@@ -32,10 +32,6 @@
 		E4ADBB290E88174200B570BC /* ArrayStack.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB0B0E88174200B570BC /* ArrayStack.m */; };
 		E4ADBB2A0E88174200B570BC /* AbstractTree.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB0C0E88174200B570BC /* AbstractTree.h */; settings = {ATTRIBUTES = (); }; };
 		E4ADBB2B0E88174200B570BC /* Comparable.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB0D0E88174200B570BC /* Comparable.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E4ADBB2C0E88174200B570BC /* DSFArrayQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB0E0E88174200B570BC /* DSFArrayQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E4ADBB2D0E88174200B570BC /* DSFArrayQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB0F0E88174200B570BC /* DSFArrayQueue.m */; };
-		E4ADBB2E0E88174200B570BC /* DSFMutableArray.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB100E88174200B570BC /* DSFMutableArray.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E4ADBB2F0E88174200B570BC /* DSFMutableArray.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB110E88174200B570BC /* DSFMutableArray.m */; };
 		E4ADBB300E88174200B570BC /* Heap.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB120E88174200B570BC /* Heap.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4ADBB310E88174200B570BC /* LLQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB130E88174200B570BC /* LLQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4ADBB320E88174200B570BC /* LLQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB140E88174200B570BC /* LLQueue.m */; };
@@ -43,8 +39,6 @@
 		E4ADBB340E88174200B570BC /* LLStack.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB160E88174200B570BC /* LLStack.m */; };
 		E4ADBB350E88174200B570BC /* LinkedList.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB170E88174200B570BC /* LinkedList.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4ADBB360E88174200B570BC /* Queue.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB180E88174200B570BC /* Queue.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E4ADBB370E88174200B570BC /* RedBlackNode.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB190E88174200B570BC /* RedBlackNode.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		E4ADBB380E88174200B570BC /* RedBlackNode.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB1A0E88174200B570BC /* RedBlackNode.m */; };
 		E4ADBB390E88174200B570BC /* RedBlackTree.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB1B0E88174200B570BC /* RedBlackTree.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4ADBB3A0E88174200B570BC /* RedBlackTree.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB1C0E88174200B570BC /* RedBlackTree.m */; };
 		E4ADBB3B0E88174200B570BC /* Stack.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB1D0E88174200B570BC /* Stack.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -97,10 +91,6 @@
 		E4ADBB0B0E88174200B570BC /* ArrayStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ArrayStack.m; path = source/ArrayStack.m; sourceTree = "<group>"; };
 		E4ADBB0C0E88174200B570BC /* AbstractTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AbstractTree.h; path = source/AbstractTree.h; sourceTree = "<group>"; };
 		E4ADBB0D0E88174200B570BC /* Comparable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Comparable.h; path = source/Comparable.h; sourceTree = "<group>"; };
-		E4ADBB0E0E88174200B570BC /* DSFArrayQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSFArrayQueue.h; path = source/DSFArrayQueue.h; sourceTree = "<group>"; };
-		E4ADBB0F0E88174200B570BC /* DSFArrayQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DSFArrayQueue.m; path = source/DSFArrayQueue.m; sourceTree = "<group>"; };
-		E4ADBB100E88174200B570BC /* DSFMutableArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSFMutableArray.h; path = source/DSFMutableArray.h; sourceTree = "<group>"; };
-		E4ADBB110E88174200B570BC /* DSFMutableArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DSFMutableArray.m; path = source/DSFMutableArray.m; sourceTree = "<group>"; };
 		E4ADBB120E88174200B570BC /* Heap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Heap.h; path = source/Heap.h; sourceTree = "<group>"; };
 		E4ADBB130E88174200B570BC /* LLQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LLQueue.h; path = source/LLQueue.h; sourceTree = "<group>"; };
 		E4ADBB140E88174200B570BC /* LLQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LLQueue.m; path = source/LLQueue.m; sourceTree = "<group>"; };
@@ -108,8 +98,6 @@
 		E4ADBB160E88174200B570BC /* LLStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LLStack.m; path = source/LLStack.m; sourceTree = "<group>"; };
 		E4ADBB170E88174200B570BC /* LinkedList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LinkedList.h; path = source/LinkedList.h; sourceTree = "<group>"; };
 		E4ADBB180E88174200B570BC /* Queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Queue.h; path = source/Queue.h; sourceTree = "<group>"; };
-		E4ADBB190E88174200B570BC /* RedBlackNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RedBlackNode.h; path = source/RedBlackNode.h; sourceTree = "<group>"; };
-		E4ADBB1A0E88174200B570BC /* RedBlackNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RedBlackNode.m; path = source/RedBlackNode.m; sourceTree = "<group>"; };
 		E4ADBB1B0E88174200B570BC /* RedBlackTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RedBlackTree.h; path = source/RedBlackTree.h; sourceTree = "<group>"; };
 		E4ADBB1C0E88174200B570BC /* RedBlackTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RedBlackTree.m; path = source/RedBlackTree.m; sourceTree = "<group>"; };
 		E4ADBB1D0E88174200B570BC /* Stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Stack.h; path = source/Stack.h; sourceTree = "<group>"; };
@@ -199,10 +187,6 @@
 				E4ADBB0B0E88174200B570BC /* ArrayStack.m */,
 				E4ADBB0C0E88174200B570BC /* AbstractTree.h */,
 				E4ADBB0D0E88174200B570BC /* Comparable.h */,
-				E4ADBB0E0E88174200B570BC /* DSFArrayQueue.h */,
-				E4ADBB0F0E88174200B570BC /* DSFArrayQueue.m */,
-				E4ADBB100E88174200B570BC /* DSFMutableArray.h */,
-				E4ADBB110E88174200B570BC /* DSFMutableArray.m */,
 				E4ADBB120E88174200B570BC /* Heap.h */,
 				E4ADBB130E88174200B570BC /* LLQueue.h */,
 				E4ADBB140E88174200B570BC /* LLQueue.m */,
@@ -210,8 +194,6 @@
 				E4ADBB160E88174200B570BC /* LLStack.m */,
 				E4ADBB170E88174200B570BC /* LinkedList.h */,
 				E4ADBB180E88174200B570BC /* Queue.h */,
-				E4ADBB190E88174200B570BC /* RedBlackNode.h */,
-				E4ADBB1A0E88174200B570BC /* RedBlackNode.m */,
 				E4ADBB1B0E88174200B570BC /* RedBlackTree.h */,
 				E4ADBB1C0E88174200B570BC /* RedBlackTree.m */,
 				E4ADBB1D0E88174200B570BC /* Stack.h */,
@@ -251,14 +233,11 @@
 				E4ADBB280E88174200B570BC /* ArrayStack.h in Headers */,
 				E4ADBB2A0E88174200B570BC /* AbstractTree.h in Headers */,
 				E4ADBB2B0E88174200B570BC /* Comparable.h in Headers */,
-				E4ADBB2C0E88174200B570BC /* DSFArrayQueue.h in Headers */,
-				E4ADBB2E0E88174200B570BC /* DSFMutableArray.h in Headers */,
 				E4ADBB300E88174200B570BC /* Heap.h in Headers */,
 				E4ADBB310E88174200B570BC /* LLQueue.h in Headers */,
 				E4ADBB330E88174200B570BC /* LLStack.h in Headers */,
 				E4ADBB350E88174200B570BC /* LinkedList.h in Headers */,
 				E4ADBB360E88174200B570BC /* Queue.h in Headers */,
-				E4ADBB370E88174200B570BC /* RedBlackNode.h in Headers */,
 				E4ADBB390E88174200B570BC /* RedBlackTree.h in Headers */,
 				E4ADBB3B0E88174200B570BC /* Stack.h in Headers */,
 				E4ADBB3C0E88174200B570BC /* StandardLinkedList.h in Headers */,
@@ -365,11 +344,8 @@
 				E4ADBB250E88174200B570BC /* ArrayHeap.m in Sources */,
 				E4ADBB270E88174200B570BC /* ArrayQueue.m in Sources */,
 				E4ADBB290E88174200B570BC /* ArrayStack.m in Sources */,
-				E4ADBB2D0E88174200B570BC /* DSFArrayQueue.m in Sources */,
-				E4ADBB2F0E88174200B570BC /* DSFMutableArray.m in Sources */,
 				E4ADBB320E88174200B570BC /* LLQueue.m in Sources */,
 				E4ADBB340E88174200B570BC /* LLStack.m in Sources */,
-				E4ADBB380E88174200B570BC /* RedBlackNode.m in Sources */,
 				E4ADBB3A0E88174200B570BC /* RedBlackTree.m in Sources */,
 				E4ADBB3D0E88174200B570BC /* StandardLinkedList.m in Sources */,
 				E4ADBB410E88174200B570BC /* UnbalancedTree.m in Sources */,

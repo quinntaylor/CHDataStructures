@@ -24,7 +24,42 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #import <Foundation/Foundation.h>
 #import "AbstractTree.h"
-#import "RBNode.h"
+#import "Comparable.h"
+
+#define nRED 0
+#define nBLACK 1
+
+#pragma mark -
+
+/**
+ A node for use by RedBlackTree for internal storage and representation.
+ */
+@interface RedBlackNode : NSObject 
+{
+    short int color;
+    id <Comparable> object;
+    RedBlackNode *left;
+    RedBlackNode *right;
+}
+
+- (id)initWithObject:(id <Comparable>)theObject;
+- (id)initWithObject:(id <Comparable>)theObject
+			withLeft:(RedBlackNode *)theLeft
+		   withRight:(RedBlackNode *)theRight;
+
+- (short int)color;
+- (RedBlackNode *)left;
+- (RedBlackNode *)right;
+- (id)object;
+
+- (void)setColor:(short int)newColor;
+- (void)setLeft:(RedBlackNode *)newLeft;
+- (void)setRight:(RedBlackNode *)newRight;
+- (void)setObject:(id <Comparable>)newObject;
+
+@end
+
+#pragma mark -
 
 /**
  Enumerators are tricky to do without recursion.
