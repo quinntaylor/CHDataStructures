@@ -1,0 +1,69 @@
+<tagfile>
+
+  <!-- Foundation classes & protocols -->
+  <compound kind="class">
+    <name>NSArray</name>
+    <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSArray_Class/Reference/Reference.html</filename>
+  </compound>
+  <compound kind="class">
+    <name>NSBundle</name>
+    <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSBundle_Class/Reference/Reference.html</filename>
+  </compound>
+  <compound kind="class">
+    <name>NSCoder</name>
+    <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSCoder_Class/Reference/NSCoder.html</filename>
+  </compound>
+  <compound kind="protocol">
+    <name>NSCoding</name>
+    <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Protocols/NSCoding_Protocol/Reference/Reference.html</filename>
+    <member kind="function">
+      <name>initWithCoder:</name>
+      <anchor>//apple_ref/occ/intfm/NSCoding/initWithCoder:</anchor>
+    </member>
+    <member kind="function">
+      <name>encodeWithCoder:</name>
+      <anchor>//apple_ref/occ/intfm/NSCoding/encodeWithCoder:</anchor>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>NSData</name>
+    <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSData_Class/Reference/Reference.html</filename>
+  </compound>
+  <compound kind="class">
+    <name>NSDictionary</name>
+    <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSDictionary_Class/Reference/Reference.html</filename>
+  </compound>
+  <compound kind="class">
+    <name>NSEnumerator</name>
+    <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSEnumerator_Class/Reference/Reference.html</filename>
+  </compound>
+  <compound kind="class">
+    <name>NSError</name>
+    <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSError_Class/Reference/Reference.html</filename>
+  </compound>
+  <compound kind="class">
+    <name>NSNotification</name>
+    <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSNotification_Class/Reference/Reference.html</filename>
+  </compound>
+  <compound kind="class">
+    <name>NSObject</name>
+    <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSObject_Class/Reference/Reference.html</filename>
+  </compound>
+  <compound kind="protocol">
+    <name>NSObject</name>
+    <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Protocols/NSObject_Protocol/Reference/NSObject.html</filename>
+  </compound>
+  <compound kind="class">
+    <name>NSSet</name>
+    <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSSet_Class/Reference/Reference.html</filename>
+  </compound>
+  <compound kind="class">
+    <name>NSString</name>
+    <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSString_Class/Reference/NSString.html</filename>
+  </compound>
+  <compound kind="class">
+    <name>NSView</name>
+    <filename>http://developer.apple.com/documentation/Cocoa/Reference/ApplicationKit/Classes/NSView_Class/Reference/NSView.html</filename>
+  </compound>
+  
+</tagfile>
