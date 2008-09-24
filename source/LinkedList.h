@@ -18,56 +18,52 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *******************************/
-//
+
 //  LinkedList.h
 //  DataStructuresFramework
-//
-
-/////
-//Just defines the interface a linked list should have.
-//I am trying to remove methods from the protocols to be more "bare bones."
-//I received some very good criticism that I was making a hack job of these protocols.
-///////
-
-/////SEE LICENSE FILE FOR LICENSE INFORMATION///////
 
 #import <Foundation/Foundation.h>
 
+/**
+ Just defines the interface a linked list should have.
+ I am trying to remove methods from the protocols to be more "bare bones."
+ I received some very good criticism that I was making a hack job of these protocols.
+ */ 
 @protocol LinkedList <NSObject>
 
--(id)init;
+- (id) init;
 
--(unsigned int) count;
--(BOOL) containsObject:(id)obj;
--(BOOL) containsObjectIdenticalTo:(id)obj;
--(void) removeAllObjects;
+- (unsigned int) count;
+- (BOOL) containsObject:(id)obj;
+- (BOOL) containsObjectIdenticalTo:(id)obj;
+- (void) removeAllObjects;
 
 //These BOOLS are all success / no success ... can safely be ignored
 //basically if you try to insert nil or if your index is out of bounds,
 //these will return NO.
--(BOOL) insertObject:(id)obj atIndex:(unsigned int)index;
--(BOOL) addFirst:(id)obj;
--(BOOL) addLast:(id)obj;
+- (BOOL) insertObject:(id)obj atIndex:(unsigned int)index;
+- (BOOL) addFirst:(id)obj;
+- (BOOL) addLast:(id)obj;
 
--(BOOL) isEmpty;
+- (BOOL) isEmpty;
 
--(id) first;
--(id) last;
--(id) objectAtIndex:(unsigned int)index;
+- (id) first;
+- (id) last;
+- (id) objectAtIndex:(unsigned int)index;
 
 //These BOOLS are all success / no success
--(BOOL)removeFirst;
--(BOOL)removeLast;
--(BOOL)removeObjectAtIndex:(unsigned int)index;
+- (BOOL) removeFirst;
+- (BOOL) removeLast;
+- (BOOL) removeObjectAtIndex:(unsigned int)index;
 
 //See NSMutableArray for the difference between these two methods.
 //basically removeObject uses isEqual, removeObjectIdenticalTo uses ==
--(BOOL)removeObject:(id)obj;
--(BOOL)removeObjectIdenticalTo:(id)obj;
+- (BOOL) removeObject:(id)obj;
+- (BOOL) removeObjectIdenticalTo:(id)obj;
 
 
 //see NSEnumerator abstract class
--(NSEnumerator *)objectEnumerator;
+- (NSEnumerator *) objectEnumerator;
 
 
 /**
@@ -79,7 +75,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * not copy, your references.  If you retain this list, your array will
  * be safe to release.
  */
-+(id <LinkedList>)listFromArray:(NSArray *)array 
-                        ofOrder:(BOOL)direction;
++ (id <LinkedList>) listFromArray:(NSArray *) ofOrder:(BOOL)direction;
 
 @end

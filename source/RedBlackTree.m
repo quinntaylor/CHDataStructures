@@ -26,17 +26,17 @@
 
 #pragma mark C Functions for Optimized Operations
 
-static RBNode * _rotateWithLeftChild(RBNode *leftChild)
+static RedBlackNode * _rotateWithLeftChild(RedBlackNode *leftChild)
 {
-    RBNode *l1 = [leftChild left];
+    RedBlackNode *l1 = [leftChild left];
     [leftChild setLeft: [l1 right]];
     [l1 setRight:leftChild];
     return l1;
 }
 
-static RBNode * _rotateWithRightChild(RBNode *rightChild)
+static RedBlackNode * _rotateWithRightChild(RedBlackNode *rightChild)
 {
-    RBNode *r1 = [rightChild right];
+    RedBlackNode *r1 = [rightChild right];
     [rightChild setRight: [r1 left]];
     [r1 setLeft:rightChild];
     return r1;
@@ -44,13 +44,9 @@ static RBNode * _rotateWithRightChild(RBNode *rightChild)
 
 #pragma mark -
 
-/**
- Enumerators are tricky to do without recursion.
- Consider using a stack to store path so far?
- */
 @implementation RedBlackTreeEnumerator
 
-- (id)initWithRoot:(RBNode *)root traversalOrder:(CHTraversalOrder)order;
+- (id)initWithRoot:(RedBlackNode *)root traversalOrder:(CHTraversalOrder)order;
 {
 	if (![super init] || order < CHTraverseInOrder || order > CHTraverseLevelOrder) {
 		[self release];
@@ -84,19 +80,6 @@ static RBNode * _rotateWithRightChild(RBNode *rightChild)
 @end
 
 
-/*
- @interface RedBlackTree
- {
- RBNode *header; //links to the root -- eliminates special cases
- RBNode *sentinel; //always black, stands in for nil
- 
- RBNode *current;
- RBNode *parent;
- RBNode *grandparent;
- RBNode *greatgrandparent;
- }
- */
-
 #pragma mark -
 
 @implementation RedBlackTree
@@ -105,7 +88,7 @@ static RBNode * _rotateWithRightChild(RBNode *rightChild)
  * This method deals simply with our header on every comparison.
  */
 - (int) _compare:(id <Comparable>)x
-        withNode:(RBNode *)node
+        withNode:(RedBlackNode *)node
 {
     if ( node == header )
         return 1;
@@ -113,8 +96,8 @@ static RBNode * _rotateWithRightChild(RBNode *rightChild)
         return [x compare:[node object]];
 }
 
-- (RBNode *) _rotate:( id <Comparable>)x
-	      onAncestor:(RBNode *)ancestor
+- (RedBlackNode *) _rotate:( id <Comparable>)x
+	      onAncestor:(RedBlackNode *)ancestor
 {
     if ( [self _compare:x withNode:ancestor] < 0 )
     {
@@ -174,11 +157,11 @@ static RBNode * _rotateWithRightChild(RBNode *rightChild)
 		return nil;
 	}
     
-    sentinel = [[RBNode alloc] init];
+    sentinel = [[RedBlackNode alloc] init];
     [sentinel setLeft:sentinel];
     [sentinel setRight:sentinel];
     
-    header = [[RBNode alloc] init];
+    header = [[RedBlackNode alloc] init];
     [header setLeft:sentinel];
     [header setRight:sentinel];
     
@@ -219,7 +202,7 @@ static RBNode * _rotateWithRightChild(RBNode *rightChild)
     if ( current != sentinel )
         return;
 	
-    current = [[RBNode alloc] initWithObject:object 
+    current = [[RedBlackNode alloc] initWithObject:object 
                                     withLeft:sentinel 
                                    withRight:sentinel ];
 	
@@ -233,7 +216,7 @@ static RBNode * _rotateWithRightChild(RBNode *rightChild)
     return;
 }
 
--(RBNode *)_findNode:(id <Comparable>)target
+-(RedBlackNode *)_findNode:(id <Comparable>)target
 {
     //we make the sentinel's object == target ... so we will eventually find it no matter what
     [sentinel setObject:target];
@@ -303,7 +286,7 @@ static RBNode * _rotateWithRightChild(RBNode *rightChild)
 
 -(NSEnumerator *)objectEnumeratorWithTraversalOrder:(CHTraversalOrder)traversalOrder;
 {
-    RBNode *root = [header right];
+    RedBlackNode *root = [header right];
     
     if (root == sentinel)
         return nil;

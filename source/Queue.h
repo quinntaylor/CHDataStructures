@@ -18,27 +18,23 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *******************************/
-//
+
 //  Queue.h
 //  DataStructuresFramework
-//
-/////SEE LICENSE FILE FOR LICENSE INFORMATION///////
-
-//////////////
-//a VERY basic queue interface
-/////////////
 
 #import <Foundation/Foundation.h>
 
-
+/**
+ A VERY basic queue interface
+ */
 @protocol Queue <NSObject>
 
-//if you try to enqueue nil, it will return false
 //retains your object
+//if you try to enqueue nil, it will return false
 - (BOOL) enqueue:(id)pushedObj;
 
+//returns and autoreleases your object
 //returns nil if the queue is empty.
-//autoreleases your object
 - (id) dequeue;
 
 //simple BOOL for whether the queue is empty or not.

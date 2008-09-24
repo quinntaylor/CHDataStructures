@@ -18,21 +18,17 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *******************************/
-/*
- *  ArrayQueue.h
- *  Data Structures Framework
-/////SEE LICENSE FILE FOR LICENSE INFORMATION///////
- *
- */
 
-//////////
-//A fairly basic queue implementation that puts its data in an NSMutableArray
-//See the protocol definition for Queue to understand the contract.
-/////////
+//  ArrayQueue.h
+//  Data Structures Framework
 
 #import <Foundation/Foundation.h>
 #import "Queue.h"
 
+/**
+ A fairly basic queue implementation that puts its data in an NSMutableArray
+ See the protocol definition for Queue to understand the contract.
+ */
 @interface ArrayQueue : NSObject <Queue>
 {
     NSMutableArray *theQ;
@@ -45,14 +41,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
     id niller; //the marker for dead spots in the queue
 }
 
-- init;
-- initWithCapacity:(unsigned)capacity;
+- (id) init;
+- (id) initWithCapacity:(unsigned)capacity;
 
 //returns the size of the queue currently
 -(unsigned int) count;
 
 /**
- * see protocol declaration for Queue
+ see protocol declaration for Queue
  */
 +(ArrayQueue *)queueWithArray:(NSArray *)array
                         ofOrder:(BOOL)direction;

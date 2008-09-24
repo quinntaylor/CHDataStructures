@@ -19,20 +19,22 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *******************************/
 
+//  Stack.h
+//  DataStructuresFramework
+
 #import <Foundation/Foundation.h>
 
-/////////
-//A VERY basic stack interface/
-/////////
-
+/**
+ A VERY basic stack interface.
+ */
 @protocol Stack <NSObject>
 
-//if you try to push nil, it will return false
 //retains the inserted object.
+//if you try to push nil, it will return false
 -(BOOL) push:(id)object;
 
+//return and autoreleases the return value.
 //returns nil if the stack is empty.
-//autoreleases the return value.
 -(id) pop;
 
 //simple BOOL for whether the stack is empty or not.

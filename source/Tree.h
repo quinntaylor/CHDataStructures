@@ -18,10 +18,9 @@
  License along with this library; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *******************************/
-/*
- *  Tree.h
- *  DataStructuresFramework
- */
+
+//  Tree.h
+//  DataStructuresFramework
 
 #import <Foundation/Foundation.h>
 #import "Comparable.h"
@@ -42,11 +41,11 @@ typedef short CHTraversalOrder;
 #define isValidTraversalOrder(o) (o>=CHTraverseInOrder && o<=CHTraverseLevelOrder)
 
 /**
- A protocol which specifies a tree and defines methods to support insertion, removal,
- search, and element enumeration. This protocol works for N-ary trees, not just those
- with only 2 children per node (aka "binary search trees"). Although any conforming
- class must implement all these methods, they may document that certain of them are
- unsupported, and/or raise exceptions when they are called.
+ A protocol which specifes an interface for N-ary trees. Defines methods to support
+ insertion, removal, search, and element enumeration. This protocol works for trees
+ where nodes have any number of children, not just binary search trees. Although any
+ conforming class must implement all these methods, they may document that certain of
+ them are unsupported, and/or raise exceptions when they are called.
  */
 @protocol Tree <NSObject>
 

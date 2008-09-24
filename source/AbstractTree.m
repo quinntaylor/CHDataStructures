@@ -18,31 +18,30 @@
  License along with this library; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *******************************/
-/*
- *  Tree.m
- *  DataStructuresFramework
- */
+
+//  Tree.m
+//  DataStructuresFramework
 
 #import "AbstractTree.h"
 #import "LLStack.h"
 
 @implementation AbstractTree
 
-+ (id)exceptionForUnsupportedOperation:(SEL)operation {
++ (id) exceptionForUnsupportedOperation:(SEL)operation {
 	[NSException raise:NSInternalInconsistencyException
 				format:@"+[%@ %s] -- Unsupported operation.",
                        [self class], sel_getName(operation)];
 	return nil;
 }
 
-- (id)exceptionForUnsupportedOperation:(SEL)operation {
+- (id) exceptionForUnsupportedOperation:(SEL)operation {
 	[NSException raise:NSInternalInconsistencyException
 				format:@"-[%@ %s] -- Unsupported operation.",
                        [self class], sel_getName(operation)];
 	return nil;
 }
 
-- (id)exceptionForInvalidArgument:(SEL)operation {
+- (id) exceptionForInvalidArgument:(SEL)operation {
 	[NSException raise:NSInvalidArgumentException
 				format:@"-[%@ %s] -- Invalid nil argument.",
 	                   [self class], sel_getName(operation)];
@@ -52,47 +51,47 @@
 
 #pragma mark Default Error Implementations
 
-- (void)addObject:(id <Comparable>)anObject {
+- (void) addObject:(id <Comparable>)anObject {
 	[self exceptionForUnsupportedOperation:_cmd];
 }
 
-- (void)addObjectsFromArray:(NSArray *)anArray {
+- (void) addObjectsFromArray:(NSArray *)anArray {
 	[self exceptionForUnsupportedOperation:_cmd];
 }
 
-- (BOOL)containsObject:(id <Comparable>)anObject {
+- (BOOL) containsObject:(id <Comparable>)anObject {
 	[self exceptionForUnsupportedOperation:_cmd];
 	return NO;
 }
 
-- (void)removeObject:(id <Comparable>)element {
+- (void) removeObject:(id <Comparable>)element {
 	[self exceptionForUnsupportedOperation:_cmd];
 }
 
-- (void)removeAllObjects {
+- (void) removeAllObjects {
 	[self exceptionForUnsupportedOperation:_cmd];
 }
 
-- (id)findMin {
+- (id) findMin {
 	return [self exceptionForUnsupportedOperation:_cmd];
 }
 
-- (id)findMax {
+- (id) findMax {
 	return [self exceptionForUnsupportedOperation:_cmd];
 }
 
-- (id)findObject:(id <Comparable>)anObject {
+- (id) findObject:(id <Comparable>)anObject {
 	return [self exceptionForUnsupportedOperation:_cmd];
 }
 
-- (BOOL)isEmpty {
+- (BOOL) isEmpty {
 	[self exceptionForUnsupportedOperation:_cmd];
 	return NO;
 }
 
 #pragma mark Convenience Constructors
 
-+ (id<Tree>)treeWithObjectsFromEnumerator:(NSEnumerator*)enumerator {
++ (id<Tree>) treeWithObjectsFromEnumerator:(NSEnumerator*)enumerator {
 	id<Tree> tree = [[self alloc] init];
 	id object;
 	while (object = [enumerator nextObject]) {
@@ -101,7 +100,7 @@
 	return [tree autorelease];
 }
 
-+ (id<Tree>)treeWithObjectsFromFastEnumeration:(id<NSFastEnumeration>)collection {
++ (id<Tree>) treeWithObjectsFromFastEnumeration:(id<NSFastEnumeration>)collection {
     id<Tree> tree = [[self alloc] init];
 	for (id object in collection) {
 		[tree addObject:object];
@@ -147,12 +146,12 @@
 
 #pragma mark Object Enumerators
 
-- (NSEnumerator *)objectEnumerator {
+- (NSEnumerator *) objectEnumerator {
 	return [self objectEnumeratorWithTraversalOrder:CHTraverseInOrder];
 }
 
 /* Must be specified by concrete child classes. */
-- (NSEnumerator *)objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order {
+- (NSEnumerator *) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order {
 	return [self exceptionForUnsupportedOperation:_cmd];
 }
 

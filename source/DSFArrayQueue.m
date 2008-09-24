@@ -19,19 +19,20 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *******************************/
 
-/////SEE LICENSE FILE FOR LICENSE INFORMATION///////
+//  DSFArrayQueue.m
+//  DataStructuresFramework
 
 #import "DSFMutableArray.h"
 #import "DSFArrayQueue.h"
 
 @implementation DSFArrayQueue
 
-- init
+- (id) init
 {
     return [self initWithCapacity:10];
 }
 
--initWithCapacity:(unsigned)capacity
+- (id) initWithCapacity:(unsigned)capacity
 {
     self = [super init];
     

@@ -18,23 +18,20 @@
  License along with this library; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *******************************/
-//
+
 //  Heap.h
 //  DataStructuresFramework
-//  Created by Gordon Worley on Tue Apr 02 2002.
-//  Copyright (c) 2002 Gordon Worley redbird@rbisland.cx
-//  Minor contributions by Phillip Morelock for purposes of integration with the library.
-//
-/////SEE LICENSE FILE FOR LICENSE INFORMATION///////
-/////many thanks to Gordon for the very first outside contribution to the library!
 
-//////////////
-//a VERY basic heap interface
-/////////////
+//  Copyright (c) 2002 Gordon Worley redbird@rbisland.cx
+//  Minor contributions by Phillip Morelock for purposes of library integration.
+//  Many thanks to Gordon for the very first outside contribution to the library!
 
 #import <Foundation/Foundation.h>
 #import "Comparable.h"
 
+/**
+ A VERY basic heap interface
+ */
 @protocol Heap <NSObject>
 
 // if you try to insert nil, it will return false

@@ -18,7 +18,7 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *******************************/
-//
+
 //  UnbalancedTree.h
 //  DataStructuresFramework
 
@@ -67,9 +67,9 @@ typedef struct BinaryNode {
 #pragma mark -
 
 /**
- A simple, unbalanced binary tree that <b>does not</b> guarantee O(log n) access,
- since the tree is never balanced when items are added or removed. Even so, access
- is <b>at worst</b> linear if the tree essentially degenerates into a linked list.
+ A simple, unbalanced binary tree that <b>does not</b> guarantee O(log n) access.
+ Even though the tree is never balanced when items are added or removed, access is
+ <b>at worst</b> linear if the tree essentially degenerates into a linked list.
  This class is fast, and without stack risk because it works without recursion.
  In release 0.4.0, nodes objects were changed to C structs for enhanced performance.
  */
@@ -85,7 +85,7 @@ typedef struct BinaryNode {
 - (id)init;
 
 /**
- Create a new UnbalancedTree with a single root node that stores the specified object.
+ Create a new UnbalancedTree with a single root node that stores the given object.
  */
 - (id)initWithObject:(id <Comparable>)rootObject;
 

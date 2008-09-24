@@ -18,11 +18,9 @@
  License along with this library; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *******************************/
-//
+
 //  RBNode.h
 //  DataStructuresFramework
-//
-//  Created by Phillip Morelock on Sat Apr 06 2002.
 
 #import <Foundation/Foundation.h>
 #import "Comparable.h"
@@ -30,28 +28,27 @@
 #define nRED 0
 #define nBLACK 1
 
-@interface RBNode : NSObject 
+@interface RedBlackNode : NSObject 
 {
     short int color;
     id <Comparable> object;
-    RBNode *left;
-    RBNode *right;
+    RedBlackNode *left;
+    RedBlackNode *right;
 }
 
 - (id)initWithObject:(id <Comparable>)theObject;
 - (id)initWithObject:(id <Comparable>)theObject
-			withLeft:(RBNode *)theLeft
-		   withRight:(RBNode *)theRight;
+			withLeft:(RedBlackNode *)theLeft
+		   withRight:(RedBlackNode *)theRight;
 
 - (short int)color;
-- (RBNode *)left;
-- (RBNode *)right;
+- (RedBlackNode *)left;
+- (RedBlackNode *)right;
 - (id)object;
 
 - (void)setColor:(short int)newColor;
-- (void)setLeft:(RBNode *)newLeft;
-- (void)setRight:(RBNode *)newRight;
+- (void)setLeft:(RedBlackNode *)newLeft;
+- (void)setRight:(RedBlackNode *)newRight;
 - (void)setObject:(id <Comparable>)newObject;
-
 
 @end

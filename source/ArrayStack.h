@@ -18,20 +18,16 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *******************************/
-/*
- *  ArrayStack.h
- *  Data Structures Framework
-/////SEE LICENSE FILE FOR LICENSE INFORMATION///////
- */
 
-////////
-//A fairly basic stack implementation that uses an NSMutableArray to store 
-//object references
-//////////
+//  ArrayStack.h
+//  DataStructuresFramework
 
 #import <Foundation/Foundation.h>
 #import "Stack.h"
 
+/**
+ A fairly basic stack implementation that uses an NSMutableArray to store objects.
+ */
 @interface ArrayStack : NSObject <Stack>
 {
     //the actual stack
@@ -40,10 +36,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
     unsigned int nextIndex;
 }
 
-- init;
-- initWithCapacity:(unsigned)capacity;
+- (id) init;
+- (id) initWithCapacity:(unsigned)capacity;
 
-
--(unsigned int)count;
+- (unsigned int) count;
 
 @end

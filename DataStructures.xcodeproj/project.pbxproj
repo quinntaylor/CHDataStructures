@@ -43,8 +43,8 @@
 		E4ADBB340E88174200B570BC /* LLStack.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB160E88174200B570BC /* LLStack.m */; };
 		E4ADBB350E88174200B570BC /* LinkedList.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB170E88174200B570BC /* LinkedList.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4ADBB360E88174200B570BC /* Queue.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB180E88174200B570BC /* Queue.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E4ADBB370E88174200B570BC /* RBNode.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB190E88174200B570BC /* RBNode.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		E4ADBB380E88174200B570BC /* RBNode.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB1A0E88174200B570BC /* RBNode.m */; };
+		E4ADBB370E88174200B570BC /* RedBlackNode.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB190E88174200B570BC /* RedBlackNode.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		E4ADBB380E88174200B570BC /* RedBlackNode.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB1A0E88174200B570BC /* RedBlackNode.m */; };
 		E4ADBB390E88174200B570BC /* RedBlackTree.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB1B0E88174200B570BC /* RedBlackTree.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4ADBB3A0E88174200B570BC /* RedBlackTree.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB1C0E88174200B570BC /* RedBlackTree.m */; };
 		E4ADBB3B0E88174200B570BC /* Stack.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB1D0E88174200B570BC /* Stack.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -108,8 +108,8 @@
 		E4ADBB160E88174200B570BC /* LLStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LLStack.m; path = source/LLStack.m; sourceTree = "<group>"; };
 		E4ADBB170E88174200B570BC /* LinkedList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LinkedList.h; path = source/LinkedList.h; sourceTree = "<group>"; };
 		E4ADBB180E88174200B570BC /* Queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Queue.h; path = source/Queue.h; sourceTree = "<group>"; };
-		E4ADBB190E88174200B570BC /* RBNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RBNode.h; path = source/RBNode.h; sourceTree = "<group>"; };
-		E4ADBB1A0E88174200B570BC /* RBNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RBNode.m; path = source/RBNode.m; sourceTree = "<group>"; };
+		E4ADBB190E88174200B570BC /* RedBlackNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RedBlackNode.h; path = source/RedBlackNode.h; sourceTree = "<group>"; };
+		E4ADBB1A0E88174200B570BC /* RedBlackNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RedBlackNode.m; path = source/RedBlackNode.m; sourceTree = "<group>"; };
 		E4ADBB1B0E88174200B570BC /* RedBlackTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RedBlackTree.h; path = source/RedBlackTree.h; sourceTree = "<group>"; };
 		E4ADBB1C0E88174200B570BC /* RedBlackTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RedBlackTree.m; path = source/RedBlackTree.m; sourceTree = "<group>"; };
 		E4ADBB1D0E88174200B570BC /* Stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Stack.h; path = source/Stack.h; sourceTree = "<group>"; };
@@ -210,8 +210,8 @@
 				E4ADBB160E88174200B570BC /* LLStack.m */,
 				E4ADBB170E88174200B570BC /* LinkedList.h */,
 				E4ADBB180E88174200B570BC /* Queue.h */,
-				E4ADBB190E88174200B570BC /* RBNode.h */,
-				E4ADBB1A0E88174200B570BC /* RBNode.m */,
+				E4ADBB190E88174200B570BC /* RedBlackNode.h */,
+				E4ADBB1A0E88174200B570BC /* RedBlackNode.m */,
 				E4ADBB1B0E88174200B570BC /* RedBlackTree.h */,
 				E4ADBB1C0E88174200B570BC /* RedBlackTree.m */,
 				E4ADBB1D0E88174200B570BC /* Stack.h */,
@@ -258,7 +258,7 @@
 				E4ADBB330E88174200B570BC /* LLStack.h in Headers */,
 				E4ADBB350E88174200B570BC /* LinkedList.h in Headers */,
 				E4ADBB360E88174200B570BC /* Queue.h in Headers */,
-				E4ADBB370E88174200B570BC /* RBNode.h in Headers */,
+				E4ADBB370E88174200B570BC /* RedBlackNode.h in Headers */,
 				E4ADBB390E88174200B570BC /* RedBlackTree.h in Headers */,
 				E4ADBB3B0E88174200B570BC /* Stack.h in Headers */,
 				E4ADBB3C0E88174200B570BC /* StandardLinkedList.h in Headers */,
@@ -369,7 +369,7 @@
 				E4ADBB2F0E88174200B570BC /* DSFMutableArray.m in Sources */,
 				E4ADBB320E88174200B570BC /* LLQueue.m in Sources */,
 				E4ADBB340E88174200B570BC /* LLStack.m in Sources */,
-				E4ADBB380E88174200B570BC /* RBNode.m in Sources */,
+				E4ADBB380E88174200B570BC /* RedBlackNode.m in Sources */,
 				E4ADBB3A0E88174200B570BC /* RedBlackTree.m in Sources */,
 				E4ADBB3D0E88174200B570BC /* StandardLinkedList.m in Sources */,
 				E4ADBB410E88174200B570BC /* UnbalancedTree.m in Sources */,

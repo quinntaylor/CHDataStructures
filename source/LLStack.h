@@ -18,23 +18,20 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *******************************/
-//
+
 //  LLStack.h
 //  DataStructuresFramework
-
-/////SEE LICENSE FILE FOR LICENSE INFORMATION///////
-
-/////////
-//A simple Stack implemented using a linked list.  Nice!  Fast!
-//The linked list (also in this library) is partially implemented in
-//straight C, so it's pretty fast.
-//////////
 
 #import <Foundation/Foundation.h>
 #import "Stack.h"
 
 @class StandardLinkedList;
 
+/**
+ A simple Stack implemented using a linked list. Nice! Fast!
+ The linked list (also in this library) is partially implemented in
+ straight C, so it's pretty fast.
+ */
 @interface LLStack : NSObject <Stack>
 {
     StandardLinkedList *list;

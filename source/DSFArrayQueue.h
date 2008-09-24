@@ -18,25 +18,22 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *******************************/
-/*
- *  ArrayQueue.h
- *  Data Structures Framework
-/////SEE LICENSE FILE FOR LICENSE INFORMATION///////
- *
- */
 
-//This queue makes use of the DSFMutableArray custom mutable array class
-//instead of NSMutableArray which is not very practical for queues.
-//Of course, one might argue that arrays are seldom practical for queues.
-//////////
-//See the protocol definition for Queue to understand the contract.
-/////////
+//  DSFArrayQueue.h
+//  DataStructuresFramework
 
 #import <Foundation/Foundation.h>
 #import "Queue.h"
 
 @class DSFMutableArray;
 
+/**
+ This queue makes use of the DSFMutableArray custom mutable array class
+ instead of NSMutableArray which is not very practical for queues.
+ Of course, one might argue that arrays are seldom practical for queues. 
+ 
+ See the protocol definition for Queue to understand the contract.
+ */
 @interface DSFArrayQueue : NSObject <Queue>
 {
     DSFMutableArray *theQ;
@@ -46,15 +43,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
     unsigned int qSize;  //the current size
 }
 
-- init;
-- initWithCapacity:(unsigned)capacity;
+- (id) init;
+- (id) initWithCapacity:(unsigned)capacity;
 
 //returns the size of the queue currently
--(unsigned int) count;
+- (unsigned int) count;
 
 /**
  * see protocol declaration for Queue
  */
-+(DSFArrayQueue *)queueWithArray:(NSArray *)array
-                        ofOrder:(BOOL)direction;
++ (DSFArrayQueue *) queueWithArray:(NSArray *)array ofOrder:(BOOL)direction;
 @end

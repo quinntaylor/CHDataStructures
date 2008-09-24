@@ -18,27 +18,24 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *******************************/
-//
+
 //  LLQueue.h
 //  DataStructuresFramework
-
-/////SEE LICENSE FILE FOR LICENSE INFORMATION///////
-
-/////////
-///A simple queue implementation that uses our linked list.
-///////
 
 #import <Foundation/Foundation.h>
 #import "Queue.h"
 
 @class StandardLinkedList;
 
+/**
+ A simple queue implementation that uses our linked list.
+ */
 @interface LLQueue : NSObject <Queue>
 {
     StandardLinkedList *list;
 }
 
-- init;
+- (id) init;
 
 //this is a weird thing to want from a queue, but i'll give it to ya
 //anyway because the LL provides it.

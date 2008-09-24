@@ -18,25 +18,19 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *******************************/
-//
+
 //  ArrayHeap.m
 //  DataStructuresFramework
-//
-//  Created by Gordon Worley on Tue Apr 02 2002.
+
 //  Copyright (c) 2002 Gordon Worley redbird@rbisland.cx
 //  Contributions by Phillip Morelock for purposes of integration with the library.
-/////SEE LICENSE FILE FOR LICENSE INFORMATION///////
+//  Many thanks to Gordon for the very first outside contribution to the library!
 
-/*******
-/////Additions by Phillip Morelock Apr 03 02
-/////fine-tuned memory management / object releases, etc.
-/////replaced some internal method calls with the "straight call" so as
-/////to reduce obj_c multiple messaging
-/////PM 04.14.02 -- converted bubbleup and bubbledown to static C functions instead of
-/////////////////////messages to self.
-//
-/////many thanks to Gordon for the very first outside contribution to the library!
-*******/
+// Additions by Phillip Morelock Apr 03 2002
+// fine-tuned memory management / object releases, etc.
+// replaced some internal method calls with the "straight call" so as
+// to reduce obj_c multiple messaging
+// converted bubbleup and bubbledown to static C functions instead of messages to self.
 
 #import "ArrayHeap.h"
 

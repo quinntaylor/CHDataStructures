@@ -25,12 +25,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 @implementation ArrayQueue
 
-- init
+- (id) init
 {
     return [self initWithCapacity:10];
 }
 
--initWithCapacity:(unsigned)capacity
+- (id) initWithCapacity:(unsigned)capacity
 {
     self = [super init];
     
@@ -45,14 +45,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
     return self;
 }
 
--(void) dealloc
+- (void) dealloc
 {
     [theQ release];
     [niller release];
     [super dealloc];
 }
 
--(BOOL) enqueue: (id)enqueuedObj
+- (BOOL) enqueue: (id)enqueuedObj
 {
     if ( enqueuedObj == nil )
 	return NO;
@@ -63,7 +63,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
     return YES;
 }
 
-- dequeue
+- (id) dequeue
 {
     id theObj;
 
@@ -88,13 +88,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
     return [theObj autorelease];
 }
 
--(unsigned) count
+- (unsigned) count
 {
     return qSize;
 }
 
 //simple BOOL for whether the queue is empty or not.
--(BOOL) isEmpty
+- (BOOL) isEmpty
 {
     if ( qSize < 1)
 	return YES;
@@ -102,7 +102,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 	return NO;
 }
 
--(void) removeAllObjects
+- (void) removeAllObjects
 {
     if (theQ)
 	[theQ release];
@@ -114,8 +114,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 }
 
-+(ArrayQueue *)queueWithArray:(NSArray *)array
-                  ofOrder:(BOOL)direction
++ (ArrayQueue *) queueWithArray:(NSArray *)array
+						ofOrder:(BOOL)direction
 {
     ArrayQueue *q;
     int i,s;
@@ -125,7 +125,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
     i = 0;
     
     if (!array || !s)
-    {}//nada
+		; //nada
     else if (direction)//so the order to dequeue will be from 0...n
     {
         while (i < s)

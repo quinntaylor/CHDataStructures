@@ -18,15 +18,13 @@
  License along with this library; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *******************************/
-//
-//  RBNode.m
+
+//  RedBlackNode.m
 //  DataStructuresFramework
-//
-//  Created by Phillip Morelock on Sat Apr 06 2002.
 
 #import "RBNode.h"
 
-@implementation RBNode
+@implementation RedBlackNode
 
 -(id)init
 {
@@ -39,8 +37,8 @@
 }
 
 -(id)initWithObject:(id <Comparable>)theObject
-		   withLeft:(RBNode *)theLeft
-		  withRight:(RBNode *)theRight
+		   withLeft:(RedBlackNode *)theLeft
+		  withRight:(RedBlackNode *)theRight
 {
 	if (![super init]) {
 		[self release];
@@ -64,12 +62,12 @@
     [super dealloc];
 }
 
-- (RBNode *)left
+- (RedBlackNode *)left
 {
     return left;
 }
 
-- (RBNode *)right
+- (RedBlackNode *)right
 {
     return right;
 }
@@ -89,17 +87,17 @@
     color = newColor;
 }
 
-- (void)setLeft:(RBNode *)newLeft
+- (void)setLeft:(RedBlackNode *)newLeft
 {
-    RBNode *old;
+    RedBlackNode *old;
     old = left;
     left = [newLeft retain];
     [old release];
 }
 
-- (void)setRight:(RBNode *)newRight
+- (void)setRight:(RedBlackNode *)newRight
 {
-    RBNode *old;
+    RedBlackNode *old;
     old = right;
     right = [newRight retain];
     [old release];

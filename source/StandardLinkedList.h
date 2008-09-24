@@ -18,13 +18,12 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *******************************/
-//
+
 //  StandardLinkedList.h
 //  DataStructuresFramework
 
-/////SEE LICENSE FILE FOR LICENSE INFORMATION///////
 
-///////////////////////////////////////////////////////////////////
+//////////////
 ///A pretty standard linked list class with a header and tail.
 ///This has changed from earlier versions: the nodes are now simple
 ///C structs rather than Obj C classes -- much faster.

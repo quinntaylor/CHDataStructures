@@ -18,35 +18,18 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *******************************/
-//
+
 //  RedBlackTree.h
 //  DataStructuresFramework
-//
-//  Created by Phillip Morelock on Sat Apr 06 2002.
-//  Copyright (c) 2002 Phillip Morelock. All rights reserved, except as licensed to you.
-//  This class is a direct port to Objective-C of the Red Black tree found in 
-//  Data Structures and Problem Solving Using Java by Mark Allen Weiss, Addison Wesley
-//
-
-/**
- * A red black tree is a nonrecursive binary search tree. It results in a very well
- * balanced, yet fast, binary search tree with guaranteed logarithmic search time.
- *
- * Four rules:
- * (taken from Data Structures and Problem Solving Using Java by Mark Allen Weiss, Addison Wesley)
- * 1. Every node is red or black.
- * 2. The root is black.
- * 3. If a node is red, its children must be black.
- * 4. Every path from a node to a null link must contain the same number of black nodes.
- *
- * Also note that nil nodes are considered black for many purposes.
- * This is really hard to make work right.  For me at least.
- */
 
 #import <Foundation/Foundation.h>
 #import "AbstractTree.h"
 #import "RBNode.h"
 
+/**
+ Enumerators are tricky to do without recursion.
+ Consider using a stack to store path so far?
+ */
 @interface RedBlackTreeEnumerator : NSEnumerator
 {
     struct RBNode *currentNode;
@@ -57,7 +40,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 }
 
 /** Create an enumerator which traverses a given subtree in the specified order. */
-- (id)initWithRoot:(RBNode *)root traversalOrder:(CHTraversalOrder)order;
+- (id)initWithRoot:(RedBlackNode *)root traversalOrder:(CHTraversalOrder)order;
 
 /** Returns the next object from the collection being enumerated. */
 - (id)nextObject;
@@ -68,15 +51,31 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #pragma mark -
 
+/**
+ A fast, balanced, non-recursive binary tree with guaranteed O(log n) access. This
+ class is a direct Objective-C port of the Red Black tree found in "Data Structures
+ and Problem Solving Using Java" by Mark Allen Weiss, published by Addison Wesley.
+
+ There are four fundamental rules: (taken from the book mentioned above)
+ <ol>
+ <li> Every node is red or black.
+ <li> The root is black.
+ <li> If a node is red, its children must be black.
+ <li> Every path from a node to a null link must contain the same number of black nodes.
+ </ol>
+ 
+ Also note that <code>nil</code> nodes are considered black for many purposes.
+ This is really hard to make work right. For me at least.
+ */
 @interface RedBlackTree : AbstractTree
 {
-    RBNode *header;   // links to the root -- eliminates special cases
-    RBNode *sentinel; // always black, stands in for nil
+    RedBlackNode *header;   // links to the root -- eliminates special cases
+    RedBlackNode *sentinel; // always black, stands in for nil
     
-    @private RBNode *current;
-    @private RBNode *parent;
-    @private RBNode *grandparent;
-    @private RBNode *greatgrandparent;
+    @private RedBlackNode *current;
+    @private RedBlackNode *parent;
+    @private RedBlackNode *grandparent;
+    @private RedBlackNode *greatgrandparent;
 }
 
 /**

@@ -18,10 +18,9 @@
  License along with this library; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *******************************/
-/*
- *  AbstractTree.h
- *  DataStructuresFramework
- */
+
+//  AbstractTree.h
+//  DataStructuresFramework
 
 #import <Foundation/Foundation.h>
 #import "Comparable.h"
@@ -29,8 +28,8 @@
 #import "Stack.h"
 
 /**
- This is to be treated as an abstract class, and concrete child classes must
- implement all methods in the Tree protocol.
+ An abstract implementation of the Tree protocol with several convenience methods.
+ Child classes must re-implement protocol methods according to their inner workings.
  */
 @interface AbstractTree : NSObject <Tree>
 {

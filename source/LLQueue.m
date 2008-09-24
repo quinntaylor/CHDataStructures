@@ -18,39 +18,29 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *******************************/
-//
 //  LLQueue.m
 //  DataStructuresFramework
-
-/////SEE LICENSE FILE FOR LICENSE INFORMATION///////
-
 
 #import "LLQueue.h"
 #import "StandardLinkedList.h"
 
 @implementation LLQueue
-/****
-@interface LLQueue : NSObject <Queue>
-{
-    StandardLinkedList *list;
-}
-****/
 
--(id)init
+- (id)init
 {
     [super init];
     list = [[StandardLinkedList alloc] init];
     return self;
 }
 
--(void)dealloc
+- (void)dealloc
 {
     [list release];
     [super dealloc];
 }
 
 //if you try to enqueue nil, it will return false
--(BOOL) enqueue:(id)pushedObj
+- (BOOL) enqueue:(id)pushedObj
 {
     if (!pushedObj)
         return NO;
@@ -60,7 +50,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 }
 
 //returns nil if the queue is empty.
--(id) dequeue
+- (id) dequeue
 {
     id retval;
     retval = [[list first] retain];
@@ -69,22 +59,22 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 }
 
 //simple BOOL for whether the queue is empty or not.
--(BOOL) isEmpty
+- (BOOL) isEmpty
 {
     return ([list first] == nil);
 }
 
--(void) removeAllObjects
+- (void) removeAllObjects
 {
     [list removeAllObjects];
 }
 
--(NSEnumerator *)objectEnumerator
+- (NSEnumerator *)objectEnumerator
 {
     return [list objectEnumerator];
 }
 
-+(LLQueue *)queueWithArray:(NSArray *)array
++ (LLQueue *)queueWithArray:(NSArray *)array
                   ofOrder:(BOOL)direction
 {
     LLQueue *q;
