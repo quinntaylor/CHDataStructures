@@ -30,29 +30,39 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 @protocol Stack <NSObject>
 
 /**
- Add an object to the top of the stack. Returns NO if the object is <code>nil</code>.
+ Add an object to the top of the stack.
+ 
+ @param anObject The object to add to the top of the stack; must not be <code>nil</code>.
  */
-- (BOOL) push:(id)object;
+- (void) push:(id)anObject;
 
 /**
  Remove and return the topmost object, or <code>nil</code> if the stack is empty.
+ 
+ @return The topmost object from the stack.
  */
 - (id) pop;
 
 /**
  Return the topmost object, but do not remove it from the stack.
- */
+
+ @return The topmost object from the stack.
+*/
 - (id) peek;
 
 /**
- Returns the number of objects currently on the stack
+ Returns the number of objects currently on the stack.
+ 
+ @return The number of objects currently on the stack.
  */
 - (unsigned int) count;
 
 /**
- Returns an autoreleased stack with the contents of the array in the same order.
- For direction, YES means that objects will dequeue in the order indexed (0...n),
- whereas NO means that objects will dequeue (n...0).
+ Returns an autoreleased stack with the contents of the array in the specified order.
+ 
+ @param array An array of objects to add to the stack.
+ @param direction The order in which to insert objects from the arran. YES means the 
+        natural index order (0...n), NO means reverse index order (n...0).
  */
 + (id <Stack>) stackWithArray:(NSArray *)array ofOrder:(BOOL)direction;
 

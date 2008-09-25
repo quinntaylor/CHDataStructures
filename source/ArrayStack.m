@@ -47,15 +47,13 @@
     [super dealloc];
 }
 
-- (BOOL) push:(id)object
+- (void) push:(id)anObject
 {
-    if ( object == nil )
-		return NO;
-	
-    //it wasn't nil, so push it
-    [theArrayStack insertObject:object atIndex:nextIndex];
-    ++nextIndex;
-    return YES;
+	// TODO: Raise NSInvalidArgumentException if anObject is nil?
+	if (anObject != nil) {
+		[theArrayStack addObject:anObject]; // Inserts at the end of the array
+		++nextIndex;		
+	}
 }
 
 - (id) pop

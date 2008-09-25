@@ -30,35 +30,30 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  with a struct than with a proper object.
  */
 typedef struct DoublyLinkedNode {
-    struct DoublyLinkedNode *next;
-    struct DoublyLinkedNode *prev;
-    id data;
+    struct DoublyLinkedNode *next; /**< The next node in the list. */
+    struct DoublyLinkedNode *prev; /**< The previous node in the list. */
+    id data; /**< The object associated with this node in the list. */
 } DoublyLinkedNode;
 
 /** A simplification for malloc'ing list nodes. */
 #define NODESIZE sizeof(struct DoublyLinkedNode)
 
-/**
- A standard doubly-linked LinkedList implementation.
- I called it Standard because i have no plans to implement a singly-linked
- list...i really don't think the extra pointers matter too much when
- you're using OO technology with its lot of excess pointers, do they?
- */
+#pragma mark -
 
 /**
- A pretty standard linked list class with a header and tail.
- This has changed from earlier versions: the nodes are now simple
- C structs rather than Obj C classes -- much faster.
- Max Horn gave me the suggestion.  Thanks Max.
- Max also has helped steer the interfaces and protocols to follow much more
- closely the API you find in Apple's collections classes.
+ A standard doubly-linked LinkedList implementation with pointers to head and tail.
+ I call it standard because I have no plans to implement a singly-linked list...
+ Does the extra pointer for each node really add that much excess?
+ 
+ Nodes are now represented with C structs rather than Obj-C classes, providing much
+ faster performance. (Thanks to Max Horn for the suggestion and additional guidance.)
+ The protocols and interfaces also follow Apple's collection APIs more closely.
  */
-
 @interface DoublyLinkedList : NSObject <LinkedList>
 {
-    int listSize;
-    DoublyLinkedNode *beginMarker;
-    DoublyLinkedNode *endMarker;
+    int listSize; /**< The number of object currently stored in the list. */
+    DoublyLinkedNode *beginMarker; /**< A pointer to the front node of the list. */
+    DoublyLinkedNode *endMarker;   /**< A pointer to the back node of the list. */
 }
 
 //a bonus method.  supplies an enumerator that goes backwards
@@ -66,21 +61,21 @@ typedef struct DoublyLinkedNode {
 - (NSEnumerator *) reverseObjectEnumerator;
 
 #pragma mark Inherited Methods
-- (BOOL) addFirst:(id)object;
-- (BOOL) addLast:(id)object;
+- (void) addFirst:(id)anObject;
+- (void) addLast:(id)anObject;
 - (id) first;
 - (id) last;
 - (unsigned int) count;
-- (BOOL) containsObject:(id)object;
-- (BOOL) containsObjectIdenticalTo:(id)object;
-- (BOOL) insertObject:(id)obj atIndex:(unsigned int)index;
+- (BOOL) containsObject:(id)anObject;
+- (BOOL) containsObjectIdenticalTo:(id)anObject;
+- (void) insertObject:(id)anObject atIndex:(unsigned int)index;
 - (id) objectAtIndex:(unsigned int)index;
 - (NSEnumerator *) objectEnumerator;
-- (BOOL) removeFirst;
-- (BOOL) removeLast;
-- (BOOL) removeObject:(id)obj;
-- (BOOL) removeObjectAtIndex:(unsigned int)index;
-- (BOOL) removeObjectIdenticalTo:(id)obj;
+- (void) removeFirst;
+- (void) removeLast;
+- (void) removeObject:(id)anObject;
+- (void) removeObjectAtIndex:(unsigned int)index;
+- (void) removeObjectIdenticalTo:(id)anObject;
 - (void) removeAllObjects;
 
 #pragma mark Redefined Methods

@@ -135,6 +135,46 @@ static RedBlackNode * _rotateWithRightChild(RedBlackNode *rightChild)
 
 #pragma mark -
 
+/**
+ An NSEnumerator for traversing a RedBlackTree subtree in a specified order.
+ 
+ NOTE: Tree enumerators are tricky to do without recursion.
+ Consider using a stack to store path so far?
+ */
+@interface RedBlackTreeEnumerator : NSEnumerator
+{
+    struct RBNode *currentNode;
+	CHTraversalOrder traversalOrder;
+    BOOL hasStarted;
+    BOOL beenLeft;
+    BOOL beenRight;
+}
+
+/** Create an enumerator which traverses a given subtree in the specified order. */
+- (id)initWithRoot:(RedBlackNode *)root traversalOrder:(CHTraversalOrder)order;
+
+/**
+ Returns an array of objects the receiver has yet to enumerate.
+ 
+ @return An array of objects the receiver has yet to enumerate.
+ 
+ Invoking this method exhausts the remainder of the objects, such that subsequent
+ invocations of #nextObject return <code>nil</code>.
+ */
+- (NSArray *) allObjects;
+
+/**
+ Returns the next object from the collection being enumerated.
+ 
+ @return The next object from the collection being enumerated, or <code>nil</code>
+ when all objects have been enumerated.
+ */
+- (id) nextObject;
+
+@end
+
+#pragma mark -
+
 @implementation RedBlackTreeEnumerator
 
 - (id)initWithRoot:(RedBlackNode *)root traversalOrder:(CHTraversalOrder)order;

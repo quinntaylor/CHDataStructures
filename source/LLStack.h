@@ -28,9 +28,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 @class DoublyLinkedList;
 
 /**
- A simple Stack implemented using a linked list. Nice! Fast!
- The linked list (also in this library) is partially implemented in
- straight C, so it's pretty fast.
+ A simple Stack implemented using a linked list. It's based on DoublyLinkedList which
+ is partially implemented in straight C, so it's pretty fast.
  */
 @interface LLStack : NSObject <Stack>
 {
@@ -44,7 +43,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 - (NSEnumerator *) objectEnumerator;
 
 #pragma mark Inherited Methods
-- (BOOL) push:(id)object;
+- (void) push:(id)anObject;
 - (id) pop;
 - (id) peek;
 - (unsigned int) count;

@@ -26,7 +26,7 @@
 
 
 /**
- A private subclass of NSEnumerator for enumerator over a doubly-linked list.
+ An NSEnumerator for traversing a DoublyLinkedList in forward or reverse order.
  */
 @interface DoublyLinkedListEnumerator : NSEnumerator
 {
@@ -36,7 +36,29 @@
     
     BOOL direction; //YES == forward
 }
+
+/**
+ Returns an array of objects the receiver has yet to enumerate.
+ 
+ @return An array of objects the receiver has yet to enumerate.
+ 
+ Invoking this method exhausts the remainder of the objects, such that subsequent
+ invocations of #nextObject return <code>nil</code>.
+ */
+- (NSArray *) allObjects;
+
+/**
+ Returns the next object from the collection being enumerated.
+ 
+ @return The next object from the collection being enumerated, or <code>nil</code>
+         when all objects have been enumerated.
+ */
+- (id) nextObject;
+
 @end
+
+
+#pragma mark -
 
 @implementation DoublyLinkedListEnumerator
 //forward means YES == same order as linked list, NO == reverse.
@@ -44,7 +66,10 @@
 		 withTail:(struct DoublyLinkedNode *)endMarker
 		  forward:(BOOL)dir
 {
-    [super init];
+    if ([super init] == nil || beginMarker == nil || endMarker == nil) {
+		[self release];
+		return nil;
+	}
     
     header = beginMarker;
     tail = endMarker;
@@ -56,22 +81,19 @@
     else
         current = tail;
     
-    if (!header || !tail)
-        [NSException raise:@"LLEnumeratorFoobar" format:@"Your linked list is invalid for this enumerator."];
-    
     return self;
 }
 
 - (id)nextObject
 {
     struct DoublyLinkedNode *old = current;
-    
+	
     if (direction)
     {
         if ( !(old->next) || old->next == tail)
             return nil;
         else
-            return (current = old->next)->data;//return and advance the list
+            return (current = old->next)->data; //return and advance the list
     }
     else
     {
@@ -103,34 +125,27 @@
 
 @end
 
+#pragma mark -
 
-//And now our class implementation.
 @implementation DoublyLinkedList
-/****** 
- from the header:
- instance vars of StandardLinkedList:
- {
- int theSize;
- 
- LLNode *beginMarker;
- LLNode *endMarker;
- }
- ***/
 
 - (id) init
 {
-    [super init];
+    if ([super init] == nil) {
+		[self release];
+		return nil;
+	}
     
-    ///set up the markers pointing to each other    
+    // set up the markers pointing to each other    
     beginMarker = malloc(NODESIZE);
     endMarker = malloc(NODESIZE);
     
     beginMarker->next = endMarker;
-    beginMarker->prev = nil;
+    beginMarker->prev = NULL;
     beginMarker->data = nil;
     
+    endMarker->next = NULL;
     endMarker->prev = beginMarker;
-    endMarker->next = nil;
     endMarker->data = nil;
     
     return self;
@@ -140,12 +155,12 @@
 {
     [self removeAllObjects];
     
-    if (beginMarker != nil)
+    if (beginMarker != NULL)
     {
         [beginMarker->data release];
         free(beginMarker);
     }
-    if (endMarker != nil)
+    if (endMarker != NULL)
     {
         [endMarker->data release];
         free(endMarker);
@@ -216,57 +231,52 @@
     return p;
 }
 
-- (BOOL) containsObject:(id)object
+- (BOOL) containsObject:(id)anObject
 {
-    //if that returns nil, we'll return NO automagically
-    return ([self _findPos:object identical:NO] != nil);
+    // if that returns nil, we'll return NO automagically
+    return ([self _findPos:anObject identical:NO] != nil);
 }
 
-- (BOOL) containsObjectIdenticalTo:(id)object
+- (BOOL) containsObjectIdenticalTo:(id)anObject
 {
-    return ([self _findPos:object identical:YES] != nil);
+    return ([self _findPos:anObject identical:YES] != nil);
 }
 
-- (BOOL) insertObject:(id)obj atIndex:(unsigned int)index
+- (void) insertObject:(id)anObject atIndex:(unsigned int)index
 {
     struct DoublyLinkedNode *p, *newNode;
 	
-    if (obj == nil) //won't insert nil
-		return NO;
+    if (anObject == nil)
+		return;
     
-    //our node to attach to is found
-    //nodeAtIndex:int does range checking, etc., by returning nil on error
-    p = [self _nodeAtIndex:index];
-    if (p == nil)
-        return NO;
+    // find node to attach to
+    // _nodeAtIndex: does range checking, etc., by returning nil on error
+    if ((p = [self _nodeAtIndex:index]) == nil)
+        return;
     
-    //is malloc okay in context of obj c??
     newNode = malloc(NODESIZE);
     
-    //now we do the linking -- a little harder to see when using a struct.
-    newNode->data = [obj retain];
-    //our prev pointer is set to point to the prev pointer of the node it displaces
+    newNode->data = [anObject retain];
+    // prev is set to the prev pointer of the node it displaces
     newNode->prev = p->prev;
-    //our next pointer is set to point to the node it displaces
+    // next is set to the node it displaces
     newNode->next = p;
-    //the "next" pointer of our prev pointer is set to point to us
+    // previous node is set to point to us as next
     newNode->prev->next = newNode;
-    //and finally the prev link of the node we're displacing is going to point to us
+    // next node is set to point to us as previous
     p->prev = newNode;
     
     ++listSize;
-    
-    return YES;
 }
 
-- (BOOL) addFirst:(id)obj
+- (void) addFirst:(id)obj
 {
-    return [self insertObject:obj atIndex:0];
+    [self insertObject:obj atIndex:0];
 }
 
-- (BOOL) addLast:(id)obj
+- (void) addLast:(id)obj
 {
-    return [self insertObject:obj atIndex:listSize];
+    [self insertObject:obj atIndex:listSize];
 }
 
 - (id) first
@@ -291,10 +301,10 @@
     return thenode->data;
 }
 
-- (BOOL) _removeNode:(struct DoublyLinkedNode *)node
+- (void) _removeNode:(struct DoublyLinkedNode *)node
 {
     if (!node || node == beginMarker || node == endMarker)
-		return NO;
+		return;
 	
     //break the links.
     node->next->prev = node->prev;
@@ -306,41 +316,39 @@
     free(node);
     
     --listSize;
-    
-    return YES;
 }
 
-- (BOOL)removeFirst
+- (void) removeFirst
 {
-    return [self _removeNode: (beginMarker->next)  ];
+    [self _removeNode: (beginMarker->next)  ];
 }
 
-- (BOOL)removeLast
+- (void)removeLast
 {
-    return [self _removeNode: (endMarker->prev)  ];
+    [self _removeNode: (endMarker->prev)  ];
 }
 
-- (BOOL)removeObjectAtIndex:(unsigned int)index
+- (void)removeObjectAtIndex:(unsigned int)index
 {
-    return [ self _removeNode:[self _nodeAtIndex:index] ];
+    [ self _removeNode:[self _nodeAtIndex:index] ];
 }
 
-- (BOOL)removeObject:(id)obj
+- (void)removeObject:(id)obj
 {
     struct DoublyLinkedNode *pos;
     pos = [self _findPos:obj identical:NO];
     
     //removeNode: will check for nils, etc.
-    return [self _removeNode:pos];
+    [self _removeNode:pos];
 }
 
-- (BOOL)removeObjectIdenticalTo:(id)obj
+- (void)removeObjectIdenticalTo:(id)obj
 {
     struct DoublyLinkedNode *pos;
     pos = [self _findPos:obj identical:YES];
     
     //removeNode: will check for nils, etc.
-    return [self _removeNode:pos];
+    [self _removeNode:pos];
 }
 
 - (void) removeAllObjects

@@ -42,7 +42,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 - (id) initWithCapacity:(unsigned)capacity;
 
 #pragma mark Inherited Methods
-- (BOOL) push:(id)object;
+- (void) push:(id)anObject;
 - (id) pop;
 - (id) peek;
 - (unsigned int) count;

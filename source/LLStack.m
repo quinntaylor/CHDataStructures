@@ -26,39 +26,29 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #import "LLStack.h"
 
 @implementation LLStack
-/********
-
-@interface LLStack : NSObject <Stack>
-{
-    StandardLinkedList *list;
-}
-***********/
-
--(id) init
+- (id) init
 {
     [super init];
     list = [[DoublyLinkedList alloc] init];
     return self;
 }
 
--(void) dealloc
+- (void) dealloc
 {
     [list release];
     [super dealloc];
 }
 
--(BOOL) push:(id)pushedObj
+- (void) push:(id)anObject
 {
-    if (!pushedObj)
-        return NO;
-    
-    return [list addFirst:pushedObj];
+	// TODO: Raise NSInvalidArgumentException if anObject is nil?
+    if (anObject != nil)
+		[list addFirst:anObject];
 }
 
--(id) pop
+- (id) pop
 {
-    id retval;
-    retval = [[list first] retain];
+    id retval = [[list first] retain];
     [list removeFirst];
     return [retval autorelease];
 }
@@ -73,7 +63,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
     return [list count];
 }
 
--(NSEnumerator *)objectEnumerator
+- (NSEnumerator *) objectEnumerator
 {
     return [list objectEnumerator];
 }

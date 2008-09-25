@@ -41,33 +41,6 @@ typedef struct BinaryNode {
 #pragma mark -
 
 /**
- An enumerator which traverses a specified subtree in the specified order.
-
- NOTE: Tree enumerators are tricky to do without recursion.
- Consider using a stack to store path so far?
- */
-@interface UnbalancedTreeEnumerator : NSEnumerator
-{
-    struct BinaryNode *currentNode;		/**< The next node that is to be returned. */
-	CHTraversalOrder traversalOrder;	/**< Order in which to traverse the tree. */
-    BOOL hasStarted;
-    BOOL beenLeft;
-    BOOL beenRight;
-}
-
-/** Create an enumerator which traverses a given subtree in the specified order. */
-- (id)initWithRoot:(struct BinaryNode *)root traversalOrder:(CHTraversalOrder)order;
-
-/** Returns the next object from the collection being enumerated. */
-- (id)nextObject;
-
-/** Returns an array of objects the receiver has yet to enumerate. */
-- (NSArray *)allObjects;
-@end
-
-#pragma mark -
-
-/**
  A simple, unbalanced binary tree that <b>does not</b> guarantee O(log n) access.
  Even though the tree is never balanced when items are added or removed, access is
  <b>at worst</b> linear if the tree essentially degenerates into a linked list.

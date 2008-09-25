@@ -62,31 +62,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #pragma mark -
 
 /**
- Enumerators are tricky to do without recursion.
- Consider using a stack to store path so far?
- */
-@interface RedBlackTreeEnumerator : NSEnumerator
-{
-    struct RBNode *currentNode;
-	CHTraversalOrder traversalOrder;
-    BOOL hasStarted;
-    BOOL beenLeft;
-    BOOL beenRight;
-}
-
-/** Create an enumerator which traverses a given subtree in the specified order. */
-- (id)initWithRoot:(RedBlackNode *)root traversalOrder:(CHTraversalOrder)order;
-
-/** Returns the next object from the collection being enumerated. */
-- (id)nextObject;
-
-/** Returns an array of objects the receiver has yet to enumerate. */
-- (NSArray *)allObjects;
-@end
-
-#pragma mark -
-
-/**
  A fast, balanced, non-recursive binary tree with guaranteed O(log n) access. This
  class is a direct Objective-C port of the Red Black tree found in "Data Structures
  and Problem Solving Using Java" by Mark Allen Weiss, published by Addison Wesley.
@@ -119,11 +94,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 - (id)init;
 
 #pragma mark Inherited Methods
+- (void)addObject:(id <Comparable>)object;
 - (id) findObject:(id <Comparable>)target;
 - (id) findMin;
 - (id) findMax;
 //- (void)removeObject:(id <Comparable>)object;
 //- (void)removeAllObjects;
-//- (NSEnumerator *)objectEnumeratorWithTraversalOrder:(CHTraversalOrder)traversalOrder;
+- (NSEnumerator *)objectEnumeratorWithTraversalOrder:(CHTraversalOrder)traversalOrder;
 
 @end
