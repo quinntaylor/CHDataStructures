@@ -34,7 +34,7 @@
 @interface AbstractTree : NSObject <Tree>
 {
 	/** A count of how many elements are currently in the tree. */
-	unsigned long count;
+	unsigned int count;
 }
 
 /**

@@ -22,14 +22,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //  DataStructuresFramework
 
 #import "LLQueue.h"
-#import "StandardLinkedList.h"
+#import "DoublyLinkedList.h"
 
 @implementation LLQueue
 
 - (id)init
 {
     [super init];
-    list = [[StandardLinkedList alloc] init];
+    list = [[DoublyLinkedList alloc] init];
     return self;
 }
 
@@ -58,10 +58,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
     return [retval autorelease];
 }
 
-//simple BOOL for whether the queue is empty or not.
-- (BOOL) isEmpty
+- (unsigned int) count
 {
-    return ([list first] == nil);
+    return [list count];
 }
 
 - (void) removeAllObjects

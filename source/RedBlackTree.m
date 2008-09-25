@@ -364,11 +364,6 @@ static RedBlackNode * _rotateWithRightChild(RedBlackNode *rightChild)
     return [parent object];
 }
 
-- (BOOL)isEmpty
-{
-    return ( [header right] == sentinel || [header right] == nil );
-}
-
 // TODO: NEXT RELEASE
 
 // Not in this version! Very difficult -- my fu is no match for it right this minute.

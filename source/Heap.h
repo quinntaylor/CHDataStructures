@@ -30,7 +30,7 @@
 #import "Comparable.h"
 
 /**
- A VERY basic heap interface
+ A basic heap interface
  */
 @protocol Heap <NSObject>
 
@@ -44,9 +44,6 @@
 - (id) removeLast;
 
 // measures the size of the heap currently
-- (unsigned) count;
-
-// simple BOOL for whether the heap is empty or not.
-- (BOOL) isEmpty;
+- (unsigned int) count;
 
 @end

@@ -25,7 +25,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #import <Foundation/Foundation.h>
 
 /**
- Just defines the interface a linked list should have.
+ A basic linked list interface.
  I am trying to remove methods from the protocols to be more "bare bones."
  I received some very good criticism that I was making a hack job of these protocols.
  */ 
@@ -33,9 +33,30 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 - (id) init;
 
+/**
+ Returns the number of objects currently in the list.
+ */
 - (unsigned int) count;
+/**
+ Determines if the list contains a given object (or one identical to it). Matches
+ based on an object's response to the <code>isEqual:</code> message.
+ */
 - (BOOL) containsObject:(id)obj;
-- (BOOL) containsObjectIdenticalTo:(id)obj;
+//See NSMutableArray for the difference between these two methods.
+//basically removeObject uses isEqual, removeObjectIdenticalTo uses ==
+/**
+ Removes all occurrences of a given object in the list. Matches based on an object's
+ response to the <code>isEqual:</code> message.
+ */
+- (BOOL) removeObject:(id)obj;
+/**
+ Removes all occurrences of a given object in the list. Matches based on object
+ addresses, using the == operator.
+ */
+- (BOOL) removeObjectIdenticalTo:(id)obj;
+/**
+ Remove all objects from the list. If the list is already empty, there is no effect.
+ */
 - (void) removeAllObjects;
 
 //These BOOLS are all success / no success ... can safely be ignored
@@ -45,8 +66,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 - (BOOL) addFirst:(id)obj;
 - (BOOL) addLast:(id)obj;
 
-- (BOOL) isEmpty;
-
 - (id) first;
 - (id) last;
 - (id) objectAtIndex:(unsigned int)index;
@@ -54,12 +73,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //These BOOLS are all success / no success
 - (BOOL) removeFirst;
 - (BOOL) removeLast;
+/**
+ Removes the object at <i>index</i>.
+ */
 - (BOOL) removeObjectAtIndex:(unsigned int)index;
 
-//See NSMutableArray for the difference between these two methods.
-//basically removeObject uses isEqual, removeObjectIdenticalTo uses ==
-- (BOOL) removeObject:(id)obj;
-- (BOOL) removeObjectIdenticalTo:(id)obj;
 
 
 //see NSEnumerator abstract class
@@ -75,6 +93,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * not copy, your references.  If you retain this list, your array will
  * be safe to release.
  */
-+ (id <LinkedList>) listFromArray:(NSArray *) ofOrder:(BOOL)direction;
++ (id <LinkedList>) listFromArray:(NSArray *)array ofOrder:(BOOL)direction;
 
 @end

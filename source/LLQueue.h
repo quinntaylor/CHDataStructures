@@ -25,14 +25,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #import <Foundation/Foundation.h>
 #import "Queue.h"
 
-@class StandardLinkedList;
+@class DoublyLinkedList;
 
 /**
- A simple queue implementation that uses our linked list.
+ A simple Queue implementation that uses our linked list.
  */
 @interface LLQueue : NSObject <Queue>
 {
-    StandardLinkedList *list;
+    DoublyLinkedList *list;
 }
 
 - (id) init;

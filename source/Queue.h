@@ -25,7 +25,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #import <Foundation/Foundation.h>
 
 /**
- A VERY basic queue interface
+ A basic queue interface
  */
 @protocol Queue <NSObject>
 
@@ -37,9 +37,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //returns nil if the queue is empty.
 - (id) dequeue;
 
-//simple BOOL for whether the queue is empty or not.
-//count == 0 usually, or for linked lists it's a nil test. 
-- (BOOL) isEmpty;
+/**
+ Returns the number of objects currently in the queue.
+ */
+- (unsigned int)count;
 
 //releases the queue and starts a new one.
 - (void) removeAllObjects;

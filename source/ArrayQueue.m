@@ -19,7 +19,8 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *******************************/
 
-/////SEE LICENSE FILE FOR LICENSE INFORMATION///////
+//  ArrayQueue.m
+//  Data Structures Framework
 
 #import "ArrayQueue.h"
 
@@ -88,18 +89,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
     return [theObj autorelease];
 }
 
-- (unsigned) count
+- (unsigned int) count
 {
-    return qSize;
-}
-
-//simple BOOL for whether the queue is empty or not.
-- (BOOL) isEmpty
-{
-    if ( qSize < 1)
-	return YES;
-    else
-	return NO;
+	return qSize;
 }
 
 - (void) removeAllObjects

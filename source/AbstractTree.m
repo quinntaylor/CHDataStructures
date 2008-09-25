@@ -49,7 +49,7 @@
 }
 
 
-#pragma mark Default Error Implementations
+#pragma mark Default Implementations
 
 - (void) addObject:(id <Comparable>)anObject {
 	[self exceptionForUnsupportedOperation:_cmd];
@@ -62,6 +62,10 @@
 - (BOOL) containsObject:(id <Comparable>)anObject {
 	[self exceptionForUnsupportedOperation:_cmd];
 	return NO;
+}
+
+- (unsigned int) count {
+	return count;
 }
 
 - (void) removeObject:(id <Comparable>)element {
@@ -82,11 +86,6 @@
 
 - (id) findObject:(id <Comparable>)anObject {
 	return [self exceptionForUnsupportedOperation:_cmd];
-}
-
-- (BOOL) isEmpty {
-	[self exceptionForUnsupportedOperation:_cmd];
-	return NO;
 }
 
 #pragma mark Convenience Constructors

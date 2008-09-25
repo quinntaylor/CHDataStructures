@@ -41,9 +41,9 @@ typedef short CHTraversalOrder;
 #define isValidTraversalOrder(o) (o>=CHTraverseInOrder && o<=CHTraverseLevelOrder)
 
 /**
- A protocol which specifes an interface for N-ary trees. Defines methods to support
- insertion, removal, search, and element enumeration. This protocol works for trees
- where nodes have any number of children, not just binary search trees. Although any
+ A protocol which specifes an interface for N-ary tree structures. Defines methods to
+ support insertion, removal, search, and element enumeration. This protocol works for
+ trees where nodes have any number of children, not just binary trees. Although any
  conforming class must implement all these methods, they may document that certain of
  them are unsupported, and/or raise exceptions when they are called.
  */
@@ -81,14 +81,20 @@ typedef short CHTraversalOrder;
 - (void)addObjectsFromArray:(NSArray *)anArray;
 
 /**
- Returns <code>YES</code> if compare: returns NSOrderedSame for an object in the
- tree, <code>NO</code> otherwise.
+ Determines if the tree contains a given object (or one identical to it). Matches are
+ based on an object's response to the <code>isEqual:</code> message.
  */
 - (BOOL)containsObject:(id <Comparable>)anObject;
 
 /**
- If the tree contains an object for which compare: returns NSOrderedSame, then that
- object is removed; otherwise, there is no effect.
+ Returns the number of objects currently in the tree.
+ */
+- (unsigned int)count;
+
+/**
+ Remove an object from the tree (or one identical to it) if it exists. Matches are
+ based on an object's response to the <code>isEqual:</code> message. If no matching
+ object exists, there is no effect.
  */
 - (void)removeObject:(id <Comparable>)element;
 
@@ -112,11 +118,6 @@ typedef short CHTraversalOrder;
  no matching object is found in the tree.
  */
 - (id)findObject:(id <Comparable>)anObject;
-
-/**
- Returns<code>YES</code> if the tree contains no objects, <code>NO</code> otherwise.
- */
-- (BOOL)isEmpty;
 
 /**
  Create an enumerator which uses the specified traversal order.

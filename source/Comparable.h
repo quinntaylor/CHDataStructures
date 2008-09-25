@@ -22,6 +22,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //  Comparable.h
 //  DataStructuresFramework
 
+/**
+ A protocol for enabling comparison between objects inserted in sorted collections.
+ */
 @protocol Comparable <NSObject>
 
 /**

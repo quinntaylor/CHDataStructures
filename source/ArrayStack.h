@@ -26,7 +26,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #import "Stack.h"
 
 /**
- A fairly basic stack implementation that uses an NSMutableArray to store objects.
+ A fairly basic Stack implementation that uses an NSMutableArray to store objects.
  */
 @interface ArrayStack : NSObject <Stack>
 {

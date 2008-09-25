@@ -26,7 +26,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #import "Queue.h"
 
 /**
- A fairly basic queue implementation that puts its data in an NSMutableArray
+ A fairly basic Queue implementation that uses an NSMutableArray to store objects.
  See the protocol definition for Queue to understand the contract.
  */
 @interface ArrayQueue : NSObject <Queue>

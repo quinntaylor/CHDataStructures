@@ -35,6 +35,7 @@ typedef struct BinaryNode {
     struct BinaryNode *parent;	/**< The parent node, if not the root of the tree. */
 } BinaryNode;
 
+/** A simplification for malloc'ing tree nodes. */
 #define bNODESIZE sizeof(struct BinaryNode)
 
 #pragma mark -

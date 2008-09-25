@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //  LLStack.m
 //  DataStructuresFramework
 
-#import "StandardLinkedList.h"
+#import "DoublyLinkedList.h"
 #import "LLStack.h"
 
 @implementation LLStack
@@ -37,7 +37,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 -(id) init
 {
     [super init];
-    list = [[StandardLinkedList alloc] init];
+    list = [[DoublyLinkedList alloc] init];
     return self;
 }
 
@@ -63,9 +63,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
     return [retval autorelease];
 }
 
--(BOOL) isEmpty
+- (unsigned int) count
 {
-    return ([list count] < 1);
+    return [list count];
 }
 
 -(NSEnumerator *)objectEnumerator

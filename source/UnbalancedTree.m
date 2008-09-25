@@ -365,14 +365,13 @@ static struct BinaryNode * _removeNode(struct BinaryNode *node, struct BinaryNod
 	
     struct BinaryNode *currentNode = root;
     while (currentNode != NULL) {
+		if ([anObject isEqual:currentNode->object])
+			return YES;
         short comparison = [anObject compare:currentNode->object];
         if (comparison == NSOrderedAscending)
             currentNode = currentNode->left;
-        else if (comparison == NSOrderedDescending)
+        else
             currentNode = currentNode->right;
-		else if (comparison == NSOrderedSame) {
-			return YES;
-		}
     }
 	return NO;
 }
@@ -436,11 +435,6 @@ static struct BinaryNode * _removeNode(struct BinaryNode *node, struct BinaryNod
 	}
 	root = NULL;
 	count = 0;
-}
-
-- (BOOL)isEmpty
-{
-    return (root == NULL);
 }
 
 - (NSEnumerator *)objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order

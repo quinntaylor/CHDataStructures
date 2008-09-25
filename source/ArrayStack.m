@@ -75,11 +75,6 @@
     return [theObj autorelease];
 }
 
-- (BOOL) isEmpty
-{
-    return (nextIndex < 1);
-}
-
 - (unsigned int) count
 {
     return nextIndex;

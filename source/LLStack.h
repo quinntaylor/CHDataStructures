@@ -25,7 +25,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #import <Foundation/Foundation.h>
 #import "Stack.h"
 
-@class StandardLinkedList;
+@class DoublyLinkedList;
 
 /**
  A simple Stack implemented using a linked list. Nice! Fast!
@@ -34,7 +34,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 @interface LLStack : NSObject <Stack>
 {
-    StandardLinkedList *list;
+    DoublyLinkedList *list;
 }
 
 - (id)init;

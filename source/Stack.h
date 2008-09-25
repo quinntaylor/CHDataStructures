@@ -25,20 +25,20 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #import <Foundation/Foundation.h>
 
 /**
- A VERY basic stack interface.
+ A basic stack interface.
  */
 @protocol Stack <NSObject>
 
 //retains the inserted object.
 //if you try to push nil, it will return false
--(BOOL) push:(id)object;
+- (BOOL) push:(id)object;
 
 //return and autoreleases the return value.
 //returns nil if the stack is empty.
--(id) pop;
+- (id) pop;
 
 //simple BOOL for whether the stack is empty or not.
--(BOOL) isEmpty;
+- (unsigned int) count;
 
 /**
  * Returns an autoreleased stack with the contents of your 
@@ -49,7 +49,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * not copy, your references.  If you retain this stack, your array will
  * be safe to release.
  */
-+(id <Stack>)stackWithArray:(NSArray *)array
-                    ofOrder:(BOOL)direction;
++ (id <Stack>) stackWithArray:(NSArray *)array
+					  ofOrder:(BOOL)direction;
 
 @end
