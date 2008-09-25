@@ -42,14 +42,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 }
 
 - (id) init;
-- (id) initWithCapacity:(unsigned)capacity;
-
-//returns the size of the queue currently
--(unsigned int) count;
+- (id) initWithCapacity:(unsigned int)capacity;
 
 /**
- see protocol declaration for Queue
+ Returns the current size of the queue.
  */
+-(unsigned int) count;
+
 +(ArrayQueue *)queueWithArray:(NSArray *)array
                         ofOrder:(BOOL)direction;
 @end

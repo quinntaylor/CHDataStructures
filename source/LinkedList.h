@@ -37,23 +37,25 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  Returns the number of objects currently in the list.
  */
 - (unsigned int) count;
+
 /**
  Determines if the list contains a given object (or one identical to it). Matches
  based on an object's response to the <code>isEqual:</code> message.
  */
 - (BOOL) containsObject:(id)obj;
-//See NSMutableArray for the difference between these two methods.
-//basically removeObject uses isEqual, removeObjectIdenticalTo uses ==
+
 /**
  Removes all occurrences of a given object in the list. Matches based on an object's
  response to the <code>isEqual:</code> message.
  */
 - (BOOL) removeObject:(id)obj;
+
 /**
  Removes all occurrences of a given object in the list. Matches based on object
  addresses, using the == operator.
  */
 - (BOOL) removeObjectIdenticalTo:(id)obj;
+
 /**
  Remove all objects from the list. If the list is already empty, there is no effect.
  */

@@ -31,7 +31,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
     return [self initWithCapacity:10];
 }
 
-- (id) initWithCapacity:(unsigned)capacity
+- (id) initWithCapacity:(unsigned int)capacity
 {
     self = [super init];
     
