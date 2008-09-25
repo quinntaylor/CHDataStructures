@@ -26,7 +26,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #import "LinkedList.h"
 
 /**
- A doubly-linked struct for nodes in DoublyLinkedList. Performance is much faster
+ A doubly-linked struct for nodes use by DoublyLinkedList. Performance is much faster
  with a struct than with a proper object.
  */
 typedef struct DoublyLinkedNode {
@@ -61,24 +61,24 @@ typedef struct DoublyLinkedNode {
 - (NSEnumerator *) reverseObjectEnumerator;
 
 #pragma mark Inherited Methods
-- (void) addFirst:(id)anObject;
-- (void) addLast:(id)anObject;
-- (id) first;
-- (id) last;
+- (void) addObjectToFront:(id)anObject;
+- (void) addObjectToBack:(id)anObject;
+- (id) firstObject;
+- (id) lastObject;
 - (unsigned int) count;
 - (BOOL) containsObject:(id)anObject;
 - (BOOL) containsObjectIdenticalTo:(id)anObject;
 - (void) insertObject:(id)anObject atIndex:(unsigned int)index;
 - (id) objectAtIndex:(unsigned int)index;
 - (NSEnumerator *) objectEnumerator;
-- (void) removeFirst;
-- (void) removeLast;
+- (void) removeFirstObject;
+- (void) removeLastObject;
 - (void) removeObject:(id)anObject;
 - (void) removeObjectAtIndex:(unsigned int)index;
 - (void) removeObjectIdenticalTo:(id)anObject;
 - (void) removeAllObjects;
 
 #pragma mark Redefined Methods
-+ (DoublyLinkedList *) listFromArray:(NSArray *)array ofOrder:(BOOL)direction;
++ (DoublyLinkedList *) listWithArray:(NSArray *)array ofOrder:(BOOL)direction;
 
 @end

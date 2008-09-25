@@ -73,10 +73,6 @@
 #pragma mark -
 
 @implementation DoublyLinkedListEnumerator
-//forward means YES == same order as linked list, NO == reverse.
-/**
- 
- */
 - (id)initWithHead:(struct DoublyLinkedNode *)beginMarker
 		 withTail:(struct DoublyLinkedNode *)endMarker
 		  forward:(BOOL)dir
@@ -89,9 +85,8 @@
     header = beginMarker;
     tail = endMarker;
     
-    direction = dir;
-    
-    if (direction)
+	// YES == same order as linked list, NO == reverse order.
+    if ((direction = dir) == YES)
         current = header;
     else
         current = tail;
@@ -284,23 +279,23 @@
     ++listSize;
 }
 
-- (void) addFirst:(id)obj
+- (void) addObjectToFront:(id)obj
 {
     [self insertObject:obj atIndex:0];
 }
 
-- (void) addLast:(id)obj
+- (void) addObjectToBack:(id)obj
 {
     [self insertObject:obj atIndex:listSize];
 }
 
-- (id) first
+- (id) firstObject
 {
     struct DoublyLinkedNode *thenode = [self _nodeAtIndex:0];
     return thenode->data;
 }
 
-- (id) last
+- (id) lastObject
 {
     struct DoublyLinkedNode *thenode = [self _nodeAtIndex:(listSize - 1)];
     return thenode->data;
@@ -333,12 +328,12 @@
     --listSize;
 }
 
-- (void) removeFirst
+- (void) removeFirstObject
 {
     [self _removeNode: (beginMarker->next)  ];
 }
 
-- (void)removeLast
+- (void)removeLastObject
 {
     [self _removeNode: (endMarker->prev)  ];
 }
@@ -402,7 +397,7 @@
 			 forward:NO]autorelease];   
 }
 
-+(DoublyLinkedList *)listFromArray:(NSArray *)array ofOrder:(BOOL)direction
++(DoublyLinkedList *)listWithArray:(NSArray *)array ofOrder:(BOOL)direction
 {
     DoublyLinkedList *list;
     int i,s;
@@ -416,12 +411,12 @@
     else if (direction)//so the order will be 0...n
     {
         while (i < s)
-            [list addLast: [array objectAtIndex: i++]];
+            [list addObjectToBack: [array objectAtIndex: i++]];
     }
     else //order to dequeue will be n...0
     {
         while (s > i)
-            [list addFirst: [array objectAtIndex: --s]];
+            [list addObjectToFront: [array objectAtIndex: --s]];
     }
     
     return [list autorelease];

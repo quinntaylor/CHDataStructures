@@ -37,4 +37,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
     NSMutableArray *irep;
 }
 
+#pragma mark Inherited Methods
+- (void) addObject:(id <Comparable>)anObject;
+- (id) removeRoot;
+- (id) removeLast;
+- (unsigned int) count;
+
+
 @end

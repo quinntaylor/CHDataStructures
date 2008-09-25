@@ -30,20 +30,46 @@
 #import "Comparable.h"
 
 /**
- A basic heap interface
+ A <a href="http://en.wikipedia.org/wiki/Heap_(data_structure)">heap</a> protocol,
+ suitable for use with many variations of the heap structure.
  */
 @protocol Heap <NSObject>
 
-// if you try to insert nil, it will return false
-- (BOOL) addObject:(id <Comparable>)obj;
+/**
+ Insert a given object into the heap.
 
-// returns nil if the heap is empty.
+ @param anObject The object to add to the heap; must not be <code>nil</code>, or an
+        <code>NSInvalidArgumentException</code> will be raised.
+ */
+- (void) addObject:(id <Comparable>)anObject;
+
+/**
+ Remove and return the first element in the heap. Rearranges the remaining elements.
+ 
+ @return The first element in the heap, or <code>nil</code> if the heap is empty.
+ */
 - (id) removeRoot;
 
-// returns nil if the heap is empty
+/**
+ Remove and return the last element in the heap.
+ 
+ @return The last element in the heap, or <code>nil</code> if the heap is empty.
+ */
 - (id) removeLast;
 
-// measures the size of the heap currently
+/**
+ Returns the number of objects currently in the heap.
+ 
+ @return The number of objects currently in the heap.
+ */
 - (unsigned int) count;
+
+// NOTE: For a future release:
+
+//- (void) addObjectsFromCollection:(id)collection
+
+//- (void) addObjectsFromHeap:(id<Heap>)otherHeap;
+
+//- (id) initWithSortOrder:(NSComparisonResult)sortOrder; // for min/max heaps
 
 @end

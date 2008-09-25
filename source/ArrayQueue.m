@@ -39,9 +39,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
     
     backIndex = -1;
     frontIndex = 0;
-    qSize = 0;
     
-    niller = [[NSString stringWithFormat:@"nothing"] retain];
     
     return self;
 }
@@ -49,72 +47,69 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 - (void) dealloc
 {
     [queue release];
-    [niller release];
     [super dealloc];
 }
 
-- (BOOL) enqueue: (id)enqueuedObj
+- (void) enqueue: (id)anObject
 {
-    if ( enqueuedObj == nil )
-	return NO;
-    
-    ++backIndex;
-    [queue insertObject:enqueuedObj atIndex:backIndex];
-    ++qSize;
-    return YES;
+	if (anObject == nil) {
+		[NSException raise:NSInvalidArgumentException
+					format:@"Object to be added cannot be nil."];
+	}
+	else {
+		++backIndex;
+		[queue insertObject:anObject atIndex:backIndex];
+	}    
 }
 
 - (id) dequeue
 {
-    id theObj;
-
-    if ( qSize < 1 )
-	return nil;
-    
-    //decrement the size of the Q
-    --qSize;
+    if ([queue count] == 0)
+		return nil;
 
     //get it and retain it
-    theObj = [[queue objectAtIndex:frontIndex] retain];
-    [queue replaceObjectAtIndex:frontIndex withObject:niller];
+    id theObj = [[queue objectAtIndex:frontIndex] retain];
+    [queue replaceObjectAtIndex:frontIndex withObject:[NSNull null]];
     
     //now increment front -- if we have large array and we've "caught up" with
     //the back, then let's dealloc and start over.
     ++frontIndex;
-    if (frontIndex > 25 && qSize < 0)
+    if (frontIndex > 25 && [queue count] < 0)
     {
-	[self removeAllObjects];
+		[self removeAllObjects];
     }
+	// TODO: Fix this ridiculous hack; NSMutableArray can act as a circlar buffer
     
     return [theObj autorelease];
 }
 
+- (id) front
+{
+	return [queue objectAtIndex:frontIndex];
+}
+
+
 - (unsigned int) count
 {
-	return qSize;
+	return [queue count];
 }
 
 - (void) removeAllObjects
 {
-    if (queue)
-	[queue release];
+    if (queue != nil)
+		[queue release];
     
     queue = [[NSMutableArray alloc] initWithCapacity:10];
     backIndex = -1;
     frontIndex = 0;
-    qSize = 0;
 
 }
 
-+ (ArrayQueue *) queueWithArray:(NSArray *)array
-						ofOrder:(BOOL)direction
++ (ArrayQueue *) queueWithArray:(NSArray *)array ofOrder:(BOOL)direction
 {
-    ArrayQueue *q;
-    int i,s;
-    
-    q = [[ArrayQueue alloc] init];
-    s = [array count];
-    i = 0;
+    ArrayQueue *q = [[ArrayQueue alloc] init];
+    int s = [array count];
+    int i = 0;
     
     if (!array || !s)
 		; //nada

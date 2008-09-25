@@ -23,6 +23,7 @@
 
 /* Begin PBXBuildFile section */
 		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
+		E42DBAF20E8C3200000E1FBD /* Deque.h in Headers */ = {isa = PBXBuildFile; fileRef = E42DBAF10E8C3200000E1FBD /* Deque.h */; };
 		E4ADBA930E88155A00B570BC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
 		E4ADBB240E88174200B570BC /* ArrayHeap.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB060E88174200B570BC /* ArrayHeap.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4ADBB250E88174200B570BC /* ArrayHeap.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB070E88174200B570BC /* ArrayHeap.m */; };
@@ -83,6 +84,7 @@
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* DataStructures.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DataStructures.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E42DBAF10E8C3200000E1FBD /* Deque.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Deque.h; path = source/Deque.h; sourceTree = "<group>"; };
 		E4ADBB060E88174200B570BC /* ArrayHeap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ArrayHeap.h; path = source/ArrayHeap.h; sourceTree = "<group>"; };
 		E4ADBB070E88174200B570BC /* ArrayHeap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ArrayHeap.m; path = source/ArrayHeap.m; sourceTree = "<group>"; };
 		E4ADBB080E88174200B570BC /* ArrayQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ArrayQueue.h; path = source/ArrayQueue.h; sourceTree = "<group>"; };
@@ -187,6 +189,7 @@
 				E4ADBB0B0E88174200B570BC /* ArrayStack.m */,
 				E4ADBB0C0E88174200B570BC /* AbstractTree.h */,
 				E4ADBB0D0E88174200B570BC /* Comparable.h */,
+				E42DBAF10E8C3200000E1FBD /* Deque.h */,
 				E4ADBB120E88174200B570BC /* Heap.h */,
 				E4ADBB130E88174200B570BC /* LLQueue.h */,
 				E4ADBB140E88174200B570BC /* LLQueue.m */,
@@ -244,6 +247,7 @@
 				E4ADBB400E88174200B570BC /* UnbalancedTree.h in Headers */,
 				E4FE77C70E8978C300971EE6 /* Tree.h in Headers */,
 				E4FE77CA0E8978DD00971EE6 /* AbstractTree.h in Headers */,
+				E42DBAF20E8C3200000E1FBD /* Deque.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

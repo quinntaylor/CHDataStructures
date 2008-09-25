@@ -43,19 +43,19 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 {
 	// TODO: Raise NSInvalidArgumentException if anObject is nil?
     if (anObject != nil)
-		[list addFirst:anObject];
+		[list addObjectToFront:anObject];
 }
 
 - (id) pop
 {
-    id retval = [[list first] retain];
-    [list removeFirst];
+    id retval = [[list firstObject] retain];
+    [list removeFirstObject];
     return [retval autorelease];
 }
 
 - (id) peek
 {
-	return [list first];
+	return [list firstObject];
 }
 
 - (unsigned int) count

@@ -34,9 +34,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #import "ArrayHeap.h"
 
-/*************
-C functions to speed the bubble up and bubble down
-***************/
+#pragma mark C Functions for Optimized Operations
 
 static void _bubbleup(NSMutableArray *heap)
 {
@@ -118,51 +116,44 @@ static void _bubbledown(NSMutableArray *heap)
     
 }
 
-/***************
-@interface ArrayHeap : NSObject <Heap>
-{
-    NSMutableArray *irep;
-}
-*****************/
+#pragma mark -
 
 @implementation ArrayHeap
 
--(id)init
+- (id) init
 {
-    [super init];
-
+    if ([super init] == nil) {
+		[self release];
+		return nil;
+	}
     irep = [[NSMutableArray alloc] init];
-
     return self;
 }
 
-- (void)dealloc
+- (void) dealloc
 {
     [irep release];
-
     [super dealloc];
 }
 
-- (BOOL)addObject:(id <Comparable>)obj
+- (void) addObject:(id <Comparable>)anObject
 {
-    if (!obj)
-        return NO;
-    
-    [irep addObject: obj];
-
-    _bubbleup(irep);
-
-    return YES;
+	if (anObject == nil) {
+		[NSException raise:NSInvalidArgumentException
+					format:@"Object to be added cannot be nil."];
+	}
+	else {
+		[irep addObject: anObject];
+		_bubbleup(irep);
+	}    
 }
         
-- (id)removeRoot
+- (id) removeRoot
 {
-    id obj;
-    
-    if (![irep count])
+    if ([irep count] == 0)
         return nil;
 
-    obj = [[irep objectAtIndex: 0] retain];
+    id obj = [[irep objectAtIndex: 0] retain];
     [irep exchangeObjectAtIndex: 0 withObjectAtIndex: [irep count] - 1];
     [irep removeLastObject];
 
@@ -173,25 +164,18 @@ static void _bubbledown(NSMutableArray *heap)
 
 - (id) removeLast
 {
-    id obj;
-    
-    if (![irep count])
+    if ([irep count] == 0)
         return nil;
     
-    obj = [[irep lastObject] retain];
+    id obj = [[irep lastObject] retain];
     [irep removeLastObject];
 
     return [obj autorelease];
 }
 
-- (unsigned)count
+- (unsigned) count
 {
     return [irep count];
-}
-
-- (BOOL) isEmpty
-{
-    return ([irep count] > 0) ? YES : NO;
 }
 
 @end

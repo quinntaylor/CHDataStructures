@@ -46,17 +46,21 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
     if (!pushedObj)
         return NO;
         
-    [list addLast:pushedObj];
+    [list addObjectToBack:pushedObj];
     return YES;
 }
 
 //returns nil if the queue is empty.
 - (id) dequeue
 {
-    id retval;
-    retval = [[list first] retain];
-    [list removeFirst];
+    id retval = [[list firstObject] retain];
+    [list removeFirstObject];
     return [retval autorelease];
+}
+
+- (id) front
+{
+	return [list firstObject];
 }
 
 - (unsigned int) count

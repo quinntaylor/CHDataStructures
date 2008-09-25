@@ -30,10 +30,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 @interface ArrayStack : NSObject <Stack>
 {
-    /** The actual stack. */
-    NSMutableArray *theArrayStack;
-    /** The "top of stack". this is the next index that an element will go into. */
-    unsigned int nextIndex;
+    /** The array used for storing the contents of the stack. */
+    NSMutableArray *stackArray;
 }
 
 /**

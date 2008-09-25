@@ -41,7 +41,8 @@ typedef short CHTraversalOrder;
 #define isValidTraversalOrder(o) (o>=CHTraverseInOrder && o<=CHTraverseLevelOrder)
 
 /**
- A protocol which specifes an interface for N-ary tree structures. Defines methods to
+ A <a href="http://en.wikipedia.org/wiki/Tree_(data_structure)">tree</a> protocol
+ which specifes an interface for N-ary tree structures. Defines methods to
  support insertion, removal, search, and element enumeration. This protocol works for
  trees where nodes have any number of children, not just binary trees. Although any
  conforming class must implement all these methods, they may document that certain of
@@ -55,7 +56,7 @@ typedef short CHTraversalOrder;
  is retained as it is inserted in the tree, but no copies are made. The behavior is
  unspecified if the objects do not conform to the Comparable protocol.
  */
-+ (id<Tree>)treeWithObjectsFromEnumerator:(NSEnumerator*)enumerator;
++ (id<Tree>)treeWithEnumerator:(NSEnumerator*)enumerator;
 
 /**
  Returns an autoreleased tree containing the objects obtained from a collection,
@@ -65,7 +66,7 @@ typedef short CHTraversalOrder;
  
  NOTE: Only supported on 10.5 and beyond.
  */
-+ (id<Tree>)treeWithObjectsFromFastEnumeration:(id<NSFastEnumeration>)collection;
++ (id<Tree>)treeWithFastEnumeration:(id<NSFastEnumeration>)collection;
 
 /**
  Add an object to the tree. Since no duplicates are allowed, if the tree already has

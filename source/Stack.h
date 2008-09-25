@@ -25,14 +25,16 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #import <Foundation/Foundation.h>
 
 /**
- A basic stack interface.
+ A <a href="http://en.wikipedia.org/wiki/Stack_(data_structure)">stack</a> protocol
+ with methods for <a href="http://en.wikipedia.org/wiki/LIFO">LIFO</a> operations.
  */
 @protocol Stack <NSObject>
 
 /**
  Add an object to the top of the stack.
  
- @param anObject The object to add to the stack; must not be <code>nil</code>.
+ @param anObject The object to add to the stack; must not be <code>nil</code>, or an
+        <code>NSInvalidArgumentException</code> will be raised.
  */
 - (void) push:(id)anObject;
 

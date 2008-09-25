@@ -26,7 +26,6 @@
 
 #pragma mark C Functions for Optimized Operations
 
-//C functions for speed
 static struct BinaryNode * _findMaxWithStarter(struct BinaryNode *starter) {
     //see comment in findMinWithStarter for explanation
     struct BinaryNode *bar, *foo = starter;

@@ -35,10 +35,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
     
     int backIndex; //where to place the next element
     int frontIndex; //the current front of the queue
-    unsigned int qSize;  //the current size
-    unsigned int arrsz;
-    
-    id niller; //the marker for dead spots in the queue
 }
 
 /**
@@ -47,8 +43,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 - (id) initWithCapacity:(unsigned int)capacity;
 
 #pragma mark Inherited Methods
-- (BOOL) enqueue:(id)anObject;
+- (void) enqueue:(id)anObject;
 - (id) dequeue;
+- (id) front;
 - (unsigned int)count;
 - (void) removeAllObjects;
 

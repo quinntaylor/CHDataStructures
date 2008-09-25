@@ -98,7 +98,7 @@
 
 #pragma mark Convenience Constructors
 
-+ (id<Tree>) treeWithObjectsFromEnumerator:(NSEnumerator*)enumerator {
++ (id<Tree>) treeWithEnumerator:(NSEnumerator*)enumerator {
 	id<Tree> tree = [[self alloc] init];
 	id object;
 	while (object = [enumerator nextObject]) {
@@ -107,7 +107,7 @@
 	return [tree autorelease];
 }
 
-+ (id<Tree>) treeWithObjectsFromFastEnumeration:(id<NSFastEnumeration>)collection {
++ (id<Tree>) treeWithFastEnumeration:(id<NSFastEnumeration>)collection {
     id<Tree> tree = [[self alloc] init];
 	for (id object in collection) {
 		[tree addObject:object];

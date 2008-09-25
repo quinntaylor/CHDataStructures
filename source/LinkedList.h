@@ -25,9 +25,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #import <Foundation/Foundation.h>
 
 /**
- A basic linked list interface.
- I am trying to remove methods from the protocols to be more "bare bones."
- I received some very good criticism that I was making a hack job of these protocols.
+ A <a href="http://en.wikipedia.org/wiki/Linked_list">linked list</a> protocol with
+ methods that work in singly- or doubly-linked lists.
  */ 
 @protocol LinkedList <NSObject>
 
@@ -75,38 +74,38 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  
  @param anObject The object to add to the list (must not be <code>nil</code>).
  */
-- (void) addFirst:(id)anObject;
+- (void) addObjectToFront:(id)anObject;
 
 /**
  Add an object at the tail of the list.
  
  @param anObject The object to add to the list (must not be <code>nil</code>).
  */
-- (void) addLast:(id)anObject;
+- (void) addObjectToBack:(id)anObject;
 
 /**
  Access the object at the head of the list.
 
  @return The object with the lowest index, or <code>nil</code> if the list is empty.
  */
-- (id) first;
+- (id) firstObject;
 
 /**
  Access the object at the tail of the list.
  
  @return The object with the highest index, or <code>nil</code> if the list is empty.
  */
-- (id) last;
+- (id) lastObject;
 
 /**
  Remove the item at the head of the list.
  */
-- (void) removeFirst;
+- (void) removeFirstObject;
 
 /**
  Remove the item at the tail of the list.
  */
-- (void) removeLast;
+- (void) removeLastObject;
 
 /**
  Remove all occurrences of a given object , matched using <code>isEqual:</code>.
@@ -152,9 +151,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 /**
  Create an autoreleased LinkedList with the contents of the array in the given order.
- YES means that the linked list will be indexed (0...n) like your array, whereas NO
- means that the list will be ordered (n...0).
+
+ @param array An array of objects to add to the queue.
+ @param direction The order in which to enqueue objects from the array. YES means the 
+	    natural index order (0...n), NO means reverse index order (n...0).
  */
-+ (id <LinkedList>) listFromArray:(NSArray *)array ofOrder:(BOOL)direction;
++ (id <LinkedList>) listWithArray:(NSArray *)array ofOrder:(BOOL)direction;
 
 @end

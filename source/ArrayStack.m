@@ -34,79 +34,77 @@
 
 - (id) initWithCapacity:(unsigned)capacity
 {
+    if ([super init] == nil) {
+		[self release];
+		return nil;
+	}
     //set the stack pointer to 0 (we mean an "internal" stack pointer, i.e., where to put the next push)
-    [super init];
-    theArrayStack = [[NSMutableArray alloc] initWithCapacity:capacity];
-    nextIndex = 0;
+    stackArray = [[NSMutableArray alloc] initWithCapacity:capacity];
     return self;
 }
 
 - (void) dealloc
 {
-    [theArrayStack release];
+    [stackArray release];
     [super dealloc];
 }
 
 - (void) push:(id)anObject
 {
-	// TODO: Raise NSInvalidArgumentException if anObject is nil?
-	if (anObject != nil) {
-		[theArrayStack addObject:anObject]; // Inserts at the end of the array
-		++nextIndex;		
+	if (anObject == nil) {
+		[NSException raise:NSInvalidArgumentException
+					format:@"Object to be added cannot be nil."];
+	}
+	else {
+		[stackArray addObject:anObject]; // Inserts at the end of the array
 	}
 }
 
 - (id) pop
 {
-    if ( nextIndex < 1 ) //empty
-    {
+    if ([stackArray count] == 0)
 		return nil;
-    }
 	
-    id theObj = [[theArrayStack objectAtIndex: (nextIndex - 1)] retain];
-    [theArrayStack removeObjectAtIndex: (nextIndex - 1)];
-    --nextIndex;
-    
-    return [theObj autorelease];
+    id object = [[stackArray lastObject] retain];
+    [stackArray removeLastObject];    
+    return [object autorelease];
 }
 
 - (id) peek
 {
-    if ( nextIndex < 1 )
+    if ([stackArray count] == 0)
 		return nil;
 
-	return [theArrayStack objectAtIndex: (nextIndex - 1)];
+	return [stackArray lastObject];
 }
 
 - (unsigned int) count
 {
-    return nextIndex;
+    return [stackArray count];
 }
 
 + (ArrayStack *) stackWithArray:(NSArray *)array 
                         ofOrder:(BOOL)direction
 {
-    ArrayStack *s;
-    int i, sz;
+    if ([array count] == 0)
+		return nil;
+	
+	ArrayStack *stack = [[ArrayStack alloc] init];
+    int size = [array count];
+    int i = 0;
     
-    s = [[ArrayStack alloc] init];
-    sz = [array count];
-    i = 0;
-    
-    if (!array || !sz)
-		;
-    else if (!direction)//so the order to pop will be from 0...n
+    if (!direction) //so the order to pop will be from 0...n
     {
-        while (i < sz)
-            [s push: [array objectAtIndex: i++]];
+        while (i < size)
+            [stack push: [array objectAtIndex: i++]];
     }
     else //order to pop will be n...0
     {
-        while (sz > i)
-            [s push: [array objectAtIndex: --sz]];
+        while (size > i)
+            [stack push: [array objectAtIndex: --size]];
     }
 	
-    return [s autorelease];
+    return [stack autorelease];
 }
 
 @end

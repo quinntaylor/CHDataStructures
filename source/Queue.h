@@ -25,15 +25,16 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #import <Foundation/Foundation.h>
 
 /**
- A basic queue interface
+ A <a href="http://en.wikipedia.org/wiki/Queue_(data_structure)">queue</a> protocol
+ with methods for <a href="http://en.wikipedia.org/wiki/FIFO">FIFO</a> operations.
  */
 @protocol Queue <NSObject>
 
 /**
  Add an object to the back of the queue.
  
- @param anObject The object to add to the queue. Raises an
-		<code>NSInvalidArgumentException</code> if <i>anObject</i> is <code>nil</code>.
+ @param anObject The object to add to the queue; must not be <code>nil</code>, or an
+		<code>NSInvalidArgumentException</code> will be raised.
  */
 - (void) enqueue:(id)anObject;
 
@@ -43,6 +44,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  @return The frontmost object in the queue, or <code>nil</code> if the queue is empty.
  */
 - (id) dequeue;
+
+/**
+ Examine the object at the front of the queue without removing it.
+ 
+ @return The frontmost object in the queue, or <code>nil</code> if the queue is empty.
+ */
+- (id) front;
 
 /**
  Returns the number of objects currently in the queue.
