@@ -150,7 +150,12 @@ static RedBlackNode * _rotateWithRightChild(RedBlackNode *rightChild)
     BOOL beenRight;
 }
 
-/** Create an enumerator which traverses a given subtree in the specified order. */
+/**
+ Create an enumerator which traverses a given (sub)tree in the specified order.
+ 
+ @param root The root node of the (sub)tree whose elements are to be enumerated.
+ @param order The traversal order to use for enumerating the given (sub)tree.
+ */
 - (id)initWithRoot:(RedBlackNode *)root traversalOrder:(CHTraversalOrder)order;
 
 /**

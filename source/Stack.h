@@ -32,7 +32,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 /**
  Add an object to the top of the stack.
  
- @param anObject The object to add to the top of the stack; must not be <code>nil</code>.
+ @param anObject The object to add to the stack; must not be <code>nil</code>.
  */
 - (void) push:(id)anObject;
 
@@ -58,10 +58,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 - (unsigned int) count;
 
 /**
- Returns an autoreleased stack with the contents of the array in the specified order.
+ Returns an autoreleased Stack with the contents of the array in the specified order.
  
  @param array An array of objects to add to the stack.
- @param direction The order in which to insert objects from the arran. YES means the 
+ @param direction The order in which to insert objects from the array. YES means the 
         natural index order (0...n), NO means reverse index order (n...0).
  */
 + (id <Stack>) stackWithArray:(NSArray *)array ofOrder:(BOOL)direction;

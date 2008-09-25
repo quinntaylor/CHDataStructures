@@ -35,7 +35,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 {
     self = [super init];
     
-    theQ = [[NSMutableArray alloc] initWithCapacity:capacity];
+    queue = [[NSMutableArray alloc] initWithCapacity:capacity];
     
     backIndex = -1;
     frontIndex = 0;
@@ -48,7 +48,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 - (void) dealloc
 {
-    [theQ release];
+    [queue release];
     [niller release];
     [super dealloc];
 }
@@ -59,7 +59,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 	return NO;
     
     ++backIndex;
-    [theQ insertObject:enqueuedObj atIndex:backIndex];
+    [queue insertObject:enqueuedObj atIndex:backIndex];
     ++qSize;
     return YES;
 }
@@ -75,8 +75,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
     --qSize;
 
     //get it and retain it
-    theObj = [[theQ objectAtIndex:frontIndex] retain];
-    [theQ replaceObjectAtIndex:frontIndex withObject:niller];
+    theObj = [[queue objectAtIndex:frontIndex] retain];
+    [queue replaceObjectAtIndex:frontIndex withObject:niller];
     
     //now increment front -- if we have large array and we've "caught up" with
     //the back, then let's dealloc and start over.
@@ -96,10 +96,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 - (void) removeAllObjects
 {
-    if (theQ)
-	[theQ release];
+    if (queue)
+	[queue release];
     
-    theQ = [[NSMutableArray alloc] initWithCapacity:10];
+    queue = [[NSMutableArray alloc] initWithCapacity:10];
     backIndex = -1;
     frontIndex = 0;
     qSize = 0;

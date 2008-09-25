@@ -30,30 +30,38 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 @protocol Queue <NSObject>
 
 /**
- Add an object to the end of the queue. Returns NO if the object is <code>nil</code>.
+ Add an object to the back of the queue.
+ 
+ @param anObject The object to add to the queue. Raises an
+		<code>NSInvalidArgumentException</code> if <i>anObject</i> is <code>nil</code>.
  */
-- (BOOL) enqueue:(id)anObject;
+- (void) enqueue:(id)anObject;
 
 /**
- Remove and return the object at the front of the queue, or <code>nil</code> if the
- queue is empty.
+ Remove and return the object at the front of the queue.
+ 
+ @return The frontmost object in the queue, or <code>nil</code> if the queue is empty.
  */
 - (id) dequeue;
 
 /**
  Returns the number of objects currently in the queue.
+ 
+ @return The number of objects currently in the queue.
  */
-- (unsigned int)count;
+- (unsigned int) count;
 
 /**
- Remove all objects from the queue. If it is already empty, there is no effect.
+ Remove all objects from the queue; if it is already empty, there is no effect.
  */
 - (void) removeAllObjects;
 
 /**
- Returns an autoreleased queue with the contents of the array in the same order.
- For direction, YES means that objects will dequeue in the order indexed (0...n),
- whereas NO means that objects will dequeue (n...0).
+ Returns an autoreleased Queue with the contents of the array in the specified order.
+ 
+ @param array An array of objects to add to the queue.
+ @param direction The order in which to enqueue objects from the array. YES means the 
+        natural index order (0...n), NO means reverse index order (n...0).
  */
 + (id <Queue>) queueWithArray:(NSArray *)array ofOrder:(BOOL)direction;
 

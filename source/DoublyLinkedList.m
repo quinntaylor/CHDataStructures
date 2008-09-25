@@ -38,6 +38,18 @@
 }
 
 /**
+ Create an enumerator which traverses a given (sub)list in the specified order.
+ 
+ @param beginMarker The leftmost element to include in the enumeration.
+ @param endMarker The rightmost element to include in the enumeration.
+ @param dir The order in which to enumerate over the list. YES means the natural
+		index order (0...n), NO means reverse index order (n...0).
+ */
+- (id)initWithHead:(struct DoublyLinkedNode *)beginMarker
+		  withTail:(struct DoublyLinkedNode *)endMarker
+		   forward:(BOOL)dir;
+
+/**
  Returns an array of objects the receiver has yet to enumerate.
  
  @return An array of objects the receiver has yet to enumerate.
@@ -62,6 +74,9 @@
 
 @implementation DoublyLinkedListEnumerator
 //forward means YES == same order as linked list, NO == reverse.
+/**
+ 
+ */
 - (id)initWithHead:(struct DoublyLinkedNode *)beginMarker
 		 withTail:(struct DoublyLinkedNode *)endMarker
 		  forward:(BOOL)dir

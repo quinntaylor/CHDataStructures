@@ -41,7 +41,7 @@ typedef struct DoublyLinkedNode {
 #pragma mark -
 
 /**
- A standard doubly-linked LinkedList implementation with pointers to head and tail.
+ A standard doubly-linked list implementation with pointers to head and tail.
  I call it standard because I have no plans to implement a singly-linked list...
  Does the extra pointer for each node really add that much excess?
  

@@ -31,7 +31,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 @interface ArrayQueue : NSObject <Queue>
 {
-    NSMutableArray *theQ;
+    NSMutableArray *queue;
     
     int backIndex; //where to place the next element
     int frontIndex; //the current front of the queue
