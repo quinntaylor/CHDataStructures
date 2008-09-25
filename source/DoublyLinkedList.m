@@ -136,6 +136,24 @@
     return self;
 }
 
+- (void)dealloc
+{
+    [self removeAllObjects];
+    
+    if (beginMarker != nil)
+    {
+        [beginMarker->data release];
+        free(beginMarker);
+    }
+    if (endMarker != nil)
+    {
+        [endMarker->data release];
+        free(endMarker);
+    }
+    
+    [super dealloc];
+}
+
 - (unsigned int) count
 {
     return listSize;
@@ -198,15 +216,15 @@
     return p;
 }
 
-- (BOOL) containsObject:(id)obj
+- (BOOL) containsObject:(id)object
 {
     //if that returns nil, we'll return NO automagically
-    return ([self _findPos:obj identical:NO] != nil);
+    return ([self _findPos:object identical:NO] != nil);
 }
 
-- (BOOL) containsObjectIdenticalTo:(id)obj
+- (BOOL) containsObjectIdenticalTo:(id)object
 {
-    return ([self _findPos:obj identical:YES] != nil);
+    return ([self _findPos:object identical:YES] != nil);
 }
 
 - (BOOL) insertObject:(id)obj atIndex:(unsigned int)index
@@ -325,24 +343,6 @@
     return [self _removeNode:pos];
 }
 
-- (void)dealloc
-{
-    [self removeAllObjects];
-    
-    if (beginMarker != nil)
-    {
-        [beginMarker->data release];
-        free(beginMarker);
-    }
-    if (endMarker != nil)
-    {
-        [endMarker->data release];
-        free(endMarker);
-    }
-    
-    [super dealloc];
-}
-
 - (void) removeAllObjects
 {
     struct DoublyLinkedNode *runner, *old;
@@ -379,8 +379,7 @@
 			 forward:NO]autorelease];   
 }
 
-+(DoublyLinkedList *)listFromArray:(NSArray *)array 
-						   ofOrder:(BOOL)direction
++(DoublyLinkedList *)listFromArray:(NSArray *)array ofOrder:(BOOL)direction
 {
     DoublyLinkedList *list;
     int i,s;

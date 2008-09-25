@@ -41,14 +41,18 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
     id niller; //the marker for dead spots in the queue
 }
 
-- (id) init;
+/**
+ Create a new queue starting with an NSMutableArray of the specified capacity.
+ */
 - (id) initWithCapacity:(unsigned int)capacity;
 
-/**
- Returns the current size of the queue.
- */
--(unsigned int) count;
+#pragma mark Inherited Methods
+- (BOOL) enqueue:(id)anObject;
+- (id) dequeue;
+- (unsigned int)count;
+- (void) removeAllObjects;
 
-+(ArrayQueue *)queueWithArray:(NSArray *)array
-                        ofOrder:(BOOL)direction;
+#pragma mark Redefined Methods
++ (ArrayQueue *) queueWithArray:(NSArray *)array ofOrder:(BOOL)direction;
+
 @end

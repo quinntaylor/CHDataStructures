@@ -35,9 +35,17 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
     DoublyLinkedList *list;
 }
 
-- (id) init;
-
 //this is a weird thing to want from a queue, but i'll give it to ya
-//anyway because the LL provides it.
--(NSEnumerator *)objectEnumerator;
+//anyway because the linked list provides it.
+- (NSEnumerator *) objectEnumerator;
+
+#pragma mark Inherited Methods
+- (BOOL) enqueue:(id)anObject;
+- (id) dequeue;
+- (unsigned int)count;
+- (void) removeAllObjects;
+
+#pragma mark Redefined Methods
++ (LLQueue *) queueWithArray:(NSArray *)array ofOrder:(BOOL)direction;
+
 @end

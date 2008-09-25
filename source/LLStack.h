@@ -37,12 +37,19 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
     DoublyLinkedList *list;
 }
 
-- (id)init;
-
 /**
  Provided simply because the linked list implementation provides it, so why shouldn't
  I let you access it? It would be pretty weird to use a stack like this, but who knows?
  **/
-- (NSEnumerator *)objectEnumerator;
+- (NSEnumerator *) objectEnumerator;
+
+#pragma mark Inherited Methods
+- (BOOL) push:(id)object;
+- (id) pop;
+- (id) peek;
+- (unsigned int) count;
+
+#pragma mark Redefined Methods
++ (LLStack *) stackWithArray:(NSArray *)array ofOrder:(BOOL)direction;
 
 @end

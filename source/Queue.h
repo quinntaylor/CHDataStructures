@@ -29,12 +29,15 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 @protocol Queue <NSObject>
 
-//retains your object
-//if you try to enqueue nil, it will return false
-- (BOOL) enqueue:(id)pushedObj;
+/**
+ Add an object to the end of the queue. Returns NO if the object is <code>nil</code>.
+ */
+- (BOOL) enqueue:(id)anObject;
 
-//returns and autoreleases your object
-//returns nil if the queue is empty.
+/**
+ Remove and return the object at the front of the queue, or <code>nil</code> if the
+ queue is empty.
+ */
 - (id) dequeue;
 
 /**
@@ -42,19 +45,16 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 - (unsigned int)count;
 
-//releases the queue and starts a new one.
+/**
+ Remove all objects from the queue. If it is already empty, there is no effect.
+ */
 - (void) removeAllObjects;
 
 /**
- * Returns an autoreleased queue with the contents of your 
- * array in the specified order.
- * YES means that objects will dequeue in the order indexed (0...n)
- * whereas NO means that objects will dequeue (n...0).
- * Your array will not be changed, released, etc.  The queue will retain,
- * not copy, your references.  If you retain this queue, your array will
- * be safe to release.
+ Returns an autoreleased queue with the contents of the array in the same order.
+ For direction, YES means that objects will dequeue in the order indexed (0...n),
+ whereas NO means that objects will dequeue (n...0).
  */
-+ (id <Queue>)queueWithArray:(NSArray *)array
-                        ofOrder:(BOOL)direction;
++ (id <Queue>) queueWithArray:(NSArray *)array ofOrder:(BOOL)direction;
 
 @end

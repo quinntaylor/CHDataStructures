@@ -29,27 +29,31 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 @protocol Stack <NSObject>
 
-//retains the inserted object.
-//if you try to push nil, it will return false
+/**
+ Add an object to the top of the stack. Returns NO if the object is <code>nil</code>.
+ */
 - (BOOL) push:(id)object;
 
-//return and autoreleases the return value.
-//returns nil if the stack is empty.
+/**
+ Remove and return the topmost object, or <code>nil</code> if the stack is empty.
+ */
 - (id) pop;
 
-//simple BOOL for whether the stack is empty or not.
+/**
+ Return the topmost object, but do not remove it from the stack.
+ */
+- (id) peek;
+
+/**
+ Returns the number of objects currently on the stack
+ */
 - (unsigned int) count;
 
 /**
- * Returns an autoreleased stack with the contents of your 
- * array in the specified order.
- * YES means that the stack will pop items in the order indexed (0...n)
- * whereas NO means that the stack will pop items (n...0).
- * Your array will not be changed, released, etc.  The stack will retain,
- * not copy, your references.  If you retain this stack, your array will
- * be safe to release.
+ Returns an autoreleased stack with the contents of the array in the same order.
+ For direction, YES means that objects will dequeue in the order indexed (0...n),
+ whereas NO means that objects will dequeue (n...0).
  */
-+ (id <Stack>) stackWithArray:(NSArray *)array
-					  ofOrder:(BOOL)direction;
++ (id <Stack>) stackWithArray:(NSArray *)array ofOrder:(BOOL)direction;
 
 @end

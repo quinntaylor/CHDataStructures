@@ -120,8 +120,37 @@ typedef short CHTraversalOrder;
 - (id)findObject:(id <Comparable>)anObject;
 
 /**
+ Create an enumerator which performs a in-order traversal. Although this has greater
+ space complexity than pre-order (depth-first) traversal, it is a sensible default
+ since it returns values according to their natural ordering based on compare:.
+ */
+- (NSEnumerator *)objectEnumerator;
+
+/**
  Create an enumerator which uses the specified traversal order.
  */
 - (NSEnumerator *)objectEnumeratorWithTraversalOrder:(CHTraversalOrder)traversalOrder;
+
+#pragma mark Collection Conversions
+
+/**
+ Creates an NSSet which contains the objects in this tree. Uses a pre-order
+ traversal since it requires less space, is extremely fast, and sets are unordered.
+ */
+- (NSSet *) contentsAsSet;
+
+/**
+ Creates an NSArray which contains the objects in this tree.
+ The tree traversal ordering (in-order, pre-order, post-order) must be specified.
+ The object traversed last will be at the end of the array.
+ */
+- (NSArray *) contentsAsArrayWithOrder:(CHTraversalOrder)order;
+
+/**
+ Creates a Stack which contains the objects in this tree.
+ The tree traversal ordering (in-order, pre-order, post-order) must be specified.
+ The object traversed last will be on the top of the stack.
+ */
+- (id <Stack>) contentsAsStackWithInsertionOrder:(CHTraversalOrder)order;
 
 @end

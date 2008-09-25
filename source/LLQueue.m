@@ -18,6 +18,7 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *******************************/
+
 //  LLQueue.m
 //  DataStructuresFramework
 
@@ -73,8 +74,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
     return [list objectEnumerator];
 }
 
-+ (LLQueue *)queueWithArray:(NSArray *)array
-                  ofOrder:(BOOL)direction
++ (LLQueue *) queueWithArray:(NSArray *)array ofOrder:(BOOL)direction
 {
     LLQueue *q;
     int i,s;

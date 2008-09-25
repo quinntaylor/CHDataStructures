@@ -118,4 +118,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 - (id)init;
 
+#pragma mark Inherited Methods
+- (id) findObject:(id <Comparable>)target;
+- (id) findMin;
+- (id) findMax;
+//- (void)removeObject:(id <Comparable>)object;
+//- (void)removeAllObjects;
+//- (NSEnumerator *)objectEnumeratorWithTraversalOrder:(CHTraversalOrder)traversalOrder;
+
 @end

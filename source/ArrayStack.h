@@ -30,15 +30,24 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 @interface ArrayStack : NSObject <Stack>
 {
-    //the actual stack
+    /** The actual stack. */
     NSMutableArray *theArrayStack;
-    //the "top of stack".  this is the next index that an element will go into.
+    /** The "top of stack". this is the next index that an element will go into. */
     unsigned int nextIndex;
 }
 
-- (id) init;
+/**
+ Create a new stack starting with an NSMutableArray of the specified capacity.
+ */
 - (id) initWithCapacity:(unsigned)capacity;
 
+#pragma mark Inherited Methods
+- (BOOL) push:(id)object;
+- (id) pop;
+- (id) peek;
 - (unsigned int) count;
+
+#pragma mark Redefined Methods
++ (ArrayStack *) stackWithArray:(NSArray *)array ofOrder:(BOOL)direction;
 
 @end

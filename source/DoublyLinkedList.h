@@ -61,9 +61,29 @@ typedef struct DoublyLinkedNode {
     DoublyLinkedNode *endMarker;
 }
 
-
 //a bonus method.  supplies an enumerator that goes backwards
 //meaning from tail to head.
--(NSEnumerator *)reverseObjectEnumerator;
+- (NSEnumerator *) reverseObjectEnumerator;
+
+#pragma mark Inherited Methods
+- (BOOL) addFirst:(id)object;
+- (BOOL) addLast:(id)object;
+- (id) first;
+- (id) last;
+- (unsigned int) count;
+- (BOOL) containsObject:(id)object;
+- (BOOL) containsObjectIdenticalTo:(id)object;
+- (BOOL) insertObject:(id)obj atIndex:(unsigned int)index;
+- (id) objectAtIndex:(unsigned int)index;
+- (NSEnumerator *) objectEnumerator;
+- (BOOL) removeFirst;
+- (BOOL) removeLast;
+- (BOOL) removeObject:(id)obj;
+- (BOOL) removeObjectAtIndex:(unsigned int)index;
+- (BOOL) removeObjectIdenticalTo:(id)obj;
+- (void) removeAllObjects;
+
+#pragma mark Redefined Methods
++ (DoublyLinkedList *) listFromArray:(NSArray *)array ofOrder:(BOOL)direction;
 
 @end

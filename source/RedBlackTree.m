@@ -370,7 +370,10 @@ static RedBlackNode * _rotateWithRightChild(RedBlackNode *rightChild)
 - (void)removeObject:(id <Comparable>)object {
 }
 
--(NSEnumerator *)objectEnumeratorWithTraversalOrder:(CHTraversalOrder)traversalOrder;
+- (void)removeAllObjects {
+}
+
+-(NSEnumerator *)objectEnumeratorWithTraversalOrder:(CHTraversalOrder)traversalOrder
 {
     RedBlackNode *root = [header right];
     

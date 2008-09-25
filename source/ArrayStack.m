@@ -60,19 +60,24 @@
 
 - (id) pop
 {
-    //what we'll return
-    id theObj;
-    
     if ( nextIndex < 1 ) //empty
     {
 		return nil;
     }
 	
-    theObj = [[theArrayStack objectAtIndex: (nextIndex - 1)] retain];
+    id theObj = [[theArrayStack objectAtIndex: (nextIndex - 1)] retain];
     [theArrayStack removeObjectAtIndex: (nextIndex - 1)];
     --nextIndex;
     
     return [theObj autorelease];
+}
+
+- (id) peek
+{
+    if ( nextIndex < 1 )
+		return nil;
+
+	return [theArrayStack objectAtIndex: (nextIndex - 1)];
 }
 
 - (unsigned int) count
@@ -84,14 +89,14 @@
                         ofOrder:(BOOL)direction
 {
     ArrayStack *s;
-    int i,sz;
+    int i, sz;
     
     s = [[ArrayStack alloc] init];
     sz = [array count];
     i = 0;
     
     if (!array || !sz)
-    {}//nada
+		;
     else if (!direction)//so the order to pop will be from 0...n
     {
         while (i < sz)

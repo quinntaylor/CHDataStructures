@@ -55,9 +55,17 @@
 	[self exceptionForUnsupportedOperation:_cmd];
 }
 
+/**
+ Uses an NSEnumerator to add each object to the tree.
+ */
 - (void) addObjectsFromArray:(NSArray *)anArray {
-	[self exceptionForUnsupportedOperation:_cmd];
+	NSEnumerator *e = [anArray objectEnumerator];
+	id object;
+	while ((object = [e nextObject]) != nil) {
+		[self addObject:object];
+	}
 }
+
 
 - (BOOL) containsObject:(id <Comparable>)anObject {
 	[self exceptionForUnsupportedOperation:_cmd];

@@ -63,6 +63,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
     return [retval autorelease];
 }
 
+- (id) peek
+{
+	return [list first];
+}
+
 - (unsigned int) count
 {
     return [list count];
@@ -73,8 +78,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
     return [list objectEnumerator];
 }
 
-+(LLStack *)stackWithArray:(NSArray *)array 
-                    ofOrder:(BOOL)direction
++ (LLStack *) stackWithArray:(NSArray *)array ofOrder:(BOOL)direction
 {
     LLStack *s;
     int i,sz;

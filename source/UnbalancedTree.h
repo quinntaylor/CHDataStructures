@@ -76,7 +76,7 @@ typedef struct BinaryNode {
  */
 @interface UnbalancedTree : AbstractTree
 {
-	/** A pointer to the root node of the tree, set to NULL if it is empty. */
+	/** A pointer to the root of the tree, set to <code>NULL</code> if it is empty. */
     struct BinaryNode *root;
 }
 
@@ -89,6 +89,16 @@ typedef struct BinaryNode {
  Create a new UnbalancedTree with a single root node that stores the given object.
  */
 - (id)initWithObject:(id <Comparable>)rootObject;
+
+#pragma mark Inherited Methods
+- (void) addObject:(id <Comparable>)anObject;
+- (id) findObject:(id <Comparable>)target;
+- (id) findMin;
+- (id) findMax;
+- (BOOL)containsObject:(id <Comparable>)anObject;
+- (void) removeObject:(id <Comparable>)anObject;
+- (void)removeAllObjects;
+- (NSEnumerator *)objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order;
 
 @end
 

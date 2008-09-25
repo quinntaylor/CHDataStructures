@@ -37,31 +37,6 @@
 	unsigned int count;
 }
 
-/**
- Creates an NSSet which contains the objects from this binary tree. Uses a pre-order
- traversal since it requires less space, is extremely fast, and sets are unordered.
- */
-- (NSSet *) contentsAsSet;
-
-/**
- Creates an NSArray which contains the objects from the specified binary tree.
- The tree traversal ordering (in-order, pre-order, post-order) must be specified.
- The object traversed last will be at the end of the array.
- */
-- (NSArray *) contentsAsArrayWithOrder:(CHTraversalOrder)traversalOrder;
-
-/**
- Creates a Stack which contains Comparable objects from a binary tree.
- The tree traversal ordering (in-order, pre-order, post-order) must be specified.
- The object traversed last will be on the top of the stack.
- */
-- (id <Stack>) contentsAsStackWithInsertionOrder:(CHTraversalOrder)traversalOrder;
-
-/**
- Create an enumerator which performs a in-order traversal. Although this has greater
- space complexity than pre-order (depth-first) traversal, it is a sensible default
- since it returns values according to their natural ordering based on compare:.
- */
 - (NSEnumerator *)objectEnumerator;
 
 /**
@@ -78,5 +53,15 @@
  Convenience method for raising an NSException for an invalid (nil) argument.
  */
 - (id)exceptionForInvalidArgument:(SEL)operation;
+
+#pragma mark Inherited Methods
+
+- (void) addObjectsFromArray:(NSArray *)anArray;
+- (unsigned int) count;
+
+- (NSSet *) contentsAsSet;
+- (NSArray *) contentsAsArrayWithOrder:(CHTraversalOrder)traversalOrder;
+- (id <Stack>) contentsAsStackWithInsertionOrder:(CHTraversalOrder)traversalOrder;
+- (NSEnumerator *)objectEnumerator;
 
 @end

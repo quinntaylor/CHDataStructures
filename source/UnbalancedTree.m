@@ -263,21 +263,21 @@ static struct BinaryNode * _removeNode(struct BinaryNode *node, struct BinaryNod
     [super dealloc];
 }
 
-- (void) addObject:(id <Comparable>)element
+- (void) addObject:(id <Comparable>)anObject
 {
     int comparison;
     
-    if (element == nil)
+    if (anObject == nil)
 		[NSException raise:NSInvalidArgumentException
 					format:@"-[UnbalancedTree addObject:] -- Invalid nil argument."];
 	
-	[element retain];
+	[anObject retain];
 	
-	NSLog(@"Adding object: %@", element);
+	NSLog(@"Adding object: %@", anObject);
 	
 	if (root == NULL) {
 		root = malloc(bNODESIZE);
-		root->object = element;
+		root->object = anObject;
 		root->left   = NULL;
 		root->right  = NULL;
 		root->parent = NULL;
@@ -289,7 +289,7 @@ static struct BinaryNode * _removeNode(struct BinaryNode *node, struct BinaryNod
     while (currentNode != nil) {
         parentNode = currentNode;
         
-        comparison = [element compare:currentNode->object];
+        comparison = [anObject compare:currentNode->object];
 		
         if (comparison == 0)
             break; // Artificially break the loop to replace the value
@@ -306,12 +306,12 @@ static struct BinaryNode * _removeNode(struct BinaryNode *node, struct BinaryNod
     //remember we REPLACE (i.e., release the old) elements
     if (comparison == NSOrderedSame) {
         [parentNode->object release];
-        parentNode->object = element;
+        parentNode->object = anObject;
     }
 	else {
 		count++;
         struct BinaryNode *newNode = malloc(bNODESIZE);
-		newNode->object = element;
+		newNode->object = anObject;
 		newNode->left   = NULL;
 		newNode->right  = NULL;
 		newNode->parent = parentNode;
@@ -320,14 +320,6 @@ static struct BinaryNode * _removeNode(struct BinaryNode *node, struct BinaryNod
 			parentNode->left = newNode;
 		else if (comparison == NSOrderedDescending)
 			parentNode->right = newNode;		
-	}
-}
-
-- (void)addObjectsFromArray:(NSArray *)anArray {
-	NSEnumerator *e = [anArray objectEnumerator];
-	id object;
-	while ((object = [e nextObject]) != nil) {
-		[self addObject:object];
 	}
 }
 
@@ -405,7 +397,7 @@ static struct BinaryNode * _removeNode(struct BinaryNode *node, struct BinaryNod
  buffer array to store the objects waiting to be deleted; in a binary tree, no more
  than half of the nodes will be on the queue.
  */
-- (void)removeAllObjects
+- (void) removeAllObjects
 {
 	unsigned int bufferSize  = count/2 + 1;
 	unsigned int bufferStart = 0;
