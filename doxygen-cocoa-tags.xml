@@ -42,6 +42,14 @@
     <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSError_Class/Reference/Reference.html</filename>
   </compound>
   <compound kind="class">
+    <name>NSMutableArray</name>
+    <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSMutableArray_Class/Reference/Reference.html</filename>
+  </compound>
+  <compound kind="class">
+    <name>NSMutableSet</name>
+    <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSMutableSet_Class/Reference/Reference.html</filename>
+  </compound>
+  <compound kind="class">
     <name>NSNotification</name>
     <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSNotification_Class/Reference/Reference.html</filename>
   </compound>

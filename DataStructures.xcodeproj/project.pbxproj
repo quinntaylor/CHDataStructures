@@ -14,7 +14,7 @@
 				E4FE76D70E89556A00971EE6 /* ShellScript */,
 			);
 			dependencies = (
-				E4FE76DC0E89557F00971EE6 /* PBXTargetDependency */,
+				E459CBB20E8B096700E68D1E /* PBXTargetDependency */,
 			);
 			name = Documentation;
 			productName = Documentation;
@@ -42,8 +42,8 @@
 		E4ADBB390E88174200B570BC /* RedBlackTree.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB1B0E88174200B570BC /* RedBlackTree.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4ADBB3A0E88174200B570BC /* RedBlackTree.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB1C0E88174200B570BC /* RedBlackTree.m */; };
 		E4ADBB3B0E88174200B570BC /* Stack.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB1D0E88174200B570BC /* Stack.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E4ADBB3C0E88174200B570BC /* StandardLinkedList.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB1E0E88174200B570BC /* StandardLinkedList.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E4ADBB3D0E88174200B570BC /* StandardLinkedList.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB1F0E88174200B570BC /* StandardLinkedList.m */; };
+		E4ADBB3C0E88174200B570BC /* DoublyLinkedList.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB1E0E88174200B570BC /* DoublyLinkedList.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E4ADBB3D0E88174200B570BC /* DoublyLinkedList.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB1F0E88174200B570BC /* DoublyLinkedList.m */; };
 		E4ADBB400E88174200B570BC /* UnbalancedTree.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB220E88174200B570BC /* UnbalancedTree.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4ADBB410E88174200B570BC /* UnbalancedTree.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB230E88174200B570BC /* UnbalancedTree.m */; };
 		E4ADBB800E8828C500B570BC /* README in Resources */ = {isa = PBXBuildFile; fileRef = E4ADBB7E0E8828C500B570BC /* README */; };
@@ -56,6 +56,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		E459CBB10E8B096700E68D1E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216 /* DataStructures */;
+			remoteInfo = DataStructures;
+		};
 		E4B83B8A0E898D11008914BD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
@@ -69,13 +76,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = E4FE76D80E89556A00971EE6;
 			remoteInfo = Documentation;
-		};
-		E4FE76DB0E89557F00971EE6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
-			remoteInfo = DataStructures;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -101,8 +101,8 @@
 		E4ADBB1B0E88174200B570BC /* RedBlackTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RedBlackTree.h; path = source/RedBlackTree.h; sourceTree = "<group>"; };
 		E4ADBB1C0E88174200B570BC /* RedBlackTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RedBlackTree.m; path = source/RedBlackTree.m; sourceTree = "<group>"; };
 		E4ADBB1D0E88174200B570BC /* Stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Stack.h; path = source/Stack.h; sourceTree = "<group>"; };
-		E4ADBB1E0E88174200B570BC /* StandardLinkedList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StandardLinkedList.h; path = source/StandardLinkedList.h; sourceTree = "<group>"; };
-		E4ADBB1F0E88174200B570BC /* StandardLinkedList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StandardLinkedList.m; path = source/StandardLinkedList.m; sourceTree = "<group>"; };
+		E4ADBB1E0E88174200B570BC /* DoublyLinkedList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DoublyLinkedList.h; path = source/DoublyLinkedList.h; sourceTree = "<group>"; };
+		E4ADBB1F0E88174200B570BC /* DoublyLinkedList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DoublyLinkedList.m; path = source/DoublyLinkedList.m; sourceTree = "<group>"; };
 		E4ADBB220E88174200B570BC /* UnbalancedTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UnbalancedTree.h; path = source/UnbalancedTree.h; sourceTree = "<group>"; };
 		E4ADBB230E88174200B570BC /* UnbalancedTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UnbalancedTree.m; path = source/UnbalancedTree.m; sourceTree = "<group>"; };
 		E4ADBB7E0E8828C500B570BC /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
@@ -197,8 +197,8 @@
 				E4ADBB1B0E88174200B570BC /* RedBlackTree.h */,
 				E4ADBB1C0E88174200B570BC /* RedBlackTree.m */,
 				E4ADBB1D0E88174200B570BC /* Stack.h */,
-				E4ADBB1E0E88174200B570BC /* StandardLinkedList.h */,
-				E4ADBB1F0E88174200B570BC /* StandardLinkedList.m */,
+				E4ADBB1E0E88174200B570BC /* DoublyLinkedList.h */,
+				E4ADBB1F0E88174200B570BC /* DoublyLinkedList.m */,
 				E4FE77C60E8978C300971EE6 /* Tree.h */,
 				E4ADBB220E88174200B570BC /* UnbalancedTree.h */,
 				E4ADBB230E88174200B570BC /* UnbalancedTree.m */,
@@ -240,7 +240,7 @@
 				E4ADBB360E88174200B570BC /* Queue.h in Headers */,
 				E4ADBB390E88174200B570BC /* RedBlackTree.h in Headers */,
 				E4ADBB3B0E88174200B570BC /* Stack.h in Headers */,
-				E4ADBB3C0E88174200B570BC /* StandardLinkedList.h in Headers */,
+				E4ADBB3C0E88174200B570BC /* DoublyLinkedList.h in Headers */,
 				E4ADBB400E88174200B570BC /* UnbalancedTree.h in Headers */,
 				E4FE77C70E8978C300971EE6 /* Tree.h in Headers */,
 				E4FE77CA0E8978DD00971EE6 /* AbstractTree.h in Headers */,
@@ -347,7 +347,7 @@
 				E4ADBB320E88174200B570BC /* LLQueue.m in Sources */,
 				E4ADBB340E88174200B570BC /* LLStack.m in Sources */,
 				E4ADBB3A0E88174200B570BC /* RedBlackTree.m in Sources */,
-				E4ADBB3D0E88174200B570BC /* StandardLinkedList.m in Sources */,
+				E4ADBB3D0E88174200B570BC /* DoublyLinkedList.m in Sources */,
 				E4ADBB410E88174200B570BC /* UnbalancedTree.m in Sources */,
 				E4ADBC9A0E88412C00B570BC /* AbstractTree.m in Sources */,
 			);
@@ -364,6 +364,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		E459CBB20E8B096700E68D1E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8DC2EF4F0486A6940098B216 /* DataStructures */;
+			targetProxy = E459CBB10E8B096700E68D1E /* PBXContainerItemProxy */;
+		};
 		E4B83B8B0E898D11008914BD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 8DC2EF4F0486A6940098B216 /* DataStructures */;
@@ -373,11 +378,6 @@
 			isa = PBXTargetDependency;
 			target = E4FE76D80E89556A00971EE6 /* Documentation */;
 			targetProxy = E4B83CE40E89EF12008914BD /* PBXContainerItemProxy */;
-		};
-		E4FE76DC0E89557F00971EE6 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 8DC2EF4F0486A6940098B216 /* DataStructures */;
-			targetProxy = E4FE76DB0E89557F00971EE6 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
