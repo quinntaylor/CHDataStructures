@@ -70,7 +70,7 @@
     return [object autorelease];
 }
 
-- (id) peek
+- (id) top
 {
     if ([stackArray count] == 0)
 		return nil;
