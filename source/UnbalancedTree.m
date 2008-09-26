@@ -133,15 +133,15 @@ typedef struct LinkedNode {
 
 #define UTE_PUSH(o) {tmp=malloc(UTE_NODESIZE);tmp->node=o;tmp->next=stack;stack=tmp;}
 #define UTE_POP()   {if(stack!=NULL){tmp=stack;stack=stack->next;free(tmp);}}
-#define UTE_TOP	 ((stack!=NULL)?stack->node:NULL)
+#define UTE_TOP     ((stack!=NULL)?stack->node:NULL)
 
 #pragma mark Queue Operations
 
 #define UTE_ENQUEUE(o) {tmp=malloc(UTE_NODESIZE);tmp->node=o;tmp->next=NULL;\
-						if(queue==NULL){queue=tmp;queueTail=tmp;}\
-						queueTail->next=tmp;queueTail=queueTail->next;}
+                        if(queue==NULL){queue=tmp;queueTail=tmp;}\
+                        queueTail->next=tmp;queueTail=queueTail->next;}
 #define UTE_DEQUEUE()  {if(queue!=NULL){tmp=queue;queue=queue->next;free(tmp);}\
-						if(queue==tmp)queue=NULL;if(queueTail==tmp)queueTail=NULL;}
+                        if(queue==tmp)queue=NULL;if(queueTail==tmp)queueTail=NULL;}
 #define UTE_FRONT	  ((queue!=NULL)?queue->node:NULL)
 
 #pragma mark -
@@ -169,7 +169,7 @@ typedef struct LinkedNode {
  @param root The root node of the (sub)tree whose elements are to be enumerated.
  @param order The traversal order to use for enumerating the given (sub)tree.
  */
-- (id)initWithRoot:(struct BinaryNode *)root traversalOrder:(CHTraversalOrder)order;
+- (id) initWithRoot:(struct BinaryNode *)root traversalOrder:(CHTraversalOrder)order;
 
 /**
  Returns an array of objects the receiver has yet to enumerate.
@@ -195,7 +195,7 @@ typedef struct LinkedNode {
 
 @implementation UnbalancedTreeEnumerator
 
-- (id)initWithRoot:(struct BinaryNode *)root traversalOrder:(CHTraversalOrder)order;
+- (id) initWithRoot:(struct BinaryNode *)root traversalOrder:(CHTraversalOrder)order;
 {
 	if (![super init] || !isValidTraversalOrder(order)) {
 		[self release];
@@ -203,16 +203,17 @@ typedef struct LinkedNode {
 	}
 	stack = NULL;
 	traversalOrder = order;
-	if (traversalOrder == CHTraverseLevelOrder)
-		UTE_ENQUEUE(root)
-		else if (traversalOrder == CHTraversePreOrder)
-			UTE_PUSH(root)
-			else
-				currentNode = root;
+	if (traversalOrder == CHTraverseLevelOrder) {
+		UTE_ENQUEUE(root);		
+	} else if (traversalOrder == CHTraversePreOrder) {
+		UTE_PUSH(root);		
+	} else {
+		currentNode = root;
+	}
 	return self;
 }
 
-- (id)nextObject
+- (id) nextObject
 {
 	switch (traversalOrder) {
 		case CHTraversePreOrder:
@@ -295,7 +296,7 @@ typedef struct LinkedNode {
 	}
 }
 
-- (NSArray *)allObjects
+- (NSArray *) allObjects
 {
 	NSMutableArray *array = [[NSMutableArray alloc] init];
 	id object;
@@ -312,12 +313,12 @@ typedef struct LinkedNode {
 
 @implementation UnbalancedTree
 
-- (id)init
+- (id) init
 {
 	return [self initWithObject:nil];
 }
 
-- (id)initWithObject:(id <Comparable>)rootObject
+- (id) initWithObject:(id <Comparable>)rootObject
 {
 	if (![super init]) {
 		[self release];
@@ -334,7 +335,7 @@ typedef struct LinkedNode {
 	return self;
 }
 
-- (void)dealloc
+- (void) dealloc
 {
 	[self removeAllObjects];
 	[super dealloc];
@@ -400,17 +401,17 @@ typedef struct LinkedNode {
 	}
 }
 
-- (id)findMax
+- (id) findMax
 {
 	return (_findMaxWithStarter(root))->object;
 }
 
-- (id)findMin
+- (id) findMin
 {
 	return (_findMinWithStarter(root))->object;
 }
 
-- (id)findObject:(id <Comparable>)anObject {
+- (id) findObject:(id <Comparable>)anObject {
 	if (anObject == nil)
 		[self exceptionForInvalidArgument:_cmd];
 	
@@ -428,7 +429,7 @@ typedef struct LinkedNode {
 	return nil;	
 }
 
-- (BOOL)containsObject:(id <Comparable>)anObject {
+- (BOOL) containsObject:(id <Comparable>)anObject {
 	if (anObject == nil)
 		[self exceptionForInvalidArgument:_cmd];
 	
@@ -498,13 +499,13 @@ typedef struct LinkedNode {
 	}
 }
 
-- (NSEnumerator *)objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order
+- (NSEnumerator *) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order
 {
 	if (root == NULL)
 		return nil;
 	
 	return [[[UnbalancedTreeEnumerator alloc] initWithRoot:root
-											traversalOrder:order] autorelease];
+                                            traversalOrder:order] autorelease];
 }
 
 @end
