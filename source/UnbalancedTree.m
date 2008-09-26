@@ -27,96 +27,96 @@
 #pragma mark C Functions for Optimized Operations
 
 static struct BinaryNode * _findMaxWithStarter(struct BinaryNode *starter) {
-    //see comment in findMinWithStarter for explanation
-    struct BinaryNode *bar, *foo = starter;
-    while ( (bar = foo->right) != nil )
+	//see comment in findMinWithStarter for explanation
+	struct BinaryNode *bar, *foo = starter;
+	while ( (bar = foo->right) != nil )
 		foo = bar;
-    return foo;    
+	return foo;	
 }
 
 static struct BinaryNode * _findMinWithStarter(struct BinaryNode *starter) {
-    struct BinaryNode *bar, *foo = starter;
-    
-    //a subtle nil test here -- note the terminating semicolon
-    //when foo->left points to nil, we return foo because
-    //there is nothing more to the left.
-    while ( (bar = foo->left) != nil )
+	struct BinaryNode *bar, *foo = starter;
+	
+	//a subtle nil test here -- note the terminating semicolon
+	//when foo->left points to nil, we return foo because
+	//there is nothing more to the left.
+	while ( (bar = foo->left) != nil )
 		foo = bar;
-    return foo;
+	return foo;
 }
 
 static struct BinaryNode * _removeNode(struct BinaryNode *node, struct BinaryNode *treeRoot)
 {
-    struct BinaryNode *oldRoot;
-    
-    if (node == NULL)
+	struct BinaryNode *oldRoot;
+	
+	if (node == NULL)
 		return NULL;
-    
-    if (node->left == NULL)
-    {
-        if (node->right == NULL) // both children are NULL
-        {
-            [node->object release];
-            if (node != treeRoot)
+	
+	if (node->left == NULL)
+	{
+		if (node->right == NULL) // both children are NULL
+		{
+			[node->object release];
+			if (node != treeRoot)
 				free(node);
-            return NULL;
-        }
-        else // only right exists, so replace current with right subtree
-        {
-            oldRoot = node;
-            node = node->right;
-            node->parent = oldRoot->parent;
-            
-            //fix the parent's pointers.
-            if (node->parent != NULL)
-            {
-                if (node->parent->left == oldRoot) 
-                    node->parent->left = node;
-                else if (node->parent->right == oldRoot)
-                    node->parent->right = node; 
-            }
-            
-            [oldRoot->object release];
-            free(oldRoot);
-            return node;
-        }
-    }
-    else //left was not nil
-    {
-        if (node->right == NULL)
-        {
-            oldRoot = node;
-            node = node->left;
-            node->parent = oldRoot->parent;
-            
-            //fix the parent's pointers.
-            if (node->parent != NULL)
-            {
-                if (node->parent->left == oldRoot) 
-                    node->parent->left = node;
-                else if (node->parent->right == oldRoot)
-                    node->parent->right = node; 
-            }
-            
-            [oldRoot->object release];
-            free(oldRoot);
-            return node;
-        }
-        else //now of course this is the usual -- both L & R nodes exist
-        {
-            //replace our node with the node at the leftmost of its right subtree.
-            //1. release our present node's object
-            //2. find the node we will destroy after plucking its object
-            //3. set our present node's object pointer to the replacement object
-            //4. fix the parent pointer of the to-be-freed node
-            [node->object release];
-            oldRoot = _findMinWithStarter(node->right);
-            node->object = oldRoot->object;
-            oldRoot->parent->left = NULL;
-            free(oldRoot);
-            return node;
-        }
-    }
+			return NULL;
+		}
+		else // only right exists, so replace current with right subtree
+		{
+			oldRoot = node;
+			node = node->right;
+			node->parent = oldRoot->parent;
+			
+			//fix the parent's pointers.
+			if (node->parent != NULL)
+			{
+				if (node->parent->left == oldRoot) 
+					node->parent->left = node;
+				else if (node->parent->right == oldRoot)
+					node->parent->right = node; 
+			}
+			
+			[oldRoot->object release];
+			free(oldRoot);
+			return node;
+		}
+	}
+	else //left was not nil
+	{
+		if (node->right == NULL)
+		{
+			oldRoot = node;
+			node = node->left;
+			node->parent = oldRoot->parent;
+			
+			//fix the parent's pointers.
+			if (node->parent != NULL)
+			{
+				if (node->parent->left == oldRoot) 
+					node->parent->left = node;
+				else if (node->parent->right == oldRoot)
+					node->parent->right = node; 
+			}
+			
+			[oldRoot->object release];
+			free(oldRoot);
+			return node;
+		}
+		else //now of course this is the usual -- both L & R nodes exist
+		{
+			//replace our node with the node at the leftmost of its right subtree.
+			//1. release our present node's object
+			//2. find the node we will destroy after plucking its object
+			//3. set our present node's object pointer to the replacement object
+			//4. fix the parent pointer of the to-be-freed node
+			[node->object release];
+			oldRoot = _findMinWithStarter(node->right);
+			node->object = oldRoot->object;
+			oldRoot->parent->left = NULL;
+			free(oldRoot);
+			return node;
+		}
+	}
 }
 
 #pragma mark -
@@ -133,16 +133,16 @@ typedef struct LinkedNode {
 
 #define UTE_PUSH(o) {tmp=malloc(UTE_NODESIZE);tmp->node=o;tmp->next=stack;stack=tmp;}
 #define UTE_POP()   {if(stack!=NULL){tmp=stack;stack=stack->next;free(tmp);}}
-#define UTE_TOP     ((stack!=NULL)?stack->node:NULL)
+#define UTE_TOP	 ((stack!=NULL)?stack->node:NULL)
 
 #pragma mark Queue Operations
 
 #define UTE_ENQUEUE(o) {tmp=malloc(UTE_NODESIZE);tmp->node=o;tmp->next=NULL;\
-                        if(queue==NULL){queue=tmp;queueTail=tmp;}\
-                        queueTail->next=tmp;queueTail=queueTail->next;}
+						if(queue==NULL){queue=tmp;queueTail=tmp;}\
+						queueTail->next=tmp;queueTail=queueTail->next;}
 #define UTE_DEQUEUE()  {if(queue!=NULL){tmp=queue;queue=queue->next;free(tmp);}\
-                        if(queue==tmp)queue=NULL;if(queueTail==tmp)queueTail=NULL;}
-#define UTE_FRONT      ((queue!=NULL)?queue->node:NULL)
+						if(queue==tmp)queue=NULL;if(queueTail==tmp)queueTail=NULL;}
+#define UTE_FRONT	  ((queue!=NULL)?queue->node:NULL)
 
 #pragma mark -
 
@@ -154,13 +154,13 @@ typedef struct LinkedNode {
  */
 @interface UnbalancedTreeEnumerator : NSEnumerator
 {
-    BinaryNode *currentNode; /**< The next node that is to be returned. */
-    BinaryNode *temp;
+	BinaryNode *currentNode; /**< The next node that is to be returned. */
+	BinaryNode *temp;
 	CHTraversalOrder traversalOrder; /**< Order in which to traverse the tree. */
-    LinkedNode *stack;
-    LinkedNode *tmp;
-    LinkedNode *queue;
-    LinkedNode *queueTail;
+	LinkedNode *stack;
+	LinkedNode *tmp;
+	LinkedNode *queue;
+	LinkedNode *queueTail;
 }
 
 /**
@@ -209,7 +209,7 @@ typedef struct LinkedNode {
 			UTE_PUSH(root)
 			else
 				currentNode = root;
-    return self;
+	return self;
 }
 
 - (id)nextObject
@@ -256,7 +256,7 @@ typedef struct LinkedNode {
 			
 		case CHTraversePostOrder:
 			// This algorithm from: http://www.johny.ca/blog/archives/05/03/04/
-			if (stack == NULL && currentNode == NULL) // is the 2nd half redundant?
+			if (stack == NULL && currentNode == NULL)
 				return nil;
 			while (1) {
 				while (currentNode != NULL) {
@@ -289,19 +289,21 @@ typedef struct LinkedNode {
 				UTE_ENQUEUE(currentNode->right);
 			}
 			return currentNode->object;
+			
+		default:
+			return nil;
 	}
-	return nil;
 }
 
 - (NSArray *)allObjects
 {
-    NSMutableArray *array = [[NSMutableArray alloc] init];
-    id object;
-    
-    while ((object = [self nextObject]))
-        [array addObject:object];
-    
-    return [array autorelease];
+	NSMutableArray *array = [[NSMutableArray alloc] init];
+	id object;
+	
+	while ((object = [self nextObject]))
+		[array addObject:object];
+	
+	return [array autorelease];
 }
 
 @end
@@ -312,12 +314,12 @@ typedef struct LinkedNode {
 
 - (id)init
 {
-    return [self initWithObject:nil];
+	return [self initWithObject:nil];
 }
 
 - (id)initWithObject:(id <Comparable>)rootObject
 {
-    if (![super init]) {
+	if (![super init]) {
 		[self release];
 		return nil;
 	}
@@ -329,20 +331,20 @@ typedef struct LinkedNode {
 		root->parent = nil;
 		count = 1;
 	}
-    return self;
+	return self;
 }
 
 - (void)dealloc
 {
-    [self removeAllObjects];
-    [super dealloc];
+	[self removeAllObjects];
+	[super dealloc];
 }
 
 - (void) addObject:(id <Comparable>)anObject
 {
-    int comparison;
-    
-    if (anObject == nil)
+	int comparison;
+	
+	if (anObject == nil)
 		[NSException raise:NSInvalidArgumentException
 					format:@"-[UnbalancedTree addObject:] -- Invalid nil argument."];
 	
@@ -359,33 +361,33 @@ typedef struct LinkedNode {
 	}
 	
 	// TODO: Simplify object insertion
-    
-    struct BinaryNode *parentNode, *currentNode = root;
-    while (currentNode != nil) {
-        parentNode = currentNode;
-        
-        comparison = [anObject compare:currentNode->object];
+	
+	struct BinaryNode *parentNode, *currentNode = root;
+	while (currentNode != nil) {
+		parentNode = currentNode;
 		
-        if (comparison == 0)
-            break; // Artificially break the loop to replace the value
-        else if (comparison < 0)
-            currentNode = currentNode->left;
-        else if (comparison > 0)
-            currentNode = currentNode->right;
-    }
-    
-    //this is why we used the special case.
-    //we see what state got us to this
-    //if it's equal, we just replace bar.
-    
-    //remember we REPLACE (i.e., release the old) elements
-    if (comparison == NSOrderedSame) {
-        [parentNode->object release];
-        parentNode->object = anObject;
-    }
+		comparison = [anObject compare:currentNode->object];
+		
+		if (comparison == 0)
+			break; // Artificially break the loop to replace the value
+		else if (comparison < 0)
+			currentNode = currentNode->left;
+		else if (comparison > 0)
+			currentNode = currentNode->right;
+	}
+	
+	//this is why we used the special case.
+	//we see what state got us to this
+	//if it's equal, we just replace bar.
+	
+	//remember we REPLACE (i.e., release the old) elements
+	if (comparison == NSOrderedSame) {
+		[parentNode->object release];
+		parentNode->object = anObject;
+	}
 	else {
 		count++;
-        struct BinaryNode *newNode = malloc(bNODESIZE);
+		struct BinaryNode *newNode = malloc(bNODESIZE);
 		newNode->object = anObject;
 		newNode->left   = NULL;
 		newNode->right  = NULL;
@@ -400,29 +402,29 @@ typedef struct LinkedNode {
 
 - (id)findMax
 {
-    return (_findMaxWithStarter(root))->object;
+	return (_findMaxWithStarter(root))->object;
 }
 
 - (id)findMin
 {
-    return (_findMinWithStarter(root))->object;
+	return (_findMinWithStarter(root))->object;
 }
 
 - (id)findObject:(id <Comparable>)anObject {
 	if (anObject == nil)
 		[self exceptionForInvalidArgument:_cmd];
 	
-    struct BinaryNode *currentNode = root;
-    while (currentNode != NULL) {
-        short comparison = [anObject compare:(currentNode->object)];
-        if (comparison == NSOrderedAscending)
-            currentNode = currentNode->left;
-        else if (comparison == NSOrderedDescending)
-            currentNode = currentNode->right;
+	struct BinaryNode *currentNode = root;
+	while (currentNode != NULL) {
+		short comparison = [anObject compare:(currentNode->object)];
+		if (comparison == NSOrderedAscending)
+			currentNode = currentNode->left;
+		else if (comparison == NSOrderedDescending)
+			currentNode = currentNode->right;
 		else if (comparison == NSOrderedSame) {
 			return currentNode->object;
 		}
-    }
+	}
 	return nil;	
 }
 
@@ -430,16 +432,16 @@ typedef struct LinkedNode {
 	if (anObject == nil)
 		[self exceptionForInvalidArgument:_cmd];
 	
-    struct BinaryNode *currentNode = root;
-    while (currentNode != NULL) {
+	struct BinaryNode *currentNode = root;
+	while (currentNode != NULL) {
 		if ([anObject isEqual:currentNode->object])
 			return YES;
-        short comparison = [anObject compare:currentNode->object];
-        if (comparison == NSOrderedAscending)
-            currentNode = currentNode->left;
-        else
-            currentNode = currentNode->right;
-    }
+		short comparison = [anObject compare:currentNode->object];
+		if (comparison == NSOrderedAscending)
+			currentNode = currentNode->left;
+		else
+			currentNode = currentNode->right;
+	}
 	return NO;
 }
 
@@ -452,18 +454,18 @@ typedef struct LinkedNode {
 	if (anObject == nil)
 		[self exceptionForInvalidArgument:_cmd];
 	
-    struct BinaryNode *currentNode = root;
-    while (currentNode != NULL) {
-        short comparison = [anObject compare:currentNode->object];
-        if (comparison == NSOrderedAscending)
-            currentNode = currentNode->left;
-        else if (comparison == NSOrderedDescending)
-            currentNode = currentNode->right;
+	struct BinaryNode *currentNode = root;
+	while (currentNode != NULL) {
+		short comparison = [anObject compare:currentNode->object];
+		if (comparison == NSOrderedAscending)
+			currentNode = currentNode->left;
+		else if (comparison == NSOrderedDescending)
+			currentNode = currentNode->right;
 		else if (comparison == NSOrderedSame) {
-            _removeNode(currentNode, root);
+			_removeNode(currentNode, root);
 			return;
 		}
-    }
+	}
 }
 
 /**
@@ -475,7 +477,7 @@ typedef struct LinkedNode {
 - (void) removeAllObjects
 {
 	BinaryNode *currentNode;
-	LinkedNode *queue     = NULL;
+	LinkedNode *queue	 = NULL;
 	LinkedNode *queueTail = NULL;
 	LinkedNode *tmp;
 	
@@ -498,10 +500,10 @@ typedef struct LinkedNode {
 
 - (NSEnumerator *)objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order
 {
-    if (root == NULL)
-        return nil;
+	if (root == NULL)
+		return nil;
 	
-    return [[[UnbalancedTreeEnumerator alloc] initWithRoot:root
+	return [[[UnbalancedTreeEnumerator alloc] initWithRoot:root
 											traversalOrder:order] autorelease];
 }
 

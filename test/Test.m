@@ -8,11 +8,11 @@
 #import "RedBlackTree.h"
 
 int main (int argc, const char * argv[]) {
-    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 	
 	// Test object insertion, enumeration, and removal in unbalanced binary trees.
 	
-    id<Tree> tree = [[UnbalancedTree alloc] init];
+	id<Tree> tree = [[UnbalancedTree alloc] init];
 	[tree addObject:@"F"];
 	[tree addObject:@"B"];
 	[tree addObject:@"A"];

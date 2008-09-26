@@ -30,21 +30,21 @@
 + (id) exceptionForUnsupportedOperation:(SEL)operation {
 	[NSException raise:NSInternalInconsistencyException
 				format:@"+[%@ %s] -- Unsupported operation.",
-                       [self class], sel_getName(operation)];
+					   [self class], sel_getName(operation)];
 	return nil;
 }
 
 - (id) exceptionForUnsupportedOperation:(SEL)operation {
 	[NSException raise:NSInternalInconsistencyException
 				format:@"-[%@ %s] -- Unsupported operation.",
-                       [self class], sel_getName(operation)];
+					   [self class], sel_getName(operation)];
 	return nil;
 }
 
 - (id) exceptionForInvalidArgument:(SEL)operation {
 	[NSException raise:NSInvalidArgumentException
 				format:@"-[%@ %s] -- Invalid nil argument.",
-	                   [self class], sel_getName(operation)];
+					   [self class], sel_getName(operation)];
 	return nil;
 }
 
@@ -108,7 +108,7 @@
 }
 
 + (id<Tree>) treeWithFastEnumeration:(id<NSFastEnumeration>)collection {
-    id<Tree> tree = [[self alloc] init];
+	id<Tree> tree = [[self alloc] init];
 	for (id object in collection) {
 		[tree addObject:object];
 	}
@@ -123,30 +123,30 @@
 	NSMutableSet *set = [[NSMutableSet alloc] init];
 	id object;
 	while ((object = [enumerator nextObject])) {
-        [set addObject:object];
+		[set addObject:object];
 	}
-    return [set autorelease];
+	return [set autorelease];
 }
 
 - (NSArray *) contentsAsArrayWithOrder:(CHTraversalOrder)order {
-    NSEnumerator *enumerator = [self objectEnumeratorWithTraversalOrder:order];
+	NSEnumerator *enumerator = [self objectEnumeratorWithTraversalOrder:order];
 	
-    NSMutableArray *array = [[NSMutableArray alloc] init];
+	NSMutableArray *array = [[NSMutableArray alloc] init];
 	id object;
 	while ((object = [enumerator nextObject])) {
-        [array addObject:object];
+		[array addObject:object];
 	}
-    return [array autorelease];
+	return [array autorelease];
 	// Document that the returned object is mutable? Return immutable copy instead?
 }
 
 - (id <Stack>) contentsAsStackWithInsertionOrder:(CHTraversalOrder)order {
-    NSEnumerator *enumerator = [self objectEnumeratorWithTraversalOrder:order];
+	NSEnumerator *enumerator = [self objectEnumeratorWithTraversalOrder:order];
 	
 	id <Stack> stack = [[LLStack alloc] init];
 	id object;
 	while ((object = [enumerator nextObject])) {
-        [stack push:object];
+		[stack push:object];
 	}
 	return [stack autorelease];
 }

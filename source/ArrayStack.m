@@ -28,25 +28,25 @@
 
 - (id) init
 {
-    //so we set up the array with initial capacity of 10 items.
-    return [self initWithCapacity:10];
+	//so we set up the array with initial capacity of 10 items.
+	return [self initWithCapacity:10];
 }
 
 - (id) initWithCapacity:(unsigned)capacity
 {
-    if ([super init] == nil) {
+	if ([super init] == nil) {
 		[self release];
 		return nil;
 	}
-    //set the stack pointer to 0 (we mean an "internal" stack pointer, i.e., where to put the next push)
-    stackArray = [[NSMutableArray alloc] initWithCapacity:capacity];
-    return self;
+	//set the stack pointer to 0 (we mean an "internal" stack pointer, i.e., where to put the next push)
+	stackArray = [[NSMutableArray alloc] initWithCapacity:capacity];
+	return self;
 }
 
 - (void) dealloc
 {
-    [stackArray release];
-    [super dealloc];
+	[stackArray release];
+	[super dealloc];
 }
 
 - (void) push:(id)anObject
@@ -62,49 +62,49 @@
 
 - (id) pop
 {
-    if ([stackArray count] == 0)
+	if ([stackArray count] == 0)
 		return nil;
 	
-    id object = [[stackArray lastObject] retain];
-    [stackArray removeLastObject];    
-    return [object autorelease];
+	id object = [[stackArray lastObject] retain];
+	[stackArray removeLastObject];	
+	return [object autorelease];
 }
 
 - (id) top
 {
-    if ([stackArray count] == 0)
+	if ([stackArray count] == 0)
 		return nil;
-
+	
 	return [stackArray lastObject];
 }
 
 - (unsigned int) count
 {
-    return [stackArray count];
+	return [stackArray count];
 }
 
 + (ArrayStack *) stackWithArray:(NSArray *)array 
-                        ofOrder:(BOOL)direction
+						ofOrder:(BOOL)direction
 {
-    if ([array count] == 0)
+	if ([array count] == 0)
 		return nil;
 	
 	ArrayStack *stack = [[ArrayStack alloc] init];
-    int size = [array count];
-    int i = 0;
-    
-    if (!direction) //so the order to pop will be from 0...n
-    {
-        while (i < size)
-            [stack push: [array objectAtIndex: i++]];
-    }
-    else //order to pop will be n...0
-    {
-        while (size > i)
-            [stack push: [array objectAtIndex: --size]];
-    }
+	int size = [array count];
+	int i = 0;
 	
-    return [stack autorelease];
+	if (!direction) //so the order to pop will be from 0...n
+	{
+		while (i < size)
+			[stack push: [array objectAtIndex: i++]];
+	}
+	else //order to pop will be n...0
+	{
+		while (size > i)
+			[stack push: [array objectAtIndex: --size]];
+	}
+	
+	return [stack autorelease];
 }
 
 @end

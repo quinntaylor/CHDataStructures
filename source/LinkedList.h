@@ -1,23 +1,23 @@
 /************************
-A Cocoa DataStructuresFramework
-Copyright (C) 2002  Phillip Morelock in the United States
-http://www.phillipmorelock.com
-Other copyrights for this specific file as acknowledged herein.
-
-This library is free software; you can redistribute it and/or
-modify it under the terms of the GNU Lesser General Public
-License as published by the Free Software Foundation; either
-version 2.1 of the License, or (at your option) any later version.
-
-This library is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
-
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*******************************/
+ A Cocoa DataStructuresFramework
+ Copyright (C) 2002  Phillip Morelock in the United States
+ http://www.phillipmorelock.com
+ Other copyrights for this specific file as acknowledged herein.
+ 
+ This library is free software; you can redistribute it and/or
+ modify it under the terms of the GNU Lesser General Public
+ License as published by the Free Software Foundation; either
+ version 2.1 of the License, or (at your option) any later version.
+ 
+ This library is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
+ 
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *******************************/
 
 //  LinkedList.h
 //  DataStructuresFramework
@@ -145,7 +145,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  Returns an enumerator object that provides access to each object in the receiver.
  
  @return An enumerator object that lets you access each object in the receiver, from
-         the element at the lowest index upwards.
+        the element at the lowest index upwards.
  */
 - (NSEnumerator *) objectEnumerator;
 
@@ -154,7 +154,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
  @param array An array of objects to add to the queue.
  @param direction The order in which to enqueue objects from the array. YES means the 
-	    natural index order (0...n), NO means reverse index order (n...0).
+        natural index order (0...n), NO means reverse index order (n...0).
  */
 + (id <LinkedList>) listWithArray:(NSArray *)array ofOrder:(BOOL)direction;
 

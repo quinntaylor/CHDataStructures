@@ -2,7 +2,7 @@
  A Cocoa DataStructuresFramework
  Copyright (C) 2002  Phillip Morelock in the United States
  http://www.phillipmorelock.com
- Other copyright for this specific file as acknowledged herein.
+ Other copyrights for this specific file as acknowledged herein.
  
  This library is free software; you can redistribute it and/or
  modify it under the terms of the GNU Lesser General Public
@@ -67,9 +67,7 @@
 // NOTE: For a future release:
 
 //- (void) addObjectsFromCollection:(id)collection
-
 //- (void) addObjectsFromHeap:(id<Heap>)otherHeap;
-
 //- (id) initWithSortOrder:(NSComparisonResult)sortOrder; // for min/max heaps
 
 @end
