@@ -102,7 +102,7 @@ static struct BinaryNode * _removeNode(struct BinaryNode *node, struct BinaryNod
             free(oldRoot);
             return node;
         }
-        else //now of course this is the usual -- both l&r nodes exist
+        else //now of course this is the usual -- both L & R nodes exist
         {
             //replace our node with the node at the leftmost of its right subtree.
             //1. release our present node's object
@@ -121,6 +121,31 @@ static struct BinaryNode * _removeNode(struct BinaryNode *node, struct BinaryNod
 
 #pragma mark -
 
+typedef struct LinkedNode {
+	struct BinaryNode *node;
+	struct LinkedNode *next;
+} LinkedNode;
+
+/** A simplification for malloc'ing stack nodes. */
+#define UTE_NODESIZE sizeof(struct LinkedNode)
+
+#pragma mark Stack Operations
+
+#define UTE_PUSH(o) {tmp=malloc(UTE_NODESIZE);tmp->node=o;tmp->next=stack;stack=tmp;}
+#define UTE_POP()   {if(stack!=NULL){tmp=stack;stack=stack->next;free(tmp);}}
+#define UTE_TOP     ((stack!=NULL)?stack->node:NULL)
+
+#pragma mark Queue Operations
+
+#define UTE_ENQUEUE(o) {tmp=malloc(UTE_NODESIZE);tmp->node=o;tmp->next=NULL;\
+                        if(queue==NULL){queue=tmp;queueTail=tmp;}\
+                        queueTail->next=tmp;queueTail=queueTail->next;}
+#define UTE_DEQUEUE()  {if(queue!=NULL){tmp=queue;queue=queue->next;free(tmp);}\
+                        if(queue==tmp)queue=NULL;if(queueTail==tmp)queueTail=NULL;}
+#define UTE_FRONT      ((queue!=NULL)?queue->node:NULL)
+
+#pragma mark -
+
 /**
  An NSEnumerator for traversing an UnbalancedTree subtree in a specified order.
  
@@ -129,11 +154,13 @@ static struct BinaryNode * _removeNode(struct BinaryNode *node, struct BinaryNod
  */
 @interface UnbalancedTreeEnumerator : NSEnumerator
 {
-    struct BinaryNode *currentNode;		/**< The next node that is to be returned. */
-	CHTraversalOrder traversalOrder;	/**< Order in which to traverse the tree. */
-    BOOL hasStarted;
-    BOOL beenLeft;
-    BOOL beenRight;
+    BinaryNode *currentNode; /**< The next node that is to be returned. */
+    BinaryNode *temp;
+	CHTraversalOrder traversalOrder; /**< Order in which to traverse the tree. */
+    LinkedNode *stack;
+    LinkedNode *tmp;
+    LinkedNode *queue;
+    LinkedNode *queueTail;
 }
 
 /**
@@ -174,12 +201,96 @@ static struct BinaryNode * _removeNode(struct BinaryNode *node, struct BinaryNod
 		[self release];
 		return nil;
 	}
-    currentNode = _findMinWithStarter(root);
+	stack = NULL;
 	traversalOrder = order;
-    beenLeft = YES;
-    beenRight = NO;
-    hasStarted = NO;
+	if (traversalOrder == CHTraverseLevelOrder)
+		UTE_ENQUEUE(root)
+		else if (traversalOrder == CHTraversePreOrder)
+			UTE_PUSH(root)
+			else
+				currentNode = root;
     return self;
+}
+
+- (id)nextObject
+{
+	switch (traversalOrder) {
+		case CHTraversePreOrder:
+			currentNode = UTE_TOP;
+			UTE_POP();
+			if (currentNode == NULL)
+				return nil;
+			if (currentNode->right != NULL) {
+				UTE_PUSH(currentNode->right);
+			}
+			if (currentNode->left != NULL) {
+				UTE_PUSH(currentNode->left);
+			}
+			return currentNode->object;
+			
+		case CHTraverseInOrder:
+			if (stack == NULL && currentNode == NULL)
+				return nil;
+			while (currentNode != NULL) {
+				UTE_PUSH(currentNode);
+				currentNode = currentNode->left;
+				// TODO: How to not push/pop leaf nodes unnecessarily?
+			}
+			temp = currentNode = UTE_TOP; // Save top node for return value
+			UTE_POP();
+			currentNode = currentNode->right;
+			return temp->object;
+			
+		case CHTraverseReverseOrder:
+			if (stack == NULL && currentNode == NULL)
+				return nil;
+			while (currentNode != NULL) {
+				UTE_PUSH(currentNode);
+				currentNode = currentNode->right;
+				// TODO: How to not push/pop leaf nodes unnecessarily?
+			}
+			temp = currentNode = UTE_TOP; // Save top node for return value
+			UTE_POP();
+			currentNode = currentNode->left;
+			return temp->object;
+			
+		case CHTraversePostOrder:
+			// This algorithm from: http://www.johny.ca/blog/archives/05/03/04/
+			if (stack == NULL && currentNode == NULL) // is the 2nd half redundant?
+				return nil;
+			while (1) {
+				while (currentNode != NULL) {
+					UTE_PUSH(currentNode);
+					currentNode = currentNode->left;
+				}
+				// A null entry indicates that we've traversed the right subtree
+				if (UTE_TOP != NULL) {
+					currentNode = UTE_TOP->right;
+					UTE_PUSH(NULL);
+					// TODO: explore how to not use null pad for leaf nodes
+				}
+				else {
+					UTE_POP(); // ignore the null pad
+					id object = UTE_TOP->object;
+					UTE_POP();
+					return object;
+				}				
+			}
+			
+		case CHTraverseLevelOrder:
+			currentNode = UTE_FRONT;
+			if (currentNode == NULL)
+				return nil;
+			UTE_DEQUEUE();
+			if (currentNode->left != NULL) {
+				UTE_ENQUEUE(currentNode->left);
+			}
+			if (currentNode->right != NULL) {
+				UTE_ENQUEUE(currentNode->right);
+			}
+			return currentNode->object;
+	}
+	return nil;
 }
 
 - (NSArray *)allObjects
@@ -191,86 +302,6 @@ static struct BinaryNode * _removeNode(struct BinaryNode *node, struct BinaryNod
         [array addObject:object];
     
     return [array autorelease];
-}
-
-// Currently assumes in-order traversal
-// TODO: Fix logic to consider traversalOrder for unbalanced trees
-- (id)nextObject
-{
-    if (currentNode == nil)
-        return nil;
-    
-    //special case of the very first time.
-    if (hasStarted == NO)
-    {
-        hasStarted = YES;
-        
-        if (currentNode->parent == nil) //root, special case
-        {
-            id tmp = currentNode->object;
-            currentNode = currentNode->right;
-            return tmp;
-        }
-        else
-        {
-            return currentNode->object;
-        }
-    }
-    else if (beenLeft)
-    {
-        if (beenRight)
-        {
-            if (currentNode->parent == nil) //root - special case
-            {
-                beenLeft = NO;
-                beenRight = NO;
-                currentNode = currentNode->right;
-                return currentNode->parent->object;
-            }
-            else if (currentNode->parent->left == currentNode) 
-            {
-                beenRight = NO;
-                currentNode = currentNode->parent;
-                return currentNode->object;
-            }
-            else 
-            {	
-                while (currentNode->parent->right == currentNode)
-                    currentNode = currentNode->parent;
-                beenLeft = YES;
-                beenRight = NO;
-                currentNode = currentNode->parent;
-                return currentNode->object;
-            }
-        }
-        else //else we haven't been right but we've been left
-        {
-            beenLeft = NO;
-            beenRight = NO;
-            currentNode = currentNode->right;
-            return currentNode->parent->object;
-        }
-    }
-    else //haven't been left
-    {
-        if (currentNode->left != nil)
-        {
-            currentNode = _findMinWithStarter(currentNode);
-            id tmp = currentNode->object;
-            currentNode = currentNode->parent;
-            beenLeft = YES;
-            beenRight = NO;
-            return tmp;
-        }
-        else
-        {
-            beenLeft = NO;
-            beenRight = NO;
-            currentNode = currentNode->right;
-            if (currentNode == nil) return nil;
-            return currentNode->parent->object;
-        }
-    }
 }
 
 @end
@@ -317,8 +348,6 @@ static struct BinaryNode * _removeNode(struct BinaryNode *node, struct BinaryNod
 	
 	[anObject retain];
 	
-	NSLog(@"Adding object: %@", anObject);
-	
 	if (root == NULL) {
 		root = malloc(bNODESIZE);
 		root->object = anObject;
@@ -328,6 +357,8 @@ static struct BinaryNode * _removeNode(struct BinaryNode *node, struct BinaryNod
 		count++;
 		return;
 	}
+	
+	// TODO: Simplify object insertion
     
     struct BinaryNode *parentNode, *currentNode = root;
     while (currentNode != nil) {
@@ -380,7 +411,7 @@ static struct BinaryNode * _removeNode(struct BinaryNode *node, struct BinaryNod
 - (id)findObject:(id <Comparable>)anObject {
 	if (anObject == nil)
 		[self exceptionForInvalidArgument:_cmd];
-
+	
     struct BinaryNode *currentNode = root;
     while (currentNode != NULL) {
         short comparison = [anObject compare:(currentNode->object)];
@@ -420,7 +451,7 @@ static struct BinaryNode * _removeNode(struct BinaryNode *node, struct BinaryNod
 {
 	if (anObject == nil)
 		[self exceptionForInvalidArgument:_cmd];
-
+	
     struct BinaryNode *currentNode = root;
     while (currentNode != NULL) {
         short comparison = [anObject compare:currentNode->object];
@@ -443,34 +474,26 @@ static struct BinaryNode * _removeNode(struct BinaryNode *node, struct BinaryNod
  */
 - (void) removeAllObjects
 {
-	unsigned int bufferSize  = count/2 + 1;
-	unsigned int bufferStart = 0;
-	unsigned int bufferEnd   = 1;
-	struct BinaryNode *deleteBuffer[bufferSize];
-	struct BinaryNode *node;
+	BinaryNode *currentNode;
+	LinkedNode *queue     = NULL;
+	LinkedNode *queueTail = NULL;
+	LinkedNode *tmp;
 	
-	// Place non-null children on a queue, delete starting from the root of the tree.
-	// This is in effect a level-order deletion traversal, which avoids recursion and
-	// unnecessary patching of holes in the tree as nodes are removed, at the expense
-	// of requiring extra storage space for the pointers waiting to be deleted.
-	deleteBuffer[bufferStart] = root;
-	while ((node = deleteBuffer[bufferStart]) != NULL) {
-		if (node->left != NULL) {
-			deleteBuffer[bufferEnd++] = node->left;
-			bufferEnd %= bufferSize;
+	UTE_ENQUEUE(root);
+	while (1) {
+		currentNode = UTE_FRONT;
+		if (currentNode == NULL)
+			break;
+		UTE_DEQUEUE();
+		if (currentNode->left != NULL) {
+			UTE_ENQUEUE(currentNode->left);
 		}
-		if (node->right != NULL) {
-			deleteBuffer[bufferEnd++] = node->right;			
-			bufferEnd %= bufferSize;
+		if (currentNode->right != NULL) {
+			UTE_ENQUEUE(currentNode->right);
 		}
-		NSLog(@"Removing object: %@", node->object);
-		[node->object release];
-		free(node);
-		deleteBuffer[bufferStart++] = NULL;
-		bufferStart %= bufferSize;
+		[currentNode->object release];
+		free(currentNode);
 	}
-	root = NULL;
-	count = 0;
 }
 
 - (NSEnumerator *)objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order

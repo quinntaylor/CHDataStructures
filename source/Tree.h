@@ -32,6 +32,7 @@
  */
 enum _CHTraversalOrder {
 	CHTraverseInOrder,		/**< Visit left subtree, ROOT, then right subtree. */
+	CHTraverseReverseOrder, /**< Visit right subtree, ROOT, then left subtree. */
 	CHTraversePreOrder,		/**< Visit ROOT, left subtree, then right subtree. */
 	CHTraversePostOrder,	/**< Visit left subtree, right subtree, then ROOT. */
 	CHTraverseLevelOrder	/**< Visit nodes on each level left-right, top-bottom. */
@@ -69,9 +70,10 @@ typedef short CHTraversalOrder;
 + (id<Tree>)treeWithFastEnumeration:(id<NSFastEnumeration>)collection;
 
 /**
- Add an object to the tree. Since no duplicates are allowed, if the tree already has
- an object for which compare: returns NSOrderedSame, the old object is released and
- replaced by the new object.
+ Add an object to the tree. Ordering is based on an object's response to the
+ <code>compare:</code> message. Since no duplicates are allowed, if the tree already
+ has an object for which <code>compare:</code> returns <code>NSOrderedSame</code>,
+ the old object is released and replaced by the new object.
  */
 - (void)addObject:(id <Comparable>)anObject;
 
@@ -121,16 +123,23 @@ typedef short CHTraversalOrder;
 - (id)findObject:(id <Comparable>)anObject;
 
 /**
- Create an enumerator which performs a in-order traversal. Although this has greater
- space complexity than pre-order (depth-first) traversal, it is a sensible default
- since it returns values according to their natural ordering based on compare:.
+ Returns an enumerator that accesses each object using the specified traversal order.
+ */
+- (NSEnumerator *)objectEnumeratorWithTraversalOrder:(CHTraversalOrder)traversalOrder;
+
+/**
+ Returns an enumerator that accesses each object in the tree in ascending order.
+ 
+ @see #objectEnumeratorWithTraversalOrder:
  */
 - (NSEnumerator *)objectEnumerator;
 
 /**
- Create an enumerator which uses the specified traversal order.
+ Returns an enumerator that accesses each object in the tree in descending order.
+ 
+ @see #objectEnumeratorWithTraversalOrder:
  */
-- (NSEnumerator *)objectEnumeratorWithTraversalOrder:(CHTraversalOrder)traversalOrder;
+- (NSEnumerator *)reverseObjectEnumerator;
 
 #pragma mark Collection Conversions
 

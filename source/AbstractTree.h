@@ -63,5 +63,6 @@
 - (NSArray *) contentsAsArrayWithOrder:(CHTraversalOrder)traversalOrder;
 - (id <Stack>) contentsAsStackWithInsertionOrder:(CHTraversalOrder)traversalOrder;
 - (NSEnumerator *)objectEnumerator;
+- (NSEnumerator *)reverseObjectEnumerator;
 
 @end

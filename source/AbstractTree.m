@@ -153,13 +153,17 @@
 
 #pragma mark Object Enumerators
 
+/* Must be specified by concrete child classes. */
+- (NSEnumerator *) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order {
+	return [self exceptionForUnsupportedOperation:_cmd];
+}
+
 - (NSEnumerator *) objectEnumerator {
 	return [self objectEnumeratorWithTraversalOrder:CHTraverseInOrder];
 }
 
-/* Must be specified by concrete child classes. */
-- (NSEnumerator *) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order {
-	return [self exceptionForUnsupportedOperation:_cmd];
+- (NSEnumerator *) reverseObjectEnumerator {
+	return [self objectEnumeratorWithTraversalOrder:CHTraverseReverseOrder];
 }
 
 @end
