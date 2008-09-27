@@ -57,7 +57,7 @@
  
  @return The number of objects currently on the stack.
  */
-- (unsigned int) count;
+- (NSUInteger) count;
 
 /**
  Returns an autoreleased Stack with the contents of the array in the specified order.

@@ -41,7 +41,7 @@
 - (void) addObject:(id <Comparable>)anObject;
 - (id) removeRoot;
 - (id) removeLast;
-- (unsigned int) count;
+- (NSUInteger) count;
 
 
 @end

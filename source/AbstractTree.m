@@ -72,7 +72,7 @@
 	return NO;
 }
 
-- (unsigned int) count {
+- (NSUInteger) count {
 	return count;
 }
 
@@ -100,8 +100,7 @@
 
 + (id<Tree>) treeWithEnumerator:(NSEnumerator*)enumerator {
 	id<Tree> tree = [[self alloc] init];
-	id object;
-	while (object = [enumerator nextObject]) {
+	for (id object in enumerator) {
 		[tree addObject:object];
 	}
 	return [tree autorelease];
@@ -118,22 +117,16 @@
 #pragma mark Collection Conversions
 
 - (NSSet *) contentsAsSet {
-	NSEnumerator *enumerator = [self objectEnumeratorWithTraversalOrder:CHTraversePreOrder];
-	
 	NSMutableSet *set = [[NSMutableSet alloc] init];
-	id object;
-	while ((object = [enumerator nextObject])) {
+	for (id object in [self objectEnumeratorWithTraversalOrder:CHTraversePreOrder]) {
 		[set addObject:object];
 	}
 	return [set autorelease];
 }
 
 - (NSArray *) contentsAsArrayWithOrder:(CHTraversalOrder)order {
-	NSEnumerator *enumerator = [self objectEnumeratorWithTraversalOrder:order];
-	
 	NSMutableArray *array = [[NSMutableArray alloc] init];
-	id object;
-	while ((object = [enumerator nextObject])) {
+	for (id object in [self objectEnumeratorWithTraversalOrder:order]) {
 		[array addObject:object];
 	}
 	return [array autorelease];
@@ -141,11 +134,8 @@
 }
 
 - (id <Stack>) contentsAsStackWithInsertionOrder:(CHTraversalOrder)order {
-	NSEnumerator *enumerator = [self objectEnumeratorWithTraversalOrder:order];
-	
 	id <Stack> stack = [[LLStack alloc] init];
-	id object;
-	while ((object = [enumerator nextObject])) {
+	for (id object in [self objectEnumeratorWithTraversalOrder:order]) {
 		[stack push:object];
 	}
 	return [stack autorelease];

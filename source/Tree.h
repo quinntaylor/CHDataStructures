@@ -92,7 +92,7 @@ typedef short CHTraversalOrder;
 /**
  Returns the number of objects currently in the tree.
  */
-- (unsigned int)count;
+- (NSUInteger)count;
 
 /**
  Remove an object from the tree (or one identical to it) if it exists. Matches are

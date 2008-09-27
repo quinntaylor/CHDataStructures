@@ -35,7 +35,7 @@
  
  @return The number of objects currently in the list.
  */
-- (unsigned int) count;
+- (NSUInteger) count;
 
 /**
  Determines if a list contains a given object, matched using <code>isEqual:</code>.
@@ -59,7 +59,7 @@
  @param index The index in the receiver at which to insert anObject. This value must
         not be greater than the count of elements in the array.
  */
-- (void) insertObject:(id)anObject atIndex:(unsigned int)index;
+- (void) insertObject:(id)anObject atIndex:(NSUInteger)index;
 
 /**
  Returns the object located at <i>index</i>.
@@ -67,7 +67,7 @@
  @param index An index within the bounds of the receiver.
  @return The object located at index.
  */
-- (id) objectAtIndex:(unsigned int)index;
+- (id) objectAtIndex:(NSUInteger)index;
 
 /**
  Add an object at the head of the list.
@@ -134,7 +134,7 @@
         the bounds of the receiver. To fill the gap, all elements beyond <i>index</i>
         are moved by subtracting 1 from their index.
  */
-- (void) removeObjectAtIndex:(unsigned int)index;
+- (void) removeObjectAtIndex:(NSUInteger)index;
 
 /**
  Remove all objects from the list. If the list is already empty, there is no effect.

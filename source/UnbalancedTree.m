@@ -343,7 +343,7 @@ typedef struct LinkedNode {
 
 - (void) addObject:(id <Comparable>)anObject
 {
-	int comparison;
+	NSInteger comparison;
 	
 	if (anObject == nil)
 		[NSException raise:NSInvalidArgumentException

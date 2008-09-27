@@ -63,7 +63,7 @@
 	return [list firstObject];
 }
 
-- (unsigned int) count
+- (NSUInteger) count
 {
 	return [list count];
 }
@@ -76,31 +76,6 @@
 - (NSEnumerator *)objectEnumerator
 {
 	return [list objectEnumerator];
-}
-
-+ (LLQueue *) queueWithArray:(NSArray *)array ofOrder:(BOOL)direction
-{
-	LLQueue *q;
-	int i,s;
-	
-	q = [[LLQueue alloc] init];
-	s = [array count];
-	i = 0;
-	
-	if (!array || !s)
-		;
-	else if (direction)//so the order to dequeue will be from 0...n
-	{
-		while (i < s)
-			[q enqueue: [array objectAtIndex: i++]];
-	}
-	else //order to dequeue will be n...0
-	{
-		while (s > i)
-			[q enqueue: [array objectAtIndex: --s]];
-	}
-	
-	return [q autorelease];
 }
 
 @end

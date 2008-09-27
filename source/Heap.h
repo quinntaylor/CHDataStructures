@@ -62,7 +62,7 @@
  
  @return The number of objects currently in the heap.
  */
-- (unsigned int) count;
+- (NSUInteger) count;
 
 // NOTE: For a future release:
 

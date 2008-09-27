@@ -178,7 +178,7 @@
 	[super dealloc];
 }
 
-- (unsigned int) count
+- (NSUInteger) count
 {
 	return listSize;
 }
@@ -209,9 +209,9 @@
 	return nil;
 }
 
-- (DoublyLinkedNode *) _nodeAtIndex:(unsigned int)index
+- (DoublyLinkedNode *) _nodeAtIndex:(NSUInteger)index
 {
-	int i;
+	NSUInteger i;
 	DoublyLinkedNode *p; //a runner, also our return val
 	
 	//need to handle special case -- they can "insert it" at the
@@ -251,7 +251,7 @@
 	return ([self _findPos:anObject identical:YES] != nil);
 }
 
-- (void) insertObject:(id)anObject atIndex:(unsigned int)index
+- (void) insertObject:(id)anObject atIndex:(NSUInteger)index
 {
 	DoublyLinkedNode *p, *newNode;
 	
@@ -300,7 +300,7 @@
 	return thenode->data;
 }
 
-- (id) objectAtIndex:(unsigned int)index
+- (id) objectAtIndex:(NSUInteger)index
 {
 	DoublyLinkedNode *thenode = [self _nodeAtIndex:index];
 	
@@ -337,7 +337,7 @@
 	[self _removeNode: (endMarker->prev)  ];
 }
 
-- (void)removeObjectAtIndex:(unsigned int)index
+- (void)removeObjectAtIndex:(NSUInteger)index
 {
 	[ self _removeNode:[self _nodeAtIndex:index] ];
 }
@@ -399,7 +399,7 @@
 +(DoublyLinkedList *)listWithArray:(NSArray *)array ofOrder:(BOOL)direction
 {
 	DoublyLinkedList *list;
-	int i,s;
+	NSUInteger i,s;
 	
 	list = [[DoublyLinkedList alloc] init];
 	s = [array count];

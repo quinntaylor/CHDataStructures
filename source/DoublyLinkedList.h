@@ -51,7 +51,7 @@ typedef struct DoublyLinkedNode {
  */
 @interface DoublyLinkedList : NSObject <LinkedList>
 {
-	int listSize; /**< The number of object currently stored in the list. */
+	NSUInteger listSize; /**< The number of object currently stored in the list. */
 	DoublyLinkedNode *beginMarker; /**< A pointer to the front node of the list. */
 	DoublyLinkedNode *endMarker;   /**< A pointer to the back node of the list. */
 }
@@ -65,16 +65,16 @@ typedef struct DoublyLinkedNode {
 - (void) addObjectToBack:(id)anObject;
 - (id) firstObject;
 - (id) lastObject;
-- (unsigned int) count;
+- (NSUInteger) count;
 - (BOOL) containsObject:(id)anObject;
 - (BOOL) containsObjectIdenticalTo:(id)anObject;
-- (void) insertObject:(id)anObject atIndex:(unsigned int)index;
-- (id) objectAtIndex:(unsigned int)index;
+- (void) insertObject:(id)anObject atIndex:(NSUInteger)index;
+- (id) objectAtIndex:(NSUInteger)index;
 - (NSEnumerator *) objectEnumerator;
 - (void) removeFirstObject;
 - (void) removeLastObject;
 - (void) removeObject:(id)anObject;
-- (void) removeObjectAtIndex:(unsigned int)index;
+- (void) removeObjectAtIndex:(NSUInteger)index;
 - (void) removeObjectIdenticalTo:(id)anObject;
 - (void) removeAllObjects;
 

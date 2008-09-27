@@ -23,33 +23,27 @@
 //  Data Structures Framework
 
 #import <Foundation/Foundation.h>
-#import "Queue.h"
+#import "AbstractQueue.h"
 
 /**
  A fairly basic Queue implementation that uses an NSMutableArray to store objects.
  See the protocol definition for Queue to understand the contract.
  */
-@interface ArrayQueue : NSObject <Queue>
+@interface ArrayQueue : AbstractQueue
 {
-	NSMutableArray *queue;
-	
-	int backIndex; //where to place the next element
-	int frontIndex; //the current front of the queue
+	NSMutableArray *array;
 }
 
 /**
  Create a new queue starting with an NSMutableArray of the specified capacity.
  */
-- (id) initWithCapacity:(unsigned int)capacity;
+- (id) initWithCapacity:(NSUInteger)capacity;
 
 #pragma mark Inherited Methods
 - (void) enqueue:(id)anObject;
 - (id) dequeue;
 - (id) front;
-- (unsigned int)count;
+- (NSUInteger) count;
 - (void) removeAllObjects;
-
-#pragma mark Redefined Methods
-+ (ArrayQueue *) queueWithArray:(NSArray *)array ofOrder:(BOOL)direction;
 
 @end

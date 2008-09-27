@@ -22,7 +22,6 @@
 //  LLStack.m
 //  DataStructuresFramework
 
-#import "DoublyLinkedList.h"
 #import "LLStack.h"
 
 @implementation LLStack
@@ -41,13 +40,17 @@
 
 - (void) push:(id)anObject
 {
-	// TODO: Raise NSInvalidArgumentException if anObject is nil?
-	if (anObject != nil)
-		[list addObjectToFront:anObject];
+	if (anObject == nil) {
+		[NSException raise:NSInvalidArgumentException
+					format:@"Object to be added cannot be nil."];
+	}
+	[list addObjectToFront:anObject];
 }
 
 - (id) pop
 {
+	if ([list count] == 0)
+		return nil;
 	id retval = [[list firstObject] retain];
 	[list removeFirstObject];
 	return [retval autorelease];
@@ -58,7 +61,7 @@
 	return [list firstObject];
 }
 
-- (unsigned int) count
+- (NSUInteger) count
 {
 	return [list count];
 }
@@ -66,31 +69,6 @@
 - (NSEnumerator *) objectEnumerator
 {
 	return [list objectEnumerator];
-}
-
-+ (LLStack *) stackWithArray:(NSArray *)array ofOrder:(BOOL)direction
-{
-	LLStack *s;
-	int i,sz;
-	
-	s = [[LLStack alloc] init];
-	sz = [array count];
-	i = 0;
-	
-	if (!array || !sz)
-		;
-	else if (!direction)//so the order to pop will be from 0...n
-	{
-		while (i < sz)
-			[s push: [array objectAtIndex: i++]];
-	}
-	else //order to pop will be n...0
-	{
-		while (sz > i)
-			[s push: [array objectAtIndex: --sz]];
-	}
-
-	return [s autorelease];
 }
 
 @end

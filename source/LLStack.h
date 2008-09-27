@@ -23,22 +23,23 @@
 //  DataStructuresFramework
 
 #import <Foundation/Foundation.h>
-#import "Stack.h"
-
-@class DoublyLinkedList;
+#import "AbstractStack.h"
+#import "DoublyLinkedList.h"
 
 /**
  A simple Stack implemented using a linked list. It's based on DoublyLinkedList which
  is partially implemented in straight C, so it's pretty fast.
  */
-@interface LLStack : NSObject <Stack>
+@interface LLStack : AbstractStack
 {
 	DoublyLinkedList *list;
 }
 
 /**
- Provided simply because the linked list implementation provides it, so why shouldn't
- I let you access it? It would be pretty weird to use a stack like this, but who knows?
+ Returns an enumerator that accesses each object in the stack from top to bottom.
+
+ The linked list implementation provides it, so why shouldn't I let you access it?
+ It would be pretty weird to use a stack like this, but who knows?
  **/
 - (NSEnumerator *) objectEnumerator;
 
@@ -46,9 +47,6 @@
 - (void) push:(id)anObject;
 - (id) pop;
 - (id) top;
-- (unsigned int) count;
-
-#pragma mark Redefined Methods
-+ (LLStack *) stackWithArray:(NSArray *)array ofOrder:(BOOL)direction;
+- (NSUInteger) count;
 
 @end

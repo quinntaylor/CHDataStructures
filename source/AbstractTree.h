@@ -34,7 +34,7 @@
 @interface AbstractTree : NSObject <Tree>
 {
 	/** A count of how many elements are currently in the tree. */
-	unsigned int count;
+	NSUInteger count;
 }
 
 - (NSEnumerator *)objectEnumerator;
@@ -57,7 +57,7 @@
 #pragma mark Inherited Methods
 
 - (void) addObjectsFromArray:(NSArray *)anArray;
-- (unsigned int) count;
+- (NSUInteger) count;
 
 - (NSSet *) contentsAsSet;
 - (NSArray *) contentsAsArrayWithOrder:(CHTraversalOrder)traversalOrder;

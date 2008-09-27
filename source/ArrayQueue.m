@@ -31,22 +31,19 @@
 	return [self initWithCapacity:10];
 }
 
-- (id) initWithCapacity:(unsigned int)capacity
+- (id) initWithCapacity:(NSUInteger)capacity
 {
-	self = [super init];
-	
-	queue = [[NSMutableArray alloc] initWithCapacity:capacity];
-	
-	backIndex = -1;
-	frontIndex = 0;
-	
-	
+	if ([super init] == nil) {
+		[self release];
+		return nil;
+	}
+	array = [[NSMutableArray alloc] initWithCapacity:capacity];
 	return self;
 }
 
 - (void) dealloc
 {
-	[queue release];
+	[array release];
 	[super dealloc];
 }
 
@@ -57,75 +54,38 @@
 					format:@"Object to be added cannot be nil."];
 	}
 	else {
-		++backIndex;
-		[queue insertObject:anObject atIndex:backIndex];
+		[array addObject:anObject];
 	}	
 }
 
 - (id) dequeue
 {
-	if ([queue count] == 0)
+	if ([array count] == 0)
 		return nil;
-
-	//get it and retain it
-	id theObj = [[queue objectAtIndex:frontIndex] retain];
-	[queue replaceObjectAtIndex:frontIndex withObject:[NSNull null]];
-	
-	//now increment front -- if we have large array and we've "caught up" with
-	//the back, then let's dealloc and start over.
-	++frontIndex;
-	if (frontIndex > 25 && [queue count] < 0)
-	{
-		[self removeAllObjects];
-	}
-	// TODO: Fix this ridiculous hack; NSMutableArray can act as a circlar buffer
-	
-	return [theObj autorelease];
+	id object = [[array objectAtIndex:0] retain];
+	[array removeObjectAtIndex:0];
+	return [object autorelease];
 }
 
 - (id) front
 {
-	return [queue objectAtIndex:frontIndex];
+	return [array objectAtIndex:0];
 }
 
 
-- (unsigned int) count
+- (NSUInteger) count
 {
-	return [queue count];
+	return [array count];
 }
 
 - (void) removeAllObjects
 {
-	if (queue != nil)
-		[queue release];
-	
-	queue = [[NSMutableArray alloc] initWithCapacity:10];
-	backIndex = -1;
-	frontIndex = 0;
-
+	[array removeAllObjects];
 }
 
-+ (ArrayQueue *) queueWithArray:(NSArray *)array ofOrder:(BOOL)direction
+- (NSEnumerator *)objectEnumerator
 {
-	ArrayQueue *q = [[ArrayQueue alloc] init];
-	int s = [array count];
-	int i = 0;
-	
-	if (!array || !s)
-		; //nada
-	else if (direction)//so the order to dequeue will be from 0...n
-	{
-		while (i < s)
-			[q enqueue: [array objectAtIndex: i++]];
-	}
-	else //order to dequeue will be n...0
-	{
-		while (s > i)
-			[q enqueue: [array objectAtIndex: --s]];
-	}
-
-	return [q autorelease];
+	return [array objectEnumerator];
 }
-
 
 @end

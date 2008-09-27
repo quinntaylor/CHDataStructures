@@ -36,26 +36,26 @@
  */
 @interface RedBlackNode : NSObject 
 {
-	short int color;
-	id <Comparable> object;
+	BOOL color;
 	RedBlackNode *left;
 	RedBlackNode *right;
+	id <Comparable> object;
 }
 
-- (id)initWithObject:(id <Comparable>)theObject;
-- (id)initWithObject:(id <Comparable>)theObject
-			withLeft:(RedBlackNode *)theLeft
-		   withRight:(RedBlackNode *)theRight;
+- (id) initWithObject:(id <Comparable>)theObject;
+- (id) initWithObject:(id <Comparable>)theObject
+             withLeft:(RedBlackNode *)theLeft
+            withRight:(RedBlackNode *)theRight;
 
-- (short int)color;
-- (RedBlackNode *)left;
-- (RedBlackNode *)right;
-- (id)object;
+- (BOOL) color;
+- (RedBlackNode *) left;
+- (RedBlackNode *) right;
+- (id) object;
 
-- (void)setColor:(short int)newColor;
-- (void)setLeft:(RedBlackNode *)newLeft;
-- (void)setRight:(RedBlackNode *)newRight;
-- (void)setObject:(id <Comparable>)newObject;
+- (void) setColor:(BOOL)newColor;
+- (void) setLeft:(RedBlackNode *)newLeft;
+- (void) setRight:(RedBlackNode *)newRight;
+- (void) setObject:(id <Comparable>)newObject;
 
 @end
 
@@ -68,10 +68,10 @@
 
  There are four fundamental rules: (taken from the book mentioned above)
  <ol>
- <li> Every node is red or black.
- <li> The root is black.
- <li> If a node is red, its children must be black.
- <li> Every path from a node to a null link must contain the same number of black nodes.
+ <li>Every node is red or black.
+ <li>The root is black.
+ <li>If a node is red, its children must be black.
+ <li>Every path from a node to a null link must contain the same number of black nodes.
  </ol>
  
  Also note that <code>nil</code> nodes are considered black for many purposes.

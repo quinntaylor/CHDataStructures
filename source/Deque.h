@@ -93,7 +93,7 @@
  
  @return The number of objects currently in the deque.
  */
-- (unsigned int) count;
+- (NSUInteger) count;
 
 /**
  Create an autoreleased Deque with the contents of the array in the specified order.

@@ -23,14 +23,14 @@
 //  DataStructuresFramework
 
 #import <Foundation/Foundation.h>
-#import "Queue.h"
+#import "AbstractQueue.h"
 
 @class DoublyLinkedList;
 
 /**
  A simple Queue implementation that uses our linked list.
  */
-@interface LLQueue : NSObject <Queue>
+@interface LLQueue : AbstractQueue
 {
 	DoublyLinkedList *list;
 }
@@ -42,10 +42,8 @@
 #pragma mark Inherited Methods
 - (BOOL) enqueue:(id)anObject;
 - (id) dequeue;
-- (unsigned int)count;
+- (id) front;
+- (NSUInteger)count;
 - (void) removeAllObjects;
-
-#pragma mark Redefined Methods
-+ (LLQueue *) queueWithArray:(NSArray *)array ofOrder:(BOOL)direction;
 
 @end

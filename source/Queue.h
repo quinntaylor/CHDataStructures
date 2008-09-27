@@ -57,7 +57,7 @@
  
  @return The number of objects currently in the queue.
  */
-- (unsigned int) count;
+- (NSUInteger) count;
 
 /**
  Remove all objects from the queue; if it is already empty, there is no effect.
@@ -71,6 +71,6 @@
  @param direction The order in which to enqueue objects from the array. YES means the 
         natural index order (0...n), NO means reverse index order (n...0).
  */
-+ (id <Queue>) queueWithArray:(NSArray *)array ofOrder:(BOOL)direction;
++ (id<Queue>) queueWithArray:(NSArray *)array ofOrder:(BOOL)direction;
 
 @end

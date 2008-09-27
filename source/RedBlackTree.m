@@ -73,7 +73,7 @@ static RedBlackNode * _rotateWithRightChild(RedBlackNode *rightChild)
 	return self;
 }
 
-- (void)dealloc
+- (void) dealloc
 {
 	[left release];
 	[right release];
@@ -82,12 +82,12 @@ static RedBlackNode * _rotateWithRightChild(RedBlackNode *rightChild)
 	[super dealloc];
 }
 
-- (RedBlackNode *)left
+- (RedBlackNode *) left
 {
 	return left;
 }
 
-- (RedBlackNode *)right
+- (RedBlackNode *) right
 {
 	return right;
 }
@@ -97,17 +97,17 @@ static RedBlackNode * _rotateWithRightChild(RedBlackNode *rightChild)
 	return object;
 }
 
-- (short int)color
+- (BOOL) color
 {
 	return color;
 }
 
-- (void)setColor:(short int)newColor
+- (void) setColor:(BOOL)newColor
 {
 	color = newColor;
 }
 
-- (void)setLeft:(RedBlackNode *)newLeft
+- (void) setLeft:(RedBlackNode *)newLeft
 {
 	RedBlackNode *old;
 	old = left;
@@ -115,7 +115,7 @@ static RedBlackNode * _rotateWithRightChild(RedBlackNode *rightChild)
 	[old release];
 }
 
-- (void)setRight:(RedBlackNode *)newRight
+- (void) setRight:(RedBlackNode *)newRight
 {
 	RedBlackNode *old;
 	old = right;
@@ -123,7 +123,7 @@ static RedBlackNode * _rotateWithRightChild(RedBlackNode *rightChild)
 	[old release];
 }
 
-- (void)setObject:(id <Comparable>)newObject
+- (void) setObject:(id <Comparable>)newObject
 {
 	id old;
 	old = object;

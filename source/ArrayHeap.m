@@ -38,7 +38,7 @@
 
 static void _bubbleup(NSMutableArray *heap)
 {
-	int i, parent;
+	NSUInteger i, parent;
 	 
 	//get the last index...
 	i = [heap count] - 1;
@@ -46,9 +46,9 @@ static void _bubbleup(NSMutableArray *heap)
 	while (i > 0)
 	{
 		parent = i / 2;
-		if ([[heap objectAtIndex: i] compare: [heap objectAtIndex: parent]] > 0)
+		if ([[heap objectAtIndex:i] compare: [heap objectAtIndex:parent]] > 0)
 		{
-			[heap exchangeObjectAtIndex: i withObjectAtIndex: parent];
+			[heap exchangeObjectAtIndex:i withObjectAtIndex:parent];
 			i = parent;
 		}
 		else
@@ -60,7 +60,7 @@ static void _bubbleup(NSMutableArray *heap)
 
 static void _bubbledown(NSMutableArray *heap)
 {
-	int parent = 0, lchild, rchild;
+	NSUInteger parent = 0, lchild, rchild;
 	
 	while (parent < [heap count] / 2)	
 	{
@@ -173,7 +173,7 @@ static void _bubbledown(NSMutableArray *heap)
 	return [obj autorelease];
 }
 
-- (unsigned) count
+- (NSUInteger) count
 {
 	return [irep count];
 }
