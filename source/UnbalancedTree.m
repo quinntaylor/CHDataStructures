@@ -45,6 +45,8 @@ static struct UnbalancedTreeNode * _findMinWithStarter(struct UnbalancedTreeNode
 	return foo;
 }
 
+// TODO: C function to locate a node; use for contains/find/remove a single object.
+
 static struct UnbalancedTreeNode * _removeNode(struct UnbalancedTreeNode *node, struct UnbalancedTreeNode *treeRoot)
 {
 	struct UnbalancedTreeNode *oldRoot;

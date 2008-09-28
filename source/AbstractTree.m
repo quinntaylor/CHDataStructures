@@ -136,7 +136,7 @@
 - (id <Stack>) contentsAsStackWithInsertionOrder:(CHTraversalOrder)order {
 	id <Stack> stack = [[LLStack alloc] init];
 	for (id object in [self objectEnumeratorWithTraversalOrder:order]) {
-		[stack push:object];
+		[stack pushObject:object];
 	}
 	return [stack autorelease];
 }

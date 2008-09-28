@@ -61,11 +61,14 @@
 #pragma mark -
 
 /**
- A fast, balanced, non-recursive binary tree with guaranteed O(log n) access. This
- class is a direct Objective-C port of the Red Black tree found in "Data Structures
- and Problem Solving Using Java" by Mark Allen Weiss, published by Addison Wesley.
+ A <a href="http://en.wikipedia.org/wiki/Red-black_trees">Red-Black tree</a>, a
+ balanced binary tree with guaranteed O(log n) access. This is an Objective-C port of
+ the Red-Black tree from <i>"Data Structures and Problem Solving Using Java"</i>
+ by Mark Allen Weiss, published by Addison Wesley. Method names have been changed to
+ match the APIs of existing Cocoa collections classes provided by Apple, and several
+ optimizations in straight C have been made to optimize speed and memory usage.
 
- There are four fundamental rules: (taken from the book mentioned above)
+ A Red-Black tree has four fundamental rules: (taken from the book mentioned above)
  <ol>
  <li>Every node is red or black.
  <li>The root is black.
@@ -97,6 +100,7 @@
 - (id) findObject:(id)target;
 - (id) findMin;
 - (id) findMax;
+//- (BOOL) containsObject:(id)anObject;
 //- (void)removeObject:(id)object;
 //- (void)removeAllObjects;
 - (NSEnumerator *)objectEnumeratorWithTraversalOrder:(CHTraversalOrder)traversalOrder;
