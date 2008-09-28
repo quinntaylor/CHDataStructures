@@ -20,6 +20,6 @@
 - (NSUInteger) count;
 - (NSEnumerator *)objectEnumerator;
 - (NSArray *) contentsAsArrayByReversingOrder:(BOOL)reverseOrder;
-+ (id<Stack>) stackWithArray:(NSArray *)array ofOrder:(BOOL)direction;
++ (id<Stack>) stackWithArray:(NSArray *)array byReversingOrder:(BOOL)reverseOrder;
 
 @end

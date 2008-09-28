@@ -70,20 +70,19 @@
 	return [array autorelease];
 }
 
-+ (id<Queue>) queueWithArray:(NSArray *)array ofOrder:(BOOL)direction;
++ (id<Queue>) queueWithArray:(NSArray *)array byReversingOrder:(BOOL)reverseOrder;
 {
 	if (array == nil)
 		return nil;
-	
 	id<Queue> queue = [[self alloc] init];
 	
-	// Order to dequeue will be from 0...n
-	if (direction)
-		for (id object in [array objectEnumerator])
-			[queue enqueueObject:object];
-	// Order to dequeue will be from n...0
-	else
+	// Order in which elements are dequeued will be (n...0)
+	if (reverseOrder)
 		for (id object in [array reverseObjectEnumerator])
+			[queue enqueueObject:object];
+	// Order in which elements are dequeued will be (0...n)
+	else
+		for (id object in [array objectEnumerator])
 			[queue enqueueObject:object];
 	return [queue autorelease];
 }

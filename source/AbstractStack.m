@@ -68,15 +68,18 @@
 	return [array autorelease];
 }
 
-+ (id<Stack>) stackWithArray:(NSArray *)array ofOrder:(BOOL)direction {
++ (id<Stack>) stackWithArray:(NSArray *)array byReversingOrder:(BOOL)reverseOrder {
 	if (array == nil)
 		return nil;
 	id<Stack> stack = [[self alloc] init];
-	if (!direction) //so the order to pop will be from 0...n
-		for (id object in [array objectEnumerator])
-			[stack pushObject:object];
-	else  //order to pop will be n...0
+	
+	// Order in which elements are popped will be (0...n)
+	if (reverseOrder)
 		for (id object in [array reverseObjectEnumerator])
+			[stack pushObject:object];
+	// Order in which elements are popped will be (n...0)
+	else
+		for (id object in [array objectEnumerator])
 			[stack pushObject:object];
 	return [stack autorelease];
 }

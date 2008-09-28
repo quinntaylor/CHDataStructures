@@ -22,6 +22,6 @@
 - (void) removeAllObjects;
 - (NSEnumerator *)objectEnumerator;
 - (NSArray *) contentsAsArrayByReversingOrder:(BOOL)reverseOrder;
-+ (id<Queue>) queueWithArray:(NSArray *)array ofOrder:(BOOL)direction;
++ (id<Queue>) queueWithArray:(NSArray *)array byReversingOrder:(BOOL)reverseOrder;
 
 @end

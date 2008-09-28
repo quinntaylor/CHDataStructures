@@ -69,15 +69,17 @@
  
  NOTE: When you use an enumerator, you must not modify the tree during enumeration. 
  */
-- (NSEnumerator *)objectEnumerator;
+- (NSEnumerator *) objectEnumerator;
 
 /**
  Creates an NSArray which contains the objects in this queue, either front-to-back or
  in reverse order.
  
- @param reverseOrder Specifies the order in which to insert queue elements into the
-        array. The 0 index in the array will be the first element in the queue if
-        <code>NO</code>, or the last element in the queue if <code>YES</code>.
+ @param reverseOrder The order in which to insert elements into the array.
+		<ul>
+		<li><code>NO</code> - The 0 index contains the first element in the queue.
+		<li><code>YES</code> - The 0 index contains the last element in the queue.
+		</ul>
  */
 - (NSArray *) contentsAsArrayByReversingOrder:(BOOL)reverseOrder;
 
@@ -85,9 +87,12 @@
  Returns an autoreleased Queue with the contents of the array in the specified order.
  
  @param array An array of objects to add to the queue.
- @param direction The order in which to enqueue objects from the array. YES means the 
-        natural index order (0...n), NO means reverse index order (n...0).
+ @param reverseOrder The order in which to enqueue objects from the array.
+		<ul>
+		<li><code>NO</code> - The queue contains the array object in order (0...n).
+		<li><code>YES</code> - The queue contains the array object in order (n...0).
+        </ul>
  */
-+ (id<Queue>) queueWithArray:(NSArray *)array ofOrder:(BOOL)direction;
++ (id<Queue>) queueWithArray:(NSArray *)array byReversingOrder:(BOOL)reverseOrder;
 
 @end

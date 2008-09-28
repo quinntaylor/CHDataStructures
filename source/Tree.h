@@ -57,82 +57,64 @@ typedef short CHTraversalOrder;
 @protocol Tree <NSObject>
 
 /**
- Returns an autoreleased tree containing the objects obtained from an enumerator,
- inserted in the order they are provided via <code>nextObject</code>. Each object
- is retained as it is inserted in the tree, but no copies are made. The behavior is
- unspecified if the objects do not conform to the Comparable protocol.
- */
-+ (id<Tree>)treeWithEnumerator:(NSEnumerator*)enumerator;
-
-/**
- Returns an autoreleased tree containing the objects obtained from a collection,
- inserted in the order they are provided via fast enumeration. Each object is
- retained as it is inserted in the tree, but no copies are made. The behavior is
- unspecified if the objects do not conform to the Comparable protocol.
- 
- NOTE: Only supported on Mac OS X 10.5 and beyond.
- */
-+ (id<Tree>)treeWithFastEnumeration:(id<NSFastEnumeration>)collection;
-
-/**
  Add an object to the tree. Ordering is based on an object's response to the
  <code>compare:</code> message. Since no duplicates are allowed, if the tree already
  has an object for which <code>compare:</code> returns <code>NSOrderedSame</code>,
  the old object is released and replaced by the new object.
  */
-- (void)addObject:(id)anObject;
+- (void) addObject:(id)anObject;
 
 /**
  Add multiple objects to the tree, inserted in the order they appear in the array.
  All objects in the array must conform to Comparable.
  */
-- (void)addObjectsFromArray:(NSArray *)anArray;
+- (void) addObjectsFromArray:(NSArray *)anArray;
 
 /**
  Determines if the tree contains a given object (or one identical to it). Matches are
  based on an object's response to the <code>isEqual:</code> message.
  */
-- (BOOL)containsObject:(id)anObject;
+- (BOOL) containsObject:(id)anObject;
 
 /**
  Returns the number of objects currently in the tree.
  */
-- (NSUInteger)count;
+- (NSUInteger) count;
 
 /**
  Remove an object from the tree (or one identical to it) if it exists. Matches are
  based on an object's response to the <code>isEqual:</code> message. If no matching
  object exists, there is no effect.
  */
-- (void)removeObject:(id)element;
+- (void) removeObject:(id)element;
 
 /**
  Remove all objects from the tree; if it is already empty, there is no effect.
  */
-- (void)removeAllObjects;
+- (void) removeAllObjects;
 
 /**
  Return the maximum (rightmost) object in the tree.
  */
-- (id)findMax;
+- (id) findMax;
 
 /**
  Return the minimum (leftmost) object in the tree.
  */
-- (id)findMin;
+- (id) findMin;
 
 /**
  Return the object for which <code>compare:</code> returns NSOrderedSame, or
  <code>nil</code> if no matching object is found in the tree.
  */
-- (id)findObject:(id)anObject;
+- (id) findObject:(id)anObject;
 
 /**
  Returns an enumerator that accesses each object using the specified traversal order.
  
  NOTE: When you use an enumerator, you must not modify the tree during enumeration.
  */
-- (NSEnumerator *)objectEnumeratorWithTraversalOrder:(CHTraversalOrder)traversalOrder;
+- (NSEnumerator *) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)traversalOrder;
 
 /**
  Returns an enumerator that accesses each object in the tree in ascending order.
@@ -141,7 +123,7 @@ typedef short CHTraversalOrder;
  
  @see #objectEnumeratorWithTraversalOrder:
  */
-- (NSEnumerator *)objectEnumerator;
+- (NSEnumerator *) objectEnumerator;
 
 /**
  Returns an enumerator that accesses each object in the tree in descending order.
@@ -150,7 +132,7 @@ typedef short CHTraversalOrder;
  
  @see #objectEnumeratorWithTraversalOrder:
  */
-- (NSEnumerator *)reverseObjectEnumerator;
+- (NSEnumerator *) reverseObjectEnumerator;
 
 #pragma mark Collection Conversions
 
@@ -173,5 +155,25 @@ typedef short CHTraversalOrder;
  The object traversed last will be on the top of the stack.
  */
 - (id <Stack>) contentsAsStackWithInsertionOrder:(CHTraversalOrder)order;
+
+/**
+ Returns an autoreleased tree containing the objects obtained from an enumerator,
+ inserted in the order they are provided via <code>nextObject</code>. Each object
+ is retained as it is inserted in the tree, but no copies are made. The behavior is
+ unspecified if the objects do not conform to the Comparable protocol.
+ 
+ @param enumerator The NSEnumerator to use for obtaining object to add to the tree.
+ */
++ (id<Tree>) treeWithEnumerator:(NSEnumerator*)enumerator;
+
+/**
+ Returns an autoreleased tree containing the objects obtained from a collection,
+ inserted in the order they are provided via fast enumeration. Each object is
+ retained as it is inserted in the tree, but no copies are made. The behavior is
+ unspecified if the objects do not conform to the Comparable protocol.
+ 
+ NOTE: Only supported on Mac OS X 10.5 and beyond.
+ */
++ (id<Tree>) treeWithFastEnumeration:(id<NSFastEnumeration>)collection;
 
 @end

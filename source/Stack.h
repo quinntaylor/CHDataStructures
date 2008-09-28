@@ -69,14 +69,14 @@
  
  NOTE: When you use an enumerator, you must not modify the tree during enumeration.
  */
-- (NSEnumerator *)objectEnumerator;
+- (NSEnumerator *) objectEnumerator;
 
 /**
  Creates an NSArray which contains the objects in this stack, either top-to-bottom or
  in reverse order.
 
- @param reverseOrder Specifies the order in which to insert stack elements into the
-        array. The 0 index in the array will be the top element in the stack if
+ @param reverseOrder The order in which to insert elements into the array.
+        The 0 index in the array will be the top element in the stack if
         <code>NO</code>, or the bottom element in the stack if <code>YES</code>.
  */
 - (NSArray *) contentsAsArrayByReversingOrder:(BOOL)reverseOrder;
@@ -85,9 +85,12 @@
  Returns an autoreleased Stack with the contents of the array in the specified order.
  
  @param array An array of objects to add to the stack.
- @param direction The order in which to insert objects from the array. YES means the 
-        natural index order (0...n), NO means reverse index order (n...0).
+ @param reverseOrder The order in which to insert objects from the array.
+       <ul>
+       <li><code>NO</code> - The stack contains the array object in order (n...0).
+       <li><code>YES</code> - The stack contains the array object in order (0...n).
+       </ul>
  */
-+ (id <Stack>) stackWithArray:(NSArray *)array ofOrder:(BOOL)direction;
++ (id <Stack>) stackWithArray:(NSArray *)array byReversingOrder:(BOOL)reverseOrder;
 
 @end
