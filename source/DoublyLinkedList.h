@@ -35,9 +35,6 @@ typedef struct DoublyLinkedNode {
 	id data; /**< The object associated with this node in the list. */
 } DoublyLinkedNode;
 
-/** A simplification for malloc'ing list nodes. */
-#define NODESIZE sizeof(DoublyLinkedNode)
-
 #pragma mark -
 
 /**

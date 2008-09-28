@@ -24,7 +24,6 @@
 
 #import <Foundation/Foundation.h>
 #import "AbstractTree.h"
-#import "Comparable.h"
 
 #define nRED 0
 #define nBLACK 1
@@ -34,28 +33,28 @@
 /**
  A node for use by RedBlackTree for internal storage and representation.
  */
-@interface RedBlackNode : NSObject 
+@interface RedBlackTreeNode : NSObject 
 {
 	BOOL color;
-	RedBlackNode *left;
-	RedBlackNode *right;
-	id <Comparable> object;
+	RedBlackTreeNode *left;
+	RedBlackTreeNode *right;
+	id object;
 }
 
-- (id) initWithObject:(id <Comparable>)theObject;
-- (id) initWithObject:(id <Comparable>)theObject
-             withLeft:(RedBlackNode *)theLeft
-            withRight:(RedBlackNode *)theRight;
+- (id) initWithObject:(id)theObject;
+- (id) initWithObject:(id)theObject
+             withLeft:(RedBlackTreeNode *)theLeft
+            withRight:(RedBlackTreeNode *)theRight;
 
 - (BOOL) color;
-- (RedBlackNode *) left;
-- (RedBlackNode *) right;
+- (RedBlackTreeNode *) left;
+- (RedBlackTreeNode *) right;
 - (id) object;
 
 - (void) setColor:(BOOL)newColor;
-- (void) setLeft:(RedBlackNode *)newLeft;
-- (void) setRight:(RedBlackNode *)newRight;
-- (void) setObject:(id <Comparable>)newObject;
+- (void) setLeft:(RedBlackTreeNode *)newLeft;
+- (void) setRight:(RedBlackTreeNode *)newRight;
+- (void) setObject:(id)newObject;
 
 @end
 
@@ -79,13 +78,13 @@
  */
 @interface RedBlackTree : AbstractTree
 {
-	RedBlackNode *header;   // links to the root -- eliminates special cases
-	RedBlackNode *sentinel; // always black, stands in for nil
+	RedBlackTreeNode *header;   // links to the root -- eliminates special cases
+	RedBlackTreeNode *sentinel; // always black, stands in for nil
 	
-	@private RedBlackNode *current;
-	@private RedBlackNode *parent;
-	@private RedBlackNode *grandparent;
-	@private RedBlackNode *greatgrandparent;
+	@private RedBlackTreeNode *current;
+	@private RedBlackTreeNode *parent;
+	@private RedBlackTreeNode *grandparent;
+	@private RedBlackTreeNode *greatgrandparent;
 }
 
 /**
@@ -94,11 +93,11 @@
 - (id)init;
 
 #pragma mark Inherited Methods
-- (void)addObject:(id <Comparable>)object;
-- (id) findObject:(id <Comparable>)target;
+- (void)addObject:(id)object;
+- (id) findObject:(id)target;
 - (id) findMin;
 - (id) findMax;
-//- (void)removeObject:(id <Comparable>)object;
+//- (void)removeObject:(id)object;
 //- (void)removeAllObjects;
 - (NSEnumerator *)objectEnumeratorWithTraversalOrder:(CHTraversalOrder)traversalOrder;
 

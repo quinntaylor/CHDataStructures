@@ -51,7 +51,7 @@
 
 #pragma mark Default Implementations
 
-- (void) addObject:(id <Comparable>)anObject {
+- (void) addObject:(id)anObject {
 	[self exceptionForUnsupportedOperation:_cmd];
 }
 
@@ -67,7 +67,7 @@
 }
 
 
-- (BOOL) containsObject:(id <Comparable>)anObject {
+- (BOOL) containsObject:(id)anObject {
 	[self exceptionForUnsupportedOperation:_cmd];
 	return NO;
 }
@@ -76,7 +76,7 @@
 	return count;
 }
 
-- (void) removeObject:(id <Comparable>)element {
+- (void) removeObject:(id)element {
 	[self exceptionForUnsupportedOperation:_cmd];
 }
 
@@ -92,7 +92,7 @@
 	return [self exceptionForUnsupportedOperation:_cmd];
 }
 
-- (id) findObject:(id <Comparable>)anObject {
+- (id) findObject:(id)anObject {
 	return [self exceptionForUnsupportedOperation:_cmd];
 }
 

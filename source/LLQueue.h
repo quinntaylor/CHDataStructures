@@ -28,7 +28,7 @@
 @class DoublyLinkedList;
 
 /**
- A simple Queue implementation that uses our linked list.
+ A simple Queue implementation that uses DoublyLinkedList.
  */
 @interface LLQueue : AbstractQueue
 {

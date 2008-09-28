@@ -136,7 +136,7 @@ static void _bubbledown(NSMutableArray *heap)
 	[super dealloc];
 }
 
-- (void) addObject:(id <Comparable>)anObject
+- (void) addObject:(id)anObject
 {
 	if (anObject == nil) {
 		[NSException raise:NSInvalidArgumentException

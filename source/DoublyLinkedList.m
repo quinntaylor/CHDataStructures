@@ -29,11 +29,12 @@
  */
 @interface DoublyLinkedListEnumerator : NSEnumerator
 {
+	BOOL direction; //YES == forward
+
+	@private
 	DoublyLinkedNode *header;
 	DoublyLinkedNode *tail;
 	DoublyLinkedNode *current;
-	
-	BOOL direction; //YES == forward
 }
 
 /**
@@ -146,8 +147,8 @@
 	}
 	
 	// set up the markers pointing to each other	
-	beginMarker = malloc(NODESIZE);
-	endMarker = malloc(NODESIZE);
+	beginMarker = malloc(sizeof(DoublyLinkedNode));
+	endMarker = malloc(sizeof(DoublyLinkedNode));
 	
 	beginMarker->next = endMarker;
 	beginMarker->prev = NULL;
@@ -263,7 +264,7 @@
 	if ((p = [self _nodeAtIndex:index]) == nil)
 		return;
 	
-	newNode = malloc(NODESIZE);
+	newNode = malloc(sizeof(DoublyLinkedNode));
 	
 	newNode->data = [anObject retain];
 	// prev is set to the prev pointer of the node it displaces

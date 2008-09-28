@@ -23,7 +23,6 @@
 //  DataStructuresFramework
 
 #import <Foundation/Foundation.h>
-#import "Comparable.h"
 #import "Tree.h"
 #import "Stack.h"
 

@@ -27,11 +27,16 @@
 //  Many thanks to Gordon for the very first outside contribution to the library!
 
 #import <Foundation/Foundation.h>
-#import "Comparable.h"
 
 /**
  A <a href="http://en.wikipedia.org/wiki/Heap_(data_structure)">heap</a> protocol,
  suitable for use with many variations of the heap structure.
+ 
+ Since objects in a Heap are inserted according to their sorted order, all objects
+ must respond to the <code>compare:</code> selector, which accepts another object
+ and returns NSOrderedAscending, NSOrderedSame, or NSOrderedDescending as the
+ receiver is less than, equal to, or greater than the argument, respectively. (See
+ NSComparisonResult in NSObjCRuntime.h for details.) 
  */
 @protocol Heap <NSObject>
 
@@ -41,7 +46,7 @@
  @param anObject The object to add to the heap; must not be <code>nil</code>, or an
         <code>NSInvalidArgumentException</code> will be raised.
  */
-- (void) addObject:(id <Comparable>)anObject;
+- (void) addObject:(id)anObject;
 
 /**
  Remove and return the first element in the heap. Rearranges the remaining elements.

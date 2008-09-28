@@ -26,17 +26,15 @@
 #import "AbstractTree.h"
 
 /**
- Represents a node in an unbalanced binary tree, with 1 parent and 2 child links.
+ A node for use by UnbalancedTree for internal storage and representation.
+ Holds an obejct and link to 2 children and a parent.
  */
-typedef struct BinaryNode {
-	id <Comparable> object;		/**< The object stored in a particular node. */
-	struct BinaryNode *left;	/**< The left child node, if any. */
-	struct BinaryNode *right;	/**< The right child node, if any. */
-	struct BinaryNode *parent;	/**< The parent node, if not the root of the tree. */
-} BinaryNode;
-
-/** A simplification for malloc'ing tree nodes. */
-#define bNODESIZE sizeof(struct BinaryNode)
+typedef struct UnbalancedTreeNode {
+	id object;		/**< The object stored in a particular node. */
+	struct UnbalancedTreeNode *left;	/**< The left child node, if any. */
+	struct UnbalancedTreeNode *right;	/**< The right child node, if any. */
+	struct UnbalancedTreeNode *parent;	/**< Link to the parent node, if any. */
+} UnbalancedTreeNode;
 
 #pragma mark -
 
@@ -49,8 +47,8 @@ typedef struct BinaryNode {
  */
 @interface UnbalancedTree : AbstractTree
 {
-	/** A pointer to the root of the tree, set to <code>NULL</code> if it is empty. */
-	BinaryNode *root;
+	/** A pointer to the root of the tree, set to <code>NULL</code> if empty. */
+	UnbalancedTreeNode *root;
 }
 
 /**
@@ -58,20 +56,13 @@ typedef struct BinaryNode {
  */
 - (id) init;
 
-/**
- Create a new UnbalancedTree with a single root node that stores the given object.
- 
- @param rootObject The node to treat as the root of the subtree to traverse.
- */
-- (id) initWithObject:(id <Comparable>)rootObject;
-
 #pragma mark Inherited Methods
-- (void) addObject:(id <Comparable>)anObject;
-- (id) findObject:(id <Comparable>)target;
+- (void) addObject:(id)anObject;
+- (id) findObject:(id)target;
 - (id) findMin;
 - (id) findMax;
-- (BOOL) containsObject:(id <Comparable>)anObject;
-- (void) removeObject:(id <Comparable>)anObject;
+- (BOOL) containsObject:(id)anObject;
+- (void) removeObject:(id)anObject;
 - (void) removeAllObjects;
 - (NSEnumerator *) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order;
 

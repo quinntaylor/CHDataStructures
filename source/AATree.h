@@ -19,28 +19,44 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *******************************/
 
-//  ArrayHeap.h
+//  AATree.h
 //  DataStructuresFramework
 
-//  Copyright (c) 2002 Gordon Worley redbird@rbisland.cx
-//  Edits and refactoring by Phillip Morelock for library integration and performance. 
-
 #import <Foundation/Foundation.h>
-#import <Heap.h>
+#import "AbstractTree.h"
 
 /**
- A simple Heap implemented using an NSMutableArray.
+ A node for use by AATree for internal storage and representation.
+ Holds an obejct, 2 child links, and level within the tree.
  */
-@interface ArrayHeap : NSObject <Heap>
-{
-	NSMutableArray *irep;
+typedef struct AATreeNode {
+	id object;		/**< The object stored in a particular node. */
+	struct AATreeNode *left;	/**< The left child node, if any. */
+	struct AATreeNode *right;	/**< The right child node, if any. */
+	NSInteger level;            /**< The level of this node in the AA-tree. */
+} AATreeNode;
+
+/**
+ 
+ */
+@interface AATree : AbstractTree {
+	/** A pointer to the root of the tree, set to <code>NULL</code> if empty. */
+	AATreeNode *root;
 }
+
+/**
+ Create a new AATree with no nodes or stored objects.
+ */
+- (id) init;
 
 #pragma mark Inherited Methods
 - (void) addObject:(id)anObject;
-- (id) removeRoot;
-- (id) removeLast;
-- (NSUInteger) count;
-
+- (id) findObject:(id)target;
+- (id) findMin;
+- (id) findMax;
+- (BOOL) containsObject:(id)anObject;
+- (void) removeObject:(id)anObject;
+- (void) removeAllObjects;
+- (NSEnumerator *) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order;
 
 @end

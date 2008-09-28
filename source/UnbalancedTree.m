@@ -26,16 +26,16 @@
 
 #pragma mark C Functions for Optimized Operations
 
-static struct BinaryNode * _findMaxWithStarter(struct BinaryNode *starter) {
+static struct UnbalancedTreeNode * _findMaxWithStarter(struct UnbalancedTreeNode *starter) {
 	//see comment in findMinWithStarter for explanation
-	struct BinaryNode *bar, *foo = starter;
+	struct UnbalancedTreeNode *bar, *foo = starter;
 	while ( (bar = foo->right) != nil )
 		foo = bar;
 	return foo;	
 }
 
-static struct BinaryNode * _findMinWithStarter(struct BinaryNode *starter) {
-	struct BinaryNode *bar, *foo = starter;
+static struct UnbalancedTreeNode * _findMinWithStarter(struct UnbalancedTreeNode *starter) {
+	struct UnbalancedTreeNode *bar, *foo = starter;
 	
 	//a subtle nil test here -- note the terminating semicolon
 	//when foo->left points to nil, we return foo because
@@ -45,9 +45,9 @@ static struct BinaryNode * _findMinWithStarter(struct BinaryNode *starter) {
 	return foo;
 }
 
-static struct BinaryNode * _removeNode(struct BinaryNode *node, struct BinaryNode *treeRoot)
+static struct UnbalancedTreeNode * _removeNode(struct UnbalancedTreeNode *node, struct UnbalancedTreeNode *treeRoot)
 {
-	struct BinaryNode *oldRoot;
+	struct UnbalancedTreeNode *oldRoot;
 	
 	if (node == NULL)
 		return NULL;
@@ -122,45 +122,54 @@ static struct BinaryNode * _removeNode(struct BinaryNode *node, struct BinaryNod
 #pragma mark -
 
 typedef struct LinkedNode {
-	struct BinaryNode *node;
+	struct UnbalancedTreeNode *node;
 	struct LinkedNode *next;
 } LinkedNode;
 
-/** A simplification for malloc'ing stack nodes. */
-#define UTE_NODESIZE sizeof(struct LinkedNode)
-
 #pragma mark Stack Operations
 
-#define UTE_PUSH(o) {tmp=malloc(UTE_NODESIZE);tmp->node=o;tmp->next=stack;stack=tmp;}
+#define UTE_PUSH(o) {tmp=malloc(sizeof(LinkedNode));tmp->node=o;tmp->next=stack;stack=tmp;}
 #define UTE_POP()   {if(stack!=NULL){tmp=stack;stack=stack->next;free(tmp);}}
 #define UTE_TOP     ((stack!=NULL)?stack->node:NULL)
 
 #pragma mark Queue Operations
 
-#define UTE_ENQUEUE(o) {tmp=malloc(UTE_NODESIZE);tmp->node=o;tmp->next=NULL;\
+#define UTE_ENQUEUE(o) {tmp=malloc(sizeof(LinkedNode));tmp->node=o;tmp->next=NULL;\
                         if(queue==NULL){queue=tmp;queueTail=tmp;}\
                         queueTail->next=tmp;queueTail=queueTail->next;}
 #define UTE_DEQUEUE()  {if(queue!=NULL){tmp=queue;queue=queue->next;free(tmp);}\
                         if(queue==tmp)queue=NULL;if(queueTail==tmp)queueTail=NULL;}
-#define UTE_FRONT	  ((queue!=NULL)?queue->node:NULL)
+#define UTE_FRONT      ((queue!=NULL)?queue->node:NULL)
 
 #pragma mark -
 
 /**
- An NSEnumerator for traversing an UnbalancedTree subtree in a specified order.
+ An NSEnumerator for traversing an UnbalancedTree (or subtree) in a specified order.
  
- NOTE: Tree enumerators are tricky to do without recursion.
- Consider using a stack to store path so far?
+ This enumerator uses iterative tree traversal algorithms for two main reasons:
+ <ol>
+ <li>Recursive algorithms cannot easily be stopped in the middle of a traversal.
+ <li>Iterative algorithms are faster since they reduce overhead of function calls.
+ </ol>
+ 
+ In addition, the stacks and queues used for storing traversal state are composed of
+ C structs and <code>\#define</code> pseudo-functions to increase performance and
+ reduce the required memory footprint.
+ 
+ Enumerators encapsulate their own state, and more than one may be active at once.
+ However, like an enumerator for a mutable data structure, any instances of this
+ enumerator become invalid if the tree is modified.
  */
 @interface UnbalancedTreeEnumerator : NSEnumerator
 {
-	BinaryNode *currentNode; /**< The next node that is to be returned. */
-	BinaryNode *temp;
 	CHTraversalOrder traversalOrder; /**< Order in which to traverse the tree. */
-	LinkedNode *stack;
-	LinkedNode *tmp;
-	LinkedNode *queue;
-	LinkedNode *queueTail;
+	@private
+	UnbalancedTreeNode *currentNode; /**< The next node that is to be returned. */
+	id tempObject;         /**< Temporary variable, holds the object to be returned.*/
+	LinkedNode *stack;     /**< Pointer to the top of a stack for most traversals. */
+	LinkedNode *queue;     /**< Pointer to the head of a queue for level-order. */
+	LinkedNode *queueTail; /**< Pointer to the tail of a queue for level-order. */
+	LinkedNode *tmp;       /**< Temporary variable for stack and queue operations. */
 }
 
 /**
@@ -169,7 +178,7 @@ typedef struct LinkedNode {
  @param root The root node of the (sub)tree whose elements are to be enumerated.
  @param order The traversal order to use for enumerating the given (sub)tree.
  */
-- (id) initWithRoot:(struct BinaryNode *)root traversalOrder:(CHTraversalOrder)order;
+- (id) initWithRoot:(UnbalancedTreeNode *)root traversalOrder:(CHTraversalOrder)order;
 
 /**
  Returns an array of objects the receiver has yet to enumerate.
@@ -195,7 +204,7 @@ typedef struct LinkedNode {
 
 @implementation UnbalancedTreeEnumerator
 
-- (id) initWithRoot:(struct BinaryNode *)root traversalOrder:(CHTraversalOrder)order;
+- (id) initWithRoot:(UnbalancedTreeNode *)root traversalOrder:(CHTraversalOrder)order;
 {
 	if (![super init] || !isValidTraversalOrder(order)) {
 		[self release];
@@ -237,10 +246,11 @@ typedef struct LinkedNode {
 				currentNode = currentNode->left;
 				// TODO: How to not push/pop leaf nodes unnecessarily?
 			}
-			temp = currentNode = UTE_TOP; // Save top node for return value
+			currentNode = UTE_TOP; // Save top node for return value
 			UTE_POP();
+			tempObject = currentNode->object;
 			currentNode = currentNode->right;
-			return temp->object;
+			return tempObject;
 			
 		case CHTraverseReverseOrder:
 			if (stack == NULL && currentNode == NULL)
@@ -250,10 +260,11 @@ typedef struct LinkedNode {
 				currentNode = currentNode->right;
 				// TODO: How to not push/pop leaf nodes unnecessarily?
 			}
-			temp = currentNode = UTE_TOP; // Save top node for return value
+			currentNode = UTE_TOP; // Save top node for return value
 			UTE_POP();
+			tempObject = currentNode->object;
 			currentNode = currentNode->left;
-			return temp->object;
+			return tempObject;
 			
 		case CHTraversePostOrder:
 			// This algorithm from: http://www.johny.ca/blog/archives/05/03/04/
@@ -272,9 +283,9 @@ typedef struct LinkedNode {
 				}
 				else {
 					UTE_POP(); // ignore the null pad
-					id object = UTE_TOP->object;
+					tempObject = UTE_TOP->object;
 					UTE_POP();
-					return object;
+					return tempObject;
 				}				
 			}
 			
@@ -315,23 +326,11 @@ typedef struct LinkedNode {
 
 - (id) init
 {
-	return [self initWithObject:nil];
-}
-
-- (id) initWithObject:(id <Comparable>)rootObject
-{
 	if (![super init]) {
 		[self release];
 		return nil;
 	}
-	if (rootObject != nil) {
-		root = malloc(bNODESIZE);
-		root->object = [rootObject retain];
-		root->left = nil;
-		root->right = nil;
-		root->parent = nil;
-		count = 1;
-	}
+	root = NULL;
 	return self;
 }
 
@@ -341,7 +340,7 @@ typedef struct LinkedNode {
 	[super dealloc];
 }
 
-- (void) addObject:(id <Comparable>)anObject
+- (void) addObject:(id)anObject
 {
 	NSInteger comparison;
 	
@@ -352,7 +351,7 @@ typedef struct LinkedNode {
 	[anObject retain];
 	
 	if (root == NULL) {
-		root = malloc(bNODESIZE);
+		root = malloc(sizeof(UnbalancedTreeNode));
 		root->object = anObject;
 		root->left   = NULL;
 		root->right  = NULL;
@@ -363,7 +362,7 @@ typedef struct LinkedNode {
 	
 	// TODO: Simplify object insertion
 	
-	struct BinaryNode *parentNode, *currentNode = root;
+	struct UnbalancedTreeNode *parentNode, *currentNode = root;
 	while (currentNode != nil) {
 		parentNode = currentNode;
 		
@@ -388,7 +387,7 @@ typedef struct LinkedNode {
 	}
 	else {
 		count++;
-		struct BinaryNode *newNode = malloc(bNODESIZE);
+		UnbalancedTreeNode *newNode = malloc(sizeof(UnbalancedTreeNode));
 		newNode->object = anObject;
 		newNode->left   = NULL;
 		newNode->right  = NULL;
@@ -411,11 +410,11 @@ typedef struct LinkedNode {
 	return (_findMinWithStarter(root))->object;
 }
 
-- (id) findObject:(id <Comparable>)anObject {
+- (id) findObject:(id)anObject {
 	if (anObject == nil)
 		[self exceptionForInvalidArgument:_cmd];
 	
-	struct BinaryNode *currentNode = root;
+	struct UnbalancedTreeNode *currentNode = root;
 	while (currentNode != NULL) {
 		short comparison = [anObject compare:(currentNode->object)];
 		if (comparison == NSOrderedAscending)
@@ -429,11 +428,11 @@ typedef struct LinkedNode {
 	return nil;	
 }
 
-- (BOOL) containsObject:(id <Comparable>)anObject {
+- (BOOL) containsObject:(id)anObject {
 	if (anObject == nil)
 		[self exceptionForInvalidArgument:_cmd];
 	
-	struct BinaryNode *currentNode = root;
+	struct UnbalancedTreeNode *currentNode = root;
 	while (currentNode != NULL) {
 		if ([anObject isEqual:currentNode->object])
 			return YES;
@@ -450,12 +449,12 @@ typedef struct LinkedNode {
  Removal is guaranteed not to make the tree deeper/taller, since it uses the "min of
  the right subtree" algorithm if the node to be removed has children.
  */
-- (void) removeObject:(id <Comparable>)anObject
+- (void) removeObject:(id)anObject
 {
 	if (anObject == nil)
 		[self exceptionForInvalidArgument:_cmd];
 	
-	struct BinaryNode *currentNode = root;
+	struct UnbalancedTreeNode *currentNode = root;
 	while (currentNode != NULL) {
 		short comparison = [anObject compare:currentNode->object];
 		if (comparison == NSOrderedAscending)
@@ -477,7 +476,7 @@ typedef struct LinkedNode {
  */
 - (void) removeAllObjects
 {
-	BinaryNode *currentNode;
+	UnbalancedTreeNode *currentNode;
 	LinkedNode *queue	 = NULL;
 	LinkedNode *queueTail = NULL;
 	LinkedNode *tmp;

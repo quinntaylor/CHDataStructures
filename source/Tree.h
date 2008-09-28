@@ -23,7 +23,6 @@
 //  DataStructuresFramework
 
 #import <Foundation/Foundation.h>
-#import "Comparable.h"
 #import "Stack.h"
 
 /**
@@ -31,11 +30,11 @@
  For details, see: http://en.wikipedia.org/wiki/Tree_traversal#Traversal_methods
  */
 enum _CHTraversalOrder {
-	CHTraverseInOrder,		/**< Visit left subtree, ROOT, then right subtree. */
+	CHTraverseInOrder,      /**< Visit left subtree, ROOT, then right subtree. */
 	CHTraverseReverseOrder, /**< Visit right subtree, ROOT, then left subtree. */
-	CHTraversePreOrder,		/**< Visit ROOT, left subtree, then right subtree. */
-	CHTraversePostOrder,	/**< Visit left subtree, right subtree, then ROOT. */
-	CHTraverseLevelOrder	/**< Visit nodes on each level left-right, top-bottom. */
+	CHTraversePreOrder,     /**< Visit ROOT, left subtree, then right subtree. */
+	CHTraversePostOrder,    /**< Visit left subtree, right subtree, then ROOT. */
+	CHTraverseLevelOrder    /**< Visit nodes on each level left-right, top-bottom. */
 };
 typedef short CHTraversalOrder;
 
@@ -48,6 +47,12 @@ typedef short CHTraversalOrder;
  trees where nodes have any number of children, not just binary trees. Although any
  conforming class must implement all these methods, they may document that certain of
  them are unsupported, and/or raise exceptions when they are called.
+ 
+ Since objects in a Tree are inserted according to their sorted order, all objects
+ must respond to the <code>compare:</code> selector, which accepts another object
+ and returns NSOrderedAscending, NSOrderedSame, or NSOrderedDescending as the
+ receiver is less than, equal to, or greater than the argument, respectively. (See
+ NSComparisonResult in NSObjCRuntime.h for details.) 
  */
 @protocol Tree <NSObject>
 
@@ -65,7 +70,7 @@ typedef short CHTraversalOrder;
  retained as it is inserted in the tree, but no copies are made. The behavior is
  unspecified if the objects do not conform to the Comparable protocol.
  
- NOTE: Only supported on 10.5 and beyond.
+ NOTE: Only supported on Mac OS X 10.5 and beyond.
  */
 + (id<Tree>)treeWithFastEnumeration:(id<NSFastEnumeration>)collection;
 
@@ -75,7 +80,7 @@ typedef short CHTraversalOrder;
  has an object for which <code>compare:</code> returns <code>NSOrderedSame</code>,
  the old object is released and replaced by the new object.
  */
-- (void)addObject:(id <Comparable>)anObject;
+- (void)addObject:(id)anObject;
 
 /**
  Add multiple objects to the tree, inserted in the order they appear in the array.
@@ -87,7 +92,7 @@ typedef short CHTraversalOrder;
  Determines if the tree contains a given object (or one identical to it). Matches are
  based on an object's response to the <code>isEqual:</code> message.
  */
-- (BOOL)containsObject:(id <Comparable>)anObject;
+- (BOOL)containsObject:(id)anObject;
 
 /**
  Returns the number of objects currently in the tree.
@@ -99,7 +104,7 @@ typedef short CHTraversalOrder;
  based on an object's response to the <code>isEqual:</code> message. If no matching
  object exists, there is no effect.
  */
-- (void)removeObject:(id <Comparable>)element;
+- (void)removeObject:(id)element;
 
 /**
  Remove all objects from the tree. If the tree is already empty, there is no effect.
@@ -117,18 +122,22 @@ typedef short CHTraversalOrder;
 - (id)findMin;
 
 /**
- Return the object for which compare: returns NSOrderedSame, or <code>nil</code> if
- no matching object is found in the tree.
+ Return the object for which <code>compare:</code> returns NSOrderedSame, or
+ <code>nil</code> if no matching object is found in the tree.
  */
-- (id)findObject:(id <Comparable>)anObject;
+- (id)findObject:(id)anObject;
 
 /**
  Returns an enumerator that accesses each object using the specified traversal order.
+ 
+ NOTE: When you use an enumerator, you must not modify the tree during enumeration.
  */
 - (NSEnumerator *)objectEnumeratorWithTraversalOrder:(CHTraversalOrder)traversalOrder;
 
 /**
  Returns an enumerator that accesses each object in the tree in ascending order.
+ 
+ NOTE: When you use an enumerator, you must not modify the tree during enumeration.
  
  @see #objectEnumeratorWithTraversalOrder:
  */
@@ -136,6 +145,8 @@ typedef short CHTraversalOrder;
 
 /**
  Returns an enumerator that accesses each object in the tree in descending order.
+ 
+ NOTE: When you use an enumerator, you must not modify the tree during enumeration.
  
  @see #objectEnumeratorWithTraversalOrder:
  */
