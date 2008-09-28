@@ -5,20 +5,20 @@
 
 @implementation AbstractQueue
 
-- (void) enqueue:(id)anObject {
+- (void) enqueueObject:(id)anObject {
 	[NSException raise:NSInternalInconsistencyException
 	            format:@"-[%@ %s] -- Unsupported operation.",
 	                   [self class], sel_getName(_cmd)];
 }
 
-- (id) dequeue {
+- (id) dequeueObject {
 	[NSException raise:NSInternalInconsistencyException
 	            format:@"-[%@ %s] -- Unsupported operation.",
 	                   [self class], sel_getName(_cmd)];
 	return nil;
 }
 
-- (id) front {
+- (id) frontObject {
 	[NSException raise:NSInternalInconsistencyException
 	            format:@"-[%@ %s] -- Unsupported operation.",
 	                   [self class], sel_getName(_cmd)];
@@ -45,11 +45,11 @@
 	// Order to dequeue will be from 0...n
 	if (direction)
 		for (id object in [array objectEnumerator])
-			[queue enqueue:object];
+			[queue enqueueObject:object];
 	// Order to dequeue will be from n...0
 	else
 		for (id object in [array reverseObjectEnumerator])
-			[queue enqueue:object];
+			[queue enqueueObject:object];
 	return [queue autorelease];
 }
 

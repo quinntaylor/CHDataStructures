@@ -40,9 +40,9 @@
 - (NSEnumerator *) objectEnumerator;
 
 #pragma mark Inherited Methods
-- (BOOL) enqueue:(id)anObject;
-- (id) dequeue;
-- (id) front;
+- (BOOL) enqueueObject:(id)anObject;
+- (id) dequeueObject;
+- (id) frontObject;
 - (NSUInteger)count;
 - (void) removeAllObjects;
 

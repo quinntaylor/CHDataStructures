@@ -5,20 +5,20 @@
 
 @implementation AbstractStack
 
-- (void) push:(id)anObject {
+- (void) pushObject:(id)anObject {
 	[NSException raise:NSInternalInconsistencyException
 	            format:@"-[%@ %s] -- Unsupported operation.",
 	                   [self class], sel_getName(_cmd)];
 }
 
-- (id) pop {
+- (id) popObject {
 	[NSException raise:NSInternalInconsistencyException
 	            format:@"-[%@ %s] -- Unsupported operation.",
 	                   [self class], sel_getName(_cmd)];
 	return nil;
 }
 
-- (id) top {
+- (id) topObject {
 	[NSException raise:NSInternalInconsistencyException
 	            format:@"-[%@ %s] -- Unsupported operation.",
 	                   [self class], sel_getName(_cmd)];
@@ -40,10 +40,10 @@
 	id<Stack> stack = [[self alloc] init];
 	if (!direction) //so the order to pop will be from 0...n
 		for (id object in [array objectEnumerator])
-			[stack push:object];
+			[stack pushObject:object];
 	else  //order to pop will be n...0
 		for (id object in [array reverseObjectEnumerator])
-			[stack push:object];
+			[stack pushObject:object];
 	return [stack autorelease];
 }
 

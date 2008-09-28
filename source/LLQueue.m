@@ -41,7 +41,7 @@
 }
 
 //if you try to enqueue nil, it will return false
-- (BOOL) enqueue:(id)pushedObj
+- (BOOL) enqueueObject:(id)pushedObj
 {
 	if (!pushedObj)
 		return NO;
@@ -51,14 +51,14 @@
 }
 
 //returns nil if the queue is empty.
-- (id) dequeue
+- (id) dequeueObject
 {
 	id retval = [[list firstObject] retain];
 	[list removeFirstObject];
 	return [retval autorelease];
 }
 
-- (id) front
+- (id) frontObject
 {
 	return [list firstObject];
 }

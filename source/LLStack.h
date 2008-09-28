@@ -44,9 +44,9 @@
 - (NSEnumerator *) objectEnumerator;
 
 #pragma mark Inherited Methods
-- (void) push:(id)anObject;
-- (id) pop;
-- (id) top;
+- (void) pushObject:(id)anObject;
+- (id) popObject;
+- (id) topObject;
 - (NSUInteger) count;
 
 @end

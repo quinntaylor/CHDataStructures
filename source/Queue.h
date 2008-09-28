@@ -36,21 +36,21 @@
  @param anObject The object to add to the queue; must not be <code>nil</code>, or an
         <code>NSInvalidArgumentException</code> will be raised.
  */
-- (void) enqueue:(id)anObject;
+- (void) enqueueObject:(id)anObject;
 
 /**
  Remove and return the object at the front of the queue.
  
  @return The frontmost object in the queue, or <code>nil</code> if the queue is empty.
  */
-- (id) dequeue;
+- (id) dequeueObject;
 
 /**
  Examine the object at the front of the queue without removing it.
  
  @return The frontmost object in the queue, or <code>nil</code> if the queue is empty.
  */
-- (id) front;
+- (id) frontObject;
 
 /**
  Returns the number of objects currently in the queue.

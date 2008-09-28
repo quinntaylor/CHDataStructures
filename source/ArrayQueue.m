@@ -47,7 +47,7 @@
 	[super dealloc];
 }
 
-- (void) enqueue: (id)anObject
+- (void) enqueueObject: (id)anObject
 {
 	if (anObject == nil) {
 		[NSException raise:NSInvalidArgumentException
@@ -58,7 +58,7 @@
 	}	
 }
 
-- (id) dequeue
+- (id) dequeueObject
 {
 	if ([array count] == 0)
 		return nil;
@@ -67,7 +67,7 @@
 	return [object autorelease];
 }
 
-- (id) front
+- (id) frontObject
 {
 	return [array objectAtIndex:0];
 }

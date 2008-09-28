@@ -38,7 +38,7 @@
 	[super dealloc];
 }
 
-- (void) push:(id)anObject
+- (void) pushObject:(id)anObject
 {
 	if (anObject == nil) {
 		[NSException raise:NSInvalidArgumentException
@@ -47,7 +47,7 @@
 	[list addObjectToFront:anObject];
 }
 
-- (id) pop
+- (id) popObject
 {
 	if ([list count] == 0)
 		return nil;
@@ -56,7 +56,7 @@
 	return [retval autorelease];
 }
 
-- (id) top
+- (id) topObject
 {
 	return [list firstObject];
 }

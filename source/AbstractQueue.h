@@ -11,9 +11,9 @@
 
 #pragma mark Inherited Methods
 
-- (void) enqueue:(id)anObject;
-- (id) dequeue;
-- (id) front;
+- (void) enqueueObject:(id)anObject;
+- (id) dequeueObject;
+- (id) frontObject;
 - (NSUInteger) count;
 - (void) removeAllObjects;
 + (id<Queue>) queueWithArray:(NSArray *)array ofOrder:(BOOL)direction;

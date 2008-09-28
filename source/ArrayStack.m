@@ -47,7 +47,7 @@
 	[super dealloc];
 }
 
-- (void) push:(id)anObject
+- (void) pushObject:(id)anObject
 {
 	if (anObject == nil) {
 		[NSException raise:NSInvalidArgumentException
@@ -56,7 +56,7 @@
 	[array addObject:anObject]; // Inserts at the end of the array
 }
 
-- (id) pop
+- (id) popObject
 {
 	if ([array count] == 0)
 		return nil;
@@ -65,7 +65,7 @@
 	return [object autorelease];
 }
 
-- (id) top
+- (id) topObject
 {
 	return [array lastObject];
 }

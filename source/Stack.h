@@ -36,21 +36,21 @@
  @param anObject The object to add to the stack; must not be <code>nil</code>, or an
         <code>NSInvalidArgumentException</code> will be raised.
  */
-- (void) push:(id)anObject;
+- (void) pushObject:(id)anObject;
 
 /**
  Remove and return the topmost object, or <code>nil</code> if the stack is empty.
  
  @return The topmost object from the stack.
  */
-- (id) pop;
+- (id) popObject;
 
 /**
  Return the topmost object, but do not remove it from the stack.
 
  @return The topmost object from the stack.
 */
-- (id) top;
+- (id) topObject;
 
 /**
  Returns the number of objects currently on the stack.
