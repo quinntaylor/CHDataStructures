@@ -4,6 +4,10 @@
 #import <Foundation/Foundation.h>
 #import "Queue.h"
 
+/**
+ An abstract implementation of the Queue protocol with several convenience methods.
+ Child classes must re-implement protocol methods according to their inner workings.
+ */
 @interface AbstractQueue : NSObject <Queue>
 {
 
@@ -16,6 +20,8 @@
 - (id) frontObject;
 - (NSUInteger) count;
 - (void) removeAllObjects;
+- (NSEnumerator *)objectEnumerator;
+- (NSArray *) contentsAsArrayByReversingOrder:(BOOL)reverseOrder;
 + (id<Queue>) queueWithArray:(NSArray *)array ofOrder:(BOOL)direction;
 
 @end

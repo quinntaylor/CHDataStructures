@@ -107,7 +107,7 @@ typedef short CHTraversalOrder;
 - (void)removeObject:(id)element;
 
 /**
- Remove all objects from the tree. If the tree is already empty, there is no effect.
+ Remove all objects from the tree; if it is already empty, there is no effect.
  */
 - (void)removeAllObjects;
 

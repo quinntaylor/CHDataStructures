@@ -60,6 +60,28 @@
 - (NSUInteger) count;
 
 /**
+ Remove all objects from the stack; if it is already empty, there is no effect.
+ */
+- (void) removeAllObjects;
+
+/**
+ Returns an enumerator that accesses each object in the stack from top to bottom.
+ 
+ NOTE: When you use an enumerator, you must not modify the tree during enumeration.
+ */
+- (NSEnumerator *)objectEnumerator;
+
+/**
+ Creates an NSArray which contains the objects in this stack, either top-to-bottom or
+ in reverse order.
+
+ @param reverseOrder Specifies the order in which to insert stack elements into the
+        array. The 0 index in the array will be the top element in the stack if
+        <code>NO</code>, or the bottom element in the stack if <code>YES</code>.
+ */
+- (NSArray *) contentsAsArrayByReversingOrder:(BOOL)reverseOrder;
+
+/**
  Returns an autoreleased Stack with the contents of the array in the specified order.
  
  @param array An array of objects to add to the stack.

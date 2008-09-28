@@ -5,34 +5,69 @@
 
 @implementation AbstractQueue
 
-- (void) enqueueObject:(id)anObject {
++ (id) exceptionForUnsupportedOperation:(SEL)operation {
 	[NSException raise:NSInternalInconsistencyException
-	            format:@"-[%@ %s] -- Unsupported operation.",
-	                   [self class], sel_getName(_cmd)];
+				format:@"+[%@ %s] -- Unsupported operation.",
+					   [self class], sel_getName(operation)];
+	return nil;
+}
+
+- (id) exceptionForUnsupportedOperation:(SEL)operation {
+	[NSException raise:NSInternalInconsistencyException
+				format:@"-[%@ %s] -- Unsupported operation.",
+					   [self class], sel_getName(operation)];
+	return nil;
+}
+
+- (id) exceptionForInvalidArgument:(SEL)operation {
+	[NSException raise:NSInvalidArgumentException
+				format:@"-[%@ %s] -- Invalid nil argument.",
+					   [self class], sel_getName(operation)];
+	return nil;
+}
+
+#pragma mark Default Implementations
+
+- (void) enqueueObject:(id)anObject {
+	[self exceptionForUnsupportedOperation:_cmd];
 }
 
 - (id) dequeueObject {
-	[NSException raise:NSInternalInconsistencyException
-	            format:@"-[%@ %s] -- Unsupported operation.",
-	                   [self class], sel_getName(_cmd)];
+	[self exceptionForUnsupportedOperation:_cmd];
 	return nil;
 }
 
 - (id) frontObject {
-	[NSException raise:NSInternalInconsistencyException
-	            format:@"-[%@ %s] -- Unsupported operation.",
-	                   [self class], sel_getName(_cmd)];
+	[self exceptionForUnsupportedOperation:_cmd];
 	return nil;
 }
 
 - (NSUInteger) count {
-	[NSException raise:NSInternalInconsistencyException
-	            format:@"-[%@ %s] -- Unsupported operation.",
-	                   [self class], sel_getName(_cmd)];	
+	[self exceptionForUnsupportedOperation:_cmd];	
 	return -1;
 }
 
 - (void) removeAllObjects {
+	[self exceptionForUnsupportedOperation:_cmd];
+}
+
+- (NSEnumerator *)objectEnumerator {
+	[NSException raise:NSInternalInconsistencyException
+				format:@"-[%@ %s] -- Unsupported operation.",
+	                   [self class], sel_getName(_cmd)];
+	return nil;	
+}
+
+- (NSArray *) contentsAsArrayByReversingOrder:(BOOL)reverseOrder {
+	NSMutableArray *array = [[NSMutableArray alloc] init];
+	if (reverseOrder) {
+		for (id object in [self objectEnumerator])
+			[array insertObject:object atIndex:0];
+	} else {
+		for (id object in [self objectEnumerator])
+			[array addObject:object];
+	}
+	return [array autorelease];
 }
 
 + (id<Queue>) queueWithArray:(NSArray *)array ofOrder:(BOOL)direction;

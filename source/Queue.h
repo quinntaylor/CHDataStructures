@@ -65,6 +65,23 @@
 - (void) removeAllObjects;
 
 /**
+ Returns an enumerator that accesses each object in the queue from front to back.
+ 
+ NOTE: When you use an enumerator, you must not modify the tree during enumeration. 
+ */
+- (NSEnumerator *)objectEnumerator;
+
+/**
+ Creates an NSArray which contains the objects in this queue, either front-to-back or
+ in reverse order.
+ 
+ @param reverseOrder Specifies the order in which to insert queue elements into the
+        array. The 0 index in the array will be the first element in the queue if
+        <code>NO</code>, or the last element in the queue if <code>YES</code>.
+ */
+- (NSArray *) contentsAsArrayByReversingOrder:(BOOL)reverseOrder;
+
+/**
  Returns an autoreleased Queue with the contents of the array in the specified order.
  
  @param array An array of objects to add to the queue.
