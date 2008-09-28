@@ -51,7 +51,7 @@ TYPEDEF_HIDES_STRUCT   = NO
 # Build related configuration options
 #---------------------------------------------------------------------------
 EXTRACT_ALL            = YES
-EXTRACT_PRIVATE        = YES
+EXTRACT_PRIVATE        = NO
 EXTRACT_STATIC         = YES
 EXTRACT_LOCAL_CLASSES  = YES
 EXTRACT_LOCAL_METHODS  = NO
@@ -65,8 +65,8 @@ CASE_SENSE_NAMES       = NO
 HIDE_SCOPE_NAMES       = NO
 SHOW_INCLUDE_FILES     = YES
 INLINE_INFO            = YES
-SORT_MEMBER_DOCS       = YES
-SORT_BRIEF_DOCS        = NO
+SORT_MEMBER_DOCS       = NO
+SORT_BRIEF_DOCS        = YES
 SORT_GROUP_NAMES       = NO
 SORT_BY_SCOPE_NAME     = NO
 GENERATE_TODOLIST      = YES
@@ -95,9 +95,7 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 INPUT                  = "source"
 INPUT_ENCODING         = UTF-8
-FILE_PATTERNS          = *.c \
-                         *.h \
-                         *.m
+FILE_PATTERNS          = *.h *.m
 RECURSIVE              = NO
 EXCLUDE                = 
 EXCLUDE_SYMLINKS       = NO
