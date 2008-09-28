@@ -4,8 +4,8 @@
 # Project related configuration options
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
-PROJECT_NAME           = "Cocoa Data Structures"
-PROJECT_NUMBER         = 0.9.0
+PROJECT_NAME           = "DataStructures.framework"
+PROJECT_NUMBER         = 
 OUTPUT_DIRECTORY       = docs
 CREATE_SUBDIRS         = NO
 OUTPUT_LANGUAGE        = English

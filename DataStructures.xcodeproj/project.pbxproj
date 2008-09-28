@@ -124,6 +124,10 @@
 		E4ADBC990E88412C00B570BC /* AbstractTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AbstractTree.m; path = source/AbstractTree.m; sourceTree = "<group>"; };
 		E4B83B620E898C26008914BD /* Test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Test; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4B83B6E0E898C76008914BD /* Test.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Test.m; path = test/Test.m; sourceTree = "<group>"; };
+		E4CFCDB00E8FD18300B0253A /* docs.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = docs.html; sourceTree = "<group>"; };
+		E4CFCDB10E8FD18300B0253A /* Doxyfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Doxyfile; sourceTree = "<group>"; };
+		E4CFCDB20E8FD18300B0253A /* doxygen-cocoa-tags.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "doxygen-cocoa-tags.xml"; sourceTree = "<group>"; };
+		E4CFCDB30E8FD18300B0253A /* doxygen.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = doxygen.css; sourceTree = "<group>"; };
 		E4FE77C60E8978C300971EE6 /* Tree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Tree.h; path = source/Tree.h; sourceTree = "<group>"; };
 		E4FE77C90E8978DD00971EE6 /* AbstractTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AbstractTree.h; path = source/AbstractTree.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -163,6 +167,7 @@
 				08FB77AEFE84172EC02AAC07 /* Classes */,
 				089C1665FE841158C02AAC07 /* Resources */,
 				0867D69AFE84028FC02AAC07 /* External Frameworks */,
+				E4CFCDAD0E8FD16400B0253A /* Documentation */,
 				034768DFFF38A50411DB9C8B /* Products */,
 				E4B83B6E0E898C76008914BD /* Test.m */,
 			);
@@ -240,6 +245,17 @@
 				0867D69BFE84028FC02AAC07 /* Foundation.framework */,
 			);
 			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		E4CFCDAD0E8FD16400B0253A /* Documentation */ = {
+			isa = PBXGroup;
+			children = (
+				E4CFCDB00E8FD18300B0253A /* docs.html */,
+				E4CFCDB10E8FD18300B0253A /* Doxyfile */,
+				E4CFCDB20E8FD18300B0253A /* doxygen-cocoa-tags.xml */,
+				E4CFCDB30E8FD18300B0253A /* doxygen.css */,
+			);
+			name = Documentation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
