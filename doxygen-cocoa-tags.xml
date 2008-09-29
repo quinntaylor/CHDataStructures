@@ -25,6 +25,10 @@
       <anchor>//apple_ref/occ/intfm/NSCoding/encodeWithCoder:</anchor>
     </member>
   </compound>
+  <compound kind="protocol">
+    <name>NSCopying</name>
+    <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Protocols/NSCopying_Protocol/Reference/Reference.html</filename>
+  </compound>
   <compound kind="class">
     <name>NSData</name>
     <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSData_Class/Reference/Reference.html</filename>
@@ -41,9 +45,18 @@
     <name>NSError</name>
     <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSError_Class/Reference/Reference.html</filename>
   </compound>
+  <compound kind="protocol">
+    <name>NSFastEnumeration</name>
+    <filename>http://developer.apple.com/documentation/Cocoa/Reference/NSFastEnumeration_protocol/Reference/NSFastEnumeration.html</filename>
+    <!-- Submitted feedback on the non-standard lowercase "p" in the URL -->
+  </compound>
   <compound kind="class">
     <name>NSMutableArray</name>
     <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSMutableArray_Class/Reference/Reference.html</filename>
+  </compound>
+  <compound kind="protocol">
+    <name>NSMutableCopying</name>
+    <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Protocols/NSMutableCopying_Protocol/Reference/Reference.html</filename>
   </compound>
   <compound kind="class">
     <name>NSMutableSet</name>

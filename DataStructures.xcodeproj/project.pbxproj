@@ -27,10 +27,9 @@
 		E442DFA80E8F1BDF00BD62F6 /* DataStructures.h in Headers */ = {isa = PBXBuildFile; fileRef = E442DFA70E8F1BDF00BD62F6 /* DataStructures.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E442DFB80E8F1E6D00BD62F6 /* AATree.h in Headers */ = {isa = PBXBuildFile; fileRef = E442DFB60E8F1E6D00BD62F6 /* AATree.h */; };
 		E442DFB90E8F1E6D00BD62F6 /* AATree.m in Sources */ = {isa = PBXBuildFile; fileRef = E442DFB70E8F1E6D00BD62F6 /* AATree.m */; };
-		E485ECB80E8DE89D00C74AED /* AbstractQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = E485ECB60E8DE89D00C74AED /* AbstractQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E485ECB90E8DE89D00C74AED /* AbstractQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = E485ECB70E8DE89D00C74AED /* AbstractQueue.m */; };
-		E485ED300E8DED5F00C74AED /* AbstractStack.h in Headers */ = {isa = PBXBuildFile; fileRef = E485ED2E0E8DED5F00C74AED /* AbstractStack.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E485ED310E8DED5F00C74AED /* AbstractStack.m in Sources */ = {isa = PBXBuildFile; fileRef = E485ED2F0E8DED5F00C74AED /* AbstractStack.m */; };
+		E44771F40E912491000889F7 /* ArrayDeque.h in Headers */ = {isa = PBXBuildFile; fileRef = E44771F20E912491000889F7 /* ArrayDeque.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E44771F50E912491000889F7 /* ArrayDeque.m in Sources */ = {isa = PBXBuildFile; fileRef = E44771F30E912491000889F7 /* ArrayDeque.m */; };
+		E44773A20E913C89000889F7 /* Util.h in Headers */ = {isa = PBXBuildFile; fileRef = E44773A10E913C89000889F7 /* Util.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4ADBA930E88155A00B570BC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
 		E4ADBB240E88174200B570BC /* ArrayHeap.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB060E88174200B570BC /* ArrayHeap.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4ADBB250E88174200B570BC /* ArrayHeap.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB070E88174200B570BC /* ArrayHeap.m */; };
@@ -94,10 +93,9 @@
 		E442DFA70E8F1BDF00BD62F6 /* DataStructures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataStructures.h; path = source/DataStructures.h; sourceTree = "<group>"; };
 		E442DFB60E8F1E6D00BD62F6 /* AATree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AATree.h; path = Source/AATree.h; sourceTree = "<group>"; };
 		E442DFB70E8F1E6D00BD62F6 /* AATree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AATree.m; path = Source/AATree.m; sourceTree = "<group>"; };
-		E485ECB60E8DE89D00C74AED /* AbstractQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AbstractQueue.h; path = source/AbstractQueue.h; sourceTree = "<group>"; };
-		E485ECB70E8DE89D00C74AED /* AbstractQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AbstractQueue.m; path = source/AbstractQueue.m; sourceTree = "<group>"; };
-		E485ED2E0E8DED5F00C74AED /* AbstractStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AbstractStack.h; path = source/AbstractStack.h; sourceTree = "<group>"; };
-		E485ED2F0E8DED5F00C74AED /* AbstractStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AbstractStack.m; path = source/AbstractStack.m; sourceTree = "<group>"; };
+		E44771F20E912491000889F7 /* ArrayDeque.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ArrayDeque.h; path = source/ArrayDeque.h; sourceTree = "<group>"; };
+		E44771F30E912491000889F7 /* ArrayDeque.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ArrayDeque.m; path = source/ArrayDeque.m; sourceTree = "<group>"; };
+		E44773A10E913C89000889F7 /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Util.h; path = source/Util.h; sourceTree = "<group>"; };
 		E4ADBB060E88174200B570BC /* ArrayHeap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ArrayHeap.h; path = source/ArrayHeap.h; sourceTree = "<group>"; };
 		E4ADBB070E88174200B570BC /* ArrayHeap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ArrayHeap.m; path = source/ArrayHeap.m; sourceTree = "<group>"; };
 		E4ADBB080E88174200B570BC /* ArrayQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ArrayQueue.h; path = source/ArrayQueue.h; sourceTree = "<group>"; };
@@ -196,11 +194,10 @@
 		08FB77AEFE84172EC02AAC07 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				E44773A10E913C89000889F7 /* Util.h */,
+				E44771F20E912491000889F7 /* ArrayDeque.h */,
+				E44771F30E912491000889F7 /* ArrayDeque.m */,
 				E442DFA70E8F1BDF00BD62F6 /* DataStructures.h */,
-				E485ECB60E8DE89D00C74AED /* AbstractQueue.h */,
-				E485ECB70E8DE89D00C74AED /* AbstractQueue.m */,
-				E485ED2E0E8DED5F00C74AED /* AbstractStack.h */,
-				E485ED2F0E8DED5F00C74AED /* AbstractStack.m */,
 				E4FE77C90E8978DD00971EE6 /* AbstractTree.h */,
 				E4ADBC990E88412C00B570BC /* AbstractTree.m */,
 				E4ADBB060E88174200B570BC /* ArrayHeap.h */,
@@ -281,10 +278,10 @@
 				E4FE77C70E8978C300971EE6 /* Tree.h in Headers */,
 				E4FE77CA0E8978DD00971EE6 /* AbstractTree.h in Headers */,
 				E42DBAF20E8C3200000E1FBD /* Deque.h in Headers */,
-				E485ECB80E8DE89D00C74AED /* AbstractQueue.h in Headers */,
-				E485ED300E8DED5F00C74AED /* AbstractStack.h in Headers */,
 				E442DFA80E8F1BDF00BD62F6 /* DataStructures.h in Headers */,
 				E442DFB80E8F1E6D00BD62F6 /* AATree.h in Headers */,
+				E44771F40E912491000889F7 /* ArrayDeque.h in Headers */,
+				E44773A20E913C89000889F7 /* Util.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -391,9 +388,8 @@
 				E4ADBB3D0E88174200B570BC /* DoublyLinkedList.m in Sources */,
 				E4ADBB410E88174200B570BC /* UnbalancedTree.m in Sources */,
 				E4ADBC9A0E88412C00B570BC /* AbstractTree.m in Sources */,
-				E485ECB90E8DE89D00C74AED /* AbstractQueue.m in Sources */,
-				E485ED310E8DED5F00C74AED /* AbstractStack.m in Sources */,
 				E442DFB90E8F1E6D00BD62F6 /* AATree.m in Sources */,
+				E44771F50E912491000889F7 /* ArrayDeque.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

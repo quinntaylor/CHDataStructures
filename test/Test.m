@@ -1,11 +1,9 @@
-//
 //  Test.m
-//  DataStructures
+//  DataStructuresFramework
 
 #import <Foundation/Foundation.h>
 
 #import "UnbalancedTree.h"
-#import "RedBlackTree.h"
 
 int main (int argc, const char * argv[]) {
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -25,25 +23,25 @@ int main (int argc, const char * argv[]) {
 	
 	// Creates the tree from: http://en.wikipedia.org/wiki/Tree_traversal#Example
 	
-	NSLog(@"*** In-order traversal");
+	QuietLog(@"In-order traversal");
 	for (id obj in [tree objectEnumeratorWithTraversalOrder:CHTraverseInOrder]) {
-		NSLog(@"%@", obj);
+		QuietLog(@"%@", obj);
 	}
-	NSLog(@"*** Reverse-order traversal");
+	QuietLog(@"Reverse-order traversal");
 	for (id obj in [tree objectEnumeratorWithTraversalOrder:CHTraverseReverseOrder]) {
-		NSLog(@"%@", obj);
+		QuietLog(@"%@", obj);
 	}
-	NSLog(@"*** Pre-order traversal");
+	QuietLog(@"Pre-order traversal");
 	for (id obj in [tree objectEnumeratorWithTraversalOrder:CHTraversePreOrder]) {
-		NSLog(@"%@", obj);
+		QuietLog(@"%@", obj);
 	}
-	NSLog(@"*** Post-order traversal");
+	QuietLog(@"Post-order traversal");
 	for (id obj in [tree objectEnumeratorWithTraversalOrder:CHTraversePostOrder]) {
-		NSLog(@"%@", obj);
+		QuietLog(@"%@", obj);
 	}
-	NSLog(@"*** Level-order traversal");
+	QuietLog(@"Level-order traversal");
 	for (id obj in [tree objectEnumeratorWithTraversalOrder:CHTraverseLevelOrder]) {
-		NSLog(@"%@", obj);
+		QuietLog(@"%@", obj);
 	}
 	
 	[tree removeAllObjects];
