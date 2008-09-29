@@ -26,6 +26,9 @@
 
 #pragma mark Enumeration Struct & Macros
 
+/**
+ A struct for use by UnbalancedTreeEnumerator to maintain traversal state.
+ */
 typedef struct UTE_NODE {
 	struct UnbalancedTreeNode *node;
 	struct UTE_NODE *next;

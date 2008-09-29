@@ -24,15 +24,14 @@
 
 #import <Foundation/Foundation.h>
 #import "Queue.h"
-
-@class DoublyLinkedList;
+#import "LinkedList.h"
 
 /**
- A simple Queue implementation that uses DoublyLinkedList.
+ A simple Queue implemented using a LinkedList.
  */
 @interface ListQueue : NSObject <Queue>
 {
-	DoublyLinkedList *list;
+	id<LinkedList> list;
 }
 
 #pragma mark Method Implementations

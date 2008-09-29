@@ -26,8 +26,8 @@
 #import "Queue.h"
 
 /**
- A fairly basic Queue implementation that uses an NSMutableArray to store objects.
- See the protocol definition for Queue to understand the contract.
+ A fairly basic Queue implemented using an NSMutableArray.
+ See the protocol definition for Queue to understand the programming contract.
  */
 @interface ArrayQueue : NSObject <Queue>
 {

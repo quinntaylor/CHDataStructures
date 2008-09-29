@@ -29,7 +29,8 @@
 #import "Heap.h"
 
 /**
- A simple Heap implemented using an NSMutableArray.
+ A fairly basic Heap implemented using an NSMutableArray.
+ See the protocol definition for Heap to understand the programming contract.
  */
 @interface ArrayHeap : NSObject <Heap>
 {
@@ -42,6 +43,5 @@
 - (id) removeRoot;
 - (id) removeLast;
 - (NSUInteger) count;
-
 
 @end

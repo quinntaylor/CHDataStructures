@@ -4,6 +4,10 @@
 #import <Foundation/Foundation.h>
 #import "Deque.h"
 
+/**
+ A fairly basic Deque implemented using an NSMutableArray.
+ See the protocol definition for Deque to understand the programming contract.
+ */
 @interface ArrayDeque : NSObject <Deque> {
 	NSMutableArray *array;
 }

@@ -304,11 +304,11 @@
 }
 
 - (void) removeFirstObject {
-	[self _removeNode: (beginMarker->next)  ];
+	[self _removeNode:(beginMarker->next)];
 }
 
 - (void)removeLastObject {
-	[self _removeNode: (endMarker->prev)  ];
+	[self _removeNode:(endMarker->prev)];
 }
 
 - (void)removeObjectAtIndex:(NSUInteger)index {

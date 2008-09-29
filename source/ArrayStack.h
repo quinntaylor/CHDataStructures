@@ -26,7 +26,8 @@
 #import "Stack.h"
 
 /**
- A fairly basic Stack implementation that uses an NSMutableArray to store objects.
+ A fairly basic Stack implemented using an NSMutableArray.
+ See the protocol definition for Stack to understand the programming contract.
  */
 @interface ArrayStack : NSObject <Stack>
 {

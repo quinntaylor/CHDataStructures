@@ -24,16 +24,15 @@
 
 #import <Foundation/Foundation.h>
 #import "Stack.h"
-#import "DoublyLinkedList.h"
+#import "LinkedList.h"
 
 /**
- A simple Stack implemented using a linked list. It's based on DoublyLinkedList which
- is partially implemented in straight C, so it's pretty fast.
+ A simple Stack implemented using a LinkedList.
  */
 @interface ListStack : NSObject <Stack>
 {
 	/** The linked list used for storing the contents of the stack. */
-	DoublyLinkedList *list;
+	id<LinkedList> list;
 }
 
 #pragma mark Method Implementations

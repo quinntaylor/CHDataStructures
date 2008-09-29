@@ -23,7 +23,11 @@
 //  DataStructuresFramework
 
 #import "ListStack.h"
+#import "DoublyLinkedList.h"
 
+/**
+ Currently, this stack uses a DoublyLinkedList, although singly-linked would work.
+ */
 @implementation ListStack
 
 - (id) init {
