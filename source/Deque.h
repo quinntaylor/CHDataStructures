@@ -23,6 +23,7 @@
 //  DataStructuresFramework
 
 #import <Foundation/Foundation.h>
+#import "Util.h"
 
 /**
  A <a href="http://en.wikipedia.org/wiki/Deque">deque</a> protocol with methods for
@@ -31,6 +32,16 @@
  @todo Add support for methods in NSCoding, NSMutableCopying, and NSFastEnumeration.
  */
 @protocol Deque <NSObject>
+
+/**
+ Initialize a newly allocated deque by placing in it the objects from an enumerator.
+ This allows flexibility in specifying insertion order, such as passing the result of
+ <code>-objectEnumerator</code> or <code>-reverseObjectEnumerator</code> on NSArray.
+ 
+ @param anEnumerator An enumerator which provides objects to insert into the queue.
+        Objects are inserted in the order received from <code>-nextObject</code>.
+ */
+- (id) initWithObjectsFromEnumerator:(NSEnumerator*)anEnumerator;
 
 /**
  Add an object to the front of the deque.
@@ -63,18 +74,32 @@
 - (id) lastObject;
 
 /**
+ Returns an array containing the objects in this deque.
+ 
+ @return An array containing the objects in this deque. If the deque is empty, the
+		 array is also empty. The array is ordered as the objects are in the deque. 
+ */
+- (NSArray*) allObjects;
+
+/**
  Remove and return the first object in the deque.
  
  @return The first object in the deque, or <code>nil</code> if the deque is empty.
  */
-- (id) removeFirstObject;
+- (void) removeFirstObject;
 
 /**
  Remove and return the last object in the deque.
  
  @return The last object in the deque, or <code>nil</code> if the deque is empty.
  */
-- (id) removeLastObject;
+- (void) removeLastObject;
+
+/**
+ Returns an NSArray containing the objects in this deque in front-to-back order.
+ @return An array which contains the objects in this deque.
+ */
+- (void) removeAllObjects;
 
 /**
  Determines if a deque contains a given object, matched using <code>isEqual:</code>.
@@ -96,14 +121,5 @@
  @return The number of objects currently in the deque.
  */
 - (NSUInteger) count;
-
-/**
- Create an autoreleased Deque with the contents of the array in the specified order.
- 
- @param array An array of objects to add to the queue.
- @param direction The order in which to enqueue objects from the array. YES means the 
-        natural index order (0...n), NO means reverse index order (n...0).
- */
-+ (id) dequeWithArray:(NSArray *)array ofOrder:(BOOL)direction;
 
 @end
