@@ -23,6 +23,7 @@
 //  DataStructuresFramework
 
 #import <Foundation/Foundation.h>
+#import "Util.h"
 
 /**
  A <a href="http://en.wikipedia.org/wiki/Stack_(data_structure)">stack</a> protocol
@@ -31,6 +32,17 @@
  @todo Add support for methods in NSCoding, NSMutableCopying, and NSFastEnumeration.
  */
 @protocol Stack <NSObject>
+
+/**
+ Initialize a newly allocated stack by placing in it the objects from an enumerator.
+ This allows flexibility in specifying insertion order, such as passing the result of
+ <code>-objectEnumerator</code> or <code>-reverseObjectEnumerator</code> on NSArray.
+ The last object provided by the enumerator will be on the stack.
+ 
+ @param anEnumerator An enumerator which provides objects to insert into the queue.
+        Objects are inserted in the order received from <code>-nextObject</code>.
+ */
+- (id) initWithObjectsFromEnumerator:(NSEnumerator*)anEnumerator;
 
 /**
  Add an object to the top of the stack.
@@ -55,6 +67,14 @@
 - (id) topObject;
 
 /**
+ Returns an array containing the objects in this deque, ordered from top to bottom.
+ 
+ @return An array containing the objects in this stack. If the stack is empty, the
+         array is also empty.
+ */
+- (NSArray*) allObjects;
+
+/**
  Returns the number of objects currently on the stack.
  
  @return The number of objects currently on the stack.
@@ -69,30 +89,8 @@
 /**
  Returns an enumerator that accesses each object in the stack from top to bottom.
  
- NOTE: When you use an enumerator, you must not modify the tree during enumeration.
+ NOTE: When you use an enumerator, you must not modify the stack during enumeration.
  */
-- (NSEnumerator *) objectEnumerator;
-
-/**
- Creates an NSArray which contains the objects in this stack, either top-to-bottom or
- in reverse order.
-
- @param reverseOrder The order in which to insert elements into the array.
-        The 0 index in the array will be the top element in the stack if
-        <code>NO</code>, or the bottom element in the stack if <code>YES</code>.
- */
-- (NSArray *) contentsAsArrayByReversingOrder:(BOOL)reverseOrder;
-
-/**
- Returns an autoreleased Stack with the contents of the array in the specified order.
- 
- @param array An array of objects to add to the stack.
- @param reverseOrder The order in which to insert objects from the array.
-       <ul>
-       <li><code>NO</code> - The stack contains the array object in order (n...0).
-       <li><code>YES</code> - The stack contains the array object in order (0...n).
-       </ul>
- */
-+ (id <Stack>) stackWithArray:(NSArray *)array byReversingOrder:(BOOL)reverseOrder;
+- (NSEnumerator*) objectEnumerator;
 
 @end

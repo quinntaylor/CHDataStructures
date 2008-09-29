@@ -25,30 +25,34 @@
 #import "LLStack.h"
 
 @implementation LLStack
-- (id) init
-{
+- (id) init {
 	[super init];
 	list = [[DoublyLinkedList alloc] init];
 	return self;
 }
 
-- (void) dealloc
-{
+- (id) initWithObjectsFromEnumerator:(NSEnumerator*)anEnumerator {
+	if ([super init] == nil) {
+		[self release];
+		return nil;
+	}
+	list = [DoublyLinkedList listWithArray:[anEnumerator allObjects] ofOrder:YES];
+	return self;
+}
+
+- (void) dealloc {
 	[list release];
 	[super dealloc];
 }
 
-- (void) pushObject:(id)anObject
-{
-	if (anObject == nil) {
-		[NSException raise:NSInvalidArgumentException
-					format:@"Object to be added cannot be nil."];
-	}
-	[list addObjectToFront:anObject];
+- (void) pushObject:(id)anObject {
+	if (anObject == nil)
+		invalidNilArgumentException([self class], _cmd);
+	else
+		[list addObjectToFront:anObject];
 }
 
-- (id) popObject
-{
+- (id) popObject {
 	if ([list count] == 0)
 		return nil;
 	id retval = [[list firstObject] retain];
@@ -56,18 +60,23 @@
 	return [retval autorelease];
 }
 
-- (id) topObject
-{
+- (id) topObject {
 	return [list firstObject];
 }
 
-- (NSUInteger) count
-{
+- (NSArray*) allObjects {
+	return [list allObjects];
+}
+
+- (NSUInteger) count {
 	return [list count];
 }
 
-- (NSEnumerator *) objectEnumerator
-{
+- (void) removeAllObjects {
+	[list removeAllObjects];
+}
+
+- (NSEnumerator*) objectEnumerator {
 	return [list objectEnumerator];
 }
 

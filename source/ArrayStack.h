@@ -23,12 +23,12 @@
 //  DataStructuresFramework
 
 #import <Foundation/Foundation.h>
-#import "AbstractStack.h"
+#import "Stack.h"
 
 /**
  A fairly basic Stack implementation that uses an NSMutableArray to store objects.
  */
-@interface ArrayStack : AbstractStack
+@interface ArrayStack : NSObject <Stack>
 {
 	/** The array used for storing the contents of the stack. */
 	NSMutableArray *array;
@@ -40,17 +40,20 @@
 - (id) initWithCapacity:(NSUInteger)capacity;
 
 /**
- Returns an enumerator that accesses each object in the stack from top to bottom.
+ Returns an enumerator that accesses each object in the stack from bottom to top.
  
- The mutable array implementation provides it, so why shouldn't I let you access it?
- It would be pretty weird to use a stack like this, but who knows?
- **/
-- (NSEnumerator *) objectEnumerator;
+ NOTE: When you use an enumerator, you must not modify the stack during enumeration.
+ */
+- (NSEnumerator*) reverseObjectEnumerator;
 
 #pragma mark Inherited Methods
+- (id) initWithObjectsFromEnumerator:(NSEnumerator*)anEnumerator;
 - (void) pushObject:(id)anObject;
 - (id) popObject;
 - (id) topObject;
+- (NSArray*) allObjects;
 - (NSUInteger) count;
+- (void) removeAllObjects;
+- (NSEnumerator*) objectEnumerator;
 
 @end
