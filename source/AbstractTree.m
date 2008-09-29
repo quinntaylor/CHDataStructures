@@ -27,103 +27,36 @@
 
 @implementation AbstractTree
 
-+ (id) exceptionForUnsupportedOperation:(SEL)operation {
-	[NSException raise:NSInternalInconsistencyException
-				format:@"+[%@ %s] -- Unsupported operation.",
-					   [self class], sel_getName(operation)];
-	return nil;
+#pragma mark Concrete Implementations
+
+- (id) initWithObjectsFromEnumerator:(NSEnumerator*)enumerator {
+	if ([self init] == nil) {
+		[self release];
+		return nil;
+	}
+	if (enumerator == nil) {
+		[self release];
+		invalidNilArgumentException([self class], _cmd);		
+	}
+	[self addObjectsFromEnumerator:enumerator];
+	return self;
 }
 
-- (id) exceptionForUnsupportedOperation:(SEL)operation {
-	[NSException raise:NSInternalInconsistencyException
-				format:@"-[%@ %s] -- Unsupported operation.",
-					   [self class], sel_getName(operation)];
-	return nil;
-}
-
-- (id) exceptionForInvalidArgument:(SEL)operation {
-	[NSException raise:NSInvalidArgumentException
-				format:@"-[%@ %s] -- Invalid nil argument.",
-					   [self class], sel_getName(operation)];
-	return nil;
-}
-
-#pragma mark Default Implementations
-
-- (void) addObject:(id)anObject {
-	[self exceptionForUnsupportedOperation:_cmd];
-}
-
-/**
- Uses an NSEnumerator to add each object to the tree.
- */
-- (void) addObjectsFromArray:(NSArray *)anArray {
-	NSEnumerator *e = [anArray objectEnumerator];
-	id object;
-	while ((object = [e nextObject]) != nil) {
+- (void) addObjectsFromEnumerator:(NSEnumerator*)enumerator {
+	if (enumerator == nil)
+		invalidNilArgumentException([self class], _cmd);
+	for (id object in enumerator)
 		[self addObject:object];
-	}
 }
 
-
-- (BOOL) containsObject:(id)anObject {
-	[self exceptionForUnsupportedOperation:_cmd];
-	return NO;
-}
-
-- (NSUInteger) count {
-	return count;
-}
-
-- (void) removeObject:(id)element {
-	[self exceptionForUnsupportedOperation:_cmd];
-}
-
-- (void) removeAllObjects {
-	[self exceptionForUnsupportedOperation:_cmd];
-}
-
-- (id) findMin {
-	return [self exceptionForUnsupportedOperation:_cmd];
-}
-
-- (id) findMax {
-	return [self exceptionForUnsupportedOperation:_cmd];
-}
-
-- (id) findObject:(id)anObject {
-	return [self exceptionForUnsupportedOperation:_cmd];
-}
-
-#pragma mark Convenience Constructors
-
-+ (id<Tree>) treeWithEnumerator:(NSEnumerator*)enumerator {
-	id<Tree> tree = [[self alloc] init];
-	for (id object in enumerator) {
-		[tree addObject:object];
-	}
-	return [tree autorelease];
-}
-
-+ (id<Tree>) treeWithFastEnumeration:(id<NSFastEnumeration>)collection {
-	id<Tree> tree = [[self alloc] init];
-	for (id object in collection) {
-		[tree addObject:object];
-	}
-	return [tree autorelease];
-}
-
-#pragma mark Collection Conversions
-
-- (NSSet *) contentsAsSet {
+- (NSSet*) contentsAsSet {
 	NSMutableSet *set = [[NSMutableSet alloc] init];
-	for (id object in [self objectEnumeratorWithTraversalOrder:CHTraversePreOrder]) {
+	for (id object in [self objectEnumeratorWithTraversalOrder:CHTraversePreOrder])
 		[set addObject:object];
-	}
 	return [set autorelease];
 }
 
-- (NSArray *) contentsAsArrayWithOrder:(CHTraversalOrder)order {
+- (NSArray*) contentsAsArrayWithOrder:(CHTraversalOrder)order {
 	NSMutableArray *array = [[NSMutableArray alloc] init];
 	for (id object in [self objectEnumeratorWithTraversalOrder:order]) {
 		[array addObject:object];
@@ -132,27 +65,55 @@
 	// Document that the returned object is mutable? Return immutable copy instead?
 }
 
-- (id <Stack>) contentsAsStackWithInsertionOrder:(CHTraversalOrder)order {
-	id <Stack> stack = [[LLStack alloc] init];
-	for (id object in [self objectEnumeratorWithTraversalOrder:order]) {
-		[stack pushObject:object];
-	}
-	return [stack autorelease];
+- (NSUInteger) count {
+	return count;
 }
 
-#pragma mark Object Enumerators
-
-/* Must be specified by concrete child classes. */
-- (NSEnumerator *) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order {
-	return [self exceptionForUnsupportedOperation:_cmd];
-}
-
-- (NSEnumerator *) objectEnumerator {
+- (NSEnumerator*) objectEnumerator {
 	return [self objectEnumeratorWithTraversalOrder:CHTraverseInOrder];
 }
 
-- (NSEnumerator *) reverseObjectEnumerator {
+- (NSEnumerator*) reverseObjectEnumerator {
 	return [self objectEnumeratorWithTraversalOrder:CHTraverseReverseOrder];
+}
+
+#pragma mark Unsupported Implementations
+
+- (void) addObject:(id)anObject {
+	unsupportedOperationException([self class], _cmd);
+}
+
+- (BOOL) containsObject:(id)anObject {
+	unsupportedOperationException([self class], _cmd);
+	return NO;
+}
+
+- (void) removeObject:(id)element {
+	unsupportedOperationException([self class], _cmd);
+}
+
+- (void) removeAllObjects {
+	unsupportedOperationException([self class], _cmd);
+}
+
+- (id) findMin {
+	unsupportedOperationException([self class], _cmd);
+	return nil;
+}
+
+- (id) findMax {
+	unsupportedOperationException([self class], _cmd);
+	return nil;
+}
+
+- (id) findObject:(id)anObject {
+	unsupportedOperationException([self class], _cmd);
+	return nil;
+}
+
+- (NSEnumerator*) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order {
+	unsupportedOperationException([self class], _cmd);
+	return nil;
 }
 
 @end

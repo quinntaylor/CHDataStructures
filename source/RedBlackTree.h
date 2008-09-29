@@ -32,6 +32,8 @@
 
 /**
  A node for use by RedBlackTree for internal storage and representation.
+ 
+ @todo Replace getters/setters with Objective-C 2.0 properties, or class with struct.
  */
 @interface RedBlackTreeNode : NSObject 
 {
@@ -43,17 +45,17 @@
 
 - (id) initWithObject:(id)theObject;
 - (id) initWithObject:(id)theObject
-             withLeft:(RedBlackTreeNode *)theLeft
-            withRight:(RedBlackTreeNode *)theRight;
+             withLeft:(RedBlackTreeNode*)theLeft
+            withRight:(RedBlackTreeNode*)theRight;
 
 - (BOOL) color;
-- (RedBlackTreeNode *) left;
-- (RedBlackTreeNode *) right;
+- (RedBlackTreeNode*) left;
+- (RedBlackTreeNode*) right;
 - (id) object;
 
 - (void) setColor:(BOOL)newColor;
-- (void) setLeft:(RedBlackTreeNode *)newLeft;
-- (void) setRight:(RedBlackTreeNode *)newRight;
+- (void) setLeft:(RedBlackTreeNode*)newLeft;
+- (void) setRight:(RedBlackTreeNode*)newRight;
 - (void) setObject:(id)newObject;
 
 @end
@@ -83,26 +85,28 @@
 {
 	RedBlackTreeNode *header;   // links to the root -- eliminates special cases
 	RedBlackTreeNode *sentinel; // always black, stands in for nil
-	
-	@private RedBlackTreeNode *current;
-	@private RedBlackTreeNode *parent;
-	@private RedBlackTreeNode *grandparent;
-	@private RedBlackTreeNode *greatgrandparent;
+
+	@private
+	RedBlackTreeNode *current;
+	RedBlackTreeNode *parent;
+	RedBlackTreeNode *grandparent;
+	RedBlackTreeNode *greatgrandparent;
 }
 
 /**
  Create a new RedBlackTree with no nodes or stored objects.
  */
-- (id)init;
+- (id) init;
 
-#pragma mark Inherited Methods
-- (void)addObject:(id)object;
-- (id) findObject:(id)target;
-- (id) findMin;
+#pragma mark Method Implementations
+
+- (void) addObject:(id)object;
+- (BOOL) containsObject:(id)anObject;
 - (id) findMax;
-//- (BOOL) containsObject:(id)anObject;
-//- (void)removeObject:(id)object;
-//- (void)removeAllObjects;
-- (NSEnumerator *)objectEnumeratorWithTraversalOrder:(CHTraversalOrder)traversalOrder;
+- (id) findMin;
+- (id) findObject:(id)target;
+- (void) removeObject:(id)anObject;
+- (void) removeAllObjects;
+- (NSEnumerator*) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order;
 
 @end

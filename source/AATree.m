@@ -54,7 +54,7 @@
  @param root The root node of the (sub)tree whose elements are to be enumerated.
  @param order The traversal order to use for enumerating the given (sub)tree.
  */
-- (id) initWithRoot:(AATreeNode *)root traversalOrder:(CHTraversalOrder)order;
+- (id) initWithRoot:(AATreeNode*)root traversalOrder:(CHTraversalOrder)order;
 
 /**
  Returns an array of objects the receiver has yet to enumerate.
@@ -64,7 +64,7 @@
  Invoking this method exhausts the remainder of the objects, such that subsequent
  invocations of #nextObject return <code>nil</code>.
  */
-- (NSArray *) allObjects;
+- (NSArray*) allObjects;
 
 /**
  Returns the next object from the collection being enumerated.
@@ -80,29 +80,27 @@
 
 @implementation AATreeEnumerator
 
-- (id) initWithRoot:(AATreeNode *)root traversalOrder:(CHTraversalOrder)order;
-{
-	if (![super init] || !isValidTraversalOrder(order)) {
+- (id) initWithRoot:(AATreeNode*)root traversalOrder:(CHTraversalOrder)order {
+	if ([super init] == nil || !isValidTraversalOrder(order)) {
 		[self release];
 		return nil;
 	}
 	// TODO: Copy and adapt traversal code from UnbalancedTree.m
+	unsupportedOperationException([self class], _cmd);
 	return self;
 }
 
-- (id) nextObject
-{
+- (id) nextObject {
 	// TODO: Copy and adapt traversal code from UnbalancedTree.m
+	unsupportedOperationException([self class], _cmd);
 	return nil;
 }
 
-- (NSArray *) allObjects
-{
+- (NSArray*) allObjects {
 	NSMutableArray *array = [[NSMutableArray alloc] init];
 	id object;
 	while ((object = [self nextObject]))
 		[array addObject:object];
-	
 	return [array autorelease];
 }
 
@@ -112,52 +110,55 @@
 
 @implementation AATree
 
-- (id) init
-{
-	if (![super init]) {
+- (id) init {
+	if ([super init] == nil) {
 		[self release];
 		return nil;
 	}
+	// allocate resources
 	return self;
 }
 
-- (void) dealloc
-{
+- (void) dealloc {
 	[self removeAllObjects];
 	[super dealloc];
 }
 
 - (void) addObject:(id)anObject {
-	[self exceptionForUnsupportedOperation:_cmd];
+	unsupportedOperationException([self class], _cmd);
 }
 
 - (id) findObject:(id)target {
-	return [self exceptionForUnsupportedOperation:_cmd];
+	unsupportedOperationException([self class], _cmd);
+	return nil;
 }
 
 - (id) findMin {
-	return [self exceptionForUnsupportedOperation:_cmd];
+	unsupportedOperationException([self class], _cmd);
+	return nil;
 }
 
 - (id) findMax {
-	return [self exceptionForUnsupportedOperation:_cmd];
+	unsupportedOperationException([self class], _cmd);
+	return nil;
 }
 
 - (BOOL) containsObject:(id)anObject {
-	[self exceptionForUnsupportedOperation:_cmd];
+	unsupportedOperationException([self class], _cmd);
 	return NO;
 }
 
 - (void) removeObject:(id)anObject {
-	[self exceptionForUnsupportedOperation:_cmd];
+	unsupportedOperationException([self class], _cmd);
 }
 
 - (void) removeAllObjects {
-	[self exceptionForUnsupportedOperation:_cmd];
+	unsupportedOperationException([self class], _cmd);
 }
 
-- (NSEnumerator *) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order {
-	return [self exceptionForUnsupportedOperation:_cmd];
+- (NSEnumerator*) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order {
+	unsupportedOperationException([self class], _cmd);
+	return nil;
 }
 
 @end

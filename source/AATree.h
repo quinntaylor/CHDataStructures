@@ -66,14 +66,15 @@ typedef struct AATreeNode {
  */
 - (id) init;
 
-#pragma mark Inherited Methods
+#pragma mark Method Implementations
+
 - (void) addObject:(id)anObject;
-- (id) findObject:(id)target;
-- (id) findMin;
-- (id) findMax;
 - (BOOL) containsObject:(id)anObject;
+- (id) findMax;
+- (id) findMin;
+- (id) findObject:(id)target;
 - (void) removeObject:(id)anObject;
 - (void) removeAllObjects;
-- (NSEnumerator *) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order;
+- (NSEnumerator*) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order;
 
 @end

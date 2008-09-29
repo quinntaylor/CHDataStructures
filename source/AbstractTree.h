@@ -27,8 +27,10 @@
 #import "Stack.h"
 
 /**
- An abstract implementation of the Tree protocol with several convenience methods.
- Child classes must re-implement protocol methods according to their inner workings.
+ An abstract Tree implementation with some default method implementations. Methods
+ for insertion, search, removal and order-specific enumeration must be re-implemented
+ by child classes so as to conform to their inner workings. The methods defined in
+ this abstract class rely on the implementations of such operations 
  */
 @interface AbstractTree : NSObject <Tree>
 {
@@ -36,32 +38,14 @@
 	NSUInteger count;
 }
 
-- (NSEnumerator *)objectEnumerator;
+#pragma mark Method Implementations
 
-/**
- Convenience method for raising an NSException for an unsupported class operation.
- */
-+ (id)exceptionForUnsupportedOperation:(SEL)operation;
-
-/**
- Convenience method for raising an NSException for an unsupported operation.
- */
-- (id)exceptionForUnsupportedOperation:(SEL)operation;
-
-/**
- Convenience method for raising an NSException for an invalid (nil) argument.
- */
-- (id)exceptionForInvalidArgument:(SEL)operation;
-
-#pragma mark Inherited Methods
-
-- (void) addObjectsFromArray:(NSArray *)anArray;
+- (id) initWithObjectsFromEnumerator:(NSEnumerator*)enumerator;
+- (void) addObjectsFromEnumerator:(NSEnumerator*)enumerator;
+- (NSSet*) contentsAsSet;
+- (NSArray*) contentsAsArrayWithOrder:(CHTraversalOrder)traversalOrder;
 - (NSUInteger) count;
-
-- (NSSet *) contentsAsSet;
-- (NSArray *) contentsAsArrayWithOrder:(CHTraversalOrder)traversalOrder;
-- (id <Stack>) contentsAsStackWithInsertionOrder:(CHTraversalOrder)traversalOrder;
-- (NSEnumerator *)objectEnumerator;
-- (NSEnumerator *)reverseObjectEnumerator;
+- (NSEnumerator*) objectEnumerator;
+- (NSEnumerator*) reverseObjectEnumerator;
 
 @end

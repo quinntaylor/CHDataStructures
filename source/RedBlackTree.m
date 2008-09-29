@@ -24,43 +24,21 @@
 
 #import "RedBlackTree.h"
 
-#pragma mark C Functions for Optimized Operations
-
-static RedBlackTreeNode * _rotateWithLeftChild(RedBlackTreeNode *leftChild)
-{
-	RedBlackTreeNode *l1 = [leftChild left];
-	[leftChild setLeft: [l1 right]];
-	[l1 setRight:leftChild];
-	return l1;
-}
-
-static RedBlackTreeNode * _rotateWithRightChild(RedBlackTreeNode *rightChild)
-{
-	RedBlackTreeNode *r1 = [rightChild right];
-	[rightChild setRight: [r1 left]];
-	[r1 setLeft:rightChild];
-	return r1;
-}
-
-#pragma mark -
-
 @implementation RedBlackTreeNode
 
--(id) init
-{
-	return [self initWithObject:nil];
+- (id) init {
+	return [self initWithObject:nil withLeft:nil withRight:nil];
 }
 
--(id) initWithObject:(id)theObject
-{
+- (id) initWithObject:(id)theObject {
 	return [self initWithObject:theObject withLeft:nil withRight:nil];
 }
 
--(id) initWithObject:(id)theObject
-            withLeft:(RedBlackTreeNode *)theLeft
-           withRight:(RedBlackTreeNode *)theRight
+- (id) initWithObject:(id)theObject
+            withLeft:(RedBlackTreeNode*)theLeft
+           withRight:(RedBlackTreeNode*)theRight
 {
-	if (![super init]) {
+	if ([super init] == nil) {
 		[self release];
 		return nil;
 	}
@@ -73,59 +51,49 @@ static RedBlackTreeNode * _rotateWithRightChild(RedBlackTreeNode *rightChild)
 	return self;
 }
 
-- (void) dealloc
-{
+- (void) dealloc {
 	[left release];
 	[right release];
 	[object release];
-	
 	[super dealloc];
 }
 
-- (RedBlackTreeNode *) left
-{
+- (RedBlackTreeNode*) left {
 	return left;
 }
 
-- (RedBlackTreeNode *) right
-{
+- (RedBlackTreeNode*) right {
 	return right;
 }
 
-- (id) object
-{
+- (id) object {
 	return object;
 }
 
-- (BOOL) color
-{
+- (BOOL) color {
 	return color;
 }
 
-- (void) setColor:(BOOL)newColor
-{
+- (void) setColor:(BOOL)newColor {
 	color = newColor;
 }
 
-- (void) setLeft:(RedBlackTreeNode *)newLeft
-{
-	RedBlackTreeNode *old = left;
-	left = [newLeft retain];
-	[old release];
+- (void) setLeft:(RedBlackTreeNode*)newLeft {
+	[newLeft retain];
+	[left release];
+	left = newLeft;
 }
 
-- (void) setRight:(RedBlackTreeNode *)newRight
-{
-	RedBlackTreeNode *old = right;
-	right = [newRight retain];
-	[old release];
+- (void) setRight:(RedBlackTreeNode*)newRight {
+	[newRight retain];
+	[right release];
+	right = newRight;
 }
 
-- (void) setObject:(id)newObject
-{
-	id old = object;
-	object = [newObject retain];
-	[old release];
+- (void) setObject:(id)newObject {
+	[newObject retain];
+	[object release];
+	object = newObject;
 }
 
 @end
@@ -154,7 +122,7 @@ static RedBlackTreeNode * _rotateWithRightChild(RedBlackTreeNode *rightChild)
  @param root The root node of the (sub)tree whose elements are to be enumerated.
  @param order The traversal order to use for enumerating the given (sub)tree.
  */
-- (id) initWithRoot:(RedBlackTreeNode *)root traversalOrder:(CHTraversalOrder)order;
+- (id) initWithRoot:(RedBlackTreeNode*)root traversalOrder:(CHTraversalOrder)order;
 
 /**
  Returns an array of objects the receiver has yet to enumerate.
@@ -164,7 +132,7 @@ static RedBlackTreeNode * _rotateWithRightChild(RedBlackTreeNode *rightChild)
  Invoking this method exhausts the remainder of the objects, such that subsequent
  invocations of #nextObject return <code>nil</code>.
  */
-- (NSArray *) allObjects;
+- (NSArray*) allObjects;
 
 /**
  Returns the next object from the collection being enumerated.
@@ -180,9 +148,8 @@ static RedBlackTreeNode * _rotateWithRightChild(RedBlackTreeNode *rightChild)
 
 @implementation RedBlackTreeEnumerator
 
-- (id) initWithRoot:(RedBlackTreeNode *)root traversalOrder:(CHTraversalOrder)order;
-{
-	if (![super init] || order < CHTraverseInOrder || order > CHTraverseLevelOrder) {
+- (id) initWithRoot:(RedBlackTreeNode*)root traversalOrder:(CHTraversalOrder)order {
+	if ([super init] == nil || !isValidTraversalOrder(order)) {
 		[self release];
 		return nil;
 	}
@@ -194,60 +161,87 @@ static RedBlackTreeNode * _rotateWithRightChild(RedBlackTreeNode *rightChild)
 	return self;
 }
 
-- (NSArray *) allObjects
-{
-	id object;
+- (NSArray*) allObjects {
 	NSMutableArray *array = [[NSMutableArray alloc] init];
-	
+	id object;
 	while ((object = [self nextObject]))
 		[array addObject:object];
-	
 	return [array autorelease];
 }
 
 /**
  @see UnbalancedTreeEnumerator#nextObject
  */
-- (id) nextObject
-{
+- (id) nextObject {
 	// TODO: Create logic to consider traversalOrder for unbalanced trees
 	return nil;
 }
 
 @end
 
+#pragma mark -
+
+#pragma mark C Functions for Optimized Operations
+
+static RedBlackTreeNode * _rotateWithLeftChild(RedBlackTreeNode *leftChild) {
+	RedBlackTreeNode *l1 = [leftChild left];
+	[leftChild setLeft: [l1 right]];
+	[l1 setRight:leftChild];
+	return l1;
+}
+
+static RedBlackTreeNode * _rotateWithRightChild(RedBlackTreeNode *rightChild) {
+	RedBlackTreeNode *r1 = [rightChild right];
+	[rightChild setRight: [r1 left]];
+	[r1 setLeft:rightChild];
+	return r1;
+}
 
 #pragma mark -
 
 @implementation RedBlackTree
 
+#pragma mark - Private Methods
+
 /**
  * This method deals simply with our header on every comparison.
  */
-- (int) _compare:(id)x
-		withNode:(RedBlackTreeNode *)node
-{
-	if ( node == header )
+- (int) _compare:(id)x withNode:(RedBlackTreeNode*)node {
+	if (node == header)
 		return 1;
 	else
 		return [x compare:[node object]];
 }
 
-- (RedBlackTreeNode *) _rotate:( id)x
-		  onAncestor:(RedBlackTreeNode *)ancestor
-{
-	if ( [self _compare:x withNode:ancestor] < 0 )
+- (RedBlackTreeNode*) _findNode:(id)target {
+	//we make the sentinel's object == target ... so we will eventually find it no matter what
+	[sentinel setObject:target];
+	current = [header right];
+	
+	while(1)
 	{
+		if ([target compare:[current object]] < 0)
+			current = [current left];
+		else if ([target compare:[current object]] > 0)
+			current = [current right];
+		else if (current != sentinel)
+			return current;
+		else
+			return nil;
+	}
+}
+
+- (RedBlackTreeNode*) _rotate:(id)x onAncestor:(RedBlackTreeNode*)ancestor {
+	if ([self _compare:x withNode:ancestor] < 0) 	{
 		[ancestor setLeft:(
 						   [self _compare:x withNode:[ancestor left]] < 0 ?
 						   (_rotateWithLeftChild([ancestor left])) : 
 						   (_rotateWithRightChild([ancestor left]))
-						   )];
+						  )];
 		
 		return [ancestor left];
 	}
-	else
-	{
+	else 	{
 		[ancestor setRight:(
 							[self _compare:x withNode:[ancestor right]] < 0 ?
 							(_rotateWithLeftChild([ancestor right])) : 
@@ -258,21 +252,16 @@ static RedBlackTreeNode * _rotateWithRightChild(RedBlackTreeNode *rightChild)
 	}
 }
 
-- (void) _reorient:(id)x
-{
+- (void) _reorient:(id)x {
 	[current setColor: nRED];
 	[[current left] setColor: nBLACK];
 	[[current right] setColor: nBLACK];
 	
-	if ( [parent color] == nRED )
-	{
+	if ([parent color] == nRED) 	{
 		[grandparent setColor: nRED];
 		
-		if ( 
-			([self _compare:x withNode:grandparent] < 0) !=
-			([self _compare:x withNode:parent] < 0)
-			
-			)
+		if (([self _compare:x withNode:grandparent] < 0) !=
+			([self _compare:x withNode:parent] < 0))
 		{
 			parent = [self _rotate:x onAncestor:grandparent];
 		}
@@ -286,10 +275,10 @@ static RedBlackTreeNode * _rotateWithRightChild(RedBlackTreeNode *rightChild)
 	[[header right] setColor: nBLACK];
 }
 
+#pragma mark - Public Methods
 
-- (id)init
-{
-	if (![super init]) {
+- (id) init {
+	if ([super init] == nil) {
 		[self release];
 		return nil;
 	}
@@ -305,8 +294,7 @@ static RedBlackTreeNode * _rotateWithRightChild(RedBlackTreeNode *rightChild)
 	return self;
 }
 
-- (void)dealloc
-{
+- (void) dealloc {
 	[header release];
 	[sentinel release];
 	[super dealloc];
@@ -318,32 +306,30 @@ static RedBlackTreeNode * _rotateWithRightChild(RedBlackTreeNode *rightChild)
  red, you'll have to rotate the tree. (Just change the root's color back to black if
  you changed it). Returns NO only when a compare: == 0 object already exists in the tree
  */
-- (void)addObject:(id)object
-{
+- (void) addObject:(id)object {
 	// TODO: Send -retain to the object when added
 
 	current = parent = grandparent = header;
 	[sentinel setObject:object];
 	
-	while ( [self _compare:object withNode:current] != 0 )
-	{
+	while ([self _compare:object withNode:current] != 0) 	{
 		greatgrandparent = grandparent; grandparent = parent; parent = current;
 		current = [self _compare:object withNode:current] < 0 ? [current left] : [current right];
 		
 		// this is where we check for the bad case of red parent and red sibling of parent
-		if ( [[current left] color] == nRED && [[current right] color] == nRED )
+		if ([[current left] color] == nRED && [[current right] color] == nRED)
 			[self _reorient:object];
 	}
 	
 	// return if a sentinel didn't result (i.e., we didn't get to nil)
-	if ( current != sentinel )
+	if (current != sentinel)
 		return;
 	
 	current = [[RedBlackTreeNode alloc] initWithObject:object 
 									withLeft:sentinel 
 								   withRight:sentinel ];
 	
-	if ( [self _compare:object withNode:parent] < 0 )
+	if ([self _compare:object withNode:parent] < 0)
 		[parent setLeft:current];
 	else
 		[parent setRight:current];
@@ -353,56 +339,16 @@ static RedBlackTreeNode * _rotateWithRightChild(RedBlackTreeNode *rightChild)
 	return;
 }
 
--(RedBlackTreeNode *)_findNode:(id)target
-{
-	//we make the sentinel's object == target ... so we will eventually find it no matter what
-	[sentinel setObject:target];
-	current = [header right];
-	
-	while(1)
-	{
-		if ( [target compare:[current object]] < 0 )
-			current = [current left];
-		else if ( [target compare:[current object]] > 0 )
-			current = [current right];
-		else if ( current != sentinel )
-			return current;
-		else
-			return nil;
-	}
+- (BOOL) containsObject:(id)anObject {
+	unsupportedOperationException([self class], _cmd);
+	return NO;
 }
 
-- (id)findObject:(id)target
-{
-	id retval = [[self _findNode: target] object];
-	
-	if (retval)
-		return retval;
-	else
-		return nil;
-}
-
-- (id)findMin
-{
+- (id) findMax {
 	parent = nil;
 	current = [header right];
 	
-	while(current != sentinel)
-	{
-		parent = current;
-		current = [current left];
-	}
-	
-	return [parent object];
-}
-
-- (id)findMax
-{
-	parent = nil;
-	current = [header right];
-	
-	while(current != sentinel)
-	{
+	while(current != sentinel) {
 		parent = current;
 		current = [current right];
 	}
@@ -410,24 +356,38 @@ static RedBlackTreeNode * _rotateWithRightChild(RedBlackTreeNode *rightChild)
 	return [parent object];
 }
 
-// TODO: NEXT RELEASE
-
-// Not in this version! Very difficult -- my fu is no match for it right this minute.
-- (void)removeObject:(id)object {
-}
-
-- (void)removeAllObjects {
-}
-
--(NSEnumerator *)objectEnumeratorWithTraversalOrder:(CHTraversalOrder)traversalOrder
-{
-	RedBlackTreeNode *root = [header right];
+- (id) findMin {
+	parent = nil;
+	current = [header right];
 	
+	while (current != sentinel) {
+		parent = current;
+		current = [current left];
+	}
+	return [parent object];
+}
+
+- (id) findObject:(id)target {
+	return [[self _findNode: target] object];
+}
+
+- (void) removeObject:(id)anObject {
+	unsupportedOperationException([self class], _cmd);
+	// TODO: Next release, very difficult, my fu is no match for it right this minute.
+}
+
+- (void) removeAllObjects {
+	unsupportedOperationException([self class], _cmd);
+	// TODO: Re-purpose this code from UnbalancedTree
+}
+
+- (NSEnumerator*) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order {
+	RedBlackTreeNode *root = [header right];
 	if (root == sentinel)
 		return nil;
 	
 	return [[[RedBlackTreeEnumerator alloc] initWithRoot:root
-										  traversalOrder:traversalOrder] autorelease];
+										  traversalOrder:order] autorelease];
 }
 
 @end

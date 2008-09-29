@@ -24,119 +24,22 @@
 
 #import "UnbalancedTree.h"
 
-#pragma mark C Functions for Optimized Operations
+#pragma mark Enumeration Struct & Macros
 
-static struct UnbalancedTreeNode * _findMaxWithStarter(struct UnbalancedTreeNode *starter) {
-	//see comment in findMinWithStarter for explanation
-	struct UnbalancedTreeNode *bar, *foo = starter;
-	while ( (bar = foo->right) != nil )
-		foo = bar;
-	return foo;	
-}
-
-static struct UnbalancedTreeNode * _findMinWithStarter(struct UnbalancedTreeNode *starter) {
-	struct UnbalancedTreeNode *bar, *foo = starter;
-	
-	//a subtle nil test here -- note the terminating semicolon
-	//when foo->left points to nil, we return foo because
-	//there is nothing more to the left.
-	while ( (bar = foo->left) != nil )
-		foo = bar;
-	return foo;
-}
-
-// TODO: C function to locate a node; use for contains/find/remove a single object.
-
-static struct UnbalancedTreeNode * _removeNode(struct UnbalancedTreeNode *node, struct UnbalancedTreeNode *treeRoot)
-{
-	struct UnbalancedTreeNode *oldRoot;
-	
-	if (node == NULL)
-		return NULL;
-	
-	if (node->left == NULL)
-	{
-		if (node->right == NULL) // both children are NULL
-		{
-			[node->object release];
-			if (node != treeRoot)
-				free(node);
-			return NULL;
-		}
-		else // only right exists, so replace current with right subtree
-		{
-			oldRoot = node;
-			node = node->right;
-			node->parent = oldRoot->parent;
-			
-			//fix the parent's pointers.
-			if (node->parent != NULL)
-			{
-				if (node->parent->left == oldRoot) 
-					node->parent->left = node;
-				else if (node->parent->right == oldRoot)
-					node->parent->right = node; 
-			}
-			
-			[oldRoot->object release];
-			free(oldRoot);
-			return node;
-		}
-	}
-	else //left was not nil
-	{
-		if (node->right == NULL)
-		{
-			oldRoot = node;
-			node = node->left;
-			node->parent = oldRoot->parent;
-			
-			//fix the parent's pointers.
-			if (node->parent != NULL)
-			{
-				if (node->parent->left == oldRoot) 
-					node->parent->left = node;
-				else if (node->parent->right == oldRoot)
-					node->parent->right = node; 
-			}
-			
-			[oldRoot->object release];
-			free(oldRoot);
-			return node;
-		}
-		else //now of course this is the usual -- both L & R nodes exist
-		{
-			//replace our node with the node at the leftmost of its right subtree.
-			//1. release our present node's object
-			//2. find the node we will destroy after plucking its object
-			//3. set our present node's object pointer to the replacement object
-			//4. fix the parent pointer of the to-be-freed node
-			[node->object release];
-			oldRoot = _findMinWithStarter(node->right);
-			node->object = oldRoot->object;
-			oldRoot->parent->left = NULL;
-			free(oldRoot);
-			return node;
-		}
-	}
-}
-
-#pragma mark -
-
-typedef struct LinkedNode {
+typedef struct UTE_NODE {
 	struct UnbalancedTreeNode *node;
-	struct LinkedNode *next;
-} LinkedNode;
+	struct UTE_NODE *next;
+} UTE_NODE;
 
-#pragma mark Stack Operations
+#pragma mark - Stack Operations
 
-#define UTE_PUSH(o) {tmp=malloc(sizeof(LinkedNode));tmp->node=o;tmp->next=stack;stack=tmp;}
+#define UTE_PUSH(o) {tmp=malloc(sizeof(UTE_NODE));tmp->node=o;tmp->next=stack;stack=tmp;}
 #define UTE_POP()   {if(stack!=NULL){tmp=stack;stack=stack->next;free(tmp);}}
 #define UTE_TOP     ((stack!=NULL)?stack->node:NULL)
 
-#pragma mark Queue Operations
+#pragma mark - Queue Operations
 
-#define UTE_ENQUEUE(o) {tmp=malloc(sizeof(LinkedNode));tmp->node=o;tmp->next=NULL;\
+#define UTE_ENQUEUE(o) {tmp=malloc(sizeof(UTE_NODE));tmp->node=o;tmp->next=NULL;\
                         if(queue==NULL){queue=tmp;queueTail=tmp;}\
                         queueTail->next=tmp;queueTail=queueTail->next;}
 #define UTE_DEQUEUE()  {if(queue!=NULL){tmp=queue;queue=queue->next;free(tmp);}\
@@ -168,10 +71,10 @@ typedef struct LinkedNode {
 	@private
 	UnbalancedTreeNode *currentNode; /**< The next node that is to be returned. */
 	id tempObject;         /**< Temporary variable, holds the object to be returned.*/
-	LinkedNode *stack;     /**< Pointer to the top of a stack for most traversals. */
-	LinkedNode *queue;     /**< Pointer to the head of a queue for level-order. */
-	LinkedNode *queueTail; /**< Pointer to the tail of a queue for level-order. */
-	LinkedNode *tmp;       /**< Temporary variable for stack and queue operations. */
+	UTE_NODE *stack;     /**< Pointer to the top of a stack for most traversals. */
+	UTE_NODE *queue;     /**< Pointer to the head of a queue for level-order. */
+	UTE_NODE *queueTail; /**< Pointer to the tail of a queue for level-order. */
+	UTE_NODE *tmp;       /**< Temporary variable for stack and queue operations. */
 }
 
 /**
@@ -180,7 +83,7 @@ typedef struct LinkedNode {
  @param root The root node of the (sub)tree whose elements are to be enumerated.
  @param order The traversal order to use for enumerating the given (sub)tree.
  */
-- (id) initWithRoot:(UnbalancedTreeNode *)root traversalOrder:(CHTraversalOrder)order;
+- (id) initWithRoot:(UnbalancedTreeNode*)root traversalOrder:(CHTraversalOrder)order;
 
 /**
  Returns an array of objects the receiver has yet to enumerate.
@@ -190,7 +93,7 @@ typedef struct LinkedNode {
  Invoking this method exhausts the remainder of the objects, such that subsequent
  invocations of #nextObject return <code>nil</code>.
  */
-- (NSArray *) allObjects;
+- (NSArray*) allObjects;
 
 /**
  Returns the next object from the collection being enumerated.
@@ -206,9 +109,8 @@ typedef struct LinkedNode {
 
 @implementation UnbalancedTreeEnumerator
 
-- (id) initWithRoot:(UnbalancedTreeNode *)root traversalOrder:(CHTraversalOrder)order;
-{
-	if (![super init] || !isValidTraversalOrder(order)) {
+- (id) initWithRoot:(UnbalancedTreeNode*)root traversalOrder:(CHTraversalOrder)order {
+	if ([super init] == nil || !isValidTraversalOrder(order)) {
 		[self release];
 		return nil;
 	}
@@ -224,8 +126,7 @@ typedef struct LinkedNode {
 	return self;
 }
 
-- (id) nextObject
-{
+- (id) nextObject {
 	switch (traversalOrder) {
 		case CHTraversePreOrder:
 			currentNode = UTE_TOP;
@@ -309,14 +210,11 @@ typedef struct LinkedNode {
 	}
 }
 
-- (NSArray *) allObjects
-{
+- (NSArray*) allObjects {
 	NSMutableArray *array = [[NSMutableArray alloc] init];
 	id object;
-	
 	while ((object = [self nextObject]))
 		[array addObject:object];
-	
 	return [array autorelease];
 }
 
@@ -324,11 +222,105 @@ typedef struct LinkedNode {
 
 #pragma mark -
 
+#pragma mark C Functions for Optimized Operations
+
+static struct UnbalancedTreeNode * _findMaxWithStarter(struct UnbalancedTreeNode *starter) {
+	//see comment in findMinWithStarter for explanation
+	struct UnbalancedTreeNode *bar, *foo = starter;
+	while ((bar = foo->right) != nil)
+		foo = bar;
+	return foo;	
+}
+
+static struct UnbalancedTreeNode * _findMinWithStarter(struct UnbalancedTreeNode *starter) {
+	struct UnbalancedTreeNode *bar, *foo = starter;
+	
+	//a subtle nil test here -- note the terminating semicolon
+	//when foo->left points to nil, we return foo because
+	//there is nothing more to the left.
+	while ((bar = foo->left) != nil)
+		foo = bar;
+	return foo;
+}
+
+// TODO: C function to locate a node; use for contains/find/remove a single object.
+
+static struct UnbalancedTreeNode * _removeNode(struct UnbalancedTreeNode *node,
+											   struct UnbalancedTreeNode *treeRoot) {
+	if (node == NULL)
+		return NULL;
+	
+	struct UnbalancedTreeNode *oldRoot;
+	
+	if (node->left == NULL) {
+		if (node->right == NULL) { // both children are NULL
+			[node->object release];
+			if (node != treeRoot)
+				free(node);
+			return NULL;
+		}
+		else { // only right exists, so replace current with right subtree
+			oldRoot = node;
+			node = node->right;
+			node->parent = oldRoot->parent;
+			
+			//fix the parent's pointers.
+			if (node->parent != NULL)
+			{
+				if (node->parent->left == oldRoot) 
+					node->parent->left = node;
+				else if (node->parent->right == oldRoot)
+					node->parent->right = node; 
+			}
+			
+			[oldRoot->object release];
+			free(oldRoot);
+			return node;
+		}
+	}
+	else { //left was not nil
+		if (node->right == NULL) {
+			oldRoot = node;
+			node = node->left;
+			node->parent = oldRoot->parent;
+			
+			//fix the parent's pointers.
+			if (node->parent != NULL)
+			{
+				if (node->parent->left == oldRoot) 
+					node->parent->left = node;
+				else if (node->parent->right == oldRoot)
+					node->parent->right = node; 
+			}
+			
+			[oldRoot->object release];
+			free(oldRoot);
+			return node;
+		}
+		else {
+			//now of course this is the usual -- both L & R nodes exist
+		
+			//replace our node with the node at the leftmost of its right subtree.
+			//1. release our present node's object
+			//2. find the node we will destroy after plucking its object
+			//3. set our present node's object pointer to the replacement object
+			//4. fix the parent pointer of the to-be-freed node
+			[node->object release];
+			oldRoot = _findMinWithStarter(node->right);
+			node->object = oldRoot->object;
+			oldRoot->parent->left = NULL;
+			free(oldRoot);
+			return node;
+		}
+	}
+}
+
+#pragma mark -
+
 @implementation UnbalancedTree
 
-- (id) init
-{
-	if (![super init]) {
+- (id) init {
+	if ([super init] == nil) {
 		[self release];
 		return nil;
 	}
@@ -336,19 +328,14 @@ typedef struct LinkedNode {
 	return self;
 }
 
-- (void) dealloc
-{
+- (void) dealloc {
 	[self removeAllObjects];
 	[super dealloc];
 }
 
-- (void) addObject:(id)anObject
-{
-	NSInteger comparison;
-	
+- (void) addObject:(id)anObject {
 	if (anObject == nil)
-		[NSException raise:NSInvalidArgumentException
-					format:@"-[UnbalancedTree addObject:] -- Invalid nil argument."];
+		invalidNilArgumentException([self class], _cmd);
 	
 	[anObject retain];
 	
@@ -364,6 +351,8 @@ typedef struct LinkedNode {
 	
 	// TODO: Simplify object insertion
 	
+	NSInteger comparison;
+	
 	struct UnbalancedTreeNode *parentNode, *currentNode = root;
 	while (currentNode != nil) {
 		parentNode = currentNode;
@@ -378,11 +367,11 @@ typedef struct LinkedNode {
 			currentNode = currentNode->right;
 	}
 	
-	//this is why we used the special case.
-	//we see what state got us to this
-	//if it's equal, we just replace bar.
+	// this is why we used the special case.
+	// we see what state got us to this
+	// if it's equal, we just replace bar.
 	
-	//remember we REPLACE (i.e., release the old) elements
+	// Remember, we REPLACE (i.e., release the old) elements
 	if (comparison == NSOrderedSame) {
 		[parentNode->object release];
 		parentNode->object = anObject;
@@ -402,19 +391,41 @@ typedef struct LinkedNode {
 	}
 }
 
-- (id) findMax
-{
+- (void) addObjectsFromEnumerator:(NSEnumerator*)enumerator {
+	if (enumerator == nil)
+		invalidNilArgumentException([self class], _cmd);
+	for (id object in enumerator)
+		[self addObject:object];
+}
+
+- (BOOL) containsObject:(id)anObject {
+	if (anObject == nil)
+		return NO;
+	
+	struct UnbalancedTreeNode *currentNode = root;
+	while (currentNode != NULL) {
+		if ([anObject isEqual:currentNode->object])
+			return YES;
+		short comparison = [anObject compare:currentNode->object];
+		if (comparison == NSOrderedAscending)
+			currentNode = currentNode->left;
+		else
+			currentNode = currentNode->right;
+	}
+	return NO;
+}
+
+- (id) findMax {
 	return (_findMaxWithStarter(root))->object;
 }
 
-- (id) findMin
-{
+- (id) findMin {
 	return (_findMinWithStarter(root))->object;
 }
 
 - (id) findObject:(id)anObject {
 	if (anObject == nil)
-		[self exceptionForInvalidArgument:_cmd];
+		return nil;
 	
 	struct UnbalancedTreeNode *currentNode = root;
 	while (currentNode != NULL) {
@@ -430,31 +441,13 @@ typedef struct LinkedNode {
 	return nil;	
 }
 
-- (BOOL) containsObject:(id)anObject {
-	if (anObject == nil)
-		[self exceptionForInvalidArgument:_cmd];
-	
-	struct UnbalancedTreeNode *currentNode = root;
-	while (currentNode != NULL) {
-		if ([anObject isEqual:currentNode->object])
-			return YES;
-		short comparison = [anObject compare:currentNode->object];
-		if (comparison == NSOrderedAscending)
-			currentNode = currentNode->left;
-		else
-			currentNode = currentNode->right;
-	}
-	return NO;
-}
-
 /**
  Removal is guaranteed not to make the tree deeper/taller, since it uses the "min of
  the right subtree" algorithm if the node to be removed has children.
  */
-- (void) removeObject:(id)anObject
-{
+- (void) removeObject:(id)anObject {
 	if (anObject == nil)
-		[self exceptionForInvalidArgument:_cmd];
+		invalidNilArgumentException([self class], _cmd);
 	
 	struct UnbalancedTreeNode *currentNode = root;
 	while (currentNode != NULL) {
@@ -476,12 +469,11 @@ typedef struct LinkedNode {
  buffer array to store the objects waiting to be deleted; in a binary tree, no more
  than half of the nodes will be on the queue.
  */
-- (void) removeAllObjects
-{
+- (void) removeAllObjects {
 	UnbalancedTreeNode *currentNode;
-	LinkedNode *queue	 = NULL;
-	LinkedNode *queueTail = NULL;
-	LinkedNode *tmp;
+	UTE_NODE *queue	 = NULL;
+	UTE_NODE *queueTail = NULL;
+	UTE_NODE *tmp;
 	
 	UTE_ENQUEUE(root);
 	while (1) {
@@ -500,8 +492,7 @@ typedef struct LinkedNode {
 	}
 }
 
-- (NSEnumerator *) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order
-{
+- (NSEnumerator*) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order {
 	if (root == NULL)
 		return nil;
 	

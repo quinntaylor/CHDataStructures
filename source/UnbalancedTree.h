@@ -56,15 +56,16 @@ typedef struct UnbalancedTreeNode {
  */
 - (id) init;
 
-#pragma mark Inherited Methods
-- (void) addObject:(id)anObject;
-- (id) findObject:(id)target;
-- (id) findMin;
-- (id) findMax;
+#pragma mark Method Implementations
+
+- (void) addObject:(id)object;
 - (BOOL) containsObject:(id)anObject;
+- (id) findMax;
+- (id) findMin;
+- (id) findObject:(id)target;
 - (void) removeObject:(id)anObject;
 - (void) removeAllObjects;
-- (NSEnumerator *) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order;
+- (NSEnumerator*) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order;
 
 @end
 
