@@ -36,8 +36,7 @@
 
 #pragma mark C Functions for Optimized Operations
 
-static void _bubbleup(NSMutableArray *heap)
-{
+static void _bubbleup(NSMutableArray *heap) {
 	NSUInteger i, parent;
 	 
 	//get the last index...
@@ -58,8 +57,7 @@ static void _bubbleup(NSMutableArray *heap)
 	return;
 }
 
-static void _bubbledown(NSMutableArray *heap)
-{
+static void _bubbledown(NSMutableArray *heap) {
 	NSUInteger parent = 0, lchild, rchild;
 	
 	while (parent < [heap count] / 2)	
@@ -120,8 +118,7 @@ static void _bubbledown(NSMutableArray *heap)
 
 @implementation ArrayHeap
 
-- (id) init
-{
+- (id) init {
 	if ([super init] == nil) {
 		[self release];
 		return nil;
@@ -130,14 +127,12 @@ static void _bubbledown(NSMutableArray *heap)
 	return self;
 }
 
-- (void) dealloc
-{
+- (void) dealloc {
 	[irep release];
 	[super dealloc];
 }
 
-- (void) addObject:(id)anObject
-{
+- (void) addObject:(id)anObject {
 	if (anObject == nil) {
 		[NSException raise:NSInvalidArgumentException
 					format:@"Object to be added cannot be nil."];
@@ -148,8 +143,7 @@ static void _bubbledown(NSMutableArray *heap)
 	}	
 }
 		
-- (id) removeRoot
-{
+- (id) removeRoot {
 	if ([irep count] == 0)
 		return nil;
 
@@ -162,8 +156,7 @@ static void _bubbledown(NSMutableArray *heap)
 	return [obj autorelease];
 }
 
-- (id) removeLast
-{
+- (id) removeLast {
 	if ([irep count] == 0)
 		return nil;
 	
@@ -173,8 +166,7 @@ static void _bubbledown(NSMutableArray *heap)
 	return [obj autorelease];
 }
 
-- (NSUInteger) count
-{
+- (NSUInteger) count {
 	return [irep count];
 }
 

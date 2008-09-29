@@ -74,10 +74,10 @@
 - (id) lastObject;
 
 /**
- Returns an array containing the objects in this deque.
+ Returns an array containing the objects in this deque, ordered from front to back.
  
  @return An array containing the objects in this deque. If the deque is empty, the
-		 array is also empty. The array is ordered as the objects are in the deque. 
+		 array is also empty.
  */
 - (NSArray*) allObjects;
 

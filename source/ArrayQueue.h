@@ -42,11 +42,12 @@
 /**
  Returns an enumerator that accesses each object in the queue from back to front.
  
- NOTE: When you use an enumerator, you must not modify the tree during enumeration.
+ NOTE: When you use an enumerator, you must not modify the queue during enumeration.
  */
 - (NSEnumerator*) reverseObjectEnumerator;
 
-#pragma mark Inherited Methods
+#pragma mark Method Implementations
+
 - (id) initWithObjectsFromEnumerator:(NSEnumerator*)anEnumerator;
 - (void) enqueueObject:(id)anObject;
 - (id) dequeueObject;

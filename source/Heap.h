@@ -27,6 +27,7 @@
 //  Many thanks to Gordon for the very first outside contribution to the library!
 
 #import <Foundation/Foundation.h>
+#import "Util.h"
 
 /**
  A <a href="http://en.wikipedia.org/wiki/Heap_(data_structure)">heap</a> protocol,
@@ -73,8 +74,7 @@
 
 // NOTE: For a future release:
 
-//- (void) addObjectsFromCollection:(id)collection
-//- (void) addObjectsFromHeap:(id<Heap>)otherHeap;
 //- (id) initWithSortOrder:(NSComparisonResult)sortOrder; // for min/max heaps
+//- (void) addObjectsFromHeap:(id<Heap>)otherHeap;
 
 @end

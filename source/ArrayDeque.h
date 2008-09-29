@@ -8,7 +8,7 @@
 	NSMutableArray *array;
 }
 
-#pragma mark Inherited Methods
+#pragma mark Method Implementations
 
 - (void) addObjectToFront:(id)anObject;
 - (void) addObjectToBack:(id)anObject;

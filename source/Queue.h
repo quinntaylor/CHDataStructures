@@ -88,7 +88,7 @@
 /**
  Returns an enumerator that accesses each object in the queue from front to back.
  
- NOTE: When you use an enumerator, you must not modify the tree during enumeration. 
+ NOTE: When you use an enumerator, you must not modify the queue during enumeration. 
  */
 - (NSEnumerator*) objectEnumerator;
 

@@ -26,7 +26,7 @@
 //  Edits and refactoring by Phillip Morelock for library integration and performance. 
 
 #import <Foundation/Foundation.h>
-#import <Heap.h>
+#import "Heap.h"
 
 /**
  A simple Heap implemented using an NSMutableArray.
@@ -36,7 +36,8 @@
 	NSMutableArray *irep;
 }
 
-#pragma mark Inherited Methods
+#pragma mark Method Implementations
+
 - (void) addObject:(id)anObject;
 - (id) removeRoot;
 - (id) removeLast;

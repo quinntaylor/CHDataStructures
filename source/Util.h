@@ -53,3 +53,14 @@ static void invalidNilArgumentException(Class theClass, SEL method) {
 				format:@"[%@ %s] -- Invalid nil argument.",
 					   theClass, sel_getName(method)];
 }
+
+static void QuietLog (NSString *format, ...) {
+    // Get a reference to the arguments that follow the format paramter
+    va_list argList;
+    va_start(argList, format);
+    // Perform format string argument substitution, reinstate %% escapes, then print
+    NSString *s = [[[NSString alloc] initWithFormat:format arguments:argList] autorelease];
+    printf("%s\n", [[s stringByReplacingOccurrencesOfString:@"%%"
+                                                 withString:@"%%%%"] UTF8String]);
+    va_end(argList);
+}

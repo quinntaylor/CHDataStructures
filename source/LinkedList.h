@@ -23,6 +23,7 @@
 //  DataStructuresFramework
 
 #import <Foundation/Foundation.h>
+#import "Util.h"
 
 /**
  A <a href="http://en.wikipedia.org/wiki/Linked_list">linked list</a> protocol with
@@ -100,6 +101,14 @@
 - (id) lastObject;
 
 /**
+ Returns an array containing the objects in this linked list.
+ 
+ @return An array containing the objects in this linked list. If the deque is empty,
+ the array is also empty. The array is ordered as the objects are in the list. 
+ */
+- (NSArray*) allObjects;
+
+/**
  Remove the item at the head of the list.
  */
 - (void) removeFirstObject;
@@ -149,7 +158,7 @@
  @return An enumerator object that lets you access each object in the receiver, from
         the element at the lowest index upwards.
  */
-- (NSEnumerator *) objectEnumerator;
+- (NSEnumerator*) objectEnumerator;
 
 /**
  Create an autoreleased LinkedList with the contents of the array in the given order.
@@ -157,7 +166,9 @@
  @param array An array of objects to add to the queue.
  @param direction The order in which to enqueue objects from the array. YES means the 
         natural index order (0...n), NO means reverse index order (n...0).
+ 
+ @todo Switch to <code>+listWithArray:byReversingOrder:</code> like Stack.
  */
-+ (id <LinkedList>) listWithArray:(NSArray *)array ofOrder:(BOOL)direction;
++ (id<LinkedList>) listWithArray:(NSArray*)array ofOrder:(BOOL)direction;
 
 @end

@@ -56,11 +56,15 @@ typedef struct DoublyLinkedNode {
 	DoublyLinkedNode *endMarker;   /**< A pointer to the back node of the list. */
 }
 
-//a bonus method.  supplies an enumerator that goes backwards
-//meaning from tail to head.
-- (NSEnumerator *) reverseObjectEnumerator;
+/**
+ Returns an enumerator that accesses each object in the list from back to front.
+ 
+ NOTE: When you use an enumerator, you must not modify the list during enumeration.
+ */
+- (NSEnumerator*) reverseObjectEnumerator;
 
-#pragma mark Inherited Methods
+#pragma mark Method Implementations
+
 - (void) addObjectToFront:(id)anObject;
 - (void) addObjectToBack:(id)anObject;
 - (id) firstObject;
@@ -70,7 +74,7 @@ typedef struct DoublyLinkedNode {
 - (BOOL) containsObjectIdenticalTo:(id)anObject;
 - (void) insertObject:(id)anObject atIndex:(NSUInteger)index;
 - (id) objectAtIndex:(NSUInteger)index;
-- (NSEnumerator *) objectEnumerator;
+- (NSEnumerator*) objectEnumerator;
 - (void) removeFirstObject;
 - (void) removeLastObject;
 - (void) removeObject:(id)anObject;
@@ -79,6 +83,7 @@ typedef struct DoublyLinkedNode {
 - (void) removeAllObjects;
 
 #pragma mark Redefined Methods
-+ (DoublyLinkedList *) listWithArray:(NSArray *)array ofOrder:(BOOL)direction;
+
++ (DoublyLinkedList*) listWithArray:(NSArray*)array ofOrder:(BOOL)direction;
 
 @end
