@@ -23,6 +23,7 @@
 //  DataStructuresFramework
 
 #import <Foundation/Foundation.h>
+#import "Util.h"
 
 /**
  A <a href="http://en.wikipedia.org/wiki/Queue_(data_structure)">queue</a> protocol
@@ -31,6 +32,16 @@
  @todo Add support for methods in NSCoding, NSMutableCopying, and NSFastEnumeration.
  */
 @protocol Queue <NSObject>
+
+/**
+ Initialize a newly allocated queue by placing in it the objects from an enumerator.
+ This allows flexibility in specifying insertion order, such as passing the result of
+ <code>-objectEnumerator</code> or <code>-reverseObjectEnumerator</code> on NSArray.
+ 
+ @param anEnumerator An enumerator which provides objects to insert into the queue.
+        Objects are inserted in the order received from <code>-nextObject</code>.
+ */
+- (id) initWithObjectsFromEnumerator:(NSEnumerator*)anEnumerator;
 
 /**
  Add an object to the back of the queue.
@@ -55,6 +66,14 @@
 - (id) frontObject;
 
 /**
+ Returns an array containing the objects in this queue, ordered from front to back.
+ 
+ @return An array containing the objects in this queue. If the queue is empty, the
+         array is also empty.
+ */
+- (NSArray*) allObjects;
+
+/**
  Returns the number of objects currently in the queue.
  
  @return The number of objects currently in the queue.
@@ -71,30 +90,6 @@
  
  NOTE: When you use an enumerator, you must not modify the tree during enumeration. 
  */
-- (NSEnumerator *) objectEnumerator;
-
-/**
- Creates an NSArray which contains the objects in this queue, either front-to-back or
- in reverse order.
- 
- @param reverseOrder The order in which to insert elements into the array.
-		<ul>
-		<li><code>NO</code> - The 0 index contains the first element in the queue.
-		<li><code>YES</code> - The 0 index contains the last element in the queue.
-		</ul>
- */
-- (NSArray *) contentsAsArrayByReversingOrder:(BOOL)reverseOrder;
-
-/**
- Returns an autoreleased Queue with the contents of the array in the specified order.
- 
- @param array An array of objects to add to the queue.
- @param reverseOrder The order in which to enqueue objects from the array.
-		<ul>
-		<li><code>NO</code> - The queue contains the array object in order (0...n).
-		<li><code>YES</code> - The queue contains the array object in order (n...0).
-        </ul>
- */
-+ (id<Queue>) queueWithArray:(NSArray *)array byReversingOrder:(BOOL)reverseOrder;
+- (NSEnumerator*) objectEnumerator;
 
 @end

@@ -26,13 +26,21 @@
 
 @implementation ArrayQueue
 
-- (id) init
-{
-	return [self initWithCapacity:10];
+- (id) init {
+	return [self initWithObjectsFromEnumerator:nil];
 }
 
-- (id) initWithCapacity:(NSUInteger)capacity
-{
+- (id) initWithObjectsFromEnumerator:(NSEnumerator*)anEnumerator {
+	if ([super init] == nil) {
+		[self release];
+		return nil;
+	}
+	array = [[anEnumerator allObjects] mutableCopy];
+	return self;
+}
+
+// Additional method in this implementation
+- (id) initWithCapacity:(NSUInteger)capacity {
 	if ([super init] == nil) {
 		[self release];
 		return nil;
@@ -41,25 +49,19 @@
 	return self;
 }
 
-- (void) dealloc
-{
+- (void) dealloc {
 	[array release];
 	[super dealloc];
 }
 
-- (void) enqueueObject: (id)anObject
-{
-	if (anObject == nil) {
-		[NSException raise:NSInvalidArgumentException
-					format:@"Object to be added cannot be nil."];
-	}
-	else {
+- (void) enqueueObject: (id)anObject {
+	if (anObject == nil)
+		invalidNilArgumentException([self class], _cmd);
+	else
 		[array addObject:anObject];
-	}	
 }
 
-- (id) dequeueObject
-{
+- (id) dequeueObject {
 	if ([array count] == 0)
 		return nil;
 	id object = [[array objectAtIndex:0] retain];
@@ -67,25 +69,29 @@
 	return [object autorelease];
 }
 
-- (id) frontObject
-{
+- (id) frontObject {
 	return [array objectAtIndex:0];
 }
 
+- (NSArray*) allObjects {
+	return [array copy];
+}
 
-- (NSUInteger) count
-{
+- (NSUInteger) count {
 	return [array count];
 }
 
-- (void) removeAllObjects
-{
+- (void) removeAllObjects {
 	[array removeAllObjects];
 }
 
-- (NSEnumerator *)objectEnumerator
-{
+- (NSEnumerator*) objectEnumerator {
 	return [array objectEnumerator];
+}
+
+// Additional method in this implementation
+- (NSEnumerator*) reverseObjectEnumerator {
+	return [array reverseObjectEnumerator];
 }
 
 @end

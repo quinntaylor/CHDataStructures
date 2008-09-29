@@ -23,13 +23,13 @@
 //  Data Structures Framework
 
 #import <Foundation/Foundation.h>
-#import "AbstractQueue.h"
+#import "Queue.h"
 
 /**
  A fairly basic Queue implementation that uses an NSMutableArray to store objects.
  See the protocol definition for Queue to understand the contract.
  */
-@interface ArrayQueue : AbstractQueue
+@interface ArrayQueue : NSObject <Queue>
 {
 	NSMutableArray *array;
 }
@@ -39,11 +39,21 @@
  */
 - (id) initWithCapacity:(NSUInteger)capacity;
 
+/**
+ Returns an enumerator that accesses each object in the queue from back to front.
+ 
+ NOTE: When you use an enumerator, you must not modify the tree during enumeration.
+ */
+- (NSEnumerator*) reverseObjectEnumerator;
+
 #pragma mark Inherited Methods
+- (id) initWithObjectsFromEnumerator:(NSEnumerator*)anEnumerator;
 - (void) enqueueObject:(id)anObject;
 - (id) dequeueObject;
 - (id) frontObject;
+- (NSArray*) allObjects;
 - (NSUInteger) count;
 - (void) removeAllObjects;
+- (NSEnumerator*) objectEnumerator;
 
 @end

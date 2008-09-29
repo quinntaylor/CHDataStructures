@@ -27,54 +27,56 @@
 
 @implementation LLQueue
 
-- (id)init
-{
-	[super init];
-	list = [[DoublyLinkedList alloc] init];
+- (id) init {
+	return [self initWithObjectsFromEnumerator:nil];
+}
+
+- (id) initWithObjectsFromEnumerator:(NSEnumerator*)anEnumerator {
+	if ([super init] == nil) {
+		[self release];
+		return nil;
+	}
+	list = [DoublyLinkedList listWithArray:[anEnumerator allObjects] ofOrder:YES];
 	return self;
 }
 
-- (void)dealloc
-{
+- (void) dealloc {
 	[list release];
 	[super dealloc];
 }
 
-//if you try to enqueue nil, it will return false
-- (BOOL) enqueueObject:(id)pushedObj
-{
-	if (!pushedObj)
-		return NO;
-	
-	[list addObjectToBack:pushedObj];
-	return YES;
+- (void) enqueueObject:(id)anObject {
+	if (anObject == nil)
+		invalidNilArgumentException([self class], _cmd);
+	else
+		[list addObjectToBack:anObject];
 }
 
-//returns nil if the queue is empty.
-- (id) dequeueObject
-{
+- (id) dequeueObject {
+	if ([list count] == 0)
+		return nil;
 	id retval = [[list firstObject] retain];
 	[list removeFirstObject];
 	return [retval autorelease];
 }
 
-- (id) frontObject
-{
+- (id) frontObject {
 	return [list firstObject];
 }
 
-- (NSUInteger) count
-{
+- (NSArray*) allObjects {
+	return [list allObjects];
+}
+
+- (NSUInteger) count {
 	return [list count];
 }
 
-- (void) removeAllObjects
-{
+- (void) removeAllObjects {
 	[list removeAllObjects];
 }
 
-- (NSEnumerator *)objectEnumerator
-{
+- (NSEnumerator*) objectEnumerator {
 	return [list objectEnumerator];
 }
 
