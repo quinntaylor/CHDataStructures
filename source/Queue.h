@@ -27,6 +27,8 @@
 /**
  A <a href="http://en.wikipedia.org/wiki/Queue_(data_structure)">queue</a> protocol
  with methods for <a href="http://en.wikipedia.org/wiki/FIFO">FIFO</a> operations.
+ 
+ @todo Add support for methods in NSCoding, NSMutableCopying, and NSFastEnumeration.
  */
 @protocol Queue <NSObject>
 

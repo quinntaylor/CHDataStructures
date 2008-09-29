@@ -27,6 +27,8 @@
 /**
  A <a href="http://en.wikipedia.org/wiki/Deque">deque</a> protocol with methods for
  insertion and removal on both ends of a queue.
+ 
+ @todo Add support for methods in NSCoding, NSMutableCopying, and NSFastEnumeration.
  */
 @protocol Deque <NSObject>
 

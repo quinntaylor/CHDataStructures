@@ -53,6 +53,11 @@ typedef short CHTraversalOrder;
  and returns NSOrderedAscending, NSOrderedSame, or NSOrderedDescending as the
  receiver is less than, equal to, or greater than the argument, respectively. (See
  NSComparisonResult in NSObjCRuntime.h for details.) 
+
+ @todo Add support for methods in NSCoding, NSMutableCopying, and NSFastEnumeration.
+ 
+ @todo <code> - (void) addObjectsFromTree:(id<Tree>)otherTree
+								withOrder:(CHTraversalOrder)traversalOrder;</code>
  */
 @protocol Tree <NSObject>
 

@@ -59,4 +59,13 @@
  I am very receptive to help, criticism, flames, whatever.
  
          &mdash; <a href="http://www.phillipmorelock.com/">Phillip Morelock</a>, 2002
+
+ 
+ 
+ @todo Add support for invalidating enumerators when the underlying data is mutated.
+ 
+ @todo Consider adding <code>-makeObjectsPerform:</code> and
+       <code>-makeObjectsPerform:with:</code>
+ 
+ @todo Consider adding <code>-replaceObject:withObject:</code>
  */

@@ -27,6 +27,8 @@
 /**
  A <a href="http://en.wikipedia.org/wiki/Stack_(data_structure)">stack</a> protocol
  with methods for <a href="http://en.wikipedia.org/wiki/LIFO">LIFO</a> operations.
+ 
+ @todo Add support for methods in NSCoding, NSMutableCopying, and NSFastEnumeration.
  */
 @protocol Stack <NSObject>
 
