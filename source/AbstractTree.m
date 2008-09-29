@@ -23,7 +23,7 @@
 //  DataStructuresFramework
 
 #import "AbstractTree.h"
-#import "LLStack.h"
+#import "ListStack.h"
 
 @implementation AbstractTree
 

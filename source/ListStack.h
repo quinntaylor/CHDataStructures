@@ -19,7 +19,7 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *******************************/
 
-//  LLStack.h
+//  ListStack.h
 //  DataStructuresFramework
 
 #import <Foundation/Foundation.h>
@@ -30,7 +30,7 @@
  A simple Stack implemented using a linked list. It's based on DoublyLinkedList which
  is partially implemented in straight C, so it's pretty fast.
  */
-@interface LLStack : NSObject <Stack>
+@interface ListStack : NSObject <Stack>
 {
 	/** The linked list used for storing the contents of the stack. */
 	DoublyLinkedList *list;

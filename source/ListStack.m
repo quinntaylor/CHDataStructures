@@ -19,16 +19,17 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *******************************/
 
-//  LLQueue.m
+//  ListStack.m
 //  DataStructuresFramework
 
-#import "LLQueue.h"
-#import "DoublyLinkedList.h"
+#import "ListStack.h"
 
-@implementation LLQueue
+@implementation ListStack
 
 - (id) init {
-	return [self initWithObjectsFromEnumerator:nil];
+	[super init];
+	list = [[DoublyLinkedList alloc] init];
+	return self;
 }
 
 - (id) initWithObjectsFromEnumerator:(NSEnumerator*)anEnumerator {
@@ -45,14 +46,14 @@
 	[super dealloc];
 }
 
-- (void) enqueueObject:(id)anObject {
+- (void) pushObject:(id)anObject {
 	if (anObject == nil)
 		invalidNilArgumentException([self class], _cmd);
 	else
-		[list addObjectToBack:anObject];
+		[list addObjectToFront:anObject];
 }
 
-- (id) dequeueObject {
+- (id) popObject {
 	if ([list count] == 0)
 		return nil;
 	id retval = [[list firstObject] retain];
@@ -60,7 +61,7 @@
 	return [retval autorelease];
 }
 
-- (id) frontObject {
+- (id) topObject {
 	return [list firstObject];
 }
 

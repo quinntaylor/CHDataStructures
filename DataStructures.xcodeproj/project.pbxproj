@@ -39,10 +39,10 @@
 		E4ADBB290E88174200B570BC /* ArrayStack.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB0B0E88174200B570BC /* ArrayStack.m */; };
 		E4ADBB2A0E88174200B570BC /* AbstractTree.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB0C0E88174200B570BC /* AbstractTree.h */; settings = {ATTRIBUTES = (); }; };
 		E4ADBB300E88174200B570BC /* Heap.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB120E88174200B570BC /* Heap.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E4ADBB310E88174200B570BC /* LLQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB130E88174200B570BC /* LLQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E4ADBB320E88174200B570BC /* LLQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB140E88174200B570BC /* LLQueue.m */; };
-		E4ADBB330E88174200B570BC /* LLStack.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB150E88174200B570BC /* LLStack.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E4ADBB340E88174200B570BC /* LLStack.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB160E88174200B570BC /* LLStack.m */; };
+		E4ADBB310E88174200B570BC /* ListQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB130E88174200B570BC /* ListQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E4ADBB320E88174200B570BC /* ListQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB140E88174200B570BC /* ListQueue.m */; };
+		E4ADBB330E88174200B570BC /* ListStack.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB150E88174200B570BC /* ListStack.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E4ADBB340E88174200B570BC /* ListStack.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB160E88174200B570BC /* ListStack.m */; };
 		E4ADBB350E88174200B570BC /* LinkedList.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB170E88174200B570BC /* LinkedList.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4ADBB360E88174200B570BC /* Queue.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB180E88174200B570BC /* Queue.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4ADBB390E88174200B570BC /* RedBlackTree.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB1B0E88174200B570BC /* RedBlackTree.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -104,10 +104,10 @@
 		E4ADBB0B0E88174200B570BC /* ArrayStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ArrayStack.m; path = source/ArrayStack.m; sourceTree = "<group>"; };
 		E4ADBB0C0E88174200B570BC /* AbstractTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AbstractTree.h; path = source/AbstractTree.h; sourceTree = "<group>"; };
 		E4ADBB120E88174200B570BC /* Heap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Heap.h; path = source/Heap.h; sourceTree = "<group>"; };
-		E4ADBB130E88174200B570BC /* LLQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LLQueue.h; path = source/LLQueue.h; sourceTree = "<group>"; };
-		E4ADBB140E88174200B570BC /* LLQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LLQueue.m; path = source/LLQueue.m; sourceTree = "<group>"; };
-		E4ADBB150E88174200B570BC /* LLStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LLStack.h; path = source/LLStack.h; sourceTree = "<group>"; };
-		E4ADBB160E88174200B570BC /* LLStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LLStack.m; path = source/LLStack.m; sourceTree = "<group>"; };
+		E4ADBB130E88174200B570BC /* ListQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ListQueue.h; path = source/ListQueue.h; sourceTree = "<group>"; };
+		E4ADBB140E88174200B570BC /* ListQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ListQueue.m; path = source/ListQueue.m; sourceTree = "<group>"; };
+		E4ADBB150E88174200B570BC /* ListStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ListStack.h; path = source/ListStack.h; sourceTree = "<group>"; };
+		E4ADBB160E88174200B570BC /* ListStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ListStack.m; path = source/ListStack.m; sourceTree = "<group>"; };
 		E4ADBB170E88174200B570BC /* LinkedList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LinkedList.h; path = source/LinkedList.h; sourceTree = "<group>"; };
 		E4ADBB180E88174200B570BC /* Queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Queue.h; path = source/Queue.h; sourceTree = "<group>"; };
 		E4ADBB1B0E88174200B570BC /* RedBlackTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RedBlackTree.h; path = source/RedBlackTree.h; sourceTree = "<group>"; };
@@ -209,10 +209,10 @@
 				E4ADBB0C0E88174200B570BC /* AbstractTree.h */,
 				E42DBAF10E8C3200000E1FBD /* Deque.h */,
 				E4ADBB120E88174200B570BC /* Heap.h */,
-				E4ADBB130E88174200B570BC /* LLQueue.h */,
-				E4ADBB140E88174200B570BC /* LLQueue.m */,
-				E4ADBB150E88174200B570BC /* LLStack.h */,
-				E4ADBB160E88174200B570BC /* LLStack.m */,
+				E4ADBB130E88174200B570BC /* ListQueue.h */,
+				E4ADBB140E88174200B570BC /* ListQueue.m */,
+				E4ADBB150E88174200B570BC /* ListStack.h */,
+				E4ADBB160E88174200B570BC /* ListStack.m */,
 				E4ADBB170E88174200B570BC /* LinkedList.h */,
 				E4ADBB180E88174200B570BC /* Queue.h */,
 				E4ADBB1B0E88174200B570BC /* RedBlackTree.h */,
@@ -267,8 +267,8 @@
 				E4ADBB280E88174200B570BC /* ArrayStack.h in Headers */,
 				E4ADBB2A0E88174200B570BC /* AbstractTree.h in Headers */,
 				E4ADBB300E88174200B570BC /* Heap.h in Headers */,
-				E4ADBB310E88174200B570BC /* LLQueue.h in Headers */,
-				E4ADBB330E88174200B570BC /* LLStack.h in Headers */,
+				E4ADBB310E88174200B570BC /* ListQueue.h in Headers */,
+				E4ADBB330E88174200B570BC /* ListStack.h in Headers */,
 				E4ADBB350E88174200B570BC /* LinkedList.h in Headers */,
 				E4ADBB360E88174200B570BC /* Queue.h in Headers */,
 				E4ADBB390E88174200B570BC /* RedBlackTree.h in Headers */,
@@ -382,8 +382,8 @@
 				E4ADBB250E88174200B570BC /* ArrayHeap.m in Sources */,
 				E4ADBB270E88174200B570BC /* ArrayQueue.m in Sources */,
 				E4ADBB290E88174200B570BC /* ArrayStack.m in Sources */,
-				E4ADBB320E88174200B570BC /* LLQueue.m in Sources */,
-				E4ADBB340E88174200B570BC /* LLStack.m in Sources */,
+				E4ADBB320E88174200B570BC /* ListQueue.m in Sources */,
+				E4ADBB340E88174200B570BC /* ListStack.m in Sources */,
 				E4ADBB3A0E88174200B570BC /* RedBlackTree.m in Sources */,
 				E4ADBB3D0E88174200B570BC /* DoublyLinkedList.m in Sources */,
 				E4ADBB410E88174200B570BC /* UnbalancedTree.m in Sources */,

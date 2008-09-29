@@ -19,7 +19,7 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *******************************/
 
-//  LLQueue.h
+//  ListQueue.h
 //  DataStructuresFramework
 
 #import <Foundation/Foundation.h>
@@ -30,7 +30,7 @@
 /**
  A simple Queue implementation that uses DoublyLinkedList.
  */
-@interface LLQueue : NSObject <Queue>
+@interface ListQueue : NSObject <Queue>
 {
 	DoublyLinkedList *list;
 }
