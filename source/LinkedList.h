@@ -42,10 +42,10 @@
  This allows flexibility in specifying insertion order, such as passing the result of
  <code>-objectEnumerator</code> or <code>-reverseObjectEnumerator</code> on NSArray.
  
- @param anEnumerator An enumerator which provides objects to insert into the list.
+ @param enumerator An enumerator which provides objects to insert into the list.
         Objects are inserted in the order received from <code>-nextObject</code>.
  */
-- (id) initWithObjectsFromEnumerator:(NSEnumerator*)anEnumerator;
+- (id) initWithObjectsFromEnumerator:(NSEnumerator*)enumerator;
 
 /**
  Returns the number of objects currently in the list.
@@ -171,6 +171,10 @@
 
 @optional
 
+- (void) insertObject:(id)anObject beforeObject:(id)otherObject;
+
+- (void) insertObject:(id)anObject afterObject:(id)otherObject;
+
 /**
  Inserts a given object at a given index. If <i>index</i> is already occupied, then
  objects at <i>index</i> and beyond are shifted one spot toward the end of the list.
@@ -185,10 +189,6 @@
  the specified index.
  */
 - (void) insertObject:(id)anObject atIndex:(NSUInteger)index;
-
-- (void) insertObject:(id)anObject beforeObject:(id)otherObject;
-
-- (void) insertObject:(id)anObject afterObject:(id)otherObject;
 
 /**
  Returns the object located at <i>index</i>.

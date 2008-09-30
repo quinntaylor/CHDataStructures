@@ -39,7 +39,7 @@
 		[self release];
 		return nil;
 	}
-	list = [DoublyLinkedList listWithArray:[anEnumerator allObjects] ofOrder:YES];
+	list = [[DoublyLinkedList alloc] initWithObjectsFromEnumerator:anEnumerator];
 	return self;
 }
 
