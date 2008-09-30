@@ -35,8 +35,6 @@
 
 /**
  Initialize a newly allocated deque by placing in it the objects from an enumerator.
- This allows flexibility in specifying insertion order, such as passing the result of
- <code>-objectEnumerator</code> or <code>-reverseObjectEnumerator</code> on NSArray.
  
  @param anEnumerator An enumerator which provides objects to insert into the queue.
         Objects are inserted in the order received from <code>-nextObject</code>.
@@ -47,17 +45,35 @@
  Add an object to the front of the deque.
  
  @param anObject The object to add to the deque; must not be <code>nil</code>, or an
-        <code>NSInvalidArgumentException</code> will be raised.
+        <code>NSInvalidArgumentException</code> is raised.
  */
-- (void) addObjectToFront:(id)anObject;
+- (void) prependObject:(id)anObject;
+
+/**
+ Add a group of objects to the front of the deque.
+ 
+ @param enumerator An enumerator containing objects to add to the front of the deque;
+		an <code>NSInvalidArgumentException</code> is raised if <code>nil</code>.
+        Objects are prepended in the order in they are provided by <i>enumerator</i>.
+ */
+- (void) prependObjectsFromEnumerator:(NSEnumerator*)enumerator;
 
 /**
  Add an object to the back of the deque.
  
  @param anObject The object to add to the deque; must not be <code>nil</code>, or an
-        <code>NSInvalidArgumentException</code> will be raised.
+ <code>NSInvalidArgumentException</code> is raised.
  */
-- (void) addObjectToBack:(id)anObject;
+- (void) appendObject:(id)anObject;
+
+/**
+ Add a group of objects to the back of the deque.
+ 
+ @param enumerator An enumerator containing objects to add to the back of the deque;
+		an <code>NSInvalidArgumentException</code> is raised if <code>nil</code>.
+		Objects are appended in the order in they are provided by <i>enumerator</i>.
+ */
+- (void) appendObjectsFromEnumerator:(NSEnumerator*)enumerator;
 
 /**
  Examine the first object in the deque without removing it.

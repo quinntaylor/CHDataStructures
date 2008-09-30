@@ -34,6 +34,16 @@
 @protocol LinkedList <NSObject>
 
 /**
+ Initialize a newly allocated list by placing in it the objects from an enumerator.
+ This allows flexibility in specifying insertion order, such as passing the result of
+ <code>-objectEnumerator</code> or <code>-reverseObjectEnumerator</code> on NSArray.
+ 
+ @param anEnumerator An enumerator which provides objects to insert into the list.
+        Objects are inserted in the order received from <code>-nextObject</code>.
+ */
+- (id) initWithObjectsFromEnumerator:(NSEnumerator*)anEnumerator;
+
+/**
  Returns the number of objects currently in the list.
  
  @return The number of objects currently in the list.
@@ -41,26 +51,17 @@
 - (NSUInteger) count;
 
 /**
- Determines if a list contains a given object, matched using <code>isEqual:</code>.
+ Inserts a given object at a given index. If <i>index</i> is already occupied, then
+ objects at <i>index</i> and beyond are shifted one spot toward the end of the list.
  
- @param anObject The object to test for membership in the list.
- */
-- (BOOL) containsObject:(id)anObject;
-
-/**
- Determines if a list contains a given object, matched using the == operator.
+ @param anObject The object to add to the list; must not be <code>nil</code>.
+ @param index The index in the receiver at which to insert anObject. If <i>index</i>
+        is greater than or equal to the value returned by <code>-count</code>, an
+        NSRangeException is raised.
  
- @param anObject The object to test for membership in the list.
- */
-- (BOOL) containsObjectIdenticalTo:(id)anObject;
-
-/**
- Inserts a given object at a given index. If index is already occupied, the objects
- at index and beyond are shifted by adding 1 to their indices to make room.
- 
- @param anObject The object to add to the list. This value must not be <code>nil</code>.
- @param index The index in the receiver at which to insert anObject. This value must
-        not be greater than the count of elements in the array.
+ NOTE: Inserting in the middle of a linked list is a somewhat inefficient operation;
+ although values aren't shifted like in arrays, the list must be traversed to find
+ the specified index.
  */
 - (void) insertObject:(id)anObject atIndex:(NSUInteger)index;
 
@@ -73,18 +74,38 @@
 - (id) objectAtIndex:(NSUInteger)index;
 
 /**
- Add an object at the head of the list.
+ Add an object to the front of the list.
  
- @param anObject The object to add to the list (must not be <code>nil</code>).
+ @param anObject The object to add to the list; must not be <code>nil</code>, or an
+ <code>NSInvalidArgumentException</code> is raised.
  */
-- (void) addObjectToFront:(id)anObject;
+- (void) prependObject:(id)anObject;
 
 /**
- Add an object at the tail of the list.
+ Add a group of objects to the front of the list.
  
- @param anObject The object to add to the list (must not be <code>nil</code>).
+ @param enumerator An enumerator containing objects to add to the front of the list;
+		an <code>NSInvalidArgumentException</code> is raised if <code>nil</code>.
+		Objects are prepended in the order in they are provided by <i>enumerator</i>.
  */
-- (void) addObjectToBack:(id)anObject;
+- (void) prependObjectsFromEnumerator:(NSEnumerator*)enumerator;
+
+/**
+ Add an object to the back of the list.
+ 
+ @param anObject The object to add to the list; must not be <code>nil</code>, or an
+ <code>NSInvalidArgumentException</code> is raised.
+ */
+- (void) appendObject:(id)anObject;
+
+/**
+ Add a group of objects to the back of the list.
+ 
+ @param enumerator An enumerator containing objects to add to the back of the list;
+		an <code>NSInvalidArgumentException</code> is raised if <code>nil</code>.
+		Objects are appended in the order in they are provided by <i>enumerator</i>.
+ */
+- (void) appendObjectsFromEnumerator:(NSEnumerator*)enumerator;
 
 /**
  Access the object at the head of the list.
@@ -107,6 +128,20 @@
  the array is also empty. The array is ordered as the objects are in the list. 
  */
 - (NSArray*) allObjects;
+
+/**
+ Determines if a list contains a given object, matched using <code>isEqual:</code>.
+ 
+ @param anObject The object to test for membership in the list.
+ */
+- (BOOL) containsObject:(id)anObject;
+
+/**
+ Determines if a list contains a given object, matched using the == operator.
+ 
+ @param anObject The object to test for membership in the list.
+ */
+- (BOOL) containsObjectIdenticalTo:(id)anObject;
 
 /**
  Remove the item at the head of the list.
@@ -156,19 +191,8 @@
  Returns an enumerator object that provides access to each object in the receiver.
  
  @return An enumerator object that lets you access each object in the receiver, from
-        the element at the lowest index upwards.
+         the element at the lowest index upwards.
  */
 - (NSEnumerator*) objectEnumerator;
-
-/**
- Create an autoreleased LinkedList with the contents of the array in the given order.
-
- @param array An array of objects to add to the queue.
- @param direction The order in which to enqueue objects from the array. YES means the 
-        natural index order (0...n), NO means reverse index order (n...0).
- 
- @todo Switch to <code>+listWithArray:byReversingOrder:</code> like Stack.
- */
-+ (id<LinkedList>) listWithArray:(NSArray*)array ofOrder:(BOOL)direction;
 
 @end

@@ -26,12 +26,24 @@
 	[super dealloc];
 }
 
-- (void) addObjectToFront:(id)anObject {
+- (void) prependObject:(id)anObject {
 	[array insertObject:anObject atIndex:0];
 }
 
-- (void) addObjectToBack:(id)anObject {
+- (void) prependObjectsFromEnumerator:(NSEnumerator*)enumerator {
+	if (enumerator != nil)
+		for (id object in enumerator)
+			[array insertObject:object atIndex:0];
+}
+
+- (void) appendObject:(id)anObject {
 	[array addObject:anObject];
+}
+
+- (void) appendObjectsFromEnumerator:(NSEnumerator*)enumerator {
+	if (enumerator != nil)
+		for (id object in enumerator)
+			[array addObject:object];
 }
 
 - (id) firstObject {
@@ -45,7 +57,6 @@
 - (NSArray*) allObjects {
 	return [array copy];
 }
-
 
 - (void) removeFirstObject {
 	[array removeObjectAtIndex:0];

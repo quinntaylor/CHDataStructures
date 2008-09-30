@@ -52,7 +52,7 @@
 	if (anObject == nil)
 		invalidNilArgumentException([self class], _cmd);
 	else
-		[list addObjectToBack:anObject];
+		[list appendObject:anObject];
 }
 
 - (id) dequeueObject {

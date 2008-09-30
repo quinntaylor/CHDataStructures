@@ -44,10 +44,6 @@ typedef struct DoublyLinkedNode {
  
  Nodes are now represented with C structs rather than Obj-C classes, providing much
  faster performance. (Thanks to Max Horn for the suggestion and additional guidance.)
- The protocols and interfaces also follow Apple's collection APIs more closely.
- 
- @todo Consider adding <code>-swapWithNext</code> and <code>-swapWithPrevious</code>?
-
  */
 @interface DoublyLinkedList : NSObject <LinkedList>
 {
@@ -65,8 +61,10 @@ typedef struct DoublyLinkedNode {
 
 #pragma mark Method Implementations
 
-- (void) addObjectToFront:(id)anObject;
-- (void) addObjectToBack:(id)anObject;
+- (void) prependObject:(id)anObject;
+- (void) prependObjectsFromEnumerator:(NSEnumerator*)enumerator;
+- (void) appendObject:(id)anObject;
+- (void) appendObjectsFromEnumerator:(NSEnumerator*)enumerator;
 - (id) firstObject;
 - (id) lastObject;
 - (NSUInteger) count;

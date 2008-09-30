@@ -42,8 +42,10 @@
 
 - (id) initWithObjectsFromEnumerator:(NSEnumerator*)enumerator;
 - (void) addObjectsFromEnumerator:(NSEnumerator*)enumerator;
+- (void) addObjectsFromTree:(id<Tree>)otherTree
+        usingTraversalOrder:(CHTraversalOrder)order;
 - (NSSet*) contentsAsSet;
-- (NSArray*) contentsAsArrayWithOrder:(CHTraversalOrder)traversalOrder;
+- (NSArray*) contentsAsArrayUsingTraversalOrder:(CHTraversalOrder)traversalOrder;
 - (NSUInteger) count;
 - (NSEnumerator*) objectEnumerator;
 - (NSEnumerator*) reverseObjectEnumerator;

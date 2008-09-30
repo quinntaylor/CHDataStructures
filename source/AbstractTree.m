@@ -49,6 +49,11 @@
 		[self addObject:object];
 }
 
+- (void) addObjectsFromTree:(id<Tree>)otherTree
+        usingTraversalOrder:(CHTraversalOrder)order {
+	[self addObjectsFromEnumerator:[otherTree objectEnumeratorWithTraversalOrder:order]];
+}
+
 - (NSSet*) contentsAsSet {
 	NSMutableSet *set = [[NSMutableSet alloc] init];
 	for (id object in [self objectEnumeratorWithTraversalOrder:CHTraversePreOrder])
@@ -56,7 +61,7 @@
 	return [set autorelease];
 }
 
-- (NSArray*) contentsAsArrayWithOrder:(CHTraversalOrder)order {
+- (NSArray*) contentsAsArrayUsingTraversalOrder:(CHTraversalOrder)order {
 	NSMutableArray *array = [[NSMutableArray alloc] init];
 	for (id object in [self objectEnumeratorWithTraversalOrder:order]) {
 		[array addObject:object];

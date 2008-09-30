@@ -49,16 +49,13 @@ typedef short CHTraversalOrder;
  conforming class must implement all these methods, they may document that certain of
  them are unsupported, and/or raise exceptions when they are called.
  
- Since objects in a Tree are inserted according to their sorted order, all objects
- must respond to the <code>compare:</code> selector, which accepts another object
- and returns NSOrderedAscending, NSOrderedSame, or NSOrderedDescending as the
+ Objects in a Tree are inserted according to their sorted order, so they must respond
+ to the <code>compare:</code> selector, which accepts another object and returns one
+ of <code>{NSOrderedAscending|NSOrderedSame|NSOrderedDescending}</code> as the
  receiver is less than, equal to, or greater than the argument, respectively. (See
- NSComparisonResult in NSObjCRuntime.h for details.) 
+ <code>NSComparisonResult</code> in NSObjCRuntime.h for details.)
 
  @todo Add support for methods in NSCoding, NSMutableCopying, and NSFastEnumeration.
- 
- @todo <code> - (void) addObjectsFromTree:(id<Tree>)otherTree
-								withOrder:(CHTraversalOrder)traversalOrder;</code>
  */
 @protocol Tree <NSObject>
 
@@ -87,6 +84,19 @@ typedef short CHTraversalOrder;
 - (void) addObjectsFromEnumerator:(NSEnumerator*)enumerator;
 
 /**
+ Add objects contained in another Tree to this tree, using the specified ordering.
+ 
+ @param otherTree The Tree containing objects to add to this tree.
+ @param order The traversal order to use for enumerating the given tree.
+ 
+ Bear in mind that the order in which nodes are drawn from the other tree influences
+ the balance of the tree, and for balanced trees, the work required to re-balance. In
+ addition, the traversal mode also affects the enumerator's memory requirements.
+ */
+- (void) addObjectsFromTree:(id<Tree>)otherTree
+        usingTraversalOrder:(CHTraversalOrder)order;
+
+/**
  Determines if the tree contains a given object (or one identical to it). Matches are
  based on an object's response to the <code>isEqual:</code> message.
  */
@@ -96,18 +106,6 @@ typedef short CHTraversalOrder;
  Returns the number of objects currently in the tree.
  */
 - (NSUInteger) count;
-
-/**
- Remove an object from the tree (or one identical to it) if it exists. Matches are
- based on an object's response to the <code>isEqual:</code> message. If no matching
- object exists, there is no effect.
- */
-- (void) removeObject:(id)element;
-
-/**
- Remove all objects from the tree; if it is already empty, there is no effect.
- */
-- (void) removeAllObjects;
 
 /**
  Return the maximum (rightmost) object in the tree.
@@ -126,6 +124,18 @@ typedef short CHTraversalOrder;
  @param anObject The object to be matched and located in the tree.
  */
 - (id) findObject:(id)anObject;
+
+/**
+ Remove an object from the tree (or one identical to it) if it exists. Matches are
+ based on an object's response to the <code>isEqual:</code> message. If no matching
+ object exists, there is no effect.
+ */
+- (void) removeObject:(id)element;
+
+/**
+ Remove all objects from the tree; if it is already empty, there is no effect.
+ */
+- (void) removeAllObjects;
 
 /**
  Returns an enumerator that accesses each object using the specified traversal order.
@@ -166,7 +176,9 @@ typedef short CHTraversalOrder;
  Creates an NSArray which contains the objects in this tree.
  The tree traversal ordering (in-order, pre-order, post-order) must be specified.
  The object traversed last will be at the end of the array.
+ 
+ @param order The traversal order to use for enumerating the given tree.
  */
-- (NSArray*) contentsAsArrayWithOrder:(CHTraversalOrder)order;
+- (NSArray*) contentsAsArrayUsingTraversalOrder:(CHTraversalOrder)order;
 
 @end

@@ -14,8 +14,10 @@
 
 #pragma mark Method Implementations
 
-- (void) addObjectToFront:(id)anObject;
-- (void) addObjectToBack:(id)anObject;
+- (void) prependObject:(id)anObject;
+- (void) prependObjectsFromEnumerator:(NSEnumerator*)enumerator;
+- (void) appendObject:(id)anObject;
+- (void) appendObjectsFromEnumerator:(NSEnumerator*)enumerator;
 - (id) firstObject;
 - (id) lastObject;
 - (NSArray*) allObjects;

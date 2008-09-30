@@ -71,6 +71,16 @@
  
  <!-- LGPL v.2 @ http://www.gnu.org/licenses/old-licenses/gpl-2.0.html -->
  
+ The data structure protocols include:
+ <ul>
+ <li>Deque
+ <li>Heap
+ <li>LinkedList
+ <li>Queue
+ <li>Stack
+ <li>Tree
+ </ul>
+ 
  Although we specifically target <a href="http://www.apple.com/macosx/">Mac OS X</a>,
  most of the code could be easily ported to other Objective-C environments, such as
  <a href="http://www.gnustep.org">GNUStep</a>. However, in the interest of code

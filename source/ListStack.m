@@ -54,7 +54,7 @@
 	if (anObject == nil)
 		invalidNilArgumentException([self class], _cmd);
 	else
-		[list addObjectToFront:anObject];
+		[list prependObject:anObject];
 }
 
 - (id) popObject {
