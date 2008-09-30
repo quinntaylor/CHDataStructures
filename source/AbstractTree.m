@@ -34,10 +34,6 @@
 		[self release];
 		return nil;
 	}
-	if (enumerator == nil) {
-		[self release];
-		invalidNilArgumentException([self class], _cmd);		
-	}
 	[self addObjectsFromEnumerator:enumerator];
 	return self;
 }

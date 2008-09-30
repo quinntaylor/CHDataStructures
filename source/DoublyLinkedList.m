@@ -32,9 +32,9 @@
 	BOOL direction; //YES == forward
 
 	@private
-	DoublyLinkedNode *header;
-	DoublyLinkedNode *tail;
-	DoublyLinkedNode *current;
+	DoublyLinkedListNode *head;
+	DoublyLinkedListNode *tail;
+	DoublyLinkedListNode *current;
 }
 
 /**
@@ -45,8 +45,8 @@
  @param dir The order in which to enumerate over the list. YES means the natural
         index order (0...n), NO means reverse index order (n...0).
  */
-- (id) initWithHead:(DoublyLinkedNode*)beginMarker
-           withTail:(DoublyLinkedNode*)endMarker
+- (id) initWithHead:(DoublyLinkedListNode*)beginMarker
+           withTail:(DoublyLinkedListNode*)endMarker
             forward:(BOOL)dir;
 
 /**
@@ -73,8 +73,8 @@
 #pragma mark -
 
 @implementation DoublyLinkedListEnumerator
-- (id) initWithHead:(DoublyLinkedNode*)beginMarker
-           withTail:(DoublyLinkedNode*)endMarker
+- (id) initWithHead:(DoublyLinkedListNode*)beginMarker
+           withTail:(DoublyLinkedListNode*)endMarker
             forward:(BOOL)dir
 {
 	if ([super init] == nil || beginMarker == nil || endMarker == nil) {
@@ -82,12 +82,12 @@
 		return nil;
 	}
 	
-	header = beginMarker;
+	head = beginMarker;
 	tail = endMarker;
 	
 	// YES == same order as linked list, NO == reverse order.
 	if ((direction = dir) == YES)
-		current = header;
+		current = head;
 	else
 		current = tail;
 	
@@ -95,7 +95,7 @@
 }
 
 - (id) nextObject {
-	DoublyLinkedNode *old = current;
+	DoublyLinkedListNode *old = current;
 	
 	if (direction) {
 		if (old->next == nil || old->next == tail)
@@ -104,7 +104,7 @@
 			return (current = old->next)->data; //return and advance the list
 	}
 	else {
-		if (old->prev == nil || old->prev == header)
+		if (old->prev == nil || old->prev == head)
 			return nil;
 		else
 			return (current = old->prev)->data;
@@ -112,7 +112,7 @@
 }
 
 - (NSArray*) allObjects {
-	DoublyLinkedNode *old = current;
+	DoublyLinkedListNode *old = current;
 	NSMutableArray *array = [[NSMutableArray alloc] init];
 	
 	if (direction) {
@@ -120,7 +120,7 @@
 			if (current) [array addObject: current->data];
 	}
 	else {
-		while ((current = old->prev) != header)
+		while ((current = old->prev) != head)
 			if (current) [array addObject: current->data];
 	}
 	return [array autorelease];
@@ -142,8 +142,8 @@
 	}
 	
 	// set up the markers pointing to each other	
-	beginMarker = malloc(sizeof(DoublyLinkedNode));
-	endMarker = malloc(sizeof(DoublyLinkedNode));
+	beginMarker = malloc(sizeof(DoublyLinkedListNode));
+	endMarker = malloc(sizeof(DoublyLinkedListNode));
 	
 	beginMarker->next = endMarker;
 	beginMarker->prev = NULL;
@@ -180,12 +180,12 @@
 	return listSize;
 }
 
-- (DoublyLinkedNode*) _findPos:(id)anObject identical:(BOOL)identical {
+- (DoublyLinkedListNode*) _findPos:(id)anObject identical:(BOOL)identical {
 	if (anObject == nil)
 		return nil;
 	
 	// simply iterate through
-	DoublyLinkedNode *p;
+	DoublyLinkedListNode *p;
 	for (p = beginMarker->next; p != endMarker; p = p->next) {
 		if (!identical) {
 			if ([anObject isEqual:p->data])
@@ -199,9 +199,9 @@
 	return nil; // not found
 }
 
-- (DoublyLinkedNode*) _nodeAtIndex:(NSUInteger)index {
+- (DoublyLinkedListNode*) _nodeAtIndex:(NSUInteger)index {
 	NSUInteger i;
-	DoublyLinkedNode *p; //a runner, also our return val
+	DoublyLinkedListNode *p; //a runner, also our return val
 	
 	// need to handle special case -- they can "insert it" at the index of the size
 	// of the list (in other words, at the end) but not beyond.
@@ -238,14 +238,14 @@
 	if (anObject == nil)
 		return;
 	
-	DoublyLinkedNode *p, *newNode;
+	DoublyLinkedListNode *p, *newNode;
 	
 	// find node to attach to
 	// _nodeAtIndex: does range checking, etc., by returning nil on error
 	if ((p = [self _nodeAtIndex:index]) == nil)
 		return;
 	
-	newNode = malloc(sizeof(DoublyLinkedNode));
+	newNode = malloc(sizeof(DoublyLinkedListNode));
 	
 	newNode->data = [anObject retain];
 	// prev is set to the prev pointer of the node it displaces
@@ -281,12 +281,12 @@
 }
 
 - (id) firstObject {
-	DoublyLinkedNode *thenode = [self _nodeAtIndex:0];
+	DoublyLinkedListNode *thenode = [self _nodeAtIndex:0];
 	return thenode->data;
 }
 
 - (id) lastObject {
-	DoublyLinkedNode *thenode = [self _nodeAtIndex:(listSize - 1)];
+	DoublyLinkedListNode *thenode = [self _nodeAtIndex:(listSize - 1)];
 	return thenode->data;
 }
 
@@ -295,13 +295,13 @@
 }
 
 - (id) objectAtIndex:(NSUInteger)index {
-	DoublyLinkedNode *theNode = [self _nodeAtIndex:index];
+	DoublyLinkedListNode *theNode = [self _nodeAtIndex:index];
 	if (theNode == nil)
 		return nil;
 	return theNode->data;
 }
 
-- (void) _removeNode:(DoublyLinkedNode*)node {
+- (void) _removeNode:(DoublyLinkedListNode*)node {
 	if (node == nil || node == beginMarker || node == endMarker)
 		return;
 	
@@ -326,17 +326,17 @@
 }
 
 - (void) removeObject:(id)anObject {
-	DoublyLinkedNode *pos = [self _findPos:anObject identical:NO];
+	DoublyLinkedListNode *pos = [self _findPos:anObject identical:NO];
 	[self _removeNode:pos]; // checks for nil, etc.
 }
 
 - (void) removeObjectIdenticalTo:(id)anObject {
-	DoublyLinkedNode *pos = [self _findPos:anObject identical:YES];
+	DoublyLinkedListNode *pos = [self _findPos:anObject identical:YES];
 	[self _removeNode:pos]; // checks for nil, etc.
 }
 
 - (void) removeAllObjects {
-	DoublyLinkedNode *runner, *old;
+	DoublyLinkedListNode *runner, *old;
 	
 	runner = beginMarker->next;
 	
@@ -364,19 +364,6 @@
 			 initWithHead:beginMarker
 			 withTail:endMarker
 			 forward:NO] autorelease];   
-}
-
-+ (DoublyLinkedList*) listWithArray:(NSArray*)array ofOrder:(BOOL)direction {
-	DoublyLinkedList *list = [[DoublyLinkedList alloc] init];
-	if (direction) {
-		for (id object in array)
-			[list appendObject:object];
-	}
-	else {
-		for (id object in array)
-			[list prependObject:object];
-	}
-	return [list autorelease];
 }
 
 @end

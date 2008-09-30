@@ -29,11 +29,11 @@
  A doubly-linked struct for nodes use by DoublyLinkedList. Performance is much faster
  with a struct than with a proper object.
  */
-typedef struct DoublyLinkedNode {
-	struct DoublyLinkedNode *next; /**< The next node in the list. */
-	struct DoublyLinkedNode *prev; /**< The previous node in the list. */
+typedef struct DoublyLinkedListNode {
 	id data; /**< The object associated with this node in the list. */
-} DoublyLinkedNode;
+	struct DoublyLinkedListNode *next; /**< The next node in the list. */
+	struct DoublyLinkedListNode *prev; /**< The previous node in the list. */
+} DoublyLinkedListNode;
 
 #pragma mark -
 
@@ -48,8 +48,8 @@ typedef struct DoublyLinkedNode {
 @interface DoublyLinkedList : NSObject <LinkedList>
 {
 	NSUInteger listSize; /**< The number of object currently stored in the list. */
-	DoublyLinkedNode *beginMarker; /**< A pointer to the front node of the list. */
-	DoublyLinkedNode *endMarker;   /**< A pointer to the back node of the list. */
+	DoublyLinkedListNode *beginMarker; /**< A pointer to the front node of the list. */
+	DoublyLinkedListNode *endMarker;   /**< A pointer to the back node of the list. */
 }
 
 /**
@@ -61,6 +61,7 @@ typedef struct DoublyLinkedNode {
 
 #pragma mark Method Implementations
 
+- (id) initWithObjectsFromEnumerator:(NSEnumerator*)anEnumerator;
 - (void) prependObject:(id)anObject;
 - (void) prependObjectsFromEnumerator:(NSEnumerator*)enumerator;
 - (void) appendObject:(id)anObject;
@@ -79,9 +80,5 @@ typedef struct DoublyLinkedNode {
 - (void) removeObjectAtIndex:(NSUInteger)index;
 - (void) removeObjectIdenticalTo:(id)anObject;
 - (void) removeAllObjects;
-
-#pragma mark Redefined Methods
-
-+ (DoublyLinkedList*) listWithArray:(NSArray*)array ofOrder:(BOOL)direction;
 
 @end

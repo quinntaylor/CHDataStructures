@@ -33,6 +33,10 @@
  */ 
 @protocol LinkedList <NSObject>
 
+#pragma mark Required Methods
+
+@required
+
 /**
  Initialize a newly allocated list by placing in it the objects from an enumerator.
  This allows flexibility in specifying insertion order, such as passing the result of
@@ -49,29 +53,6 @@
  @return The number of objects currently in the list.
  */
 - (NSUInteger) count;
-
-/**
- Inserts a given object at a given index. If <i>index</i> is already occupied, then
- objects at <i>index</i> and beyond are shifted one spot toward the end of the list.
- 
- @param anObject The object to add to the list; must not be <code>nil</code>.
- @param index The index in the receiver at which to insert anObject. If <i>index</i>
-        is greater than or equal to the value returned by <code>-count</code>, an
-        NSRangeException is raised.
- 
- NOTE: Inserting in the middle of a linked list is a somewhat inefficient operation;
- although values aren't shifted like in arrays, the list must be traversed to find
- the specified index.
- */
-- (void) insertObject:(id)anObject atIndex:(NSUInteger)index;
-
-/**
- Returns the object located at <i>index</i>.
- 
- @param index An index within the bounds of the receiver.
- @return The object located at index.
- */
-- (id) objectAtIndex:(NSUInteger)index;
 
 /**
  Add an object to the front of the list.
@@ -174,15 +155,6 @@
 - (void) removeObjectIdenticalTo:(id)anObject;
 
 /**
- Removes the object at <i>index</i>.
- 
- @param index The index from which to remove the object. The value must not exceed
-        the bounds of the receiver. To fill the gap, all elements beyond <i>index</i>
-        are moved by subtracting 1 from their index.
- */
-- (void) removeObjectAtIndex:(NSUInteger)index;
-
-/**
  Remove all objects from the list. If the list is already empty, there is no effect.
  */
 - (void) removeAllObjects;
@@ -194,5 +166,45 @@
          the element at the lowest index upwards.
  */
 - (NSEnumerator*) objectEnumerator;
+
+#pragma mark Optional Methods
+
+@optional
+
+/**
+ Inserts a given object at a given index. If <i>index</i> is already occupied, then
+ objects at <i>index</i> and beyond are shifted one spot toward the end of the list.
+ 
+ @param anObject The object to add to the list; must not be <code>nil</code>.
+ @param index The index in the receiver at which to insert anObject. If <i>index</i>
+        is greater than or equal to the value returned by <code>-count</code>, an
+        NSRangeException is raised.
+ 
+ NOTE: Inserting in the middle of a linked list is a somewhat inefficient operation;
+ although values aren't shifted like in arrays, the list must be traversed to find
+ the specified index.
+ */
+- (void) insertObject:(id)anObject atIndex:(NSUInteger)index;
+
+- (void) insertObject:(id)anObject beforeObject:(id)otherObject;
+
+- (void) insertObject:(id)anObject afterObject:(id)otherObject;
+
+/**
+ Returns the object located at <i>index</i>.
+ 
+ @param index An index within the bounds of the receiver.
+ @return The object located at index.
+ */
+- (id) objectAtIndex:(NSUInteger)index;
+
+/**
+ Removes the object at <i>index</i>.
+ 
+ @param index The index from which to remove the object. The value must not exceed
+ the bounds of the receiver. To fill the gap, all elements beyond <i>index</i>
+ are moved by subtracting 1 from their index.
+ */
+- (void) removeObjectAtIndex:(NSUInteger)index;
 
 @end
