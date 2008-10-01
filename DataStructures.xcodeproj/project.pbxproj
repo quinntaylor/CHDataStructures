@@ -15,6 +15,7 @@
 			);
 			dependencies = (
 				E459CBB20E8B096700E68D1E /* PBXTargetDependency */,
+				E473C9500E931E96005CA997 /* PBXTargetDependency */,
 			);
 			name = Documentation;
 			productName = Documentation;
@@ -70,19 +71,19 @@
 			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = DataStructures;
 		};
+		E473C94F0E931E96005CA997 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E4B83B610E898C26008914BD /* Test */;
+			remoteInfo = Test;
+		};
 		E4B83B8A0E898D11008914BD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = DataStructures;
-		};
-		E4B83CE40E89EF12008914BD /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = E4FE76D80E89556A00971EE6;
-			remoteInfo = Documentation;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -321,7 +322,6 @@
 			);
 			dependencies = (
 				E4B83B8B0E898D11008914BD /* PBXTargetDependency */,
-				E4B83CE50E89EF12008914BD /* PBXTargetDependency */,
 			);
 			name = Test;
 			productName = Test;
@@ -342,8 +342,8 @@
 			projectRoot = "";
 			targets = (
 				8DC2EF4F0486A6940098B216 /* DataStructures */,
-				E4FE76D80E89556A00971EE6 /* Documentation */,
 				E4B83B610E898C26008914BD /* Test */,
+				E4FE76D80E89556A00971EE6 /* Documentation */,
 			);
 		};
 /* End PBXProject section */
@@ -413,15 +413,15 @@
 			target = 8DC2EF4F0486A6940098B216 /* DataStructures */;
 			targetProxy = E459CBB10E8B096700E68D1E /* PBXContainerItemProxy */;
 		};
+		E473C9500E931E96005CA997 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E4B83B610E898C26008914BD /* Test */;
+			targetProxy = E473C94F0E931E96005CA997 /* PBXContainerItemProxy */;
+		};
 		E4B83B8B0E898D11008914BD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 8DC2EF4F0486A6940098B216 /* DataStructures */;
 			targetProxy = E4B83B8A0E898D11008914BD /* PBXContainerItemProxy */;
-		};
-		E4B83CE50E89EF12008914BD /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = E4FE76D80E89556A00971EE6 /* Documentation */;
-			targetProxy = E4B83CE40E89EF12008914BD /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -447,6 +447,7 @@
 				FRAMEWORK_VERSION = A;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_ENABLE_OBJC_GC = supported;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
@@ -466,6 +467,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_VERSION = A;
+				GCC_ENABLE_OBJC_GC = supported;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
