@@ -5,7 +5,7 @@
 #import "SinglyLinkedList.h"
 
 @interface SinglyLinkedListTest : SenTestCase {
-	SinglyLinkedList *slist;
+	SinglyLinkedList *list;
 	NSArray *testArray;
 }
 @end
@@ -14,64 +14,79 @@
 @implementation SinglyLinkedListTest
 
 - (void) setUp {
-    slist = [[SinglyLinkedList alloc] init];
+    list = [[SinglyLinkedList alloc] init];
 	testArray = [NSArray arrayWithObjects:@"A", @"B", @"C", nil];
 }
 
 - (void) tearDown {
-    [slist release];
+    [list release];
 }
 
 - (void) testEmptyList {
-	STAssertEquals([slist count], 0u, @"-count is incorrect.");
-	STAssertEqualObjects([slist firstObject], nil, @"-firstObject should be nil.");	
-	STAssertEqualObjects([slist lastObject], nil, @"-lastObject should be nil.");
+	STAssertEquals([list count], 0u, @"-count is incorrect.");
+	STAssertEqualObjects([list firstObject], nil, @"-firstObject should be nil.");	
+	STAssertEqualObjects([list lastObject], nil, @"-lastObject should be nil.");
 }
 
 - (void) testAppendObject {
-	[slist appendObject:@"A"];
-	[slist appendObject:@"B"];
-	[slist appendObject:@"C"];
+	[list appendObject:@"A"];
+	[list appendObject:@"B"];
+	[list appendObject:@"C"];
 	
-	STAssertEquals([slist count], 3u, @"-count is incorrect.");
-	STAssertEqualObjects([slist firstObject], @"A", @"-firstObject is wrong.");
-	STAssertEqualObjects([slist lastObject], @"C", @"-lastObject is wrong.");
+	STAssertEquals([list count], 3u, @"-count is incorrect.");
+	STAssertEqualObjects([list firstObject], @"A", @"-firstObject is wrong.");
+	STAssertEqualObjects([list lastObject], @"C", @"-lastObject is wrong.");
 }
 
 - (void) testAppendObjectsFromEnumerator {
-	[slist appendObjectsFromEnumerator:[testArray objectEnumerator]];
+	[list appendObjectsFromEnumerator:[testArray objectEnumerator]];
 	
-	STAssertEquals([slist count], 3u, @"-count is incorrect.");
-	STAssertEqualObjects([slist firstObject], @"A", @"-firstObject is wrong.");
-	STAssertEqualObjects([slist lastObject],  @"C", @"-lastObject is wrong.");
+	STAssertEquals([list count], 3u, @"-count is incorrect.");
+	STAssertEqualObjects([list firstObject], @"A", @"-firstObject is wrong.");
+	STAssertEqualObjects([list lastObject],  @"C", @"-lastObject is wrong.");
 }
 
 - (void) testPrependObject {
-	[slist prependObject:@"A"];
-	[slist prependObject:@"B"];
-	[slist prependObject:@"C"];
+	[list prependObject:@"A"];
+	[list prependObject:@"B"];
+	[list prependObject:@"C"];
 	
-	STAssertEquals([slist count], 3u, @"-count is incorrect.");
-	STAssertEqualObjects([slist firstObject], @"C", @"-firstObject is wrong.");
-	STAssertEqualObjects([slist lastObject],  @"A", @"-lastObject is wrong.");
+	STAssertEquals([list count], 3u, @"-count is incorrect.");
+	STAssertEqualObjects([list firstObject], @"C", @"-firstObject is wrong.");
+	STAssertEqualObjects([list lastObject],  @"A", @"-lastObject is wrong.");
 }
 
 - (void) testPrependObjectsFromEnumerator {
-	[slist prependObjectsFromEnumerator:[testArray objectEnumerator]];
+	[list prependObjectsFromEnumerator:[testArray objectEnumerator]];
 	
-	STAssertEquals([slist count], 3u, @"-count is incorrect.");
-	STAssertEqualObjects([slist firstObject], @"C", @"-firstObject is wrong.");
-	STAssertEqualObjects([slist lastObject],  @"A", @"-lastObject is wrong.");
+	STAssertEquals([list count], 3u, @"-count is incorrect.");
+	STAssertEqualObjects([list firstObject], @"C", @"-firstObject is wrong.");
+	STAssertEqualObjects([list lastObject],  @"A", @"-lastObject is wrong.");
+}
+
+- (void) testRemoveFirstLastObject {
+	[list appendObjectsFromEnumerator:[testArray objectEnumerator]];
+	STAssertEquals([list count], 3u, @"-count is incorrect.");
+	
+	[list removeFirstObject];
+	STAssertEquals([list count], 2u, @"-count is incorrect.");
+	STAssertEqualObjects([list firstObject], @"B", @"-firstObject is wrong.");
+	STAssertEqualObjects([list lastObject],  @"C", @"-lastObject is wrong.");
+	
+	[list removeLastObject];
+	STAssertEquals([list count], 1u, @"-count is incorrect.");
+	STAssertEqualObjects([list firstObject], @"B", @"-firstObject is wrong.");
+	STAssertEqualObjects([list lastObject],  @"B", @"-lastObject is wrong.");
 }
 
 - (void) testObjectEnumerator {
-	NSEnumerator *e = [slist objectEnumerator];
+	NSEnumerator *e = [list objectEnumerator];
 	STAssertNotNil(e, @"Enumerator should not be nil.");
 	STAssertNil([e nextObject], @"-nextObject should return nil.");
 	
-	[slist appendObjectsFromEnumerator:[testArray objectEnumerator]];
+	[list appendObjectsFromEnumerator:[testArray objectEnumerator]];
 	
-	e = [slist objectEnumerator];
+	e = [list objectEnumerator];
 	STAssertNotNil(e, @"Enumerator should not be nil.");
 	
 	STAssertEqualObjects([e nextObject], @"A", @"-nextObject is wrong.");
@@ -79,11 +94,24 @@
 	STAssertEqualObjects([e nextObject], @"C", @"-nextObject is wrong.");
 	STAssertNil([e nextObject], @"-nextObject should return nil.");
 	
-	NSArray *array = [[slist objectEnumerator] allObjects];
+	NSArray *array = [[list objectEnumerator] allObjects];
 	STAssertNotNil(array, @"Array should not be nil");
 	STAssertEquals([array count], 3u, @"-count is incorrect.");
 	STAssertEqualObjects([array objectAtIndex:0], @"A", @"-firstObject is wrong.");
 	STAssertEqualObjects([array lastObject],      @"C", @"-lastObject is wrong.");
+}
+
+- (void) testContainsObject {
+	[list appendObject:@"A"];
+	STAssertTrue([list containsObject:@"A"], @"Should return YES.");
+	STAssertFalse([list containsObject:@"Z"], @"Should return NO.");
+}
+
+- (void) testContainsObjectIdenticalTo {
+	NSString *a = [NSString stringWithFormat:@"A"];
+	[list appendObject:a];
+	STAssertTrue([list containsObjectIdenticalTo:a], @"Should return YES.");
+	STAssertFalse([list containsObjectIdenticalTo:@"A"], @"Should return NO.");
 }
 
 @end
