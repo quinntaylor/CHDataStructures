@@ -1,7 +1,16 @@
 //  UnbalancedTreeTest.m
 //  DataStructures.framework
 
-#import "UnbalancedTreeTest.h"
+#import <SenTestingKit/SenTestingKit.h>
+#import "UnbalancedTree.h"
+
+@interface UnbalancedTreeTest : SenTestCase {
+	UnbalancedTree *tree;
+	NSArray *testArray;
+	NSEnumerator *e;
+}
+@end
+
 
 @implementation UnbalancedTreeTest
 

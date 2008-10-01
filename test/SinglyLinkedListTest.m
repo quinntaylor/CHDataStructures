@@ -1,7 +1,15 @@
 //  SinglyLinkedListTest.m
 //  DataStructures.framework
 
-#import "SinglyLinkedListTest.h"
+#import <SenTestingKit/SenTestingKit.h>
+#import "SinglyLinkedList.h"
+
+@interface SinglyLinkedListTest : SenTestCase {
+	SinglyLinkedList *slist;
+	NSArray *testArray;
+}
+@end
+
 
 @implementation SinglyLinkedListTest
 

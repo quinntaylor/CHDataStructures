@@ -71,6 +71,7 @@
 		E4ADBB800E8828C500B570BC /* README in Resources */ = {isa = PBXBuildFile; fileRef = E4ADBB7E0E8828C500B570BC /* README */; };
 		E4ADBB810E8828C500B570BC /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = E4ADBB7F0E8828C500B570BC /* LICENSE */; };
 		E4ADBC9A0E88412C00B570BC /* AbstractTree.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBC990E88412C00B570BC /* AbstractTree.m */; };
+		E4D4996A0E93CD1300434CBA /* DoublyLinkedListTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D499690E93CD1300434CBA /* DoublyLinkedListTest.m */; };
 		E4FE77C70E8978C300971EE6 /* Tree.h in Headers */ = {isa = PBXBuildFile; fileRef = E4FE77C60E8978C300971EE6 /* Tree.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4FE77CA0E8978DD00971EE6 /* AbstractTree.h in Headers */ = {isa = PBXBuildFile; fileRef = E4FE77C90E8978DD00971EE6 /* AbstractTree.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
@@ -87,14 +88,14 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 8DC2EF4F0486A6940098B216 /* DataStructures */;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = DataStructures;
 		};
 		E473CBE50E93B61F005CA997 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = E473CB540E9346CB005CA997 /* Unit Testing */;
+			remoteGlobalIDString = E473CB540E9346CB005CA997;
 			remoteInfo = "Unit Testing";
 		};
 /* End PBXContainerItemProxy section */
@@ -114,10 +115,8 @@
 		E44773A10E913C89000889F7 /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Util.h; path = source/Util.h; sourceTree = "<group>"; };
 		E473C9890E9331FA005CA997 /* Unit Testing-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Unit Testing-Info.plist"; sourceTree = "<group>"; };
 		E473C99E0E93333C005CA997 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		E473CA3C0E93346B005CA997 /* SinglyLinkedListTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SinglyLinkedListTest.h; path = test/SinglyLinkedListTest.h; sourceTree = "<group>"; };
 		E473CA3D0E93346B005CA997 /* SinglyLinkedListTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SinglyLinkedListTest.m; path = test/SinglyLinkedListTest.m; sourceTree = "<group>"; };
-		E473CB550E9346CB005CA997 /* Unit Testing.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "Unit Testing.octest"; path = "build/Debug/Unit Testing.octest"; sourceTree = "<group>"; };
-		E473CB7C0E934838005CA997 /* UnbalancedTreeTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UnbalancedTreeTest.h; path = test/UnbalancedTreeTest.h; sourceTree = "<group>"; };
+		E473CB550E9346CB005CA997 /* Unit Testing.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Unit Testing.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E473CB7D0E934838005CA997 /* UnbalancedTreeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UnbalancedTreeTest.m; path = test/UnbalancedTreeTest.m; sourceTree = "<group>"; };
 		E4ADBB060E88174200B570BC /* ArrayHeap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ArrayHeap.h; path = source/ArrayHeap.h; sourceTree = "<group>"; };
 		E4ADBB070E88174200B570BC /* ArrayHeap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ArrayHeap.m; path = source/ArrayHeap.m; sourceTree = "<group>"; };
@@ -146,6 +145,7 @@
 		E4CFCDB10E8FD18300B0253A /* Doxyfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Doxyfile; sourceTree = "<group>"; };
 		E4CFCDB20E8FD18300B0253A /* doxygen-cocoa-tags.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "doxygen-cocoa-tags.xml"; sourceTree = "<group>"; };
 		E4CFCDB30E8FD18300B0253A /* doxygen.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = doxygen.css; sourceTree = "<group>"; };
+		E4D499690E93CD1300434CBA /* DoublyLinkedListTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DoublyLinkedListTest.m; path = test/DoublyLinkedListTest.m; sourceTree = "<group>"; };
 		E4FE77C60E8978C300971EE6 /* Tree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Tree.h; path = source/Tree.h; sourceTree = "<group>"; };
 		E4FE77C90E8978DD00971EE6 /* AbstractTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AbstractTree.h; path = source/AbstractTree.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -182,10 +182,10 @@
 			isa = PBXGroup;
 			children = (
 				08FB77AEFE84172EC02AAC07 /* Classes */,
-				089C1665FE841158C02AAC07 /* Resources */,
 				E473C9A70E933350005CA997 /* Test Cases */,
-				0867D69AFE84028FC02AAC07 /* Frameworks */,
 				E4CFCDAD0E8FD16400B0253A /* Documentation */,
+				089C1665FE841158C02AAC07 /* Resources */,
+				0867D69AFE84028FC02AAC07 /* Frameworks */,
 				034768DFFF38A50411DB9C8B /* Products */,
 			);
 			name = DataStructures;
@@ -253,9 +253,8 @@
 		E473C9A70E933350005CA997 /* Test Cases */ = {
 			isa = PBXGroup;
 			children = (
-				E473CA3C0E93346B005CA997 /* SinglyLinkedListTest.h */,
+				E4D499690E93CD1300434CBA /* DoublyLinkedListTest.m */,
 				E473CA3D0E93346B005CA997 /* SinglyLinkedListTest.m */,
-				E473CB7C0E934838005CA997 /* UnbalancedTreeTest.h */,
 				E473CB7D0E934838005CA997 /* UnbalancedTreeTest.m */,
 			);
 			name = "Test Cases";
@@ -450,6 +449,7 @@
 				E473CB670E9346E7005CA997 /* UnbalancedTree.m in Sources */,
 				E473CB7E0E934838005CA997 /* UnbalancedTreeTest.m in Sources */,
 				E473CB870E9348F5005CA997 /* SinglyLinkedListTest.m in Sources */,
+				E4D4996A0E93CD1300434CBA /* DoublyLinkedListTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
