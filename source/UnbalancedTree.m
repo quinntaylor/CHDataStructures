@@ -52,7 +52,7 @@ typedef struct UTE_NODE {
 #pragma mark -
 
 /**
- An NSEnumerator for traversing an UnbalancedTree (or subtree) in a specified order.
+ An NSEnumerator for traversing an UnbalancedTree in a specified order.
  
  This enumerator uses iterative tree traversal algorithms for two main reasons:
  <ol>
@@ -68,8 +68,7 @@ typedef struct UTE_NODE {
  However, like an enumerator for a mutable data structure, any instances of this
  enumerator become invalid if the tree is modified.
  */
-@interface UnbalancedTreeEnumerator : NSEnumerator
-{
+@interface UnbalancedTreeEnumerator : NSEnumerator {
 	CHTraversalOrder traversalOrder; /**< Order in which to traverse the tree. */
 	@private
 	UnbalancedTreeNode *currentNode; /**< The next node that is to be returned. */
@@ -473,6 +472,9 @@ static struct UnbalancedTreeNode * _removeNode(struct UnbalancedTreeNode *node,
  than half of the nodes will be on the queue.
  */
 - (void) removeAllObjects {
+	if (root == NULL)
+		return;
+	
 	UnbalancedTreeNode *currentNode;
 	UTE_NODE *queue	 = NULL;
 	UTE_NODE *queueTail = NULL;
@@ -493,6 +495,8 @@ static struct UnbalancedTreeNode * _removeNode(struct UnbalancedTreeNode *node,
 		[currentNode->object release];
 		free(currentNode);
 	}
+	root = NULL;
+	count = 0;
 }
 
 - (NSEnumerator*) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order {

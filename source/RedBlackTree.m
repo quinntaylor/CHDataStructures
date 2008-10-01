@@ -101,7 +101,7 @@
 #pragma mark -
 
 /**
- An NSEnumerator for traversing a RedBlackTree subtree in a specified order.
+ An NSEnumerator for traversing a RedBlackTree in a specified order.
  
  NOTE: Tree enumerators are tricky to do without recursion.
  Consider using a stack to store path so far?

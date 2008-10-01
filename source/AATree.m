@@ -25,7 +25,7 @@
 #import "AATree.h"
 
 /**
- An NSEnumerator for traversing an UnbalancedTree (or subtree) in a specified order.
+ An NSEnumerator for traversing an UnbalancedTree in a specified order.
  
  This enumerator uses iterative tree traversal algorithms for two main reasons:
  <ol>
