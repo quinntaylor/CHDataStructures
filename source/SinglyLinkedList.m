@@ -177,11 +177,11 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(SinglyLinkedListNode);
 }
 
 - (id) firstObject {
-	return head->object;
+	return (head != NULL) ? head->object : nil;
 }
 
 - (id) lastObject {
-	return tail->object;
+	return (tail != NULL) ? tail->object : nil;
 }
 
 - (NSArray*) allObjects {

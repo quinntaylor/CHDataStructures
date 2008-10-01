@@ -15,7 +15,7 @@
 			);
 			dependencies = (
 				E459CBB20E8B096700E68D1E /* PBXTargetDependency */,
-				E473C9500E931E96005CA997 /* PBXTargetDependency */,
+				E473CBE60E93B61F005CA997 /* PBXTargetDependency */,
 			);
 			name = Documentation;
 			productName = Documentation;
@@ -71,7 +71,6 @@
 		E4ADBB800E8828C500B570BC /* README in Resources */ = {isa = PBXBuildFile; fileRef = E4ADBB7E0E8828C500B570BC /* README */; };
 		E4ADBB810E8828C500B570BC /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = E4ADBB7F0E8828C500B570BC /* LICENSE */; };
 		E4ADBC9A0E88412C00B570BC /* AbstractTree.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBC990E88412C00B570BC /* AbstractTree.m */; };
-		E4B83B960E898D9B008914BD /* DataStructures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* DataStructures.framework */; };
 		E4FE77C70E8978C300971EE6 /* Tree.h in Headers */ = {isa = PBXBuildFile; fileRef = E4FE77C60E8978C300971EE6 /* Tree.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4FE77CA0E8978DD00971EE6 /* AbstractTree.h in Headers */ = {isa = PBXBuildFile; fileRef = E4FE77C90E8978DD00971EE6 /* AbstractTree.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
@@ -84,13 +83,6 @@
 			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = DataStructures;
 		};
-		E473C94F0E931E96005CA997 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = E4B83B610E898C26008914BD /* Test */;
-			remoteInfo = Test;
-		};
 		E473CB5A0E9346D0005CA997 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
@@ -98,12 +90,12 @@
 			remoteGlobalIDString = 8DC2EF4F0486A6940098B216 /* DataStructures */;
 			remoteInfo = DataStructures;
 		};
-		E4B83B8A0E898D11008914BD /* PBXContainerItemProxy */ = {
+		E473CBE50E93B61F005CA997 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
-			remoteInfo = DataStructures;
+			remoteGlobalIDString = E473CB540E9346CB005CA997 /* Unit Testing */;
+			remoteInfo = "Unit Testing";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -150,7 +142,6 @@
 		E4ADBB7E0E8828C500B570BC /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		E4ADBB7F0E8828C500B570BC /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		E4ADBC990E88412C00B570BC /* AbstractTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AbstractTree.m; path = source/AbstractTree.m; sourceTree = "<group>"; };
-		E4B83B620E898C26008914BD /* Test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Test; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4CFCDB00E8FD18300B0253A /* docs.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = docs.html; sourceTree = "<group>"; };
 		E4CFCDB10E8FD18300B0253A /* Doxyfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Doxyfile; sourceTree = "<group>"; };
 		E4CFCDB20E8FD18300B0253A /* doxygen-cocoa-tags.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "doxygen-cocoa-tags.xml"; sourceTree = "<group>"; };
@@ -175,14 +166,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E4B83B600E898C26008914BD /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				E4B83B960E898D9B008914BD /* DataStructures.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -190,7 +173,6 @@
 			isa = PBXGroup;
 			children = (
 				8DC2EF5B0486A6940098B216 /* DataStructures.framework */,
-				E4B83B620E898C26008914BD /* Test */,
 				E473CB550E9346CB005CA997 /* Unit Testing.octest */,
 			);
 			name = Products;
@@ -361,23 +343,6 @@
 			productReference = E473CB550E9346CB005CA997 /* Unit Testing.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
-		E4B83B610E898C26008914BD /* Test */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = E4B83B6D0E898C49008914BD /* Build configuration list for PBXNativeTarget "Test" */;
-			buildPhases = (
-				E4B83B5F0E898C26008914BD /* Sources */,
-				E4B83B600E898C26008914BD /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				E4B83B8B0E898D11008914BD /* PBXTargetDependency */,
-			);
-			name = Test;
-			productName = Test;
-			productReference = E4B83B620E898C26008914BD /* Test */;
-			productType = "com.apple.product-type.tool";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -392,9 +357,8 @@
 			projectRoot = "";
 			targets = (
 				8DC2EF4F0486A6940098B216 /* DataStructures */,
-				E4B83B610E898C26008914BD /* Test */,
-				E4FE76D80E89556A00971EE6 /* Documentation */,
 				E473CB540E9346CB005CA997 /* Unit Testing */,
+				E4FE76D80E89556A00971EE6 /* Documentation */,
 			);
 		};
 /* End PBXProject section */
@@ -489,13 +453,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E4B83B5F0E898C26008914BD /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -504,20 +461,15 @@
 			target = 8DC2EF4F0486A6940098B216 /* DataStructures */;
 			targetProxy = E459CBB10E8B096700E68D1E /* PBXContainerItemProxy */;
 		};
-		E473C9500E931E96005CA997 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = E4B83B610E898C26008914BD /* Test */;
-			targetProxy = E473C94F0E931E96005CA997 /* PBXContainerItemProxy */;
-		};
 		E473CB5B0E9346D0005CA997 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 8DC2EF4F0486A6940098B216 /* DataStructures */;
 			targetProxy = E473CB5A0E9346D0005CA997 /* PBXContainerItemProxy */;
 		};
-		E4B83B8B0E898D11008914BD /* PBXTargetDependency */ = {
+		E473CBE60E93B61F005CA997 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 8DC2EF4F0486A6940098B216 /* DataStructures */;
-			targetProxy = E4B83B8A0E898D11008914BD /* PBXContainerItemProxy */;
+			target = E473CB540E9346CB005CA997 /* Unit Testing */;
+			targetProxy = E473CBE50E93B61F005CA997 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -662,52 +614,6 @@
 			};
 			name = Release;
 		};
-		E4B83B640E898C27008914BD /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
-				INSTALL_PATH = /usr/local/bin;
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					AppKit,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = Test;
-			};
-			name = Debug;
-		};
-		E4B83B650E898C27008914BD /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
-				INSTALL_PATH = /usr/local/bin;
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					AppKit,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = Test;
-				ZERO_LINK = NO;
-			};
-			name = Release;
-		};
 		E4FE76D90E89556A00971EE6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -755,15 +661,6 @@
 			buildConfigurations = (
 				E473CB580E9346CB005CA997 /* Debug */,
 				E473CB590E9346CB005CA997 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		E4B83B6D0E898C49008914BD /* Build configuration list for PBXNativeTarget "Test" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				E4B83B640E898C27008914BD /* Debug */,
-				E4B83B650E898C27008914BD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
