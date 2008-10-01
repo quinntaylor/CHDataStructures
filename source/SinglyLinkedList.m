@@ -118,7 +118,7 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(SinglyLinkedListNode);
 
 - (void) prependObject:(id)anObject {
 	if (anObject == nil)
-		invalidNilArgumentException([self class], _cmd);
+		nilArgumentException([self class], _cmd);
 	SinglyLinkedListNode *new;
 	new = malloc(kSinglyLinkedListNodeSize);
 	new->object = [anObject retain];
@@ -131,7 +131,7 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(SinglyLinkedListNode);
 
 - (void) prependObjectsFromEnumerator:(NSEnumerator*)enumerator {
 	if (enumerator == nil)
-		invalidNilArgumentException([self class], _cmd);
+		nilArgumentException([self class], _cmd);
 	SinglyLinkedListNode *new;
 	for (id anObject in enumerator) {
 		new = malloc(kSinglyLinkedListNodeSize);
@@ -146,7 +146,7 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(SinglyLinkedListNode);
 
 - (void) appendObject:(id)anObject {
 	if (anObject == nil)
-		invalidNilArgumentException([self class], _cmd);
+		nilArgumentException([self class], _cmd);
 	SinglyLinkedListNode *new;
 	new = malloc(kSinglyLinkedListNodeSize);
 	new->object = [anObject retain];
@@ -161,7 +161,7 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(SinglyLinkedListNode);
 
 - (void) appendObjectsFromEnumerator:(NSEnumerator*)enumerator {
 	if (enumerator == nil)
-		invalidNilArgumentException([self class], _cmd);
+		nilArgumentException([self class], _cmd);
 	SinglyLinkedListNode *new;
 	for (id anObject in enumerator) {
 		new = malloc(kSinglyLinkedListNodeSize);
@@ -217,20 +217,17 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(SinglyLinkedListNode);
 }
 
 - (void) removeFirstObject {
-	if (head == NULL)
+	if (listSize == 0)
 		return;
-	[head->object release];
-	if (tail == head)
-		tail = NULL;
 	SinglyLinkedListNode *old = head;
+	[head->object release];
 	head = head->next;
+	if (tail == old)
+		tail = NULL;
 	free(old);
-	listSize--;
+	--listSize;
 }
 
-/**
- NOTE: Removing from the end of a singly-linked list is O(n) complexity!
- */
 - (void) removeLastObject {
 	if (listSize == 0)
 		return;
@@ -240,17 +237,18 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(SinglyLinkedListNode);
 		head = tail = NULL;
 		listSize = 0;
 	}
+	// This is the expensive part: O(n) instead of O(1) for doubly-linked lists
 	else {
-		SinglyLinkedListNode *current = head;
+		SinglyLinkedListNode *old = head;
 		// Iterate to penultimate node
-		while (current->next != tail)
-			current = current->next;
+		while (old->next != tail)
+			old = old->next;
 		// Delete current last node, move tail back one node
 		[tail->object release];
 		free(tail);
-		current->next = NULL;
-		tail = current;
-		listSize--;
+		old->next = NULL;
+		tail = old;
+		--listSize;
 	}
 }
 
@@ -261,17 +259,17 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(SinglyLinkedListNode);
 		[self removeFirstObject];
 		return;
 	}
-	SinglyLinkedListNode *current = head;
+	SinglyLinkedListNode *node = head;
 	// Iterate until the next node contains the object to remove, or is nil
-	while (current->next != nil && ![current->next->object isEqual:anObject])
-		current = current->next;
-	if (current->next != nil) {
+	while (node->next != NULL && ![node->next->object isEqual:anObject])
+		node = node->next;
+	if (node->next != NULL) {
 		// Remove the node with a matching object, steal its 'next' link for my own
-		SinglyLinkedListNode *temp = current->next;
-		current->next = temp->next;
+		SinglyLinkedListNode *temp = node->next;
+		node->next = temp->next;
 		[temp->object release];
 		free(temp);
-		listSize--;
+		--listSize;
 	}
 }
 
@@ -282,17 +280,17 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(SinglyLinkedListNode);
 		[self removeFirstObject];
 		return;
 	}
-	SinglyLinkedListNode *current = head;
+	SinglyLinkedListNode *node = head;
 	// Iterate until the next node contains the object to remove, or is nil
-	while (current->next != nil && current->next->object != anObject)
-		current = current->next;
-	if (current->next != nil) {
+	while (node->next != NULL && node->next->object != anObject)
+		node = node->next;
+	if (node->next != NULL) {
 		// Remove the node with a matching object, steal its 'next' link for my own
-		SinglyLinkedListNode *temp = current->next;
-		current->next = temp->next;
+		SinglyLinkedListNode *temp = node->next;
+		node->next = temp->next;
 		[temp->object release];
 		free(temp);
-		listSize--;
+		--listSize;
 	}	
 }
 

@@ -40,7 +40,7 @@
 
 - (void) addObjectsFromEnumerator:(NSEnumerator*)enumerator {
 	if (enumerator == nil)
-		invalidNilArgumentException([self class], _cmd);
+		nilArgumentException([self class], _cmd);
 	for (id object in enumerator)
 		[self addObject:object];
 }

@@ -341,7 +341,7 @@ static struct UnbalancedTreeNode * _removeNode(struct UnbalancedTreeNode *node,
 
 - (void) addObject:(id)anObject {
 	if (anObject == nil)
-		invalidNilArgumentException([self class], _cmd);
+		nilArgumentException([self class], _cmd);
 	
 	[anObject retain];
 	
@@ -399,7 +399,7 @@ static struct UnbalancedTreeNode * _removeNode(struct UnbalancedTreeNode *node,
 
 - (void) addObjectsFromEnumerator:(NSEnumerator*)enumerator {
 	if (enumerator == nil)
-		invalidNilArgumentException([self class], _cmd);
+		nilArgumentException([self class], _cmd);
 	for (id object in enumerator)
 		[self addObject:object];
 }
@@ -453,7 +453,7 @@ static struct UnbalancedTreeNode * _removeNode(struct UnbalancedTreeNode *node,
  */
 - (void) removeObject:(id)anObject {
 	if (anObject == nil)
-		invalidNilArgumentException([self class], _cmd);
+		nilArgumentException([self class], _cmd);
 	
 	struct UnbalancedTreeNode *currentNode = root;
 	while (currentNode != NULL) {

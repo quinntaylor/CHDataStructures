@@ -170,9 +170,8 @@
  objects at <i>index</i> and beyond are shifted one spot toward the end of the list.
  
  @param anObject The object to add to the list; must not be <code>nil</code>.
- @param index The index in the receiver at which to insert anObject. If <i>index</i>
-        is greater than or equal to the value returned by <code>-count</code>, an
-        NSRangeException is raised.
+ @param index The index at which to insert anObject. If <i>index</i> is greater
+        than or equal to the number of elements, an NSRangeException is raised.
  
  NOTE: Inserting in the middle of a linked list is a somewhat inefficient operation;
  although values aren't shifted like in arrays, the list must be traversed to find
@@ -183,7 +182,8 @@
 /**
  Returns the object located at <i>index</i>.
  
- @param index An index within the bounds of the receiver.
+ @param index An index from which to retrieve an object. If <i>index</i> is greater
+        than or equal to the number of elements, an NSRangeException is raised.
  @return The object located at index.
  */
 - (id) objectAtIndex:(NSUInteger)index;
@@ -191,9 +191,10 @@
 /**
  Removes the object at <i>index</i>.
  
- @param index The index from which to remove the object. The value must not exceed
- the bounds of the receiver. To fill the gap, all elements beyond <i>index</i>
- are moved by subtracting 1 from their index.
+ @param index The index from which to remove the object. If <i>index</i> is greater
+        than or equal to the number of elements, an NSRangeException is raised.
+ 
+ To fill the gap, all elements beyond <i>index</i> have 1 subtracted from their index.
  */
 - (void) removeObjectAtIndex:(NSUInteger)index;
 

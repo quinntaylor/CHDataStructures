@@ -50,7 +50,7 @@
 
 - (void) enqueueObject:(id)anObject {
 	if (anObject == nil)
-		invalidNilArgumentException([self class], _cmd);
+		nilArgumentException([self class], _cmd);
 	else
 		[list appendObject:anObject];
 }

@@ -23,19 +23,19 @@
 //  DataStructuresFramework
 
 /**
- Convenience function for raising an exception for un-implemented functionality.
+ Convenience function for raising an exception for an invalid range (index).
  
  @param theClass The class object for the originator of the exception. Callers should
-        pass <code>[self class]</code> for this parameter.
+        pass the result of <code>[self class]</code> for this parameter.
  @param method The method selector where the problem originated. Callers should pass
-        <code>_cmd</code> for this parameter. 
-
+        <code>_cmd</code> for this parameter.
+ 
  Currently, there is no support for calling this function from a C function.
  */
-static void unsupportedOperationException(Class theClass, SEL method) {
-	[NSException raise:NSInternalInconsistencyException
-				format:@"[%@ %s] -- Unsupported operation.",
-					   theClass, sel_getName(method)];
+static void rangeException(Class theClass, SEL method) {
+	[NSException raise:NSRangeException
+                format:@"[%@ %s] -- Invalid nil argument.",
+                       theClass, sel_getName(method)];
 }
 
 /**
@@ -48,9 +48,25 @@ static void unsupportedOperationException(Class theClass, SEL method) {
  
  Currently, there is no support for calling this function from a C function.
  */
-static void invalidNilArgumentException(Class theClass, SEL method) {
+static void nilArgumentException(Class theClass, SEL method) {
 	[NSException raise:NSInternalInconsistencyException
 				format:@"[%@ %s] -- Invalid nil argument.",
+					   theClass, sel_getName(method)];
+}
+
+/**
+ Convenience function for raising an exception for un-implemented functionality.
+ 
+ @param theClass The class object for the originator of the exception. Callers should
+        pass the result of <code>[self class]</code> for this parameter.
+ @param method The method selector where the problem originated. Callers should pass
+        <code>_cmd</code> for this parameter. 
+
+ Currently, there is no support for calling this function from a C function.
+ */
+static void unsupportedOperationException(Class theClass, SEL method) {
+	[NSException raise:NSInternalInconsistencyException
+				format:@"[%@ %s] -- Unsupported operation.",
 					   theClass, sel_getName(method)];
 }
 

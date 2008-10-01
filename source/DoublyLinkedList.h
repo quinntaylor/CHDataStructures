@@ -48,8 +48,8 @@ typedef struct DoublyLinkedListNode {
  */
 @interface DoublyLinkedList : NSObject <LinkedList> {
 	NSUInteger listSize; /**< The number of object currently stored in the list. */
-	DoublyLinkedListNode *beginMarker; /**< A pointer to the front node of the list. */
-	DoublyLinkedListNode *endMarker;   /**< A pointer to the back node of the list. */
+	DoublyLinkedListNode *head; /**< A pointer to the front node of the list. */
+	DoublyLinkedListNode *tail;   /**< A pointer to the back node of the list. */
 }
 
 /**
@@ -78,7 +78,8 @@ typedef struct DoublyLinkedListNode {
 - (void) removeObjectIdenticalTo:(id)anObject;
 - (void) removeAllObjects;
 
-// Optional protocol methods
+#pragma mark - Optional Protocol Methods
+
 - (void) insertObject:(id)anObject atIndex:(NSUInteger)index;
 - (id) objectAtIndex:(NSUInteger)index;
 - (void) removeObjectAtIndex:(NSUInteger)index;

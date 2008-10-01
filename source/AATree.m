@@ -128,6 +128,11 @@ static NSUInteger kAATreeNodeSize = sizeof(AATreeNode);
 
 - (void) addObject:(id)anObject {
 	unsupportedOperationException([self class], _cmd);
+	
+	AATreeNode *newNode = malloc(kAATreeNodeSize);
+	newNode->object = [anObject retain];
+	newNode->left = NULL;
+	newNode->right = NULL;
 }
 
 - (id) findObject:(id)target {
