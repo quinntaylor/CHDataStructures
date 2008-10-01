@@ -26,8 +26,37 @@
 
 static NSUInteger kAATreeNodeSize = sizeof(AATreeNode);
 
+#pragma mark Enumeration Struct & Macros
+
 /**
- An NSEnumerator for traversing an UnbalancedTree in a specified order.
+ A struct for use by AATreeEnumerator to maintain traversal state.
+ */
+typedef struct AATE_NODE {
+	struct AATreeNode *node;
+	struct AATE_NODE *next;
+} AATE_NODE;
+
+static NSUInteger kAATE_SIZE = sizeof(AATE_NODE);
+
+#pragma mark - Stack Operations
+
+#define AATE_PUSH(o) {tmp=malloc(kAATE_SIZE);tmp->node=o;tmp->next=stack;stack=tmp;}
+#define AATE_POP()   {if(stack!=NULL){tmp=stack;stack=stack->next;free(tmp);}}
+#define AATE_TOP     ((stack!=NULL)?stack->node:NULL)
+
+#pragma mark - Queue Operations
+
+#define AATE_ENQUEUE(o) {tmp=malloc(kAATE_SIZE);tmp->node=o;tmp->next=NULL;\
+if(queue==NULL){queue=tmp;queueTail=tmp;}\
+queueTail->next=tmp;queueTail=queueTail->next;}
+#define AATE_DEQUEUE()  {if(queue!=NULL){tmp=queue;queue=queue->next;free(tmp);}\
+if(queue==tmp)queue=NULL;if(queueTail==tmp)queueTail=NULL;}
+#define AATE_FRONT      ((queue!=NULL)?queue->node:NULL)
+
+#pragma mark -
+
+/**
+ An NSEnumerator for traversing an AATree in a specified order.
  
  This enumerator uses iterative tree traversal algorithms for two main reasons:
  <ol>
@@ -48,6 +77,11 @@ static NSUInteger kAATreeNodeSize = sizeof(AATreeNode);
 	CHTraversalOrder traversalOrder; /**< Order in which to traverse the tree. */
 	@private
 	AATreeNode *currentNode; /**< The next node that is to be returned. */
+	id tempObject;         /**< Temporary variable, holds the object to be returned.*/
+	AATE_NODE *stack;     /**< Pointer to the top of a stack for most traversals. */
+	AATE_NODE *queue;     /**< Pointer to the head of a queue for level-order. */
+	AATE_NODE *queueTail; /**< Pointer to the tail of a queue for level-order. */
+	AATE_NODE *tmp;       /**< Temporary variable for stack and queue operations. */
 }
 
 /**
@@ -87,15 +121,100 @@ static NSUInteger kAATreeNodeSize = sizeof(AATreeNode);
 		[self release];
 		return nil;
 	}
-	// TODO: Copy and adapt traversal code from UnbalancedTree.m
-	unsupportedOperationException([self class], _cmd);
+	stack = NULL;
+	traversalOrder = order;
+	if (traversalOrder == CHTraverseLevelOrder) {
+		AATE_ENQUEUE(root);		
+	} else if (traversalOrder == CHTraversePreOrder) {
+		AATE_PUSH(root);		
+	} else {
+		currentNode = root;
+	}
 	return self;
 }
 
 - (id) nextObject {
-	// TODO: Copy and adapt traversal code from UnbalancedTree.m
-	unsupportedOperationException([self class], _cmd);
-	return nil;
+	switch (traversalOrder) {
+		case CHTraversePreOrder:
+			currentNode = AATE_TOP;
+			AATE_POP();
+			if (currentNode == NULL)
+				return nil;
+			if (currentNode->right != NULL) {
+				AATE_PUSH(currentNode->right);
+			}
+			if (currentNode->left != NULL) {
+				AATE_PUSH(currentNode->left);
+			}
+			return currentNode->object;
+			
+		case CHTraverseInOrder:
+			if (stack == NULL && currentNode == NULL)
+				return nil;
+			while (currentNode != NULL) {
+				AATE_PUSH(currentNode);
+				currentNode = currentNode->left;
+				// TODO: How to not push/pop leaf nodes unnecessarily?
+			}
+			currentNode = AATE_TOP; // Save top node for return value
+			AATE_POP();
+			tempObject = currentNode->object;
+			currentNode = currentNode->right;
+			return tempObject;
+			
+		case CHTraverseReverseOrder:
+			if (stack == NULL && currentNode == NULL)
+				return nil;
+			while (currentNode != NULL) {
+				AATE_PUSH(currentNode);
+				currentNode = currentNode->right;
+				// TODO: How to not push/pop leaf nodes unnecessarily?
+			}
+			currentNode = AATE_TOP; // Save top node for return value
+			AATE_POP();
+			tempObject = currentNode->object;
+			currentNode = currentNode->left;
+			return tempObject;
+			
+		case CHTraversePostOrder:
+			// This algorithm from: http://www.johny.ca/blog/archives/05/03/04/
+			if (stack == NULL && currentNode == NULL)
+				return nil;
+			while (1) {
+				while (currentNode != NULL) {
+					AATE_PUSH(currentNode);
+					currentNode = currentNode->left;
+				}
+				// A null entry indicates that we've traversed the right subtree
+				if (AATE_TOP != NULL) {
+					currentNode = AATE_TOP->right;
+					AATE_PUSH(NULL);
+					// TODO: explore how to not use null pad for leaf nodes
+				}
+				else {
+					AATE_POP(); // ignore the null pad
+					tempObject = AATE_TOP->object;
+					AATE_POP();
+					return tempObject;
+				}				
+			}
+			
+		case CHTraverseLevelOrder:
+			currentNode = AATE_FRONT;
+			if (currentNode == NULL)
+				return nil;
+			AATE_DEQUEUE();
+			if (currentNode->left != NULL) {
+				AATE_ENQUEUE(currentNode->left);
+			}
+			if (currentNode->right != NULL) {
+				AATE_ENQUEUE(currentNode->right);
+			}
+			return currentNode->object;
+			
+		default:
+			return nil;
+	}
 }
 
 - (NSArray*) allObjects {

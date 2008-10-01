@@ -41,9 +41,8 @@ typedef struct SinglyLinkedListNode {
  ideally suited for use in LIFO and FIFO structures (stacks and queues). The lack of
  backwards links prevents backwards enumeration, and removing from the tail of the
  list is O(n), rather than O(1). However, other operations should be slightly faster.
- 
  Nodes are now represented with C structs rather than Obj-C classes, providing much
- faster performance. (Thanks to Max Horn for the suggestion and additional guidance.)
+ faster performance.
  */
 
 @interface SinglyLinkedList : NSObject <LinkedList> {

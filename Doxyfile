@@ -77,8 +77,8 @@ ENABLED_SECTIONS       =
 MAX_INITIALIZER_LINES  = 30
 SHOW_USED_FILES        = YES
 SHOW_DIRECTORIES       = NO
-SHOW_FILES             = YES
-SHOW_NAMESPACES        = YES
+SHOW_FILES             = NO
+SHOW_NAMESPACES        = NO
 FILE_VERSION_FILTER    = 
 #---------------------------------------------------------------------------
 # configuration options related to warning and progress messages
@@ -87,13 +87,13 @@ QUIET                  = NO
 WARNINGS               = YES
 WARN_IF_UNDOCUMENTED   = YES
 WARN_IF_DOC_ERROR      = YES
-WARN_NO_PARAMDOC       = NO
+WARN_NO_PARAMDOC       = YES
 WARN_FORMAT            = "$file:$line: $text"
 WARN_LOGFILE           = 
 #---------------------------------------------------------------------------
 # configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = "source"
+INPUT                  = source
 INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.h *.m
 RECURSIVE              = NO
@@ -113,7 +113,7 @@ FILTER_SOURCE_FILES    = NO
 #---------------------------------------------------------------------------
 SOURCE_BROWSER         = NO
 INLINE_SOURCES         = NO
-STRIP_CODE_COMMENTS    = YES
+STRIP_CODE_COMMENTS    = NO
 REFERENCED_BY_RELATION = NO
 REFERENCES_RELATION    = NO
 REFERENCES_LINK_SOURCE = YES
@@ -228,7 +228,7 @@ CLASS_DIAGRAMS         = YES
 MSCGEN_PATH            = /Applications/Doxygen.app/Contents/Resources/
 HIDE_UNDOC_RELATIONS   = YES
 HAVE_DOT               = YES
-DOT_FONTNAME           = FreeSans
+DOT_FONTNAME           = Lucida Grande
 DOT_FONTPATH           = 
 CLASS_GRAPH            = YES
 COLLABORATION_GRAPH    = YES
@@ -242,10 +242,16 @@ CALLER_GRAPH           = NO
 GRAPHICAL_HIERARCHY    = YES
 DIRECTORY_GRAPH        = YES
 DOT_IMAGE_FORMAT       = png
-DOT_PATH               = /Applications/Doxygen.app/Contents/Resources/
+DOT_PATH               = /usr/local/bin/
+                         #/Applications/Graphviz.app/Contents/MacOS/ # for v1.13
+                         #/Applications/Doxygen.app/Contents/Resources/
+						 
+						 # Graphviz.app is available free online
+						 # (v1.13) http://www.pixelglow.com/graphviz/download/
+						 # (v2.20) http://www.graphviz.org/Download_macos.php
 DOTFILE_DIRS           = 
 DOT_GRAPH_MAX_NODES    = 50
-MAX_DOT_GRAPH_DEPTH    = 1000
+MAX_DOT_GRAPH_DEPTH    = 20
 DOT_TRANSPARENT        = YES
 DOT_MULTI_TARGETS      = NO
 GENERATE_LEGEND        = YES
