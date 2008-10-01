@@ -24,6 +24,8 @@
 
 #import "UnbalancedTree.h"
 
+static NSUInteger kUnbalancedTreeNodeSize = sizeof(UnbalancedTreeNode);
+
 #pragma mark Enumeration Struct & Macros
 
 /**
@@ -34,15 +36,17 @@ typedef struct UTE_NODE {
 	struct UTE_NODE *next;
 } UTE_NODE;
 
+static NSUInteger kUTE_SIZE = sizeof(UTE_NODE);
+
 #pragma mark - Stack Operations
 
-#define UTE_PUSH(o) {tmp=malloc(sizeof(UTE_NODE));tmp->node=o;tmp->next=stack;stack=tmp;}
+#define UTE_PUSH(o) {tmp=malloc(kUTE_SIZE);tmp->node=o;tmp->next=stack;stack=tmp;}
 #define UTE_POP()   {if(stack!=NULL){tmp=stack;stack=stack->next;free(tmp);}}
 #define UTE_TOP     ((stack!=NULL)?stack->node:NULL)
 
 #pragma mark - Queue Operations
 
-#define UTE_ENQUEUE(o) {tmp=malloc(sizeof(UTE_NODE));tmp->node=o;tmp->next=NULL;\
+#define UTE_ENQUEUE(o) {tmp=malloc(kUTE_SIZE);tmp->node=o;tmp->next=NULL;\
                         if(queue==NULL){queue=tmp;queueTail=tmp;}\
                         queueTail->next=tmp;queueTail=queueTail->next;}
 #define UTE_DEQUEUE()  {if(queue!=NULL){tmp=queue;queue=queue->next;free(tmp);}\
@@ -342,7 +346,7 @@ static struct UnbalancedTreeNode * _removeNode(struct UnbalancedTreeNode *node,
 	[anObject retain];
 	
 	if (root == NULL) {
-		root = malloc(sizeof(UnbalancedTreeNode));
+		root = malloc(kUnbalancedTreeNodeSize);
 		root->object = anObject;
 		root->left   = NULL;
 		root->right  = NULL;
@@ -380,7 +384,7 @@ static struct UnbalancedTreeNode * _removeNode(struct UnbalancedTreeNode *node,
 	}
 	else {
 		count++;
-		UnbalancedTreeNode *newNode = malloc(sizeof(UnbalancedTreeNode));
+		UnbalancedTreeNode *newNode = malloc(kUnbalancedTreeNodeSize);
 		newNode->object = anObject;
 		newNode->left   = NULL;
 		newNode->right  = NULL;

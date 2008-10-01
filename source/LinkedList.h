@@ -38,16 +38,6 @@
 @required
 
 /**
- Initialize a newly allocated list by placing in it the objects from an enumerator.
- This allows flexibility in specifying insertion order, such as passing the result of
- <code>-objectEnumerator</code> or <code>-reverseObjectEnumerator</code> on NSArray.
- 
- @param enumerator An enumerator which provides objects to insert into the list.
-        Objects are inserted in the order received from <code>-nextObject</code>.
- */
-- (id) initWithObjectsFromEnumerator:(NSEnumerator*)enumerator;
-
-/**
  Returns the number of objects currently in the list.
  
  @return The number of objects currently in the list.

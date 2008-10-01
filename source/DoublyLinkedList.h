@@ -30,7 +30,7 @@
  with a struct than with a proper object.
  */
 typedef struct DoublyLinkedListNode {
-	id data; /**< The object associated with this node in the list. */
+	id object; /**< The object associated with this node in the list. */
 	struct DoublyLinkedListNode *next; /**< The next node in the list. */
 	struct DoublyLinkedListNode *prev; /**< The previous node in the list. */
 } DoublyLinkedListNode;
@@ -38,15 +38,15 @@ typedef struct DoublyLinkedListNode {
 #pragma mark -
 
 /**
- A standard doubly-linked list implementation with pointers to head and tail.
- I call it standard because I have no plans to implement a singly-linked list...
- Does the extra pointer for each node really add that much excess?
+ A standard doubly-linked list implementation with pointers to head and tail. The
+ extra 'previous' link allows for reverse enumeration and cheap removal from the tail
+ of the list. The tradeoff is a little extra storage for each list node, and a little
+ extra work when inserting and removing.
  
  Nodes are now represented with C structs rather than Obj-C classes, providing much
  faster performance. (Thanks to Max Horn for the suggestion and additional guidance.)
  */
-@interface DoublyLinkedList : NSObject <LinkedList>
-{
+@interface DoublyLinkedList : NSObject <LinkedList> {
 	NSUInteger listSize; /**< The number of object currently stored in the list. */
 	DoublyLinkedListNode *beginMarker; /**< A pointer to the front node of the list. */
 	DoublyLinkedListNode *endMarker;   /**< A pointer to the back node of the list. */
@@ -61,7 +61,6 @@ typedef struct DoublyLinkedListNode {
 
 #pragma mark Method Implementations
 
-- (id) initWithObjectsFromEnumerator:(NSEnumerator*)anEnumerator;
 - (void) prependObject:(id)anObject;
 - (void) prependObjectsFromEnumerator:(NSEnumerator*)enumerator;
 - (void) appendObject:(id)anObject;
@@ -69,16 +68,19 @@ typedef struct DoublyLinkedListNode {
 - (id) firstObject;
 - (id) lastObject;
 - (NSUInteger) count;
+- (NSArray*) allObjects;
+- (NSEnumerator*) objectEnumerator;
 - (BOOL) containsObject:(id)anObject;
 - (BOOL) containsObjectIdenticalTo:(id)anObject;
-- (void) insertObject:(id)anObject atIndex:(NSUInteger)index;
-- (id) objectAtIndex:(NSUInteger)index;
-- (NSEnumerator*) objectEnumerator;
 - (void) removeFirstObject;
 - (void) removeLastObject;
 - (void) removeObject:(id)anObject;
-- (void) removeObjectAtIndex:(NSUInteger)index;
 - (void) removeObjectIdenticalTo:(id)anObject;
 - (void) removeAllObjects;
+
+// Optional protocol methods
+- (void) insertObject:(id)anObject atIndex:(NSUInteger)index;
+- (id) objectAtIndex:(NSUInteger)index;
+- (void) removeObjectAtIndex:(NSUInteger)index;
 
 @end

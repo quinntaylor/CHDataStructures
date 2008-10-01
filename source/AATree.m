@@ -24,6 +24,8 @@
 
 #import "AATree.h"
 
+static NSUInteger kAATreeNodeSize = sizeof(AATreeNode);
+
 /**
  An NSEnumerator for traversing an UnbalancedTree in a specified order.
  

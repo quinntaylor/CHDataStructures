@@ -27,16 +27,24 @@
 
 /**
  A singly-linked struct for nodes use by SinglyLinkedList. Performance is much faster
- with a struct than with a proper object. In addition, the requirements for time and
- memory can be reduced when only one link is stored and maintained for each node.
+ with a struct than with a proper object.
  */
 typedef struct SinglyLinkedListNode {
-	id data; /**< The object associated with this node in the list. */
+	id object; /**< The object associated with this node in the list. */
 	struct SinglyLinkedListNode *next; /**< The next node in the list. */
 } SinglyLinkedListNode;
 
 #pragma mark -
 
+/**
+ A standard singly-linked list implementation with pointers to head and tail. This is
+ ideally suited for use in LIFO and FIFO structures (stacks and queues). However, the
+ lack of backwards links prevents backwards enumeration, and removing from the tail
+ of the list is O(n), rather than O(1).
+ 
+ Nodes are now represented with C structs rather than Obj-C classes, providing much
+ faster performance. (Thanks to Max Horn for the suggestion and additional guidance.)
+ */
 
 @interface SinglyLinkedList : NSObject <LinkedList> {
 	NSUInteger listSize; /**< The number of object currently stored in the list. */
@@ -46,24 +54,22 @@ typedef struct SinglyLinkedListNode {
 
 #pragma mark Method Implementations
 
-- (id) initWithObjectsFromEnumerator:(NSEnumerator*)enumerator;
-- (NSUInteger) count;
 - (void) prependObject:(id)anObject;
 - (void) prependObjectsFromEnumerator:(NSEnumerator*)enumerator;
 - (void) appendObject:(id)anObject;
 - (void) appendObjectsFromEnumerator:(NSEnumerator*)enumerator;
 - (id) firstObject;
 - (id) lastObject;
+- (NSUInteger) count;
 - (NSArray*) allObjects;
+- (NSEnumerator*) objectEnumerator;
 - (BOOL) containsObject:(id)anObject;
 - (BOOL) containsObjectIdenticalTo:(id)anObject;
-- (NSEnumerator*) objectEnumerator;
 - (void) removeFirstObject;
 - (void) removeLastObject;
 - (void) removeObject:(id)anObject;
 - (void) removeObjectIdenticalTo:(id)anObject;
 - (void) removeAllObjects;
-- (NSEnumerator*) objectEnumerator;
 
 // Doesn't currently support index-based operations or inserting in the middle
 
