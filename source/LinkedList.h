@@ -48,7 +48,7 @@
  Add an object to the front of the list.
  
  @param anObject The object to add to the list; must not be <code>nil</code>, or an
- <code>NSInvalidArgumentException</code> is raised.
+        <code>NSInvalidArgumentException</code> is raised.
  */
 - (void) prependObject:(id)anObject;
 
@@ -161,8 +161,22 @@
 
 @optional
 
+/**
+ Inserts an object before <i>otherObject</i>, matched using <code>compare:</code>.
+ 
+ @param anObject The object to add to the list; must not be <code>nil</code>, or an
+        <code>NSInvalidArgumentException</code> is raised.
+ @param otherObject The object before which to add <i>anObject</i>
+ */
 - (void) insertObject:(id)anObject beforeObject:(id)otherObject;
 
+/**
+ Inserts an object after <i>otherObject</i>, matched using <code>compare:</code>.
+ 
+ @param anObject The object to add to the list; must not be <code>nil</code>, or an
+        <code>NSInvalidArgumentException</code> is raised.
+ @param otherObject
+ */
 - (void) insertObject:(id)anObject afterObject:(id)otherObject;
 
 /**

@@ -41,10 +41,8 @@ typedef struct DoublyLinkedListNode {
  A standard doubly-linked list implementation with pointers to head and tail. The
  extra 'previous' link allows for reverse enumeration and cheap removal from the tail
  of the list. The tradeoff is a little extra storage for each list node, and a little
- extra work when inserting and removing.
- 
- Nodes are now represented with C structs rather than Obj-C classes, providing much
- faster performance. (Thanks to Max Horn for the suggestion and additional guidance.)
+ extra work when inserting and removing. Nodes are now represented with C structs
+ rather than Obj-C classes, providing much faster performance.
  */
 @interface DoublyLinkedList : NSObject <LinkedList> {
 	NSUInteger listSize; /**< The number of object currently stored in the list. */

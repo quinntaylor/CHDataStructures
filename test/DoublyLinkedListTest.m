@@ -67,7 +67,6 @@
 
 - (void) testRemoveFirstLastObject {
 	[list appendObjectsFromEnumerator:[testArray objectEnumerator]];
-	STAssertEquals([list count], 3u, @"-count is incorrect.");
 	
 	[list removeFirstObject];
 	STAssertEquals([list count], 2u, @"-count is incorrect.");
@@ -86,6 +85,32 @@
 	
 	[list removeAllObjects];
 	STAssertEquals([list count], 0u, @"-count is incorrect.");
+}
+
+- (void) testObjectAtIndex {
+	[list appendObjectsFromEnumerator:[testArray objectEnumerator]];
+	STAssertThrows([list objectAtIndex:-1], @"Should raise NSRangeException.");
+	STAssertEqualObjects([list objectAtIndex:0], @"A", @"-objectAtIndex: is wrong.");
+	STAssertEqualObjects([list objectAtIndex:1], @"B", @"-objectAtIndex: is wrong.");
+	STAssertEqualObjects([list objectAtIndex:2], @"C", @"-objectAtIndex: is wrong.");
+	STAssertThrows([list objectAtIndex:3], @"Should raise NSRangeException.");
+}
+
+- (void) testInsertObjectAtIndex {
+	[list appendObjectsFromEnumerator:[testArray objectEnumerator]];
+	[list insertObject:@"D" atIndex:1];
+}
+
+- (void) testRemoveObjectAtIndex {
+	[list appendObjectsFromEnumerator:[testArray objectEnumerator]];
+	
+	STAssertThrows([list removeObjectAtIndex:3], @"Should raise NSRangeException.");
+	STAssertThrows([list removeObjectAtIndex:-1], @"Should raise NSRangeException.");
+
+	[list removeObjectAtIndex:1];
+	STAssertEquals([list count], 2u, @"-count is incorrect.");
+	STAssertEqualObjects([list firstObject], @"A", @"-firstObject is wrong.");
+	STAssertEqualObjects([list lastObject],  @"C", @"-lastObject is wrong.");
 }
 
 - (void) testObjectEnumerator {

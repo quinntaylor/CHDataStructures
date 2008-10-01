@@ -29,13 +29,16 @@
         pass the result of <code>[self class]</code> for this parameter.
  @param method The method selector where the problem originated. Callers should pass
         <code>_cmd</code> for this parameter.
+ @param index The offending index passed to the receiver.
+ @param elements The number of elements present in the receiver.
  
  Currently, there is no support for calling this function from a C function.
  */
-static void rangeException(Class theClass, SEL method) {
+static void rangeException(Class theClass, SEL method,
+						   NSUInteger index, NSUInteger elements) {
 	[NSException raise:NSRangeException
-                format:@"[%@ %s] -- Invalid nil argument.",
-                       theClass, sel_getName(method)];
+                format:@"[%@ %s] -- Index (%d) out of range (0-%d).",
+                       theClass, sel_getName(method), index, elements-1];
 }
 
 /**
