@@ -33,7 +33,21 @@
 		E44771F40E912491000889F7 /* ArrayDeque.h in Headers */ = {isa = PBXBuildFile; fileRef = E44771F20E912491000889F7 /* ArrayDeque.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E44771F50E912491000889F7 /* ArrayDeque.m in Sources */ = {isa = PBXBuildFile; fileRef = E44771F30E912491000889F7 /* ArrayDeque.m */; };
 		E44773A20E913C89000889F7 /* Util.h in Headers */ = {isa = PBXBuildFile; fileRef = E44773A10E913C89000889F7 /* Util.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E4ADBA930E88155A00B570BC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
+		E473CB5C0E9346DD005CA997 /* AATree.m in Sources */ = {isa = PBXBuildFile; fileRef = E442DFB70E8F1E6D00BD62F6 /* AATree.m */; };
+		E473CB5D0E9346DE005CA997 /* AbstractTree.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBC990E88412C00B570BC /* AbstractTree.m */; };
+		E473CB5E0E9346DE005CA997 /* ArrayDeque.m in Sources */ = {isa = PBXBuildFile; fileRef = E44771F30E912491000889F7 /* ArrayDeque.m */; };
+		E473CB5F0E9346DF005CA997 /* ArrayHeap.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB070E88174200B570BC /* ArrayHeap.m */; };
+		E473CB600E9346E0005CA997 /* ArrayQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB090E88174200B570BC /* ArrayQueue.m */; };
+		E473CB610E9346E1005CA997 /* ArrayStack.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB0B0E88174200B570BC /* ArrayStack.m */; };
+		E473CB620E9346E3005CA997 /* DoublyLinkedList.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB1F0E88174200B570BC /* DoublyLinkedList.m */; };
+		E473CB630E9346E4005CA997 /* ListQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB140E88174200B570BC /* ListQueue.m */; };
+		E473CB640E9346E5005CA997 /* ListStack.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB160E88174200B570BC /* ListStack.m */; };
+		E473CB650E9346E5005CA997 /* RedBlackTree.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB1C0E88174200B570BC /* RedBlackTree.m */; };
+		E473CB660E9346E6005CA997 /* SinglyLinkedList.m in Sources */ = {isa = PBXBuildFile; fileRef = E41180260E91E7E700E66053 /* SinglyLinkedList.m */; };
+		E473CB670E9346E7005CA997 /* UnbalancedTree.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB230E88174200B570BC /* UnbalancedTree.m */; };
+		E473CB7E0E934838005CA997 /* UnbalancedTreeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E473CB7D0E934838005CA997 /* UnbalancedTreeTest.m */; };
+		E473CB870E9348F5005CA997 /* SinglyLinkedListTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E473CA3D0E93346B005CA997 /* SinglyLinkedListTest.m */; };
+		E4ADBA930E88155A00B570BC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		E4ADBB240E88174200B570BC /* ArrayHeap.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB060E88174200B570BC /* ArrayHeap.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4ADBB250E88174200B570BC /* ArrayHeap.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB070E88174200B570BC /* ArrayHeap.m */; };
 		E4ADBB260E88174200B570BC /* ArrayQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB080E88174200B570BC /* ArrayQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -57,7 +71,6 @@
 		E4ADBB800E8828C500B570BC /* README in Resources */ = {isa = PBXBuildFile; fileRef = E4ADBB7E0E8828C500B570BC /* README */; };
 		E4ADBB810E8828C500B570BC /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = E4ADBB7F0E8828C500B570BC /* LICENSE */; };
 		E4ADBC9A0E88412C00B570BC /* AbstractTree.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBC990E88412C00B570BC /* AbstractTree.m */; };
-		E4B83B6F0E898C76008914BD /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = E4B83B6E0E898C76008914BD /* Test.m */; };
 		E4B83B960E898D9B008914BD /* DataStructures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* DataStructures.framework */; };
 		E4FE77C70E8978C300971EE6 /* Tree.h in Headers */ = {isa = PBXBuildFile; fileRef = E4FE77C60E8978C300971EE6 /* Tree.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4FE77CA0E8978DD00971EE6 /* AbstractTree.h in Headers */ = {isa = PBXBuildFile; fileRef = E4FE77C90E8978DD00971EE6 /* AbstractTree.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -77,6 +90,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = E4B83B610E898C26008914BD /* Test */;
 			remoteInfo = Test;
+		};
+		E473CB5A0E9346D0005CA997 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216 /* DataStructures */;
+			remoteInfo = DataStructures;
 		};
 		E4B83B8A0E898D11008914BD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -100,6 +120,13 @@
 		E44771F20E912491000889F7 /* ArrayDeque.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ArrayDeque.h; path = source/ArrayDeque.h; sourceTree = "<group>"; };
 		E44771F30E912491000889F7 /* ArrayDeque.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ArrayDeque.m; path = source/ArrayDeque.m; sourceTree = "<group>"; };
 		E44773A10E913C89000889F7 /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Util.h; path = source/Util.h; sourceTree = "<group>"; };
+		E473C9890E9331FA005CA997 /* Unit Testing-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Unit Testing-Info.plist"; sourceTree = "<group>"; };
+		E473C99E0E93333C005CA997 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		E473CA3C0E93346B005CA997 /* SinglyLinkedListTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SinglyLinkedListTest.h; path = test/SinglyLinkedListTest.h; sourceTree = "<group>"; };
+		E473CA3D0E93346B005CA997 /* SinglyLinkedListTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SinglyLinkedListTest.m; path = test/SinglyLinkedListTest.m; sourceTree = "<group>"; };
+		E473CB550E9346CB005CA997 /* Unit Testing.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "Unit Testing.octest"; path = "build/Debug/Unit Testing.octest"; sourceTree = "<group>"; };
+		E473CB7C0E934838005CA997 /* UnbalancedTreeTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UnbalancedTreeTest.h; path = test/UnbalancedTreeTest.h; sourceTree = "<group>"; };
+		E473CB7D0E934838005CA997 /* UnbalancedTreeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UnbalancedTreeTest.m; path = test/UnbalancedTreeTest.m; sourceTree = "<group>"; };
 		E4ADBB060E88174200B570BC /* ArrayHeap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ArrayHeap.h; path = source/ArrayHeap.h; sourceTree = "<group>"; };
 		E4ADBB070E88174200B570BC /* ArrayHeap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ArrayHeap.m; path = source/ArrayHeap.m; sourceTree = "<group>"; };
 		E4ADBB080E88174200B570BC /* ArrayQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ArrayQueue.h; path = source/ArrayQueue.h; sourceTree = "<group>"; };
@@ -124,7 +151,6 @@
 		E4ADBB7F0E8828C500B570BC /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		E4ADBC990E88412C00B570BC /* AbstractTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AbstractTree.m; path = source/AbstractTree.m; sourceTree = "<group>"; };
 		E4B83B620E898C26008914BD /* Test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Test; sourceTree = BUILT_PRODUCTS_DIR; };
-		E4B83B6E0E898C76008914BD /* Test.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Test.m; path = test/Test.m; sourceTree = "<group>"; };
 		E4CFCDB00E8FD18300B0253A /* docs.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = docs.html; sourceTree = "<group>"; };
 		E4CFCDB10E8FD18300B0253A /* Doxyfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Doxyfile; sourceTree = "<group>"; };
 		E4CFCDB20E8FD18300B0253A /* doxygen-cocoa-tags.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "doxygen-cocoa-tags.xml"; sourceTree = "<group>"; };
@@ -139,6 +165,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				E4ADBA930E88155A00B570BC /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E473CB520E9346CB005CA997 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,6 +191,7 @@
 			children = (
 				8DC2EF5B0486A6940098B216 /* DataStructures.framework */,
 				E4B83B620E898C26008914BD /* Test */,
+				E473CB550E9346CB005CA997 /* Unit Testing.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -167,21 +201,21 @@
 			children = (
 				08FB77AEFE84172EC02AAC07 /* Classes */,
 				089C1665FE841158C02AAC07 /* Resources */,
-				0867D69AFE84028FC02AAC07 /* External Frameworks */,
+				E473C9A70E933350005CA997 /* Test Cases */,
+				0867D69AFE84028FC02AAC07 /* Frameworks */,
 				E4CFCDAD0E8FD16400B0253A /* Documentation */,
 				034768DFFF38A50411DB9C8B /* Products */,
-				E4B83B6E0E898C76008914BD /* Test.m */,
 			);
 			name = DataStructures;
 			sourceTree = "<group>";
 		};
-		0867D69AFE84028FC02AAC07 /* External Frameworks */ = {
+		0867D69AFE84028FC02AAC07 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				1058C7B0FEA5585E11CA2CBB /* Linked Frameworks */,
-				1058C7B2FEA5585E11CA2CBB /* Other Frameworks */,
+				E473C99E0E93333C005CA997 /* SenTestingKit.framework */,
+				0867D69BFE84028FC02AAC07 /* Foundation.framework */,
 			);
-			name = "External Frameworks";
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		089C1665FE841158C02AAC07 /* Resources */ = {
@@ -190,6 +224,7 @@
 				E4ADBB7F0E8828C500B570BC /* LICENSE */,
 				E4ADBB7E0E8828C500B570BC /* README */,
 				089C1666FE841158C02AAC07 /* InfoPlist.strings */,
+				E473C9890E9331FA005CA997 /* Unit Testing-Info.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -233,19 +268,15 @@
 			name = Classes;
 			sourceTree = "<group>";
 		};
-		1058C7B0FEA5585E11CA2CBB /* Linked Frameworks */ = {
+		E473C9A70E933350005CA997 /* Test Cases */ = {
 			isa = PBXGroup;
 			children = (
+				E473CA3C0E93346B005CA997 /* SinglyLinkedListTest.h */,
+				E473CA3D0E93346B005CA997 /* SinglyLinkedListTest.m */,
+				E473CB7C0E934838005CA997 /* UnbalancedTreeTest.h */,
+				E473CB7D0E934838005CA997 /* UnbalancedTreeTest.m */,
 			);
-			name = "Linked Frameworks";
-			sourceTree = "<group>";
-		};
-		1058C7B2FEA5585E11CA2CBB /* Other Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				0867D69BFE84028FC02AAC07 /* Foundation.framework */,
-			);
-			name = "Other Frameworks";
+			name = "Test Cases";
 			sourceTree = "<group>";
 		};
 		E4CFCDAD0E8FD16400B0253A /* Documentation */ = {
@@ -311,6 +342,25 @@
 			productReference = 8DC2EF5B0486A6940098B216 /* DataStructures.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		E473CB540E9346CB005CA997 /* Unit Testing */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E473CB690E9346F3005CA997 /* Build configuration list for PBXNativeTarget "Unit Testing" */;
+			buildPhases = (
+				E473CB500E9346CB005CA997 /* Resources */,
+				E473CB510E9346CB005CA997 /* Sources */,
+				E473CB520E9346CB005CA997 /* Frameworks */,
+				E473CB530E9346CB005CA997 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E473CB5B0E9346D0005CA997 /* PBXTargetDependency */,
+			);
+			name = "Unit Testing";
+			productName = "Unit Testing";
+			productReference = E473CB550E9346CB005CA997 /* Unit Testing.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
 		E4B83B610E898C26008914BD /* Test */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = E4B83B6D0E898C49008914BD /* Build configuration list for PBXNativeTarget "Test" */;
@@ -344,6 +394,7 @@
 				8DC2EF4F0486A6940098B216 /* DataStructures */,
 				E4B83B610E898C26008914BD /* Test */,
 				E4FE76D80E89556A00971EE6 /* Documentation */,
+				E473CB540E9346CB005CA997 /* Unit Testing */,
 			);
 		};
 /* End PBXProject section */
@@ -359,9 +410,29 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E473CB500E9346CB005CA997 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		E473CB530E9346CB005CA997 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
 		E4FE76D70E89556A00971EE6 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -397,11 +468,31 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E473CB510E9346CB005CA997 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E473CB5C0E9346DD005CA997 /* AATree.m in Sources */,
+				E473CB5D0E9346DE005CA997 /* AbstractTree.m in Sources */,
+				E473CB5E0E9346DE005CA997 /* ArrayDeque.m in Sources */,
+				E473CB5F0E9346DF005CA997 /* ArrayHeap.m in Sources */,
+				E473CB600E9346E0005CA997 /* ArrayQueue.m in Sources */,
+				E473CB610E9346E1005CA997 /* ArrayStack.m in Sources */,
+				E473CB620E9346E3005CA997 /* DoublyLinkedList.m in Sources */,
+				E473CB630E9346E4005CA997 /* ListQueue.m in Sources */,
+				E473CB640E9346E5005CA997 /* ListStack.m in Sources */,
+				E473CB650E9346E5005CA997 /* RedBlackTree.m in Sources */,
+				E473CB660E9346E6005CA997 /* SinglyLinkedList.m in Sources */,
+				E473CB670E9346E7005CA997 /* UnbalancedTree.m in Sources */,
+				E473CB7E0E934838005CA997 /* UnbalancedTreeTest.m in Sources */,
+				E473CB870E9348F5005CA997 /* SinglyLinkedListTest.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E4B83B5F0E898C26008914BD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E4B83B6F0E898C76008914BD /* Test.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -417,6 +508,11 @@
 			isa = PBXTargetDependency;
 			target = E4B83B610E898C26008914BD /* Test */;
 			targetProxy = E473C94F0E931E96005CA997 /* PBXContainerItemProxy */;
+		};
+		E473CB5B0E9346D0005CA997 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8DC2EF4F0486A6940098B216 /* DataStructures */;
+			targetProxy = E473CB5A0E9346D0005CA997 /* PBXContainerItemProxy */;
 		};
 		E4B83B8B0E898D11008914BD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -512,6 +608,60 @@
 			};
 			name = Release;
 		};
+		E473CB580E9346CB005CA997 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Cocoa.framework/Headers/Cocoa.h";
+				INFOPLIST_FILE = "Unit Testing-Info.plist";
+				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Cocoa,
+					"-framework",
+					SenTestingKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = "Unit Testing";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		E473CB590E9346CB005CA997 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Cocoa.framework/Headers/Cocoa.h";
+				INFOPLIST_FILE = "Unit Testing-Info.plist";
+				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Cocoa,
+					"-framework",
+					SenTestingKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = "Unit Testing";
+				WRAPPER_EXTENSION = octest;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 		E4B83B640E898C27008914BD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -596,6 +746,15 @@
 			buildConfigurations = (
 				1DEB91B208733DA50010E9CD /* Debug */,
 				1DEB91B308733DA50010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E473CB690E9346F3005CA997 /* Build configuration list for PBXNativeTarget "Unit Testing" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E473CB580E9346CB005CA997 /* Debug */,
+				E473CB590E9346CB005CA997 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
