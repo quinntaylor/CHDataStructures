@@ -116,6 +116,7 @@ static NSUInteger kDoublyLinkedListNodeSize = sizeof(DoublyLinkedListNode);
 	head = NULL;
 	tail = NULL;
 	listSize = 0;
+	mutations = 0;
 	return self;
 }
 
@@ -141,25 +142,8 @@ static NSUInteger kDoublyLinkedListNodeSize = sizeof(DoublyLinkedListNode);
 	head = new;
 	if (tail == NULL)
 		tail = new;
-	listSize++;
-}
-
-- (void) prependObjectsFromEnumerator:(NSEnumerator*)enumerator {
-	if (enumerator == nil)
-		nilArgumentException([self class], _cmd);
-	DoublyLinkedListNode *new;
-	for (id anObject in enumerator) {
-		new = malloc(kDoublyLinkedListNodeSize);
-		new->object = [anObject retain];
-		new->next = head;
-		new->prev = NULL;
-		if (head != NULL)
-			head->prev = new;
-		head = new;
-		if (tail == NULL)
-			tail = new;
-		listSize++;
-	}
+	++listSize;
+	++mutations;
 }
 
 - (void) appendObject:(id)anObject {
@@ -175,25 +159,8 @@ static NSUInteger kDoublyLinkedListNodeSize = sizeof(DoublyLinkedListNode);
 	else
 		tail->next = new;
 	tail = new;
-	listSize++;
-}
-
-- (void) appendObjectsFromEnumerator:(NSEnumerator*)enumerator {
-	if (enumerator == nil)
-		nilArgumentException([self class], _cmd);
-	DoublyLinkedListNode *new;
-	for (id anObject in enumerator) {
-		new = malloc(kDoublyLinkedListNodeSize);
-		new->object = [anObject retain];
-		new->next = NULL;
-		new->prev = tail;
-		if (tail == NULL)
-			head = new;
-		else
-			tail->next = new;
-		tail = new;
-		listSize++;
-	}
+	++listSize;
+	++mutations;
 }
 
 - (id) firstObject {
@@ -252,6 +219,7 @@ static NSUInteger kDoublyLinkedListNodeSize = sizeof(DoublyLinkedListNode);
 		head->prev = NULL;
 	free(old);
 	--listSize;
+	++mutations;
 }
 
 - (void) removeLastObject {
@@ -266,6 +234,7 @@ static NSUInteger kDoublyLinkedListNodeSize = sizeof(DoublyLinkedListNode);
 		head = NULL;
 	free(old);
 	--listSize;
+	++mutations;
 }
 
 // Remove the node with a matching object, patch prev/next links around it
@@ -273,7 +242,7 @@ static NSUInteger kDoublyLinkedListNodeSize = sizeof(DoublyLinkedListNode);
 		if (node != NULL) { \
 		if (node->prev) node->prev->next = node->next; \
 		if (node->next) node->next->prev = node->prev; \
-		[node->object release]; free(node); listSize--; }
+		[node->object release]; free(node); --listSize; ++mutations; }
 
 - (void) removeObject:(id)anObject {
 	if (listSize == 0)
@@ -311,6 +280,7 @@ static NSUInteger kDoublyLinkedListNodeSize = sizeof(DoublyLinkedListNode);
 	}
 	tail = NULL;
 	listSize = 0;
+	++mutations;
 }
 
 #pragma mark - Optional Protocol Methods
@@ -342,6 +312,7 @@ static NSUInteger kDoublyLinkedListNodeSize = sizeof(DoublyLinkedListNode);
 	newNode->prev->next = newNode; // point preceding node to new node
 	node->prev = newNode;          // point following (displaced) node to new node
 	++listSize;
+	++mutations;
 }
 
 - (id) objectAtIndex:(NSUInteger)index {
@@ -369,6 +340,40 @@ static NSUInteger kDoublyLinkedListNodeSize = sizeof(DoublyLinkedListNode);
 		findNodeAtIndex(index);
 		removeNodeFromMiddle(node);		
 	}
+}
+
+#pragma mark <NSFastEnumeration> Methods
+
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState*)state
+								  objects:(id*)stackbuf
+									count:(NSUInteger)len
+{
+	DoublyLinkedListNode *currentNode;
+	// If this is the first call, start at head, otherwise start at last saved node
+	if (state->state == 0) {
+		currentNode = head;
+		state->itemsPtr = stackbuf;
+		state->mutationsPtr = &mutations;
+	}
+	else if (state->state == 1) {
+		return 0;		
+	}
+	else {
+		currentNode = (DoublyLinkedListNode*) state->state;
+	}
+	
+	// Accumulate objects from the list until we reach the tail, or the maximum limit
+    NSUInteger batchCount = 0;
+    while (currentNode != NULL && batchCount < len) {
+        stackbuf[batchCount] = currentNode->object;
+        currentNode = currentNode->next;
+		batchCount++;
+    }
+	if (currentNode == NULL)
+		state->state = 1; // used as a termination flag
+	else
+		state->state = (unsigned long)currentNode;
+    return batchCount;
 }
 
 @end

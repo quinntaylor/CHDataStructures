@@ -31,7 +31,7 @@
  
  @todo Add support for methods in NSCoding, NSMutableCopying, and NSFastEnumeration.
  */ 
-@protocol LinkedList <NSObject>
+@protocol LinkedList <NSObject, NSFastEnumeration>
 
 #pragma mark Required Methods
 

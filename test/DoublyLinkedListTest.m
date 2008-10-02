@@ -30,17 +30,8 @@
 }
 
 - (void) testAppendObject {
-	[list appendObject:@"A"];
-	[list appendObject:@"B"];
-	[list appendObject:@"C"];
-	
-	STAssertEquals([list count], 3u, @"-count is incorrect.");
-	STAssertEqualObjects([list firstObject], @"A", @"-firstObject is wrong.");
-	STAssertEqualObjects([list lastObject],  @"C", @"-lastObject is wrong.");
-}
-
-- (void) testAppendObjectsFromEnumerator {
-	[list appendObjectsFromEnumerator:[testArray objectEnumerator]];
+	for (id anObject in testArray)
+		[list appendObject:anObject];
 	
 	STAssertEquals([list count], 3u, @"-count is incorrect.");
 	STAssertEqualObjects([list firstObject], @"A", @"-firstObject is wrong.");
@@ -48,17 +39,8 @@
 }
 
 - (void) testPrependObject {
-	[list prependObject:@"A"];
-	[list prependObject:@"B"];
-	[list prependObject:@"C"];
-	
-	STAssertEquals([list count], 3u, @"-count is incorrect.");
-	STAssertEqualObjects([list firstObject], @"C", @"-firstObject is wrong.");
-	STAssertEqualObjects([list lastObject],  @"A", @"-lastObject is wrong.");
-}
-
-- (void) testPrependObjectsFromEnumerator {
-	[list prependObjectsFromEnumerator:[testArray objectEnumerator]];
+	for (id anObject in testArray)
+		[list prependObject:anObject];
 	
 	STAssertEquals([list count], 3u, @"-count is incorrect.");
 	STAssertEqualObjects([list firstObject], @"C", @"-firstObject is wrong.");
@@ -66,7 +48,8 @@
 }
 
 - (void) testRemoveFirstLastObject {
-	[list appendObjectsFromEnumerator:[testArray objectEnumerator]];
+	for (id anObject in testArray)
+		[list appendObject:anObject];
 	
 	[list removeFirstObject];
 	STAssertEquals([list count], 2u, @"-count is incorrect.");
@@ -88,7 +71,9 @@
 }
 
 - (void) testObjectAtIndex {
-	[list appendObjectsFromEnumerator:[testArray objectEnumerator]];
+	for (id anObject in testArray)
+		[list appendObject:anObject];
+
 	STAssertThrows([list objectAtIndex:-1], @"Should raise NSRangeException.");
 	STAssertEqualObjects([list objectAtIndex:0], @"A", @"-objectAtIndex: is wrong.");
 	STAssertEqualObjects([list objectAtIndex:1], @"B", @"-objectAtIndex: is wrong.");
@@ -97,12 +82,15 @@
 }
 
 - (void) testInsertObjectAtIndex {
-	[list appendObjectsFromEnumerator:[testArray objectEnumerator]];
+	for (id anObject in testArray)
+		[list appendObject:anObject];
 	[list insertObject:@"D" atIndex:1];
+	// TODO: Test for index 1
 }
 
 - (void) testRemoveObjectAtIndex {
-	[list appendObjectsFromEnumerator:[testArray objectEnumerator]];
+	for (id anObject in testArray)
+		[list appendObject:anObject];
 	
 	STAssertThrows([list removeObjectAtIndex:3], @"Should raise NSRangeException.");
 	STAssertThrows([list removeObjectAtIndex:-1], @"Should raise NSRangeException.");
@@ -118,7 +106,8 @@
 	STAssertNotNil(e, @"Enumerator should not be nil.");
 	STAssertNil([e nextObject], @"-nextObject should return nil.");
 	
-	[list appendObjectsFromEnumerator:[testArray objectEnumerator]];
+	for (id anObject in testArray)
+		[list appendObject:anObject];
 	
 	e = [list objectEnumerator];
 	STAssertNotNil(e, @"Enumerator should not be nil.");
@@ -140,9 +129,10 @@
 	STAssertNotNil(e, @"Enumerator should not be nil.");
 	STAssertNil([e nextObject], @"-nextObject should return nil.");
 	
-	[list appendObjectsFromEnumerator:[testArray reverseObjectEnumerator]];
+	for (id anObject in testArray)
+		[list appendObject:anObject];
 	
-	e = [list objectEnumerator];
+	e = [list reverseObjectEnumerator];
 	STAssertNotNil(e, @"Enumerator should not be nil.");
 	
 	STAssertEqualObjects([e nextObject], @"C", @"-nextObject is wrong.");
@@ -150,7 +140,7 @@
 	STAssertEqualObjects([e nextObject], @"A", @"-nextObject is wrong.");
 	STAssertNil([e nextObject], @"-nextObject should return nil.");
 	
-	NSArray *array = [[list objectEnumerator] allObjects];
+	NSArray *array = [[list reverseObjectEnumerator] allObjects];
 	STAssertNotNil(array, @"Array should not be nil");
 	STAssertEquals([array count], 3u, @"-count is incorrect.");
 	STAssertEqualObjects([array objectAtIndex:0], @"C", @"-firstObject is wrong.");
@@ -168,6 +158,17 @@
 	[list appendObject:a];
 	STAssertTrue([list containsObjectIdenticalTo:a], @"Should return YES.");
 	STAssertFalse([list containsObjectIdenticalTo:@"A"], @"Should return NO.");
+}
+
+- (void) testFastEnumeration {
+	for (id anObject in testArray)
+		[list appendObject:anObject];
+	NSUInteger count = 0;
+	for (id anObject in list) {
+		STAssertNotNil(anObject, @"Object should not be nil.");
+		count++;
+	}
+	STAssertEquals(count, 3u, @"Count of enumerated items is incorrect.");
 }
 
 @end

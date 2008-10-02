@@ -38,14 +38,6 @@
 	STAssertEqualObjects([list lastObject], @"C", @"-lastObject is wrong.");
 }
 
-- (void) testAppendObjectsFromEnumerator {
-	[list appendObjectsFromEnumerator:[testArray objectEnumerator]];
-	
-	STAssertEquals([list count], 3u, @"-count is incorrect.");
-	STAssertEqualObjects([list firstObject], @"A", @"-firstObject is wrong.");
-	STAssertEqualObjects([list lastObject],  @"C", @"-lastObject is wrong.");
-}
-
 - (void) testPrependObject {
 	[list prependObject:@"A"];
 	[list prependObject:@"B"];
@@ -56,16 +48,9 @@
 	STAssertEqualObjects([list lastObject],  @"A", @"-lastObject is wrong.");
 }
 
-- (void) testPrependObjectsFromEnumerator {
-	[list prependObjectsFromEnumerator:[testArray objectEnumerator]];
-	
-	STAssertEquals([list count], 3u, @"-count is incorrect.");
-	STAssertEqualObjects([list firstObject], @"C", @"-firstObject is wrong.");
-	STAssertEqualObjects([list lastObject],  @"A", @"-lastObject is wrong.");
-}
-
 - (void) testRemoveFirstLastObject {
-	[list appendObjectsFromEnumerator:[testArray objectEnumerator]];
+	for (id anObject in testArray)
+		[list appendObject:anObject];
 	STAssertEquals([list count], 3u, @"-count is incorrect.");
 	
 	[list removeFirstObject];
@@ -84,7 +69,8 @@
 	STAssertNotNil(e, @"Enumerator should not be nil.");
 	STAssertNil([e nextObject], @"-nextObject should return nil.");
 	
-	[list appendObjectsFromEnumerator:[testArray objectEnumerator]];
+	for (id anObject in testArray)
+		[list appendObject:anObject];
 	
 	e = [list objectEnumerator];
 	STAssertNotNil(e, @"Enumerator should not be nil.");
@@ -112,6 +98,17 @@
 	[list appendObject:a];
 	STAssertTrue([list containsObjectIdenticalTo:a], @"Should return YES.");
 	STAssertFalse([list containsObjectIdenticalTo:@"A"], @"Should return NO.");
+}
+
+- (void) testFastEnumeration {
+	for (id anObject in testArray)
+		[list appendObject:anObject];
+	NSUInteger count = 0;
+	for (id anObject in list) {
+		STAssertNotNil(anObject, @"Object should not be nil.");
+		count++;
+	}
+	STAssertEquals(count, 3u, @"Count of enumerated items is incorrect.");
 }
 
 @end

@@ -104,6 +104,7 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(SinglyLinkedListNode);
 	head = NULL;
 	tail = NULL;
 	listSize = 0;
+	mutations = 0;
 	return self;
 }
 
@@ -126,22 +127,8 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(SinglyLinkedListNode);
 	head = new;
 	if (tail == NULL)
 		tail = new;
-	listSize++;
-}
-
-- (void) prependObjectsFromEnumerator:(NSEnumerator*)enumerator {
-	if (enumerator == nil)
-		nilArgumentException([self class], _cmd);
-	SinglyLinkedListNode *new;
-	for (id anObject in enumerator) {
-		new = malloc(kSinglyLinkedListNodeSize);
-		new->object = [anObject retain];
-		new->next = head;
-		head = new;
-		if (tail == NULL)
-			tail = new;
-		listSize++;
-	}
+	++listSize;
+	++mutations;
 }
 
 - (void) appendObject:(id)anObject {
@@ -156,24 +143,8 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(SinglyLinkedListNode);
 	else
 		tail->next = new;
 	tail = new;
-	listSize++;
-}
-
-- (void) appendObjectsFromEnumerator:(NSEnumerator*)enumerator {
-	if (enumerator == nil)
-		nilArgumentException([self class], _cmd);
-	SinglyLinkedListNode *new;
-	for (id anObject in enumerator) {
-		new = malloc(kSinglyLinkedListNodeSize);
-		new->object = [anObject retain];
-		new->next = NULL;
-		if (tail == NULL)
-			head = new;
-		else
-			tail->next = new;
-		tail = new;
-		listSize++;
-	}
+	++listSize;
+	++mutations;
 }
 
 - (id) firstObject {
@@ -226,6 +197,7 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(SinglyLinkedListNode);
 		tail = NULL;
 	free(old);
 	--listSize;
+	++mutations;
 }
 
 - (void) removeLastObject {
@@ -249,6 +221,7 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(SinglyLinkedListNode);
 		old->next = NULL;
 		tail = old;
 		--listSize;
+		++mutations;
 	}
 }
 
@@ -270,6 +243,7 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(SinglyLinkedListNode);
 		[temp->object release];
 		free(temp);
 		--listSize;
+		++mutations;
 	}
 }
 
@@ -291,6 +265,7 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(SinglyLinkedListNode);
 		[temp->object release];
 		free(temp);
 		--listSize;
+		++mutations;
 	}	
 }
 
@@ -304,6 +279,41 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(SinglyLinkedListNode);
 	}
 	tail = NULL;
 	listSize = 0;
+	++mutations;
+}
+
+#pragma mark <NSFastEnumeration> Methods
+
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState*)state
+								  objects:(id*)stackbuf
+									count:(NSUInteger)len
+{
+	SinglyLinkedListNode *currentNode;
+	// If this is the first call, start at head, otherwise start at last saved node
+	if (state->state == 0) {
+		currentNode = head;
+		state->itemsPtr = stackbuf;
+		state->mutationsPtr = &mutations;
+	}
+	else if (state->state == 1) {
+		return 0;		
+	}
+	else {
+		currentNode = (SinglyLinkedListNode*) state->state;
+	}
+
+	// Accumulate objects from the list until we reach the tail, or the maximum limit
+    NSUInteger batchCount = 0;
+    while (currentNode != NULL && batchCount < len) {
+        stackbuf[batchCount] = currentNode->object;
+        currentNode = currentNode->next;
+		batchCount++;
+    }
+	if (currentNode == NULL)
+		state->state = 1; // used as a termination flag
+	else
+		state->state = (unsigned long)currentNode;
+    return batchCount;
 }
 
 @end

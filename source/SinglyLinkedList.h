@@ -49,14 +49,13 @@ typedef struct SinglyLinkedListNode {
 	NSUInteger listSize; /**< The number of object currently stored in the list. */
 	SinglyLinkedListNode *head;  /**< A pointer to the front node of the list. */
 	SinglyLinkedListNode *tail;  /**< A pointer to the back node of the list. */
+	unsigned long mutations; /**< Used to track mutations for NSFastEnumeration. */
 }
 
 #pragma mark Method Implementations
 
 - (void) prependObject:(id)anObject;
-- (void) prependObjectsFromEnumerator:(NSEnumerator*)enumerator;
 - (void) appendObject:(id)anObject;
-- (void) appendObjectsFromEnumerator:(NSEnumerator*)enumerator;
 - (id) firstObject;
 - (id) lastObject;
 - (NSUInteger) count;
