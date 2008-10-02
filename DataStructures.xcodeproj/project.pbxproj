@@ -34,10 +34,10 @@
 		E40D182D0E9452BB007F39D8 /* ArrayHeapTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D18220E9452BB007F39D8 /* ArrayHeapTest.m */; };
 		E40D182F0E9452BB007F39D8 /* ArrayQueueTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D18240E9452BB007F39D8 /* ArrayQueueTest.m */; };
 		E40D184C0E945580007F39D8 /* ListDeque.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D184B0E945580007F39D8 /* ListDeque.m */; };
-		E40D184D0E945580007F39D8 /* ListDeque.h in Headers */ = {isa = PBXBuildFile; fileRef = E40D184A0E945580007F39D8 /* ListDeque.h */; };
+		E40D184D0E945580007F39D8 /* ListDeque.h in Headers */ = {isa = PBXBuildFile; fileRef = E40D184A0E945580007F39D8 /* ListDeque.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E40D184E0E945580007F39D8 /* ListDeque.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D184B0E945580007F39D8 /* ListDeque.m */; };
 		E40D18720E94577F007F39D8 /* ListDequeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D18710E94577F007F39D8 /* ListDequeTest.m */; };
-		E41180270E91E7E700E66053 /* SinglyLinkedList.h in Headers */ = {isa = PBXBuildFile; fileRef = E41180250E91E7E700E66053 /* SinglyLinkedList.h */; };
+		E41180270E91E7E700E66053 /* SinglyLinkedList.h in Headers */ = {isa = PBXBuildFile; fileRef = E41180250E91E7E700E66053 /* SinglyLinkedList.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E41180280E91E7E700E66053 /* SinglyLinkedList.m in Sources */ = {isa = PBXBuildFile; fileRef = E41180260E91E7E700E66053 /* SinglyLinkedList.m */; };
 		E42DBAF20E8C3200000E1FBD /* Deque.h in Headers */ = {isa = PBXBuildFile; fileRef = E42DBAF10E8C3200000E1FBD /* Deque.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E442DFA80E8F1BDF00BD62F6 /* DataStructures.h in Headers */ = {isa = PBXBuildFile; fileRef = E442DFA70E8F1BDF00BD62F6 /* DataStructures.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -46,6 +46,7 @@
 		E44771F40E912491000889F7 /* ArrayDeque.h in Headers */ = {isa = PBXBuildFile; fileRef = E44771F20E912491000889F7 /* ArrayDeque.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E44771F50E912491000889F7 /* ArrayDeque.m in Sources */ = {isa = PBXBuildFile; fileRef = E44771F30E912491000889F7 /* ArrayDeque.m */; };
 		E44773A20E913C89000889F7 /* Util.h in Headers */ = {isa = PBXBuildFile; fileRef = E44773A10E913C89000889F7 /* Util.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E44B57660E95538600F9DD1A /* DataStructures.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* DataStructures.framework */; };
 		E473CB5C0E9346DD005CA997 /* AATree.m in Sources */ = {isa = PBXBuildFile; fileRef = E442DFB70E8F1E6D00BD62F6 /* AATree.m */; };
 		E473CB5D0E9346DE005CA997 /* AbstractTree.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBC990E88412C00B570BC /* AbstractTree.m */; };
 		E473CB5E0E9346DE005CA997 /* ArrayDeque.m in Sources */ = {isa = PBXBuildFile; fileRef = E44771F30E912491000889F7 /* ArrayDeque.m */; };
@@ -111,6 +112,19 @@
 			remoteInfo = "Unit Testing";
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E44B57800E9553A700F9DD1A /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 12;
+			dstPath = "~/Library/Frameworks";
+			dstSubfolderSpec = 0;
+			files = (
+				E44B57660E95538600F9DD1A /* DataStructures.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
@@ -204,6 +218,7 @@
 		0867D691FE84028FC02AAC07 /* DataStructures */ = {
 			isa = PBXGroup;
 			children = (
+				E44B57D00E9558A000F9DD1A /* Protocols & Utils */,
 				08FB77AEFE84172EC02AAC07 /* Classes */,
 				E473C9A70E933350005CA997 /* Unit Tests */,
 				E4CFCDAD0E8FD16400B0253A /* Documentation */,
@@ -249,30 +264,37 @@
 				E4ADBB090E88174200B570BC /* ArrayQueue.m */,
 				E4ADBB0A0E88174200B570BC /* ArrayStack.h */,
 				E4ADBB0B0E88174200B570BC /* ArrayStack.m */,
-				E442DFA70E8F1BDF00BD62F6 /* DataStructures.h */,
-				E42DBAF10E8C3200000E1FBD /* Deque.h */,
 				E4ADBB1E0E88174200B570BC /* DoublyLinkedList.h */,
 				E4ADBB1F0E88174200B570BC /* DoublyLinkedList.m */,
-				E4ADBB120E88174200B570BC /* Heap.h */,
 				E40D184A0E945580007F39D8 /* ListDeque.h */,
 				E40D184B0E945580007F39D8 /* ListDeque.m */,
 				E4ADBB130E88174200B570BC /* ListQueue.h */,
 				E4ADBB140E88174200B570BC /* ListQueue.m */,
 				E4ADBB150E88174200B570BC /* ListStack.h */,
 				E4ADBB160E88174200B570BC /* ListStack.m */,
-				E4ADBB170E88174200B570BC /* LinkedList.h */,
-				E4ADBB180E88174200B570BC /* Queue.h */,
 				E4ADBB1B0E88174200B570BC /* RedBlackTree.h */,
 				E4ADBB1C0E88174200B570BC /* RedBlackTree.m */,
 				E41180250E91E7E700E66053 /* SinglyLinkedList.h */,
 				E41180260E91E7E700E66053 /* SinglyLinkedList.m */,
-				E4ADBB1D0E88174200B570BC /* Stack.h */,
-				E4FE77C60E8978C300971EE6 /* Tree.h */,
 				E4ADBB220E88174200B570BC /* UnbalancedTree.h */,
 				E4ADBB230E88174200B570BC /* UnbalancedTree.m */,
-				E44773A10E913C89000889F7 /* Util.h */,
 			);
 			name = Classes;
+			sourceTree = "<group>";
+		};
+		E44B57D00E9558A000F9DD1A /* Protocols & Utils */ = {
+			isa = PBXGroup;
+			children = (
+				E442DFA70E8F1BDF00BD62F6 /* DataStructures.h */,
+				E42DBAF10E8C3200000E1FBD /* Deque.h */,
+				E4ADBB120E88174200B570BC /* Heap.h */,
+				E4ADBB170E88174200B570BC /* LinkedList.h */,
+				E4ADBB180E88174200B570BC /* Queue.h */,
+				E4ADBB1D0E88174200B570BC /* Stack.h */,
+				E4FE77C60E8978C300971EE6 /* Tree.h */,
+				E44773A10E913C89000889F7 /* Util.h */,
+			);
+			name = "Protocols & Utils";
 			sourceTree = "<group>";
 		};
 		E473C9A70E933350005CA997 /* Unit Tests */ = {
@@ -347,6 +369,7 @@
 				8DC2EF520486A6940098B216 /* Resources */,
 				8DC2EF540486A6940098B216 /* Sources */,
 				8DC2EF560486A6940098B216 /* Frameworks */,
+				E44B57800E9553A700F9DD1A /* CopyFiles */,
 			);
 			buildRules = (
 			);

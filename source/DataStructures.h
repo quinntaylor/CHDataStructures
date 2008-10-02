@@ -24,8 +24,7 @@
 
 #import <Foundation/Foundation.h>
 
-#pragma mark Framework Protocols
-
+// Protocols
 #import "Deque.h"
 #import "Heap.h"
 #import "LinkedList.h"
@@ -33,23 +32,25 @@
 #import "Stack.h"
 #import "Tree.h"
 
-#pragma mark Framework Classes
-
-#import "AbstractQueue.h"
-#import "AbstractStack.h"
-#import "AbstractTree.h"
-
+// Classes
 #import "AATree.h"
+#import "AbstractTree.h"
 #import "ArrayDeque.h"
 #import "ArrayHeap.h"
 #import "ArrayQueue.h"
 #import "ArrayStack.h"
 #import "DoublyLinkedList.h"
+#import "ListDeque.h"
 #import "ListQueue.h"
 #import "ListStack.h"
 #import "RedBlackTree.h"
+#import "SinglyLinkedList.h"
 #import "UnbalancedTree.h"
+
+// Utilities
 #import "Util.h"
+
+
 
 /**
  @mainpage Overview
@@ -102,6 +103,4 @@
        <code>-makeObjectsPerform:with:</code>
  
  @todo Consider adding <code>-replaceObject:withObject:</code>
- 
- @todo Consider adding <code>-addObjectsFromEnumerator:</code>
  */
