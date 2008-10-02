@@ -31,7 +31,7 @@
 		[self release];
 		return nil;
 	}
-	list = [[ListDeque alloc] init];
+	list = [[DoublyLinkedList alloc] init];
 	return self;
 }
 
@@ -95,8 +95,8 @@
 #pragma mark <NSFastEnumeration> Methods
 
 - (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState*)state
-								  objects:(id*)stackbuf
-									count:(NSUInteger)len
+                                  objects:(id*)stackbuf
+                                    count:(NSUInteger)len
 {
 	return [list countByEnumeratingWithState:state objects:stackbuf count:len];
 }
