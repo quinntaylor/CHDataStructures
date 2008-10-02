@@ -19,18 +19,19 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *******************************/
 
-//  ArrayDeque.h
+//  ListDeque.h
 //  DataStructuresFramework
 
 #import <Foundation/Foundation.h>
 #import "Deque.h"
+#import "DoublyLinkedList.h"
 
 /**
- A fairly basic Deque implemented using an NSMutableArray.
+ A fairly basic Deque implemented using a DoublyLinkedList.
  See the protocol definition for Deque to understand the programming contract.
  */
-@interface ArrayDeque : NSObject <Deque> {
-	NSMutableArray *array;
+@interface ListDeque : NSObject <Deque> {
+	DoublyLinkedList *list;
 }
 
 #pragma mark Method Implementations

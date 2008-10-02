@@ -24,6 +24,19 @@
 
 /* Begin PBXBuildFile section */
 		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
+		E40D18060E94519F007F39D8 /* AATreeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D18050E94519F007F39D8 /* AATreeTest.m */; };
+		E40D18260E9452BB007F39D8 /* ArrayDequeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D181B0E9452BB007F39D8 /* ArrayDequeTest.m */; };
+		E40D18270E9452BB007F39D8 /* RedBlackTreeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D181C0E9452BB007F39D8 /* RedBlackTreeTest.m */; };
+		E40D18280E9452BB007F39D8 /* ListStackTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D181D0E9452BB007F39D8 /* ListStackTest.m */; };
+		E40D18290E9452BB007F39D8 /* UnbalancedTreeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D181E0E9452BB007F39D8 /* UnbalancedTreeTest.m */; };
+		E40D182A0E9452BB007F39D8 /* ArrayStackTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D181F0E9452BB007F39D8 /* ArrayStackTest.m */; };
+		E40D182C0E9452BB007F39D8 /* ListQueueTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D18210E9452BB007F39D8 /* ListQueueTest.m */; };
+		E40D182D0E9452BB007F39D8 /* ArrayHeapTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D18220E9452BB007F39D8 /* ArrayHeapTest.m */; };
+		E40D182F0E9452BB007F39D8 /* ArrayQueueTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D18240E9452BB007F39D8 /* ArrayQueueTest.m */; };
+		E40D184C0E945580007F39D8 /* ListDeque.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D184B0E945580007F39D8 /* ListDeque.m */; };
+		E40D184D0E945580007F39D8 /* ListDeque.h in Headers */ = {isa = PBXBuildFile; fileRef = E40D184A0E945580007F39D8 /* ListDeque.h */; };
+		E40D184E0E945580007F39D8 /* ListDeque.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D184B0E945580007F39D8 /* ListDeque.m */; };
+		E40D18720E94577F007F39D8 /* ListDequeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D18710E94577F007F39D8 /* ListDequeTest.m */; };
 		E41180270E91E7E700E66053 /* SinglyLinkedList.h in Headers */ = {isa = PBXBuildFile; fileRef = E41180250E91E7E700E66053 /* SinglyLinkedList.h */; };
 		E41180280E91E7E700E66053 /* SinglyLinkedList.m in Sources */ = {isa = PBXBuildFile; fileRef = E41180260E91E7E700E66053 /* SinglyLinkedList.m */; };
 		E42DBAF20E8C3200000E1FBD /* Deque.h in Headers */ = {isa = PBXBuildFile; fileRef = E42DBAF10E8C3200000E1FBD /* Deque.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -45,7 +58,6 @@
 		E473CB650E9346E5005CA997 /* RedBlackTree.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB1C0E88174200B570BC /* RedBlackTree.m */; };
 		E473CB660E9346E6005CA997 /* SinglyLinkedList.m in Sources */ = {isa = PBXBuildFile; fileRef = E41180260E91E7E700E66053 /* SinglyLinkedList.m */; };
 		E473CB670E9346E7005CA997 /* UnbalancedTree.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB230E88174200B570BC /* UnbalancedTree.m */; };
-		E473CB7E0E934838005CA997 /* UnbalancedTreeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E473CB7D0E934838005CA997 /* UnbalancedTreeTest.m */; };
 		E473CB870E9348F5005CA997 /* SinglyLinkedListTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E473CA3D0E93346B005CA997 /* SinglyLinkedListTest.m */; };
 		E4ADBA930E88155A00B570BC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		E4ADBB240E88174200B570BC /* ArrayHeap.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB060E88174200B570BC /* ArrayHeap.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -104,6 +116,18 @@
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* DataStructures.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DataStructures.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E40D18050E94519F007F39D8 /* AATreeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AATreeTest.m; path = test/AATreeTest.m; sourceTree = "<group>"; };
+		E40D181B0E9452BB007F39D8 /* ArrayDequeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ArrayDequeTest.m; path = test/ArrayDequeTest.m; sourceTree = "<group>"; };
+		E40D181C0E9452BB007F39D8 /* RedBlackTreeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RedBlackTreeTest.m; path = test/RedBlackTreeTest.m; sourceTree = "<group>"; };
+		E40D181D0E9452BB007F39D8 /* ListStackTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ListStackTest.m; path = test/ListStackTest.m; sourceTree = "<group>"; };
+		E40D181E0E9452BB007F39D8 /* UnbalancedTreeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UnbalancedTreeTest.m; path = test/UnbalancedTreeTest.m; sourceTree = "<group>"; };
+		E40D181F0E9452BB007F39D8 /* ArrayStackTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ArrayStackTest.m; path = test/ArrayStackTest.m; sourceTree = "<group>"; };
+		E40D18210E9452BB007F39D8 /* ListQueueTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ListQueueTest.m; path = test/ListQueueTest.m; sourceTree = "<group>"; };
+		E40D18220E9452BB007F39D8 /* ArrayHeapTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ArrayHeapTest.m; path = test/ArrayHeapTest.m; sourceTree = "<group>"; };
+		E40D18240E9452BB007F39D8 /* ArrayQueueTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ArrayQueueTest.m; path = test/ArrayQueueTest.m; sourceTree = "<group>"; };
+		E40D184A0E945580007F39D8 /* ListDeque.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ListDeque.h; path = source/ListDeque.h; sourceTree = "<group>"; };
+		E40D184B0E945580007F39D8 /* ListDeque.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ListDeque.m; path = source/ListDeque.m; sourceTree = "<group>"; };
+		E40D18710E94577F007F39D8 /* ListDequeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ListDequeTest.m; path = test/ListDequeTest.m; sourceTree = "<group>"; };
 		E41180250E91E7E700E66053 /* SinglyLinkedList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SinglyLinkedList.h; path = source/SinglyLinkedList.h; sourceTree = "<group>"; };
 		E41180260E91E7E700E66053 /* SinglyLinkedList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SinglyLinkedList.m; path = source/SinglyLinkedList.m; sourceTree = "<group>"; };
 		E42DBAF10E8C3200000E1FBD /* Deque.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Deque.h; path = source/Deque.h; sourceTree = "<group>"; };
@@ -117,7 +141,6 @@
 		E473C99E0E93333C005CA997 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		E473CA3D0E93346B005CA997 /* SinglyLinkedListTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SinglyLinkedListTest.m; path = test/SinglyLinkedListTest.m; sourceTree = "<group>"; };
 		E473CB550E9346CB005CA997 /* Unit Testing.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Unit Testing.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		E473CB7D0E934838005CA997 /* UnbalancedTreeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UnbalancedTreeTest.m; path = test/UnbalancedTreeTest.m; sourceTree = "<group>"; };
 		E4ADBB060E88174200B570BC /* ArrayHeap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ArrayHeap.h; path = source/ArrayHeap.h; sourceTree = "<group>"; };
 		E4ADBB070E88174200B570BC /* ArrayHeap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ArrayHeap.m; path = source/ArrayHeap.m; sourceTree = "<group>"; };
 		E4ADBB080E88174200B570BC /* ArrayQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ArrayQueue.h; path = source/ArrayQueue.h; sourceTree = "<group>"; };
@@ -231,6 +254,8 @@
 				E4ADBB1E0E88174200B570BC /* DoublyLinkedList.h */,
 				E4ADBB1F0E88174200B570BC /* DoublyLinkedList.m */,
 				E4ADBB120E88174200B570BC /* Heap.h */,
+				E40D184A0E945580007F39D8 /* ListDeque.h */,
+				E40D184B0E945580007F39D8 /* ListDeque.m */,
 				E4ADBB130E88174200B570BC /* ListQueue.h */,
 				E4ADBB140E88174200B570BC /* ListQueue.m */,
 				E4ADBB150E88174200B570BC /* ListStack.h */,
@@ -253,9 +278,18 @@
 		E473C9A70E933350005CA997 /* Test Cases */ = {
 			isa = PBXGroup;
 			children = (
+				E40D18050E94519F007F39D8 /* AATreeTest.m */,
+				E40D181B0E9452BB007F39D8 /* ArrayDequeTest.m */,
+				E40D18220E9452BB007F39D8 /* ArrayHeapTest.m */,
+				E40D18240E9452BB007F39D8 /* ArrayQueueTest.m */,
+				E40D181F0E9452BB007F39D8 /* ArrayStackTest.m */,
 				E4D499690E93CD1300434CBA /* DoublyLinkedListTest.m */,
+				E40D18710E94577F007F39D8 /* ListDequeTest.m */,
+				E40D18210E9452BB007F39D8 /* ListQueueTest.m */,
+				E40D181D0E9452BB007F39D8 /* ListStackTest.m */,
+				E40D181C0E9452BB007F39D8 /* RedBlackTreeTest.m */,
 				E473CA3D0E93346B005CA997 /* SinglyLinkedListTest.m */,
-				E473CB7D0E934838005CA997 /* UnbalancedTreeTest.m */,
+				E40D181E0E9452BB007F39D8 /* UnbalancedTreeTest.m */,
 			);
 			name = "Test Cases";
 			sourceTree = "<group>";
@@ -298,6 +332,7 @@
 				E44771F40E912491000889F7 /* ArrayDeque.h in Headers */,
 				E44773A20E913C89000889F7 /* Util.h in Headers */,
 				E41180270E91E7E700E66053 /* SinglyLinkedList.h in Headers */,
+				E40D184D0E945580007F39D8 /* ListDeque.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -428,6 +463,7 @@
 				E442DFB90E8F1E6D00BD62F6 /* AATree.m in Sources */,
 				E44771F50E912491000889F7 /* ArrayDeque.m in Sources */,
 				E41180280E91E7E700E66053 /* SinglyLinkedList.m in Sources */,
+				E40D184E0E945580007F39D8 /* ListDeque.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -447,9 +483,19 @@
 				E473CB650E9346E5005CA997 /* RedBlackTree.m in Sources */,
 				E473CB660E9346E6005CA997 /* SinglyLinkedList.m in Sources */,
 				E473CB670E9346E7005CA997 /* UnbalancedTree.m in Sources */,
-				E473CB7E0E934838005CA997 /* UnbalancedTreeTest.m in Sources */,
 				E473CB870E9348F5005CA997 /* SinglyLinkedListTest.m in Sources */,
 				E4D4996A0E93CD1300434CBA /* DoublyLinkedListTest.m in Sources */,
+				E40D18060E94519F007F39D8 /* AATreeTest.m in Sources */,
+				E40D18260E9452BB007F39D8 /* ArrayDequeTest.m in Sources */,
+				E40D18270E9452BB007F39D8 /* RedBlackTreeTest.m in Sources */,
+				E40D18280E9452BB007F39D8 /* ListStackTest.m in Sources */,
+				E40D18290E9452BB007F39D8 /* UnbalancedTreeTest.m in Sources */,
+				E40D182A0E9452BB007F39D8 /* ArrayStackTest.m in Sources */,
+				E40D182C0E9452BB007F39D8 /* ListQueueTest.m in Sources */,
+				E40D182D0E9452BB007F39D8 /* ArrayHeapTest.m in Sources */,
+				E40D182F0E9452BB007F39D8 /* ArrayQueueTest.m in Sources */,
+				E40D184C0E945580007F39D8 /* ListDeque.m in Sources */,
+				E40D18720E94577F007F39D8 /* ListDequeTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
