@@ -29,9 +29,9 @@
  A <a href="http://en.wikipedia.org/wiki/Stack_(data_structure)">stack</a> protocol
  with methods for <a href="http://en.wikipedia.org/wiki/LIFO">LIFO</a> operations.
  
- @todo Add support for methods in NSCoding, NSMutableCopying, and NSFastEnumeration.
+ @todo Add support for methods in NSCoding and NSMutableCopying.
  */
-@protocol Stack <NSObject>
+@protocol Stack <NSObject, NSFastEnumeration>
 
 /**
  Initialize a newly-allocated stack with no objects.

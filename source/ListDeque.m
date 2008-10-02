@@ -92,4 +92,13 @@
 	return [list containsObjectIdenticalTo:anObject];
 }
 
+#pragma mark <NSFastEnumeration> Methods
+
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState*)state
+								  objects:(id*)stackbuf
+									count:(NSUInteger)len
+{
+	return [list countByEnumeratingWithState:state objects:stackbuf count:len];
+}
+
 @end

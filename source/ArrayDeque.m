@@ -85,4 +85,13 @@
 	return [array count];
 }
 
+#pragma mark <NSFastEnumeration> Methods
+
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState*)state
+								  objects:(id*)stackbuf
+									count:(NSUInteger)len
+{
+	return [array countByEnumeratingWithState:state objects:stackbuf count:len];
+}
+
 @end

@@ -29,7 +29,7 @@
  A <a href="http://en.wikipedia.org/wiki/Linked_list">linked list</a> protocol with
  methods that work in singly- or doubly-linked lists.
  
- @todo Add support for methods in NSCoding, NSMutableCopying, and NSFastEnumeration.
+ @todo Add support for methods in NSCoding and NSMutableCopying.
  */ 
 @protocol LinkedList <NSObject, NSFastEnumeration>
 
