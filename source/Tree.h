@@ -60,15 +60,9 @@ typedef short CHTraversalOrder;
 @protocol Tree <NSObject>
 
 /**
- Initialize a newly allocated tree by placing in it the objects from an enumerator.
- This allows flexibility in specifying insertion order, such as passing the result of
- <code>-objectEnumerator</code> or <code>-reverseObjectEnumerator</code> on NSArray.
- 
- @param anEnumerator An enumerator which provides objects to insert into the tree.
-        Objects are inserted in the order received from <code>-nextObject</code>.
-        Bear in mind that insertion order can affect tree balance/re-balancing cost.
+ Initialize a newly-allocated tree with no objects.
  */
-- (id) initWithObjectsFromEnumerator:(NSEnumerator*)anEnumerator;
+- (id) init;
 
 /**
  Add an object to the tree. Ordering is based on an object's response to the
@@ -77,24 +71,6 @@ typedef short CHTraversalOrder;
  the old object is released and replaced by the new object.
  */
 - (void) addObject:(id)anObject;
-
-/**
- Add multiple objects to the tree, inserted in the order provided by the enumerator.
- */
-- (void) addObjectsFromEnumerator:(NSEnumerator*)enumerator;
-
-/**
- Add objects contained in another Tree to this tree, using the specified ordering.
- 
- @param otherTree The Tree containing objects to add to this tree.
- @param order The traversal order to use for enumerating the given tree.
- 
- Bear in mind that the order in which nodes are drawn from the other tree influences
- the balance of the tree, and for balanced trees, the work required to re-balance. In
- addition, the traversal mode also affects the enumerator's memory requirements.
- */
-- (void) addObjectsFromTree:(id<Tree>)otherTree
-        usingTraversalOrder:(CHTraversalOrder)order;
 
 /**
  Determines if the tree contains a given object (or one identical to it). Matches are
@@ -167,12 +143,6 @@ typedef short CHTraversalOrder;
 #pragma mark Collection Conversions
 
 /**
- Creates an NSSet which contains the objects in this tree. Generally uses a pre-order
- traversal, since it uses less space, is extremely fast, and sets are unordered.
- */
-- (NSSet*) contentsAsSet;
-
-/**
  Creates an NSArray which contains the objects in this tree.
  The tree traversal ordering (in-order, pre-order, post-order) must be specified.
  The object traversed last will be at the end of the array.
@@ -180,5 +150,11 @@ typedef short CHTraversalOrder;
  @param order The traversal order to use for enumerating the given tree.
  */
 - (NSArray*) contentsAsArrayUsingTraversalOrder:(CHTraversalOrder)order;
+
+/**
+ Creates an NSSet which contains the objects in this tree. Generally uses a pre-order
+ traversal, since it uses less space, is extremely fast, and sets are unordered.
+ */
+- (NSSet*) contentsAsSet;
 
 @end

@@ -37,7 +37,6 @@
 
 #pragma mark Method Implementations
 
-- (id) initWithObjectsFromEnumerator:(NSEnumerator*)anEnumerator;
 - (void) pushObject:(id)anObject;
 - (id) popObject;
 - (id) topObject;

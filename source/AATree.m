@@ -231,12 +231,51 @@ if(queue==tmp)queue=NULL;if(queueTail==tmp)queueTail=NULL;}
 
 @implementation AATree
 
+#pragma mark - Private Functions
+
+void _rotateWithLeftChild(AATreeNode *node) {
+	AATreeNode *other = node->left;
+	node->left = other->right;
+	other->right = node;
+	node = other;
+}
+
+void _rotateWithRightChild(AATreeNode *node) {
+	AATreeNode *other = node->right;
+	node->right = other->left;
+	other->left = node;
+	node = other;
+}
+
+/**
+ Skew primitive for AA-trees.
+ @param node The node that roots the sub-tree.
+ */
+void _skew(AATreeNode *node) {
+	if (node->left->level == node->level) {
+		_rotateWithLeftChild(node);
+	}
+}
+
+/**
+ Split primitive for AA-trees.
+ @param node The node that roots the sub-tree.
+ */
+void _split(AATreeNode *node) {
+	if (node->right->right->level == node->level) {
+		_rotateWithRightChild(node);
+		node->level++;
+	}
+}
+
+#pragma mark - Public Methods
+
 - (id) init {
 	if ([super init] == nil) {
 		[self release];
 		return nil;
 	}
-	// allocate resources
+	root = NULL;
 	return self;
 }
 
@@ -246,45 +285,64 @@ if(queue==tmp)queue=NULL;if(queueTail==tmp)queueTail=NULL;}
 }
 
 - (void) addObject:(id)anObject {
+	if (anObject == nil)
+		nilArgumentException([self class], _cmd);
 	unsupportedOperationException([self class], _cmd);
 	
 	AATreeNode *newNode = malloc(kAATreeNodeSize);
 	newNode->object = [anObject retain];
 	newNode->left = NULL;
 	newNode->right = NULL;
+	
+	 // TODO: Handle adding node, plus skew/split as needed
 }
 
 - (id) findObject:(id)target {
+	if (count == 0)
+		return nil;
 	unsupportedOperationException([self class], _cmd);
 	return nil;
 }
 
 - (id) findMin {
+	if (count == 0)
+		return nil;
 	unsupportedOperationException([self class], _cmd);
 	return nil;
 }
 
 - (id) findMax {
+	if (count == 0)
+		return nil;
 	unsupportedOperationException([self class], _cmd);
 	return nil;
 }
 
 - (BOOL) containsObject:(id)anObject {
+	if (anObject == nil)
+		nilArgumentException([self class], _cmd);
 	unsupportedOperationException([self class], _cmd);
 	return NO;
 }
 
 - (void) removeObject:(id)anObject {
+	if (anObject == nil)
+		nilArgumentException([self class], _cmd);
 	unsupportedOperationException([self class], _cmd);
 }
 
 - (void) removeAllObjects {
+	if (count == 0)
+		return;
 	unsupportedOperationException([self class], _cmd);
 }
 
 - (NSEnumerator*) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order {
-	unsupportedOperationException([self class], _cmd);
-	return nil;
+	if (root == NULL)
+		return nil;
+	
+	return [[[AATreeEnumerator alloc] initWithRoot:root
+	                                traversalOrder:order] autorelease];
 }
 
 @end

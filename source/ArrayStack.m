@@ -27,15 +27,11 @@
 @implementation ArrayStack
 
 - (id) init {
-	return [self initWithObjectsFromEnumerator:nil];
-}
-
-- (id) initWithObjectsFromEnumerator:(NSEnumerator*)anEnumerator {
 	if ([super init] == nil) {
 		[self release];
 		return nil;
 	}
-	array = [[anEnumerator allObjects] mutableCopy];
+	array = [[NSMutableArray alloc] init];
 	return self;
 }
 

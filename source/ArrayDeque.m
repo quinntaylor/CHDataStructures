@@ -27,18 +27,11 @@
 @implementation ArrayDeque
 
 - (id) init {
-	return [self initWithObjectsFromEnumerator:nil];
-}
-
-- (id) initWithObjectsFromEnumerator:(NSEnumerator*)anEnumerator {
 	if ([super init] == nil) {
 		[self release];
 		return nil;
 	}
-	if (anEnumerator != nil)
-		array = [[anEnumerator allObjects] mutableCopy];
-	else
-		array = [[NSMutableArray alloc] init];
+	array = [[NSMutableArray alloc] init];
 	return self;
 }
 
@@ -51,20 +44,8 @@
 	[array insertObject:anObject atIndex:0];
 }
 
-- (void) prependObjectsFromEnumerator:(NSEnumerator*)enumerator {
-	if (enumerator != nil)
-		for (id object in enumerator)
-			[array insertObject:object atIndex:0];
-}
-
 - (void) appendObject:(id)anObject {
 	[array addObject:anObject];
-}
-
-- (void) appendObjectsFromEnumerator:(NSEnumerator*)enumerator {
-	if (enumerator != nil)
-		for (id object in enumerator)
-			[array addObject:object];
 }
 
 - (id) firstObject {

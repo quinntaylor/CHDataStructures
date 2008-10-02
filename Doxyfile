@@ -246,9 +246,9 @@ DOT_PATH               = /usr/local/bin/
                          #/Applications/Graphviz.app/Contents/MacOS/ # for v1.13
                          #/Applications/Doxygen.app/Contents/Resources/
 						 
-						 # Graphviz.app is available free online
-						 # (v1.13) http://www.pixelglow.com/graphviz/download/
-						 # (v2.20) http://www.graphviz.org/Download_macos.php
+                         # Graphviz.app is available free online
+                         # (v1.13) http://www.pixelglow.com/graphviz/download/
+                         # (v2.20) http://www.graphviz.org/Download_macos.php
 DOTFILE_DIRS           = 
 DOT_GRAPH_MAX_NODES    = 50
 MAX_DOT_GRAPH_DEPTH    = 20

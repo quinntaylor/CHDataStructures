@@ -40,10 +40,6 @@
 
 #pragma mark Method Implementations
 
-- (id) initWithObjectsFromEnumerator:(NSEnumerator*)enumerator;
-- (void) addObjectsFromEnumerator:(NSEnumerator*)enumerator;
-- (void) addObjectsFromTree:(id<Tree>)otherTree
-        usingTraversalOrder:(CHTraversalOrder)order;
 - (NSSet*) contentsAsSet;
 - (NSArray*) contentsAsArrayUsingTraversalOrder:(CHTraversalOrder)traversalOrder;
 - (NSUInteger) count;

@@ -27,15 +27,11 @@
 @implementation ArrayQueue
 
 - (id) init {
-	return [self initWithObjectsFromEnumerator:nil];
-}
-
-- (id) initWithObjectsFromEnumerator:(NSEnumerator*)anEnumerator {
 	if ([super init] == nil) {
 		[self release];
 		return nil;
 	}
-	array = [[anEnumerator allObjects] mutableCopy];
+	array = [[NSMutableArray alloc] init];
 	return self;
 }
 
@@ -57,8 +53,7 @@
 - (void) enqueueObject: (id)anObject {
 	if (anObject == nil)
 		nilArgumentException([self class], _cmd);
-	else
-		[array addObject:anObject];
+	[array addObject:anObject];
 }
 
 - (id) dequeueObject {

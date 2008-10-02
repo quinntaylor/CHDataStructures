@@ -26,4 +26,70 @@
 
 @implementation ListDeque
 
+- (id) init {
+	if ([super init] == nil) {
+		[self release];
+		return nil;
+	}
+	list = [[ListDeque alloc] init];
+	return self;
+}
+
+- (void) dealloc {
+	[list release];
+	[super dealloc];
+}
+
+- (NSUInteger) count {
+	return [list count];
+}
+
+- (void) prependObject:(id)anObject {
+	if (anObject == nil)
+		nilArgumentException([self class], _cmd);
+	[list prependObject:anObject];
+}
+
+- (void) appendObject:(id)anObject {
+	if (anObject == nil)
+		nilArgumentException([self class], _cmd);
+	[list appendObject:anObject];
+}
+
+- (id) firstObject {
+	return [list firstObject];
+}
+
+- (id) lastObject {
+	return [list lastObject];
+}
+
+- (NSArray*) allObjects {
+	return [list allObjects];
+}
+
+- (void) removeFirstObject {
+	[list removeFirstObject];
+}
+
+- (void) removeLastObject {
+	[list removeLastObject];
+}
+
+- (void) removeAllObjects {
+	[list removeAllObjects];
+}
+
+- (BOOL) containsObject:(id)anObject {
+	if (anObject == nil)
+		nilArgumentException([self class], _cmd);
+	return [list containsObject:anObject];
+}
+
+- (BOOL) containsObjectIdenticalTo:(id)anObject {
+	if (anObject == nil)
+		nilArgumentException([self class], _cmd);
+	return [list containsObjectIdenticalTo:anObject];
+}
+
 @end

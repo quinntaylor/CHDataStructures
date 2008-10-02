@@ -27,12 +27,14 @@
 
 - (void) testAddObjectsFromEnumerator {
 	STAssertEquals([tree count], 0u, @"-count is incorrect.");
-	[tree addObjectsFromEnumerator:[testArray objectEnumerator]];
+	for (id object in testArray)
+		[tree addObject:object];
 	STAssertEquals([tree count], 9u, @"-count is incorrect.");
 }
 
 - (void) testTraversalInOrder {
-	[tree addObjectsFromEnumerator:[testArray objectEnumerator]];
+	for (id object in testArray)
+		[tree addObject:object];
 	e = [tree objectEnumeratorWithTraversalOrder:CHTraverseInOrder];
 	
 	STAssertEqualObjects([e nextObject], @"A", @"-nextObject is wrong.");
@@ -48,7 +50,8 @@
 }
 
 - (void) testTraversalReverseOrder {
-	[tree addObjectsFromEnumerator:[testArray objectEnumerator]];
+	for (id object in testArray)
+		[tree addObject:object];
 	e = [tree objectEnumeratorWithTraversalOrder:CHTraverseReverseOrder];
 
 	STAssertEqualObjects([e nextObject], @"I", @"-nextObject is wrong.");
@@ -64,7 +67,8 @@
 }
 
 - (void) testTraversalPreOrder {
-	[tree addObjectsFromEnumerator:[testArray objectEnumerator]];
+	for (id object in testArray)
+		[tree addObject:object];
 	e = [tree objectEnumeratorWithTraversalOrder:CHTraversePreOrder];
 
 	STAssertEqualObjects([e nextObject], @"F", @"-nextObject is wrong.");
@@ -80,7 +84,8 @@
 }
 
 - (void) testTraversalPostOrder {
-	[tree addObjectsFromEnumerator:[testArray objectEnumerator]];
+	for (id object in testArray)
+		[tree addObject:object];
 	e = [tree objectEnumeratorWithTraversalOrder:CHTraversePostOrder];
 
 	STAssertEqualObjects([e nextObject], @"A", @"-nextObject is wrong.");
@@ -96,7 +101,8 @@
 }
 
 - (void) testTraversalLevelOrder {
-	[tree addObjectsFromEnumerator:[testArray objectEnumerator]];
+	for (id object in testArray)
+		[tree addObject:object];
 	e = [tree objectEnumeratorWithTraversalOrder:CHTraverseLevelOrder];
 
 	STAssertEqualObjects([e nextObject], @"F", @"-nextObject is wrong.");

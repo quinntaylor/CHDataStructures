@@ -29,32 +29,13 @@
 
 #pragma mark Concrete Implementations
 
-- (id) initWithObjectsFromEnumerator:(NSEnumerator*)enumerator {
-	if ([self init] == nil) {
+- (id) init {
+	if ([super init] == nil) {
 		[self release];
 		return nil;
 	}
-	[self addObjectsFromEnumerator:enumerator];
+	count = 0;
 	return self;
-}
-
-- (void) addObjectsFromEnumerator:(NSEnumerator*)enumerator {
-	if (enumerator == nil)
-		nilArgumentException([self class], _cmd);
-	for (id object in enumerator)
-		[self addObject:object];
-}
-
-- (void) addObjectsFromTree:(id<Tree>)otherTree
-        usingTraversalOrder:(CHTraversalOrder)order {
-	[self addObjectsFromEnumerator:[otherTree objectEnumeratorWithTraversalOrder:order]];
-}
-
-- (NSSet*) contentsAsSet {
-	NSMutableSet *set = [[NSMutableSet alloc] init];
-	for (id object in [self objectEnumeratorWithTraversalOrder:CHTraversePreOrder])
-		[set addObject:object];
-	return [set autorelease];
 }
 
 - (NSArray*) contentsAsArrayUsingTraversalOrder:(CHTraversalOrder)order {
@@ -64,6 +45,13 @@
 	}
 	return [array autorelease];
 	// Document that the returned object is mutable? Return immutable copy instead?
+}
+
+- (NSSet*) contentsAsSet {
+	NSMutableSet *set = [[NSMutableSet alloc] init];
+	for (id object in [self objectEnumeratorWithTraversalOrder:CHTraversePreOrder])
+		[set addObject:object];
+	return [set autorelease];
 }
 
 - (NSUInteger) count {

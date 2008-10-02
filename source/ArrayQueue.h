@@ -48,7 +48,6 @@
 
 #pragma mark Method Implementations
 
-- (id) initWithObjectsFromEnumerator:(NSEnumerator*)anEnumerator;
 - (void) enqueueObject:(id)anObject;
 - (id) dequeueObject;
 - (id) frontObject;

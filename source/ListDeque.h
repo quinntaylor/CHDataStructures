@@ -37,9 +37,7 @@
 #pragma mark Method Implementations
 
 - (void) prependObject:(id)anObject;
-- (void) prependObjectsFromEnumerator:(NSEnumerator*)enumerator;
 - (void) appendObject:(id)anObject;
-- (void) appendObjectsFromEnumerator:(NSEnumerator*)enumerator;
 - (id) firstObject;
 - (id) lastObject;
 - (NSArray*) allObjects;

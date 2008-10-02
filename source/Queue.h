@@ -34,14 +34,9 @@
 @protocol Queue <NSObject>
 
 /**
- Initialize a newly allocated queue by placing in it the objects from an enumerator.
- This allows flexibility in specifying insertion order, such as passing the result of
- <code>-objectEnumerator</code> or <code>-reverseObjectEnumerator</code> on NSArray.
- 
- @param anEnumerator An enumerator which provides objects to insert into the queue.
-        Objects are inserted in the order received from <code>-nextObject</code>.
+ Initialize a newly-allocated queue with no objects.
  */
-- (id) initWithObjectsFromEnumerator:(NSEnumerator*)anEnumerator;
+- (id) init;
 
 /**
  Add an object to the back of the queue.

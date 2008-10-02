@@ -31,15 +31,11 @@
 @implementation ListQueue
 
 - (id) init {
-	return [self initWithObjectsFromEnumerator:nil];
-}
-
-- (id) initWithObjectsFromEnumerator:(NSEnumerator*)anEnumerator {
 	if ([super init] == nil) {
 		[self release];
 		return nil;
 	}
-	list = [[DoublyLinkedList alloc] initWithObjectsFromEnumerator:anEnumerator];
+	list = [[DoublyLinkedList alloc] init];
 	return self;
 }
 

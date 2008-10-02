@@ -53,30 +53,12 @@
 - (void) prependObject:(id)anObject;
 
 /**
- Add a group of objects to the front of the list.
- 
- @param enumerator An enumerator containing objects to add to the front of the list;
-		an <code>NSInvalidArgumentException</code> is raised if <code>nil</code>.
-		Objects are prepended in the order in they are provided by <i>enumerator</i>.
- */
-- (void) prependObjectsFromEnumerator:(NSEnumerator*)enumerator;
-
-/**
  Add an object to the back of the list.
  
  @param anObject The object to add to the list; must not be <code>nil</code>, or an
  <code>NSInvalidArgumentException</code> is raised.
  */
 - (void) appendObject:(id)anObject;
-
-/**
- Add a group of objects to the back of the list.
- 
- @param enumerator An enumerator containing objects to add to the back of the list;
-		an <code>NSInvalidArgumentException</code> is raised if <code>nil</code>.
-		Objects are appended in the order in they are provided by <i>enumerator</i>.
- */
-- (void) appendObjectsFromEnumerator:(NSEnumerator*)enumerator;
 
 /**
  Access the object at the head of the list.

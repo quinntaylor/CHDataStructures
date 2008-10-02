@@ -34,15 +34,9 @@
 @protocol Stack <NSObject>
 
 /**
- Initialize a newly allocated stack by placing in it the objects from an enumerator.
- This allows flexibility in specifying insertion order, such as passing the result of
- <code>-objectEnumerator</code> or <code>-reverseObjectEnumerator</code> on NSArray.
- The last object provided by the enumerator will be on the stack.
- 
- @param anEnumerator An enumerator which provides objects to insert into the queue.
-        Objects are inserted in the order received from <code>-nextObject</code>.
+ Initialize a newly-allocated stack with no objects.
  */
-- (id) initWithObjectsFromEnumerator:(NSEnumerator*)anEnumerator;
+- (id) init;
 
 /**
  Add an object to the top of the stack.

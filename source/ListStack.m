@@ -31,17 +31,11 @@
 @implementation ListStack
 
 - (id) init {
-	[super init];
-	list = [[DoublyLinkedList alloc] init];
-	return self;
-}
-
-- (id) initWithObjectsFromEnumerator:(NSEnumerator*)anEnumerator {
 	if ([super init] == nil) {
 		[self release];
 		return nil;
 	}
-	list = [[DoublyLinkedList alloc] initWithObjectsFromEnumerator:anEnumerator];
+	list = [[DoublyLinkedList alloc] init];
 	return self;
 }
 
