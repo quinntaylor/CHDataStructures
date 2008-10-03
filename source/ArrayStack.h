@@ -49,6 +49,7 @@
 
 #pragma mark Method Implementations
 
+- (id) init;
 - (void) pushObject:(id)anObject;
 - (id) popObject;
 - (id) topObject;

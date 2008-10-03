@@ -23,10 +23,12 @@
 //  DataStructuresFramework
 
 #import "ListQueue.h"
-#import "DoublyLinkedList.h"
+#import "SinglyLinkedList.h"
 
 /**
- Currently, this stack uses a DoublyLinkedList, although singly-linked would work.
+ This implementation uses a SinglyLinkedList, since it's slightly faster than using
+ a DoublyLinkedList, and requires a little less memory. Also, since it's a queue, it
+ is unlikely that there is any need to enumerate over the object from back to front.
  */
 @implementation ListQueue
 
@@ -35,7 +37,7 @@
 		[self release];
 		return nil;
 	}
-	list = [[DoublyLinkedList alloc] init];
+	list = [[SinglyLinkedList alloc] init];
 	return self;
 }
 
@@ -44,14 +46,14 @@
 	[super dealloc];
 }
 
-- (void) enqueueObject:(id)anObject {
+- (void) addObject:(id)anObject {
 	if (anObject == nil)
 		nilArgumentException([self class], _cmd);
 	else
 		[list appendObject:anObject];
 }
 
-- (id) dequeueObject {
+- (id) removeObject {
 	if ([list count] == 0)
 		return nil;
 	id retval = [[list firstObject] retain];
@@ -59,7 +61,7 @@
 	return [retval autorelease];
 }
 
-- (id) frontObject {
+- (id) nextObject {
 	return [list firstObject];
 }
 

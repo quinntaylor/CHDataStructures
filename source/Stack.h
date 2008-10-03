@@ -27,7 +27,13 @@
 
 /**
  A <a href="http://en.wikipedia.org/wiki/Stack_(data_structure)">stack</a> protocol
- with methods for <a href="http://en.wikipedia.org/wiki/LIFO">LIFO</a> operations.
+ with methods for <a href="http://en.wikipedia.org/wiki/LIFO">LIFO</a> ("Last In,
+ First Out") operations. 
+ 
+ A stack is commonly compared to a stack of plates. Objects may be added in any order
+ (@link #pushObject: -pushObject:\endlink) and the most recently added object may be
+ removed (@link #popObject -popObject\endlink) or returned without removing it (@link
+ #topObject -topObject\endlink).
  
  @todo Add support for methods in NSCoding and NSMutableCopying.
  */

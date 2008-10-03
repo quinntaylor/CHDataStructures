@@ -121,24 +121,24 @@ void benchmarkQueue(Class testClass) {
 		printf("\t%-8d", items);
 	}	
 	
-	printf("\nenqueueObject:    ");
+	printf("\naddObject:         ");
 	for (items = 1; items <= limit; items *= 10) {
 		queue = [[testClass alloc] init];
 		startTime = timestamp();
 		for (item = 1; item <= items; item++)
-			[queue enqueueObject:[NSNumber numberWithUnsignedInteger:item]];
+			[queue addObject:[NSNumber numberWithUnsignedInteger:item]];
 		printf("\t%f", timestamp() - startTime);
 		[queue release];
 	}
 	
-	printf("\ndequeueObject:    ");
+	printf("\nremoveObject:      ");
 	for (items = 1; items <= limit; items *= 10) {
 		queue = [[testClass alloc] init];
 		for (item = 1; item <= items; item++)
-			[queue enqueueObject:[NSNumber numberWithUnsignedInteger:item]];
+			[queue addObject:[NSNumber numberWithUnsignedInteger:item]];
 		startTime = timestamp();
 		for (item = 1; item <= items; item++)
-			[queue dequeueObject];
+			[queue removeObject];
 		printf("\t%f", timestamp() - startTime);
 		[queue release];
 	}
@@ -147,7 +147,7 @@ void benchmarkQueue(Class testClass) {
 	for (items = 1; items <= limit; items *= 10) {
 		queue = [[testClass alloc] init];
 		for (item = 1; item <= items; item++)
-			[queue enqueueObject:[NSNumber numberWithUnsignedInteger:item]];
+			[queue addObject:[NSNumber numberWithUnsignedInteger:item]];
 		startTime = timestamp();
 		[queue removeAllObjects];
 		printf("\t%f", timestamp() - startTime);
@@ -158,7 +158,7 @@ void benchmarkQueue(Class testClass) {
 	for (items = 1; items <= limit; items *= 10) {
 		queue = [[testClass alloc] init];
 		for (item = 1; item <= items; item++)
-			[queue enqueueObject:[NSNumber numberWithUnsignedInteger:item]];
+			[queue addObject:[NSNumber numberWithUnsignedInteger:item]];
 		startTime = timestamp();
 		NSEnumerator *e = [queue objectEnumerator];
 		id object;
@@ -172,7 +172,7 @@ void benchmarkQueue(Class testClass) {
 	for (items = 1; items <= limit; items *= 10) {
 		queue = [[testClass alloc] init];
 		for (item = 1; item <= items; item++)
-			[queue enqueueObject:[NSNumber numberWithUnsignedInteger:item]];
+			[queue addObject:[NSNumber numberWithUnsignedInteger:item]];
 		startTime = timestamp();
 		for (id object in queue)
 			;

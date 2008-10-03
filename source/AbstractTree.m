@@ -29,6 +29,9 @@
 
 #pragma mark Concrete Implementations
 
+/**
+ Only to be called from concrete child classes to initialize shared variables.
+ */
 - (id) init {
 	if ([super init] == nil) {
 		[self release];

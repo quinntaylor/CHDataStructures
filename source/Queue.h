@@ -27,7 +27,14 @@
 
 /**
  A <a href="http://en.wikipedia.org/wiki/Queue_(data_structure)">queue</a> protocol
- with methods for <a href="http://en.wikipedia.org/wiki/FIFO">FIFO</a> operations.
+ with methods for <a href="http://en.wikipedia.org/wiki/FIFO">FIFO</a> ("First In,
+ First Out") operations.
+ 
+ A queue is commonly compared to waiting in line. When objects are added, they go to
+ the back of the line, and objects are always removed from the front of the line.
+ These actions are accomplished using @link #addObject: -addObject:\endlink
+ and @link #removeObject -removeObject\endlink, respectively. The frontmost object
+ may be examined (without removing it) using @link #nextObject -nextObject\endlink.
  
  @todo Add support for methods in NSCoding and NSMutableCopying.
  */
@@ -44,21 +51,21 @@
  @param anObject The object to add to the queue; must not be <code>nil</code>, or an
         <code>NSInvalidArgumentException</code> will be raised.
  */
-- (void) enqueueObject:(id)anObject;
+- (void) addObject:(id)anObject;
 
 /**
  Remove and return the object at the front of the queue.
  
  @return The frontmost object in the queue, or <code>nil</code> if the queue is empty.
  */
-- (id) dequeueObject;
+- (id) removeObject;
 
 /**
  Examine the object at the front of the queue without removing it.
  
  @return The frontmost object in the queue, or <code>nil</code> if the queue is empty.
  */
-- (id) frontObject;
+- (id) nextObject;
 
 /**
  Returns an array containing the objects in this queue, ordered from front to back.

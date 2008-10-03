@@ -50,13 +50,13 @@
 	[super dealloc];
 }
 
-- (void) enqueueObject: (id)anObject {
+- (void) addObject: (id)anObject {
 	if (anObject == nil)
 		nilArgumentException([self class], _cmd);
 	[array addObject:anObject];
 }
 
-- (id) dequeueObject {
+- (id) removeObject {
 	if ([array count] == 0)
 		return nil;
 	id object = [[array objectAtIndex:0] retain];
@@ -64,7 +64,7 @@
 	return [object autorelease];
 }
 
-- (id) frontObject {
+- (id) nextObject {
 	return [array objectAtIndex:0];
 }
 

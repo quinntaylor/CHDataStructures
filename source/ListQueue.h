@@ -36,9 +36,10 @@
 
 #pragma mark Method Implementations
 
-- (void) enqueueObject:(id)anObject;
-- (id) dequeueObject;
-- (id) frontObject;
+- (id) init;
+- (void) addObject:(id)anObject;
+- (id) removeObject;
+- (id) nextObject;
 - (NSArray*) allObjects;
 - (NSUInteger) count;
 - (void) removeAllObjects;

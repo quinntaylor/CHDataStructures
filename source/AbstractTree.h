@@ -30,7 +30,12 @@
  An abstract Tree implementation with some default method implementations. Methods
  for insertion, search, removal and order-specific enumeration must be re-implemented
  by child classes so as to conform to their inner workings. The methods defined in
- this abstract class rely on the implementations of such operations 
+ this abstract class rely on the implementations of such operations, so they cannot
+ be implemented here.
+ 
+ Rather than enforcing that this class be abstract, the contract is implied. In any
+ case, if this class is actually instantiated, it will be of little use since all the
+ methods for insertion, removal, and search are unsupported and raise exceptions.
  */
 @interface AbstractTree : NSObject <Tree>
 {
@@ -40,6 +45,7 @@
 
 #pragma mark Method Implementations
 
+- (id) init;
 - (NSSet*) contentsAsSet;
 - (NSArray*) contentsAsArrayUsingTraversalOrder:(CHTraversalOrder)traversalOrder;
 - (NSUInteger) count;

@@ -39,6 +39,7 @@
 
 #pragma mark Method Implementations
 
+- (id) init;
 - (void) addObject:(id)anObject;
 - (id) removeRoot;
 - (id) removeLast;

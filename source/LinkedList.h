@@ -29,6 +29,19 @@
  A <a href="http://en.wikipedia.org/wiki/Linked_list">linked list</a> protocol with
  methods that work in singly- or doubly-linked lists.
  
+ This type of data structure is useful for storing sparse data that will be traversed
+ often. (Linked lists are very memory efficient when dealing with sparse data, unlike
+ hashing and some array schemes.) Insertion and removal at either end of a list is
+ extremely fast, but if fast random access (whether insertion, search, or removal) is
+ desired, a linked list will generally incur a substantial performance penalty.
+ 
+ Linked lists maintain references to both the start and end of the list, but there is
+ no externally-visibly notion of state, such as a "current node". Implementations may
+ choose to add indexing or hashing schemes to improve index-based or object-relative
+ random access; several optional methods are included to allow such flexibility if
+ desired. However, bear in mind that any such additions will increase memory cost and
+ diminish the comparative advantages over classes such as NSMutableArray.
+ 
  @todo Add support for methods in NSCoding and NSMutableCopying.
  */ 
 @protocol LinkedList <NSObject, NSFastEnumeration>

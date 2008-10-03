@@ -36,6 +36,7 @@
 
 #pragma mark Method Implementations
 
+- (id) init;
 - (void) prependObject:(id)anObject;
 - (void) appendObject:(id)anObject;
 - (id) firstObject;
