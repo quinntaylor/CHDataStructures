@@ -85,6 +85,14 @@
 	return [array count];
 }
 
+- (NSEnumerator*) objectEnumerator {
+	return [array objectEnumerator];
+}
+
+- (NSEnumerator*) reverseObjectEnumerator {
+	return [array reverseObjectEnumerator];
+}
+
 #pragma mark <NSFastEnumeration> Methods
 
 - (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState*)state

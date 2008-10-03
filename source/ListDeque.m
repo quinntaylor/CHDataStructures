@@ -92,6 +92,14 @@
 	return [list containsObjectIdenticalTo:anObject];
 }
 
+- (NSEnumerator*) objectEnumerator {
+	return [list objectEnumerator];
+}
+
+- (NSEnumerator*) reverseObjectEnumerator {
+	return [list reverseObjectEnumerator];
+}
+
 #pragma mark <NSFastEnumeration> Methods
 
 - (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState*)state

@@ -117,4 +117,18 @@
  */
 - (NSUInteger) count;
 
+/**
+ Returns an enumerator that accesses each object in the deque from front to back.
+ 
+ NOTE: When you use an enumerator, you must not modify the deque during enumeration. 
+ */
+- (NSEnumerator*) objectEnumerator;
+
+/**
+ Returns an enumerator that accesses each object in the deque from back to front.
+ 
+ NOTE: When you use an enumerator, you must not modify the deque during enumeration. 
+ */
+- (NSEnumerator*) reverseObjectEnumerator;
+
 @end

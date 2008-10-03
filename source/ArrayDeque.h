@@ -49,4 +49,7 @@
 - (BOOL) containsObjectIdenticalTo:(id)anObject;
 - (NSUInteger) count;
 
+- (NSEnumerator*) objectEnumerator;
+- (NSEnumerator*) reverseObjectEnumerator;
+
 @end
