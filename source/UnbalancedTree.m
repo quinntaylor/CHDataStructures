@@ -511,4 +511,53 @@ static struct UnbalancedTreeNode * _removeNode(struct UnbalancedTreeNode *node,
                                             traversalOrder:order] autorelease];
 }
 
+#pragma mark <NSFastEnumeration> Methods
+
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState*)state
+								  objects:(id*)stackbuf
+									count:(NSUInteger)len
+{
+	UnbalancedTreeNode *currentNode;
+	UTE_NODE *stack, *tmp; 
+	
+	// For the first call, start at leftmost node, otherwise start at last saved node
+	if (state->state == 0) {
+		currentNode = root;
+		state->itemsPtr = stackbuf;
+		state->mutationsPtr = &mutations;
+		stack = NULL;
+	}
+	else if (state->state == 1) {
+		return 0;		
+	}
+	else {
+		currentNode = (UnbalancedTreeNode*) state->state;
+		// TODO: Grab pointer to top of stack from extra[0]
+		stack = (UTE_NODE*) state->extra[0];
+	}
+
+	// Accumulate objects from the tree until we reach all nodes or the maximum limit
+	NSUInteger batchCount = 0;
+	while ( (currentNode != NULL || stack != NULL) && batchCount < len) {
+		while (currentNode != NULL) {
+			UTE_PUSH(currentNode);
+			currentNode = currentNode->left;
+			// TODO: How to not push/pop leaf nodes unnecessarily?
+		}
+		currentNode = UTE_TOP; // Save top node for return value
+		UTE_POP();
+		stackbuf[batchCount] = currentNode->object;
+		currentNode = currentNode->right;
+		batchCount++;
+    }
+	
+	if (currentNode == NULL && stack == NULL)
+		state->state = 1; // used as a termination flag
+	else {
+		state->state = (unsigned long) currentNode;
+		state->extra[0] = (unsigned long) stack;
+	}
+    return batchCount;
+}
+
 @end

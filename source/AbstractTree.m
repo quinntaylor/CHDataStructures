@@ -38,6 +38,7 @@
 		return nil;
 	}
 	count = 0;
+	mutations = 0;
 	return self;
 }
 
@@ -106,6 +107,14 @@
 - (NSEnumerator*) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order {
 	unsupportedOperationException([self class], _cmd);
 	return nil;
+}
+
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState*)state
+								  objects:(id*)stackbuf
+									count:(NSUInteger)len
+{
+	unsupportedOperationException([self class], _cmd);
+	return 0;
 }
 
 @end

@@ -55,9 +55,9 @@ typedef short CHTraversalOrder;
  receiver is less than, equal to, or greater than the argument, respectively. (See
  <code>NSComparisonResult</code> in NSObjCRuntime.h for details.)
 
- @todo Add support for methods in NSCoding, NSMutableCopying, and NSFastEnumeration.
+ @todo Add support for methods in NSCoding and NSMutableCopying.
  */
-@protocol Tree <NSObject>
+@protocol Tree <NSObject, NSFastEnumeration>
 
 /**
  Initialize a newly-allocated tree with no objects.

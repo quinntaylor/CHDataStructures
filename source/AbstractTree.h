@@ -41,6 +41,7 @@
 {
 	/** A count of how many elements are currently in the tree. */
 	NSUInteger count;
+	unsigned long mutations; /**< Used to track mutations for NSFastEnumeration. */
 }
 
 #pragma mark Method Implementations
