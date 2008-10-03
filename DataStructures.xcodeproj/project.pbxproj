@@ -47,6 +47,20 @@
 		E44771F50E912491000889F7 /* ArrayDeque.m in Sources */ = {isa = PBXBuildFile; fileRef = E44771F30E912491000889F7 /* ArrayDeque.m */; };
 		E44773A20E913C89000889F7 /* Util.h in Headers */ = {isa = PBXBuildFile; fileRef = E44773A10E913C89000889F7 /* Util.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E44B57660E95538600F9DD1A /* DataStructures.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* DataStructures.framework */; };
+		E44B59BA0E95851B00F9DD1A /* AATree.m in Sources */ = {isa = PBXBuildFile; fileRef = E442DFB70E8F1E6D00BD62F6 /* AATree.m */; };
+		E44B59BB0E95851B00F9DD1A /* AbstractTree.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBC990E88412C00B570BC /* AbstractTree.m */; };
+		E44B59BC0E95851C00F9DD1A /* ArrayDeque.m in Sources */ = {isa = PBXBuildFile; fileRef = E44771F30E912491000889F7 /* ArrayDeque.m */; };
+		E44B59BD0E95851C00F9DD1A /* ArrayHeap.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB070E88174200B570BC /* ArrayHeap.m */; };
+		E44B59BE0E95851D00F9DD1A /* ArrayQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB090E88174200B570BC /* ArrayQueue.m */; };
+		E44B59BF0E95851E00F9DD1A /* ArrayStack.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB0B0E88174200B570BC /* ArrayStack.m */; };
+		E44B59C00E95851E00F9DD1A /* DoublyLinkedList.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB1F0E88174200B570BC /* DoublyLinkedList.m */; };
+		E44B59C10E95851F00F9DD1A /* ListDeque.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D184B0E945580007F39D8 /* ListDeque.m */; };
+		E44B59C20E95852000F9DD1A /* ListQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB140E88174200B570BC /* ListQueue.m */; };
+		E44B59C30E95852000F9DD1A /* ListStack.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB160E88174200B570BC /* ListStack.m */; };
+		E44B59C40E95852100F9DD1A /* RedBlackTree.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB1C0E88174200B570BC /* RedBlackTree.m */; };
+		E44B59C50E95852200F9DD1A /* SinglyLinkedList.m in Sources */ = {isa = PBXBuildFile; fileRef = E41180260E91E7E700E66053 /* SinglyLinkedList.m */; };
+		E44B59C60E95852200F9DD1A /* UnbalancedTree.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB230E88174200B570BC /* UnbalancedTree.m */; };
+		E44B59C70E95852400F9DD1A /* Benchmarks.m in Sources */ = {isa = PBXBuildFile; fileRef = E44B58C40E95820400F9DD1A /* Benchmarks.m */; };
 		E473CB5C0E9346DD005CA997 /* AATree.m in Sources */ = {isa = PBXBuildFile; fileRef = E442DFB70E8F1E6D00BD62F6 /* AATree.m */; };
 		E473CB5D0E9346DE005CA997 /* AbstractTree.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBC990E88412C00B570BC /* AbstractTree.m */; };
 		E473CB5E0E9346DE005CA997 /* ArrayDeque.m in Sources */ = {isa = PBXBuildFile; fileRef = E44771F30E912491000889F7 /* ArrayDeque.m */; };
@@ -128,7 +142,7 @@
 
 /* Begin PBXFileReference section */
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
-		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = resources/English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* DataStructures.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DataStructures.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E40D18050E94519F007F39D8 /* AATreeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AATreeTest.m; path = test/AATreeTest.m; sourceTree = "<group>"; };
 		E40D181B0E9452BB007F39D8 /* ArrayDequeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ArrayDequeTest.m; path = test/ArrayDequeTest.m; sourceTree = "<group>"; };
@@ -151,7 +165,9 @@
 		E44771F20E912491000889F7 /* ArrayDeque.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ArrayDeque.h; path = source/ArrayDeque.h; sourceTree = "<group>"; };
 		E44771F30E912491000889F7 /* ArrayDeque.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ArrayDeque.m; path = source/ArrayDeque.m; sourceTree = "<group>"; };
 		E44773A10E913C89000889F7 /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Util.h; path = source/Util.h; sourceTree = "<group>"; };
-		E473C9890E9331FA005CA997 /* Unit Testing-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Unit Testing-Info.plist"; sourceTree = "<group>"; };
+		E44B58C40E95820400F9DD1A /* Benchmarks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Benchmarks.m; sourceTree = "<group>"; };
+		E44B59B40E95850F00F9DD1A /* Benchmarks */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Benchmarks; sourceTree = BUILT_PRODUCTS_DIR; };
+		E473C9890E9331FA005CA997 /* Unit Testing-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Unit Testing-Info.plist"; path = "resources/Unit Testing-Info.plist"; sourceTree = "<group>"; };
 		E473C99E0E93333C005CA997 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		E473CA3D0E93346B005CA997 /* SinglyLinkedListTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SinglyLinkedListTest.m; path = test/SinglyLinkedListTest.m; sourceTree = "<group>"; };
 		E473CB550E9346CB005CA997 /* Unit Testing.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Unit Testing.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -179,9 +195,9 @@
 		E4ADBB7F0E8828C500B570BC /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		E4ADBC990E88412C00B570BC /* AbstractTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AbstractTree.m; path = source/AbstractTree.m; sourceTree = "<group>"; };
 		E4CFCDB00E8FD18300B0253A /* docs.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = docs.html; sourceTree = "<group>"; };
-		E4CFCDB10E8FD18300B0253A /* Doxyfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Doxyfile; sourceTree = "<group>"; };
-		E4CFCDB20E8FD18300B0253A /* doxygen-cocoa-tags.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "doxygen-cocoa-tags.xml"; sourceTree = "<group>"; };
-		E4CFCDB30E8FD18300B0253A /* doxygen.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = doxygen.css; sourceTree = "<group>"; };
+		E4CFCDB10E8FD18300B0253A /* Doxyfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Doxyfile; path = doxygen/Doxyfile; sourceTree = "<group>"; };
+		E4CFCDB20E8FD18300B0253A /* doxygen-cocoa-tags.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "doxygen-cocoa-tags.xml"; path = "doxygen/doxygen-cocoa-tags.xml"; sourceTree = "<group>"; };
+		E4CFCDB30E8FD18300B0253A /* doxygen.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = doxygen.css; path = doxygen/doxygen.css; sourceTree = "<group>"; };
 		E4D499690E93CD1300434CBA /* DoublyLinkedListTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DoublyLinkedListTest.m; path = test/DoublyLinkedListTest.m; sourceTree = "<group>"; };
 		E4FE77C60E8978C300971EE6 /* Tree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Tree.h; path = source/Tree.h; sourceTree = "<group>"; };
 		E4FE77C90E8978DD00971EE6 /* AbstractTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AbstractTree.h; path = source/AbstractTree.h; sourceTree = "<group>"; };
@@ -193,6 +209,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				E4ADBA930E88155A00B570BC /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E44B59B20E95850F00F9DD1A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -211,6 +234,7 @@
 			children = (
 				8DC2EF5B0486A6940098B216 /* DataStructures.framework */,
 				E473CB550E9346CB005CA997 /* Unit Testing.octest */,
+				E44B59B40E95850F00F9DD1A /* Benchmarks */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -222,6 +246,7 @@
 				08FB77AEFE84172EC02AAC07 /* Classes */,
 				E473C9A70E933350005CA997 /* Unit Tests */,
 				E4CFCDAD0E8FD16400B0253A /* Documentation */,
+				E4FAE0F60E967A8B007BB1F9 /* Benchmarks */,
 				089C1665FE841158C02AAC07 /* Resources */,
 				0867D69AFE84028FC02AAC07 /* Frameworks */,
 				034768DFFF38A50411DB9C8B /* Products */,
@@ -327,6 +352,14 @@
 			name = Documentation;
 			sourceTree = "<group>";
 		};
+		E4FAE0F60E967A8B007BB1F9 /* Benchmarks */ = {
+			isa = PBXGroup;
+			children = (
+				E44B58C40E95820400F9DD1A /* Benchmarks.m */,
+			);
+			name = Benchmarks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -381,6 +414,22 @@
 			productReference = 8DC2EF5B0486A6940098B216 /* DataStructures.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		E44B59B30E95850F00F9DD1A /* Benchmarks */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E44B59CB0E95853300F9DD1A /* Build configuration list for PBXNativeTarget "Benchmarks" */;
+			buildPhases = (
+				E44B59B10E95850F00F9DD1A /* Sources */,
+				E44B59B20E95850F00F9DD1A /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Benchmarks;
+			productName = Benchmarks;
+			productReference = E44B59B40E95850F00F9DD1A /* Benchmarks */;
+			productType = "com.apple.product-type.tool";
+		};
 		E473CB540E9346CB005CA997 /* Unit Testing */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = E473CB690E9346F3005CA997 /* Build configuration list for PBXNativeTarget "Unit Testing" */;
@@ -416,6 +465,7 @@
 				8DC2EF4F0486A6940098B216 /* DataStructures */,
 				E473CB540E9346CB005CA997 /* Unit Testing */,
 				E4FE76D80E89556A00971EE6 /* Documentation */,
+				E44B59B30E95850F00F9DD1A /* Benchmarks */,
 			);
 		};
 /* End PBXProject section */
@@ -465,7 +515,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = doxygen;
+			shellScript = "doxygen doxygen/Doxyfile";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -487,6 +537,27 @@
 				E44771F50E912491000889F7 /* ArrayDeque.m in Sources */,
 				E41180280E91E7E700E66053 /* SinglyLinkedList.m in Sources */,
 				E40D184E0E945580007F39D8 /* ListDeque.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E44B59B10E95850F00F9DD1A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E44B59BA0E95851B00F9DD1A /* AATree.m in Sources */,
+				E44B59BB0E95851B00F9DD1A /* AbstractTree.m in Sources */,
+				E44B59BC0E95851C00F9DD1A /* ArrayDeque.m in Sources */,
+				E44B59BD0E95851C00F9DD1A /* ArrayHeap.m in Sources */,
+				E44B59BE0E95851D00F9DD1A /* ArrayQueue.m in Sources */,
+				E44B59BF0E95851E00F9DD1A /* ArrayStack.m in Sources */,
+				E44B59C00E95851E00F9DD1A /* DoublyLinkedList.m in Sources */,
+				E44B59C10E95851F00F9DD1A /* ListDeque.m in Sources */,
+				E44B59C20E95852000F9DD1A /* ListQueue.m in Sources */,
+				E44B59C30E95852000F9DD1A /* ListStack.m in Sources */,
+				E44B59C40E95852100F9DD1A /* RedBlackTree.m in Sources */,
+				E44B59C50E95852200F9DD1A /* SinglyLinkedList.m in Sources */,
+				E44B59C60E95852200F9DD1A /* UnbalancedTree.m in Sources */,
+				E44B59C70E95852400F9DD1A /* Benchmarks.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -569,7 +640,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
-				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_FILE = resources/Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Frameworks";
 				PRODUCT_NAME = DataStructures;
 				WRAPPER_EXTENSION = framework;
@@ -629,6 +700,52 @@
 			};
 			name = Release;
 		};
+		E44B59B80E95851000F9DD1A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INSTALL_PATH = /usr/local/bin;
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Benchmarks;
+			};
+			name = Debug;
+		};
+		E44B59B90E95851000F9DD1A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INSTALL_PATH = /usr/local/bin;
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Benchmarks;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 		E473CB580E9346CB005CA997 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -642,7 +759,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Cocoa.framework/Headers/Cocoa.h";
-				INFOPLIST_FILE = "Unit Testing-Info.plist";
+				INFOPLIST_FILE = "resources/Unit Testing-Info.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
 				OTHER_LDFLAGS = (
 					"-framework",
@@ -721,6 +838,15 @@
 			buildConfigurations = (
 				1DEB91B208733DA50010E9CD /* Debug */,
 				1DEB91B308733DA50010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E44B59CB0E95853300F9DD1A /* Build configuration list for PBXNativeTarget "Benchmarks" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E44B59B80E95851000F9DD1A /* Debug */,
+				E44B59B90E95851000F9DD1A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
