@@ -25,7 +25,7 @@
     [tree release];
 }
 
-- (void) testAddObjectsFromEnumerator {
+- (void) testAddObject {
 	STAssertEquals([tree count], 0u, @"-count is incorrect.");
 	for (id object in testArray)
 		[tree addObject:object];
@@ -116,5 +116,23 @@
 	STAssertEqualObjects([e nextObject], @"H", @"-nextObject is wrong.");
 	STAssertNil([e nextObject], @"-nextObject should return nil.");
 }
+/*
+- (void) testRemoveObject {
+	for (id object in testArray)
+		[tree addObject:object];
+	STAssertEquals([tree count], 9u, @"-count is incorrect.");
+	[tree removeObject:@"Z"];
+	STAssertEquals([tree count], 9u, @"-count is incorrect.");
+	[tree removeObject:@"A"];
+	STAssertEquals([tree count], 8u, @"-count is incorrect.");	
+}
 
+- (void) testRemoveAllObjects {
+	for (id object in testArray)
+		[tree addObject:object];
+	STAssertEquals([tree count], 9u, @"-count is incorrect.");
+	[tree removeAllObjects];
+	STAssertEquals([tree count], 0u, @"-count is incorrect.");
+}
+*/
 @end

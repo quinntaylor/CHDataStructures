@@ -258,6 +258,8 @@ static struct UnbalancedTreeNode * _removeNode(struct UnbalancedTreeNode *node,
 	
 	struct UnbalancedTreeNode *oldRoot;
 	
+	// TODO: Null out the parent's link to leaf nodes (avoid EXC_BAD_ACCESS on clear)
+	
 	if (node->left == NULL) {
 		if (node->right == NULL) { // both children are NULL
 			[node->object release];
@@ -271,8 +273,7 @@ static struct UnbalancedTreeNode * _removeNode(struct UnbalancedTreeNode *node,
 			node->parent = oldRoot->parent;
 			
 			//fix the parent's pointers.
-			if (node->parent != NULL)
-			{
+			if (node->parent != NULL) {
 				if (node->parent->left == oldRoot) 
 					node->parent->left = node;
 				else if (node->parent->right == oldRoot)
@@ -283,8 +284,7 @@ static struct UnbalancedTreeNode * _removeNode(struct UnbalancedTreeNode *node,
 			free(oldRoot);
 			return node;
 		}
-	}
-	else { //left was not nil
+	} else { //left was not nil
 		if (node->right == NULL) {
 			oldRoot = node;
 			node = node->left;
@@ -302,8 +302,7 @@ static struct UnbalancedTreeNode * _removeNode(struct UnbalancedTreeNode *node,
 			[oldRoot->object release];
 			free(oldRoot);
 			return node;
-		}
-		else {
+		} else {
 			//now of course this is the usual -- both L & R nodes exist
 		
 			//replace our node with the node at the leftmost of its right subtree.
@@ -344,6 +343,7 @@ static struct UnbalancedTreeNode * _removeNode(struct UnbalancedTreeNode *node,
 		nilArgumentException([self class], _cmd);
 	
 	[anObject retain];
+	++mutations;
 	
 	if (root == NULL) {
 		root = malloc(kUnbalancedTreeNodeSize);
@@ -395,13 +395,6 @@ static struct UnbalancedTreeNode * _removeNode(struct UnbalancedTreeNode *node,
 		else if (comparison == NSOrderedDescending)
 			parentNode->right = newNode;		
 	}
-}
-
-- (void) addObjectsFromEnumerator:(NSEnumerator*)enumerator {
-	if (enumerator == nil)
-		nilArgumentException([self class], _cmd);
-	for (id object in enumerator)
-		[self addObject:object];
 }
 
 - (BOOL) containsObject:(id)anObject {
@@ -463,7 +456,9 @@ static struct UnbalancedTreeNode * _removeNode(struct UnbalancedTreeNode *node,
 		else if (comparison == NSOrderedDescending)
 			currentNode = currentNode->right;
 		else if (comparison == NSOrderedSame) {
+			++mutations;
 			_removeNode(currentNode, root);
+			--count;
 			return;
 		}
 	}
@@ -501,6 +496,7 @@ static struct UnbalancedTreeNode * _removeNode(struct UnbalancedTreeNode *node,
 	}
 	root = NULL;
 	count = 0;
+	++mutations;
 }
 
 - (NSEnumerator*) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order {
@@ -514,8 +510,8 @@ static struct UnbalancedTreeNode * _removeNode(struct UnbalancedTreeNode *node,
 #pragma mark <NSFastEnumeration> Methods
 
 - (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState*)state
-								  objects:(id*)stackbuf
-									count:(NSUInteger)len
+                                  objects:(id*)stackbuf
+                                    count:(NSUInteger)len
 {
 	UnbalancedTreeNode *currentNode;
 	UTE_NODE *stack, *tmp; 
@@ -549,7 +545,7 @@ static struct UnbalancedTreeNode * _removeNode(struct UnbalancedTreeNode *node,
 		stackbuf[batchCount] = currentNode->object;
 		currentNode = currentNode->right;
 		batchCount++;
-    }
+	}
 	
 	if (currentNode == NULL && stack == NULL)
 		state->state = 1; // used as a termination flag
@@ -557,7 +553,7 @@ static struct UnbalancedTreeNode * _removeNode(struct UnbalancedTreeNode *node,
 		state->state = (unsigned long) currentNode;
 		state->extra[0] = (unsigned long) stack;
 	}
-    return batchCount;
+	return batchCount;
 }
 
 @end

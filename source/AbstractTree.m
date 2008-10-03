@@ -110,8 +110,8 @@
 }
 
 - (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState*)state
-								  objects:(id*)stackbuf
-									count:(NSUInteger)len
+                                  objects:(id*)stackbuf
+                                    count:(NSUInteger)len
 {
 	unsupportedOperationException([self class], _cmd);
 	return 0;

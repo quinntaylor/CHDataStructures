@@ -285,8 +285,8 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(SinglyLinkedListNode);
 #pragma mark <NSFastEnumeration> Methods
 
 - (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState*)state
-								  objects:(id*)stackbuf
-									count:(NSUInteger)len
+                                  objects:(id*)stackbuf
+                                    count:(NSUInteger)len
 {
 	SinglyLinkedListNode *currentNode;
 	// If this is the first call, start at head, otherwise start at last saved node
@@ -301,19 +301,19 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(SinglyLinkedListNode);
 	else {
 		currentNode = (SinglyLinkedListNode*) state->state;
 	}
-
+	
 	// Accumulate objects from the list until we reach the tail, or the maximum limit
-    NSUInteger batchCount = 0;
-    while (currentNode != NULL && batchCount < len) {
-        stackbuf[batchCount] = currentNode->object;
-        currentNode = currentNode->next;
+	NSUInteger batchCount = 0;
+	while (currentNode != NULL && batchCount < len) {
+		stackbuf[batchCount] = currentNode->object;
+		currentNode = currentNode->next;
 		batchCount++;
-    }
+	}
 	if (currentNode == NULL)
 		state->state = 1; // used as a termination flag
 	else
 		state->state = (unsigned long)currentNode;
-    return batchCount;
+	return batchCount;
 }
 
 @end
