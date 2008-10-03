@@ -73,14 +73,12 @@
  <!-- LGPL v.2 @ http://www.gnu.org/licenses/old-licenses/gpl-2.0.html -->
  
  The data structure protocols include:
- <ul>
- <li>Deque
- <li>Heap
- <li>LinkedList
- <li>Queue
- <li>Stack
- <li>Tree
- </ul>
+ - Deque
+ - Heap
+ - LinkedList
+ - Queue
+ - Stack
+ - Tree
  
  Although we specifically target <a href="http://www.apple.com/macosx/">Mac OS X</a>,
  most of the code could be easily ported to other Objective-C environments, such as
@@ -99,8 +97,8 @@
  
  @todo Add support for invalidating enumerators when the underlying data is mutated.
  
- @todo Consider adding <code>-makeObjectsPerform:</code> and
-       <code>-makeObjectsPerform:with:</code>
+ @todo Consider adding <code>-makeObjectsPerformSelector:</code> and
+       <code>-makeObjectsPerformSelector:withObject:</code>?
  
  @todo Consider adding <code>-replaceObject:withObject:</code>
  */

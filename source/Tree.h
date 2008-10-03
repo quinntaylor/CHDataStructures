@@ -142,7 +142,7 @@ typedef short CHTraversalOrder;
  
  NOTE: When you use an enumerator, you must not modify the tree during enumeration.
  
- @see #objectEnumeratorWithTraversalOrder:
+ @see @link #objectEnumeratorWithTraversalOrder: - [Tree objectEnumeratorWithTraversalOrder:] @endlink
  */
 - (NSEnumerator*) objectEnumerator;
 
@@ -151,7 +151,7 @@ typedef short CHTraversalOrder;
  
  NOTE: When you use an enumerator, you must not modify the tree during enumeration.
  
- @see #objectEnumeratorWithTraversalOrder:
+ @see @link #objectEnumeratorWithTraversalOrder: - [Tree objectEnumeratorWithTraversalOrder:] @endlink
  */
 - (NSEnumerator*) reverseObjectEnumerator;
 

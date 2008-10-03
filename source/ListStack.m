@@ -37,7 +37,7 @@
 		[self release];
 		return nil;
 	}
-	list = [[DoublyLinkedList alloc] init];
+	list = [[SinglyLinkedList alloc] init];
 	return self;
 }
 
