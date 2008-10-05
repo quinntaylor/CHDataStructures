@@ -57,6 +57,12 @@ static void nilArgumentException(Class theClass, SEL method) {
 					   theClass, sel_getName(method)];
 }
 
+static void mutatedCollectionException(Class theClass, SEL method) {
+	[NSException raise:NSGenericException
+                format:@"[%@ %s] -- Collection was mutated while being enumerated.",
+                       theClass, sel_getName(method)];
+}
+
 /**
  Convenience function for raising an exception for un-implemented functionality.
  

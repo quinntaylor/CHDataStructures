@@ -31,14 +31,18 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(SinglyLinkedListNode);
  */
 @interface SinglyLinkedListEnumerator : NSEnumerator {
 	SinglyLinkedListNode *current; /**< The next node that is to be enumerated. */
+	unsigned long mutationCount;
+	unsigned long *mutationPtr;
 }
 
 /**
  Create an enumerator which traverses a given list in the specified order.
  
  @param startNode The node at which to begin the enumeration.
+ @param mutations A pointer to the collection's count of mutations, for invalidation.
  */
-- (id) initWithStartNode:(SinglyLinkedListNode*)startNode;
+- (id) initWithStartNode:(SinglyLinkedListNode*)startNode
+         mutationPointer:(unsigned long*)mutations;
 
 /**
  Returns the next object from the collection being enumerated.
@@ -64,16 +68,22 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(SinglyLinkedListNode);
 
 @implementation SinglyLinkedListEnumerator
 
-- (id) initWithStartNode:(SinglyLinkedListNode*)startNode {
+- (id) initWithStartNode:(SinglyLinkedListNode*)startNode
+         mutationPointer:(unsigned long*)mutations
+{
 	if ([super init] == nil) {
 		[self release];
 		return nil;
 	}
 	current = startNode; // If startNode is NULL, nothing will be returned, anyway.
+	mutationCount = *mutations;
+	mutationPtr = mutations;
 	return self;	
 }
 
 - (id) nextObject {
+	if (mutationCount != *mutationPtr)
+		mutatedCollectionException([self class], _cmd);
 	if (current == NULL)
 		return nil;
 	id object = current->object;
@@ -82,6 +92,8 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(SinglyLinkedListNode);
 }
 
 - (NSArray*) allObjects {
+	if (mutationCount != *mutationPtr)
+		mutatedCollectionException([self class], _cmd);
 	NSMutableArray *array = [[NSMutableArray alloc] init];
 	while (current != NULL) {
 		[array addObject:current->object];
@@ -160,7 +172,9 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(SinglyLinkedListNode);
 }
 
 - (NSEnumerator*) objectEnumerator {
-	return [[[SinglyLinkedListEnumerator alloc] initWithStartNode:head] autorelease];
+	return [[[SinglyLinkedListEnumerator alloc]
+			 initWithStartNode:head
+			 mutationPointer:&mutations] autorelease];
 }
 
 - (BOOL) containsObject:(id)anObject {

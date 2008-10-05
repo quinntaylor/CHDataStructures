@@ -19,7 +19,7 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *******************************/
 
-//  StandardLinkedList.m
+//  DoublyLinkedList.m
 //  DataStructuresFramework
 
 #import "DoublyLinkedList.h"
@@ -32,12 +32,15 @@ static NSUInteger kDoublyLinkedListNodeSize = sizeof(DoublyLinkedListNode);
 @interface DoublyLinkedListEnumerator : NSEnumerator {
 	DoublyLinkedListNode *current; /**< The next node that is to be enumerated. */
 	BOOL reverse; /**< Whether the enumerator is proceeding from back to front. */
+	unsigned long mutationCount;
+	unsigned long *mutationPtr;
 }
 
 /**
  Create an enumerator which traverses a list starting from either the head or tail.
  
  @param startNode The node at which to begin the enumeration.
+ @param mutations A pointer to the collection's count of mutations, for invalidation.
  
  The enumeration direction is inferred from the state of the provided start node. If
  <code>startNode->next</code> is <code>NULL</code>, enumeration proceeds from back to
@@ -48,7 +51,8 @@ static NSUInteger kDoublyLinkedListNodeSize = sizeof(DoublyLinkedListNode);
  This enumerator doesn't explicitly support enumerating over a sub-list of nodes. (If
  a node from the middle is provided, enumeration will proceed towards the tail.)
  */
-- (id) initWithStartNode:(DoublyLinkedListNode*)startNode;
+- (id) initWithStartNode:(DoublyLinkedListNode*)startNode
+         mutationPointer:(unsigned long*)mutations;
 
 /**
  Returns the next object from the collection being enumerated.
@@ -74,7 +78,9 @@ static NSUInteger kDoublyLinkedListNodeSize = sizeof(DoublyLinkedListNode);
 
 @implementation DoublyLinkedListEnumerator
 
-- (id) initWithStartNode:(DoublyLinkedListNode*)startNode {
+- (id) initWithStartNode:(DoublyLinkedListNode*)startNode
+         mutationPointer:(unsigned long*)mutations
+{
 	if ([super init] == nil) {
 		[self release];
 		return nil;
@@ -82,10 +88,14 @@ static NSUInteger kDoublyLinkedListNodeSize = sizeof(DoublyLinkedListNode);
 	current = startNode; // If startNode is NULL, nothing will be returned, anyway.
 	if (startNode != NULL)
 		reverse = (startNode->next == nil) ? YES : NO;
+	mutationCount = *mutations;
+	mutationPtr = mutations;
 	return self;
 }
 
 - (id) nextObject {
+	if (mutationCount != *mutationPtr)
+		mutatedCollectionException([self class], _cmd);
 	if (current == NULL)
 		return nil;
 	id object = current->object;
@@ -94,6 +104,8 @@ static NSUInteger kDoublyLinkedListNodeSize = sizeof(DoublyLinkedListNode);
 }
 
 - (NSArray*) allObjects {
+	if (mutationCount != *mutationPtr)
+		mutatedCollectionException([self class], _cmd);
 	NSMutableArray *array = [[NSMutableArray alloc] init];
 	while (current != NULL) {
 		[array addObject:current->object];
@@ -176,11 +188,15 @@ static NSUInteger kDoublyLinkedListNodeSize = sizeof(DoublyLinkedListNode);
 }
 
 - (NSEnumerator*) objectEnumerator {
-	return [[[DoublyLinkedListEnumerator alloc] initWithStartNode:head] autorelease];
+	return [[[DoublyLinkedListEnumerator alloc]
+			 initWithStartNode:head
+			 mutationPointer:&mutations] autorelease];
 }
 
 - (NSEnumerator*) reverseObjectEnumerator {
-	return [[[DoublyLinkedListEnumerator alloc] initWithStartNode:tail] autorelease];
+	return [[[DoublyLinkedListEnumerator alloc]
+			 initWithStartNode:tail
+			 mutationPointer:&mutations] autorelease];
 }
 
 - (BOOL) containsObject:(id)anObject {

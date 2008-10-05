@@ -82,6 +82,8 @@ if(queue==tmp)queue=NULL;if(queueTail==tmp)queueTail=NULL;}
 	AATE_NODE *queue;     /**< Pointer to the head of a queue for level-order. */
 	AATE_NODE *queueTail; /**< Pointer to the tail of a queue for level-order. */
 	AATE_NODE *tmp;       /**< Temporary variable for stack and queue operations. */
+	unsigned long mutationCount;
+	unsigned long *mutationPtr;
 }
 
 /**
@@ -89,8 +91,11 @@ if(queue==tmp)queue=NULL;if(queueTail==tmp)queueTail=NULL;}
  
  @param root The root node of the (sub)tree whose elements are to be enumerated.
  @param order The traversal order to use for enumerating the given (sub)tree.
+ @param mutations A pointer to the collection's count of mutations, for invalidation.
  */
-- (id) initWithRoot:(AATreeNode*)root traversalOrder:(CHTraversalOrder)order;
+- (id) initWithRoot:(AATreeNode*)root
+     traversalOrder:(CHTraversalOrder)order
+    mutationPointer:(unsigned long*)mutations;
 
 /**
  Returns an array of objects the receiver has yet to enumerate.
@@ -116,7 +121,10 @@ if(queue==tmp)queue=NULL;if(queueTail==tmp)queueTail=NULL;}
 
 @implementation AATreeEnumerator
 
-- (id) initWithRoot:(AATreeNode*)root traversalOrder:(CHTraversalOrder)order {
+- (id) initWithRoot:(AATreeNode*)root
+     traversalOrder:(CHTraversalOrder)order
+    mutationPointer:(unsigned long*)mutations
+{
 	if ([super init] == nil || !isValidTraversalOrder(order)) {
 		[self release];
 		return nil;
@@ -124,16 +132,30 @@ if(queue==tmp)queue=NULL;if(queueTail==tmp)queueTail=NULL;}
 	stack = NULL;
 	traversalOrder = order;
 	if (traversalOrder == CHTraverseLevelOrder) {
-		AATE_ENQUEUE(root);		
+		AATE_ENQUEUE(root);
 	} else if (traversalOrder == CHTraversePreOrder) {
-		AATE_PUSH(root);		
+		AATE_PUSH(root);
 	} else {
 		currentNode = root;
 	}
+	mutationCount = *mutations;
+	mutationPtr = mutations;
 	return self;
 }
 
+- (NSArray*) allObjects {
+	if (mutationCount != *mutationPtr)
+		mutatedCollectionException([self class], _cmd);
+	NSMutableArray *array = [[NSMutableArray alloc] init];
+	id object;
+	while ((object = [self nextObject]))
+		[array addObject:object];
+	return [array autorelease];
+}
+
 - (id) nextObject {
+	if (mutationCount != *mutationPtr)
+		mutatedCollectionException([self class], _cmd);
 	switch (traversalOrder) {
 		case CHTraversePreOrder:
 			currentNode = AATE_TOP;
@@ -215,14 +237,6 @@ if(queue==tmp)queue=NULL;if(queueTail==tmp)queueTail=NULL;}
 		default:
 			return nil;
 	}
-}
-
-- (NSArray*) allObjects {
-	NSMutableArray *array = [[NSMutableArray alloc] init];
-	id object;
-	while ((object = [self nextObject]))
-		[array addObject:object];
-	return [array autorelease];
 }
 
 @end
@@ -342,7 +356,17 @@ void _split(AATreeNode *node) {
 		return nil;
 	
 	return [[[AATreeEnumerator alloc] initWithRoot:root
-	                                traversalOrder:order] autorelease];
+                                    traversalOrder:order
+                                   mutationPointer:&mutations] autorelease];
+}
+
+#pragma mark <NSFastEnumeration> Methods
+
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState*)state
+                                  objects:(id*)stackbuf
+                                    count:(NSUInteger)len
+{
+	return 0;
 }
 
 @end

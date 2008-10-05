@@ -95,8 +95,6 @@
 
  
  
- @todo Add support for invalidating enumerators when the underlying data is mutated.
- 
  @todo Consider adding <code>-makeObjectsPerformSelector:</code> and
        <code>-makeObjectsPerformSelector:withObject:</code>?
  

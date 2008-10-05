@@ -109,6 +109,17 @@
 	return nil;
 }
 
+/**
+ A method for NSFastEnumeration, called by <code><b>for</b> (type variable <b>in</b>
+ collection)</code> constructs.
+ 
+ @param state Context information that is used in the enumeration. In addition to
+        other possibilities, it can ensure that the collection has not been mutated.
+ @param stackbuf A C array of objects over which the sender is to iterate. The method
+        generally saves objects directly to this array.
+ @param len The maximum number of objects to return in <i>stackbuf</i>.
+ @return The number of objects copied into the <i>stackbuf</i> array.
+ */
 - (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState*)state
                                   objects:(id*)stackbuf
                                     count:(NSUInteger)len

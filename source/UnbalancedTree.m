@@ -81,6 +81,8 @@ static NSUInteger kUTE_SIZE = sizeof(UTE_NODE);
 	UTE_NODE *queue;     /**< Pointer to the head of a queue for level-order. */
 	UTE_NODE *queueTail; /**< Pointer to the tail of a queue for level-order. */
 	UTE_NODE *tmp;       /**< Temporary variable for stack and queue operations. */
+	unsigned long mutationCount;
+	unsigned long *mutationPtr;
 }
 
 /**
@@ -88,8 +90,11 @@ static NSUInteger kUTE_SIZE = sizeof(UTE_NODE);
  
  @param root The root node of the (sub)tree whose elements are to be enumerated.
  @param order The traversal order to use for enumerating the given (sub)tree.
+ @param mutations A pointer to the collection's count of mutations, for invalidation.
  */
-- (id) initWithRoot:(UnbalancedTreeNode*)root traversalOrder:(CHTraversalOrder)order;
+- (id) initWithRoot:(UnbalancedTreeNode*)root
+     traversalOrder:(CHTraversalOrder)order
+    mutationPointer:(unsigned long*)mutations;
 
 /**
  Returns an array of objects the receiver has yet to enumerate.
@@ -115,7 +120,10 @@ static NSUInteger kUTE_SIZE = sizeof(UTE_NODE);
 
 @implementation UnbalancedTreeEnumerator
 
-- (id) initWithRoot:(UnbalancedTreeNode*)root traversalOrder:(CHTraversalOrder)order {
+- (id) initWithRoot:(UnbalancedTreeNode*)root
+     traversalOrder:(CHTraversalOrder)order
+    mutationPointer:(unsigned long*)mutations
+{
 	if ([super init] == nil || !isValidTraversalOrder(order)) {
 		[self release];
 		return nil;
@@ -123,16 +131,30 @@ static NSUInteger kUTE_SIZE = sizeof(UTE_NODE);
 	stack = NULL;
 	traversalOrder = order;
 	if (traversalOrder == CHTraverseLevelOrder) {
-		UTE_ENQUEUE(root);		
+		UTE_ENQUEUE(root);
 	} else if (traversalOrder == CHTraversePreOrder) {
-		UTE_PUSH(root);		
+		UTE_PUSH(root);
 	} else {
 		currentNode = root;
 	}
+	mutationCount = *mutations;
+	mutationPtr = mutations;
 	return self;
 }
 
+- (NSArray*) allObjects {
+	if (mutationCount != *mutationPtr)
+		mutatedCollectionException([self class], _cmd);
+	NSMutableArray *array = [[NSMutableArray alloc] init];
+	id object;
+	while ((object = [self nextObject]))
+		[array addObject:object];
+	return [array autorelease];
+}
+
 - (id) nextObject {
+	if (mutationCount != *mutationPtr)
+		mutatedCollectionException([self class], _cmd);
 	switch (traversalOrder) {
 		case CHTraversePreOrder:
 			currentNode = UTE_TOP;
@@ -214,14 +236,6 @@ static NSUInteger kUTE_SIZE = sizeof(UTE_NODE);
 		default:
 			return nil;
 	}
-}
-
-- (NSArray*) allObjects {
-	NSMutableArray *array = [[NSMutableArray alloc] init];
-	id object;
-	while ((object = [self nextObject]))
-		[array addObject:object];
-	return [array autorelease];
 }
 
 @end
@@ -508,7 +522,8 @@ static struct UnbalancedTreeNode * _removeNode(struct UnbalancedTreeNode *node,
 		return nil;
 	
 	return [[[UnbalancedTreeEnumerator alloc] initWithRoot:root
-                                            traversalOrder:order] autorelease];
+	                                        traversalOrder:order
+	                                       mutationPointer:&mutations] autorelease];
 }
 
 #pragma mark <NSFastEnumeration> Methods

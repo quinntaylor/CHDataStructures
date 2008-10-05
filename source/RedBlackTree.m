@@ -114,6 +114,8 @@
 	BOOL hasStarted;
 	BOOL beenLeft;
 	BOOL beenRight;
+	unsigned long mutationCount;
+	unsigned long *mutationPtr;
 }
 
 /**
@@ -121,8 +123,11 @@
  
  @param root The root node of the (sub)tree whose elements are to be enumerated.
  @param order The traversal order to use for enumerating the given (sub)tree.
+ @param mutations A pointer to the collection's count of mutations, for invalidation.
  */
-- (id) initWithRoot:(RedBlackTreeNode*)root traversalOrder:(CHTraversalOrder)order;
+- (id) initWithRoot:(RedBlackTreeNode*)root
+     traversalOrder:(CHTraversalOrder)order
+    mutationPointer:(unsigned long*)mutations;
 
 /**
  Returns an array of objects the receiver has yet to enumerate.
@@ -148,7 +153,10 @@
 
 @implementation RedBlackTreeEnumerator
 
-- (id) initWithRoot:(RedBlackTreeNode*)root traversalOrder:(CHTraversalOrder)order {
+- (id) initWithRoot:(RedBlackTreeNode*)root
+     traversalOrder:(CHTraversalOrder)order
+    mutationPointer:(unsigned long*)mutations
+{
 	if ([super init] == nil || !isValidTraversalOrder(order)) {
 		[self release];
 		return nil;
@@ -158,10 +166,14 @@
 	beenLeft = YES;
 	beenRight = NO;
 	hasStarted = NO;
+	mutationCount = *mutations;
+	mutationPtr = mutations;
 	return self;
 }
 
 - (NSArray*) allObjects {
+	if (mutationCount != *mutationPtr)
+		mutatedCollectionException([self class], _cmd);
 	NSMutableArray *array = [[NSMutableArray alloc] init];
 	id object;
 	while ((object = [self nextObject]))
@@ -173,7 +185,9 @@
  @see UnbalancedTreeEnumerator#nextObject
  */
 - (id) nextObject {
-	// TODO: Create logic to consider traversalOrder for unbalanced trees
+	if (mutationCount != *mutationPtr)
+		mutatedCollectionException([self class], _cmd);
+	// TODO: Copy enumeration logic from UnbalancedTree
 	return nil;
 }
 
@@ -387,7 +401,8 @@ static RedBlackTreeNode * _rotateWithRightChild(RedBlackTreeNode *rightChild) {
 		return nil;
 	
 	return [[[RedBlackTreeEnumerator alloc] initWithRoot:root
-										  traversalOrder:order] autorelease];
+	                                      traversalOrder:order
+	                                     mutationPointer:&mutations] autorelease];
 }
 
 @end
