@@ -258,10 +258,14 @@ static struct UnbalancedTreeNode * _removeNode(struct UnbalancedTreeNode *node,
 	
 	struct UnbalancedTreeNode *oldRoot;
 	
-	// TODO: Null out the parent's link to leaf nodes (avoid EXC_BAD_ACCESS on clear)
-	
 	if (node->left == NULL) {
 		if (node->right == NULL) { // both children are NULL
+			// Remove reference to this node from parent
+			if (node->parent->left == node)
+				node->parent->left = NULL;
+			else
+				node->parent->right = NULL;
+			// Release resources associated with this node
 			[node->object release];
 			if (node != treeRoot)
 				free(node);

@@ -116,7 +116,7 @@
 	STAssertEqualObjects([e nextObject], @"H", @"-nextObject is wrong.");
 	STAssertNil([e nextObject], @"-nextObject should return nil.");
 }
-/*
+
 - (void) testRemoveObject {
 	for (id object in testArray)
 		[tree addObject:object];
@@ -134,5 +134,5 @@
 	[tree removeAllObjects];
 	STAssertEquals([tree count], 0u, @"-count is incorrect.");
 }
-*/
+
 @end
