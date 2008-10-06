@@ -24,26 +24,15 @@
 
 #import <Foundation/Foundation.h>
 #import "Stack.h"
-#import "LinkedList.h"
+#import "SinglyLinkedList.h"
 
 /**
- A simple Stack implemented using a LinkedList.
+ A simple Stack implemented using a SinglyLinkedList.
  */
 @interface ListStack : NSObject <Stack>
 {
 	/** The linked list used for storing the contents of the stack. */
-	id<LinkedList> list;
+	SinglyLinkedList *list;
 }
-
-#pragma mark Method Implementations
-
-- (id) init;
-- (void) pushObject:(id)anObject;
-- (id) popObject;
-- (id) topObject;
-- (NSArray*) allObjects;
-- (NSUInteger) count;
-- (void) removeAllObjects;
-- (NSEnumerator*) objectEnumerator;
 
 @end

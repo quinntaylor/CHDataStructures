@@ -56,25 +56,10 @@ typedef struct AATreeNode {
  Red-Black tree is more consistent in its performance than an AA-tree, but an AA-tree
  tends to be flatter, which results in slightly faster search times.
  */
-@interface AATree : AbstractTree {
+@interface AATree : AbstractTree
+{
 	/** A pointer to the root of the tree, set to <code>NULL</code> if empty. */
 	AATreeNode *root;
 }
-
-/**
- Create a new AATree with no nodes or stored objects.
- */
-- (id) init;
-
-#pragma mark Method Implementations
-
-- (void) addObject:(id)anObject;
-- (BOOL) containsObject:(id)anObject;
-- (id) findMax;
-- (id) findMin;
-- (id) findObject:(id)target;
-- (void) removeObject:(id)anObject;
-- (void) removeAllObjects;
-- (NSEnumerator*) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order;
 
 @end

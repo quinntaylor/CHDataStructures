@@ -26,11 +26,12 @@
 #import "Queue.h"
 
 /**
- A fairly basic Queue implemented using an NSMutableArray.
+ A simple Queue implemented using an NSMutableArray.
  See the protocol definition for Queue to understand the programming contract.
  */
 @interface ArrayQueue : NSObject <Queue>
 {
+	/** The array used for storing the contents of the queue. */
 	NSMutableArray *array;
 }
 
@@ -45,16 +46,5 @@
  NOTE: When you use an enumerator, you must not modify the queue during enumeration.
  */
 - (NSEnumerator*) reverseObjectEnumerator;
-
-#pragma mark Method Implementations
-
-- (id) init;
-- (void) addObject:(id)anObject;
-- (id) removeObject;
-- (id) nextObject;
-- (NSArray*) allObjects;
-- (NSUInteger) count;
-- (void) removeAllObjects;
-- (NSEnumerator*) objectEnumerator;
 
 @end

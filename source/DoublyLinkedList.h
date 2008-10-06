@@ -58,27 +58,4 @@ typedef struct DoublyLinkedListNode {
  */
 - (NSEnumerator*) reverseObjectEnumerator;
 
-#pragma mark Method Implementations
-
-- (void) prependObject:(id)anObject;
-- (void) appendObject:(id)anObject;
-- (id) firstObject;
-- (id) lastObject;
-- (NSUInteger) count;
-- (NSArray*) allObjects;
-- (NSEnumerator*) objectEnumerator;
-- (BOOL) containsObject:(id)anObject;
-- (BOOL) containsObjectIdenticalTo:(id)anObject;
-- (void) removeFirstObject;
-- (void) removeLastObject;
-- (void) removeObject:(id)anObject;
-- (void) removeObjectIdenticalTo:(id)anObject;
-- (void) removeAllObjects;
-
-#pragma mark - Optional Protocol Methods
-
-- (void) insertObject:(id)anObject atIndex:(NSUInteger)index;
-- (id) objectAtIndex:(NSUInteger)index;
-- (void) removeObjectAtIndex:(NSUInteger)index;
-
 @end

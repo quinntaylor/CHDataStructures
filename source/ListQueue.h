@@ -24,25 +24,14 @@
 
 #import <Foundation/Foundation.h>
 #import "Queue.h"
-#import "LinkedList.h"
+#import "SinglyLinkedList.h"
 
 /**
- A simple Queue implemented using a LinkedList.
+ A simple Queue implemented using a SinglyLinkedList.
  */
 @interface ListQueue : NSObject <Queue>
 {
-	id<LinkedList> list;
+	SinglyLinkedList *list;
 }
-
-#pragma mark Method Implementations
-
-- (id) init;
-- (void) addObject:(id)anObject;
-- (id) removeObject;
-- (id) nextObject;
-- (NSArray*) allObjects;
-- (NSUInteger) count;
-- (void) removeAllObjects;
-- (NSEnumerator*) objectEnumerator;
 
 @end

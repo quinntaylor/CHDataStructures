@@ -51,21 +51,5 @@ typedef struct UnbalancedTreeNode {
 	UnbalancedTreeNode *root;
 }
 
-/**
- Create a new UnbalancedTree with no nodes or stored objects.
- */
-- (id) init;
-
-#pragma mark Method Implementations
-
-- (void) addObject:(id)object;
-- (BOOL) containsObject:(id)anObject;
-- (id) findMax;
-- (id) findMin;
-- (id) findObject:(id)target;
-- (void) removeObject:(id)anObject;
-- (void) removeAllObjects;
-- (NSEnumerator*) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order;
-
 @end
 

@@ -51,6 +51,11 @@
 @required
 
 /**
+ Initialize a newly-allocated linked list with no objects.
+ */
+- (id) init;
+
+/**
  Returns the number of objects currently in the list.
  
  @return The number of objects currently in the list.

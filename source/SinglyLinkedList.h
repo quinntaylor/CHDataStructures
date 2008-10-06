@@ -52,23 +52,6 @@ typedef struct SinglyLinkedListNode {
 	unsigned long mutations; /**< Used to track mutations for NSFastEnumeration. */
 }
 
-#pragma mark Method Implementations
-
-- (void) prependObject:(id)anObject;
-- (void) appendObject:(id)anObject;
-- (id) firstObject;
-- (id) lastObject;
-- (NSUInteger) count;
-- (NSArray*) allObjects;
-- (NSEnumerator*) objectEnumerator;
-- (BOOL) containsObject:(id)anObject;
-- (BOOL) containsObjectIdenticalTo:(id)anObject;
-- (void) removeFirstObject;
-- (void) removeLastObject;
-- (void) removeObject:(id)anObject;
-- (void) removeObjectIdenticalTo:(id)anObject;
-- (void) removeAllObjects;
-
 // Doesn't currently support index-based operations or inserting in the middle
 
 @end

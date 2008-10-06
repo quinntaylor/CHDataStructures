@@ -29,20 +29,12 @@
 #import "Heap.h"
 
 /**
- A fairly basic Heap implemented using an NSMutableArray.
+ A simple Heap implemented using an NSMutableArray.
  See the protocol definition for Heap to understand the programming contract.
  */
 @interface ArrayHeap : NSObject <Heap>
 {
 	NSMutableArray *irep;
 }
-
-#pragma mark Method Implementations
-
-- (id) init;
-- (void) addObject:(id)anObject;
-- (id) removeRoot;
-- (id) removeLast;
-- (NSUInteger) count;
 
 @end

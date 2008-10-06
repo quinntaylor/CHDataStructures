@@ -26,7 +26,7 @@
 #import "Stack.h"
 
 /**
- A fairly basic Stack implemented using an NSMutableArray.
+ A simple Stack implemented using an NSMutableArray.
  See the protocol definition for Stack to understand the programming contract.
  */
 @interface ArrayStack : NSObject <Stack>
@@ -46,16 +46,5 @@
  NOTE: When you use an enumerator, you must not modify the stack during enumeration.
  */
 - (NSEnumerator*) reverseObjectEnumerator;
-
-#pragma mark Method Implementations
-
-- (id) init;
-- (void) pushObject:(id)anObject;
-- (id) popObject;
-- (id) topObject;
-- (NSArray*) allObjects;
-- (NSUInteger) count;
-- (void) removeAllObjects;
-- (NSEnumerator*) objectEnumerator;
 
 @end

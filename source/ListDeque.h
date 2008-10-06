@@ -27,31 +27,11 @@
 #import "DoublyLinkedList.h"
 
 /**
- A fairly basic Deque implemented using a DoublyLinkedList.
+ A simple Deque implemented using a DoublyLinkedList.
  See the protocol definition for Deque to understand the programming contract.
  */
 @interface ListDeque : NSObject <Deque> {
 	DoublyLinkedList *list;
 }
-
-#pragma mark Method Implementations
-
-- (id) init;
-- (void) prependObject:(id)anObject;
-- (void) appendObject:(id)anObject;
-- (id) firstObject;
-- (id) lastObject;
-- (NSArray*) allObjects;
-
-- (void) removeFirstObject;
-- (void) removeLastObject;
-- (void) removeAllObjects;
-
-- (BOOL) containsObject:(id)anObject;
-- (BOOL) containsObjectIdenticalTo:(id)anObject;
-- (NSUInteger) count;
-
-- (NSEnumerator*) objectEnumerator;
-- (NSEnumerator*) reverseObjectEnumerator;
 
 @end

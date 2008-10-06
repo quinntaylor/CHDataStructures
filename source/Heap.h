@@ -44,6 +44,11 @@
 @protocol Heap <NSObject>
 
 /**
+ Initialize a newly-allocated heap with no objects.
+ */
+- (id) init;
+
+/**
  Insert a given object into the heap.
 
  @param anObject The object to add to the heap; must not be <code>nil</code>, or an

@@ -24,7 +24,6 @@
 
 #import <Foundation/Foundation.h>
 #import "Tree.h"
-#import "Stack.h"
 
 /**
  An abstract Tree implementation with some default method implementations. Methods
@@ -39,18 +38,8 @@
  */
 @interface AbstractTree : NSObject <Tree>
 {
-	/** A count of how many elements are currently in the tree. */
-	NSUInteger count;
+	NSUInteger count; /**< A count of how many elements are currently in the tree. */
 	unsigned long mutations; /**< Used to track mutations for NSFastEnumeration. */
 }
-
-#pragma mark Method Implementations
-
-- (id) init;
-- (NSSet*) contentsAsSet;
-- (NSArray*) contentsAsArrayUsingTraversalOrder:(CHTraversalOrder)traversalOrder;
-- (NSUInteger) count;
-- (NSEnumerator*) objectEnumerator;
-- (NSEnumerator*) reverseObjectEnumerator;
 
 @end
