@@ -28,7 +28,6 @@
 				E4FE76D70E89556A00971EE6 /* ShellScript */,
 			);
 			dependencies = (
-				E4E18AB70E994D6E001A75AF /* PBXTargetDependency */,
 			);
 			name = Documentation;
 			productName = Documentation;
@@ -117,27 +116,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		E4759A750E9A9FB10067C267 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 8DC2EF4F0486A6940098B216 /* DataStructures */;
-			remoteInfo = DataStructures;
-		};
-		E4759A770E9A9FB70067C267 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 8DC2EF4F0486A6940098B216 /* DataStructures */;
-			remoteInfo = DataStructures;
-		};
-		E4E18AB60E994D6E001A75AF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
-			remoteInfo = DataStructures;
-		};
 		E4FAE15E0E968F20007BB1F9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
@@ -465,7 +443,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				E4759A780E9A9FB70067C267 /* PBXTargetDependency */,
 			);
 			name = Benchmarks;
 			productName = Benchmarks;
@@ -484,7 +461,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				E4759A760E9A9FB10067C267 /* PBXTargetDependency */,
 			);
 			name = "Unit Testing";
 			productName = "Unit Testing";
@@ -496,6 +472,9 @@
 /* Begin PBXProject section */
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+			};
 			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "DataStructures" */;
 			compatibilityVersion = "Xcode 3.1";
 			hasScannedForEncodings = 1;
@@ -639,21 +618,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		E4759A760E9A9FB10067C267 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 8DC2EF4F0486A6940098B216 /* DataStructures */;
-			targetProxy = E4759A750E9A9FB10067C267 /* PBXContainerItemProxy */;
-		};
-		E4759A780E9A9FB70067C267 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 8DC2EF4F0486A6940098B216 /* DataStructures */;
-			targetProxy = E4759A770E9A9FB70067C267 /* PBXContainerItemProxy */;
-		};
-		E4E18AB70E994D6E001A75AF /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 8DC2EF4F0486A6940098B216 /* DataStructures */;
-			targetProxy = E4E18AB60E994D6E001A75AF /* PBXContainerItemProxy */;
-		};
 		E4FAE15F0E968F20007BB1F9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 8DC2EF4F0486A6940098B216 /* DataStructures */;
