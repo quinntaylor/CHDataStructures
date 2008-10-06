@@ -34,10 +34,8 @@
  (@link #pushObject: -pushObject:\endlink) and the most recently added object may be
  removed (@link #popObject -popObject\endlink) or returned without removing it (@link
  #topObject -topObject\endlink).
- 
- @todo Add support for methods in NSCoding.
  */
-@protocol Stack <NSObject, NSCopying, NSFastEnumeration>
+@protocol Stack <NSObject, NSCoding, NSCopying, NSFastEnumeration>
 
 /**
  Initialize a newly-allocated stack with no objects.

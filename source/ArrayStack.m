@@ -26,6 +26,11 @@
 
 @implementation ArrayStack
 
+- (void) dealloc {
+	[array release];
+	[super dealloc];
+}
+
 - (id) init {
 	if ([super init] == nil) {
 		[self release];
@@ -57,28 +62,50 @@
 	return self;
 }
 
-- (void) dealloc {
-	[array release];
-	[super dealloc];
+#pragma mark <NSCoding> methods
+
+/**
+ Returns an object initialized from data in a given unarchiver.
+ 
+ @param decoder An unarchiver object.
+ */
+- (id) initWithCoder:(NSCoder *)decoder {
+	if ([super init] == nil) {
+		[self release];
+		return nil;
+	}
+	array = [[decoder decodeObjectForKey:@"ArrayStack"] retain];
+	return self;
 }
+
+/**
+ Encodes the receiver using a given archiver.
+ 
+ @param encoder An archiver object.
+ */
+- (void) encodeWithCoder:(NSCoder *)encoder {
+	[encoder encodeObject:array forKey:@"ArrayStack"];
+}
+
+#pragma mark Stack Implementation
 
 - (void) pushObject:(id)anObject {
 	if (anObject == nil)
 		nilArgumentException([self class], _cmd);
 	else
-		[array addObject:anObject];
+		[array insertObject:anObject atIndex:0];
 }
 
 - (id) popObject {
 	if ([array count] == 0)
 		return nil;
-	id object = [[array lastObject] retain];
-	[array removeLastObject];	
+	id object = [[array objectAtIndex:0] retain];
+	[array removeObjectAtIndex:0];
 	return [object autorelease];
 }
 
 - (id) topObject {
-	return [array lastObject];
+	return [array objectAtIndex:0];
 }
 
 - (NSArray*) allObjects {

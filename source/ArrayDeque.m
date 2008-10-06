@@ -26,6 +26,11 @@
 
 @implementation ArrayDeque
 
+- (void) dealloc {
+	[array release];
+	[super dealloc];
+}
+
 - (id) init {
 	if ([super init] == nil) {
 		[self release];
@@ -47,10 +52,32 @@
 	return self;
 }
 
-- (void) dealloc {
-	[array release];
-	[super dealloc];
+#pragma mark <NSCoding> methods
+
+/**
+ Returns an object initialized from data in a given unarchiver.
+ 
+ @param decoder An unarchiver object.
+ */
+- (id) initWithCoder:(NSCoder *)decoder {
+	if ([super init] == nil) {
+		[self release];
+		return nil;
+	}
+	array = [[decoder decodeObjectForKey:@"ArrayDeque"] retain];
+	return self;
 }
+
+/**
+ Encodes the receiver using a given archiver.
+ 
+ @param encoder An archiver object.
+ */
+- (void) encodeWithCoder:(NSCoder *)encoder {
+	[encoder encodeObject:array forKey:@"ArrayDeque"];
+}
+
+#pragma mark Deque Implementation
 
 - (void) prependObject:(id)anObject {
 	[array insertObject:anObject atIndex:0];
@@ -83,7 +110,6 @@
 - (void) removeAllObjects {
 	[array removeAllObjects];
 }
-
 
 - (BOOL) containsObject:(id)anObject {
 	return [array containsObject:anObject];

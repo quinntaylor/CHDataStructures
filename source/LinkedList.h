@@ -41,10 +41,8 @@
  random access; several optional methods are included to allow such flexibility if
  desired. However, bear in mind that any such additions will increase memory cost and
  diminish the comparative advantages over classes such as NSMutableArray.
- 
- @todo Add support for methods in NSCoding.
  */ 
-@protocol LinkedList <NSObject, NSCopying, NSFastEnumeration>
+@protocol LinkedList <NSObject, NSCoding, NSCopying, NSFastEnumeration>
 
 #pragma mark Required Methods
 

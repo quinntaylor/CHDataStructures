@@ -26,6 +26,11 @@
 
 @implementation ListDeque
 
+- (void) dealloc {
+	[list release];
+	[super dealloc];
+}
+
 - (id) init {
 	if ([super init] == nil) {
 		[self release];
@@ -47,14 +52,32 @@
 	return self;
 }
 
-- (void) dealloc {
-	[list release];
-	[super dealloc];
+#pragma mark <NSCoding> methods
+
+/**
+ Returns an object initialized from data in a given unarchiver.
+ 
+ @param decoder An unarchiver object.
+ */
+- (id) initWithCoder:(NSCoder *)decoder {
+	if ([super init] == nil) {
+		[self release];
+		return nil;
+	}
+	list = [[decoder decodeObjectForKey:@"ListDeque"] retain];
+	return self;
 }
 
-- (NSUInteger) count {
-	return [list count];
+/**
+ Encodes the receiver using a given archiver.
+ 
+ @param encoder An archiver object.
+ */
+- (void) encodeWithCoder:(NSCoder *)encoder {
+	[encoder encodeObject:list forKey:@"ListDeque"];
 }
+
+#pragma mark Deque Implementation
 
 - (void) prependObject:(id)anObject {
 	if (anObject == nil)
@@ -102,6 +125,10 @@
 	if (anObject == nil)
 		nilArgumentException([self class], _cmd);
 	return [list containsObjectIdenticalTo:anObject];
+}
+
+- (NSUInteger) count {
+	return [list count];
 }
 
 - (NSEnumerator*) objectEnumerator {

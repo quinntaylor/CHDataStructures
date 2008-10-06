@@ -120,6 +120,11 @@ static NSUInteger kDoublyLinkedListNodeSize = sizeof(DoublyLinkedListNode);
 
 @implementation DoublyLinkedList
 
+- (void) dealloc {
+	[self removeAllObjects];
+	[super dealloc];
+}
+
 - (id) init {
 	if ([super init] == nil) {
 		[self release];
@@ -132,10 +137,34 @@ static NSUInteger kDoublyLinkedListNodeSize = sizeof(DoublyLinkedListNode);
 	return self;
 }
 
-- (void) dealloc {
-	[self removeAllObjects];
-	[super dealloc];
+#pragma mark <NSCoding> methods
+
+/**
+ Returns an object initialized from data in a given unarchiver.
+ 
+ @param decoder An unarchiver object.
+ */
+- (id) initWithCoder:(NSCoder *)decoder {
+	if ([super init] == nil) {
+		[self release];
+		return nil;
+	}
+	for (id anObject in [decoder decodeObjectForKey:@"DoublyLinkedList"])
+		[self appendObject:anObject];
+	return self;
 }
+
+/**
+ Encodes the receiver using a given archiver.
+ 
+ @param encoder An archiver object.
+ */
+- (void) encodeWithCoder:(NSCoder *)encoder {
+	NSArray *array = [[self objectEnumerator] allObjects];
+	[encoder encodeObject:array forKey:@"DoublyLinkedList"];
+}
+
+#pragma mark Queue Implementation
 
 - (NSUInteger) count {
 	return listSize;

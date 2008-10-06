@@ -26,6 +26,11 @@
 
 @implementation ArrayQueue
 
+- (void) dealloc {
+	[array release];
+	[super dealloc];
+}
+
 - (id) init {
 	if ([super init] == nil) {
 		[self release];
@@ -57,10 +62,32 @@
 	return self;
 }
 
-- (void) dealloc {
-	[array release];
-	[super dealloc];
+#pragma mark <NSCoding> methods
+
+/**
+ Returns an object initialized from data in a given unarchiver.
+ 
+ @param decoder An unarchiver object.
+ */
+- (id) initWithCoder:(NSCoder *)decoder {
+	if ([super init] == nil) {
+		[self release];
+		return nil;
+	}
+	array = [[decoder decodeObjectForKey:@"ArrayQueue"] retain];
+	return self;
 }
+
+/**
+ Encodes the receiver using a given archiver.
+ 
+ @param encoder An archiver object.
+ */
+- (void) encodeWithCoder:(NSCoder *)encoder {
+	[encoder encodeObject:array forKey:@"ArrayQueue"];
+}
+
+#pragma mark Queue Implementation
 
 - (void) addObject: (id)anObject {
 	if (anObject == nil)
