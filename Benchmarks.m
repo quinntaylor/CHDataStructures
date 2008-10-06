@@ -16,6 +16,7 @@ double timestamp() {
 }
 
 void benchmarkDeque(Class testClass) {
+    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 	QuietLog(@"\n* %@", testClass);
 	
 	id<Deque> deque;
@@ -108,9 +109,11 @@ void benchmarkDeque(Class testClass) {
 	}
 	
 	QuietLog(@"");
+	[pool drain];
 }
 
 void benchmarkQueue(Class testClass) {
+    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 	QuietLog(@"\n* %@", testClass);
 	
 	id<Queue> queue;
@@ -181,9 +184,11 @@ void benchmarkQueue(Class testClass) {
 	}
 	
 	QuietLog(@"");
+	[pool drain];
 }
 
 void benchmarkStack(Class testClass) {
+    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 	QuietLog(@"\n%@", testClass);
 	
 	id<Stack> stack;
@@ -254,9 +259,11 @@ void benchmarkStack(Class testClass) {
 	}
 	
 	QuietLog(@"");
+	[pool drain];
 }
 
 void benchmarkTree(Class testClass) {
+    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 	QuietLog(@"\n%@", testClass);
 	
 	id<Tree> tree;
@@ -281,6 +288,7 @@ void benchmarkTree(Class testClass) {
 		[tree release];
 	}
 	QuietLog(@"");
+	[pool drain];
 }
 
 int main (int argc, const char * argv[]) {
