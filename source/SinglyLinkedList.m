@@ -296,11 +296,20 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(SinglyLinkedListNode);
 	++mutations;
 }
 
+#pragma mark <NSCopying> Methods
+
+- (id) copyWithZone:(NSZone *)zone {
+	SinglyLinkedList *newList = [[SinglyLinkedList alloc] init];
+	for (id anObject in self)
+		[newList appendObject:anObject];
+	return newList;
+}
+
 #pragma mark <NSFastEnumeration> Methods
 
-- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState*)state
-                                  objects:(id*)stackbuf
-                                    count:(NSUInteger)len
+- (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
+                                   objects:(id*)stackbuf
+                                     count:(NSUInteger)len
 {
 	SinglyLinkedListNode *currentNode;
 	// If this is the first call, start at head, otherwise start at last saved node

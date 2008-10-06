@@ -358,11 +358,20 @@ static NSUInteger kDoublyLinkedListNodeSize = sizeof(DoublyLinkedListNode);
 	}
 }
 
+#pragma mark <NSCopying> Methods
+
+- (id) copyWithZone:(NSZone *)zone {
+	DoublyLinkedList *newList = [[DoublyLinkedList alloc] init];
+	for (id anObject in self)
+		[newList appendObject:anObject];
+	return newList;
+}
+
 #pragma mark <NSFastEnumeration> Methods
 
-- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState*)state
-								  objects:(id*)stackbuf
-									count:(NSUInteger)len
+- (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
+				 				  objects:(id*)stackbuf
+				 					count:(NSUInteger)len
 {
 	DoublyLinkedListNode *currentNode;
 	// If this is the first call, start at head, otherwise start at last saved node

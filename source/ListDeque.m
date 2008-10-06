@@ -35,6 +35,18 @@
 	return self;
 }
 
+/**
+ Private initializer for NSCopying; makes a mutable copy of the array
+ */
+- (id) initWithList:(id<LinkedList>)aList {
+	if ([super init] == nil) {
+		[self release];
+		return nil;
+	}
+	list = [aList copyWithZone:nil];
+	return self;
+}
+
 - (void) dealloc {
 	[list release];
 	[super dealloc];
@@ -98,6 +110,12 @@
 
 - (NSEnumerator*) reverseObjectEnumerator {
 	return [list reverseObjectEnumerator];
+}
+
+#pragma mark <NSCopying> Methods
+
+- (id) copyWithZone:(NSZone *)zone {
+	return [[ListDeque alloc] initWithList:list];
 }
 
 #pragma mark <NSFastEnumeration> Methods

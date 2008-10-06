@@ -35,9 +35,9 @@
  removed (@link #popObject -popObject\endlink) or returned without removing it (@link
  #topObject -topObject\endlink).
  
- @todo Add support for methods in NSCoding and NSMutableCopying.
+ @todo Add support for methods in NSCoding.
  */
-@protocol Stack <NSObject, NSFastEnumeration>
+@protocol Stack <NSObject, NSCopying, NSFastEnumeration>
 
 /**
  Initialize a newly-allocated stack with no objects.

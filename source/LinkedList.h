@@ -42,9 +42,9 @@
  desired. However, bear in mind that any such additions will increase memory cost and
  diminish the comparative advantages over classes such as NSMutableArray.
  
- @todo Add support for methods in NSCoding and NSMutableCopying.
+ @todo Add support for methods in NSCoding.
  */ 
-@protocol LinkedList <NSObject, NSFastEnumeration>
+@protocol LinkedList <NSObject, NSCopying, NSFastEnumeration>
 
 #pragma mark Required Methods
 

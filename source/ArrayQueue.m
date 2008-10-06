@@ -35,6 +35,18 @@
 	return self;
 }
 
+/**
+ Private initializer for NSCopying; makes a mutable copy of the array
+ */
+- (id) initWithArray:(NSArray*)anArray {
+	if ([super init] == nil) {
+		[self release];
+		return nil;
+	}
+	array = [anArray mutableCopy];
+	return self;
+}
+
 // Additional method in this implementation
 - (id) initWithCapacity:(NSUInteger)capacity {
 	if ([super init] == nil) {
@@ -87,6 +99,12 @@
 // Additional method in this implementation
 - (NSEnumerator*) reverseObjectEnumerator {
 	return [array reverseObjectEnumerator];
+}
+
+#pragma mark <NSCopying> Methods
+
+- (id) copyWithZone:(NSZone *)zone {
+	return [[ArrayQueue alloc] initWithArray:array];
 }
 
 #pragma mark <NSFastEnumeration> Methods

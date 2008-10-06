@@ -36,9 +36,9 @@
  and @link #removeObject -removeObject\endlink, respectively. The frontmost object
  may be examined (without removing it) using @link #nextObject -nextObject\endlink.
  
- @todo Add support for methods in NSCoding and NSMutableCopying.
+ @todo Add support for methods in NSCoding.
  */
-@protocol Queue <NSObject, NSFastEnumeration>
+@protocol Queue <NSObject, NSCopying, NSFastEnumeration>
 
 /**
  Initialize a newly-allocated queue with no objects.
