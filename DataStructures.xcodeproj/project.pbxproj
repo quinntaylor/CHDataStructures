@@ -28,6 +28,7 @@
 				E4FE76D70E89556A00971EE6 /* ShellScript */,
 			);
 			dependencies = (
+				E4E18AB70E994D6E001A75AF /* PBXTargetDependency */,
 			);
 			name = Documentation;
 			productName = Documentation;
@@ -116,6 +117,27 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		E4759A750E9A9FB10067C267 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216 /* DataStructures */;
+			remoteInfo = DataStructures;
+		};
+		E4759A770E9A9FB70067C267 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216 /* DataStructures */;
+			remoteInfo = DataStructures;
+		};
+		E4E18AB60E994D6E001A75AF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
+			remoteInfo = DataStructures;
+		};
 		E4FAE15E0E968F20007BB1F9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
@@ -443,6 +465,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				E4759A780E9A9FB70067C267 /* PBXTargetDependency */,
 			);
 			name = Benchmarks;
 			productName = Benchmarks;
@@ -461,6 +484,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				E4759A760E9A9FB10067C267 /* PBXTargetDependency */,
 			);
 			name = "Unit Testing";
 			productName = "Unit Testing";
@@ -482,8 +506,8 @@
 			targets = (
 				8DC2EF4F0486A6940098B216 /* DataStructures */,
 				E473CB540E9346CB005CA997 /* Unit Testing */,
-				E4FE76D80E89556A00971EE6 /* Documentation */,
 				E44B59B30E95850F00F9DD1A /* Benchmarks */,
+				E4FE76D80E89556A00971EE6 /* Documentation */,
 				E4FAE15B0E968F1B007BB1F9 /* All */,
 			);
 		};
@@ -615,6 +639,21 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		E4759A760E9A9FB10067C267 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8DC2EF4F0486A6940098B216 /* DataStructures */;
+			targetProxy = E4759A750E9A9FB10067C267 /* PBXContainerItemProxy */;
+		};
+		E4759A780E9A9FB70067C267 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8DC2EF4F0486A6940098B216 /* DataStructures */;
+			targetProxy = E4759A770E9A9FB70067C267 /* PBXContainerItemProxy */;
+		};
+		E4E18AB70E994D6E001A75AF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8DC2EF4F0486A6940098B216 /* DataStructures */;
+			targetProxy = E4E18AB60E994D6E001A75AF /* PBXContainerItemProxy */;
+		};
 		E4FAE15F0E968F20007BB1F9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 8DC2EF4F0486A6940098B216 /* DataStructures */;
