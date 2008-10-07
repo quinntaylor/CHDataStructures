@@ -26,6 +26,13 @@
 //  Minor contributions by Phillip Morelock for purposes of library integration.
 //  Many thanks to Gordon for the very first outside contribution to the library!
 
+/**
+ @file Heap.h
+ 
+ A <a href="http://en.wikipedia.org/wiki/Heap_(data_structure)">heap</a> protocol,
+ suitable for use with many variations of the heap structure.
+ */
+
 #import <Foundation/Foundation.h>
 #import "Util.h"
 

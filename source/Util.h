@@ -23,6 +23,12 @@
 //  DataStructuresFramework
 
 /**
+ @file Util.h
+ 
+ A group of utility C functions for simplifying common operations in the framework.
+ */
+
+/**
  Convenience function for raising an exception for an invalid range (index).
  
  @param theClass The class object for the originator of the exception. Callers should

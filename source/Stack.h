@@ -22,6 +22,14 @@
 //  Stack.h
 //  DataStructuresFramework
 
+/**
+ @file Stack.h
+ 
+ A <a href="http://en.wikipedia.org/wiki/Stack_(data_structure)">stack</a> protocol
+ with methods for <a href="http://en.wikipedia.org/wiki/LIFO">LIFO</a> ("Last In,
+ First Out") operations. 
+ */
+
 #import <Foundation/Foundation.h>
 #import "Util.h"
 

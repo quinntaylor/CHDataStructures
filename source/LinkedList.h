@@ -22,6 +22,13 @@
 //  LinkedList.h
 //  DataStructuresFramework
 
+/**
+ @file LinkedList.h
+ 
+ A <a href="http://en.wikipedia.org/wiki/Linked_list">linked list</a> protocol with
+ methods that work in singly- or doubly-linked lists.
+ */
+
 #import <Foundation/Foundation.h>
 #import "Util.h"
 

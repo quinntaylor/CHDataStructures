@@ -22,6 +22,13 @@
 //  Tree.h
 //  DataStructuresFramework
 
+/**
+ @file Tree.h
+ 
+ A <a href="http://en.wikipedia.org/wiki/Tree_(data_structure)">tree</a> protocol
+ which specifes an interface for N-ary tree structures.
+ */
+
 #import <Foundation/Foundation.h>
 #import "Util.h"
 #import "Stack.h"

@@ -22,6 +22,12 @@
 //  DataStructures.h
 //  DataStructuresFramework
 
+/**
+ @file DataStructures.h
+ 
+ An umbrella header which imports all the header files included in the framework.
+ */
+
 #import <Foundation/Foundation.h>
 
 // Protocols

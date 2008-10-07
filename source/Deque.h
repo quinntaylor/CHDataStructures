@@ -22,6 +22,13 @@
 //  Deque.h
 //  DataStructuresFramework
 
+/**
+ @file Deque.h
+ 
+ A <a href="http://en.wikipedia.org/wiki/Deque">deque</a> protocol with methods for
+ insertion and removal on both ends of a queue.
+ */
+
 #import <Foundation/Foundation.h>
 #import "Util.h"
 
