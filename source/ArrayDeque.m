@@ -109,10 +109,6 @@
 	return nil;
 }
 
-- (NSArray*) allObjects {
-	return [array copy];
-}
-
 - (void) removeFirstObject {
 	@try {
 		[array removeObjectAtIndex:0];
@@ -131,16 +127,20 @@
 	[array removeAllObjects];
 }
 
+- (NSArray*) allObjects {
+	return [array copy];
+}
+
+- (NSUInteger) count {
+	return [array count];
+}
+
 - (BOOL) containsObject:(id)anObject {
 	return [array containsObject:anObject];
 }
 
 - (BOOL) containsObjectIdenticalTo:(id)anObject {
 	return ([array indexOfObjectIdenticalTo:anObject] != NSNotFound);
-}
-
-- (NSUInteger) count {
-	return [array count];
 }
 
 - (NSEnumerator*) objectEnumerator {

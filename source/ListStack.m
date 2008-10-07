@@ -91,12 +91,16 @@
 		[list prependObject:anObject];
 }
 
+- (id) topObject {
+	return [list firstObject];
+}
+
 - (void) popObject {
 	[list removeFirstObject];
 }
 
-- (id) topObject {
-	return [list firstObject];
+- (void) removeAllObjects {
+	[list removeAllObjects];
 }
 
 - (NSArray*) allObjects {
@@ -107,8 +111,12 @@
 	return [list count];
 }
 
-- (void) removeAllObjects {
-	[list removeAllObjects];
+- (BOOL) containsObject:(id)anObject {
+	return [list containsObject:anObject];
+}
+
+- (BOOL) containsObjectIdenticalTo:(id)anObject {
+	return [list containsObjectIdenticalTo:anObject];
 }
 
 - (NSEnumerator*) objectEnumerator {

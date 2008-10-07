@@ -111,6 +111,10 @@
 	@catch (NSException *exception) {}
 }
 
+- (void) removeAllObjects {
+	[array removeAllObjects];
+}
+
 - (NSArray*) allObjects {
 	return [array copy];
 }
@@ -119,8 +123,12 @@
 	return [array count];
 }
 
-- (void) removeAllObjects {
-	[array removeAllObjects];
+- (BOOL) containsObject:(id)anObject {
+	return [array containsObject:anObject];
+}
+
+- (BOOL) containsObjectIdenticalTo:(id)anObject {
+	return ([array indexOfObjectIdenticalTo:anObject] != NSNotFound);
 }
 
 - (NSEnumerator*) objectEnumerator {

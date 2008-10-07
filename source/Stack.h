@@ -51,19 +51,24 @@
 - (void) pushObject:(id)anObject;
 
 /**
- Remove the topmost object on the stack.
+ Examine the object on the top of the stack without removing it.
+ 
+ @return The topmost object from the stack.
+ */
+- (id) topObject;
+
+/**
+ Remove the topmost object on the stack; if it is already empty, there is no effect.
  */
 - (void) popObject;
 
 /**
- Return the topmost object, but do not remove it from the stack.
-
- @return The topmost object from the stack.
-*/
-- (id) topObject;
+ Remove all objects from the stack; if it is already empty, there is no effect.
+ */
+- (void) removeAllObjects;
 
 /**
- Returns an array containing the objects in this deque, ordered from top to bottom.
+ Returns an array containing the objects in this stack, ordered from top to bottom.
  
  @return An array containing the objects in this stack. If the stack is empty, the
          array is also empty.
@@ -78,9 +83,22 @@
 - (NSUInteger) count;
 
 /**
- Remove all objects from the stack; if it is already empty, there is no effect.
+ Determines if a stack contains a given object, matched using <code>isEqual:</code>.
+ 
+ @param anObject The object to test for membership in the stack.
+ @return <code>YES</code> if <i>anObject</i> is present in the stack, <code>NO</code>
+         if it not present or <code>nil</code>.
  */
-- (void) removeAllObjects;
+- (BOOL) containsObject:(id)anObject;
+
+/**
+ Determines if a stack contains a given object, matched using the == operator.
+ 
+ @param anObject The object to test for membership in the stack.
+ @return <code>YES</code> if <i>anObject</i> is present in the stack, <code>NO</code>
+         if it not present or <code>nil</code>.
+ */
+- (BOOL) containsObjectIdenticalTo:(id)anObject;
 
 /**
  Returns an enumerator that accesses each object in the stack from top to bottom.

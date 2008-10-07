@@ -99,10 +99,6 @@
 	return [list lastObject];
 }
 
-- (NSArray*) allObjects {
-	return [list allObjects];
-}
-
 - (void) removeFirstObject {
 	[list removeFirstObject];
 }
@@ -115,20 +111,20 @@
 	[list removeAllObjects];
 }
 
-- (BOOL) containsObject:(id)anObject {
-	if (anObject == nil)
-		nilArgumentException([self class], _cmd);
-	return [list containsObject:anObject];
-}
-
-- (BOOL) containsObjectIdenticalTo:(id)anObject {
-	if (anObject == nil)
-		nilArgumentException([self class], _cmd);
-	return [list containsObjectIdenticalTo:anObject];
+- (NSArray*) allObjects {
+	return [list allObjects];
 }
 
 - (NSUInteger) count {
 	return [list count];
+}
+
+- (BOOL) containsObject:(id)anObject {
+	return [list containsObject:anObject];
+}
+
+- (BOOL) containsObjectIdenticalTo:(id)anObject {
+	return [list containsObjectIdenticalTo:anObject];
 }
 
 - (NSEnumerator*) objectEnumerator {

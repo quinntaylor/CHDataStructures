@@ -59,9 +59,14 @@
 - (id) nextObject;
 
 /**
- Remove the object at the front of the queue. Does nothing if the queue is empty.
+ Remove the front object in the queue; if it is already empty, there is no effect.
  */
 - (void) removeNextObject;
+
+/**
+ Remove all objects from the queue; if it is already empty, there is no effect.
+ */
+- (void) removeAllObjects;
 
 /**
  Returns an array containing the objects in this queue, ordered from front to back.
@@ -79,9 +84,22 @@
 - (NSUInteger) count;
 
 /**
- Remove all objects from the queue; if it is already empty, there is no effect.
+ Determines if a queue contains a given object, matched using <code>isEqual:</code>.
+ 
+ @param anObject The object to test for membership in the queue.
+ @return <code>YES</code> if <i>anObject</i> is present in the queue, <code>NO</code>
+         if it not present or <code>nil</code>.
  */
-- (void) removeAllObjects;
+- (BOOL) containsObject:(id)anObject;
+
+/**
+ Determines if a queue contains a given object, matched using the == operator.
+ 
+ @param anObject The object to test for membership in the queue.
+ @return <code>YES</code> if <i>anObject</i> is present in the queue, <code>NO</code>
+         if it not present or <code>nil</code>.
+ */
+- (BOOL) containsObjectIdenticalTo:(id)anObject;
 
 /**
  Returns an enumerator that accesses each object in the queue from front to back.

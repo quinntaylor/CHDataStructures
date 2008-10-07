@@ -96,6 +96,14 @@
 		[array addObject:anObject];
 }
 
+- (id) topObject {
+	@try {
+		return [array lastObject];
+	}
+	@catch (NSException *exception) {}
+	return nil;
+}
+
 - (void) popObject {
 	@try {
 		[array removeLastObject];	
@@ -103,12 +111,8 @@
 	@catch (NSException *exception) {}
 }
 
-- (id) topObject {
-	@try {
-		return [array lastObject];
-	}
-	@catch (NSException *exception) {}
-	return nil;
+- (void) removeAllObjects {
+	[array removeAllObjects];
 }
 
 - (NSArray*) allObjects {
@@ -119,8 +123,12 @@
 	return [array count];
 }
 
-- (void) removeAllObjects {
-	[array removeAllObjects];
+- (BOOL) containsObject:(id)anObject {
+	return [array containsObject:anObject];
+}
+
+- (BOOL) containsObjectIdenticalTo:(id)anObject {
+	return ([array indexOfObjectIdenticalTo:anObject] != NSNotFound);
 }
 
 - (NSEnumerator*) objectEnumerator {

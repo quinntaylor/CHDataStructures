@@ -67,42 +67,27 @@
 - (id) lastObject;
 
 /**
- Returns an array containing the objects in this deque, ordered from front to back.
- 
- @return An array containing the objects in this deque. If the deque is empty, the
-		 array is also empty.
- */
-- (NSArray*) allObjects;
-
-/**
- Remove the first object in the deque.
+ Remove the first object in the deque; if it is already empty, there is no effect.
  */
 - (void) removeFirstObject;
 
 /**
- Remove the last object in the deque.
+ Remove the last object in the deque; if it is already empty, there is no effect.
  */
 - (void) removeLastObject;
 
 /**
- Returns an NSArray containing the objects in this deque in front-to-back order.
- @return An array which contains the objects in this deque.
+ Remove all objects from the deque; if it is already empty, there is no effect.
  */
 - (void) removeAllObjects;
 
 /**
- Determines if a deque contains a given object, matched using <code>isEqual:</code>.
+ Returns an array containing the objects in this deque, ordered from front to back.
  
- @param anObject The object to test for membership in the deque.
+ @return An array containing the objects in this deque. If the deque is empty, the
+         array is also empty.
  */
-- (BOOL) containsObject:(id)anObject;
-
-/**
- Determines if a deque contains a given object, matched using the == operator.
- 
- @param anObject The object to test for membership in the deque.
- */
-- (BOOL) containsObjectIdenticalTo:(id)anObject;
+- (NSArray*) allObjects;
 
 /**
  Returns the number of objects currently in the deque.
@@ -110,6 +95,24 @@
  @return The number of objects currently in the deque.
  */
 - (NSUInteger) count;
+
+/**
+ Determines if a deque contains a given object, matched using <code>isEqual:</code>.
+ 
+ @param anObject The object to test for membership in the deque. 
+ @return <code>YES</code> if <i>anObject</i> is present in the deque, <code>NO</code>
+         if it not present or <code>nil</code>.
+ */
+- (BOOL) containsObject:(id)anObject;
+
+/**
+ Determines if a deque contains a given object, matched using the == operator.
+ 
+ @param anObject The object to test for membership in the deque.
+ @return <code>YES</code> if <i>anObject</i> is present in the deque, <code>NO</code>
+         if it not present or <code>nil</code>.
+ */
+- (BOOL) containsObjectIdenticalTo:(id)anObject;
 
 /**
  Returns an enumerator that accesses each object in the deque from front to back.

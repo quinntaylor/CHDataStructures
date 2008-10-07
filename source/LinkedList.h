@@ -54,13 +54,6 @@
 - (id) init;
 
 /**
- Returns the number of objects currently in the list.
- 
- @return The number of objects currently in the list.
- */
-- (NSUInteger) count;
-
-/**
  Add an object to the front of the list.
  
  @param anObject The object to add to the list; must not be <code>nil</code>, or an
@@ -89,28 +82,6 @@
  @return The object with the highest index, or <code>nil</code> if the list is empty.
  */
 - (id) lastObject;
-
-/**
- Returns an array containing the objects in this linked list.
- 
- @return An array containing the objects in this linked list. If the deque is empty,
- the array is also empty. The array is ordered as the objects are in the list. 
- */
-- (NSArray*) allObjects;
-
-/**
- Determines if a list contains a given object, matched using <code>isEqual:</code>.
- 
- @param anObject The object to test for membership in the list.
- */
-- (BOOL) containsObject:(id)anObject;
-
-/**
- Determines if a list contains a given object, matched using the == operator.
- 
- @param anObject The object to test for membership in the list.
- */
-- (BOOL) containsObjectIdenticalTo:(id)anObject;
 
 /**
  Remove the item at the head of the list.
@@ -148,6 +119,39 @@
 - (void) removeAllObjects;
 
 /**
+ Returns an array containing the objects in this linked list, in the same order.
+ 
+ @return An array containing the objects in this linked list. If the list is empty,
+         the array is also empty.
+ */
+- (NSArray*) allObjects;
+
+/**
+ Returns the number of objects currently in the list.
+ 
+ @return The number of objects currently in the list.
+ */
+- (NSUInteger) count;
+
+/**
+ Determines if a list contains a given object, matched using <code>isEqual:</code>.
+ 
+ @param anObject The object to test for membership in the list.
+ @return <code>YES</code> if <i>anObject</i> is present in the list, <code>NO</code>
+         if it not present or <code>nil</code>.
+ */
+- (BOOL) containsObject:(id)anObject;
+
+/**
+ Determines if a list contains a given object, matched using the == operator.
+ 
+ @param anObject The object to test for membership in the list.
+ @return <code>YES</code> if <i>anObject</i> is present in the list, <code>NO</code>
+         if it not present or <code>nil</code>.
+ */
+- (BOOL) containsObjectIdenticalTo:(id)anObject;
+
+/**
  Returns an enumerator object that provides access to each object in the receiver.
  
  @return An enumerator object that lets you access each object in the receiver, from
@@ -164,7 +168,7 @@
  
  @param anObject The object to add to the list; must not be <code>nil</code>, or an
         <code>NSInvalidArgumentException</code> is raised.
- @param otherObject The object before which to add <i>anObject</i>
+ @param otherObject The object before which to add <i>anObject</i>.
  */
 - (void) insertObject:(id)anObject beforeObject:(id)otherObject;
 
@@ -173,7 +177,7 @@
  
  @param anObject The object to add to the list; must not be <code>nil</code>, or an
         <code>NSInvalidArgumentException</code> is raised.
- @param otherObject
+ @param otherObject The object after which to add <i>anObject</i>.
  */
 - (void) insertObject:(id)anObject afterObject:(id)otherObject;
 
@@ -201,12 +205,12 @@
 - (id) objectAtIndex:(NSUInteger)index;
 
 /**
- Removes the object at <i>index</i>.
+ Removes the object at <i>index</i>. To fill the gap, elements beyond <i>index</i>
+ have 1 subtracted from their index.
  
  @param index The index from which to remove the object. If <i>index</i> is greater
         than or equal to the number of elements, an NSRangeException is raised.
  
- To fill the gap, all elements beyond <i>index</i> have 1 subtracted from their index.
  */
 - (void) removeObjectAtIndex:(NSUInteger)index;
 
