@@ -48,7 +48,7 @@
  Add an object to the back of the deque.
  
  @param anObject The object to add to the deque; must not be <code>nil</code>, or an
- <code>NSInvalidArgumentException</code> is raised.
+        <code>NSInvalidArgumentException</code> is raised.
  */
 - (void) appendObject:(id)anObject;
 
@@ -75,16 +75,12 @@
 - (NSArray*) allObjects;
 
 /**
- Remove and return the first object in the deque.
- 
- @return The first object in the deque, or <code>nil</code> if the deque is empty.
+ Remove the first object in the deque.
  */
 - (void) removeFirstObject;
 
 /**
- Remove and return the last object in the deque.
- 
- @return The last object in the deque, or <code>nil</code> if the deque is empty.
+ Remove the last object in the deque.
  */
 - (void) removeLastObject;
 

@@ -96,16 +96,19 @@
 		[array addObject:anObject];
 }
 
-- (id) popObject {
-	if ([array count] == 0)
-		return nil;
-	id object = [[array lastObject] retain];
-	[array removeLastObject];	
-	return [object autorelease];
+- (void) popObject {
+	@try {
+		[array removeLastObject];	
+	}
+	@catch (NSException *exception) {}
 }
 
 - (id) topObject {
-	return [array lastObject];
+	@try {
+		return [array lastObject];
+	}
+	@catch (NSException *exception) {}
+	return nil;
 }
 
 - (NSArray*) allObjects {

@@ -141,7 +141,7 @@ void benchmarkQueue(Class testClass) {
 			[queue addObject:[NSNumber numberWithUnsignedInteger:item]];
 		startTime = timestamp();
 		for (item = 1; item <= items; item++)
-			[queue removeObject];
+			[queue removeNextObject];
 		printf("\t%f", timestamp() - startTime);
 		[queue release];
 	}

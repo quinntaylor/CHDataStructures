@@ -383,7 +383,7 @@ static NSUInteger kDoublyLinkedListNodeSize = sizeof(DoublyLinkedListNode);
 		DoublyLinkedListNode *node;
 		NSUInteger nodeIndex;
 		findNodeAtIndex(index);
-		removeNodeFromMiddle(node);		
+		removeNodeFromMiddle(node);
 	}
 }
 

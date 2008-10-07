@@ -91,12 +91,8 @@
 		[list prependObject:anObject];
 }
 
-- (id) popObject {
-	if ([list count] == 0)
-		return nil;
-	id retval = [[list firstObject] retain];
+- (void) popObject {
 	[list removeFirstObject];
-	return [retval autorelease];
 }
 
 - (id) topObject {

@@ -251,6 +251,7 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(SinglyLinkedListNode);
 		free(head);
 		head = tail = NULL;
 		listSize = 0;
+		++mutations;
 	}
 	// This is the expensive part: O(n) instead of O(1) for doubly-linked lists
 	else {

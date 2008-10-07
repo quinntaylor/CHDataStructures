@@ -91,16 +91,12 @@
 		[list appendObject:anObject];
 }
 
-- (id) removeObject {
-	if ([list count] == 0)
-		return nil;
-	id retval = [[list firstObject] retain];
-	[list removeFirstObject];
-	return [retval autorelease];
-}
-
 - (id) nextObject {
 	return [list firstObject];
+}
+
+- (void) removeNextObject {
+	[list removeFirstObject];
 }
 
 - (NSArray*) allObjects {
@@ -127,9 +123,9 @@
 
 #pragma mark <NSFastEnumeration> Methods
 
-- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState*)state
-                                  objects:(id*)stackbuf
-                                    count:(NSUInteger)len
+- (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
+                                   objects:(id*)stackbuf
+                                     count:(NSUInteger)len
 {
 	return [list countByEnumeratingWithState:state objects:stackbuf count:len];
 }

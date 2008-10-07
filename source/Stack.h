@@ -51,11 +51,9 @@
 - (void) pushObject:(id)anObject;
 
 /**
- Remove and return the topmost object, or <code>nil</code> if the stack is empty.
- 
- @return The topmost object from the stack.
+ Remove the topmost object on the stack.
  */
-- (id) popObject;
+- (void) popObject;
 
 /**
  Return the topmost object, but do not remove it from the stack.

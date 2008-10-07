@@ -123,7 +123,7 @@
 - (void) removeLastObject;
 
 /**
- Remove all occurrences of a given object , matched using <code>isEqual:</code>.
+ Remove all occurrences of a given object, matched using <code>isEqual:</code>.
  
  @param anObject The object to remove from the list.
 

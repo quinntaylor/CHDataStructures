@@ -92,19 +92,23 @@
 - (void) addObject: (id)anObject {
 	if (anObject == nil)
 		nilArgumentException([self class], _cmd);
-	[array addObject:anObject];
-}
-
-- (id) removeObject {
-	if ([array count] == 0)
-		return nil;
-	id object = [[array objectAtIndex:0] retain];
-	[array removeObjectAtIndex:0];
-	return [object autorelease];
+	else
+		[array addObject:anObject];
 }
 
 - (id) nextObject {
-	return [array objectAtIndex:0];
+	@try {
+		return [array objectAtIndex:0];
+	}
+	@catch (NSException *exception) {}
+	return nil;
+}
+
+- (void) removeNextObject {
+	@try {
+		[array removeObjectAtIndex:0];
+	}
+	@catch (NSException *exception) {}
 }
 
 - (NSArray*) allObjects {

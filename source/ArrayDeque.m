@@ -80,19 +80,33 @@
 #pragma mark Deque Implementation
 
 - (void) prependObject:(id)anObject {
-	[array insertObject:anObject atIndex:0];
+	if (anObject == nil)
+		nilArgumentException([self class], _cmd);
+	else
+		[array insertObject:anObject atIndex:0];
 }
 
 - (void) appendObject:(id)anObject {
-	[array addObject:anObject];
+	if (anObject == nil)
+		nilArgumentException([self class], _cmd);
+	else
+		[array addObject:anObject];
 }
 
 - (id) firstObject {
-	return [array objectAtIndex:0];
+	@try {
+		return [array objectAtIndex:0];
+	}
+	@catch (NSException *exception) {}
+	return nil;
 }
 
 - (id) lastObject {
-	return [array lastObject];
+	@try {
+		return [array lastObject];
+	}
+	@catch (NSException *exception) {}
+	return nil;
 }
 
 - (NSArray*) allObjects {
@@ -100,11 +114,17 @@
 }
 
 - (void) removeFirstObject {
-	[array removeObjectAtIndex:0];
+	@try {
+		[array removeObjectAtIndex:0];
+	}
+	@catch (NSException *exception) {}
 }
 
 - (void) removeLastObject {
-	[array removeLastObject];
+	@try {
+		[array removeLastObject];	
+	}
+	@catch (NSException *exception) {}
 }
 
 - (void) removeAllObjects {
