@@ -93,19 +93,19 @@
 	if (anObject == nil)
 		nilArgumentException([self class], _cmd);
 	else
-		[array insertObject:anObject atIndex:0];
+		[array addObject:anObject];
 }
 
 - (id) popObject {
 	if ([array count] == 0)
 		return nil;
-	id object = [[array objectAtIndex:0] retain];
-	[array removeObjectAtIndex:0];
+	id object = [[array lastObject] retain];
+	[array removeLastObject];	
 	return [object autorelease];
 }
 
 - (id) topObject {
-	return [array objectAtIndex:0];
+	return [array lastObject];
 }
 
 - (NSArray*) allObjects {
@@ -121,12 +121,12 @@
 }
 
 - (NSEnumerator*) objectEnumerator {
-	return [array objectEnumerator];
+	return [array reverseObjectEnumerator];  // top of stack is at the back
 }
 
 // Additional method in this implementation
 - (NSEnumerator*) reverseObjectEnumerator {
-	return [array reverseObjectEnumerator];
+	return [array objectEnumerator];         // bottom of stack is at the front
 }
 
 #pragma mark <NSCopying> Methods
