@@ -339,40 +339,43 @@ static NSUInteger kDoublyLinkedListNodeSize = sizeof(DoublyLinkedListNode);
 			node=tail; nodeIndex=listSize-1; while(i<nodeIndex--) node=node->prev;\
 		}
 
-- (void) insertObject:(id)anObject atIndex:(NSUInteger)index {
-	if (index >= listSize)
-		rangeException([self class], _cmd, index, listSize);
-	if (anObject == nil)
-		nilArgumentException([self class], _cmd);
-	
-	DoublyLinkedListNode *node;
-	NSUInteger nodeIndex;
-	findNodeAtIndex(index);
-	
-	DoublyLinkedListNode *newNode;
-	newNode = malloc(kDoublyLinkedListNodeSize);
-	newNode->object = [anObject retain];
-	newNode->next = node;          // point to node previously at this index
-	newNode->prev = node->prev;    // point to preceding node
-	newNode->prev->next = newNode; // point preceding node to new node
-	node->prev = newNode;          // point following (displaced) node to new node
-	++listSize;
-	++mutations;
-}
-
 - (id) objectAtIndex:(NSUInteger)index {
-	if (index >= listSize)
+	if (index >= listSize || index < 0)
 		rangeException([self class], _cmd, index, listSize);
 	
 	DoublyLinkedListNode *node;
 	NSUInteger nodeIndex;
 	findNodeAtIndex(index);
-
 	return node->object;
 }
 
+- (void) insertObject:(id)anObject atIndex:(NSUInteger)index {
+	if (anObject == nil)
+		nilArgumentException([self class], _cmd);
+	if (index >= listSize || index < 0)
+		rangeException([self class], _cmd, index, listSize);
+	
+	if (index == 0)
+		[self prependObject:anObject];
+	else {
+		DoublyLinkedListNode *node;
+		NSUInteger nodeIndex;
+		findNodeAtIndex(index);
+		
+		DoublyLinkedListNode *newNode;
+		newNode = malloc(kDoublyLinkedListNodeSize);
+		newNode->object = [anObject retain];
+		newNode->next = node;          // point to node previously at this index
+		newNode->prev = node->prev;    // point to preceding node
+		newNode->prev->next = newNode; // point preceding node to new node
+		node->prev = newNode;          // point next (displaced) node to new node
+		++listSize;
+		++mutations;
+	}
+}
+
 - (void) removeObjectAtIndex:(NSUInteger)index {
-	if (index >= listSize)
+	if (index >= listSize || index < 0)
 		rangeException([self class], _cmd, index, listSize);
 	
 	if (index == 0)

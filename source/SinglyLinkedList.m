@@ -326,6 +326,73 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(SinglyLinkedListNode);
 	++mutations;
 }
 
+#pragma mark - Optional Protocol Methods
+
+// Require that "SinglyLinkedListNode *node" and "NSUInteger nodeIndex" be declared.
+
+// Sets "node" to point to the node found at the given index
+#define findNodeAtIndex(i) \
+        { node=head; nodeIndex=0; while(i>nodeIndex++) node=node->next; }
+// Sets "node" to point to the node found one before the given index
+#define findNodeBeforeIndex(i) \
+        { node=head; nodeIndex=1; while(i>nodeIndex++) node=node->next; }
+
+- (id) objectAtIndex:(NSUInteger)index {
+	if (index >= listSize || index < 0)
+		rangeException([self class], _cmd, index, listSize);
+	
+	SinglyLinkedListNode *node;
+	NSUInteger nodeIndex;
+	findNodeAtIndex(index);
+	
+	return node->object;
+}
+
+- (void) insertObject:(id)anObject atIndex:(NSUInteger)index {
+	if (anObject == nil)
+		nilArgumentException([self class], _cmd);
+	if (index >= listSize || index < 0)
+		rangeException([self class], _cmd, index, listSize);
+	
+	if (index == 0)
+		[self prependObject:anObject];
+	else {
+		SinglyLinkedListNode *node;
+		NSUInteger nodeIndex;
+		findNodeBeforeIndex(index);
+		
+		SinglyLinkedListNode *new;
+		new = malloc(kSinglyLinkedListNodeSize);
+		new->object = [anObject retain];
+		new->next = node->next;
+		node->next = new;
+		++listSize;
+		++mutations;
+	}
+}
+
+- (void) removeObjectAtIndex:(NSUInteger)index {
+	if (index >= listSize || index < 0)
+		rangeException([self class], _cmd, index, listSize);
+	
+	if (index == 0)
+		[self removeFirstObject];
+	else {
+		SinglyLinkedListNode *node;
+		NSUInteger nodeIndex;
+		findNodeBeforeIndex(index);
+		
+		SinglyLinkedListNode *old = node->next;
+		node->next = old->next;
+		if (tail == old)
+			tail = node;
+		[old->object release];
+		free(old);
+		--listSize;
+		++mutations;		
+	}
+}
+
 #pragma mark <NSCopying> Methods
 
 - (id) copyWithZone:(NSZone *)zone {
