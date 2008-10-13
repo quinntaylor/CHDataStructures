@@ -7,6 +7,18 @@
 	objects = {
 
 /* Begin PBXAggregateTarget section */
+		E43C87680EA3D35500B3B31E /* Disk Image */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = E43C87740EA3D36600B3B31E /* Build configuration list for PBXAggregateTarget "Disk Image" */;
+			buildPhases = (
+				E43C87670EA3D35500B3B31E /* ShellScript */,
+			);
+			dependencies = (
+				E43C876C0EA3D35C00B3B31E /* PBXTargetDependency */,
+			);
+			name = "Disk Image";
+			productName = "Disk Image";
+		};
 		E4FAE15B0E968F1B007BB1F9 /* All */ = {
 			isa = PBXAggregateTarget;
 			buildConfigurationList = E4FAE1670E968F3F007BB1F9 /* Build configuration list for PBXAggregateTarget "All" */;
@@ -17,6 +29,7 @@
 				E4FAE1610E968F20007BB1F9 /* PBXTargetDependency */,
 				E4FAE1650E968F20007BB1F9 /* PBXTargetDependency */,
 				E4FAE1630E968F20007BB1F9 /* PBXTargetDependency */,
+				E43C87A50EA3E19500B3B31E /* PBXTargetDependency */,
 			);
 			name = All;
 			productName = All;
@@ -107,8 +120,6 @@
 		E4ADBB3D0E88174200B570BC /* DoublyLinkedList.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB1F0E88174200B570BC /* DoublyLinkedList.m */; };
 		E4ADBB400E88174200B570BC /* UnbalancedTree.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB220E88174200B570BC /* UnbalancedTree.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4ADBB410E88174200B570BC /* UnbalancedTree.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB230E88174200B570BC /* UnbalancedTree.m */; };
-		E4ADBB800E8828C500B570BC /* README in Resources */ = {isa = PBXBuildFile; fileRef = E4ADBB7E0E8828C500B570BC /* README */; };
-		E4ADBB810E8828C500B570BC /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = E4ADBB7F0E8828C500B570BC /* LICENSE */; };
 		E4ADBC9A0E88412C00B570BC /* AbstractTree.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBC990E88412C00B570BC /* AbstractTree.m */; };
 		E4D4996A0E93CD1300434CBA /* DoublyLinkedListTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D499690E93CD1300434CBA /* DoublyLinkedListTest.m */; };
 		E4FE77C70E8978C300971EE6 /* Tree.h in Headers */ = {isa = PBXBuildFile; fileRef = E4FE77C60E8978C300971EE6 /* Tree.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -116,6 +127,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		E43C876B0EA3D35C00B3B31E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216 /* DataStructures */;
+			remoteInfo = DataStructures;
+		};
+		E43C87A40EA3E19500B3B31E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E43C87680EA3D35500B3B31E /* Disk Image */;
+			remoteInfo = "Disk Image";
+		};
 		E4FAE15E0E968F20007BB1F9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
@@ -487,6 +512,7 @@
 				E473CB540E9346CB005CA997 /* Unit Testing */,
 				E44B59B30E95850F00F9DD1A /* Benchmarks */,
 				E4FE76D80E89556A00971EE6 /* Documentation */,
+				E43C87680EA3D35500B3B31E /* Disk Image */,
 				E4FAE15B0E968F1B007BB1F9 /* All */,
 			);
 		};
@@ -498,8 +524,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */,
-				E4ADBB800E8828C500B570BC /* README in Resources */,
-				E4ADBB810E8828C500B570BC /* LICENSE in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -513,6 +537,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		E43C87670EA3D35500B3B31E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ ${CONFIGURATION} = 'Release' ]; then\n\t\n\t# http://www.red-sweater.com/blog/23/automatic-build-sub-versioning-in-xcode\n\tSVN_REVISION=`svnversion . | perl -p -e \"s/([\\d]*:)(\\d+[M|S]*).*/\\$2/\"`\n\t\n\tif [ $SVN_REVISION = \"exported\" ]\n\tthen\n\t\tDATE=`date '+%Y-%m-%d'`\n\t\tDISK_IMAGE_NAME=${PRODUCT_NAME}\\ \\(${DATE}\\)\n\t\tDISK_IMAGE_FILE=${PRODUCT_NAME}-${DATE}.dmg\n\telse\n\t\tDISK_IMAGE_NAME=${PRODUCT_NAME}\\ \\(r${SVN_REVISION}\\)\n\t\tDISK_IMAGE_FILE=${PRODUCT_NAME}-r${SVN_REVISION}.dmg\n\tfi\n\t\n\tSOURCE_DIRECTORY=${TEMP_FILES_DIR}/temp\t\n\tmkdir -p \"${SOURCE_DIRECTORY}\"/DataStructures.framework/\n\n\tcp -R build/Release/DataStructures.framework/ \"${SOURCE_DIRECTORY}\"/DataStructures.framework/\n\tcp LICENSE \"${SOURCE_DIRECTORY}\"\n\tcp README \"${SOURCE_DIRECTORY}\"\n\t\n\thdiutil create -fs HFS+ -volname \"${DISK_IMAGE_NAME}\" -srcfolder \"${SOURCE_DIRECTORY}\" \"${DISK_IMAGE_FILE}\"\n\thdiutil internet-enable -yes \"${DISK_IMAGE_FILE}\"\n\nfi\n";
+		};
 		E473CB530E9346CB005CA997 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -618,6 +655,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		E43C876C0EA3D35C00B3B31E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8DC2EF4F0486A6940098B216 /* DataStructures */;
+			targetProxy = E43C876B0EA3D35C00B3B31E /* PBXContainerItemProxy */;
+		};
+		E43C87A50EA3E19500B3B31E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E43C87680EA3D35500B3B31E /* Disk Image */;
+			targetProxy = E43C87A40EA3E19500B3B31E /* PBXContainerItemProxy */;
+		};
 		E4FAE15F0E968F20007BB1F9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 8DC2EF4F0486A6940098B216 /* DataStructures */;
@@ -686,7 +733,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
-				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_FILE = resources/Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Frameworks";
 				PRODUCT_NAME = DataStructures;
 				WRAPPER_EXTENSION = framework;
@@ -724,6 +771,27 @@
 				PREBINDING = NO;
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
 				SDKROOT = macosx10.5;
+			};
+			name = Release;
+		};
+		E43C87690EA3D35500B3B31E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = DataStructures;
+			};
+			name = Debug;
+		};
+		E43C876A0EA3D35500B3B31E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				PRODUCT_NAME = DataStructures;
+				ZERO_LINK = NO;
 			};
 			name = Release;
 		};
@@ -812,7 +880,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Cocoa.framework/Headers/Cocoa.h";
-				INFOPLIST_FILE = "Unit Testing-Info.plist";
+				INFOPLIST_FILE = "resources/Unit Testing-Info.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
 				OTHER_LDFLAGS = (
 					"-framework",
@@ -886,6 +954,15 @@
 			buildConfigurations = (
 				1DEB91B208733DA50010E9CD /* Debug */,
 				1DEB91B308733DA50010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E43C87740EA3D36600B3B31E /* Build configuration list for PBXAggregateTarget "Disk Image" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E43C87690EA3D35500B3B31E /* Debug */,
+				E43C876A0EA3D35500B3B31E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
