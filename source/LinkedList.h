@@ -51,14 +51,8 @@
  
  Index-based operations are included in this protocol, but users should be aware that
  unless a subclass chooses to use a special indexing scheme, all index-based methods
- in a linked list are O(n). If the operations below are used frequently, it's likely
+ in a linked list are O(n). If indexed operations are used frequently, it is likely
  that a better alternative is to use an NSMutableArray.
- 
- - @link #indexOfObject: -indexOfObject: @endlink
- - @link #indexOfObjectIdenticalTo: -indexOfObjectIdenticalTo: @endlink
- - @link #insertObject:atIndex: -insertObject:atIndex: @endlink
- - @link #objectAtIndex: -objectAtIndex: @endlink
- - @link #removeObjectAtIndex: -removeObjectAtIndex: @endlink
  */ 
 @protocol LinkedList <NSObject, NSCoding, NSCopying, NSFastEnumeration>
 

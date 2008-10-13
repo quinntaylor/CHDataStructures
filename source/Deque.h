@@ -26,7 +26,7 @@
  @file Deque.h
  
  A <a href="http://en.wikipedia.org/wiki/Deque">deque</a> protocol with methods for
- insertion and removal on both ends of a queue.
+ insertion and removal on both ends.
  */
 
 #import <Foundation/Foundation.h>
@@ -62,29 +62,29 @@
 /**
  Examine the first object in the deque without removing it.
  
- @return The first object in the deque, or <code>nil</code> if the deque is empty.
+ @return The first object in the deque, or <code>nil</code> if it is empty.
  */
 - (id) firstObject;
 
 /**
  Examine the last object in the deque without removing it.
  
- @return The last object in the deque, or <code>nil</code> if the deque is empty.
+ @return The last object in the deque, or <code>nil</code> if it is empty.
  */
 - (id) lastObject;
 
 /**
- Remove the first object in the deque; if it is already empty, there is no effect.
+ Remove the first object in the deque; no effect if it is empty.
  */
 - (void) removeFirstObject;
 
 /**
- Remove the last object in the deque; if it is already empty, there is no effect.
+ Remove the last object in the deque; no effect if it is empty.
  */
 - (void) removeLastObject;
 
 /**
- Remove all objects from the deque; if it is already empty, there is no effect.
+ Remove all objects from the deque; no effect if it is empty.
  */
 - (void) removeAllObjects;
 
