@@ -106,6 +106,16 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(SinglyLinkedListNode);
 
 #pragma mark -
 
+// These macros require "SinglyLinkedListNode *node" and "NSUInteger nodeIndex".
+
+// Sets "node" to point to the node found at the given index
+#define findNodeAtIndex(i) \
+        { node=head; nodeIndex=0; while(i>nodeIndex++) node=node->next; }
+
+// Sets "node" to point to the node found one before the given index
+#define findNodeBeforeIndex(i) \
+        { node=head; nodeIndex=1; while(i>nodeIndex++) node=node->next; }
+
 @implementation SinglyLinkedList
 
 - (void) dealloc {
@@ -152,11 +162,50 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(SinglyLinkedListNode);
 	[encoder encodeObject:array forKey:@"SinglyLinkedList"];
 }
 
-#pragma mark Queue Implementation
+#pragma mark <NSCopying> Methods
 
-- (NSUInteger) count {
-	return listSize;
+- (id) copyWithZone:(NSZone *)zone {
+	SinglyLinkedList *newList = [[SinglyLinkedList alloc] init];
+	for (id anObject in self)
+		[newList appendObject:anObject];
+	return newList;
 }
+
+#pragma mark <NSFastEnumeration> Methods
+
+- (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
+                                   objects:(id*)stackbuf
+                                     count:(NSUInteger)len
+{
+	SinglyLinkedListNode *currentNode;
+	// If this is the first call, start at head, otherwise start at last saved node
+	if (state->state == 0) {
+		currentNode = head;
+		state->itemsPtr = stackbuf;
+		state->mutationsPtr = &mutations;
+	}
+	else if (state->state == 1) {
+		return 0;		
+	}
+	else {
+		currentNode = (SinglyLinkedListNode*) state->state;
+	}
+	
+	// Accumulate objects from the list until we reach the tail, or the maximum limit
+	NSUInteger batchCount = 0;
+	while (currentNode != NULL && batchCount < len) {
+		stackbuf[batchCount] = currentNode->object;
+		currentNode = currentNode->next;
+		batchCount++;
+	}
+	if (currentNode == NULL)
+		state->state = 1; // used as a termination flag
+	else
+		state->state = (unsigned long)currentNode;
+	return batchCount;
+}
+
+#pragma mark Insertion
 
 - (void) prependObject:(id)anObject {
 	if (anObject == nil)
@@ -188,6 +237,35 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(SinglyLinkedListNode);
 	++mutations;
 }
 
+- (void) insertObject:(id)anObject atIndex:(NSUInteger)index {
+	if (anObject == nil)
+		nilArgumentException([self class], _cmd);
+	if (index >= listSize || index < 0)
+		rangeException([self class], _cmd, index, listSize);
+	
+	if (index == 0)
+		[self prependObject:anObject];
+	else {
+		SinglyLinkedListNode *node;
+		NSUInteger nodeIndex;
+		findNodeBeforeIndex(index);
+		
+		SinglyLinkedListNode *new;
+		new = malloc(kSinglyLinkedListNodeSize);
+		new->object = [anObject retain];
+		new->next = node->next;
+		node->next = new;
+		++listSize;
+		++mutations;
+	}
+}
+
+#pragma mark Access
+
+- (NSUInteger) count {
+	return listSize;
+}
+
 - (id) firstObject {
 	return (head != NULL) ? head->object : nil;
 }
@@ -206,29 +284,56 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(SinglyLinkedListNode);
 			 mutationPointer:&mutations] autorelease];
 }
 
+#pragma mark Search
+
 - (BOOL) containsObject:(id)anObject {
-	if (listSize > 0) {
-		SinglyLinkedListNode *current = head;
-		while (current != NULL) {
-			if ([current->object isEqual:anObject])
-				return YES;
-			current = current->next;
-		}
-	}
-	return NO;
+	return ([self indexOfObject:anObject] != NSNotFound);
 }
 
 - (BOOL) containsObjectIdenticalTo:(id)anObject {
+	return ([self indexOfObjectIdenticalTo:anObject] != NSNotFound);
+}
+
+- (NSUInteger) indexOfObject:(id)anObject {
 	if (listSize > 0) {
 		SinglyLinkedListNode *current = head;
+		NSUInteger index = 0;
 		while (current != NULL) {
-			if (current->object == anObject)
-				return YES;
+			if ([current->object isEqual:anObject])
+				return index;
 			current = current->next;
+			++index;
 		}
 	}
-	return NO;
+	return NSNotFound;
 }
+
+- (NSUInteger) indexOfObjectIdenticalTo:(id)anObject {
+	if (listSize > 0) {
+		SinglyLinkedListNode *current = head;
+		NSUInteger index = 0;
+		while (current != NULL) {
+			if (current->object == anObject)
+				return index;
+			current = current->next;
+			++index;
+		}
+	}
+	return NSNotFound;	
+}
+
+- (id) objectAtIndex:(NSUInteger)index {
+	if (index >= listSize || index < 0)
+		rangeException([self class], _cmd, index, listSize);
+	
+	SinglyLinkedListNode *node;
+	NSUInteger nodeIndex;
+	findNodeAtIndex(index);
+	
+	return node->object;
+}
+
+#pragma mark Removal
 
 - (void) removeFirstObject {
 	if (listSize == 0)
@@ -313,64 +418,6 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(SinglyLinkedListNode);
 	}	
 }
 
-- (void) removeAllObjects {
-	SinglyLinkedListNode *temp;
-	while (head != NULL) {
-		temp = head;
-		head = head->next;
-		[temp->object release];
-		free(temp);
-	}
-	tail = NULL;
-	listSize = 0;
-	++mutations;
-}
-
-#pragma mark - Optional Protocol Methods
-
-// Require that "SinglyLinkedListNode *node" and "NSUInteger nodeIndex" be declared.
-
-// Sets "node" to point to the node found at the given index
-#define findNodeAtIndex(i) \
-        { node=head; nodeIndex=0; while(i>nodeIndex++) node=node->next; }
-// Sets "node" to point to the node found one before the given index
-#define findNodeBeforeIndex(i) \
-        { node=head; nodeIndex=1; while(i>nodeIndex++) node=node->next; }
-
-- (id) objectAtIndex:(NSUInteger)index {
-	if (index >= listSize || index < 0)
-		rangeException([self class], _cmd, index, listSize);
-	
-	SinglyLinkedListNode *node;
-	NSUInteger nodeIndex;
-	findNodeAtIndex(index);
-	
-	return node->object;
-}
-
-- (void) insertObject:(id)anObject atIndex:(NSUInteger)index {
-	if (anObject == nil)
-		nilArgumentException([self class], _cmd);
-	if (index >= listSize || index < 0)
-		rangeException([self class], _cmd, index, listSize);
-	
-	if (index == 0)
-		[self prependObject:anObject];
-	else {
-		SinglyLinkedListNode *node;
-		NSUInteger nodeIndex;
-		findNodeBeforeIndex(index);
-		
-		SinglyLinkedListNode *new;
-		new = malloc(kSinglyLinkedListNodeSize);
-		new->object = [anObject retain];
-		new->next = node->next;
-		node->next = new;
-		++listSize;
-		++mutations;
-	}
-}
-
 - (void) removeObjectAtIndex:(NSUInteger)index {
 	if (index >= listSize || index < 0)
 		rangeException([self class], _cmd, index, listSize);
@@ -393,47 +440,17 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(SinglyLinkedListNode);
 	}
 }
 
-#pragma mark <NSCopying> Methods
-
-- (id) copyWithZone:(NSZone *)zone {
-	SinglyLinkedList *newList = [[SinglyLinkedList alloc] init];
-	for (id anObject in self)
-		[newList appendObject:anObject];
-	return newList;
-}
-
-#pragma mark <NSFastEnumeration> Methods
-
-- (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
-                                   objects:(id*)stackbuf
-                                     count:(NSUInteger)len
-{
-	SinglyLinkedListNode *currentNode;
-	// If this is the first call, start at head, otherwise start at last saved node
-	if (state->state == 0) {
-		currentNode = head;
-		state->itemsPtr = stackbuf;
-		state->mutationsPtr = &mutations;
+- (void) removeAllObjects {
+	SinglyLinkedListNode *temp;
+	while (head != NULL) {
+		temp = head;
+		head = head->next;
+		[temp->object release];
+		free(temp);
 	}
-	else if (state->state == 1) {
-		return 0;		
-	}
-	else {
-		currentNode = (SinglyLinkedListNode*) state->state;
-	}
-	
-	// Accumulate objects from the list until we reach the tail, or the maximum limit
-	NSUInteger batchCount = 0;
-	while (currentNode != NULL && batchCount < len) {
-		stackbuf[batchCount] = currentNode->object;
-		currentNode = currentNode->next;
-		batchCount++;
-	}
-	if (currentNode == NULL)
-		state->state = 1; // used as a termination flag
-	else
-		state->state = (unsigned long)currentNode;
-	return batchCount;
+	tail = NULL;
+	listSize = 0;
+	++mutations;
 }
 
 @end

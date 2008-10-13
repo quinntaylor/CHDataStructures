@@ -48,17 +48,26 @@
  random access; several optional methods are included to allow such flexibility if
  desired. However, bear in mind that any such additions will increase memory cost and
  diminish the comparative advantages over classes such as NSMutableArray.
+ 
+ Index-based operations are included in this protocol, but users should be aware that
+ unless a subclass chooses to use a special indexing scheme, all index-based methods
+ in a linked list are O(n). If the operations below are used frequently, it's likely
+ that a better alternative is to use an NSMutableArray.
+ 
+ - @link #indexOfObject: -indexOfObject: @endlink
+ - @link #indexOfObjectIdenticalTo: -indexOfObjectIdenticalTo: @endlink
+ - @link #insertObject:atIndex: -insertObject:atIndex: @endlink
+ - @link #objectAtIndex: -objectAtIndex: @endlink
+ - @link #removeObjectAtIndex: -removeObjectAtIndex: @endlink
  */ 
 @protocol LinkedList <NSObject, NSCoding, NSCopying, NSFastEnumeration>
-
-#pragma mark Required Methods
-
-@required
 
 /**
  Initialize a newly-allocated linked list with no objects.
  */
 - (id) init;
+
+#pragma mark Insertion
 
 /**
  Add an object to the front of the list.
@@ -72,9 +81,32 @@
  Add an object to the back of the list.
  
  @param anObject The object to add to the list; must not be <code>nil</code>, or an
- <code>NSInvalidArgumentException</code> is raised.
+        <code>NSInvalidArgumentException</code> is raised.
  */
 - (void) appendObject:(id)anObject;
+
+/**
+ Inserts a given object at a given index. If <i>index</i> is already occupied, then
+ objects at <i>index</i> and beyond are shifted one spot toward the end of the list.
+ 
+ @param anObject The object to add to the list; must not be <code>nil</code>.
+ @param index The index at which to insert anObject. If <i>index</i> is greater
+        than or equal to the number of elements, an NSRangeException is raised.
+ 
+ NOTE: Inserting in the middle of a linked list is a somewhat inefficient operation;
+ although values aren't shifted like in arrays, the list must be traversed to find
+ the specified index.
+ */
+- (void) insertObject:(id)anObject atIndex:(NSUInteger)index;
+
+#pragma mark Access
+
+/**
+ Returns the number of objects currently in the list.
+ 
+ @return The number of objects currently in the list.
+ */
+- (NSUInteger) count;
 
 /**
  Access the object at the head of the list.
@@ -89,6 +121,69 @@
  @return The object with the highest index, or <code>nil</code> if the list is empty.
  */
 - (id) lastObject;
+
+/**
+ Returns an array containing the objects in this linked list, in the same order.
+ 
+ @return An array containing the objects in this linked list. If the list is empty,
+         the array is also empty.
+ */
+- (NSArray*) allObjects;
+
+/**
+ Returns an enumerator object that provides access to each object in the receiver.
+ 
+ @return An enumerator object that lets you access each object in the receiver, from
+         the element at the lowest index upwards.
+ */
+- (NSEnumerator*) objectEnumerator;
+
+#pragma mark Search
+
+/**
+ Determines if a list contains a given object, matched using <code>isEqual:</code>.
+ 
+ @param anObject The object to test for membership in the list.
+ @return <code>YES</code> if <i>anObject</i> is present in the list, <code>NO</code>
+         if it not present or <code>nil</code>.
+ */
+- (BOOL) containsObject:(id)anObject;
+
+/**
+ Determines if a list contains a given object, matched using the == operator.
+ 
+ @param anObject The object to test for membership in the list.
+ @return <code>YES</code> if <i>anObject</i> is present in the list, <code>NO</code>
+         if it not present or <code>nil</code>.
+ */
+- (BOOL) containsObjectIdenticalTo:(id)anObject;
+
+/**
+ Returns the lowest indexof a given object, matched using <code>isEqual:</code>.
+ 
+ @return The index of the first object which is equal to @a anObject. If none of the
+         objects in the list is equal to @a anObject, returns <code>NSNotFound</code>.
+ */
+- (NSUInteger) indexOfObject:(id)anObject;
+
+/**
+ Returns the lowest indexof a given object, matched using the == operator.
+ 
+ @return The index of the first object which is equal to @a anObject. If none of the
+         objects in the list is equal to @a anObject, returns <code>NSNotFound</code>.
+ */
+- (NSUInteger) indexOfObjectIdenticalTo:(id)anObject;
+
+/**
+ Returns the object located at <i>index</i>.
+ 
+ @param index An index from which to retrieve an object. If <i>index</i> is greater
+        than or equal to the number of elements, an NSRangeException is raised.
+ @return The object located at index.
+ */
+- (id) objectAtIndex:(NSUInteger)index;
+
+#pragma mark Removal
 
 /**
  Remove the item at the head of the list.
@@ -121,97 +216,6 @@
 - (void) removeObjectIdenticalTo:(id)anObject;
 
 /**
- Remove all objects from the list. If the list is already empty, there is no effect.
- */
-- (void) removeAllObjects;
-
-/**
- Returns an array containing the objects in this linked list, in the same order.
- 
- @return An array containing the objects in this linked list. If the list is empty,
-         the array is also empty.
- */
-- (NSArray*) allObjects;
-
-/**
- Returns the number of objects currently in the list.
- 
- @return The number of objects currently in the list.
- */
-- (NSUInteger) count;
-
-/**
- Determines if a list contains a given object, matched using <code>isEqual:</code>.
- 
- @param anObject The object to test for membership in the list.
- @return <code>YES</code> if <i>anObject</i> is present in the list, <code>NO</code>
-         if it not present or <code>nil</code>.
- */
-- (BOOL) containsObject:(id)anObject;
-
-/**
- Determines if a list contains a given object, matched using the == operator.
- 
- @param anObject The object to test for membership in the list.
- @return <code>YES</code> if <i>anObject</i> is present in the list, <code>NO</code>
-         if it not present or <code>nil</code>.
- */
-- (BOOL) containsObjectIdenticalTo:(id)anObject;
-
-/**
- Returns an enumerator object that provides access to each object in the receiver.
- 
- @return An enumerator object that lets you access each object in the receiver, from
-         the element at the lowest index upwards.
- */
-- (NSEnumerator*) objectEnumerator;
-
-#pragma mark Optional Methods
-
-@optional
-
-/**
- Inserts an object before <i>otherObject</i>, matched using <code>compare:</code>.
- 
- @param anObject The object to add to the list; must not be <code>nil</code>, or an
-        <code>NSInvalidArgumentException</code> is raised.
- @param otherObject The object before which to add <i>anObject</i>.
- */
-- (void) insertObject:(id)anObject beforeObject:(id)otherObject;
-
-/**
- Inserts an object after <i>otherObject</i>, matched using <code>compare:</code>.
- 
- @param anObject The object to add to the list; must not be <code>nil</code>, or an
-        <code>NSInvalidArgumentException</code> is raised.
- @param otherObject The object after which to add <i>anObject</i>.
- */
-- (void) insertObject:(id)anObject afterObject:(id)otherObject;
-
-/**
- Inserts a given object at a given index. If <i>index</i> is already occupied, then
- objects at <i>index</i> and beyond are shifted one spot toward the end of the list.
- 
- @param anObject The object to add to the list; must not be <code>nil</code>.
- @param index The index at which to insert anObject. If <i>index</i> is greater
-        than or equal to the number of elements, an NSRangeException is raised.
- 
- NOTE: Inserting in the middle of a linked list is a somewhat inefficient operation;
- although values aren't shifted like in arrays, the list must be traversed to find
- the specified index.
- */
-- (void) insertObject:(id)anObject atIndex:(NSUInteger)index;
-
-/**
- Returns the object located at <i>index</i>.
- 
- @param index An index from which to retrieve an object. If <i>index</i> is greater
-        than or equal to the number of elements, an NSRangeException is raised.
- @return The object located at index.
- */
-- (id) objectAtIndex:(NSUInteger)index;
-
-/**
  Removes the object at <i>index</i>. To fill the gap, elements beyond <i>index</i>
  have 1 subtracted from their index.
  
@@ -220,5 +224,10 @@
  
  */
 - (void) removeObjectAtIndex:(NSUInteger)index;
+
+/**
+ Remove all objects from the list. If the list is already empty, there is no effect.
+ */
+- (void) removeAllObjects;
 
 @end

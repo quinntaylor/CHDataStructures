@@ -118,6 +118,22 @@ static NSUInteger kDoublyLinkedListNodeSize = sizeof(DoublyLinkedListNode);
 
 #pragma mark -
 
+// Sets "node" to point to the node found at the given index
+// Requires that "DoublyLinkedListNode *node" and "NSUInteger nodeIndex" be declared.
+#define findNodeAtIndex(i) \
+        if (i<listSize/2) {\
+            node=head; nodeIndex=0; while(i>nodeIndex++) node=node->next;\
+        } else {\
+            node=tail; nodeIndex=listSize-1; while(i<nodeIndex--) node=node->prev;\
+        }
+
+// Remove the node with a matching object, patch prev/next links around it
+#define removeNodeFromMiddle(node) \
+        if (node != NULL) { \
+        if (node->prev) node->prev->next = node->next; \
+        if (node->next) node->next->prev = node->prev; \
+        [node->object release]; free(node); --listSize; ++mutations; }
+
 @implementation DoublyLinkedList
 
 - (void) dealloc {
@@ -164,232 +180,6 @@ static NSUInteger kDoublyLinkedListNodeSize = sizeof(DoublyLinkedListNode);
 	[encoder encodeObject:array forKey:@"DoublyLinkedList"];
 }
 
-#pragma mark Queue Implementation
-
-- (NSUInteger) count {
-	return listSize;
-}
-
-- (void) prependObject:(id)anObject {
-	if (anObject == nil)
-		nilArgumentException([self class], _cmd);
-	DoublyLinkedListNode *new;
-	new = malloc(kDoublyLinkedListNodeSize);
-	new->object = [anObject retain];
-	new->next = head;
-	new->prev = NULL;
-	if (head != NULL)
-		head->prev = new;
-	head = new;
-	if (tail == NULL)
-		tail = new;
-	++listSize;
-	++mutations;
-}
-
-- (void) appendObject:(id)anObject {
-	if (anObject == nil)
-		nilArgumentException([self class], _cmd);	
-	DoublyLinkedListNode *new;
-	new = malloc(kDoublyLinkedListNodeSize);
-	new->object = [anObject retain];
-	new->next = NULL;
-	new->prev = tail;
-	if (tail == NULL)
-		head = new;
-	else
-		tail->next = new;
-	tail = new;
-	++listSize;
-	++mutations;
-}
-
-- (id) firstObject {
-	return (head != NULL) ? head->object : nil;
-}
-
-- (id) lastObject {
-	return (tail != NULL) ? tail->object : nil;
-}
-
-- (NSArray*) allObjects {
-	return [[self objectEnumerator] allObjects];
-}
-
-- (NSEnumerator*) objectEnumerator {
-	return [[[DoublyLinkedListEnumerator alloc]
-			 initWithStartNode:head
-			 mutationPointer:&mutations] autorelease];
-}
-
-- (NSEnumerator*) reverseObjectEnumerator {
-	return [[[DoublyLinkedListEnumerator alloc]
-			 initWithStartNode:tail
-			 mutationPointer:&mutations] autorelease];
-}
-
-- (BOOL) containsObject:(id)anObject {
-	if (listSize > 0) {
-		DoublyLinkedListNode *current = head;
-		while (current != NULL) {
-			if ([current->object isEqual:anObject])
-				return YES;
-			current = current->next;
-		}
-	}
-	return NO;
-}
-
-- (BOOL) containsObjectIdenticalTo:(id)anObject {
-	if (listSize > 0) {
-		DoublyLinkedListNode *current = head;
-		while (current != NULL) {
-			if (current->object == anObject)
-				return YES;
-			current = current->next;
-		}
-	}
-	return NO;
-}
-
-- (void) removeFirstObject {
-	if (listSize == 0)
-		return;
-	DoublyLinkedListNode *old = head;
-	[head->object release];
-	head = head->next;
-	if (tail == old)
-		tail = NULL;
-	if (head)
-		head->prev = NULL;
-	free(old);
-	--listSize;
-	++mutations;
-}
-
-- (void) removeLastObject {
-	if (listSize == 0)
-		return;
-	DoublyLinkedListNode *old = tail;
-	[tail->object release];
-	tail = tail->prev;
-	if (tail)
-		tail->next = NULL;
-	if (head == old)
-		head = NULL;
-	free(old);
-	--listSize;
-	++mutations;
-}
-
-// Remove the node with a matching object, patch prev/next links around it
-#define removeNodeFromMiddle(node) \
-		if (node != NULL) { \
-		if (node->prev) node->prev->next = node->next; \
-		if (node->next) node->next->prev = node->prev; \
-		[node->object release]; free(node); --listSize; ++mutations; }
-
-- (void) removeObject:(id)anObject {
-	if (listSize == 0)
-		return;
-	if ([head->object isEqual:anObject]) {
-		[self removeFirstObject];
-		return;
-	}
-	DoublyLinkedListNode *node = head;
-	while (node != NULL && ![node->object isEqual:anObject])
-		node = node->next;
-	removeNodeFromMiddle(node); // checks for NULL node
-}
-
-- (void) removeObjectIdenticalTo:(id)anObject {
-	if (listSize == 0)
-		return;
-	if (head->object == anObject) {
-		[self removeFirstObject];
-		return;
-	}
-	DoublyLinkedListNode *node = head;
-	while (node != NULL && node->object != anObject)
-		node = node->next;
-	removeNodeFromMiddle(node); // checks for NULL node
-}
-
-- (void) removeAllObjects {
-	DoublyLinkedListNode *temp;
-	while (head != NULL) {
-		temp = head;
-		head = head->next;
-		[temp->object release];
-		free(temp);
-	}
-	tail = NULL;
-	listSize = 0;
-	++mutations;
-}
-
-#pragma mark - Optional Protocol Methods
-
-// Sets "node" to point to the node found at the given index
-// Requires that "DoublyLinkedListNode *node" and "NSUInteger nodeIndex" be declared.
-#define findNodeAtIndex(i) \
-		if (i<listSize/2) {\
-			node=head; nodeIndex=0; while(i>nodeIndex++) node=node->next;\
-		} else {\
-			node=tail; nodeIndex=listSize-1; while(i<nodeIndex--) node=node->prev;\
-		}
-
-- (id) objectAtIndex:(NSUInteger)index {
-	if (index >= listSize || index < 0)
-		rangeException([self class], _cmd, index, listSize);
-	
-	DoublyLinkedListNode *node;
-	NSUInteger nodeIndex;
-	findNodeAtIndex(index);
-	return node->object;
-}
-
-- (void) insertObject:(id)anObject atIndex:(NSUInteger)index {
-	if (anObject == nil)
-		nilArgumentException([self class], _cmd);
-	if (index >= listSize || index < 0)
-		rangeException([self class], _cmd, index, listSize);
-	
-	if (index == 0)
-		[self prependObject:anObject];
-	else {
-		DoublyLinkedListNode *node;
-		NSUInteger nodeIndex;
-		findNodeAtIndex(index);
-		
-		DoublyLinkedListNode *newNode;
-		newNode = malloc(kDoublyLinkedListNodeSize);
-		newNode->object = [anObject retain];
-		newNode->next = node;          // point to node previously at this index
-		newNode->prev = node->prev;    // point to preceding node
-		newNode->prev->next = newNode; // point preceding node to new node
-		node->prev = newNode;          // point next (displaced) node to new node
-		++listSize;
-		++mutations;
-	}
-}
-
-- (void) removeObjectAtIndex:(NSUInteger)index {
-	if (index >= listSize || index < 0)
-		rangeException([self class], _cmd, index, listSize);
-	
-	if (index == 0)
-		[self removeFirstObject];
-	else if (index == (listSize - 1))
-		[self removeLastObject];
-	else {
-		DoublyLinkedListNode *node;
-		NSUInteger nodeIndex;
-		findNodeAtIndex(index);
-		removeNodeFromMiddle(node);
-	}
-}
-
 #pragma mark <NSCopying> Methods
 
 - (id) copyWithZone:(NSZone *)zone {
@@ -431,6 +221,232 @@ static NSUInteger kDoublyLinkedListNodeSize = sizeof(DoublyLinkedListNode);
 	else
 		state->state = (unsigned long)currentNode;
     return batchCount;
+}
+
+#pragma mark Insertion
+
+- (void) prependObject:(id)anObject {
+	if (anObject == nil)
+		nilArgumentException([self class], _cmd);
+	DoublyLinkedListNode *new;
+	new = malloc(kDoublyLinkedListNodeSize);
+	new->object = [anObject retain];
+	new->next = head;
+	new->prev = NULL;
+	if (head != NULL)
+		head->prev = new;
+	head = new;
+	if (tail == NULL)
+		tail = new;
+	++listSize;
+	++mutations;
+}
+
+- (void) appendObject:(id)anObject {
+	if (anObject == nil)
+		nilArgumentException([self class], _cmd);	
+	DoublyLinkedListNode *new;
+	new = malloc(kDoublyLinkedListNodeSize);
+	new->object = [anObject retain];
+	new->next = NULL;
+	new->prev = tail;
+	if (tail == NULL)
+		head = new;
+	else
+		tail->next = new;
+	tail = new;
+	++listSize;
+	++mutations;
+}
+
+- (void) insertObject:(id)anObject atIndex:(NSUInteger)index {
+	if (anObject == nil)
+		nilArgumentException([self class], _cmd);
+	if (index >= listSize || index < 0)
+		rangeException([self class], _cmd, index, listSize);
+	
+	if (index == 0)
+		[self prependObject:anObject];
+	else {
+		DoublyLinkedListNode *node;
+		NSUInteger nodeIndex;
+		findNodeAtIndex(index);
+		
+		DoublyLinkedListNode *newNode;
+		newNode = malloc(kDoublyLinkedListNodeSize);
+		newNode->object = [anObject retain];
+		newNode->next = node;          // point to node previously at this index
+		newNode->prev = node->prev;    // point to preceding node
+		newNode->prev->next = newNode; // point preceding node to new node
+		node->prev = newNode;          // point next (displaced) node to new node
+		++listSize;
+		++mutations;
+	}
+}
+
+#pragma mark Access
+
+- (NSUInteger) count {
+	return listSize;
+}
+
+- (id) firstObject {
+	return (head != NULL) ? head->object : nil;
+}
+
+- (id) lastObject {
+	return (tail != NULL) ? tail->object : nil;
+}
+
+- (NSArray*) allObjects {
+	return [[self objectEnumerator] allObjects];
+}
+
+- (NSEnumerator*) objectEnumerator {
+	return [[[DoublyLinkedListEnumerator alloc]
+			 initWithStartNode:head
+			 mutationPointer:&mutations] autorelease];
+}
+
+- (NSEnumerator*) reverseObjectEnumerator {
+	return [[[DoublyLinkedListEnumerator alloc]
+			 initWithStartNode:tail
+			 mutationPointer:&mutations] autorelease];
+}
+
+#pragma mark Search
+
+- (BOOL) containsObject:(id)anObject {
+	return ([self indexOfObject:anObject] != NSNotFound);
+}
+
+- (BOOL) containsObjectIdenticalTo:(id)anObject {
+	return ([self indexOfObjectIdenticalTo:anObject] != NSNotFound);
+}
+
+- (NSUInteger) indexOfObject:(id)anObject {
+	if (listSize > 0) {
+		DoublyLinkedListNode *current = head;
+		NSUInteger index = 0;
+		while (current != NULL) {
+			if ([current->object isEqual:anObject])
+				return index;
+			current = current->next;
+			++index;
+		}
+	}
+	return NSNotFound;
+}
+
+- (NSUInteger) indexOfObjectIdenticalTo:(id)anObject {
+	if (listSize > 0) {
+		DoublyLinkedListNode *current = head;
+		NSUInteger index = 0;
+		while (current != NULL) {
+			if (current->object == anObject)
+				return index;
+			current = current->next;
+			++index;
+		}
+	}
+	return NSNotFound;
+}
+
+- (id) objectAtIndex:(NSUInteger)index {
+	if (index >= listSize || index < 0)
+		rangeException([self class], _cmd, index, listSize);
+	
+	DoublyLinkedListNode *node;
+	NSUInteger nodeIndex;
+	findNodeAtIndex(index);
+	return node->object;
+}
+
+#pragma mark Removal
+
+- (void) removeFirstObject {
+	if (listSize == 0)
+		return;
+	DoublyLinkedListNode *old = head;
+	[head->object release];
+	head = head->next;
+	if (tail == old)
+		tail = NULL;
+	if (head)
+		head->prev = NULL;
+	free(old);
+	--listSize;
+	++mutations;
+}
+
+- (void) removeLastObject {
+	if (listSize == 0)
+		return;
+	DoublyLinkedListNode *old = tail;
+	[tail->object release];
+	tail = tail->prev;
+	if (tail)
+		tail->next = NULL;
+	if (head == old)
+		head = NULL;
+	free(old);
+	--listSize;
+	++mutations;
+}
+
+- (void) removeObject:(id)anObject {
+	if (listSize == 0)
+		return;
+	if ([head->object isEqual:anObject]) {
+		[self removeFirstObject];
+		return;
+	}
+	DoublyLinkedListNode *node = head;
+	while (node != NULL && ![node->object isEqual:anObject])
+		node = node->next;
+	removeNodeFromMiddle(node); // checks for NULL node
+}
+
+- (void) removeObjectIdenticalTo:(id)anObject {
+	if (listSize == 0)
+		return;
+	if (head->object == anObject) {
+		[self removeFirstObject];
+		return;
+	}
+	DoublyLinkedListNode *node = head;
+	while (node != NULL && node->object != anObject)
+		node = node->next;
+	removeNodeFromMiddle(node); // checks for NULL node
+}
+
+- (void) removeObjectAtIndex:(NSUInteger)index {
+	if (index >= listSize || index < 0)
+		rangeException([self class], _cmd, index, listSize);
+	
+	if (index == 0)
+		[self removeFirstObject];
+	else if (index == (listSize - 1))
+		[self removeLastObject];
+	else {
+		DoublyLinkedListNode *node;
+		NSUInteger nodeIndex;
+		findNodeAtIndex(index);
+		removeNodeFromMiddle(node);
+	}
+}
+
+- (void) removeAllObjects {
+	DoublyLinkedListNode *temp;
+	while (head != NULL) {
+		temp = head;
+		head = head->next;
+		[temp->object release];
+		free(temp);
+	}
+	tail = NULL;
+	listSize = 0;
+	++mutations;
 }
 
 @end

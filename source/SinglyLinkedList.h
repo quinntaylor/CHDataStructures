@@ -52,6 +52,4 @@ typedef struct SinglyLinkedListNode {
 	unsigned long mutations; /**< Used to track mutations for NSFastEnumeration. */
 }
 
-// Doesn't currently support index-based operations or inserting in the middle
-
 @end
