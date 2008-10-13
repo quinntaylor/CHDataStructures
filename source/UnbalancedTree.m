@@ -484,9 +484,9 @@ static struct UnbalancedTreeNode * _removeNode(struct UnbalancedTreeNode *node,
 
 /**
  Frees all the nodes in the tree and releases the objects they point to. The pointer
- to the root node remains NULL until an object is added to the tree. Uses a circular
- buffer array to store the objects waiting to be deleted; in a binary tree, no more
- than half of the nodes will be on the queue.
+ to the root node remains NULL until an object is added to the tree. Uses a linked
+ list to store the objects waiting to be deleted; in a binary tree, no more than half
+ of the nodes will be on the queue.
  */
 - (void) removeAllObjects {
 	if (root == NULL)
@@ -503,12 +503,10 @@ static struct UnbalancedTreeNode * _removeNode(struct UnbalancedTreeNode *node,
 		if (currentNode == NULL)
 			break;
 		UTE_DEQUEUE();
-		if (currentNode->left != NULL) {
+		if (currentNode->left != NULL)
 			UTE_ENQUEUE(currentNode->left);
-		}
-		if (currentNode->right != NULL) {
+		if (currentNode->right != NULL)
 			UTE_ENQUEUE(currentNode->right);
-		}
 		[currentNode->object release];
 		free(currentNode);
 	}
@@ -547,7 +545,6 @@ static struct UnbalancedTreeNode * _removeNode(struct UnbalancedTreeNode *node,
 	}
 	else {
 		currentNode = (UnbalancedTreeNode*) state->state;
-		// TODO: Grab pointer to top of stack from extra[0]
 		stack = (UTE_NODE*) state->extra[0];
 	}
 

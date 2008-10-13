@@ -192,8 +192,8 @@ static NSUInteger kDoublyLinkedListNodeSize = sizeof(DoublyLinkedListNode);
 #pragma mark <NSFastEnumeration> Methods
 
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
-				 				  objects:(id*)stackbuf
-				 					count:(NSUInteger)len
+                                   objects:(id*)stackbuf
+                                     count:(NSUInteger)len
 {
 	DoublyLinkedListNode *currentNode;
 	// If this is the first call, start at head, otherwise start at last saved node

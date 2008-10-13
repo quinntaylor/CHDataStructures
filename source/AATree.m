@@ -47,10 +47,10 @@ static NSUInteger kAATE_SIZE = sizeof(AATE_NODE);
 #pragma mark - Queue Operations
 
 #define AATE_ENQUEUE(o) {tmp=malloc(kAATE_SIZE);tmp->node=o;tmp->next=NULL;\
-if(queue==NULL){queue=tmp;queueTail=tmp;}\
-queueTail->next=tmp;queueTail=queueTail->next;}
+                         if(queue==NULL){queue=tmp;queueTail=tmp;}\
+                         queueTail->next=tmp;queueTail=queueTail->next;}
 #define AATE_DEQUEUE()  {if(queue!=NULL){tmp=queue;queue=queue->next;free(tmp);}\
-if(queue==tmp)queue=NULL;if(queueTail==tmp)queueTail=NULL;}
+                         if(queue==tmp)queue=NULL;if(queueTail==tmp)queueTail=NULL;}
 #define AATE_FRONT      ((queue!=NULL)?queue->node:NULL)
 
 #pragma mark -
@@ -345,10 +345,37 @@ void _split(AATreeNode *node) {
 	unsupportedOperationException([self class], _cmd);
 }
 
+/**
+ Frees all the nodes in the tree and releases the objects they point to. The pointer
+ to the root node remains NULL until an object is added to the tree. Uses a linked
+ list to store the objects waiting to be deleted; in a binary tree, no more than half
+ of the nodes will be on the queue.
+ */
 - (void) removeAllObjects {
 	if (count == 0)
 		return;
-	unsupportedOperationException([self class], _cmd);
+
+	AATreeNode *currentNode;
+	AATE_NODE *queue	 = NULL;
+	AATE_NODE *queueTail = NULL;
+	AATE_NODE *tmp;
+	
+	AATE_ENQUEUE(root);
+	while (1) {
+		currentNode = AATE_FRONT;
+		if (currentNode == NULL)
+			break;
+		AATE_DEQUEUE();
+		if (currentNode->left != NULL)
+			AATE_ENQUEUE(currentNode->left);
+		if (currentNode->right != NULL)
+			AATE_ENQUEUE(currentNode->right);
+		[currentNode->object release];
+		free(currentNode);
+	}
+	root = NULL;
+	count = 0;
+	++mutations;
 }
 
 - (NSEnumerator*) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order {
@@ -366,7 +393,46 @@ void _split(AATreeNode *node) {
                                   objects:(id*)stackbuf
                                     count:(NSUInteger)len
 {
-	return 0;
+	AATreeNode *currentNode;
+	AATE_NODE *stack, *tmp; 
+	
+	// For the first call, start at leftmost node, otherwise start at last saved node
+	if (state->state == 0) {
+		currentNode = root;
+		state->itemsPtr = stackbuf;
+		state->mutationsPtr = &mutations;
+		stack = NULL;
+	}
+	else if (state->state == 1) {
+		return 0;		
+	}
+	else {
+		currentNode = (AATreeNode*) state->state;
+		stack = (AATE_NODE*) state->extra[0];
+	}
+	
+	// Accumulate objects from the tree until we reach all nodes or the maximum limit
+	NSUInteger batchCount = 0;
+	while ( (currentNode != NULL || stack != NULL) && batchCount < len) {
+		while (currentNode != NULL) {
+			AATE_PUSH(currentNode);
+			currentNode = currentNode->left;
+			// TODO: How to not push/pop leaf nodes unnecessarily?
+		}
+		currentNode = AATE_TOP; // Save top node for return value
+		AATE_POP();
+		stackbuf[batchCount] = currentNode->object;
+		currentNode = currentNode->right;
+		batchCount++;
+	}
+	
+	if (currentNode == NULL && stack == NULL)
+		state->state = 1; // used as a termination flag
+	else {
+		state->state = (unsigned long) currentNode;
+		state->extra[0] = (unsigned long) stack;
+	}
+	return batchCount;
 }
 
 @end
