@@ -1,3 +1,6 @@
+//  CHTree.h
+//  CHDataStructures.framework
+
 /************************
  A Cocoa DataStructuresFramework
  Copyright (C) 2002  Phillip Morelock in the United States
@@ -18,9 +21,6 @@
  License along with this library; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *******************************/
-
-//  CHTree.h
-//  CHDataStructures.framework
 
 /**
  @file CHTree.h
@@ -102,7 +102,7 @@ typedef short CHTraversalOrder;
  - <code>CHTraversePostOrder</code>
  - <code>CHTraverseLevelOrder</code>
  
- These constants are used primarily for @link #objectEnumeratorWithTraversalOrder:
+ These constants are used primarily with @link #objectEnumeratorWithTraversalOrder:
  -[Tree objectEnumeratorWithTraversalOrder:]@endlink to obtain an NSEnumerator that
  provides objects from the tree by traversing using the specified order.
  */
