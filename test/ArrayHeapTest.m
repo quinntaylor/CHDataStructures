@@ -1,20 +1,20 @@
 //  ArrayHeapTest.m
-//  DataStructures.framework
+//  CHDataStructures.framework
 
 #import <SenTestingKit/SenTestingKit.h>
-#import "ArrayHeap.h"
+#import "CHArrayHeap.h"
 
-@interface ArrayHeapTest : SenTestCase {
-	ArrayHeap *heap;
+@interface CHArrayHeapTest : SenTestCase {
+	CHArrayHeap *heap;
 	NSArray *testArray;
 }
 @end
 
 
-@implementation ArrayHeapTest
+@implementation CHArrayHeapTest
 
 - (void) setUp {
-	heap = [[ArrayHeap alloc] init];
+	heap = [[CHArrayHeap alloc] init];
 }
 
 - (void) tearDown {

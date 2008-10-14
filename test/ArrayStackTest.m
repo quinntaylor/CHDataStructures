@@ -1,20 +1,20 @@
 //  ArrayStackTest.m
-//  DataStructures.framework
+//  CHDataStructures.framework
 
 #import <SenTestingKit/SenTestingKit.h>
-#import "ArrayStack.h"
+#import "CHArrayStack.h"
 
-@interface ArrayStackTest : SenTestCase {
-	ArrayStack *stack;
+@interface CHArrayStackTest : SenTestCase {
+	CHArrayStack *stack;
 	NSArray *testArray;
 }
 @end
 
 
-@implementation ArrayStackTest
+@implementation CHArrayStackTest
 
 - (void) setUp {
-	stack = [[ArrayStack alloc] init];
+	stack = [[CHArrayStack alloc] init];
 }
 
 - (void) tearDown {

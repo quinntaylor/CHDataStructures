@@ -1,21 +1,21 @@
 //  UnbalancedTreeTest.m
-//  DataStructures.framework
+//  CHDataStructures.framework
 
 #import <SenTestingKit/SenTestingKit.h>
-#import "UnbalancedTree.h"
+#import "CHUnbalancedTree.h"
 
-@interface UnbalancedTreeTest : SenTestCase {
-	UnbalancedTree *tree;
+@interface CHUnbalancedTreeTest : SenTestCase {
+	CHUnbalancedTree *tree;
 	NSArray *testArray;
 	NSEnumerator *e;
 }
 @end
 
 
-@implementation UnbalancedTreeTest
+@implementation CHUnbalancedTreeTest
 
 - (void) setUp {
-    tree = [[UnbalancedTree alloc] init];
+    tree = [[CHUnbalancedTree alloc] init];
 	testArray = [NSArray arrayWithObjects:
 				 @"F", @"B", @"A", @"D", @"C", @"E", @"G", @"I", @"H", nil];
 	// Creates the tree from: http://en.wikipedia.org/wiki/Tree_traversal#Example

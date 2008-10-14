@@ -1,20 +1,20 @@
 //  SinglyLinkedListTest.m
-//  DataStructures.framework
+//  CHDataStructures.framework
 
 #import <SenTestingKit/SenTestingKit.h>
-#import "SinglyLinkedList.h"
+#import "CHSinglyLinkedList.h"
 
-@interface SinglyLinkedListTest : SenTestCase {
-	SinglyLinkedList *list;
+@interface CHSinglyLinkedListTest : SenTestCase {
+	CHSinglyLinkedList *list;
 	NSArray *testArray;
 }
 @end
 
 
-@implementation SinglyLinkedListTest
+@implementation CHSinglyLinkedListTest
 
 - (void) setUp {
-    list = [[SinglyLinkedList alloc] init];
+    list = [[CHSinglyLinkedList alloc] init];
 	testArray = [NSArray arrayWithObjects:@"A", @"B", @"C", nil];
 }
 

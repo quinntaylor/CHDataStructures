@@ -1,20 +1,20 @@
 //  ListDequeTest.m
-//  DataStructures.framework
+//  CHDataStructures.framework
 
 #import <SenTestingKit/SenTestingKit.h>
-#import "ListDeque.h"
+#import "CHListDeque.h"
 
-@interface ListDequeTest : SenTestCase {
-	ListDeque *deque;
+@interface CHListDequeTest : SenTestCase {
+	CHListDeque *deque;
 	NSArray *testArray;
 }
 @end
 
 
-@implementation ListDequeTest
+@implementation CHListDequeTest
 
 - (void) setUp {
-	deque = [[ListDeque alloc] init];
+	deque = [[CHListDeque alloc] init];
 }
 
 - (void) tearDown {

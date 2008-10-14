@@ -20,7 +20,7 @@
  *******************************/
 
 //  Util.h
-//  DataStructuresFramework
+//  CHDataStructures.framework
 
 /**
  @file Util.h

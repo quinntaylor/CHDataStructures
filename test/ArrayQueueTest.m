@@ -1,20 +1,20 @@
 //  ArrayQueueTest.m
-//  DataStructures.framework
+//  CHDataStructures.framework
 
 #import <SenTestingKit/SenTestingKit.h>
-#import "ArrayQueue.h"
+#import "CHArrayQueue.h"
 
-@interface ArrayQueueTest : SenTestCase {
-	ArrayQueue *queue;
+@interface CHArrayQueueTest : SenTestCase {
+	CHArrayQueue *queue;
 	NSArray *testArray;
 }
 @end
 
 
-@implementation ArrayQueueTest
+@implementation CHArrayQueueTest
 
 - (void) setUp {
-	queue = [[ArrayQueue alloc] init];
+	queue = [[CHArrayQueue alloc] init];
 }
 
 - (void) tearDown {

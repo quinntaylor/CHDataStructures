@@ -1,20 +1,20 @@
 //  ArrayDequeTest.m
-//  DataStructures.framework
+//  CHDataStructures.framework
 
 #import <SenTestingKit/SenTestingKit.h>
-#import "ArrayDeque.h"
+#import "CHArrayDeque.h"
 
-@interface ArrayDequeTest : SenTestCase {
-	ArrayDeque *deque;
+@interface CHArrayDequeTest : SenTestCase {
+	CHArrayDeque *deque;
 	NSArray *testArray;
 }
 @end
 
 
-@implementation ArrayDequeTest
+@implementation CHArrayDequeTest
 
 - (void) setUp {
-	deque = [[ArrayDeque alloc] init];
+	deque = [[CHArrayDeque alloc] init];
 }
 
 - (void) tearDown {

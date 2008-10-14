@@ -1,21 +1,21 @@
-//  AATreeTest.m
-//  DataStructures.framework
+//  CHAnderssonTreeTest.m
+//  CHDataStructures.framework
 
 #import <SenTestingKit/SenTestingKit.h>
-#import "AATree.h"
+#import "CHAnderssonTree.h"
 
-@interface AATreeTest : SenTestCase {
-	AATree *tree;
+@interface CHAnderssonTreeTest : SenTestCase {
+	CHAnderssonTree *tree;
 	NSArray *testArray;
 	NSEnumerator *e;
 }
 @end
 
 
-@implementation AATreeTest
+@implementation CHAnderssonTreeTest
 
 - (void) setUp {
-	tree = [[AATree alloc] init];
+	tree = [[CHAnderssonTree alloc] init];
 	testArray = [NSArray arrayWithObjects:
 				 @"F", @"B", @"A", @"D", @"C", @"E", @"G", @"I", @"H", nil];
 	// Creates the tree from: http://en.wikipedia.org/wiki/Tree_traversal#Example

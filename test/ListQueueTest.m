@@ -1,20 +1,20 @@
 //  ListQueueTest.m
-//  DataStructures.framework
+//  CHDataStructures.framework
 
 #import <SenTestingKit/SenTestingKit.h>
-#import "ListQueue.h"
+#import "CHListQueue.h"
 
-@interface ListQueueTest : SenTestCase {
-	ListQueue *queue;
+@interface CHListQueueTest : SenTestCase {
+	CHListQueue *queue;
 	NSArray *testArray;
 }
 @end
 
 
-@implementation ListQueueTest
+@implementation CHListQueueTest
 
 - (void) setUp {
-	queue = [[ListQueue alloc] init];
+	queue = [[CHListQueue alloc] init];
 }
 
 - (void) tearDown {

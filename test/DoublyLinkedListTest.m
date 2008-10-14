@@ -1,20 +1,20 @@
 //  DoublyLinkedListTest.m
-//  DataStructures.framework
+//  CHDataStructures.framework
 
 #import <SenTestingKit/SenTestingKit.h>
-#import "DoublyLinkedList.h"
+#import "CHDoublyLinkedList.h"
 
-@interface DoublyLinkedListTest : SenTestCase {
-	DoublyLinkedList *list;
+@interface CHDoublyLinkedListTest : SenTestCase {
+	CHDoublyLinkedList *list;
 	NSArray *testArray;
 }
 @end
 
 
-@implementation DoublyLinkedListTest
+@implementation CHDoublyLinkedListTest
 
 - (void) setUp {
-    list = [[DoublyLinkedList alloc] init];
+    list = [[CHDoublyLinkedList alloc] init];
 	testArray = [NSArray arrayWithObjects:@"A", @"B", @"C", nil];
 }
 

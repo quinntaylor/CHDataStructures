@@ -1,8 +1,8 @@
 //  Benchmarks.m
-//  DataStructures.framework
+//  CHDataStructures.framework
 
 #import <Foundation/Foundation.h>
-#import <DataStructures/DataStructures.h>
+#import <CHDataStructures/CHDataStructures.h>
 #import <sys/time.h>
 
 static NSUInteger limit = 1000000;
@@ -19,7 +19,7 @@ void benchmarkDeque(Class testClass) {
     NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 	QuietLog(@"\n* %@", testClass);
 	
-	id<Deque> deque;
+	id<CHDeque> deque;
 	NSUInteger item, items;
 	
 	printf("(Operation)         ");
@@ -116,7 +116,7 @@ void benchmarkQueue(Class testClass) {
     NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 	QuietLog(@"\n* %@", testClass);
 	
-	id<Queue> queue;
+	id<CHQueue> queue;
 	NSUInteger item, items;
 	
 	printf("(Operation)         ");
@@ -191,7 +191,7 @@ void benchmarkStack(Class testClass) {
     NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 	QuietLog(@"\n%@", testClass);
 	
-	id<Stack> stack;
+	id<CHStack> stack;
 	NSUInteger item, items;
 	
 	printf("(Operation)         ");
@@ -266,7 +266,7 @@ void benchmarkTree(Class testClass) {
     NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 	QuietLog(@"\n%@", testClass);
 	
-	id<Tree> tree;
+	id<CHTree> tree;
 	NSUInteger item, items;
 	
 	printf("(Operation)         ");
@@ -295,21 +295,21 @@ int main (int argc, const char * argv[]) {
     NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 	
 	QuietLog(@"\n<Deque> Implemenations");
-	benchmarkDeque([ArrayDeque class]);
-	benchmarkDeque([ListDeque class]);
+	benchmarkDeque([CHArrayDeque class]);
+	benchmarkDeque([CHListDeque class]);
 
 	QuietLog(@"\n<Queue> Implemenations");
-	benchmarkQueue([ArrayQueue class]);
-	benchmarkQueue([ListQueue class]);
+	benchmarkQueue([CHArrayQueue class]);
+	benchmarkQueue([CHListQueue class]);
 
 	QuietLog(@"\n<Stack> Implemenations");
-	benchmarkStack([ArrayStack class]);
-	benchmarkStack([ListStack class]);
+	benchmarkStack([CHArrayStack class]);
+	benchmarkStack([CHListStack class]);
 
 //	QuietLog(@"\n<Tree> Implemenations");
 //	benchmarkTree([UnbalancedTree class]);
 //	benchmarkTree([RedBlackTree class]);
-//	benchmarkTree([AATree class]);
+//	benchmarkTree([CHAnderssonTree class]);
 
     [pool drain];
     return 0;

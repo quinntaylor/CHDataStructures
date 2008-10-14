@@ -1,20 +1,20 @@
 //  RedBlackTreeTest.m
-//  DataStructures.framework
+//  CHDataStructures.framework
 
 #import <SenTestingKit/SenTestingKit.h>
-#import "RedBlackTree.h"
+#import "CHRedBlackTree.h"
 
-@interface RedBlackTreeTest : SenTestCase {
-	RedBlackTree *tree;
+@interface CHRedBlackTreeTest : SenTestCase {
+	CHRedBlackTree *tree;
 	NSArray *testArray;
 }
 @end
 
 
-@implementation RedBlackTreeTest
+@implementation CHRedBlackTreeTest
 
 - (void) setUp {
-	tree = [[RedBlackTree alloc] init];
+	tree = [[CHRedBlackTree alloc] init];
 	testArray = [NSArray arrayWithObjects:
 				 @"F", @"B", @"A", @"D", @"C", @"E", @"G", @"I", @"H", nil];
 	// Creates the tree from: http://en.wikipedia.org/wiki/Tree_traversal#Example

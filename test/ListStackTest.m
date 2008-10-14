@@ -1,20 +1,20 @@
 //  ListStackTest.m
-//  DataStructures.framework
+//  CHDataStructures.framework
 
 #import <SenTestingKit/SenTestingKit.h>
-#import "ListStack.h"
+#import "CHListStack.h"
 
-@interface ListStackTest : SenTestCase {
-	ListStack *stack;
+@interface CHListStackTest : SenTestCase {
+	CHListStack *stack;
 	NSArray *testArray;
 }
 @end
 
 
-@implementation ListStackTest
+@implementation CHListStackTest
 
 - (void) setUp {
-	stack = [[ListStack alloc] init];
+	stack = [[CHListStack alloc] init];
 }
 
 - (void) tearDown {
