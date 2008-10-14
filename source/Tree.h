@@ -58,13 +58,55 @@ typedef short CHTraversalOrder;
  
  Objects in a Tree are inserted according to their sorted order, so they must respond
  to the <code>compare:</code> selector, which accepts another object and returns one
- of <code>{NSOrderedAscending|NSOrderedSame|NSOrderedDescending}</code> as the
+ of <code>{NSOrderedAscending | NSOrderedSame | NSOrderedDescending}</code> as the
  receiver is less than, equal to, or greater than the argument, respectively. (See
  <code>NSComparisonResult</code> in NSObjCRuntime.h for details.)
-
- @todo Add support for methods in NSCoding and NSMutableCopying.
+ 
+ There are several methods for visiting each node in a tree data structure, known as
+ <a href="http://en.wikipedia.org/wiki/Tree_traversal">tree traversal</a> techniques.
+ (Traversal applies to N-ary trees, not just binary trees.) Whereas linked lists and
+ arrays have one or two logical means of stepping through the elements, because trees
+ are branching structures, there are many different ways to choose how to visit all
+ of the nodes. There are 5 most commonly-used tree traversal methods; of these, 4 are
+ <a href="http://en.wikipedia.org/wiki/Depth-first_traversal">depth-first</a> and 1
+ is <a href="http://en.wikipedia.org/wiki/Breadth-first_traversal">breadth-first</a>.
+ These methods are described below:
+ 
+ <table align="center" width="100%" border="0" cellpadding="0">
+ <tr>
+ <td style="vertical-align: bottom">
+	@image html tree-traversal.png "Figure 1 — A sample binary tree."
+ </td>
+ <td style="vertical-align: bottom" align="center">
+ 
+ <table style="border-collapse: collapse;">
+ <tr style="background: #ddd;">
+     <th>Traversal</th>     <th>Visit Order</th> <th>Sample Ordering</th>
+ </tr>
+ <tr><td>In-order</td>	    <td>L, node, R</td>  <td>A B C D E F G H I</td></tr>
+ <tr><td>Reverse-order</td> <td>R, node, L</td>  <td>I H G F E D C B A</td></tr>
+ <tr><td>Pre-order</td>	    <td>node, L, R</td>  <td>F B A D C E G I H</td></tr>
+ <tr><td>Post-order</td>	<td>L, R, node</td>  <td>A C E D B H I G F</td></tr>
+ <tr><td>Level-order</td>	<td>L→R, T→B</td>    <td>F B G A D I C E H</td></tr>
+ </table>
+ <p><strong>Table 1 - Node orderings for traversals on Figure 1.</strong></p>
+ 
+ </td></tr>
+ </table>
+ 
+ These orderings correspond to the following constants, also declared in Tree.h:
+ 
+ - <code>CHTraverseInOrder</code>
+ - <code>CHTraverseReverseOrder</code>
+ - <code>CHTraversePreOrder</code>
+ - <code>CHTraversePostOrder</code>
+ - <code>CHTraverseLevelOrder</code>
+ 
+ These constants are used primarily for @link #objectEnumeratorWithTraversalOrder:
+ -[Tree objectEnumeratorWithTraversalOrder:]@endlink to obtain an NSEnumerator that
+ provides objects from the tree by traversing using the specified order.
  */
-@protocol Tree <NSObject, NSFastEnumeration>
+@protocol Tree <NSObject, NSCoding, NSCopying, NSFastEnumeration>
 
 /**
  Initialize a newly-allocated tree with no objects.
@@ -117,7 +159,7 @@ typedef short CHTraversalOrder;
 
 /**
  Return the object for which <code>compare:</code> returns NSOrderedSame, or
- <code>nil</code> if no matching object is found in the tree.
+ <code>nil</code> if no matching object is found.
  
  @param anObject The object to be matched and located in the tree.
  */
@@ -149,7 +191,8 @@ typedef short CHTraversalOrder;
  
  NOTE: When you use an enumerator, you must not modify the tree during enumeration.
  
- @see @link #objectEnumeratorWithTraversalOrder: - [Tree objectEnumeratorWithTraversalOrder:] @endlink
+ @see @link #objectEnumeratorWithTraversalOrder:
+      -[Tree objectEnumeratorWithTraversalOrder:] @endlink
  */
 - (NSEnumerator*) objectEnumerator;
 
@@ -158,7 +201,8 @@ typedef short CHTraversalOrder;
  
  NOTE: When you use an enumerator, you must not modify the tree during enumeration.
  
- @see @link #objectEnumeratorWithTraversalOrder: - [Tree objectEnumeratorWithTraversalOrder:] @endlink
+ @see @link #objectEnumeratorWithTraversalOrder:
+      -[Tree objectEnumeratorWithTraversalOrder:] @endlink
  */
 - (NSEnumerator*) reverseObjectEnumerator;
 

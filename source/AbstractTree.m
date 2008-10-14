@@ -26,7 +26,6 @@
 
 @implementation AbstractTree
 
-#pragma mark Concrete Implementations
 
 /**
  Only to be called from concrete child classes to initialize shared variables.
@@ -40,6 +39,47 @@
 	mutations = 0;
 	return self;
 }
+
+#pragma mark <NSCoding> methods
+
+/**
+ Returns an object initialized from data in a given unarchiver.
+ 
+ @param decoder An unarchiver object.
+ */
+- (id) initWithCoder:(NSCoder *)decoder {
+	if ([super init] == nil) {
+		[self release];
+		return nil;
+	}
+	count = 0;
+	mutations = 0;
+	for (id anObject in [decoder decodeObjectForKey:[self className]])
+		[self addObject:anObject];
+	return self;
+}
+
+/**
+ Encodes the receiver using a given archiver.
+ 
+ @param encoder An archiver object.
+ */
+- (void) encodeWithCoder:(NSCoder *)encoder {
+	NSEnumerator *e = [self objectEnumeratorWithTraversalOrder:CHTraverseLevelOrder];
+	[encoder encodeObject:[e allObjects] forKey:[self className]];
+}
+
+#pragma mark <NSCopying> methods
+
+- (id) copyWithZone:(NSZone *)zone {
+	id<Tree> newTree = [[[self class] alloc] init];
+	NSEnumerator *e = [self objectEnumeratorWithTraversalOrder:CHTraverseLevelOrder];
+	for (id anObject in e)
+		[newTree addObject:anObject];
+	return newTree;
+}
+
+#pragma mark Concrete Implementations
 
 - (NSArray*) contentsAsArrayUsingTraversalOrder:(CHTraversalOrder)order {
 	NSMutableArray *array = [[NSMutableArray alloc] init];
