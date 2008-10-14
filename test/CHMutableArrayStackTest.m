@@ -1,4 +1,4 @@
-//  ArrayStackTest.m
+//  CHMutableArrayStackTest.m
 //  CHDataStructures.framework
 
 #import <SenTestingKit/SenTestingKit.h>

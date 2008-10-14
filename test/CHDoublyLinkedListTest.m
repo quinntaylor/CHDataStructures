@@ -1,4 +1,4 @@
-//  DoublyLinkedListTest.m
+//  CHDoublyLinkedListTest.m
 //  CHDataStructures.framework
 
 #import <SenTestingKit/SenTestingKit.h>

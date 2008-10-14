@@ -1,3 +1,6 @@
+//  CHMutableArrayHeap.h
+//  CHDataStructures.framework
+
 /************************
  A Cocoa DataStructuresFramework
  Copyright (C) 2002  Phillip Morelock in the United States
@@ -18,9 +21,6 @@
  License along with this library; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *******************************/
-
-//  CHMutableArrayHeap.h
-//  CHDataStructures.framework
 
 //  Copyright (c) 2002 Gordon Worley redbird@rbisland.cx
 //  Edits and refactoring by Phillip Morelock for library integration and performance. 

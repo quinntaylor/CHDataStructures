@@ -1,4 +1,4 @@
-//  ListQueueTest.m
+//  CHListQueueTest.m
 //  CHDataStructures.framework
 
 #import <SenTestingKit/SenTestingKit.h>

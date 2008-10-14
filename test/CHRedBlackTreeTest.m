@@ -1,4 +1,4 @@
-//  RedBlackTreeTest.m
+//  CHRedBlackTreeTest.m
 //  CHDataStructures.framework
 
 #import <SenTestingKit/SenTestingKit.h>

@@ -1,4 +1,4 @@
-//  ArrayDequeTest.m
+//  CHMutableArrayDequeTest.m
 //  CHDataStructures.framework
 
 #import <SenTestingKit/SenTestingKit.h>

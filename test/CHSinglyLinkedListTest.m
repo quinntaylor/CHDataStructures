@@ -1,4 +1,4 @@
-//  SinglyLinkedListTest.m
+//  CHSinglyLinkedListTest.m
 //  CHDataStructures.framework
 
 #import <SenTestingKit/SenTestingKit.h>
