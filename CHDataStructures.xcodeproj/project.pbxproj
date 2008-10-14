@@ -7,16 +7,16 @@
 	objects = {
 
 /* Begin PBXAggregateTarget section */
-		E43C87680EA3D35500B3B31E /* Disk Image */ = {
+		E43C87680EA3D35500B3B31E /* Deployment */ = {
 			isa = PBXAggregateTarget;
-			buildConfigurationList = E43C87740EA3D36600B3B31E /* Build configuration list for PBXAggregateTarget "Disk Image" */;
+			buildConfigurationList = E43C87740EA3D36600B3B31E /* Build configuration list for PBXAggregateTarget "Deployment" */;
 			buildPhases = (
 				E43C87670EA3D35500B3B31E /* ShellScript */,
 			);
 			dependencies = (
 				E43C876C0EA3D35C00B3B31E /* PBXTargetDependency */,
 			);
-			name = "Disk Image";
+			name = Deployment;
 			productName = "Disk Image";
 		};
 		E4FAE15B0E968F1B007BB1F9 /* All */ = {
@@ -27,9 +27,9 @@
 			dependencies = (
 				E4FAE15F0E968F20007BB1F9 /* PBXTargetDependency */,
 				E4FAE1610E968F20007BB1F9 /* PBXTargetDependency */,
-				E4FAE1650E968F20007BB1F9 /* PBXTargetDependency */,
-				E4FAE1630E968F20007BB1F9 /* PBXTargetDependency */,
 				E43C87A50EA3E19500B3B31E /* PBXTargetDependency */,
+				E4FAE1630E968F20007BB1F9 /* PBXTargetDependency */,
+				E4FAE1650E968F20007BB1F9 /* PBXTargetDependency */,
 			);
 			name = All;
 			productName = All;
@@ -127,6 +127,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		E428B52E0EA537D9007CB324 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216 /* CHDataStructures */;
+			remoteInfo = CHDataStructures;
+		};
 		E43C876B0EA3D35C00B3B31E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
@@ -438,9 +445,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		8DC2EF4F0486A6940098B216 /* CHDataStructures */ = {
+		8DC2EF4F0486A6940098B216 /* Framework */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "CHDataStructures" */;
+			buildConfigurationList = 1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "Framework" */;
 			buildPhases = (
 				8DC2EF500486A6940098B216 /* Headers */,
 				8DC2EF520486A6940098B216 /* Resources */,
@@ -452,7 +459,7 @@
 			);
 			dependencies = (
 			);
-			name = CHDataStructures;
+			name = Framework;
 			productInstallPath = "$(HOME)/Library/Frameworks";
 			productName = CHDataStructures;
 			productReference = 8DC2EF5B0486A6940098B216 /* CHDataStructures.framework */;
@@ -468,6 +475,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				E428B52F0EA537D9007CB324 /* PBXTargetDependency */,
 			);
 			name = Benchmarks;
 			productName = Benchmarks;
@@ -508,11 +516,11 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8DC2EF4F0486A6940098B216 /* CHDataStructures */,
+				8DC2EF4F0486A6940098B216 /* Framework */,
 				E473CB540E9346CB005CA997 /* Unit Testing */,
-				E44B59B30E95850F00F9DD1A /* Benchmarks */,
+				E43C87680EA3D35500B3B31E /* Deployment */,
 				E4FE76D80E89556A00971EE6 /* Documentation */,
-				E43C87680EA3D35500B3B31E /* Disk Image */,
+				E44B59B30E95850F00F9DD1A /* Benchmarks */,
 				E4FAE15B0E968F1B007BB1F9 /* All */,
 			);
 		};
@@ -655,19 +663,24 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		E428B52F0EA537D9007CB324 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8DC2EF4F0486A6940098B216 /* Framework */;
+			targetProxy = E428B52E0EA537D9007CB324 /* PBXContainerItemProxy */;
+		};
 		E43C876C0EA3D35C00B3B31E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 8DC2EF4F0486A6940098B216 /* CHDataStructures */;
+			target = 8DC2EF4F0486A6940098B216 /* Framework */;
 			targetProxy = E43C876B0EA3D35C00B3B31E /* PBXContainerItemProxy */;
 		};
 		E43C87A50EA3E19500B3B31E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = E43C87680EA3D35500B3B31E /* Disk Image */;
+			target = E43C87680EA3D35500B3B31E /* Deployment */;
 			targetProxy = E43C87A40EA3E19500B3B31E /* PBXContainerItemProxy */;
 		};
 		E4FAE15F0E968F20007BB1F9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 8DC2EF4F0486A6940098B216 /* CHDataStructures */;
+			target = 8DC2EF4F0486A6940098B216 /* Framework */;
 			targetProxy = E4FAE15E0E968F20007BB1F9 /* PBXContainerItemProxy */;
 		};
 		E4FAE1610E968F20007BB1F9 /* PBXTargetDependency */ = {
@@ -943,7 +956,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "CHDataStructures" */ = {
+		1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "Framework" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1DEB91AE08733DA50010E9CD /* Debug */,
@@ -961,7 +974,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E43C87740EA3D36600B3B31E /* Build configuration list for PBXAggregateTarget "Disk Image" */ = {
+		E43C87740EA3D36600B3B31E /* Build configuration list for PBXAggregateTarget "Deployment" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E43C87690EA3D35500B3B31E /* Debug */,
