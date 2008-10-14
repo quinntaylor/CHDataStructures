@@ -19,12 +19,12 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *******************************/
 
-//  CHArrayStack.m
-//  CHDataStructures.framework
+//  CHMutableArrayQueue.m
+//  Data Structures Framework
 
-#import "CHArrayStack.h"
+#import "CHMutableArrayQueue.h"
 
-@implementation CHArrayStack
+@implementation CHMutableArrayQueue
 
 - (void) dealloc {
 	[array release];
@@ -74,7 +74,7 @@
 		[self release];
 		return nil;
 	}
-	array = [[decoder decodeObjectForKey:@"ArrayStack"] retain];
+	array = [[decoder decodeObjectForKey:@"ArrayQueue"] retain];
 	return self;
 }
 
@@ -84,29 +84,29 @@
  @param encoder An archiver object.
  */
 - (void) encodeWithCoder:(NSCoder *)encoder {
-	[encoder encodeObject:array forKey:@"ArrayStack"];
+	[encoder encodeObject:array forKey:@"ArrayQueue"];
 }
 
-#pragma mark Stack Implementation
+#pragma mark Queue Implementation
 
-- (void) pushObject:(id)anObject {
+- (void) addObject: (id)anObject {
 	if (anObject == nil)
 		nilArgumentException([self class], _cmd);
 	else
 		[array addObject:anObject];
 }
 
-- (id) topObject {
+- (id) nextObject {
 	@try {
-		return [array lastObject];
+		return [array objectAtIndex:0];
 	}
 	@catch (NSException *exception) {}
 	return nil;
 }
 
-- (void) popObject {
+- (void) removeNextObject {
 	@try {
-		[array removeLastObject];	
+		[array removeObjectAtIndex:0];
 	}
 	@catch (NSException *exception) {}
 }
@@ -132,18 +132,18 @@
 }
 
 - (NSEnumerator*) objectEnumerator {
-	return [array reverseObjectEnumerator];  // top of stack is at the back
+	return [array objectEnumerator];
 }
 
 // Additional method in this implementation
 - (NSEnumerator*) reverseObjectEnumerator {
-	return [array objectEnumerator];         // bottom of stack is at the front
+	return [array reverseObjectEnumerator];
 }
 
 #pragma mark <NSCopying> Methods
 
 - (id) copyWithZone:(NSZone *)zone {
-	return [[CHArrayStack alloc] initWithArray:array];
+	return [[CHMutableArrayQueue alloc] initWithArray:array];
 }
 
 #pragma mark <NSFastEnumeration> Methods

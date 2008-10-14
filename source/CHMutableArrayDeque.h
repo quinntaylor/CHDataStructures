@@ -19,22 +19,18 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *******************************/
 
-//  CHArrayHeap.h
+//  CHMutableArrayDeque.h
 //  CHDataStructures.framework
 
-//  Copyright (c) 2002 Gordon Worley redbird@rbisland.cx
-//  Edits and refactoring by Phillip Morelock for library integration and performance. 
-
 #import <Foundation/Foundation.h>
-#import "CHHeap.h"
+#import "CHDeque.h"
 
 /**
- A simple CHHeap implemented using an NSMutableArray.
- See the protocol definition for CHHeap to understand the programming contract.
+ A simple CHDeque implemented using an NSMutableArray.
+ See the protocol definition for CHDeque to understand the programming contract.
  */
-@interface CHArrayHeap : NSObject <CHHeap>
-{
-	NSMutableArray *irep;
+@interface CHMutableArrayDeque : NSObject <CHDeque> {
+	NSMutableArray *array;
 }
 
 @end

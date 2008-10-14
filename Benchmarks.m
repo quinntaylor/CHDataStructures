@@ -295,15 +295,15 @@ int main (int argc, const char * argv[]) {
     NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 	
 	QuietLog(@"\n<Deque> Implemenations");
-	benchmarkDeque([CHArrayDeque class]);
+	benchmarkDeque([CHMutableArrayDeque class]);
 	benchmarkDeque([CHListDeque class]);
 
 	QuietLog(@"\n<Queue> Implemenations");
-	benchmarkQueue([CHArrayQueue class]);
+	benchmarkQueue([CHMutableArrayQueue class]);
 	benchmarkQueue([CHListQueue class]);
 
 	QuietLog(@"\n<Stack> Implemenations");
-	benchmarkStack([CHArrayStack class]);
+	benchmarkStack([CHMutableArrayStack class]);
 	benchmarkStack([CHListStack class]);
 
 //	QuietLog(@"\n<Tree> Implemenations");

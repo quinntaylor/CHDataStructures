@@ -19,12 +19,12 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *******************************/
 
-//  CHArrayQueue.m
-//  Data Structures Framework
+//  CHMutableArrayDeque.m
+//  CHDataStructures.framework
 
-#import "CHArrayQueue.h"
+#import "CHMutableArrayDeque.h"
 
-@implementation CHArrayQueue
+@implementation CHMutableArrayDeque
 
 - (void) dealloc {
 	[array release];
@@ -52,16 +52,6 @@
 	return self;
 }
 
-// Additional method in this implementation
-- (id) initWithCapacity:(NSUInteger)capacity {
-	if ([super init] == nil) {
-		[self release];
-		return nil;
-	}
-	array = [[NSMutableArray alloc] initWithCapacity:capacity];
-	return self;
-}
-
 #pragma mark <NSCoding> methods
 
 /**
@@ -74,7 +64,7 @@
 		[self release];
 		return nil;
 	}
-	array = [[decoder decodeObjectForKey:@"ArrayQueue"] retain];
+	array = [[decoder decodeObjectForKey:@"ArrayDeque"] retain];
 	return self;
 }
 
@@ -84,19 +74,26 @@
  @param encoder An archiver object.
  */
 - (void) encodeWithCoder:(NSCoder *)encoder {
-	[encoder encodeObject:array forKey:@"ArrayQueue"];
+	[encoder encodeObject:array forKey:@"ArrayDeque"];
 }
 
-#pragma mark Queue Implementation
+#pragma mark Deque Implementation
 
-- (void) addObject: (id)anObject {
+- (void) prependObject:(id)anObject {
+	if (anObject == nil)
+		nilArgumentException([self class], _cmd);
+	else
+		[array insertObject:anObject atIndex:0];
+}
+
+- (void) appendObject:(id)anObject {
 	if (anObject == nil)
 		nilArgumentException([self class], _cmd);
 	else
 		[array addObject:anObject];
 }
 
-- (id) nextObject {
+- (id) firstObject {
 	@try {
 		return [array objectAtIndex:0];
 	}
@@ -104,9 +101,24 @@
 	return nil;
 }
 
-- (void) removeNextObject {
+- (id) lastObject {
+	@try {
+		return [array lastObject];
+	}
+	@catch (NSException *exception) {}
+	return nil;
+}
+
+- (void) removeFirstObject {
 	@try {
 		[array removeObjectAtIndex:0];
+	}
+	@catch (NSException *exception) {}
+}
+
+- (void) removeLastObject {
+	@try {
+		[array removeLastObject];	
 	}
 	@catch (NSException *exception) {}
 }
@@ -135,7 +147,6 @@
 	return [array objectEnumerator];
 }
 
-// Additional method in this implementation
 - (NSEnumerator*) reverseObjectEnumerator {
 	return [array reverseObjectEnumerator];
 }
@@ -143,7 +154,7 @@
 #pragma mark <NSCopying> Methods
 
 - (id) copyWithZone:(NSZone *)zone {
-	return [[CHArrayQueue alloc] initWithArray:array];
+	return [[CHMutableArrayDeque alloc] initWithArray:array];
 }
 
 #pragma mark <NSFastEnumeration> Methods

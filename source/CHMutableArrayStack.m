@@ -19,12 +19,12 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *******************************/
 
-//  CHArrayDeque.m
+//  CHMutableArrayStack.m
 //  CHDataStructures.framework
 
-#import "CHArrayDeque.h"
+#import "CHMutableArrayStack.h"
 
-@implementation CHArrayDeque
+@implementation CHMutableArrayStack
 
 - (void) dealloc {
 	[array release];
@@ -52,6 +52,16 @@
 	return self;
 }
 
+// Additional method in this implementation
+- (id) initWithCapacity:(NSUInteger)capacity {
+	if ([super init] == nil) {
+		[self release];
+		return nil;
+	}
+	array = [[NSMutableArray alloc] initWithCapacity:capacity];
+	return self;
+}
+
 #pragma mark <NSCoding> methods
 
 /**
@@ -64,7 +74,7 @@
 		[self release];
 		return nil;
 	}
-	array = [[decoder decodeObjectForKey:@"ArrayDeque"] retain];
+	array = [[decoder decodeObjectForKey:@"ArrayStack"] retain];
 	return self;
 }
 
@@ -74,34 +84,19 @@
  @param encoder An archiver object.
  */
 - (void) encodeWithCoder:(NSCoder *)encoder {
-	[encoder encodeObject:array forKey:@"ArrayDeque"];
+	[encoder encodeObject:array forKey:@"ArrayStack"];
 }
 
-#pragma mark Deque Implementation
+#pragma mark Stack Implementation
 
-- (void) prependObject:(id)anObject {
-	if (anObject == nil)
-		nilArgumentException([self class], _cmd);
-	else
-		[array insertObject:anObject atIndex:0];
-}
-
-- (void) appendObject:(id)anObject {
+- (void) pushObject:(id)anObject {
 	if (anObject == nil)
 		nilArgumentException([self class], _cmd);
 	else
 		[array addObject:anObject];
 }
 
-- (id) firstObject {
-	@try {
-		return [array objectAtIndex:0];
-	}
-	@catch (NSException *exception) {}
-	return nil;
-}
-
-- (id) lastObject {
+- (id) topObject {
 	@try {
 		return [array lastObject];
 	}
@@ -109,14 +104,7 @@
 	return nil;
 }
 
-- (void) removeFirstObject {
-	@try {
-		[array removeObjectAtIndex:0];
-	}
-	@catch (NSException *exception) {}
-}
-
-- (void) removeLastObject {
+- (void) popObject {
 	@try {
 		[array removeLastObject];	
 	}
@@ -144,17 +132,18 @@
 }
 
 - (NSEnumerator*) objectEnumerator {
-	return [array objectEnumerator];
+	return [array reverseObjectEnumerator];  // top of stack is at the back
 }
 
+// Additional method in this implementation
 - (NSEnumerator*) reverseObjectEnumerator {
-	return [array reverseObjectEnumerator];
+	return [array objectEnumerator];         // bottom of stack is at the front
 }
 
 #pragma mark <NSCopying> Methods
 
 - (id) copyWithZone:(NSZone *)zone {
-	return [[CHArrayDeque alloc] initWithArray:array];
+	return [[CHMutableArrayStack alloc] initWithArray:array];
 }
 
 #pragma mark <NSFastEnumeration> Methods

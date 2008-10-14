@@ -19,31 +19,31 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *******************************/
 
-//  CHArrayStack.h
-//  CHDataStructures.framework
+//  CHMutableArrayQueue.h
+//  Data Structures Framework
 
 #import <Foundation/Foundation.h>
-#import "CHStack.h"
+#import "CHQueue.h"
 
 /**
- A simple CHStack implemented using an NSMutableArray.
- See the protocol definition for CHStack to understand the programming contract.
+ A simple CHQueue implemented using an NSMutableArray.
+ See the protocol definition for CHQueue to understand the programming contract.
  */
-@interface CHArrayStack : NSObject <CHStack>
+@interface CHMutableArrayQueue : NSObject <CHQueue>
 {
-	/** The array used for storing the contents of the stack. */
+	/** The array used for storing the contents of the queue. */
 	NSMutableArray *array;
 }
 
 /**
- Create a new stack starting with an NSMutableArray of the specified capacity.
+ Create a new queue starting with an NSMutableArray of the specified capacity.
  */
 - (id) initWithCapacity:(NSUInteger)capacity;
 
 /**
- Returns an enumerator that accesses each object in the stack from bottom to top.
+ Returns an enumerator that accesses each object in the queue from back to front.
  
- NOTE: When you use an enumerator, you must not modify the stack during enumeration.
+ NOTE: When you use an enumerator, you must not modify the queue during enumeration.
  */
 - (NSEnumerator*) reverseObjectEnumerator;
 

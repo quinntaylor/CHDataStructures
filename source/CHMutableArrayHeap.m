@@ -19,7 +19,7 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *******************************/
 
-//  CHArrayHeap.m
+//  CHMutableArrayHeap.m
 //  CHDataStructures.framework
 
 //  Copyright (c) 2002 Gordon Worley redbird@rbisland.cx
@@ -32,7 +32,7 @@
 //  - to reduce obj_c multiple messaging
 //  - converted bubbleup and bubbledown from Obj-C methods to static C functions.
 
-#import "CHArrayHeap.h"
+#import "CHMutableArrayHeap.h"
 
 #pragma mark C Functions for Optimized Operations
 
@@ -102,7 +102,7 @@ static void _bubbledown(NSMutableArray *heap) {
 
 #pragma mark -
 
-@implementation CHArrayHeap
+@implementation CHMutableArrayHeap
 
 - (id) init {
 	if ([super init] == nil) {

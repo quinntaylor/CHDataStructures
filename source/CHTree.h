@@ -94,7 +94,7 @@ typedef short CHTraversalOrder;
  </td></tr>
  </table>
  
- These orderings correspond to the following constants, also declared in Tree.h:
+ These orderings correspond to the following constants, also declared in CHTree.h:
  
  - <code>CHTraverseInOrder</code>
  - <code>CHTraverseReverseOrder</code>
