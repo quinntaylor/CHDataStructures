@@ -46,7 +46,7 @@
  receiver is less than, equal to, or greater than the argument, respectively. (See
  NSComparisonResult in NSObjCRuntime.h for details.) 
  
- @todo Add support for methods in NSCoding, NSMutableCopying, and NSFastEnumeration.
+ @todo Add support for NSCoding and NSCopying.
  */
 @protocol Heap <NSObject>
 

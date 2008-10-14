@@ -98,11 +98,4 @@
  I am very receptive to help, criticism, flames, whatever.
  
          &mdash; <a href="http://www.phillipmorelock.com/">Phillip Morelock</a>, 2002
-
- 
- 
- @todo Consider adding <code>-makeObjectsPerformSelector:</code> and
-       <code>-makeObjectsPerformSelector:withObject:</code>?
- 
- @todo Consider adding <code>-replaceObject:withObject:</code>
  */
