@@ -375,7 +375,7 @@ static struct CHUnbalancedTreeNode * _removeNode(struct CHUnbalancedTreeNode *no
 	
 	// TODO: Simplify object insertion
 	
-	NSInteger comparison;
+	NSComparisonResult comparison;
 	
 	struct CHUnbalancedTreeNode *parentNode, *currentNode = root;
 	while (currentNode != nil) {

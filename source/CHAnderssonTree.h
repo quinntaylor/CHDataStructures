@@ -33,7 +33,7 @@ typedef struct CHAnderssonTreeNode {
 	id object;		/**< The object stored in a particular node. */
 	struct CHAnderssonTreeNode *left;	/**< The left child node, if any. */
 	struct CHAnderssonTreeNode *right;	/**< The right child node, if any. */
-	NSInteger level;            /**< The level of this node in the AA-tree. */
+	NSUInteger level;            /**< The level of this node in the AA-tree. */
 } CHAnderssonTreeNode;
 
 /**

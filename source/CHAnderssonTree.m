@@ -40,18 +40,18 @@ static NSUInteger kATE_SIZE = sizeof(CH_ATE_NODE);
 
 #pragma mark - Stack Operations
 
-#define AATE_PUSH(o) {tmp=malloc(kATE_SIZE);tmp->node=o;tmp->next=stack;stack=tmp;}
-#define AATE_POP()   {if(stack!=NULL){tmp=stack;stack=stack->next;free(tmp);}}
-#define AATE_TOP     ((stack!=NULL)?stack->node:NULL)
+#define ATE_PUSH(o) {tmp=malloc(kATE_SIZE);tmp->node=o;tmp->next=stack;stack=tmp;}
+#define ATE_POP()   {if(stack!=NULL){tmp=stack;stack=stack->next;free(tmp);}}
+#define ATE_TOP     ((stack!=NULL)?stack->node:NULL)
 
 #pragma mark - Queue Operations
 
-#define AATE_ENQUEUE(o) {tmp=malloc(kATE_SIZE);tmp->node=o;tmp->next=NULL;\
+#define ATE_ENQUEUE(o) {tmp=malloc(kATE_SIZE);tmp->node=o;tmp->next=NULL;\
                          if(queue==NULL){queue=tmp;queueTail=tmp;}\
                          queueTail->next=tmp;queueTail=queueTail->next;}
-#define AATE_DEQUEUE()  {if(queue!=NULL){tmp=queue;queue=queue->next;free(tmp);}\
+#define ATE_DEQUEUE()  {if(queue!=NULL){tmp=queue;queue=queue->next;free(tmp);}\
                          if(queue==tmp)queue=NULL;if(queueTail==tmp)queueTail=NULL;}
-#define AATE_FRONT      ((queue!=NULL)?queue->node:NULL)
+#define ATE_FRONT      ((queue!=NULL)?queue->node:NULL)
 
 #pragma mark -
 
@@ -132,9 +132,9 @@ static NSUInteger kATE_SIZE = sizeof(CH_ATE_NODE);
 	stack = NULL;
 	traversalOrder = order;
 	if (traversalOrder == CHTraverseLevelOrder) {
-		AATE_ENQUEUE(root);
+		ATE_ENQUEUE(root);
 	} else if (traversalOrder == CHTraversePreOrder) {
-		AATE_PUSH(root);
+		ATE_PUSH(root);
 	} else {
 		currentNode = root;
 	}
@@ -158,15 +158,15 @@ static NSUInteger kATE_SIZE = sizeof(CH_ATE_NODE);
 		mutatedCollectionException([self class], _cmd);
 	switch (traversalOrder) {
 		case CHTraversePreOrder:
-			currentNode = AATE_TOP;
-			AATE_POP();
+			currentNode = ATE_TOP;
+			ATE_POP();
 			if (currentNode == NULL)
 				return nil;
 			if (currentNode->right != NULL) {
-				AATE_PUSH(currentNode->right);
+				ATE_PUSH(currentNode->right);
 			}
 			if (currentNode->left != NULL) {
-				AATE_PUSH(currentNode->left);
+				ATE_PUSH(currentNode->left);
 			}
 			return currentNode->object;
 			
@@ -174,12 +174,12 @@ static NSUInteger kATE_SIZE = sizeof(CH_ATE_NODE);
 			if (stack == NULL && currentNode == NULL)
 				return nil;
 			while (currentNode != NULL) {
-				AATE_PUSH(currentNode);
+				ATE_PUSH(currentNode);
 				currentNode = currentNode->left;
 				// TODO: How to not push/pop leaf nodes unnecessarily?
 			}
-			currentNode = AATE_TOP; // Save top node for return value
-			AATE_POP();
+			currentNode = ATE_TOP; // Save top node for return value
+			ATE_POP();
 			tempObject = currentNode->object;
 			currentNode = currentNode->right;
 			return tempObject;
@@ -188,12 +188,12 @@ static NSUInteger kATE_SIZE = sizeof(CH_ATE_NODE);
 			if (stack == NULL && currentNode == NULL)
 				return nil;
 			while (currentNode != NULL) {
-				AATE_PUSH(currentNode);
+				ATE_PUSH(currentNode);
 				currentNode = currentNode->right;
 				// TODO: How to not push/pop leaf nodes unnecessarily?
 			}
-			currentNode = AATE_TOP; // Save top node for return value
-			AATE_POP();
+			currentNode = ATE_TOP; // Save top node for return value
+			ATE_POP();
 			tempObject = currentNode->object;
 			currentNode = currentNode->left;
 			return tempObject;
@@ -204,33 +204,33 @@ static NSUInteger kATE_SIZE = sizeof(CH_ATE_NODE);
 				return nil;
 			while (1) {
 				while (currentNode != NULL) {
-					AATE_PUSH(currentNode);
+					ATE_PUSH(currentNode);
 					currentNode = currentNode->left;
 				}
 				// A null entry indicates that we've traversed the right subtree
-				if (AATE_TOP != NULL) {
-					currentNode = AATE_TOP->right;
-					AATE_PUSH(NULL);
+				if (ATE_TOP != NULL) {
+					currentNode = ATE_TOP->right;
+					ATE_PUSH(NULL);
 					// TODO: explore how to not use null pad for leaf nodes
 				}
 				else {
-					AATE_POP(); // ignore the null pad
-					tempObject = AATE_TOP->object;
-					AATE_POP();
+					ATE_POP(); // ignore the null pad
+					tempObject = ATE_TOP->object;
+					ATE_POP();
 					return tempObject;
 				}				
 			}
 			
 		case CHTraverseLevelOrder:
-			currentNode = AATE_FRONT;
+			currentNode = ATE_FRONT;
 			if (currentNode == NULL)
 				return nil;
-			AATE_DEQUEUE();
+			ATE_DEQUEUE();
 			if (currentNode->left != NULL) {
-				AATE_ENQUEUE(currentNode->left);
+				ATE_ENQUEUE(currentNode->left);
 			}
 			if (currentNode->right != NULL) {
-				AATE_ENQUEUE(currentNode->right);
+				ATE_ENQUEUE(currentNode->right);
 			}
 			return currentNode->object;
 			
@@ -360,16 +360,16 @@ void _split(CHAnderssonTreeNode *node) {
 	CH_ATE_NODE *queueTail = NULL;
 	CH_ATE_NODE *tmp;
 	
-	AATE_ENQUEUE(root);
+	ATE_ENQUEUE(root);
 	while (1) {
-		currentNode = AATE_FRONT;
+		currentNode = ATE_FRONT;
 		if (currentNode == NULL)
 			break;
-		AATE_DEQUEUE();
+		ATE_DEQUEUE();
 		if (currentNode->left != NULL)
-			AATE_ENQUEUE(currentNode->left);
+			ATE_ENQUEUE(currentNode->left);
 		if (currentNode->right != NULL)
-			AATE_ENQUEUE(currentNode->right);
+			ATE_ENQUEUE(currentNode->right);
 		[currentNode->object release];
 		free(currentNode);
 	}
@@ -415,12 +415,12 @@ void _split(CHAnderssonTreeNode *node) {
 	NSUInteger batchCount = 0;
 	while ( (currentNode != NULL || stack != NULL) && batchCount < len) {
 		while (currentNode != NULL) {
-			AATE_PUSH(currentNode);
+			ATE_PUSH(currentNode);
 			currentNode = currentNode->left;
 			// TODO: How to not push/pop leaf nodes unnecessarily?
 		}
-		currentNode = AATE_TOP; // Save top node for return value
-		AATE_POP();
+		currentNode = ATE_TOP; // Save top node for return value
+		ATE_POP();
 		stackbuf[batchCount] = currentNode->object;
 		currentNode = currentNode->right;
 		batchCount++;
