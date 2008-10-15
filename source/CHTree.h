@@ -118,12 +118,19 @@ typedef short CHTraversalOrder;
  <code>compare:</code> message. Since no duplicates are allowed, if the tree already
  has an object for which <code>compare:</code> returns <code>NSOrderedSame</code>,
  the old object is released and replaced by the new object.
+ 
+ @param anObject The object to add to the queue; must not be <code>nil</code>, or an
+        <code>NSInvalidArgumentException</code> will be raised.
  */
 - (void) addObject:(id)anObject;
 
 /**
  Determines if the tree contains a given object (or one identical to it). Matches are
  based on an object's response to the <code>isEqual:</code> message.
+
+ @param anObject The object to test for membership in the queue.
+ @return <code>YES</code> if <i>anObject</i> is present in the queue, <code>NO</code>
+         if it not present or <code>nil</code>.
  */
 - (BOOL) containsObject:(id)anObject;
 
@@ -158,10 +165,10 @@ typedef short CHTraversalOrder;
 - (id) findMin;
 
 /**
- Return the object for which <code>compare:</code> returns NSOrderedSame, or
- <code>nil</code> if no matching object is found.
+ Return the object for which <code>compare:</code> returns <code>NSOrderedSame</code>.
  
  @param anObject The object to be matched and located in the tree.
+ @return An object which matches @a anObject, or <code>nil</code> if none is found.
  */
 - (id) findObject:(id)anObject;
 
@@ -169,8 +176,10 @@ typedef short CHTraversalOrder;
  Remove an object from the tree (or one identical to it) if it exists. Matches are
  based on an object's response to the <code>isEqual:</code> message. If no matching
  object exists, there is no effect.
+
+ @param anObject The object to be matched and removed from the tree.
  */
-- (void) removeObject:(id)element;
+- (void) removeObject:(id)anObject;
 
 /**
  Remove all objects from the tree; if it is already empty, there is no effect.

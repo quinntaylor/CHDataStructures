@@ -28,9 +28,7 @@ static NSUInteger kUnbalancedTreeNodeSize = sizeof(CHUnbalancedTreeNode);
 
 #pragma mark Enumeration Struct & Macros
 
-/**
- A struct for use by CHUnbalancedTreeEnumerator to maintain traversal state.
- */
+// A struct for use by CHUnbalancedTreeEnumerator to maintain traversal state.
 typedef struct CH_UTE_NODE {
 	struct CHUnbalancedTreeNode *node;
 	struct CH_UTE_NODE *next;

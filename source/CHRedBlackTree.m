@@ -314,13 +314,14 @@ static CHRedBlackTreeNode * _rotateWithRightChild(CHRedBlackTreeNode *rightChild
 	[super dealloc];
 }
 
-/**
- Basically, as you walk down the tree to insert, if the present node has two red
- children, you color it red and change the two children to black. If its parent is
- red, you'll have to rotate the tree. (Just change the root's color back to black if
- you changed it). Returns NO only when a compare: == 0 object already exists in the tree
- */
 - (void) addObject:(id)object {
+	/*
+	 Basically, as you walk down the tree to insert, if the present node has two red
+	 children, you color it red and change the two children to black. If its parent is
+	 red, you'll have to rotate the tree. (Just change the root's color back to black if
+	 you changed it). Returns NO only when a compare: == 0 object already exists in the tree
+	 */
+
 	// TODO: Send -retain to the object when added
 
 	current = parent = grandparent = header;

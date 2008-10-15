@@ -28,9 +28,7 @@ static NSUInteger kCHAnderssonTreeNodeSize = sizeof(CHAnderssonTreeNode);
 
 #pragma mark Enumeration Struct & Macros
 
-/**
- A struct for use by CHAnderssonTreeEnumerator to maintain traversal state.
- */
+// A struct for use by CHAnderssonTreeEnumerator to maintain traversal state.
 typedef struct CH_ATE_NODE {
 	struct CHAnderssonTreeNode *node;
 	struct CH_ATE_NODE *next;

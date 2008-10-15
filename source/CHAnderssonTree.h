@@ -25,15 +25,12 @@
 #import <Foundation/Foundation.h>
 #import "CHAbstractTree.h"
 
-/**
- A node for use by CHAnderssonTree for internal storage and representation.
- Holds an obejct, 2 child links, and level within the tree.
- */
+// A node for use by CHAnderssonTree for internal storage and representation.
 typedef struct CHAnderssonTreeNode {
-	id object;		/**< The object stored in a particular node. */
-	struct CHAnderssonTreeNode *left;	/**< The left child node, if any. */
-	struct CHAnderssonTreeNode *right;	/**< The right child node, if any. */
-	NSUInteger level;            /**< The level of this node in the AA-tree. */
+	id object;		                   /**< The object stored in the node. */
+	struct CHAnderssonTreeNode *left;  /**< The left child node, if any. */
+	struct CHAnderssonTreeNode *right; /**< The right child node, if any. */
+	NSUInteger level;                  /**< The level of this node in the tree. */
 } CHAnderssonTreeNode;
 
 /**

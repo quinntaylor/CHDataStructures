@@ -25,10 +25,7 @@
 #import <Foundation/Foundation.h>
 #import "CHAbstractTree.h"
 
-/**
- A node for use by CHUnbalancedTree for internal storage and representation.
- Holds an obejct and link to 2 children and a parent.
- */
+// A node for use by CHUnbalancedTree for internal storage and representation.
 typedef struct CHUnbalancedTreeNode {
 	id object;		/**< The object stored in a particular node. */
 	struct CHUnbalancedTreeNode *left;	/**< The left child node, if any. */

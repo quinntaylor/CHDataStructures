@@ -30,11 +30,8 @@
 
 #pragma mark -
 
-/**
- A node for use by CHRedBlackTree for internal storage and representation.
- 
- @todo Replace getters/setters with Objective-C 2.0 properties, or class with struct.
- */
+// A node for use by CHRedBlackTree for internal storage and representation.
+// TODO: Replace getters/setters with Objective-C 2.0 properties, or class with struct.
 @interface CHRedBlackTreeNode : NSObject 
 {
 	BOOL color;

@@ -25,10 +25,7 @@
 #import <Foundation/Foundation.h>
 #import "CHLinkedList.h"
 
-/**
- A singly-linked struct for nodes use by CHSinglyLinkedList. Performance is much faster
- with a struct than with a proper object.
- */
+// A struct for nodes in a CHSinglyLinkedList. Performance is faster than an object.
 typedef struct CHSinglyLinkedListNode {
 	id object; /**< The object associated with this node in the list. */
 	struct CHSinglyLinkedListNode *next; /**< The next node in the list. */

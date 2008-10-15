@@ -25,10 +25,7 @@
 #import <Foundation/Foundation.h>
 #import "CHLinkedList.h"
 
-/**
- A doubly-linked struct for nodes use by CHDoublyLinkedList. Performance is faster
- with a struct than with a proper object.
- */
+// A struct for nodes in a CHDoublyLinkedList. Performance is faster than an object.
 typedef struct CHDoublyLinkedListNode {
 	id object; /**< The object associated with this node in the list. */
 	struct CHDoublyLinkedListNode *next; /**< The next node in the list. */
