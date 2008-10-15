@@ -24,14 +24,13 @@
 
 #import <Foundation/Foundation.h>
 #import "CHDeque.h"
+#import "CHAbstractListCollection.h"
 #import "CHDoublyLinkedList.h"
 
 /**
  A simple CHDeque implemented using a CHDoublyLinkedList.
  See the protocol definition for CHDeque to understand the programming contract.
  */
-@interface CHListDeque : NSObject <CHDeque> {
-	CHDoublyLinkedList *list;
-}
+@interface CHListDeque : CHAbstractListCollection <CHDeque>
 
 @end

@@ -24,14 +24,12 @@
 
 #import <Foundation/Foundation.h>
 #import "CHQueue.h"
+#import "CHAbstractListCollection.h"
 #import "CHSinglyLinkedList.h"
 
 /**
  A simple CHQueue implemented using a CHSinglyLinkedList.
  */
-@interface CHListQueue : NSObject <CHQueue>
-{
-	CHSinglyLinkedList *list;
-}
+@interface CHListQueue : CHAbstractListCollection <CHQueue>
 
 @end

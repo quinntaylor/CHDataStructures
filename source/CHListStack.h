@@ -24,15 +24,12 @@
 
 #import <Foundation/Foundation.h>
 #import "CHStack.h"
+#import "CHAbstractListCollection.h"
 #import "CHSinglyLinkedList.h"
 
 /**
  A simple CHStack implemented using a CHSinglyLinkedList.
  */
-@interface CHListStack : NSObject <CHStack>
-{
-	/** The linked list used for storing the contents of the stack. */
-	CHSinglyLinkedList *list;
-}
+@interface CHListStack : CHAbstractListCollection <CHStack>
 
 @end

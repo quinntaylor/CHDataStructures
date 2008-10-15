@@ -24,27 +24,12 @@
 
 #import <Foundation/Foundation.h>
 #import "CHQueue.h"
+#import "CHAbstractMutableArrayCollection.h"
 
 /**
  A simple CHQueue implemented using an NSMutableArray.
  See the protocol definition for CHQueue to understand the programming contract.
  */
-@interface CHMutableArrayQueue : NSObject <CHQueue>
-{
-	/** The array used for storing the contents of the queue. */
-	NSMutableArray *array;
-}
-
-/**
- Create a new queue starting with an NSMutableArray of the specified capacity.
- */
-- (id) initWithCapacity:(NSUInteger)capacity;
-
-/**
- Returns an enumerator that accesses each object in the queue from back to front.
- 
- NOTE: When you use an enumerator, you must not modify the queue during enumeration.
- */
-- (NSEnumerator*) reverseObjectEnumerator;
+@interface CHMutableArrayQueue : CHAbstractMutableArrayCollection <CHQueue>
 
 @end

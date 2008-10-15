@@ -31,11 +31,6 @@
  */
 @implementation CHListStack
 
-- (void) dealloc {
-	[list release];
-	[super dealloc];
-}
-
 - (id) init {
 	if ([super init] == nil) {
 		[self release];
@@ -45,44 +40,7 @@
 	return self;
 }
 
-/**
- Private initializer for NSCopying; makes a mutable copy of the array
- */
-- (id) initWithList:(id<CHLinkedList>)aList {
-	if ([super init] == nil) {
-		[self release];
-		return nil;
-	}
-	list = [aList copyWithZone:nil];
-	return self;
-}
-
-#pragma mark <NSCoding> methods
-
-/**
- Returns an object initialized from data in a given unarchiver.
- 
- @param decoder An unarchiver object.
- */
-- (id) initWithCoder:(NSCoder *)decoder {
-	if ([super init] == nil) {
-		[self release];
-		return nil;
-	}
-	list = [[decoder decodeObjectForKey:@"ListStack"] retain];
-	return self;
-}
-
-/**
- Encodes the receiver using a given archiver.
- 
- @param encoder An archiver object.
- */
-- (void) encodeWithCoder:(NSCoder *)encoder {
-	[encoder encodeObject:list forKey:@"ListStack"];
-}
-
-#pragma mark CHStack Implementation
+// TODO: Add a custom -initWithList: to create a new CHSinglyLinkedList with contents
 
 - (void) pushObject:(id)anObject {
 	if (anObject == nil)
@@ -97,45 +55,6 @@
 
 - (void) popObject {
 	[list removeFirstObject];
-}
-
-- (void) removeAllObjects {
-	[list removeAllObjects];
-}
-
-- (NSArray*) allObjects {
-	return [list allObjects];
-}
-
-- (NSUInteger) count {
-	return [list count];
-}
-
-- (BOOL) containsObject:(id)anObject {
-	return [list containsObject:anObject];
-}
-
-- (BOOL) containsObjectIdenticalTo:(id)anObject {
-	return [list containsObjectIdenticalTo:anObject];
-}
-
-- (NSEnumerator*) objectEnumerator {
-	return [list objectEnumerator];
-}
-
-#pragma mark <NSCopying> Methods
-
-- (id) copyWithZone:(NSZone *)zone {
-	return [[CHListStack alloc] initWithList:list];
-}
-
-#pragma mark <NSFastEnumeration> Methods
-
-- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState*)state
-                                  objects:(id*)stackbuf
-                                    count:(NSUInteger)len
-{
-	return [list countByEnumeratingWithState:state objects:stackbuf count:len];
 }
 
 @end

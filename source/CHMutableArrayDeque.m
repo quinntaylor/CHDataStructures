@@ -26,59 +26,6 @@
 
 @implementation CHMutableArrayDeque
 
-- (void) dealloc {
-	[array release];
-	[super dealloc];
-}
-
-- (id) init {
-	if ([super init] == nil) {
-		[self release];
-		return nil;
-	}
-	array = [[NSMutableArray alloc] init];
-	return self;
-}
-
-/**
- Private initializer for NSCopying; makes a mutable copy of the array
- */
-- (id) initWithArray:(NSArray*)anArray {
-	if ([super init] == nil) {
-		[self release];
-		return nil;
-	}
-	array = [anArray mutableCopy];
-	return self;
-}
-
-#pragma mark <NSCoding> methods
-
-/**
- Returns an object initialized from data in a given unarchiver.
- 
- @param decoder An unarchiver object.
- */
-- (id) initWithCoder:(NSCoder *)decoder {
-	if ([super init] == nil) {
-		[self release];
-		return nil;
-	}
-	array = [[decoder decodeObjectForKey:@"ArrayDeque"] retain];
-	return self;
-}
-
-/**
- Encodes the receiver using a given archiver.
- 
- @param encoder An archiver object.
- */
-- (void) encodeWithCoder:(NSCoder *)encoder {
-	[encoder encodeObject:array forKey:@"ArrayDeque"];
-}
-
-#pragma mark Deque Implementation
-
 - (void) prependObject:(id)anObject {
 	if (anObject == nil)
 		nilArgumentException([self class], _cmd);
@@ -121,49 +68,6 @@
 		[array removeLastObject];	
 	}
 	@catch (NSException *exception) {}
-}
-
-- (void) removeAllObjects {
-	[array removeAllObjects];
-}
-
-- (NSArray*) allObjects {
-	return [array copy];
-}
-
-- (NSUInteger) count {
-	return [array count];
-}
-
-- (BOOL) containsObject:(id)anObject {
-	return [array containsObject:anObject];
-}
-
-- (BOOL) containsObjectIdenticalTo:(id)anObject {
-	return ([array indexOfObjectIdenticalTo:anObject] != NSNotFound);
-}
-
-- (NSEnumerator*) objectEnumerator {
-	return [array objectEnumerator];
-}
-
-- (NSEnumerator*) reverseObjectEnumerator {
-	return [array reverseObjectEnumerator];
-}
-
-#pragma mark <NSCopying> Methods
-
-- (id) copyWithZone:(NSZone *)zone {
-	return [[CHMutableArrayDeque alloc] initWithArray:array];
-}
-
-#pragma mark <NSFastEnumeration> Methods
-
-- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState*)state
-                                  objects:(id*)stackbuf
-                                    count:(NSUInteger)len
-{
-	return [array countByEnumeratingWithState:state objects:stackbuf count:len];
 }
 
 @end

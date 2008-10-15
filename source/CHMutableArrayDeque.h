@@ -24,13 +24,12 @@
 
 #import <Foundation/Foundation.h>
 #import "CHDeque.h"
+#import "CHAbstractMutableArrayCollection.h"
 
 /**
  A simple CHDeque implemented using an NSMutableArray.
  See the protocol definition for CHDeque to understand the programming contract.
  */
-@interface CHMutableArrayDeque : NSObject <CHDeque> {
-	NSMutableArray *array;
-}
+@interface CHMutableArrayDeque : CHAbstractMutableArrayCollection <CHDeque>
 
 @end

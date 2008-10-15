@@ -24,27 +24,12 @@
 
 #import <Foundation/Foundation.h>
 #import "CHStack.h"
+#import "CHAbstractMutableArrayCollection.h"
 
 /**
  A simple CHStack implemented using an NSMutableArray.
  See the protocol definition for CHStack to understand the programming contract.
  */
-@interface CHMutableArrayStack : NSObject <CHStack>
-{
-	/** The array used for storing the contents of the stack. */
-	NSMutableArray *array;
-}
-
-/**
- Create a new stack starting with an NSMutableArray of the specified capacity.
- */
-- (id) initWithCapacity:(NSUInteger)capacity;
-
-/**
- Returns an enumerator that accesses each object in the stack from bottom to top.
- 
- NOTE: When you use an enumerator, you must not modify the stack during enumeration.
- */
-- (NSEnumerator*) reverseObjectEnumerator;
+@interface CHMutableArrayStack : CHAbstractMutableArrayCollection <CHStack>
 
 @end

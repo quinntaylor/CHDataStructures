@@ -155,6 +155,7 @@
 /**
  Returns the lowest indexof a given object, matched using <code>isEqual:</code>.
  
+ @param anObject The object to be matched and located in the tree.
  @return The index of the first object which is equal to @a anObject. If none of the
          objects in the list is equal to @a anObject, returns <code>NSNotFound</code>.
  */
@@ -163,6 +164,7 @@
 /**
  Returns the lowest indexof a given object, matched using the == operator.
  
+ @param anObject The object to be matched and located in the tree.
  @return The index of the first object which is equal to @a anObject. If none of the
          objects in the list is equal to @a anObject, returns <code>NSNotFound</code>.
  */
