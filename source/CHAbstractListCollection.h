@@ -36,6 +36,7 @@
  - NSFastEnumeration
  
  This class also contains concrete implementations for the following methods:
+ 
  <pre><code>
  -(NSUInteger) count
  -(NSString*) description
@@ -49,6 +50,9 @@
  -(NSUInteger) indexOfObjectIdenticalTo:
  -(id) objectAtIndex:
  </code></pre>
+
+ Rather than enforcing that this class be abstract, the contract is implied. In any
+ case, instances of this class will be useless since there is no way to add objects.
  */
 @interface CHAbstractListCollection : NSObject
 	<NSCoding, NSCopying, NSMutableCopying, NSFastEnumeration>
@@ -62,7 +66,8 @@
  */
 - (id) initWithList:(id<CHLinkedList>)aList;
 
-// These method declarations cause duplicate documentation, but avoid build warnings.
+// These methods are undocumented here so they don't cause duplicated documentation.
+// For details, see the subclasses of this class, or CHDeque, CHQueue, and CHStack.
 
 - (NSUInteger) count;
 - (NSEnumerator*) objectEnumerator;

@@ -35,6 +35,7 @@
  - NSFastEnumeration
  
  This class also contains concrete implementations for the following methods:
+ 
  <pre><code>
  -(NSUInteger) count
  -(NSString*) description
@@ -49,6 +50,9 @@
  -(NSUInteger) indexOfObjectIdenticalTo:
  -(id) objectAtIndex:
  </code></pre>
+
+ Rather than enforcing that this class be abstract, the contract is implied. In any
+ case, instances of this class will be useless since there is no way to add objects.
  */
 @interface CHAbstractMutableArrayCollection : NSObject
 	<NSCoding, NSCopying, NSMutableCopying, NSFastEnumeration>
@@ -66,7 +70,6 @@
  Create a new collection starting with an NSMutableArray of the specified capacity.
  */
 - (id) initWithCapacity:(NSUInteger)capacity;
-
 
 // These methods are undocumented here so they don't cause duplicated documentation.
 // For details, see the subclasses of this class, or CHDeque, CHQueue, and CHStack.
