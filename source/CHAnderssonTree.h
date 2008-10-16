@@ -27,7 +27,7 @@
 
 // A node for use by CHAnderssonTree for internal storage and representation.
 typedef struct CHAnderssonTreeNode {
-	id object;		                   /**< The object stored in the node. */
+	id object;                         /**< The object stored in the node. */
 	struct CHAnderssonTreeNode *left;  /**< The left child node, if any. */
 	struct CHAnderssonTreeNode *right; /**< The right child node, if any. */
 	NSUInteger level;                  /**< The level of this node in the tree. */

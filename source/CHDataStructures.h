@@ -25,7 +25,7 @@
 /**
  @file CHDataStructures.h
  
- An umbrella header which imports all the header files included in the framework.
+ An umbrella header which imports the important header files from the framework.
  */
 
 #import <Foundation/Foundation.h>
@@ -40,7 +40,6 @@
 
 // Classes
 #import "CHAnderssonTree.h"
-#import "CHAbstractTree.h"
 #import "CHDoublyLinkedList.h"
 #import "CHListDeque.h"
 #import "CHListQueue.h"

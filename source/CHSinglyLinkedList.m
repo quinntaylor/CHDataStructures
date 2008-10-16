@@ -135,6 +135,10 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 	return self;
 }
 
+- (NSString*) description {
+	return [[self allObjects] description];
+}
+
 #pragma mark <NSCoding> methods
 
 /**
@@ -441,15 +445,17 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 }
 
 - (void) removeAllObjects {
-	CHSinglyLinkedListNode *temp;
-	while (head != NULL) {
-		temp = head;
-		head = head->next;
-		[temp->object release];
-		free(temp);
+	if (listSize > 0) {
+		CHSinglyLinkedListNode *temp;
+		while (head != NULL) {
+			temp = head;
+			head = head->next;
+			[temp->object release];
+			free(temp);
+		}
+		tail = NULL;
+		listSize = 0;
 	}
-	tail = NULL;
-	listSize = 0;
 	++mutations;
 }
 

@@ -387,9 +387,9 @@ void _split(CHAnderssonTreeNode *node) {
 
 #pragma mark <NSFastEnumeration> Methods
 
-- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState*)state
-                                  objects:(id*)stackbuf
-                                    count:(NSUInteger)len
+- (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
+                                   objects:(id*)stackbuf
+                                     count:(NSUInteger)len
 {
 	CHAnderssonTreeNode *currentNode;
 	CH_ATE_NODE *stack, *tmp; 

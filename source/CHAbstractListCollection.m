@@ -109,9 +109,9 @@
  @param len The maximum number of objects to return in stackbuf.
  @return The number of objects returned in stackbuf, or 0 when iteration is finished.
  */
-- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState*)state
-                                  objects:(id*)stackbuf
-                                    count:(NSUInteger)len
+- (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
+                                   objects:(id*)stackbuf
+                                     count:(NSUInteger)len
 {
 	return [list countByEnumeratingWithState:state objects:stackbuf count:len];
 }

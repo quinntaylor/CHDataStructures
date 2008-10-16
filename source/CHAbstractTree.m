@@ -158,9 +158,9 @@
  @param len The maximum number of objects to return in <i>stackbuf</i>.
  @return The number of objects copied into the <i>stackbuf</i> array.
  */
-- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState*)state
-                                  objects:(id*)stackbuf
-                                    count:(NSUInteger)len
+- (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
+                                   objects:(id*)stackbuf
+                                     count:(NSUInteger)len
 {
 	unsupportedOperationException([self class], _cmd);
 	return 0;
