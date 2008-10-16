@@ -21,4 +21,8 @@
 	[stack release];
 }
 
+- (void) testTset {
+	
+}
+
 @end
