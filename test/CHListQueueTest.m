@@ -35,14 +35,13 @@
 }
 
 - (void) testNextObjectAndRemoveNextObject {
+	// this will be a very thorough first pass
 	for (id object in testArray)
 		[queue addObject:object];
 	
 	STAssertEquals([queue count], 9u, @"-count is incorrect.");
 	STAssertEqualObjects([queue nextObject], @"A", @"-nextObject is wrong.");
-	STAssertEquals([queue count], 9u, @"-count is incorrect.");
 	STAssertEqualObjects([queue nextObject], @"A", @"-nextObject is wrong.");
-	STAssertEquals([queue count], 9u, @"-count is incorrect.");
 	STAssertEqualObjects([queue nextObject], @"A", @"-nextObject is wrong.");
 	STAssertEquals([queue count], 9u, @"-count is incorrect.");
 	[queue removeNextObject];
@@ -60,7 +59,6 @@
 	[queue removeNextObject];
 	STAssertEquals([queue count], 5u, @"-count is incorrect.");
 	STAssertEqualObjects([queue nextObject], @"E", @"-nextObject is wrong.");
-	STAssertEquals([queue count], 5u, @"-count is incorrect.");
 	STAssertEqualObjects([queue nextObject], @"E", @"-nextObject is wrong.");
 	STAssertEquals([queue count], 5u, @"-count is incorrect.");
 	[queue removeNextObject];
@@ -78,7 +76,6 @@
 	[queue removeNextObject];
 	STAssertEquals([queue count], 1u, @"-count is incorrect.");
 	STAssertEqualObjects([queue nextObject], @"I", @"-nextObject is wrong.");
-	STAssertEquals([queue count], 1u, @"-count is incorrect.");
 	STAssertEqualObjects([queue nextObject], @"I", @"-nextObject is wrong.");
 	STAssertEquals([queue count], 1u, @"-count is incorrect.");
 	[queue removeNextObject];
@@ -90,59 +87,54 @@
 	STAssertNil([queue nextObject], @"-nextObject should return nil.");
 	STAssertEquals([queue count], 0u, @"-count is incorrect.");
 	
-	// test it with a differnt order of objects
+	// now test it with a differnt order of objects
 	for (id object in [testArray reverseObjectEnumerator])
 		[queue addObject:object];
 	
 	STAssertEquals([queue count], 9u, @"-count is incorrect.");
 	STAssertEqualObjects([queue nextObject], @"I", @"-nextObject is wrong.");
-	STAssertEquals([queue count], 9u, @"-count is incorrect.");
-	STAssertEqualObjects([queue nextObject], @"I", @"-nextObject is wrong.");
-	STAssertEquals([queue count], 9u, @"-count is incorrect.");
-	STAssertEqualObjects([queue nextObject], @"I", @"-nextObject is wrong.");
-	STAssertEquals([queue count], 9u, @"-count is incorrect.");
 	[queue removeNextObject];
-	STAssertEquals([queue count], 8u, @"-count is incorrect.");
 	STAssertEqualObjects([queue nextObject], @"H", @"-nextObject is wrong.");
-	STAssertEquals([queue count], 8u, @"-count is incorrect.");
 	[queue removeNextObject];
-	STAssertEquals([queue count], 7u, @"-count is incorrect.");
 	STAssertEqualObjects([queue nextObject], @"G", @"-nextObject is wrong.");
-	STAssertEquals([queue count], 7u, @"-count is incorrect.");
 	[queue removeNextObject];
-	STAssertEquals([queue count], 6u, @"-count is incorrect.");
 	STAssertEqualObjects([queue nextObject], @"F", @"-nextObject is wrong.");
-	STAssertEquals([queue count], 6u, @"-count is incorrect.");
 	[queue removeNextObject];
-	STAssertEquals([queue count], 5u, @"-count is incorrect.");
 	STAssertEqualObjects([queue nextObject], @"E", @"-nextObject is wrong.");
-	STAssertEquals([queue count], 5u, @"-count is incorrect.");
-	STAssertEqualObjects([queue nextObject], @"E", @"-nextObject is wrong.");
-	STAssertEquals([queue count], 5u, @"-count is incorrect.");
 	[queue removeNextObject];
 	STAssertEquals([queue count], 4u, @"-count is incorrect.");
+	
+	// throw some in the middle
+	for (id object in testArray)
+		[queue addObject:object];
+	
+	STAssertEquals([queue count], 13u, @"-count is incorrect.");
 	STAssertEqualObjects([queue nextObject], @"D", @"-nextObject is wrong.");
-	STAssertEquals([queue count], 4u, @"-count is incorrect.");
 	[queue removeNextObject];
-	STAssertEquals([queue count], 3u, @"-count is incorrect.");
 	STAssertEqualObjects([queue nextObject], @"C", @"-nextObject is wrong.");
-	STAssertEquals([queue count], 3u, @"-count is incorrect.");
 	[queue removeNextObject];
-	STAssertEquals([queue count], 2u, @"-count is incorrect.");
 	STAssertEqualObjects([queue nextObject], @"B", @"-nextObject is wrong.");
-	STAssertEquals([queue count], 2u, @"-count is incorrect.");
 	[queue removeNextObject];
-	STAssertEquals([queue count], 1u, @"-count is incorrect.");
 	STAssertEqualObjects([queue nextObject], @"A", @"-nextObject is wrong.");
-	STAssertEquals([queue count], 1u, @"-count is incorrect.");
+	[queue removeNextObject];
 	STAssertEqualObjects([queue nextObject], @"A", @"-nextObject is wrong.");
-	STAssertEquals([queue count], 1u, @"-count is incorrect.");
 	[queue removeNextObject];
-	STAssertEquals([queue count], 0u, @"-count is incorrect.");
-	STAssertNil([queue nextObject], @"-nextObject should return nil.");
-	STAssertEquals([queue count], 0u, @"-count is incorrect.");
+	STAssertEqualObjects([queue nextObject], @"B", @"-nextObject is wrong.");
 	[queue removeNextObject];
-	STAssertEquals([queue count], 0u, @"-count is incorrect.");
+	STAssertEqualObjects([queue nextObject], @"C", @"-nextObject is wrong.");
+	[queue removeNextObject];
+	STAssertEqualObjects([queue nextObject], @"D", @"-nextObject is wrong.");
+	[queue removeNextObject];
+	STAssertEqualObjects([queue nextObject], @"E", @"-nextObject is wrong.");
+	[queue removeNextObject];
+	STAssertEqualObjects([queue nextObject], @"F", @"-nextObject is wrong.");
+	[queue removeNextObject];
+	STAssertEqualObjects([queue nextObject], @"G", @"-nextObject is wrong.");
+	[queue removeNextObject];
+	STAssertEqualObjects([queue nextObject], @"H", @"-nextObject is wrong.");
+	[queue removeNextObject];
+	STAssertEqualObjects([queue nextObject], @"I", @"-nextObject is wrong.");
+	[queue removeNextObject];
 	STAssertNil([queue nextObject], @"-nextObject should return nil.");
 	STAssertEquals([queue count], 0u, @"-count is incorrect.");
 }
