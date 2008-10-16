@@ -35,7 +35,7 @@
 		[array addObject:anObject];
 }
 
-- (id) nextObject {
+- (id) firstObject {
 	@try {
 		return [array objectAtIndex:0];
 	}
@@ -43,7 +43,7 @@
 	return nil;
 }
 
-- (void) removeNextObject {
+- (void) removeFirstObject {
 	@try {
 		[array removeObjectAtIndex:0];
 	}

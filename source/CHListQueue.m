@@ -49,11 +49,11 @@
 		[list appendObject:anObject];
 }
 
-- (id) nextObject {
+- (id) firstObject {
 	return [list firstObject];
 }
 
-- (void) removeNextObject {
+- (void) removeFirstObject {
 	[list removeFirstObject];
 }
 

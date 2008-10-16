@@ -41,8 +41,8 @@
  A queue is commonly compared to waiting in line. When objects are added, they go to
  the back of the line, and objects are always removed from the front of the line.
  These actions are accomplished using @link #addObject: -addObject:\endlink
- and @link #removeNextObject -removeNextObject\endlink, respectively. The frontmost
- bject may be examined (without removing) using @link #nextObject -nextObject\endlink.
+ and @link #removeFirstObject -removeFirstObject\endlink, respectively. The frontmost
+ object may be examined (not removed) using @link #firstObject -firstObject\endlink.
  */
 @protocol CHQueue <NSObject, NSCoding, NSCopying, NSFastEnumeration>
 
@@ -64,12 +64,12 @@
  
  @return The frontmost object in the queue, or <code>nil</code> if the queue is empty.
  */
-- (id) nextObject;
+- (id) firstObject;
 
 /**
  Remove the front object in the queue; if it is already empty, there is no effect.
  */
-- (void) removeNextObject;
+- (void) removeFirstObject;
 
 /**
  Remove all objects from the queue; if it is already empty, there is no effect.
