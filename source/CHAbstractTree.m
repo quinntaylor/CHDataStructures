@@ -85,8 +85,7 @@
 	for (id object in [self objectEnumeratorWithTraversalOrder:order]) {
 		[array addObject:object];
 	}
-	return [array autorelease];
-	// Document that the returned object is mutable? Return immutable copy instead?
+	return [array autorelease]; // Currently a mutable array, but doesn't affect tree
 }
 
 - (NSSet*) contentsAsSet {

@@ -32,7 +32,6 @@
  
  - NSCoding
  - NSCopying
- - NSMutableCopying
  - NSFastEnumeration
  
  This class also contains concrete implementations for the following methods:
@@ -55,7 +54,7 @@
  case, instances of this class will be useless since there is no way to add objects.
  */
 @interface CHAbstractListCollection : NSObject
-	<NSCoding, NSCopying, NSMutableCopying, NSFastEnumeration>
+	<NSCoding, NSCopying, NSFastEnumeration>
 {
 	/** The linked list used for storing the contents of the data collection. */
 	id<CHLinkedList> list;

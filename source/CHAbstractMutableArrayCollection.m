@@ -99,22 +99,6 @@
 	return [[[self class] alloc] initWithArray:array];
 }
 
-#pragma mark <NSMutableCopying>
-
-/**
- Returns a new instance that is a mutablecopy of the receiver.
- 
- @param zone The zone identifies an area of memory from which to allocate for the new
-        instance. If zone is <code>NULL</code>, the instance is allocated from the
-        default zone, returned from the function <code>NSDefaultMallocZone</code>.
- 
- The returned object is implicitly retained by the sender, which is responsible for
- releasing it. The copy returned is mutable whether the original is mutable or not.
- */
-- (id) mutableCopyWithZone:(NSZone *)zone {
-	return [[[self class] alloc] initWithArray:array];
-}
-
 #pragma mark <NSFastEnumeration> Methods
 
 /**
