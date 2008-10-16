@@ -40,8 +40,6 @@
 	return self;
 }
 
-// TODO: Add a custom -initWithList: to create a new CHSinglyLinkedList with contents
-
 - (void) addObject:(id)anObject {
 	if (anObject == nil)
 		nilArgumentException([self class], _cmd);

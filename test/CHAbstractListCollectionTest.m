@@ -4,10 +4,12 @@
 #import <SenTestingKit/SenTestingKit.h>
 #import "CHAbstractListCollection.h"
 #import "CHSinglyLinkedList.h"
+#import "CHDoublyLinkedList.h"
 
 @interface CHAbstractListCollection (Test)
 
 - (void) addObject:(id)anObject;
+- (id<CHLinkedList>) list;
 
 @end
 
@@ -24,6 +26,10 @@
 
 - (void) addObject:(id)anObject {
 	[list appendObject:anObject];
+}
+
+- (id<CHLinkedList>) list {
+	return list;
 }
 
 @end
@@ -50,6 +56,38 @@
 
 - (void) testInit {
 	STAssertNotNil(collection, @"collection should not be nil");
+}
+
+- (void) testInitWithList {
+	[collection release];
+	
+	CHDoublyLinkedList *aListS = [[CHDoublyLinkedList alloc] init];
+	[aListS appendObject:@"A"];
+	[aListS appendObject:@"B"];
+	[aListS appendObject:@"C"];
+	collection = [[CHAbstractListCollection alloc] initWithList:aListS];
+	[aListS release];
+	
+	STAssertTrue([[collection list] isMemberOfClass:[CHSinglyLinkedList class]], @"Failed to create a singly linked list");
+	NSEnumerator *enumerator = [collection objectEnumerator];
+	STAssertEqualObjects([enumerator nextObject], @"A", @"-nextObject is wrong");
+	STAssertEqualObjects([enumerator nextObject], @"B", @"-nextObject is wrong");
+	STAssertEqualObjects([enumerator nextObject], @"C", @"-nextObject is wrong");
+	STAssertNil([enumerator nextObject], @"-nextObject should return Nil");
+	
+	CHSinglyLinkedList *aListD = [[CHSinglyLinkedList alloc] init];
+	[aListD appendObject:@"A"];
+	[aListD appendObject:@"B"];
+	[aListD appendObject:@"C"];
+	collection = [[CHAbstractListCollection alloc] initWithList:aListD];
+	[aListD release];
+	
+	STAssertTrue([[collection list] isMemberOfClass:[CHSinglyLinkedList class]], @"Failed to create a singly linked list");
+	enumerator = [collection objectEnumerator];
+	STAssertEqualObjects([enumerator nextObject], @"A", @"-nextObject is wrong");
+	STAssertEqualObjects([enumerator nextObject], @"B", @"-nextObject is wrong");
+	STAssertEqualObjects([enumerator nextObject], @"C", @"-nextObject is wrong");
+	STAssertNil([enumerator nextObject], @"-nextObject should return Nil");
 }
 
 - (void) testCount {

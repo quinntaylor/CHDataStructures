@@ -42,8 +42,6 @@
 	return self;
 }
 
-// TODO: Add a custom -initWithList: to create a new CHDoublyLinkedList with contents
-
 - (void) prependObject:(id)anObject {
 	if (anObject == nil)
 		nilArgumentException([self class], _cmd);

@@ -32,11 +32,10 @@
 }
 
 - (id) initWithList:(id<CHLinkedList>)aList {
-	if ([super init] == nil) {
-		[self release];
+	if ([self init] == nil)
 		return nil;
-	}
-	list = [aList copyWithZone:nil];
+	for (id anObject in aList)
+		[list appendObject:anObject];
 	return self;
 }
 
