@@ -22,9 +22,6 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *******************************/
 
-//  Copyright (c) 2002 Gordon Worley redbird@rbisland.cx
-//  Edits and refactoring by Phillip Morelock for library integration and performance. 
-
 #import <Foundation/Foundation.h>
 #import "CHHeap.h"
 #import "CHAbstractMutableArrayCollection.h"

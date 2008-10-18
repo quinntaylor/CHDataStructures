@@ -22,10 +22,6 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *******************************/
 
-//  Copyright (c) 2002 Gordon Worley redbird@rbisland.cx
-//  Minor contributions by Phillip Morelock for purposes of library integration.
-//  Many thanks to Gordon for the very first outside contribution to the library!
-
 /**
  @file CHHeap.h
  
@@ -114,6 +110,31 @@
 - (NSArray*) allObjects;
 
 /**
+ Returns the number of objects currently in the heap.
+ 
+ @return The number of objects currently in the heap.
+ */
+- (NSUInteger) count;
+
+/**
+ Determines if a heap contains a given object, matched using <code>isEqual:</code>.
+ 
+ @param anObject The object to test for membership in the heap.
+ @return <code>YES</code> if <i>anObject</i> is present in the heap, <code>NO</code>
+         if it not present or <code>nil</code>.
+ */
+- (BOOL) containsObject:(id)anObject;
+
+/**
+ Determines if a heap contains a given object, matched using the == operator.
+ 
+ @param anObject The object to test for membership in the heap.
+ @return <code>YES</code> if <i>anObject</i> is present in the heap, <code>NO</code>
+         if it not present or <code>nil</code>.
+ */
+- (BOOL) containsObjectIdenticalTo:(id)anObject;
+
+/**
  Returns an enumerator that accesses each object in the heap in sorted order. Uses
  the NSArray returned by #allObjects for enumeration, so all the same caveats apply.
  
@@ -124,22 +145,5 @@
  @see #allObjects
  */
 - (NSEnumerator*) objectEnumerator;
-	
-
-/**
- Returns the number of objects currently in the heap.
- 
- @return The number of objects currently in the heap.
- */
-- (NSUInteger) count;
-
-- (BOOL) containsObject:(id)anObject;
-
-- (BOOL) containsObjectIdenticalTo:(id)anObject;
-
-
-// NOTE: For a future release:
-
-//- (void) addObjectsFromHeap:(id<Heap>)otherHeap;
 
 @end

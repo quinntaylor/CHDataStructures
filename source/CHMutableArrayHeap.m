@@ -22,19 +22,7 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *******************************/
 
-//  Copyright (c) 2002 Gordon Worley redbird@rbisland.cx
-//  Contributions by Phillip Morelock for purposes of integration with the library.
-//  Many thanks to Gordon for the very first outside contribution to the library!
-
-//  Additions by Phillip Morelock Apr 03 2002
-//  - fine-tuned memory management / object releases, etc.
-//  - replaced some internal method calls with the "straight call" so as
-//  - to reduce obj-c multiple messaging
-//  - converted bubbleup and bubbledown from Obj-C methods to static C functions.
-
 #import "CHMutableArrayHeap.h"
-
-#pragma mark -
 
 @implementation CHMutableArrayHeap
 
