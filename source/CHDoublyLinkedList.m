@@ -81,10 +81,8 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 - (id) initWithStartNode:(CHDoublyLinkedListNode*)startNode
          mutationPointer:(unsigned long*)mutations
 {
-	if ([super init] == nil) {
-		[self release];
+	if ([super init] == nil)
 		return nil;
-	}
 	current = startNode; // If startNode is NULL, nothing will be returned, anyway.
 	if (startNode != NULL)
 		reverse = (startNode->next == nil) ? YES : NO;
@@ -141,10 +139,8 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 }
 
 - (id) init {
-	if ([super init] == nil) {
-		[self release];
+	if ([super init] == nil)
 		return nil;
-	}
 	head = NULL;
 	tail = NULL;
 	listSize = 0;
@@ -164,10 +160,8 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
  @param decoder An unarchiver object.
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super init] == nil) {
-		[self release];
+	if ([super init] == nil)
 		return nil;
-	}
 	for (id anObject in [decoder decodeObjectForKey:@"objects"])
 		[self appendObject:anObject];
 	return self;

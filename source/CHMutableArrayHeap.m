@@ -42,12 +42,9 @@
 }
 
 - (id) initWithOrdering:(NSComparisonResult)order array:(NSArray*)anArray {
-	if ([super init] == nil) {
-		[self release];
+	if ([super init] == nil)
 		return nil;
-	}
 	if (order != NSOrderedAscending && order != NSOrderedDescending) {
-		[self release];
 		[NSException raise:NSInvalidArgumentException
 		            format:@"Must provide a valid sort ordering."];
 		return nil;
@@ -62,10 +59,8 @@
 #pragma mark <NSCoding> methods
 
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super initWithCoder:decoder] == nil) {
-		[self release];
+	if ([super initWithCoder:decoder] == nil)
 		return nil;
-	}
 	sortOrder = [decoder decodeIntForKey:@"sortOrder"];
 	return self;
 }

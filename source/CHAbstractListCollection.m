@@ -47,10 +47,8 @@
  @param decoder An unarchiver object.
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super init] == nil) {
-		[self release];
+	if ([super init] == nil)
 		return nil;
-	}
 	list = [[decoder decodeObjectForKey:@"list"] retain];
 	return self;
 }

@@ -32,10 +32,8 @@
 @implementation CHListStack
 
 - (id) init {
-	if ([super init] == nil) {
-		[self release];
+	if ([super init] == nil)
 		return nil;
-	}
 	list = [[CHSinglyLinkedList alloc] init];
 	return self;
 }

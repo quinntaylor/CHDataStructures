@@ -122,10 +122,8 @@ static NSUInteger kUTE_SIZE = sizeof(CH_UTE_NODE);
      traversalOrder:(CHTraversalOrder)order
     mutationPointer:(unsigned long*)mutations
 {
-	if ([super init] == nil || !isValidTraversalOrder(order)) {
-		[self release];
+	if ([super init] == nil || !isValidTraversalOrder(order))
 		return nil;
-	}
 	stack = NULL;
 	traversalOrder = order;
 	if (traversalOrder == CHTraverseLevelOrder) {
@@ -341,10 +339,8 @@ static struct CHUnbalancedTreeNode * _removeNode(struct CHUnbalancedTreeNode *no
 @implementation CHUnbalancedTree
 
 - (id) init {
-	if ([super init] == nil) {
-		[self release];
+	if ([super init] == nil)
 		return nil;
-	}
 	root = NULL;
 	return self;
 }

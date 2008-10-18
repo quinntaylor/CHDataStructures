@@ -123,10 +123,8 @@ static NSUInteger kATE_SIZE = sizeof(CH_ATE_NODE);
      traversalOrder:(CHTraversalOrder)order
     mutationPointer:(unsigned long*)mutations
 {
-	if ([super init] == nil || !isValidTraversalOrder(order)) {
-		[self release];
+	if ([super init] == nil || !isValidTraversalOrder(order))
 		return nil;
-	}
 	stack = NULL;
 	traversalOrder = order;
 	if (traversalOrder == CHTraverseLevelOrder) {
@@ -283,10 +281,8 @@ void _split(CHAnderssonTreeNode *node) {
 #pragma mark - Public Methods
 
 - (id) init {
-	if ([super init] == nil) {
-		[self release];
+	if ([super init] == nil)
 		return nil;
-	}
 	root = NULL;
 	return self;
 }

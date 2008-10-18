@@ -38,16 +38,12 @@
             withLeft:(CHRedBlackTreeNode*)theLeft
            withRight:(CHRedBlackTreeNode*)theRight
 {
-	if ([super init] == nil) {
-		[self release];
+	if ([super init] == nil)
 		return nil;
-	}
-	
 	color = nBLACK;
 	object = [theObject retain];
 	left = [theLeft retain];
 	right = [theRight retain];
-	
 	return self;
 }
 
@@ -157,10 +153,8 @@
      traversalOrder:(CHTraversalOrder)order
     mutationPointer:(unsigned long*)mutations
 {
-	if ([super init] == nil || !isValidTraversalOrder(order)) {
-		[self release];
+	if ([super init] == nil || !isValidTraversalOrder(order))
 		return nil;
-	}
 //	currentNode = ___;
 	traversalOrder = order;
 	beenLeft = YES;
@@ -292,19 +286,14 @@ static CHRedBlackTreeNode * _rotateWithRightChild(CHRedBlackTreeNode *rightChild
 #pragma mark - Public Methods
 
 - (id) init {
-	if ([super init] == nil) {
-		[self release];
+	if ([super init] == nil)
 		return nil;
-	}
-	
 	sentinel = [[CHRedBlackTreeNode alloc] init];
 	[sentinel setLeft:sentinel];
 	[sentinel setRight:sentinel];
-	
 	header = [[CHRedBlackTreeNode alloc] init];
 	[header setLeft:sentinel];
 	[header setRight:sentinel];
-	
 	return self;
 }
 
