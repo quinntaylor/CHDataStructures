@@ -116,6 +116,11 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 #define findNodeBeforeIndex(i) \
         { node=head; nodeIndex=1; while(i>nodeIndex++) node=node->next; }
 
+// Remove the node with a matching object, steal its 'next' link for my own
+#define removeNode(node) \
+        { temp = node->next; node->next = temp->next; \
+        [temp->object release]; free(temp); --listSize; ++mutations;}
+
 @implementation CHSinglyLinkedList
 
 - (void) dealloc {
@@ -385,19 +390,15 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 		[self removeFirstObject];
 		return;
 	}
-	CHSinglyLinkedListNode *node = head;
-	// Iterate until the next node contains the object to remove, or is nil
-	while (node->next != NULL && ![node->next->object isEqual:anObject])
-		node = node->next;
-	if (node->next != NULL) {
-		// Remove the node with a matching object, steal its 'next' link for my own
-		CHSinglyLinkedListNode *temp = node->next;
-		node->next = temp->next;
-		[temp->object release];
-		free(temp);
-		--listSize;
-		++mutations;
-	}
+	CHSinglyLinkedListNode *node = head, *temp;
+	do {
+		// Iterate until the next node contains the object to remove, or is nil
+		while (node->next != NULL && ![node->next->object isEqual:anObject])
+			node = node->next;
+		if (node->next != NULL)
+			removeNode(node); // ++mutations
+	} while (node->next != NULL);
+	++mutations;
 }
 
 - (void) removeObjectIdenticalTo:(id)anObject {
@@ -407,19 +408,15 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 		[self removeFirstObject];
 		return;
 	}
-	CHSinglyLinkedListNode *node = head;
-	// Iterate until the next node contains the object to remove, or is nil
-	while (node->next != NULL && node->next->object != anObject)
-		node = node->next;
-	if (node->next != NULL) {
-		// Remove the node with a matching object, steal its 'next' link for my own
-		CHSinglyLinkedListNode *temp = node->next;
-		node->next = temp->next;
-		[temp->object release];
-		free(temp);
-		--listSize;
-		++mutations;
-	}	
+	CHSinglyLinkedListNode *node = head, *temp;
+	do {
+		// Iterate until the next node contains the object to remove, or is nil
+		while (node->next != NULL && node->next->object != anObject)
+			node = node->next;
+		if (node->next != NULL)
+			removeNode(node); // ++mutations
+	} while (node->next != NULL);
+	++mutations;
 }
 
 - (void) removeObjectAtIndex:(NSUInteger)index {
@@ -429,18 +426,12 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 	if (index == 0)
 		[self removeFirstObject];
 	else {
-		CHSinglyLinkedListNode *node;
+		CHSinglyLinkedListNode *node, *temp;
 		NSUInteger nodeIndex;
 		findNodeBeforeIndex(index);
-		
-		CHSinglyLinkedListNode *old = node->next;
-		node->next = old->next;
-		if (tail == old)
+		removeNode(node); // ++mutations, assigns the node being removed to 'temp'
+		if (tail == temp)
 			tail = node;
-		[old->object release];
-		free(old);
-		--listSize;
-		++mutations;		
 	}
 }
 

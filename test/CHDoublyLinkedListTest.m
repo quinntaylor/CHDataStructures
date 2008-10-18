@@ -184,6 +184,21 @@
 	STAssertEquals([list count], 0u, @"-count is incorrect.");
 	STAssertNil([list firstObject], @"-firstObject should return nil.");
 	STAssertNil([list lastObject], @"-lastObject should return nil.");
+	
+	// Test removing all instances of an object	
+	[list appendObject:@"A"];
+	[list appendObject:@"Z"];
+	[list appendObject:@"B"];
+	[list appendObject:@"Z"];
+	[list appendObject:@"Z"];
+	[list appendObject:@"C"];
+	
+	STAssertEquals([list count], 6u, @"-count is incorrect.");
+	[list removeObject:@"Z"];
+	STAssertEquals([list count], 3u, @"-count is incorrect.");
+	STAssertEqualObjects([list objectAtIndex:0], @"A", @"Wrong object at index.");
+	STAssertEqualObjects([list objectAtIndex:1], @"B", @"Wrong object at index.");
+	STAssertEqualObjects([list objectAtIndex:2], @"C", @"Wrong object at index.");	
 }
 
 - (void) testRemoveObjectIdenticalTo {
@@ -194,6 +209,22 @@
 	STAssertEquals([list count], 1u, @"-count is incorrect.");
 	[list removeObjectIdenticalTo:a];
 	STAssertEquals([list count], 0u, @"-count is incorrect.");
+	
+	// Test removing all instances of an object
+	[list appendObject:@"A"];
+	[list appendObject:@"Z"];
+	[list appendObject:@"B"];
+	[list appendObject:@"Z"];
+	[list appendObject:@"C"];
+	[list appendObject:[NSString stringWithFormat:@"Z"]];
+	
+	STAssertEquals([list count], 6u, @"-count is incorrect.");
+	[list removeObjectIdenticalTo:@"Z"];
+	STAssertEquals([list count], 4u, @"-count is incorrect.");
+	STAssertEqualObjects([list objectAtIndex:0], @"A", @"Wrong object at index.");
+	STAssertEqualObjects([list objectAtIndex:1], @"B", @"Wrong object at index.");
+	STAssertEqualObjects([list objectAtIndex:2], @"C", @"Wrong object at index.");	
+	STAssertEqualObjects([list objectAtIndex:3], @"Z", @"Wrong object at index.");
 }
 
 - (void) testRemoveObjectAtIndex {

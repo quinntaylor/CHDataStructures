@@ -128,8 +128,7 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
         }
 
 // Remove the node with a matching object, patch prev/next links around it
-#define removeNodeFromMiddle(node) \
-        if (node != NULL) { \
+#define removeNodeFromMiddle(node) { \
         if (node->prev) node->prev->next = node->next; \
         if (node->next) node->next->prev = node->prev; \
         [node->object release]; free(node); --listSize; ++mutations; }
@@ -405,10 +404,16 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 		[self removeFirstObject];
 		return;
 	}
-	CHDoublyLinkedListNode *node = head;
-	while (node != NULL && ![node->object isEqual:anObject])
-		node = node->next;
-	removeNodeFromMiddle(node); // checks for NULL node
+	CHDoublyLinkedListNode *node = head, *temp;
+	do {
+		while (node != NULL && ![node->object isEqual:anObject])
+			node = node->next;
+		if (node != NULL) {
+			temp = node->next;
+			removeNodeFromMiddle(node);
+			node = temp;
+		}
+	} while (node != NULL);
 }
 
 - (void) removeObjectIdenticalTo:(id)anObject {
@@ -418,10 +423,16 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 		[self removeFirstObject];
 		return;
 	}
-	CHDoublyLinkedListNode *node = head;
-	while (node != NULL && node->object != anObject)
-		node = node->next;
-	removeNodeFromMiddle(node); // checks for NULL node
+	CHDoublyLinkedListNode *node = head, *temp;
+	do {
+		while (node != NULL && node->object != anObject)
+			node = node->next;
+		if (node != NULL) {
+			temp = node->next;
+			removeNodeFromMiddle(node);
+			node = temp;
+		}
+	} while (node != NULL);
 }
 
 - (void) removeObjectAtIndex:(NSUInteger)index {
@@ -436,7 +447,8 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 		CHDoublyLinkedListNode *node;
 		NSUInteger nodeIndex;
 		findNodeAtIndex(index);
-		removeNodeFromMiddle(node);
+		if (node != NULL)
+			removeNodeFromMiddle(node);
 	}
 }
 

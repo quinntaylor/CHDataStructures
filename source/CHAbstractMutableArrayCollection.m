@@ -141,16 +141,16 @@
 	return [array objectAtIndex:index];
 }
 
-- (NSArray*) allObjects {
-	return [[array copy] autorelease];
-}
-
 - (void) removeObject:(id)anObject {
 	[array removeObject:anObject];
 }
 
 - (void) removeAllObjects {
 	[array removeAllObjects];
+}
+
+- (NSArray*) allObjects {
+	return [[array copy] autorelease];
 }
 
 - (NSEnumerator*) objectEnumerator {

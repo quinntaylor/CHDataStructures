@@ -198,6 +198,9 @@
 
  If the list does not contain <i>anObject</i>, the method has no effect (although it
  does incur the overhead of searching the contents).
+ 
+ If you want to remove only the first object which matches <i>anObject</i>, use
+ #indexOfObject: and #removeObjectAtIndex: instead.
  */
 - (void) removeObject:(id)anObject;
 
@@ -208,6 +211,9 @@
  
  If the list does not contain <i>anObject</i>, the method has no effect (although it
  does incur the overhead of searching the contents).
+ 
+ If you want to remove only the first object which matches <i>anObject</i>, use
+ #indexOfObjectIdenticalTo: and #removeObjectAtIndex: instead.
  */
 - (void) removeObjectIdenticalTo:(id)anObject;
 
