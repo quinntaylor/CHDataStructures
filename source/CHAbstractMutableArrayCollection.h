@@ -41,6 +41,7 @@
  -(NSEnumerator*) objectEnumerator
  -(NSEnumerator*) reverseObjectEnumerator
  -(NSArray*) allObjects
+ -(void) removeObject:
  -(void) removeAllObjects
  
  -(BOOL) containsObject:
@@ -71,6 +72,7 @@
 - (NSEnumerator*) reverseObjectEnumerator;
 - (NSArray*) allObjects;
 - (void) removeAllObjects;
+- (void) removeObject:(id)anObject;
 
 - (BOOL) containsObject:(id)anObject;
 - (BOOL) containsObjectIdenticalTo:(id)anObject;

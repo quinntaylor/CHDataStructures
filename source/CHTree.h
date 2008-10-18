@@ -177,7 +177,7 @@ typedef short CHTraversalOrder;
  based on an object's response to the <code>isEqual:</code> message. If no matching
  object exists, there is no effect.
 
- @param anObject The object to be matched and removed from the tree.
+ @param anObject The object to be removed from the tree.
  */
 - (void) removeObject:(id)anObject;
 

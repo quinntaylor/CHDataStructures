@@ -92,16 +92,12 @@
 	// Currently (in Leopard) the NSEnumerators from NSArray only return 1 each time
 	if (state->state == 0) {
 		// Create a sorted array to use for enumeration, and store it in the state.
-		NSArray *sorted = [self allObjects];
-		state->extra[4] = (unsigned long)sorted;
-		NSUInteger count = [sorted countByEnumeratingWithState:state objects:stackbuf count:len];
-		state->mutationsPtr = &mutations; // point state to mutations for heap array
-		return count;
+		state->extra[4] = (unsigned long) [self allObjects];
 	}
-	else {
-		NSArray *sorted = (NSArray*) state->extra[4];
-		return [sorted countByEnumeratingWithState:state objects:stackbuf count:len];
-	}
+	NSArray *sorted = (NSArray*) state->extra[4];
+	NSUInteger count = [sorted countByEnumeratingWithState:state objects:stackbuf count:len];
+	state->mutationsPtr = &mutations; // point state to mutations for heap array
+	return count;
 }
 
 #pragma mark -
@@ -171,7 +167,7 @@
 				parentIndex = leftIndex;
 			}
 			else
-				parentIndex = arraySize;			
+				parentIndex = arraySize;	
 		}
 		else {
 			if ([parent compare:rightChild] != sortOrder) {
@@ -184,17 +180,22 @@
 	}
 }
 
+- (void) removeObject:(id)anObject {
+	[array removeObject:anObject];
+	++mutations;
+}
+
+- (void) removeAllObjects {
+	[array removeAllObjects];
+	++mutations;
+}
+
 - (NSArray*) allObjects {
 	NSSortDescriptor *desc = [[[NSSortDescriptor alloc]
 	                              initWithKey:nil
 	                                ascending:(sortOrder == NSOrderedAscending)]
 	                          autorelease];
 	return [array sortedArrayUsingDescriptors:[NSArray arrayWithObject:desc]];
-}
-
-- (void) removeAllObjects {
-	[array removeAllObjects];
-	++mutations;
 }
 
 - (NSEnumerator*) objectEnumerator {

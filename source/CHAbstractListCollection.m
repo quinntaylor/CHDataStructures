@@ -125,12 +125,16 @@
 	return [list objectAtIndex:index];
 }
 
-- (NSArray*) allObjects {
-	return [list allObjects];
+- (void) removeObject:(id)anObject {
+	[list removeObject:anObject];
 }
 
 - (void) removeAllObjects {
 	[list removeAllObjects];
+}
+
+- (NSArray*) allObjects {
+	return [list allObjects];
 }
 
 - (NSEnumerator*) objectEnumerator {

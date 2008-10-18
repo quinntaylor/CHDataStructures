@@ -145,6 +145,10 @@
 	return [[array copy] autorelease];
 }
 
+- (void) removeObject:(id)anObject {
+	[array removeObject:anObject];
+}
+
 - (void) removeAllObjects {
 	[array removeAllObjects];
 }

@@ -93,6 +93,16 @@
 - (void) removeFirstObject;
 
 /**
+ Remove all occurrences of a given object, matched using <code>isEqual:</code>.
+ 
+ @param anObject The object to be removed from the heap.
+ 
+ If the heap does not contain <i>anObject</i>, the method has no effect (although it
+ does incur the overhead of searching the contents).
+ */
+- (void) removeObject:(id)anObject;
+
+/**
  Remove all objects from the heap; if it is already empty, there is no effect.
  */
 - (void) removeAllObjects;
