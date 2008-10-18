@@ -134,7 +134,7 @@ void benchmarkQueue(Class testClass) {
 		[queue release];
 	}
 	
-	printf("\removeFirstObject:  ");
+	printf("\nremoveFirstObject:  ");
 	for (items = 1; items <= limit; items *= 10) {
 		queue = [[testClass alloc] init];
 		for (item = 1; item <= items; item++)
@@ -262,6 +262,70 @@ void benchmarkStack(Class testClass) {
 	[pool drain];
 }
 
+void benchmarkHeap(Class testClass) {
+	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+	QuietLog(@"\n%@", testClass);
+
+	id<CHHeap> heap;
+	NSUInteger item, items;
+
+	printf("(Operation)         ");
+	for (items = 1; items <= limit; items *= 10) {
+		printf("\t%-8d", items);
+	}	
+	
+	printf("\naddObject:         ");
+	for (items = 1; items <= limit; items *= 10) {
+		heap = [[testClass alloc] init];
+		startTime = timestamp();
+		for (item = 1; item <= items; item++)
+			[heap addObject:[NSNumber numberWithUnsignedInteger:item]];
+		printf("\t%f", timestamp() - startTime);
+		[heap release];
+	}
+	
+	printf("\nremoveFirstObject:  ");
+	for (items = 1; items <= limit; items *= 10) {
+		heap = [[testClass alloc] init];
+		for (item = 1; item <= items; item++)
+			[heap addObject:[NSNumber numberWithUnsignedInteger:item]];
+		startTime = timestamp();
+		for (item = 1; item <= items; item++)
+			[heap removeFirstObject];
+		printf("\t%f", timestamp() - startTime);
+		[heap release];
+	}
+	
+	printf("\nNSEnumerator       ");
+	for (items = 1; items <= limit; items *= 10) {
+		heap = [[testClass alloc] init];
+		for (item = 1; item <= items; item++)
+			[heap addObject:[NSNumber numberWithUnsignedInteger:item]];
+		startTime = timestamp();
+		NSEnumerator *e = [heap objectEnumerator];
+		id object;
+		while ((object = [e nextObject]) != nil)
+			;
+		printf("\t%f", timestamp() - startTime);
+		[heap release];
+	}
+
+	printf("\nNSFastEnumeration  ");
+	for (items = 1; items <= limit; items *= 10) {
+		heap = [[testClass alloc] init];
+		for (item = 1; item <= items; item++)
+			[heap addObject:[NSNumber numberWithUnsignedInteger:item]];
+		startTime = timestamp();
+		for (id object in heap)
+			;
+		printf("\t%f", timestamp() - startTime);
+		[heap release];
+	}
+	
+	QuietLog(@"");
+	[pool drain];
+}
+
 void benchmarkTree(Class testClass) {
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 	QuietLog(@"\n%@", testClass);
@@ -287,6 +351,7 @@ void benchmarkTree(Class testClass) {
 		printf("\t%f", timestamp() - startTime);
 		[tree release];
 	}
+	
 	QuietLog(@"");
 	[pool drain];
 }
@@ -305,6 +370,9 @@ int main (int argc, const char * argv[]) {
 	QuietLog(@"\n<Stack> Implemenations");
 	benchmarkStack([CHMutableArrayStack class]);
 	benchmarkStack([CHListStack class]);
+
+	QuietLog(@"\n<Heap> Implemenations");
+	benchmarkHeap([CHMutableArrayHeap class]);
 
 //	QuietLog(@"\n<Tree> Implemenations");
 //	benchmarkTree([CHUnbalancedTree class]);
