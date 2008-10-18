@@ -47,7 +47,7 @@
 @protocol CHQueue <NSObject, NSCoding, NSCopying, NSFastEnumeration>
 
 /**
- Initialize a newly-allocated queue with no objects.
+ Initialize a queue with no objects.
  */
 - (id) init;
 

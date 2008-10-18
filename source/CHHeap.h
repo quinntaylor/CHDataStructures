@@ -48,12 +48,33 @@
  
  @todo Add support for NSCoding and NSCopying.
  */
-@protocol CHHeap <NSObject>
+@protocol CHHeap <NSObject, NSFastEnumeration>
 
 /**
- Initialize a newly-allocated heap with no objects.
+ Initialize a heap with ascending ordering and no objects.
  */
 - (id) init;
+
+/**
+ Initialize a heap with a given sort ordering and no objects.
+ 
+ @param order The sort order to use, either <code>NSOrderedAscending</code> or
+        <code>NSOrderedDescending</code>. The root element of the heap will be the
+        smallest or largest (according to <code>-compare:</code>), respectively.
+        For any other value, an <code>NSInvalidArgumentException</code> is raised.
+ */
+- (id) initWithOrdering:(NSComparisonResult)order;
+
+/**
+ Initialize a heap with a given sort ordering and objects from the given array.
+ 
+ @param order The sort order to use, either <code>NSOrderedAscending</code> or
+        <code>NSOrderedDescending</code>. The root element of the heap will be the
+        smallest or largest (according to <code>-compare:</code>), respectively.
+        For any other value, an <code>NSInvalidArgumentException</code> is raised.
+ @param anArray An array containing objects to be added to this heap.
+ */
+- (id) initWithOrdering:(NSComparisonResult)order array:(NSArray*)anArray;
 
 /**
  Insert a given object into the heap.
@@ -64,18 +85,46 @@
 - (void) addObject:(id)anObject;
 
 /**
- Remove and return the first element in the heap. Rearranges the remaining elements.
+ Examine the first object in the heap without removing it.
  
- @return The first element in the heap, or <code>nil</code> if the heap is empty.
+ @return The first object in the heap, or <code>nil</code> if the heap is empty.
  */
-- (id) removeRoot;
+- (id) firstObject;
 
 /**
- Remove and return the last element in the heap.
- 
- @return The last element in the heap, or <code>nil</code> if the heap is empty.
+ Remove the front object in the heap; if it is already empty, there is no effect.
  */
-- (id) removeLast;
+- (void) removeFirstObject;
+
+/**
+ Remove all objects from the heap; if it is already empty, there is no effect.
+ */
+- (void) removeAllObjects;
+
+/**
+ Returns an array containing the objects in this heap in sorted order.
+ 
+ NOTE: Since a heap structure is only "sorted" as elements are removed, this incurs
+ extra costs for sorting and storing the duplicate array, but does not affect the
+ order of elements in the heap itself.
+
+ @return An array containing the objects in this heap. If the heap is empty, the
+         array is also empty.
+ */
+- (NSArray*) allObjects;
+
+/**
+ Returns an enumerator that accesses each object in the heap in sorted order. Uses
+ the NSArray returned by #allObjects for enumeration, so all the same caveats apply.
+ 
+ @return An enumerator that accesses each object in the heap in sorted order.
+ 
+ NOTE: When you use an enumerator, you must not modify the heap during enumeration.
+ 
+ @see #allObjects
+ */
+- (NSEnumerator*) objectEnumerator;
+	
 
 /**
  Returns the number of objects currently in the heap.
@@ -84,9 +133,13 @@
  */
 - (NSUInteger) count;
 
+- (BOOL) containsObject:(id)anObject;
+
+- (BOOL) containsObjectIdenticalTo:(id)anObject;
+
+
 // NOTE: For a future release:
 
-//- (id) initWithSortOrder:(NSComparisonResult)sortOrder; // for min/max heaps
 //- (void) addObjectsFromHeap:(id<Heap>)otherHeap;
 
 @end

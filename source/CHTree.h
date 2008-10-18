@@ -109,7 +109,7 @@ typedef short CHTraversalOrder;
 @protocol CHTree <NSObject, NSCoding, NSCopying, NSFastEnumeration>
 
 /**
- Initialize a newly-allocated tree with no objects.
+ Initialize a tree with no objects.
  */
 - (id) init;
 

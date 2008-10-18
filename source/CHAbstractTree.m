@@ -53,7 +53,7 @@
 	}
 	count = 0;
 	mutations = 0;
-	for (id anObject in [decoder decodeObjectForKey:[self className]])
+	for (id anObject in [decoder decodeObjectForKey:@"objects"])
 		[self addObject:anObject];
 	return self;
 }
@@ -65,7 +65,7 @@
  */
 - (void) encodeWithCoder:(NSCoder *)encoder {
 	NSEnumerator *e = [self objectEnumeratorWithTraversalOrder:CHTraverseLevelOrder];
-	[encoder encodeObject:[e allObjects] forKey:[self className]];
+	[encoder encodeObject:[e allObjects] forKey:@"objects"];
 }
 
 #pragma mark <NSCopying> methods

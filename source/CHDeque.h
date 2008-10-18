@@ -39,7 +39,7 @@
 @protocol CHDeque <NSObject, NSCoding, NSCopying, NSFastEnumeration>
 
 /**
- Initialize a newly-allocated deque with no objects.
+ Initialize a deque with no objects.
  */
 - (id) init;
 

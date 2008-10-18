@@ -169,7 +169,7 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 		[self release];
 		return nil;
 	}
-	for (id anObject in [decoder decodeObjectForKey:@"DoublyLinkedList"])
+	for (id anObject in [decoder decodeObjectForKey:@"objects"])
 		[self appendObject:anObject];
 	return self;
 }
@@ -181,7 +181,7 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
  */
 - (void) encodeWithCoder:(NSCoder *)encoder {
 	NSArray *array = [[self objectEnumerator] allObjects];
-	[encoder encodeObject:array forKey:@"DoublyLinkedList"];
+	[encoder encodeObject:array forKey:@"objects"];
 }
 
 #pragma mark <NSCopying> Methods

@@ -51,7 +51,7 @@
 		[self release];
 		return nil;
 	}
-	list = [[decoder decodeObjectForKey:[self className]] retain];
+	list = [[decoder decodeObjectForKey:@"list"] retain];
 	return self;
 }
 
@@ -61,7 +61,7 @@
  @param encoder An archiver object.
  */
 - (void) encodeWithCoder:(NSCoder *)encoder {
-	[encoder encodeObject:list forKey:[self className]];
+	[encoder encodeObject:list forKey:@"list"];
 }
 
 #pragma mark <NSCopying> Methods

@@ -31,6 +31,9 @@
 	[super dealloc];
 }
 
+/**
+ Initialize a collection with no objects.
+ */
 - (id) init {
 	if ([super init] == nil) {
 		[self release];
@@ -40,6 +43,9 @@
 	return self;
 }
 
+/**
+ Initialize a collection with the contents of the given array.
+ */
 - (id) initWithArray:(NSArray*)anArray {
 	if ([super init] == nil) {
 		[self release];
@@ -49,19 +55,10 @@
 	return self;
 }
 
-- (id) initWithCapacity:(NSUInteger)capacity {
-	if ([super init] == nil) {
-		[self release];
-		return nil;
-	}
-	array = [[NSMutableArray alloc] initWithCapacity:capacity];
-	return self;
-}
-
 #pragma mark <NSCoding> methods
 
 /**
- Returns an object initialized from data in a given unarchiver.
+ Initialize a collection with data from a given unarchiver.
  
  @param decoder An unarchiver object.
  */
@@ -70,7 +67,7 @@
 		[self release];
 		return nil;
 	}
-	array = [[decoder decodeObjectForKey:[self className]] retain];
+	array = [[decoder decodeObjectForKey:@"array"] retain];
 	return self;
 }
 
@@ -80,7 +77,7 @@
  @param encoder An archiver object.
  */
 - (void) encodeWithCoder:(NSCoder *)encoder {
-	[encoder encodeObject:array forKey:[self className]];
+	[encoder encodeObject:array forKey:@"array"];
 }
 
 #pragma mark <NSCopying> Methods

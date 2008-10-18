@@ -57,7 +57,7 @@
 @protocol CHLinkedList <NSObject, NSCoding, NSCopying, NSFastEnumeration>
 
 /**
- Initialize a newly-allocated linked list with no objects.
+ Initialize a linked list with no objects.
  */
 - (id) init;
 

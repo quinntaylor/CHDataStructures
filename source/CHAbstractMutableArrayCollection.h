@@ -60,17 +60,10 @@
 	NSMutableArray *array;
 }
 
-/**
- Create a new collection with the contents of the given array.
- */
+- (id) init;
 - (id) initWithArray:(NSArray*)anArray;
 
-/**
- Create a new collection starting with an NSMutableArray of the specified capacity.
- */
-- (id) initWithCapacity:(NSUInteger)capacity;
-
-// These methods are undocumented here so they don't cause duplicated documentation.
+// The methods below are undocumented so they don't cause duplicated documentation.
 // For details, see the subclasses of this class, or CHDeque, CHQueue, and CHStack.
 
 - (NSUInteger) count;

@@ -151,7 +151,7 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 		[self release];
 		return nil;
 	}
-	for (id anObject in [decoder decodeObjectForKey:@"SinglyLinkedList"])
+	for (id anObject in [decoder decodeObjectForKey:@"objects"])
 		[self appendObject:anObject];
 	return self;
 }
@@ -163,7 +163,7 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
  */
 - (void) encodeWithCoder:(NSCoder *)encoder {
 	NSArray *array = [[self objectEnumerator] allObjects];
-	[encoder encodeObject:array forKey:@"SinglyLinkedList"];
+	[encoder encodeObject:array forKey:@"objects"];
 }
 
 #pragma mark <NSCopying> Methods

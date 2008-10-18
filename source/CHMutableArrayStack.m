@@ -66,9 +66,7 @@
 
 #pragma mark <NSFastEnumeration>
 
-/**
- This overridden method returns the array contents in reverse order, like a stack.
- */
+// This overridden method returns the array contents in reverse order, like a stack.
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len

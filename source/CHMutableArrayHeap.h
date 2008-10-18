@@ -27,14 +27,16 @@
 
 #import <Foundation/Foundation.h>
 #import "CHHeap.h"
+#import "CHAbstractMutableArrayCollection.h"
 
 /**
  A simple CHHeap implemented using an NSMutableArray.
  See the protocol definition for CHHeap to understand the programming contract.
  */
-@interface CHMutableArrayHeap : NSObject <CHHeap>
+@interface CHMutableArrayHeap : CHAbstractMutableArrayCollection <CHHeap>
 {
-	NSMutableArray *irep;
+	NSComparisonResult sortOrder;
+	unsigned long mutations; /**< Used to track mutations for NSFastEnumeration. */
 }
 
 @end

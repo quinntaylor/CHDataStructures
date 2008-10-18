@@ -29,131 +29,205 @@
 //  Additions by Phillip Morelock Apr 03 2002
 //  - fine-tuned memory management / object releases, etc.
 //  - replaced some internal method calls with the "straight call" so as
-//  - to reduce obj_c multiple messaging
+//  - to reduce obj-c multiple messaging
 //  - converted bubbleup and bubbledown from Obj-C methods to static C functions.
 
 #import "CHMutableArrayHeap.h"
-
-#pragma mark C Functions for Optimized Operations
-
-static void _bubbleup(NSMutableArray *heap) {
-	NSUInteger i, parent;
-	 
-	//get the last index...
-	i = [heap count] - 1;
-	
-	while (i > 0) {
-		parent = i / 2;
-		if ([[heap objectAtIndex:i] compare: [heap objectAtIndex:parent]] > 0) {
-			[heap exchangeObjectAtIndex:i withObjectAtIndex:parent];
-			i = parent;
-		}
-		else
-			i = 0;
-	}
-}
-
-static void _bubbledown(NSMutableArray *heap) {
-	NSUInteger parent = 0, lchild, rchild;
-	
-	while (parent < [heap count] / 2) {
-		lchild = parent * 2;
-		rchild = parent * 2 + 1;
-	
-		if ([heap objectAtIndex: lchild] != nil && [heap objectAtIndex: rchild] != nil) {
-			if ([[heap objectAtIndex: lchild] compare: [heap objectAtIndex: rchild]] > 0) {
-				if ([[heap objectAtIndex: lchild] compare: [heap objectAtIndex: parent]] > 0) {
-					[heap exchangeObjectAtIndex: lchild withObjectAtIndex: parent];
-					parent = lchild;
-				}
-				else
-					parent = [heap count];
-			}
-			else {
-				if ([[heap objectAtIndex: rchild] compare: [heap objectAtIndex: parent]] > 0) {
-					[heap exchangeObjectAtIndex: rchild withObjectAtIndex: parent];
-					parent = rchild;
-				}
-				else
-					parent = [heap count];
-			}
-		}
-		else if ([heap objectAtIndex: lchild]) {
-			if ([[heap objectAtIndex: lchild] compare: [heap objectAtIndex: parent]] > 0) {
-				[heap exchangeObjectAtIndex: lchild withObjectAtIndex: parent];
-				parent = lchild;
-			}
-			else
-				parent = [heap count];
-		}
-		else if ([heap objectAtIndex: rchild]) {
-			if ([[heap objectAtIndex: rchild] compare: [heap objectAtIndex: parent]] > 0) {
-				[heap exchangeObjectAtIndex: rchild withObjectAtIndex: parent];
-				parent = rchild;
-			}
-			else
-				parent = [heap count];
-		}
-		else
-			parent = [heap count];
-	}
-	
-}
 
 #pragma mark -
 
 @implementation CHMutableArrayHeap
 
 - (id) init {
+	return [self initWithOrdering:NSOrderedAscending array:nil];
+}
+
+/**
+ Initialize a heap with ascending ordering and objects from an array.
+ */
+- (id) initWithArray:(NSArray*)anArray {
+	return [self initWithOrdering:NSOrderedAscending array:anArray];
+}
+
+- (id) initWithOrdering:(NSComparisonResult)order {
+	return [self initWithOrdering:order array:nil];
+}
+
+- (id) initWithOrdering:(NSComparisonResult)order array:(NSArray*)anArray {
 	if ([super init] == nil) {
 		[self release];
 		return nil;
 	}
-	irep = [[NSMutableArray alloc] init];
+	if (order != NSOrderedAscending && order != NSOrderedDescending) {
+		[self release];
+		[NSException raise:NSInvalidArgumentException
+		            format:@"Must provide a valid sort ordering."];
+		return nil;
+	}
+	else
+		sortOrder = order;
+	for (id anObject in anArray)
+		[self addObject:anObject];
 	return self;
 }
 
-- (void) dealloc {
-	[irep release];
-	[super dealloc];
+#pragma mark <NSCoding> methods
+
+- (id) initWithCoder:(NSCoder *)decoder {
+	if ([super initWithCoder:decoder] == nil) {
+		[self release];
+		return nil;
+	}
+	sortOrder = [decoder decodeIntForKey:@"sortOrder"];
+	return self;
 }
 
-- (void) addObject:(id)anObject {
-	if (anObject == nil) {
-		[NSException raise:NSInvalidArgumentException
-					format:@"Object to be added cannot be nil."];
+- (void) encodeWithCoder:(NSCoder *)encoder {
+	[super encodeWithCoder:encoder];
+	[encoder encodeInt:sortOrder forKey:@"sortOrder"];
+}
+
+#pragma mark <NSCopying> Methods
+
+- (id) copyWithZone:(NSZone *)zone {
+	return [[[self class] alloc] initWithOrdering:sortOrder array:array];
+}
+
+#pragma mark <NSFastEnumeration>
+
+// This overridden method returns the heap contents in fully-sorted order.
+// Just as -objectEnumerator above, the first call incurs a hidden sorting cost.
+- (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
+                                   objects:(id*)stackbuf
+                                     count:(NSUInteger)len
+{
+	// Currently (in Leopard) the NSEnumerators from NSArray only return 1 each time
+	if (state->state == 0) {
+		// Create a sorted array to use for enumeration, and store it in the state.
+		NSArray *sorted = [self allObjects];
+		state->extra[4] = (unsigned long)sorted;
+		NSUInteger count = [sorted countByEnumeratingWithState:state objects:stackbuf count:len];
+		state->mutationsPtr = &mutations; // point state to mutations for heap array
+		return count;
 	}
 	else {
-		[irep addObject: anObject];
-		_bubbleup(irep);
+		NSArray *sorted = (NSArray*) state->extra[4];
+		return [sorted countByEnumeratingWithState:state objects:stackbuf count:len];
+	}
+}
+
+#pragma mark -
+
+- (void) addObject:(id)anObject {
+	if (anObject == nil)
+		nilArgumentException([self class], _cmd);
+	else {
+		++mutations;
+		[array addObject:anObject];
+		// Bubble the new object up the heap if necessary
+		NSUInteger parent;
+		NSUInteger i = [array count] - 1;
+		NSComparisonResult comparison;
+		
+		while (i > 0) {
+			parent = (i-1) / 2;
+			comparison = [[array objectAtIndex:parent] compare:[array objectAtIndex:i]];
+			if (comparison != sortOrder) {
+				[array exchangeObjectAtIndex:parent withObjectAtIndex:i];
+				i = parent;
+			}
+			else
+				break;
+		}
 	}	
 }
+
+- (id) firstObject {
+	@try {
+		return [array objectAtIndex:0];
+	}
+	@catch (NSException *exception) {}
+	return nil;
+}
 		
-- (id) removeRoot {
-	if ([irep count] == 0)
-		return nil;
+- (void) removeFirstObject {
+	NSUInteger arraySize = [array count];
+	@try {
+		[array exchangeObjectAtIndex:0 withObjectAtIndex:(arraySize-1)];
+		[array removeLastObject];
+		--arraySize;
+	}
+	@catch (NSException *exception) {
+		return;
+	}
+	++mutations;
+	// Bubble the new root node down until the heap property is again satisfied
+	id parent;
+	id leftChild;
+	id rightChild;
+	NSUInteger parentIndex = 0;
+	NSUInteger leftIndex;
+	NSUInteger rightIndex;
 
-	id obj = [[irep objectAtIndex: 0] retain];
-	[irep exchangeObjectAtIndex: 0 withObjectAtIndex: [irep count] - 1];
-	[irep removeLastObject];
-
-	_bubbledown(irep);
-	
-	return [obj autorelease];
+	while (parentIndex < arraySize / 2) {
+		leftIndex = parentIndex * 2 + 1;
+		rightIndex = parentIndex * 2 + 2;
+		
+		// Since a binary heap is always a complete tree, the left will never be nil.
+		parent = [array objectAtIndex:parentIndex];
+		leftChild = [array objectAtIndex:leftIndex];
+		rightChild = (rightIndex < arraySize) ? [array objectAtIndex:rightIndex] : nil;
+		if (rightChild == nil || [leftChild compare:rightChild] == sortOrder) {
+			if ([parent compare:leftChild] != sortOrder) {
+				[array exchangeObjectAtIndex:parentIndex withObjectAtIndex:leftIndex];
+				parentIndex = leftIndex;
+			}
+			else
+				parentIndex = arraySize;			
+		}
+		else {
+			if ([parent compare:rightChild] != sortOrder) {
+				[array exchangeObjectAtIndex:parentIndex withObjectAtIndex:rightIndex];
+				parentIndex = rightIndex;
+			}
+			else
+				parentIndex = arraySize;
+		}
+	}
 }
 
-- (id) removeLast {
-	if ([irep count] == 0)
-		return nil;
-	
-	id obj = [[irep lastObject] retain];
-	[irep removeLastObject];
-
-	return [obj autorelease];
+- (NSArray*) allObjects {
+	NSSortDescriptor *desc = [[[NSSortDescriptor alloc]
+	                              initWithKey:nil
+	                                ascending:(sortOrder == NSOrderedAscending)]
+	                          autorelease];
+	return [array sortedArrayUsingDescriptors:[NSArray arrayWithObject:desc]];
 }
 
-- (NSUInteger) count {
-	return [irep count];
+- (void) removeAllObjects {
+	[array removeAllObjects];
+	++mutations;
+}
+
+- (NSEnumerator*) objectEnumerator {
+	return [[self allObjects] objectEnumerator];
+}
+
+#pragma mark Unsupported Operations
+
+- (NSUInteger) indexOfObject:(id)anObject {
+	unsupportedOperationException([self class], _cmd);
+	return 0;
+}
+
+- (NSUInteger) indexOfObjectIdenticalTo:(id)anObject {
+	unsupportedOperationException([self class], _cmd);
+	return 0;
+}
+
+- (id) objectAtIndex:(NSUInteger)index {
+	unsupportedOperationException([self class], _cmd);
+	return nil;
 }
 
 @end

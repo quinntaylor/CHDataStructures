@@ -46,7 +46,7 @@
 @protocol CHStack <NSObject, NSCoding, NSCopying, NSFastEnumeration>
 
 /**
- Initialize a newly-allocated stack with no objects.
+ Initialize a stack with no objects.
  */
 - (id) init;
 
