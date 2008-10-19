@@ -34,6 +34,7 @@
 {
 	NSComparisonResult sortOrder;
 	unsigned long mutations; /**< Used to track mutations for NSFastEnumeration. */
+	NSArray *sortDescriptors;
 }
 
 @end

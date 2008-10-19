@@ -5,7 +5,7 @@
 #import <CHDataStructures/CHDataStructures.h>
 #import <sys/time.h>
 
-static NSUInteger limit = 1000000;
+static NSUInteger limit = 100000;
 struct timeval timeOfDay;
 static double startTime;
 
@@ -296,6 +296,16 @@ void benchmarkHeap(Class testClass) {
 		[heap release];
 	}
 	
+	printf("\nremoveAllObjects:  ");
+	for (items = 1; items <= limit; items *= 10) {
+		heap = [[testClass alloc] init];
+		for (item = 1; item <= items; item++)
+			[heap addObject:[NSNumber numberWithUnsignedInteger:item]];
+		startTime = timestamp();
+		[heap removeAllObjects];
+		printf("\t%f", timestamp() - startTime);
+		[heap release];
+	}
 	printf("\nNSEnumerator       ");
 	for (items = 1; items <= limit; items *= 10) {
 		heap = [[testClass alloc] init];
