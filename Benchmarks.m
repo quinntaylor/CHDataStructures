@@ -5,7 +5,8 @@
 #import <CHDataStructures/CHDataStructures.h>
 #import <sys/time.h>
 
-static NSUInteger limit = 100000;
+static NSMutableArray *testArrays;
+static NSUInteger item, arrayCount;
 struct timeval timeOfDay;
 static double startTime;
 
@@ -20,62 +21,63 @@ void benchmarkDeque(Class testClass) {
 	QuietLog(@"\n* %@", testClass);
 	
 	id<CHDeque> deque;
-	NSUInteger item, items;
 	
 	printf("(Operation)         ");
-	for (items = 1; items <= limit; items *= 10) {
-		printf("\t%-8d", items);
-	}	
+	for (NSArray *array in testArrays)
+		printf("\t%-8d", [array count]);
 
 	printf("\nprependObject:    ");
-	for (items = 1; items <= limit; items *= 10) {
+	for (NSArray *array in testArrays) {
 		deque = [[testClass alloc] init];
 		startTime = timestamp();
-		for (item = 1; item <= items; item++)
-			[deque prependObject:[NSNumber numberWithUnsignedInteger:item]];
+		for (id anObject in array)
+			[deque prependObject:anObject];
 		printf("\t%f", timestamp() - startTime);
 		[deque release];
 	}
 	
 	printf("\nappendObject:     ");
-	for (items = 1; items <= limit; items *= 10) {
+	for (NSArray *array in testArrays) {
 		deque = [[testClass alloc] init];
 		startTime = timestamp();
-		for (item = 1; item <= items; item++)
-			[deque appendObject:[NSNumber numberWithUnsignedInteger:item]];
+		for (id anObject in array)
+			[deque appendObject:anObject];
 		printf("\t%f", timestamp() - startTime);
 		[deque release];
 	}
 	
 	printf("\nremoveFirstObject: ");
-	for (items = 1; items <= limit; items *= 10) {
+	for (NSArray *array in testArrays) {
 		deque = [[testClass alloc] init];
-		for (item = 1; item <= items; item++)
-			[deque appendObject:[NSNumber numberWithUnsignedInteger:item]];
+		arrayCount = [array count];
+		for (id anObject in array)
+			[deque appendObject:anObject];
 		startTime = timestamp();
-		for (item = 1; item <= items; item++)
+		for (item = 1; item <= arrayCount; item++)
 			[deque removeFirstObject];
 		printf("\t%f", timestamp() - startTime);
 		[deque release];
 	}
 	
 	printf("\nremoveLastObject:  ");
-	for (items = 1; items <= limit; items *= 10) {
+	for (NSArray *array in testArrays) {
 		deque = [[testClass alloc] init];
-		for (item = 1; item <= items; item++)
-			[deque appendObject:[NSNumber numberWithUnsignedInteger:item]];
+		arrayCount = [array count];
+		for (id anObject in array)
+			[deque appendObject:anObject];
 		startTime = timestamp();
-		for (item = 1; item <= items; item++)
+		for (item = 1; item <= arrayCount; item++)
 			[deque removeLastObject];
 		printf("\t%f", timestamp() - startTime);
 		[deque release];
 	}
 
 	printf("\nremoveAllObjects:  ");
-	for (items = 1; items <= limit; items *= 10) {
+	for (NSArray *array in testArrays) {
 		deque = [[testClass alloc] init];
-		for (item = 1; item <= items; item++)
-			[deque appendObject:[NSNumber numberWithUnsignedInteger:item]];
+		arrayCount = [array count];
+		for (id anObject in array)
+			[deque appendObject:anObject];
 		startTime = timestamp();
 		[deque removeAllObjects];
 		printf("\t%f", timestamp() - startTime);
@@ -83,10 +85,11 @@ void benchmarkDeque(Class testClass) {
 	}
 
 	printf("\nNSEnumerator       ");
-	for (items = 1; items <= limit; items *= 10) {
+	for (NSArray *array in testArrays) {
 		deque = [[testClass alloc] init];
-		for (item = 1; item <= items; item++)
-			[deque appendObject:[NSNumber numberWithUnsignedInteger:item]];
+		arrayCount = [array count];
+		for (id anObject in array)
+			[deque appendObject:anObject];
 		startTime = timestamp();
 		NSEnumerator *e = [deque objectEnumerator];
 		id object;
@@ -97,10 +100,11 @@ void benchmarkDeque(Class testClass) {
 	}
 	
 	printf("\nNSFastEnumeration  ");
-	for (items = 1; items <= limit; items *= 10) {
+	for (NSArray *array in testArrays) {
 		deque = [[testClass alloc] init];
-		for (item = 1; item <= items; item++)
-			[deque appendObject:[NSNumber numberWithUnsignedInteger:item]];
+		arrayCount = [array count];
+		for (id anObject in array)
+			[deque appendObject:anObject];
 		startTime = timestamp();
 		for (id object in deque)
 			;
@@ -117,40 +121,39 @@ void benchmarkQueue(Class testClass) {
 	QuietLog(@"\n* %@", testClass);
 	
 	id<CHQueue> queue;
-	NSUInteger item, items;
 	
 	printf("(Operation)         ");
-	for (items = 1; items <= limit; items *= 10) {
-		printf("\t%-8d", items);
-	}	
+	for (NSArray *array in testArrays)
+		printf("\t%-8d", [array count]);
 	
 	printf("\naddObject:         ");
-	for (items = 1; items <= limit; items *= 10) {
+	for (NSArray *array in testArrays) {
 		queue = [[testClass alloc] init];
 		startTime = timestamp();
-		for (item = 1; item <= items; item++)
-			[queue addObject:[NSNumber numberWithUnsignedInteger:item]];
+		for (id anObject in array)
+			[queue addObject:anObject];
 		printf("\t%f", timestamp() - startTime);
 		[queue release];
 	}
 	
 	printf("\nremoveFirstObject:  ");
-	for (items = 1; items <= limit; items *= 10) {
+	for (NSArray *array in testArrays) {
 		queue = [[testClass alloc] init];
-		for (item = 1; item <= items; item++)
-			[queue addObject:[NSNumber numberWithUnsignedInteger:item]];
+		for (id anObject in array)
+			[queue addObject:anObject];
 		startTime = timestamp();
-		for (item = 1; item <= items; item++)
+		arrayCount = [array count];
+		for (item = 1; item <= arrayCount; item++)
 			[queue removeFirstObject];
 		printf("\t%f", timestamp() - startTime);
 		[queue release];
 	}
 	
 	printf("\nremoveAllObjects:  ");
-	for (items = 1; items <= limit; items *= 10) {
+	for (NSArray *array in testArrays) {
 		queue = [[testClass alloc] init];
-		for (item = 1; item <= items; item++)
-			[queue addObject:[NSNumber numberWithUnsignedInteger:item]];
+		for (id anObject in array)
+			[queue addObject:anObject];
 		startTime = timestamp();
 		[queue removeAllObjects];
 		printf("\t%f", timestamp() - startTime);
@@ -158,10 +161,10 @@ void benchmarkQueue(Class testClass) {
 	}
 	
 	printf("\nNSEnumerator       ");
-	for (items = 1; items <= limit; items *= 10) {
+	for (NSArray *array in testArrays) {
 		queue = [[testClass alloc] init];
-		for (item = 1; item <= items; item++)
-			[queue addObject:[NSNumber numberWithUnsignedInteger:item]];
+		for (id anObject in array)
+			[queue addObject:anObject];
 		startTime = timestamp();
 		NSEnumerator *e = [queue objectEnumerator];
 		id object;
@@ -172,11 +175,12 @@ void benchmarkQueue(Class testClass) {
 	}
 	
 	printf("\nNSFastEnumeration  ");
-	for (items = 1; items <= limit; items *= 10) {
+	for (NSArray *array in testArrays) {
 		queue = [[testClass alloc] init];
-		for (item = 1; item <= items; item++)
-			[queue addObject:[NSNumber numberWithUnsignedInteger:item]];
+		for (id anObject in array)
+			[queue addObject:anObject];
 		startTime = timestamp();
+		arrayCount = [array count];
 		for (id object in queue)
 			;
 		printf("\t%f", timestamp() - startTime);
@@ -192,40 +196,39 @@ void benchmarkStack(Class testClass) {
 	QuietLog(@"\n%@", testClass);
 	
 	id<CHStack> stack;
-	NSUInteger item, items;
 	
 	printf("(Operation)         ");
-	for (items = 1; items <= limit; items *= 10) {
-		printf("\t%-8d", items);
-	}	
+	for (NSArray *array in testArrays)
+		printf("\t%-8d", [array count]);
 	
 	printf("\npushObject:       ");
-	for (items = 1; items <= limit; items *= 10) {
+	for (NSArray *array in testArrays) {
 		stack = [[testClass alloc] init];
 		startTime = timestamp();
-		for (item = 1; item <= items; item++)
-			[stack pushObject:[NSNumber numberWithUnsignedInteger:item]];
+		for (id anObject in array)
+			[stack pushObject:anObject];
 		printf("\t%f", timestamp() - startTime);
 		[stack release];
 	}
 	
 	printf("\npopObject:        ");
-	for (items = 1; items <= limit; items *= 10) {
+	for (NSArray *array in testArrays) {
 		stack = [[testClass alloc] init];
-		for (item = 1; item <= items; item++)
-			[stack pushObject:[NSNumber numberWithUnsignedInteger:item]];
+		for (id anObject in array)
+			[stack pushObject:anObject];
 		startTime = timestamp();
-		for (item = 1; item <= items; item++)
+		arrayCount = [array count];
+		for (item = 1; item <= arrayCount; item++)
 			[stack popObject];
 		printf("\t%f", timestamp() - startTime);
 		[stack release];
 	}
 	
 	printf("\nremoveAllObjects:  ");
-	for (items = 1; items <= limit; items *= 10) {
+	for (NSArray *array in testArrays) {
 		stack = [[testClass alloc] init];
-		for (item = 1; item <= items; item++)
-			[stack pushObject:[NSNumber numberWithUnsignedInteger:item]];
+		for (id anObject in array)
+			[stack pushObject:anObject];
 		startTime = timestamp();
 		[stack removeAllObjects];
 		printf("\t%f", timestamp() - startTime);
@@ -233,10 +236,10 @@ void benchmarkStack(Class testClass) {
 	}
 	
 	printf("\nNSEnumerator       ");
-	for (items = 1; items <= limit; items *= 10) {
+	for (NSArray *array in testArrays) {
 		stack = [[testClass alloc] init];
-		for (item = 1; item <= items; item++)
-			[stack pushObject:[NSNumber numberWithUnsignedInteger:item]];
+		for (id anObject in array)
+			[stack pushObject:anObject];
 		startTime = timestamp();
 		NSEnumerator *e = [stack objectEnumerator];
 		id object;
@@ -247,10 +250,10 @@ void benchmarkStack(Class testClass) {
 	}
 	
 	printf("\nNSFastEnumeration  ");
-	for (items = 1; items <= limit; items *= 10) {
+	for (NSArray *array in testArrays) {
 		stack = [[testClass alloc] init];
-		for (item = 1; item <= items; item++)
-			[stack pushObject:[NSNumber numberWithUnsignedInteger:item]];
+		for (id anObject in array)
+			[stack pushObject:anObject];
 		startTime = timestamp();
 		for (id object in stack)
 			;
@@ -267,50 +270,49 @@ void benchmarkHeap(Class testClass) {
 	QuietLog(@"\n%@", testClass);
 
 	id<CHHeap> heap;
-	NSUInteger item, items;
 
 	printf("(Operation)         ");
-	for (items = 1; items <= limit; items *= 10) {
-		printf("\t%-8d", items);
-	}	
+	for (NSArray *array in testArrays)
+		printf("\t%-8d", [array count]);
 	
 	printf("\naddObject:         ");
-	for (items = 1; items <= limit; items *= 10) {
+	for (NSArray *array in testArrays) {
 		heap = [[testClass alloc] init];
 		startTime = timestamp();
-		for (item = 1; item <= items; item++)
-			[heap addObject:[NSNumber numberWithUnsignedInteger:item]];
+		for (id anObject in array)
+			[heap addObject:anObject];
 		printf("\t%f", timestamp() - startTime);
 		[heap release];
 	}
 	
 	printf("\nremoveFirstObject:  ");
-	for (items = 1; items <= limit; items *= 10) {
+	for (NSArray *array in testArrays) {
 		heap = [[testClass alloc] init];
-		for (item = 1; item <= items; item++)
-			[heap addObject:[NSNumber numberWithUnsignedInteger:item]];
+		for (id anObject in array)
+			[heap addObject:anObject];
 		startTime = timestamp();
-		for (item = 1; item <= items; item++)
+		arrayCount = [array count];
+		for (item = 1; item <= arrayCount; item++)
 			[heap removeFirstObject];
 		printf("\t%f", timestamp() - startTime);
 		[heap release];
 	}
 	
 	printf("\nremoveAllObjects:  ");
-	for (items = 1; items <= limit; items *= 10) {
+	for (NSArray *array in testArrays) {
 		heap = [[testClass alloc] init];
-		for (item = 1; item <= items; item++)
-			[heap addObject:[NSNumber numberWithUnsignedInteger:item]];
+		for (id anObject in array)
+			[heap addObject:anObject];
 		startTime = timestamp();
 		[heap removeAllObjects];
 		printf("\t%f", timestamp() - startTime);
 		[heap release];
 	}
 	printf("\nNSEnumerator       ");
-	for (items = 1; items <= limit; items *= 10) {
+	for (NSArray *array in testArrays) {
 		heap = [[testClass alloc] init];
-		for (item = 1; item <= items; item++)
-			[heap addObject:[NSNumber numberWithUnsignedInteger:item]];
+		for (id anObject in array)
+			[heap addObject:anObject];
 		startTime = timestamp();
 		NSEnumerator *e = [heap objectEnumerator];
 		id object;
@@ -321,10 +323,10 @@ void benchmarkHeap(Class testClass) {
 	}
 
 	printf("\nNSFastEnumeration  ");
-	for (items = 1; items <= limit; items *= 10) {
+	for (NSArray *array in testArrays) {
 		heap = [[testClass alloc] init];
-		for (item = 1; item <= items; item++)
-			[heap addObject:[NSNumber numberWithUnsignedInteger:item]];
+		for (id anObject in array)
+			[heap addObject:anObject];
 		startTime = timestamp();
 		for (id object in heap)
 			;
@@ -341,18 +343,17 @@ void benchmarkTree(Class testClass) {
 	QuietLog(@"\n%@", testClass);
 	
 	id<CHTree> tree;
-	NSUInteger item, items;
 	
 	printf("(Operation)         ");
-	for (items = 1; items <= limit; items *= 10) {
-		printf("\t%-8d", items);
+	for (NSArray *array in testArrays) {
+		printf("\t%-8d", [array count]);
 	}	
 	
 	printf("\nNSEnumerator       ");
-	for (items = 1; items <= limit; items *= 10) {
+	for (NSArray *array in testArrays) {
 		tree = [[testClass alloc] init];
-		for (item = 1; item <= items; item++)
-			[tree addObject:[NSNumber numberWithUnsignedInteger:item]];
+		for (id anObject in array)
+			[tree addObject:anObject];
 		startTime = timestamp();
 		NSEnumerator *e = [tree objectEnumerator];
 		id object;
@@ -368,6 +369,19 @@ void benchmarkTree(Class testClass) {
 
 int main (int argc, const char * argv[]) {
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+	
+	NSUInteger size, item, limit = 1000000;
+	testArrays = [[NSMutableArray alloc] init];
+	for (size = 1; size <= limit; size *= 10) {
+		NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+		NSMutableArray *array = (size == 1)
+			? [NSMutableArray array]
+			: [[[testArrays lastObject] mutableCopy] autorelease]; // reuse previous
+		for (item = [array count]+1; item <= size; item++)
+			[array addObject:[NSNumber numberWithUnsignedInteger:item]];
+		[testArrays addObject:array];
+		[pool drain];
+	}
 	
 	QuietLog(@"\n<Deque> Implemenations");
 	benchmarkDeque([CHMutableArrayDeque class]);
