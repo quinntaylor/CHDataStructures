@@ -187,6 +187,14 @@ typedef short CHTraversalOrder;
 - (void) removeAllObjects;
 
 /**
+ Returns an array containing the objects in this tree in ascending sorted order.
+ 
+ @return An array containing the objects in this tree. If the tree is empty, the
+         array is also empty.
+ */
+- (NSArray*) allObjects;
+
+/**
  Returns an enumerator that accesses each object using the specified traversal order.
  
  NOTE: When you use an enumerator, you must not modify the tree during enumeration.

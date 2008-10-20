@@ -103,6 +103,10 @@
 	return [self objectEnumeratorWithTraversalOrder:CHTraverseReverseOrder];
 }
 
+- (NSArray*) allObjects {
+	return [[self objectEnumeratorWithTraversalOrder:CHTraverseInOrder] allObjects];
+}
+
 #pragma mark Unsupported Implementations
 
 - (void) addObject:(id)anObject {

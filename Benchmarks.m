@@ -373,14 +373,13 @@ int main (int argc, const char * argv[]) {
 	NSUInteger size, item, limit = 1000000;
 	testArrays = [[NSMutableArray alloc] init];
 	for (size = 1; size <= limit; size *= 10) {
-		NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 		NSMutableArray *array = (size == 1)
-			? [NSMutableArray array]
-			: [[[testArrays lastObject] mutableCopy] autorelease]; // reuse previous
+			? [[NSMutableArray alloc] init]
+			: [[testArrays lastObject] mutableCopy]; // reuse elements in previous
 		for (item = [array count]+1; item <= size; item++)
 			[array addObject:[NSNumber numberWithUnsignedInteger:item]];
 		[testArrays addObject:array];
-		[pool drain];
+		[array release];
 	}
 	
 	QuietLog(@"\n<Deque> Implemenations");
@@ -402,6 +401,8 @@ int main (int argc, const char * argv[]) {
 //	benchmarkTree([CHUnbalancedTree class]);
 //	benchmarkTree([CHAnderssonTree class]);
 //	benchmarkTree([CHRedBlackTree class]);
+	
+	[testArrays release];
 
 	[pool drain];
 	return 0;

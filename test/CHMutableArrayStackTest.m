@@ -34,7 +34,6 @@
 }
 
 - (void) testTopObjectAndPopObject {
-	// this will be a very thorough first pass
 	for (id object in testArray)
 		[stack pushObject:object];
 	

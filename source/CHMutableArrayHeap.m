@@ -47,13 +47,11 @@
 }
 
 - (id) initWithOrdering:(NSComparisonResult)order array:(NSArray*)anArray {
-	if ([super init] == nil)
+	if ([super init] == nil) // Parent's initializer allocates the actual array
 		return nil;
-	if (order != NSOrderedAscending && order != NSOrderedDescending) {
+	if (order != NSOrderedAscending && order != NSOrderedDescending)
 		[NSException raise:NSInvalidArgumentException
 		            format:@"Must provide a valid sort ordering."];
-		return nil;
-	}
 	sortOrder = order;
 	sortDescriptors = [NSArray arrayWithObject:
                        [[[NSSortDescriptor alloc]
@@ -71,6 +69,11 @@
 	if ([super initWithCoder:decoder] == nil)
 		return nil;
 	sortOrder = [decoder decodeIntForKey:@"sortOrder"];
+	sortDescriptors = [NSArray arrayWithObject:
+                       [[[NSSortDescriptor alloc]
+                          initWithKey:nil
+                            ascending:(sortOrder == NSOrderedAscending)] autorelease]
+                      ];
 	return self;
 }
 
@@ -115,11 +118,9 @@
 		// Bubble the new object up the heap if necessary
 		NSUInteger parent;
 		NSUInteger i = [array count] - 1;
-		NSComparisonResult comparison;
 		while (i > 0) {
 			parent = (i-1) / 2;
-			comparison = [[array objectAtIndex:parent] compare:[array objectAtIndex:i]];
-			if (comparison != sortOrder) {
+			if ([[array objectAtIndex:parent] compare:[array objectAtIndex:i]] != sortOrder) {
 				[array exchangeObjectAtIndex:parent withObjectAtIndex:i];
 				i = parent;
 			}
