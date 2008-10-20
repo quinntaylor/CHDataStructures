@@ -17,8 +17,8 @@
 - (void) setUp {
 	tree = [[CHAnderssonTree alloc] init];
 	testArray = [NSArray arrayWithObjects:
-				 @"F", @"B", @"A", @"D", @"C", @"E", @"G", @"I", @"H", nil];
-	// Creates the tree from: http://en.wikipedia.org/wiki/Tree_traversal#Example
+				 @"B", @"N", @"C", @"L", @"D", @"J", @"E", @"H", @"K", @"M", @"O", @"G", @"A", @"I", @"F", nil];
+	// Creates the tree from: Weiss pg. 645
 }
 
 - (void) tearDown {
@@ -29,7 +29,7 @@
 	STAssertEquals([tree count], 0u, @"-count is incorrect.");
 	for (id object in testArray)
 		[tree addObject:object];
-	STAssertEquals([tree count], 9u, @"-count is incorrect.");
+	STAssertEquals([tree count], 15u, @"-count is incorrect.");
 }
 
 - (void) testTraversalInOrder {
@@ -46,6 +46,12 @@
 	STAssertEqualObjects([e nextObject], @"G", @"-nextObject is wrong.");
 	STAssertEqualObjects([e nextObject], @"H", @"-nextObject is wrong.");
 	STAssertEqualObjects([e nextObject], @"I", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"J", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"K", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"L", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"M", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"N", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"O", @"-nextObject is wrong.");
 	STAssertNil([e nextObject], @"-nextObject should return nil.");
 }
 
@@ -54,6 +60,12 @@
 		[tree addObject:object];
 	e = [tree objectEnumeratorWithTraversalOrder:CHTraverseReverseOrder];
 	
+	STAssertEqualObjects([e nextObject], @"O", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"N", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"M", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"L", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"K", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"J", @"-nextObject is wrong.");
 	STAssertEqualObjects([e nextObject], @"I", @"-nextObject is wrong.");
 	STAssertEqualObjects([e nextObject], @"H", @"-nextObject is wrong.");
 	STAssertEqualObjects([e nextObject], @"G", @"-nextObject is wrong.");
@@ -71,15 +83,21 @@
 		[tree addObject:object];
 	e = [tree objectEnumeratorWithTraversalOrder:CHTraversePreOrder];
 	
-	STAssertEqualObjects([e nextObject], @"F", @"-nextObject is wrong.");
-	STAssertEqualObjects([e nextObject], @"B", @"-nextObject is wrong.");
-	STAssertEqualObjects([e nextObject], @"A", @"-nextObject is wrong.");
-	STAssertEqualObjects([e nextObject], @"D", @"-nextObject is wrong.");
-	STAssertEqualObjects([e nextObject], @"C", @"-nextObject is wrong.");
 	STAssertEqualObjects([e nextObject], @"E", @"-nextObject is wrong.");
-	STAssertEqualObjects([e nextObject], @"G", @"-nextObject is wrong.");
-	STAssertEqualObjects([e nextObject], @"I", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"C", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"A", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"B", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"D", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"L", @"-nextObject is wrong.");
 	STAssertEqualObjects([e nextObject], @"H", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"F", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"G", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"J", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"I", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"K", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"N", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"M", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"O", @"-nextObject is wrong.");
 	STAssertNil([e nextObject], @"-nextObject should return nil.");
 }
 
@@ -88,15 +106,21 @@
 		[tree addObject:object];
 	e = [tree objectEnumeratorWithTraversalOrder:CHTraversePostOrder];
 	
-	STAssertEqualObjects([e nextObject], @"A", @"-nextObject is wrong.");
-	STAssertEqualObjects([e nextObject], @"C", @"-nextObject is wrong.");
-	STAssertEqualObjects([e nextObject], @"E", @"-nextObject is wrong.");
-	STAssertEqualObjects([e nextObject], @"D", @"-nextObject is wrong.");
 	STAssertEqualObjects([e nextObject], @"B", @"-nextObject is wrong.");
-	STAssertEqualObjects([e nextObject], @"H", @"-nextObject is wrong.");
-	STAssertEqualObjects([e nextObject], @"I", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"A", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"D", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"C", @"-nextObject is wrong.");
 	STAssertEqualObjects([e nextObject], @"G", @"-nextObject is wrong.");
 	STAssertEqualObjects([e nextObject], @"F", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"I", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"K", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"J", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"H", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"M", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"O", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"N", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"L", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"E", @"-nextObject is wrong.");
 	STAssertNil([e nextObject], @"-nextObject should return nil.");
 }
 
@@ -105,15 +129,21 @@
 		[tree addObject:object];
 	e = [tree objectEnumeratorWithTraversalOrder:CHTraverseLevelOrder];
 	
-	STAssertEqualObjects([e nextObject], @"F", @"-nextObject is wrong.");
-	STAssertEqualObjects([e nextObject], @"B", @"-nextObject is wrong.");
-	STAssertEqualObjects([e nextObject], @"G", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"E", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"C", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"L", @"-nextObject is wrong.");
 	STAssertEqualObjects([e nextObject], @"A", @"-nextObject is wrong.");
 	STAssertEqualObjects([e nextObject], @"D", @"-nextObject is wrong.");
-	STAssertEqualObjects([e nextObject], @"I", @"-nextObject is wrong.");
-	STAssertEqualObjects([e nextObject], @"C", @"-nextObject is wrong.");
-	STAssertEqualObjects([e nextObject], @"E", @"-nextObject is wrong.");
 	STAssertEqualObjects([e nextObject], @"H", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"N", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"B", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"F", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"J", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"M", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"O", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"G", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"I", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"K", @"-nextObject is wrong.");	
 	STAssertNil([e nextObject], @"-nextObject should return nil.");
 }
 

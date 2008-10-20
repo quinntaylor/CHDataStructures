@@ -443,10 +443,71 @@ CHAnderssonTreeNode* split(CHAnderssonTreeNode *node) {
 	return NO;
 }
 
-- (void) removeObject:(id)anObject {
+- (void) removeObject:(id)anObject 
+{
 	if (anObject == nil)
 		nilArgumentException([self class], _cmd);
-	unsupportedOperationException([self class], _cmd);
+	
+	CHAnderssonTreeNode *currentNode = root;
+	CHAnderssonTreeNode *nodeToDelete = NULL;
+	CH_ATE_NODE *stack = NULL;
+	CH_ATE_NODE *tmp;
+	NSComparisonResult comparison;
+	
+	while (currentNode != NULL) 
+	{
+		ATE_PUSH(currentNode);
+		
+		comparison = [anObject compare:currentNode->object];
+		
+		if (comparison < 0)
+			currentNode = currentNode->left;
+		else 
+		{
+			if (comparison == 0)
+				nodeToDelete = currentNode;
+			currentNode = currentNode->right;
+		}
+	}
+	
+	if (nodeToDelete != NULL) 
+	{
+		nodeToDelete->object = currentNode->object;
+		nodeToDelete->level = currentNode->level;
+		currentNode = currentNode->right;
+	}
+	else return; //the node was not found
+	
+			
+	CHAnderssonTreeNode *previous = NULL;
+		
+	while (stack != NULL) 
+	{
+		currentNode = ATE_TOP;
+		ATE_POP();
+		if(previous != NULL) 
+		{
+			if([currentNode->object compare:previous->object] < 0)
+				currentNode->right = previous;
+			else
+				currentNode->left = previous;
+		}
+		
+		if ((currentNode->left != NULL && currentNode->left->level < currentNode->level - 1) || 
+			(currentNode->right != NULL && currentNode->right->level < currentNode->level - 1)) 
+		{
+			--currentNode->level;
+			if (currentNode->right->level > currentNode->level)
+				currentNode->right->level = currentNode->level;
+			currentNode = skew(currentNode);
+			currentNode->right = skew(currentNode->right);
+			currentNode->right->right = skew(currentNode->right->right);
+			currentNode = split(currentNode);
+			currentNode->right = split(currentNode->right);
+		}
+		previous = currentNode;
+	}
+	root = currentNode;
 }
 
 /**
