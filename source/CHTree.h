@@ -81,7 +81,7 @@ typedef short CHTraversalOrder;
  
  <table style="border-collapse: collapse;">
  <tr style="background: #ddd;">
-     <th>Traversal</th>     <th>Visit Order</th> <th>Sample Ordering</th>
+     <th>Traversal</th>     <th>Visit Order</th> <th>Node Ordering</th>
  </tr>
  <tr><td>In-order</td>	    <td>L, node, R</td>  <td>A B C D E F G H I</td></tr>
  <tr><td>Reverse-order</td> <td>R, node, L</td>  <td>I H G F E D C B A</td></tr>
@@ -89,7 +89,7 @@ typedef short CHTraversalOrder;
  <tr><td>Post-order</td>	<td>L, R, node</td>  <td>A C E D B H I G F</td></tr>
  <tr><td>Level-order</td>	<td>L→R, T→B</td>    <td>F B G A D I C E H</td></tr>
  </table>
- <p><strong>Table 1 - Node orderings for traversals on Figure 1.</strong></p>
+ <p><strong>Table 1 - Various tree traversals on Figure 1.</strong></p>
  
  </td></tr>
  </table>

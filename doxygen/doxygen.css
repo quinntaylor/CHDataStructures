@@ -3,6 +3,13 @@ body, table, div, p, dl {
 	font-size: 12px;
 }
 
+body {
+	background: white;
+	color: black;
+	margin-right: 10px;
+	margin-left: 10px;
+}
+
 /* @group Heading Levels */
 
 h1 {
@@ -121,13 +128,6 @@ div.groupHeader {
 div.groupText {
 	margin-left: 16px;
 	font-style: italic;
-}
-
-body {
-	background: white;
-	color: black;
-	margin-right: 20px;
-	margin-left: 20px;
 }
 
 td.indexkey {
