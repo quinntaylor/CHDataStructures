@@ -25,7 +25,7 @@
 	[tree release];
 }
 
-- (void) testAddObjectsFromEnumerator {
+- (void) testAddObjects {
 	STAssertEquals([tree count], 0u, @"-count is incorrect.");
 	for (id object in testArray)
 		[tree addObject:object];

@@ -243,39 +243,34 @@ static NSUInteger kATE_SIZE = sizeof(CH_ATE_NODE);
 
 #pragma mark - Private Functions
 
-void _rotateWithLeftChild(CHAnderssonTreeNode *node) {
-	CHAnderssonTreeNode *other = node->left;
-	node->left = other->right;
-	other->right = node;
-	node = other;
-}
-
-void _rotateWithRightChild(CHAnderssonTreeNode *node) {
-	CHAnderssonTreeNode *other = node->right;
-	node->right = other->left;
-	other->left = node;
-	node = other;
-}
-
 /**
  Skew primitive for AA-trees.
  @param node The node that roots the sub-tree.
  */
-void _skew(CHAnderssonTreeNode *node) {
-	if (node->left->level == node->level) {
-		_rotateWithLeftChild(node);
+CHAnderssonTreeNode* skew(CHAnderssonTreeNode *node) {
+	if (node->left != NULL && node->left->level == node->level) {
+		CHAnderssonTreeNode *other = node->left;
+		node->left = other->right;
+		other->right = node;
+		return other;
 	}
+	return node;
 }
 
 /**
  Split primitive for AA-trees.
  @param node The node that roots the sub-tree.
  */
-void _split(CHAnderssonTreeNode *node) {
-	if (node->right->right->level == node->level) {
-		_rotateWithRightChild(node);
-		node->level++;
+CHAnderssonTreeNode* split(CHAnderssonTreeNode *node) {
+	if (node->right != NULL && node->right->right != NULL && node->right->right->level == node->level)
+	{
+		CHAnderssonTreeNode *other = node->right;
+		node->right = other->left;
+		other->left = node;
+		other->level++;
+		return other;
 	}
+	return node;
 }
 
 #pragma mark - Public Methods
@@ -295,41 +290,156 @@ void _split(CHAnderssonTreeNode *node) {
 - (void) addObject:(id)anObject {
 	if (anObject == nil)
 		nilArgumentException([self class], _cmd);
-	unsupportedOperationException([self class], _cmd);
 	
-	CHAnderssonTreeNode *newNode = malloc(kCHAnderssonTreeNodeSize);
-	newNode->object = [anObject retain];
-	newNode->left = NULL;
-	newNode->right = NULL;
+	if (root == NULL) {
+		root = malloc(kCHAnderssonTreeNodeSize);
+		root->object = [anObject retain];
+		root->left = NULL;
+		root->right = NULL;
+		root->level = 1;
+		count++;
+		return;
+	}
 	
-	 // TODO: Handle adding node, plus skew/split as needed
+	CHAnderssonTreeNode *currentNode = root;
+	CH_ATE_NODE *stack = NULL;
+	CH_ATE_NODE *tmp;
+	NSComparisonResult comparison;
+	
+	while (currentNode != NULL) {
+		ATE_PUSH(currentNode);
+		
+		comparison = [anObject compare:currentNode->object];
+		
+		if (comparison > 0)
+			currentNode = currentNode->right;
+		else if (comparison < 0)
+			currentNode = currentNode->left;
+		else if (comparison == 0) {
+			// Replace the existing object with the new object.
+			[anObject retain];
+			[currentNode->object release];
+			currentNode->object = anObject;
+			return; // no need to 
+		}
+	}
+	
+	if (currentNode == NULL) {
+		CHAnderssonTreeNode *newNode = malloc(kCHAnderssonTreeNodeSize);
+		count++;
+		newNode->object = [anObject retain];
+		newNode->left = NULL;
+		newNode->right = NULL;
+		newNode->level = 1;
+		currentNode = ATE_TOP;
+		if(comparison > 0)
+			currentNode->right = newNode;
+		else if (comparison < 0)
+			currentNode->left = newNode;
+	}	
+	
+	CHAnderssonTreeNode *previous = NULL;
+	
+	while (stack != NULL) {
+		
+		currentNode = ATE_TOP;
+		ATE_POP();
+		if(previous != NULL) {
+			if([currentNode->object compare:previous->object] < 0)
+				currentNode->right = previous;
+			else
+				currentNode->left = previous;
+		}
+		currentNode = skew(currentNode);
+		currentNode = split(currentNode);
+		previous = currentNode;
+	}
+	
+	root = currentNode;
 }
 
 - (id) findObject:(id)target {
 	if (count == 0)
 		return nil;
-	unsupportedOperationException([self class], _cmd);
-	return nil;
+	
+	CHAnderssonTreeNode *currentNode = root;
+	NSComparisonResult comparison;
+	
+	while (currentNode != NULL) {
+		
+		comparison = [target compare:currentNode->object];
+		
+		if (comparison > 0)
+			currentNode = currentNode->right;
+		else if (comparison < 0)
+			currentNode = currentNode->left;
+		else if (comparison == 0) {
+			return currentNode->object; //found
+		}
+	}
+	return nil; //not found
+	
 }
 
 - (id) findMin {
 	if (count == 0)
 		return nil;
-	unsupportedOperationException([self class], _cmd);
-	return nil;
+	
+	CHAnderssonTreeNode *currentNode = root;
+	
+	while (currentNode != NULL) {
+		
+		if(currentNode->left != NULL)
+		{
+			currentNode = currentNode->left;
+		}
+		else
+		{
+			return currentNode->object;
+		}
+	}
+	
+	return nil; //theoretically this is unreachable
+	
 }
 
 - (id) findMax {
-	if (count == 0)
-		return nil;
-	unsupportedOperationException([self class], _cmd);
-	return nil;
+	CHAnderssonTreeNode *currentNode = root;
+	
+	while (currentNode != NULL) {
+		
+		if(currentNode->right != NULL)
+		{
+			currentNode = currentNode->left;
+		}
+		else
+		{
+			return currentNode->object;
+		}
+	}
+	
+	return nil; // empty tree
 }
 
 - (BOOL) containsObject:(id)anObject {
 	if (anObject == nil)
 		nilArgumentException([self class], _cmd);
-	unsupportedOperationException([self class], _cmd);
+	
+	CHAnderssonTreeNode *currentNode = root;
+	NSComparisonResult comparison;
+	
+	while (currentNode != NULL) {
+		
+		comparison = [anObject compare:currentNode->object];
+		
+		if (comparison > 0)
+			currentNode = currentNode->right;
+		else if (comparison < 0)
+			currentNode = currentNode->left;
+		else if (comparison == 0)
+			return YES;
+	}
+
 	return NO;
 }
 
