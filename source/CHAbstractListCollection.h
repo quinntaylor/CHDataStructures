@@ -37,6 +37,7 @@
  This class also contains concrete implementations for the following methods:
  
  <pre><code>
+ -(id) initWithArray:
  -(NSUInteger) count
  -(NSString*) description
  -(NSEnumerator*) objectEnumerator

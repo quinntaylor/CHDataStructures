@@ -36,6 +36,7 @@
  This class also contains concrete implementations for the following methods:
  
  <pre><code>
+ - (id) initWithArray:
  -(NSUInteger) count
  -(NSString*) description
  -(NSEnumerator*) objectEnumerator
@@ -61,12 +62,10 @@
 	NSMutableArray *array;
 }
 
-- (id) init;
-- (id) initWithArray:(NSArray*)anArray;
-
 // The methods below are undocumented so they don't cause duplicated documentation.
 // For details, see the subclasses of this class, or CHDeque, CHQueue, and CHStack.
 
+- (id) initWithArray:(NSArray*)anArray;
 - (NSUInteger) count;
 - (NSEnumerator*) objectEnumerator;
 - (NSEnumerator*) reverseObjectEnumerator;
