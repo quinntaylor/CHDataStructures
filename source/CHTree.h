@@ -173,9 +173,8 @@ typedef short CHTraversalOrder;
 - (id) findObject:(id)anObject;
 
 /**
- Remove an object from the tree (or one identical to it) if it exists. Matches are
- based on an object's response to the <code>isEqual:</code> message. If no matching
- object exists, there is no effect.
+ Remove an object for which <code>compare:</code> returns <code>NSOrderedSame</code>.
+ If no matching object exists, there is no effect.
 
  @param anObject The object to be removed from the tree.
  */

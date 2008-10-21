@@ -319,133 +319,98 @@ CHAnderssonTreeNode* split(CHAnderssonTreeNode *node) {
 	if (anObject == nil)
 		nilArgumentException([self class], _cmd);
 	
-	if (root == NULL) {
-		root = malloc(kCHAnderssonTreeNodeSize);
-		root->object = [anObject retain];
-		root->left = NULL;
-		root->right = NULL;
-		root->level = 1;
-		count++;
-		return;
-	}
-	
-	CHAnderssonTreeNode *currentNode = root;
+	CHAnderssonTreeNode *current = root;
+	CHAnderssonTreeNode *previous = NULL;
 	CH_ATE_NODE *stack = NULL;
 	CH_ATE_NODE *tmp;
 	NSComparisonResult comparison;
 	
-	while (currentNode != NULL) {
-		ATE_PUSH(currentNode);
-		
-		comparison = [anObject compare:currentNode->object];
-		
-		if (comparison > 0)
-			currentNode = currentNode->right;
-		else if (comparison < 0)
-			currentNode = currentNode->left;
+	while (current != NULL) {
+		ATE_PUSH(current);
+		comparison = [(current->object) compare:anObject];
+		if (comparison == NSOrderedAscending)
+			current = current->right;
+		else if (comparison == NSOrderedDescending)
+			current = current->left;
 		else if (comparison == 0) {
 			// Replace the existing object with the new object.
 			[anObject retain];
-			[currentNode->object release];
-			currentNode->object = anObject;
+			[current->object release];
+			current->object = anObject;
 			return; // no need to 
 		}
 	}
 	
-	if (currentNode == NULL) {
+	if (current == NULL) {
 		CHAnderssonTreeNode *newNode = malloc(kCHAnderssonTreeNodeSize);
-		count++;
+		++count;
+		++mutations;
 		newNode->object = [anObject retain];
 		newNode->left = NULL;
 		newNode->right = NULL;
 		newNode->level = 1;
-		currentNode = ATE_TOP;
-		if(comparison > 0)
-			currentNode->right = newNode;
-		else if (comparison < 0)
-			currentNode->left = newNode;
+		if (root == NULL) {
+			root = newNode;
+			return;
+		}
+		current = ATE_TOP;
+		if (comparison == NSOrderedAscending)
+			current->right = newNode;
+		else if (comparison == NSOrderedDescending)
+			current->left = newNode;
 	}	
 	
-	CHAnderssonTreeNode *previous = NULL;
-	
 	while (stack != NULL) {
-		
-		currentNode = ATE_TOP;
+		current = ATE_TOP;
 		ATE_POP();
-		if(previous != NULL) {
-			if([currentNode->object compare:previous->object] < 0)
-				currentNode->right = previous;
+		if (previous != NULL) {
+			if ([(current->object) compare:(previous->object)] < 0)
+				current->right = previous;
 			else
-				currentNode->left = previous;
+				current->left = previous;
 		}
-		currentNode = skew(currentNode);
-		currentNode = split(currentNode);
-		previous = currentNode;
+		current = skew(current);
+		current = split(current);
+		previous = current;
 	}
-	
-	root = currentNode;
+	root = current;
 }
 
 - (id) findObject:(id)target {
-	if (count == 0)
-		return nil;
-	
 	CHAnderssonTreeNode *currentNode = root;
-	NSComparisonResult comparison;
-	
+	NSComparisonResult comparison;	
 	while (currentNode != NULL) {
-		
-		comparison = [target compare:currentNode->object];
-		
-		if (comparison > 0)
+		comparison = [(currentNode->object) compare:target];
+		if (comparison == NSOrderedAscending)
 			currentNode = currentNode->right;
-		else if (comparison < 0)
+		else if (comparison == NSOrderedDescending)
 			currentNode = currentNode->left;
-		else if (comparison == 0) {
-			return currentNode->object; //found
-		}
-	}
-	return nil; //not found
-	
-}
-
-- (id) findMin {
-	if (count == 0)
-		return nil;
-	
-	CHAnderssonTreeNode *currentNode = root;
-	
-	while (currentNode != NULL) {
-		
-		if(currentNode->left != NULL)
-		{
-			currentNode = currentNode->left;
-		}
-		else
-		{
+		else if (comparison == NSOrderedSame) {
 			return currentNode->object;
 		}
 	}
-	
-	return nil; //theoretically this is unreachable
-	
+	return nil; // object not found
+}
+
+- (id) findMin {
+	CHAnderssonTreeNode *currentNode = root;
+	while (currentNode != NULL) {
+		if (currentNode->left != NULL)
+			currentNode = currentNode->left;
+		else
+			return currentNode->object;
+	}
+	return nil; // empty tree
 }
 
 - (id) findMax {
 	CHAnderssonTreeNode *currentNode = root;
-	
 	while (currentNode != NULL) {
-		
 		if(currentNode->right != NULL)
-		{
 			currentNode = currentNode->left;
-		}
 		else
-		{
 			return currentNode->object;
-		}
-	}
-	
+	}	
 	return nil; // empty tree
 }
 
@@ -455,87 +420,72 @@ CHAnderssonTreeNode* split(CHAnderssonTreeNode *node) {
 	
 	CHAnderssonTreeNode *currentNode = root;
 	NSComparisonResult comparison;
-	
 	while (currentNode != NULL) {
-		
-		comparison = [anObject compare:currentNode->object];
-		
-		if (comparison > 0)
+		comparison = [(currentNode->object) compare:anObject];
+		if (comparison == NSOrderedAscending)
 			currentNode = currentNode->right;
-		else if (comparison < 0)
+		else if (comparison == NSOrderedDescending)
 			currentNode = currentNode->left;
-		else if (comparison == 0)
+		else if (comparison == NSOrderedSame)
 			return YES;
 	}
-
 	return NO;
 }
 
-- (void) removeObject:(id)anObject 
-{
+- (void) removeObject:(id)anObject {
 	if (anObject == nil)
 		nilArgumentException([self class], _cmd);
 	
-	CHAnderssonTreeNode *currentNode = root;
+	CHAnderssonTreeNode *current = root;
 	CHAnderssonTreeNode *nodeToDelete = NULL;
 	CH_ATE_NODE *stack = NULL;
 	CH_ATE_NODE *tmp;
 	NSComparisonResult comparison;
 	
-	while (currentNode != NULL) 
-	{
-		ATE_PUSH(currentNode);
-		
-		comparison = [anObject compare:currentNode->object];
-		
-		if (comparison < 0)
-			currentNode = currentNode->left;
-		else 
-		{
-			if (comparison == 0)
-				nodeToDelete = currentNode;
-			currentNode = currentNode->right;
+	while (current != NULL) {
+		ATE_PUSH(current);
+		comparison = [(current->object) compare:anObject];
+		if (comparison == NSOrderedDescending)
+			current = current->left;
+		else  {
+			if (comparison == NSOrderedSame)
+				nodeToDelete = current;
+			current = current->right;
 		}
 	}
-	
-	if (nodeToDelete != NULL) 
-	{
-		nodeToDelete->object = currentNode->object;
-		nodeToDelete->level = currentNode->level;
-		currentNode = currentNode->right;
+	if (nodeToDelete != NULL)  {
+		nodeToDelete->object = current->object;
+		nodeToDelete->level = current->level;
+		current = current->right;
 	}
-	else return; //the node was not found
-	
+	else
+		return; // the specified object was not found
 			
 	CHAnderssonTreeNode *previous = NULL;
-		
-	while (stack != NULL) 
-	{
-		currentNode = ATE_TOP;
+	while (stack != NULL)  {
+		current = ATE_TOP;
 		ATE_POP();
-		if(previous != NULL) 
-		{
-			if([currentNode->object compare:previous->object] < 0)
-				currentNode->right = previous;
+		if(previous != NULL) {
+			if([current->object compare:previous->object] < 0)
+				current->right = previous;
 			else
-				currentNode->left = previous;
+				current->left = previous;
 		}
-		
-		if ((currentNode->left != NULL && currentNode->left->level < currentNode->level - 1) || 
-			(currentNode->right != NULL && currentNode->right->level < currentNode->level - 1)) 
+		if ((current->left != NULL && current->left->level < current->level - 1) || 
+			(current->right != NULL && current->right->level < current->level - 1)) 
 		{
-			--currentNode->level;
-			if (currentNode->right->level > currentNode->level)
-				currentNode->right->level = currentNode->level;
-			currentNode = skew(currentNode);
-			currentNode->right = skew(currentNode->right);
-			currentNode->right->right = skew(currentNode->right->right);
-			currentNode = split(currentNode);
-			currentNode->right = split(currentNode->right);
+			--current->level;
+			if (current->right->level > current->level)
+				current->right->level = current->level;
+			current = skew(current);
+			current->right = skew(current->right);
+			current->right->right = skew(current->right->right);
+			current = split(current);
+			current->right = split(current->right);
 		}
-		previous = currentNode;
+		previous = current;
 	}
-	root = currentNode;
+	root = current;
 }
 
 /**
@@ -549,7 +499,7 @@ CHAnderssonTreeNode* split(CHAnderssonTreeNode *node) {
 		return;
 
 	CHAnderssonTreeNode *currentNode;
-	CH_ATE_NODE *queue	 = NULL;
+	CH_ATE_NODE *queue = NULL;
 	CH_ATE_NODE *queueTail = NULL;
 	CH_ATE_NODE *tmp;
 	
