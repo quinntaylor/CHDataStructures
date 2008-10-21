@@ -104,7 +104,7 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 
 - (id) nextObject {
 	if (mutationCount != *mutationPtr)
-		mutatedCollectionException([self class], _cmd);
+		CHMutatedCollectionException([self class], _cmd);
 	if (current == NULL) {
 		[collection release];
 		collection = nil;
@@ -117,7 +117,7 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 
 - (NSArray*) allObjects {
 	if (mutationCount != *mutationPtr)
-		mutatedCollectionException([self class], _cmd);
+		CHMutatedCollectionException([self class], _cmd);
 	NSMutableArray *array = [[NSMutableArray alloc] init];
 	while (current != NULL) {
 		[array addObject:current->object];
@@ -240,7 +240,7 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 
 - (void) prependObject:(id)anObject {
 	if (anObject == nil)
-		nilArgumentException([self class], _cmd);
+		CHNilArgumentException([self class], _cmd);
 	CHDoublyLinkedListNode *new;
 	new = malloc(kCHDoublyLinkedListNodeSize);
 	new->object = [anObject retain];
@@ -257,7 +257,7 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 
 - (void) appendObject:(id)anObject {
 	if (anObject == nil)
-		nilArgumentException([self class], _cmd);	
+		CHNilArgumentException([self class], _cmd);	
 	CHDoublyLinkedListNode *new;
 	new = malloc(kCHDoublyLinkedListNodeSize);
 	new->object = [anObject retain];
@@ -274,9 +274,9 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 
 - (void) insertObject:(id)anObject atIndex:(NSUInteger)index {
 	if (anObject == nil)
-		nilArgumentException([self class], _cmd);
+		CHNilArgumentException([self class], _cmd);
 	if (index >= listSize || index < 0)
-		rangeException([self class], _cmd, index, listSize);
+		CHIndexOutOfRangeException([self class], _cmd, index, listSize);
 	
 	if (index == 0)
 		[self prependObject:anObject];
@@ -369,7 +369,7 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 
 - (id) objectAtIndex:(NSUInteger)index {
 	if (index >= listSize || index < 0)
-		rangeException([self class], _cmd, index, listSize);
+		CHIndexOutOfRangeException([self class], _cmd, index, listSize);
 	
 	CHDoublyLinkedListNode *node;
 	NSUInteger nodeIndex;
@@ -449,7 +449,7 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 
 - (void) removeObjectAtIndex:(NSUInteger)index {
 	if (index >= listSize || index < 0)
-		rangeException([self class], _cmd, index, listSize);
+		CHIndexOutOfRangeException([self class], _cmd, index, listSize);
 	
 	if (index == 0)
 		[self removeFirstObject];

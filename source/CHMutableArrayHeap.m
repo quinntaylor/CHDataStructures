@@ -111,7 +111,7 @@
 
 - (void) addObject:(id)anObject {
 	if (anObject == nil)
-		nilArgumentException([self class], _cmd);
+		CHNilArgumentException([self class], _cmd);
 	else {
 		++mutations;
 		[array addObject:anObject];
@@ -205,17 +205,17 @@
 #pragma mark Unsupported Operations
 
 - (NSUInteger) indexOfObject:(id)anObject {
-	unsupportedOperationException([self class], _cmd);
+	CHUnsupportedOperationException([self class], _cmd);
 	return 0;
 }
 
 - (NSUInteger) indexOfObjectIdenticalTo:(id)anObject {
-	unsupportedOperationException([self class], _cmd);
+	CHUnsupportedOperationException([self class], _cmd);
 	return 0;
 }
 
 - (id) objectAtIndex:(NSUInteger)index {
-	unsupportedOperationException([self class], _cmd);
+	CHUnsupportedOperationException([self class], _cmd);
 	return nil;
 }
 

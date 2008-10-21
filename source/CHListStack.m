@@ -40,7 +40,7 @@
 
 - (void) pushObject:(id)anObject {
 	if (anObject == nil)
-		nilArgumentException([self class], _cmd);
+		CHNilArgumentException([self class], _cmd);
 	else
 		[list prependObject:anObject];
 }

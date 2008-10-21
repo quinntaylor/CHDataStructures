@@ -30,7 +30,7 @@
 
 - (void) addObject: (id)anObject {
 	if (anObject == nil)
-		nilArgumentException([self class], _cmd);
+		CHNilArgumentException([self class], _cmd);
 	else
 		[array addObject:anObject];
 }

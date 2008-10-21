@@ -155,7 +155,7 @@ static NSUInteger kUTE_SIZE = sizeof(CH_UTE_NODE);
 
 - (NSArray*) allObjects {
 	if (mutationCount != *mutationPtr)
-		mutatedCollectionException([self class], _cmd);
+		CHMutatedCollectionException([self class], _cmd);
 	NSMutableArray *array = [[NSMutableArray alloc] init];
 	id object;
 	while ((object = [self nextObject]))
@@ -167,7 +167,7 @@ static NSUInteger kUTE_SIZE = sizeof(CH_UTE_NODE);
 
 - (id) nextObject {
 	if (mutationCount != *mutationPtr)
-		mutatedCollectionException([self class], _cmd);
+		CHMutatedCollectionException([self class], _cmd);
 	switch (traversalOrder) {
 		case CHTraversePreOrder:
 			currentNode = UTE_TOP;
@@ -380,7 +380,7 @@ static struct CHUnbalancedTreeNode * _removeNode(struct CHUnbalancedTreeNode *no
 
 - (void) addObject:(id)anObject {
 	if (anObject == nil)
-		nilArgumentException([self class], _cmd);
+		CHNilArgumentException([self class], _cmd);
 	
 	[anObject retain];
 	++mutations;
@@ -486,7 +486,7 @@ static struct CHUnbalancedTreeNode * _removeNode(struct CHUnbalancedTreeNode *no
  */
 - (void) removeObject:(id)anObject {
 	if (anObject == nil)
-		nilArgumentException([self class], _cmd);
+		CHNilArgumentException([self class], _cmd);
 	
 	struct CHUnbalancedTreeNode *currentNode = root;
 	while (currentNode != NULL) {

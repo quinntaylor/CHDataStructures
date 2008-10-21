@@ -110,39 +110,39 @@
 #pragma mark Unsupported Implementations
 
 - (void) addObject:(id)anObject {
-	unsupportedOperationException([self class], _cmd);
+	CHUnsupportedOperationException([self class], _cmd);
 }
 
 - (BOOL) containsObject:(id)anObject {
-	unsupportedOperationException([self class], _cmd);
+	CHUnsupportedOperationException([self class], _cmd);
 	return NO;
 }
 
 - (void) removeObject:(id)element {
-	unsupportedOperationException([self class], _cmd);
+	CHUnsupportedOperationException([self class], _cmd);
 }
 
 - (void) removeAllObjects {
-	unsupportedOperationException([self class], _cmd);
+	CHUnsupportedOperationException([self class], _cmd);
 }
 
 - (id) findMin {
-	unsupportedOperationException([self class], _cmd);
+	CHUnsupportedOperationException([self class], _cmd);
 	return nil;
 }
 
 - (id) findMax {
-	unsupportedOperationException([self class], _cmd);
+	CHUnsupportedOperationException([self class], _cmd);
 	return nil;
 }
 
 - (id) findObject:(id)anObject {
-	unsupportedOperationException([self class], _cmd);
+	CHUnsupportedOperationException([self class], _cmd);
 	return nil;
 }
 
 - (NSEnumerator*) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order {
-	unsupportedOperationException([self class], _cmd);
+	CHUnsupportedOperationException([self class], _cmd);
 	return nil;
 }
 
@@ -161,7 +161,7 @@
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len
 {
-	unsupportedOperationException([self class], _cmd);
+	CHUnsupportedOperationException([self class], _cmd);
 	return 0;
 }
 

@@ -92,7 +92,7 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 
 - (id) nextObject {
 	if (mutationCount != *mutationPtr)
-		mutatedCollectionException([self class], _cmd);
+		CHMutatedCollectionException([self class], _cmd);
 	if (current == NULL) {
 		[collection release];
 		collection = nil;
@@ -105,7 +105,7 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 
 - (NSArray*) allObjects {
 	if (mutationCount != *mutationPtr)
-		mutatedCollectionException([self class], _cmd);
+		CHMutatedCollectionException([self class], _cmd);
 	NSMutableArray *array = [[NSMutableArray alloc] init];
 	while (current != NULL) {
 		[array addObject:current->object];
@@ -228,7 +228,7 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 
 - (void) prependObject:(id)anObject {
 	if (anObject == nil)
-		nilArgumentException([self class], _cmd);
+		CHNilArgumentException([self class], _cmd);
 	CHSinglyLinkedListNode *new;
 	new = malloc(kSinglyLinkedListNodeSize);
 	new->object = [anObject retain];
@@ -242,7 +242,7 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 
 - (void) appendObject:(id)anObject {
 	if (anObject == nil)
-		nilArgumentException([self class], _cmd);
+		CHNilArgumentException([self class], _cmd);
 	CHSinglyLinkedListNode *new;
 	new = malloc(kSinglyLinkedListNodeSize);
 	new->object = [anObject retain];
@@ -258,9 +258,9 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 
 - (void) insertObject:(id)anObject atIndex:(NSUInteger)index {
 	if (anObject == nil)
-		nilArgumentException([self class], _cmd);
+		CHNilArgumentException([self class], _cmd);
 	if (index >= listSize || index < 0)
-		rangeException([self class], _cmd, index, listSize);
+		CHIndexOutOfRangeException([self class], _cmd, index, listSize);
 	
 	if (index == 0)
 		[self prependObject:anObject];
@@ -344,7 +344,7 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 
 - (id) objectAtIndex:(NSUInteger)index {
 	if (index >= listSize || index < 0)
-		rangeException([self class], _cmd, index, listSize);
+		CHIndexOutOfRangeException([self class], _cmd, index, listSize);
 	
 	CHSinglyLinkedListNode *node;
 	NSUInteger nodeIndex;
@@ -432,7 +432,7 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 
 - (void) removeObjectAtIndex:(NSUInteger)index {
 	if (index >= listSize || index < 0)
-		rangeException([self class], _cmd, index, listSize);
+		CHIndexOutOfRangeException([self class], _cmd, index, listSize);
 	
 	if (index == 0)
 		[self removeFirstObject];

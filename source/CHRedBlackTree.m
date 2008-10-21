@@ -178,7 +178,7 @@
 
 - (NSArray*) allObjects {
 	if (mutationCount != *mutationPtr)
-		mutatedCollectionException([self class], _cmd);
+		CHMutatedCollectionException([self class], _cmd);
 	NSMutableArray *array = [[NSMutableArray alloc] init];
 	id object;
 	while ((object = [self nextObject]))
@@ -193,7 +193,7 @@
  */
 - (id) nextObject {
 	if (mutationCount != *mutationPtr)
-		mutatedCollectionException([self class], _cmd);
+		CHMutatedCollectionException([self class], _cmd);
 	// TODO: Copy enumeration logic from UnbalancedTree
 	return nil;
 }
@@ -357,7 +357,7 @@ static CHRedBlackTreeNode * _rotateWithRightChild(CHRedBlackTreeNode *rightChild
 }
 
 - (BOOL) containsObject:(id)anObject {
-	unsupportedOperationException([self class], _cmd);
+	CHUnsupportedOperationException([self class], _cmd);
 	return NO;
 }
 
@@ -389,12 +389,12 @@ static CHRedBlackTreeNode * _rotateWithRightChild(CHRedBlackTreeNode *rightChild
 }
 
 - (void) removeObject:(id)anObject {
-	unsupportedOperationException([self class], _cmd);
+	CHUnsupportedOperationException([self class], _cmd);
 	// TODO: Next release, very difficult, my fu is no match for it right this minute.
 }
 
 - (void) removeAllObjects {
-	unsupportedOperationException([self class], _cmd);
+	CHUnsupportedOperationException([self class], _cmd);
 	// TODO: Re-purpose this code from UnbalancedTree
 }
 

@@ -18,7 +18,7 @@ double timestamp() {
 
 void benchmarkDeque(Class testClass) {
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-	QuietLog(@"\n* %@", testClass);
+	CHQuietLog(@"\n* %@", testClass);
 	
 	id<CHDeque> deque;
 	
@@ -112,13 +112,13 @@ void benchmarkDeque(Class testClass) {
 		[deque release];
 	}
 	
-	QuietLog(@"");
+	CHQuietLog(@"");
 	[pool drain];
 }
 
 void benchmarkQueue(Class testClass) {
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-	QuietLog(@"\n* %@", testClass);
+	CHQuietLog(@"\n* %@", testClass);
 	
 	id<CHQueue> queue;
 	
@@ -187,13 +187,13 @@ void benchmarkQueue(Class testClass) {
 		[queue release];
 	}
 	
-	QuietLog(@"");
+	CHQuietLog(@"");
 	[pool drain];
 }
 
 void benchmarkStack(Class testClass) {
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-	QuietLog(@"\n%@", testClass);
+	CHQuietLog(@"\n%@", testClass);
 	
 	id<CHStack> stack;
 	
@@ -261,13 +261,13 @@ void benchmarkStack(Class testClass) {
 		[stack release];
 	}
 	
-	QuietLog(@"");
+	CHQuietLog(@"");
 	[pool drain];
 }
 
 void benchmarkHeap(Class testClass) {
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-	QuietLog(@"\n%@", testClass);
+	CHQuietLog(@"\n%@", testClass);
 
 	id<CHHeap> heap;
 
@@ -334,13 +334,13 @@ void benchmarkHeap(Class testClass) {
 		[heap release];
 	}
 	
-	QuietLog(@"");
+	CHQuietLog(@"");
 	[pool drain];
 }
 
 void benchmarkTree(Class testClass) {
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-	QuietLog(@"\n%@", testClass);
+	CHQuietLog(@"\n%@", testClass);
 	
 	id<CHTree> tree;
 	
@@ -363,7 +363,7 @@ void benchmarkTree(Class testClass) {
 		[tree release];
 	}
 	
-	QuietLog(@"");
+	CHQuietLog(@"");
 	[pool drain];
 }
 
@@ -382,22 +382,22 @@ int main (int argc, const char * argv[]) {
 		[array release];
 	}
 	
-	QuietLog(@"\n<Deque> Implemenations");
+	CHQuietLog(@"\n<Deque> Implemenations");
 	benchmarkDeque([CHMutableArrayDeque class]);
 	benchmarkDeque([CHListDeque class]);
 
-	QuietLog(@"\n<Queue> Implemenations");
+	CHQuietLog(@"\n<Queue> Implemenations");
 	benchmarkQueue([CHMutableArrayQueue class]);
 	benchmarkQueue([CHListQueue class]);
 
-	QuietLog(@"\n<Stack> Implemenations");
+	CHQuietLog(@"\n<Stack> Implemenations");
 	benchmarkStack([CHMutableArrayStack class]);
 	benchmarkStack([CHListStack class]);
 
-	QuietLog(@"\n<Heap> Implemenations");
+	CHQuietLog(@"\n<Heap> Implemenations");
 	benchmarkHeap([CHMutableArrayHeap class]);
 
-//	QuietLog(@"\n<Tree> Implemenations");
+//	CHQuietLog(@"\n<Tree> Implemenations");
 //	benchmarkTree([CHUnbalancedTree class]);
 //	benchmarkTree([CHAnderssonTree class]);
 //	benchmarkTree([CHRedBlackTree class]);

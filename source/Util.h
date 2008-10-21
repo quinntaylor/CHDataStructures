@@ -40,7 +40,7 @@
  
  Currently, there is no support for calling this function from a C function.
  */
-static void rangeException(Class theClass, SEL method,
+static void CHIndexOutOfRangeException(Class theClass, SEL method,
 						   NSUInteger index, NSUInteger elements) {
 	[NSException raise:NSRangeException
                 format:@"[%@ %s] -- Index (%d) out of range (0-%d).",
@@ -57,13 +57,13 @@ static void rangeException(Class theClass, SEL method,
  
  Currently, there is no support for calling this function from a C function.
  */
-static void nilArgumentException(Class theClass, SEL method) {
+static void CHNilArgumentException(Class theClass, SEL method) {
 	[NSException raise:NSInternalInconsistencyException
 				format:@"[%@ %s] -- Invalid nil argument.",
 					   theClass, sel_getName(method)];
 }
 
-static void mutatedCollectionException(Class theClass, SEL method) {
+static void CHMutatedCollectionException(Class theClass, SEL method) {
 	[NSException raise:NSGenericException
                 format:@"[%@ %s] -- Collection was mutated while being enumerated.",
                        theClass, sel_getName(method)];
@@ -79,13 +79,13 @@ static void mutatedCollectionException(Class theClass, SEL method) {
 
  Currently, there is no support for calling this function from a C function.
  */
-static void unsupportedOperationException(Class theClass, SEL method) {
+static void CHUnsupportedOperationException(Class theClass, SEL method) {
 	[NSException raise:NSInternalInconsistencyException
 				format:@"[%@ %s] -- Unsupported operation.",
 					   theClass, sel_getName(method)];
 }
 
-static void QuietLog (NSString *format, ...) {
+static void CHQuietLog(NSString *format, ...) {
     // Get a reference to the arguments that follow the format paramter
     va_list argList;
     va_start(argList, format);

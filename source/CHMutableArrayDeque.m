@@ -28,14 +28,14 @@
 
 - (void) prependObject:(id)anObject {
 	if (anObject == nil)
-		nilArgumentException([self class], _cmd);
+		CHNilArgumentException([self class], _cmd);
 	else
 		[array insertObject:anObject atIndex:0];
 }
 
 - (void) appendObject:(id)anObject {
 	if (anObject == nil)
-		nilArgumentException([self class], _cmd);
+		CHNilArgumentException([self class], _cmd);
 	else
 		[array addObject:anObject];
 }

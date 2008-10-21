@@ -42,13 +42,13 @@
 
 - (void) prependObject:(id)anObject {
 	if (anObject == nil)
-		nilArgumentException([self class], _cmd);
+		CHNilArgumentException([self class], _cmd);
 	[list prependObject:anObject];
 }
 
 - (void) appendObject:(id)anObject {
 	if (anObject == nil)
-		nilArgumentException([self class], _cmd);
+		CHNilArgumentException([self class], _cmd);
 	[list appendObject:anObject];
 }
 
