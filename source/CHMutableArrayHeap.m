@@ -27,7 +27,7 @@
 @implementation CHMutableArrayHeap
 
 - (void) dealloc {
-	[sortDescriptors release];
+	[sortDescriptor release];
 	[super dealloc];
 }
 
@@ -53,11 +53,9 @@
 		[NSException raise:NSInvalidArgumentException
 		            format:@"Must provide a valid sort ordering."];
 	sortOrder = order;
-	sortDescriptors = [NSArray arrayWithObject:
-                       [[[NSSortDescriptor alloc]
-                          initWithKey:nil
-                            ascending:(sortOrder == NSOrderedAscending)] autorelease]
-                      ];
+	sortDescriptor = [[NSSortDescriptor alloc]
+                       initWithKey:nil
+                         ascending:(sortOrder == NSOrderedAscending)];
 	for (id anObject in anArray)
 		[self addObject:anObject];
 	return self;
@@ -69,11 +67,9 @@
 	if ([super initWithCoder:decoder] == nil)
 		return nil;
 	sortOrder = [decoder decodeIntForKey:@"sortOrder"];
-	sortDescriptors = [NSArray arrayWithObject:
-                       [[[NSSortDescriptor alloc]
-                          initWithKey:nil
-                            ascending:(sortOrder == NSOrderedAscending)] autorelease]
-                      ];
+	sortDescriptor = [[NSSortDescriptor alloc]
+                       initWithKey:nil
+                         ascending:(sortOrder == NSOrderedAscending)];
 	return self;
 }
 
@@ -195,7 +191,7 @@
 }
 
 - (NSArray*) allObjects {
-	return [array sortedArrayUsingDescriptors:sortDescriptors];
+	return [array sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
 }
 
 - (NSEnumerator*) objectEnumerator {

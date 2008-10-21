@@ -58,7 +58,7 @@
  
  @param decoder An unarchiver object.
  */
-- (id) initWithCoder:(NSCoder *)decoder {
+- (id) initWithCoder:(NSCoder*)decoder {
 	if ([super init] == nil)
 		return nil;
 	array = [[decoder decodeObjectForKey:@"array"] retain];
@@ -70,7 +70,7 @@
  
  @param encoder An archiver object.
  */
-- (void) encodeWithCoder:(NSCoder *)encoder {
+- (void) encodeWithCoder:(NSCoder*)encoder {
 	[encoder encodeObject:array forKey:@"array"];
 }
 
