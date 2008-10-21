@@ -97,6 +97,11 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 	return self;
 }
 
+- (void) dealloc {
+	[collection release];
+	[super dealloc];
+}
+
 - (id) nextObject {
 	if (mutationCount != *mutationPtr)
 		mutatedCollectionException([self class], _cmd);

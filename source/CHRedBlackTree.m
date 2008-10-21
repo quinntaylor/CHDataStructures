@@ -171,6 +171,11 @@
 	return self;
 }
 
+- (void) dealloc {
+	[collection release];
+	[super dealloc];
+}
+
 - (NSArray*) allObjects {
 	if (mutationCount != *mutationPtr)
 		mutatedCollectionException([self class], _cmd);

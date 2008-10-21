@@ -144,6 +144,15 @@ static NSUInteger kUTE_SIZE = sizeof(CH_UTE_NODE);
 	return self;
 }
 
+- (void) dealloc {
+	[collection release];
+	while (stack != NULL)
+		UTE_POP();
+	while (queue != NULL)
+		UTE_DEQUEUE();
+	[super dealloc];
+}
+
 - (NSArray*) allObjects {
 	if (mutationCount != *mutationPtr)
 		mutatedCollectionException([self class], _cmd);
@@ -168,12 +177,10 @@ static NSUInteger kUTE_SIZE = sizeof(CH_UTE_NODE);
 				collection = nil;
 				return nil;
 			}
-			if (currentNode->right != NULL) {
+			if (currentNode->right != NULL)
 				UTE_PUSH(currentNode->right);
-			}
-			if (currentNode->left != NULL) {
+			if (currentNode->left != NULL)
 				UTE_PUSH(currentNode->left);
-			}
 			return currentNode->object;
 			
 		case CHTraverseInOrder:
@@ -244,12 +251,10 @@ static NSUInteger kUTE_SIZE = sizeof(CH_UTE_NODE);
 				return nil;
 			}
 			UTE_DEQUEUE();
-			if (currentNode->left != NULL) {
+			if (currentNode->left != NULL)
 				UTE_ENQUEUE(currentNode->left);
-			}
-			if (currentNode->right != NULL) {
+			if (currentNode->right != NULL)
 				UTE_ENQUEUE(currentNode->right);
-			}
 			return currentNode->object;
 			
 		default:
@@ -533,8 +538,6 @@ static struct CHUnbalancedTreeNode * _removeNode(struct CHUnbalancedTreeNode *no
 }
 
 - (NSEnumerator*) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order {
-	if (root == NULL)
-		return nil;
 	return [[[CHUnbalancedTreeEnumerator alloc] initWithTree:self
 	                                                    root:root
 	                                          traversalOrder:order

@@ -85,6 +85,11 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 	return self;	
 }
 
+- (void) dealloc {
+	[collection release];
+	[super dealloc];
+}
+
 - (id) nextObject {
 	if (mutationCount != *mutationPtr)
 		mutatedCollectionException([self class], _cmd);

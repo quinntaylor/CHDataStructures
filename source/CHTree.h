@@ -196,6 +196,8 @@ typedef short CHTraversalOrder;
 
 /**
  Returns an enumerator that accesses each object using the specified traversal order.
+ The enumerator returned should never be nil; if the tree is empty, the enumerator
+ will always return nil for -nextObject, and an empty array for -allObjects.
  
  NOTE: When you use an enumerator, you must not modify the tree during enumeration.
  

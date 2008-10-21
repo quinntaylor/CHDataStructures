@@ -126,6 +126,8 @@
 
 /**
  Returns an enumerator object that provides access to each object in the receiver.
+ The enumerator returned should never be nil; if the list is empty, the enumerator
+ will always return nil for -nextObject, and an empty array for -allObjects.
  
  @return An enumerator object that lets you access each object in the receiver, from
          the element at the lowest index upwards.

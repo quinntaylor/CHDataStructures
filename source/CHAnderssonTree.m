@@ -145,6 +145,15 @@ static NSUInteger kATE_SIZE = sizeof(CH_ATE_NODE);
 	return self;
 }
 
+- (void) dealloc {
+	[collection release];
+	while (stack != NULL)
+		ATE_POP();
+	while (queue != NULL)
+		ATE_DEQUEUE();
+	[super dealloc];
+}
+
 - (NSArray*) allObjects {
 	if (mutationCount != *mutationPtr)
 		mutatedCollectionException([self class], _cmd);
@@ -169,12 +178,10 @@ static NSUInteger kATE_SIZE = sizeof(CH_ATE_NODE);
 				collection = nil;
 				return nil;
 			}
-			if (currentNode->right != NULL) {
+			if (currentNode->right != NULL)
 				ATE_PUSH(currentNode->right);
-			}
-			if (currentNode->left != NULL) {
+			if (currentNode->left != NULL)
 				ATE_PUSH(currentNode->left);
-			}
 			return currentNode->object;
 			
 		case CHTraverseInOrder:
@@ -245,12 +252,10 @@ static NSUInteger kATE_SIZE = sizeof(CH_ATE_NODE);
 				return nil;
 			}
 			ATE_DEQUEUE();
-			if (currentNode->left != NULL) {
+			if (currentNode->left != NULL)
 				ATE_ENQUEUE(currentNode->left);
-			}
-			if (currentNode->right != NULL) {
+			if (currentNode->right != NULL)
 				ATE_ENQUEUE(currentNode->right);
-			}
 			return currentNode->object;
 			
 		default:
@@ -567,8 +572,6 @@ CHAnderssonTreeNode* split(CHAnderssonTreeNode *node) {
 }
 
 - (NSEnumerator*) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order {
-	if (root == NULL)
-		return nil;
 	return [[[CHAnderssonTreeEnumerator alloc] initWithTree:self
                                                        root:root
                                              traversalOrder:order

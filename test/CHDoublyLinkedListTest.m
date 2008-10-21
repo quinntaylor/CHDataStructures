@@ -4,14 +4,20 @@
 #import <SenTestingKit/SenTestingKit.h>
 #import "CHDoublyLinkedList.h"
 
+static BOOL gcDisabled;
+
 @interface CHDoublyLinkedListTest : SenTestCase {
 	CHDoublyLinkedList *list;
 	NSArray *testArray;
+	NSEnumerator *e;
 }
 @end
 
-
 @implementation CHDoublyLinkedListTest
+
++ (void) initialize {
+	gcDisabled = ([NSGarbageCollector defaultCollector] == nil);
+}
 
 - (void) setUp {
     list = [[CHDoublyLinkedList alloc] init];
@@ -64,26 +70,57 @@
 }
 
 - (void) testObjectEnumerator {
-	NSEnumerator *e = [list objectEnumerator];
-	STAssertNotNil(e, @"Enumerator should not be nil.");
-	STAssertNil([e nextObject], @"-nextObject should return nil.");
-	
-	for (id anObject in testArray)
-		[list appendObject:anObject];
-	
+	// Enumerator shouldn't retain collection if there are no objects
+	if (gcDisabled)
+		STAssertEquals([list retainCount], 1u, @"Wrong retain count");
 	e = [list objectEnumerator];
 	STAssertNotNil(e, @"Enumerator should not be nil.");
+	if (gcDisabled)
+		STAssertEquals([list retainCount], 1u, @"Should not retain collection");
+	STAssertNil([e nextObject], @"-nextObject should return nil.");
+	
+	// Enumerator should retain collection when it has 1+ objects, release when 0
+	for (id anObject in testArray)
+		[list appendObject:anObject];
+	if (gcDisabled)
+		STAssertEquals([list retainCount], 1u, @"Wrong retain count");
+	e = [list objectEnumerator];
+	STAssertNotNil(e, @"Enumerator should not be nil.");
+	if (gcDisabled)
+		STAssertEquals([list retainCount], 2u, @"Enumerator should retain collection");
 	
 	STAssertEqualObjects([e nextObject], @"A", @"-nextObject is wrong.");
 	STAssertEqualObjects([e nextObject], @"B", @"-nextObject is wrong.");
 	STAssertEqualObjects([e nextObject], @"C", @"-nextObject is wrong.");
-	STAssertNil([e nextObject], @"-nextObject should return nil.");
 	
-	NSArray *array = [[list objectEnumerator] allObjects];
+	if (gcDisabled)
+		STAssertEquals([list retainCount], 2u, @"Collection should still be retained");
+	STAssertNil([e nextObject], @"-nextObject should return nil.");
+	if (gcDisabled)
+		STAssertEquals([list retainCount], 1u, @"Enumerator should release collection");
+	
+	e = [list objectEnumerator];
+	if (gcDisabled)
+		STAssertEquals([list retainCount], 2u, @"Enumerator should retain collection");
+	NSArray *array = [e allObjects];
+	if (gcDisabled)
+		STAssertEquals([list retainCount], 1u, @"Enumerator should release collection");
 	STAssertNotNil(array, @"Array should not be nil");
 	STAssertEquals([array count], 3u, @"-count is incorrect.");
 	STAssertEqualObjects([array objectAtIndex:0], @"A", @"Object order is wrong.");
 	STAssertEqualObjects([array lastObject],      @"C", @"Object order is wrong.");
+	
+	// Test that enumerator releases on -dealloc
+	NSAutoreleasePool *pool  = [[NSAutoreleasePool alloc] init];
+	if (gcDisabled)
+		STAssertEquals([list retainCount], 1u, @"Wrong retain count");
+	e = [list objectEnumerator];
+	STAssertNotNil(e, @"Enumerator should not be nil.");
+	if (gcDisabled)
+		STAssertEquals([list retainCount], 2u, @"Enumerator should retain collection");
+	[pool drain]; // Force deallocation of enumerator
+	if (gcDisabled)
+		STAssertEquals([list retainCount], 1u, @"Enumerator should release collection");	
 }
 
 - (void) testFastEnumeration {
