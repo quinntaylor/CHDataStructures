@@ -152,6 +152,14 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 	return self;
 }
 
+- (id) initWithArray:(NSArray*)anArray {
+	if ([self init] == nil)
+		return nil;
+	for (id anObject in anArray)
+		[self appendObject:anObject];
+	return self;
+}
+
 - (NSString*) description {
 	return [[self allObjects] description];
 }

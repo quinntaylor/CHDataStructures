@@ -50,6 +50,14 @@
 - (id) init;
 
 /**
+ Initialize a heap with the contents of an array. Objects are added to the heap in
+ the order they occur in the array.
+ 
+ @param anArray An array containing object with which to populate a new heap.
+ */
+- (id) initWithArray:(NSArray*)anArray;
+
+/**
  Initialize a heap with a given sort ordering and no objects.
  
  @param order The sort order to use, either <code>NSOrderedAscending</code> or

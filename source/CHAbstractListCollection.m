@@ -31,6 +31,14 @@
 	[super dealloc];
 }
 
+- (id) initWithArray:(NSArray*)anArray {
+	if ([self init] == nil)
+		return nil;
+	for (id anObject in anArray)
+		[list appendObject:anObject];
+	return self;
+}
+
 - (id) initWithList:(id<CHLinkedList>)aList {
 	if ([self init] == nil)
 		return nil;

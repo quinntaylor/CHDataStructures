@@ -69,6 +69,7 @@
 // These methods are undocumented here so they don't cause duplicated documentation.
 // For details, see the subclasses of this class, or CHDeque, CHQueue, and CHStack.
 
+- (id) initWithArray:(NSArray*)anArray;
 - (NSUInteger) count;
 - (NSEnumerator*) objectEnumerator;
 - (NSArray*) allObjects;

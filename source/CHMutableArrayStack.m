@@ -26,6 +26,14 @@
 
 @implementation CHMutableArrayStack
 
+- (id) initWithArray:(NSArray*)anArray {
+	if ([self init] == nil)
+		return nil;
+	for (id anObject in anArray)
+		[array addObject:anObject];
+	return self;
+}
+
 - (void) pushObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);

@@ -52,6 +52,14 @@
 - (id) init;
 
 /**
+ Initialize a queue with the contents of an array. Objects are enqueued in the order
+ they occur in the array.
+ 
+ @param anArray An array containing object with which to populate a new queue.
+ */
+- (id) initWithArray:(NSArray*)anArray;
+
+/**
  Add an object to the back of the queue.
  
  @param anObject The object to add to the queue; must not be <code>nil</code>, or an

@@ -51,6 +51,14 @@
 - (id) init;
 
 /**
+ Initialize a stack with the contents of an array. Objects are pushed on the stack in
+ the order they occur in the array.
+ 
+ @param anArray An array containing object with which to populate a new deque.
+ */
+- (id) initWithArray:(NSArray*)anArray;
+
+/**
  Add an object to the top of the stack.
  
  @param anObject The object to add to the stack; must not be <code>nil</code>, or an

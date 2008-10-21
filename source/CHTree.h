@@ -114,6 +114,14 @@ typedef short CHTraversalOrder;
 - (id) init;
 
 /**
+ Initialize a tree with the contents of an array. Objects are added to the tree
+ in the order they occur in the array.
+ 
+ @param anArray An array containing object with which to populate a new deque.
+ */
+- (id) initWithArray:(NSArray*)anArray;
+
+/**
  Add an object to the tree. Ordering is based on an object's response to the
  <code>compare:</code> message. Since no duplicates are allowed, if the tree already
  has an object for which <code>compare:</code> returns <code>NSOrderedSame</code>,

@@ -44,6 +44,14 @@
 - (id) init;
 
 /**
+ Initialize a deque with the contents of an array. Objects are appended in the order
+ they occur in the array.
+ 
+ @param anArray An array containing object with which to populate a new deque.
+ */
+- (id) initWithArray:(NSArray*)anArray;
+
+/**
  Add an object to the front of the deque.
  
  @param anObject The object to add to the deque; must not be <code>nil</code>, or an

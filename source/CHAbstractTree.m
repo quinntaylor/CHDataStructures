@@ -37,6 +37,14 @@
 	return self;
 }
 
+- (id) initWithArray:(NSArray*)anArray {
+	if ([self init] == nil) // call the subclass -init, which calls [super init] here
+		return nil;
+	for (id anObject in anArray)
+		[self addObject:anObject];
+	return self;
+}
+
 #pragma mark <NSCoding> methods
 
 /**

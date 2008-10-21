@@ -61,6 +61,14 @@
  */
 - (id) init;
 
+/**
+ Initialize a linked list with the contents of an array. Objects are appended in the
+ order they occur in the array.
+ 
+ @param anArray An array containing object with which to populate a new linked list.
+ */
+- (id) initWithArray:(NSArray*)anArray;
+
 #pragma mark Insertion
 
 /**
