@@ -30,6 +30,7 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
  An NSEnumerator for traversing a CHSinglyLinkedList from front to back.
  */
 @interface CHSinglyLinkedListEnumerator : NSEnumerator {
+	CHSinglyLinkedList *collection;
 	CHSinglyLinkedListNode *current; /**< The next node that is to be enumerated. */
 	unsigned long mutationCount;
 	unsigned long *mutationPtr;
@@ -38,11 +39,14 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 /**
  Create an enumerator which traverses a given list in the specified order.
  
+ @param list The linked list collection being enumerated. This collection is to be
+             retained while the enumerator has not exhausted all its objects.
  @param startNode The node at which to begin the enumeration.
  @param mutations A pointer to the collection's count of mutations, for invalidation.
  */
-- (id) initWithStartNode:(CHSinglyLinkedListNode*)startNode
-         mutationPointer:(unsigned long*)mutations;
+- (id) initWithList:(CHSinglyLinkedList*)list
+          startNode:(CHSinglyLinkedListNode*)startNode
+    mutationPointer:(unsigned long*)mutations;
 
 /**
  Returns the next object from the collection being enumerated.
@@ -68,11 +72,13 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 
 @implementation CHSinglyLinkedListEnumerator
 
-- (id) initWithStartNode:(CHSinglyLinkedListNode*)startNode
-         mutationPointer:(unsigned long*)mutations
+- (id) initWithList:(CHSinglyLinkedList*)list
+          startNode:(CHSinglyLinkedListNode*)startNode
+    mutationPointer:(unsigned long*)mutations;
 {
 	if ([super init] == nil)
 		return nil;
+	collection = (startNode != NULL) ? collection = [list retain] : nil;
 	current = startNode; // If startNode is NULL, nothing will be returned, anyway.
 	mutationCount = *mutations;
 	mutationPtr = mutations;
@@ -82,8 +88,11 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 - (id) nextObject {
 	if (mutationCount != *mutationPtr)
 		mutatedCollectionException([self class], _cmd);
-	if (current == NULL)
+	if (current == NULL) {
+		[collection release];
+		collection = nil;
 		return nil;
+	}
 	id object = current->object;
 	current = current->next;
 	return object;
@@ -97,7 +106,9 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 		[array addObject:current->object];
 		current = current->next;
 	}
-	return [array autorelease];	
+	[collection release];
+	collection = nil;
+	return [array autorelease];
 }
 
 @end
@@ -283,8 +294,9 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 
 - (NSEnumerator*) objectEnumerator {
 	return [[[CHSinglyLinkedListEnumerator alloc]
-			 initWithStartNode:head
-			 mutationPointer:&mutations] autorelease];
+              initWithList:self
+                 startNode:head
+           mutationPointer:&mutations] autorelease];
 }
 
 #pragma mark Search

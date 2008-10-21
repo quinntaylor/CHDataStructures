@@ -30,6 +30,7 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
  An NSEnumerator for traversing a CHDoublyLinkedList in forward or reverse order.
  */
 @interface CHDoublyLinkedListEnumerator : NSEnumerator {
+	CHDoublyLinkedList *collection;
 	CHDoublyLinkedListNode *current; /**< The next node that is to be enumerated. */
 	BOOL reverse; /**< Whether the enumerator is proceeding from back to front. */
 	unsigned long mutationCount;
@@ -39,6 +40,8 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 /**
  Create an enumerator which traverses a list starting from either the head or tail.
  
+ @param list The linked list collection being enumerated. This collection is to be
+        retained while the enumerator has not exhausted all its objects.
  @param startNode The node at which to begin the enumeration.
  @param mutations A pointer to the collection's count of mutations, for invalidation.
  
@@ -51,8 +54,9 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
  This enumerator doesn't explicitly support enumerating over a sub-list of nodes. (If
  a node from the middle is provided, enumeration will proceed towards the tail.)
  */
-- (id) initWithStartNode:(CHDoublyLinkedListNode*)startNode
-         mutationPointer:(unsigned long*)mutations;
+- (id) initWithList:(CHDoublyLinkedList*)list
+          startNode:(CHDoublyLinkedListNode*)startNode
+    mutationPointer:(unsigned long*)mutations;
 
 /**
  Returns the next object from the collection being enumerated.
@@ -78,11 +82,13 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 
 @implementation CHDoublyLinkedListEnumerator
 
-- (id) initWithStartNode:(CHDoublyLinkedListNode*)startNode
-         mutationPointer:(unsigned long*)mutations
+- (id) initWithList:(CHDoublyLinkedList*)list
+          startNode:(CHDoublyLinkedListNode*)startNode
+    mutationPointer:(unsigned long*)mutations;
 {
 	if ([super init] == nil)
 		return nil;
+	collection = (startNode != NULL) ? collection = [list retain] : nil;
 	current = startNode; // If startNode is NULL, nothing will be returned, anyway.
 	if (startNode != NULL)
 		reverse = (startNode->next == nil) ? YES : NO;
@@ -94,8 +100,11 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 - (id) nextObject {
 	if (mutationCount != *mutationPtr)
 		mutatedCollectionException([self class], _cmd);
-	if (current == NULL)
+	if (current == NULL) {
+		[collection release];
+		collection = nil;
 		return nil;
+	}
 	id object = current->object;
 	current = (reverse) ? current->prev : current->next;
 	return object;
@@ -109,6 +118,8 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 		[array addObject:current->object];
 		current = (reverse) ? current->prev : current->next;
 	}
+	[collection release];
+	collection = nil;
 	return [array autorelease];
 }
 
@@ -301,14 +312,16 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 
 - (NSEnumerator*) objectEnumerator {
 	return [[[CHDoublyLinkedListEnumerator alloc]
-			 initWithStartNode:head
-			 mutationPointer:&mutations] autorelease];
+              initWithList:self
+			 	startNode:head
+          mutationPointer:&mutations] autorelease];
 }
 
 - (NSEnumerator*) reverseObjectEnumerator {
 	return [[[CHDoublyLinkedListEnumerator alloc]
-			 initWithStartNode:tail
-			 mutationPointer:&mutations] autorelease];
+              initWithList:self
+                 startNode:tail
+           mutationPointer:&mutations] autorelease];
 }
 
 #pragma mark Search

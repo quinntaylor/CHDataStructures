@@ -73,6 +73,7 @@ static NSUInteger kUTE_SIZE = sizeof(CH_UTE_NODE);
 @interface CHUnbalancedTreeEnumerator : NSEnumerator {
 	CHTraversalOrder traversalOrder; /**< Order in which to traverse the tree. */
 	@private
+	CHUnbalancedTree *collection;
 	CHUnbalancedTreeNode *currentNode; /**< The next node that is to be returned. */
 	id tempObject;       /**< Temporary variable, holds the object to be returned.*/
 	CH_UTE_NODE *stack;     /**< Pointer to the top of a stack for most traversals. */
@@ -86,11 +87,14 @@ static NSUInteger kUTE_SIZE = sizeof(CH_UTE_NODE);
 /**
  Create an enumerator which traverses a given (sub)tree in the specified order.
  
+ @param tree The tree collection that is being enumerated. This collection is to be
+             retained while the enumerator has not exhausted all its objects.
  @param root The root node of the (sub)tree whose elements are to be enumerated.
  @param order The traversal order to use for enumerating the given (sub)tree.
  @param mutations A pointer to the collection's count of mutations, for invalidation.
  */
-- (id) initWithRoot:(CHUnbalancedTreeNode*)root
+- (id) initWithTree:(CHUnbalancedTree*)tree
+               root:(CHUnbalancedTreeNode*)root
      traversalOrder:(CHTraversalOrder)order
     mutationPointer:(unsigned long*)mutations;
 
@@ -118,7 +122,8 @@ static NSUInteger kUTE_SIZE = sizeof(CH_UTE_NODE);
 
 @implementation CHUnbalancedTreeEnumerator
 
-- (id) initWithRoot:(CHUnbalancedTreeNode*)root
+- (id) initWithTree:(CHUnbalancedTree*)tree
+               root:(CHUnbalancedTreeNode*)root
      traversalOrder:(CHTraversalOrder)order
     mutationPointer:(unsigned long*)mutations
 {
@@ -126,6 +131,7 @@ static NSUInteger kUTE_SIZE = sizeof(CH_UTE_NODE);
 		return nil;
 	stack = NULL;
 	traversalOrder = order;
+	collection = (root != NULL) ? collection = [tree retain] : nil;
 	if (traversalOrder == CHTraverseLevelOrder) {
 		UTE_ENQUEUE(root);
 	} else if (traversalOrder == CHTraversePreOrder) {
@@ -145,6 +151,8 @@ static NSUInteger kUTE_SIZE = sizeof(CH_UTE_NODE);
 	id object;
 	while ((object = [self nextObject]))
 		[array addObject:object];
+	[collection release];
+	collection = nil;
 	return [array autorelease];
 }
 
@@ -155,8 +163,11 @@ static NSUInteger kUTE_SIZE = sizeof(CH_UTE_NODE);
 		case CHTraversePreOrder:
 			currentNode = UTE_TOP;
 			UTE_POP();
-			if (currentNode == NULL)
+			if (currentNode == NULL) {
+				[collection release];
+				collection = nil;
 				return nil;
+			}
 			if (currentNode->right != NULL) {
 				UTE_PUSH(currentNode->right);
 			}
@@ -166,8 +177,11 @@ static NSUInteger kUTE_SIZE = sizeof(CH_UTE_NODE);
 			return currentNode->object;
 			
 		case CHTraverseInOrder:
-			if (stack == NULL && currentNode == NULL)
+			if (stack == NULL && currentNode == NULL) {
+				[collection release];
+				collection = nil;
 				return nil;
+			}
 			while (currentNode != NULL) {
 				UTE_PUSH(currentNode);
 				currentNode = currentNode->left;
@@ -180,8 +194,11 @@ static NSUInteger kUTE_SIZE = sizeof(CH_UTE_NODE);
 			return tempObject;
 			
 		case CHTraverseReverseOrder:
-			if (stack == NULL && currentNode == NULL)
+			if (stack == NULL && currentNode == NULL) {
+				[collection release];
+				collection = nil;
 				return nil;
+			}
 			while (currentNode != NULL) {
 				UTE_PUSH(currentNode);
 				currentNode = currentNode->right;
@@ -195,8 +212,11 @@ static NSUInteger kUTE_SIZE = sizeof(CH_UTE_NODE);
 			
 		case CHTraversePostOrder:
 			// This algorithm from: http://www.johny.ca/blog/archives/05/03/04/
-			if (stack == NULL && currentNode == NULL)
+			if (stack == NULL && currentNode == NULL) {
+				[collection release];
+				collection = nil;
 				return nil;
+			}
 			while (1) {
 				while (currentNode != NULL) {
 					UTE_PUSH(currentNode);
@@ -218,8 +238,11 @@ static NSUInteger kUTE_SIZE = sizeof(CH_UTE_NODE);
 			
 		case CHTraverseLevelOrder:
 			currentNode = UTE_FRONT;
-			if (currentNode == NULL)
+			if (currentNode == NULL) {
+				[collection release];
+				collection = nil;
 				return nil;
+			}
 			UTE_DEQUEUE();
 			if (currentNode->left != NULL) {
 				UTE_ENQUEUE(currentNode->left);
@@ -512,8 +535,8 @@ static struct CHUnbalancedTreeNode * _removeNode(struct CHUnbalancedTreeNode *no
 - (NSEnumerator*) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order {
 	if (root == NULL)
 		return nil;
-	
-	return [[[CHUnbalancedTreeEnumerator alloc] initWithRoot:root
+	return [[[CHUnbalancedTreeEnumerator alloc] initWithTree:self
+	                                                    root:root
 	                                          traversalOrder:order
 	                                         mutationPointer:&mutations] autorelease];
 }

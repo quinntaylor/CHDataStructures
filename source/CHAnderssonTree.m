@@ -74,6 +74,7 @@ static NSUInteger kATE_SIZE = sizeof(CH_ATE_NODE);
 {
 	CHTraversalOrder traversalOrder; /**< Order in which to traverse the tree. */
 	@private
+	CHAnderssonTree *collection;
 	CHAnderssonTreeNode *currentNode; /**< The next node that is to be returned. */
 	id tempObject;         /**< Temporary variable, holds the object to be returned.*/
 	CH_ATE_NODE *stack;     /**< Pointer to the top of a stack for most traversals. */
@@ -87,11 +88,14 @@ static NSUInteger kATE_SIZE = sizeof(CH_ATE_NODE);
 /**
  Create an enumerator which traverses a given (sub)tree in the specified order.
  
+ @param tree The tree collection that is being enumerated. This collection is to be
+             retained while the enumerator has not exhausted all its objects.
  @param root The root node of the (sub)tree whose elements are to be enumerated.
  @param order The traversal order to use for enumerating the given (sub)tree.
  @param mutations A pointer to the collection's count of mutations, for invalidation.
  */
-- (id) initWithRoot:(CHAnderssonTreeNode*)root
+- (id) initWithTree:(CHAnderssonTree*)tree
+               root:(CHAnderssonTreeNode*)root
      traversalOrder:(CHTraversalOrder)order
     mutationPointer:(unsigned long*)mutations;
 
@@ -119,7 +123,8 @@ static NSUInteger kATE_SIZE = sizeof(CH_ATE_NODE);
 
 @implementation CHAnderssonTreeEnumerator
 
-- (id) initWithRoot:(CHAnderssonTreeNode*)root
+- (id) initWithTree:(CHAnderssonTree*)tree
+               root:(CHAnderssonTreeNode*)root
      traversalOrder:(CHTraversalOrder)order
     mutationPointer:(unsigned long*)mutations
 {
@@ -127,6 +132,7 @@ static NSUInteger kATE_SIZE = sizeof(CH_ATE_NODE);
 		return nil;
 	stack = NULL;
 	traversalOrder = order;
+	collection = (root != NULL) ? collection = [tree retain] : nil;
 	if (traversalOrder == CHTraverseLevelOrder) {
 		ATE_ENQUEUE(root);
 	} else if (traversalOrder == CHTraversePreOrder) {
@@ -146,6 +152,8 @@ static NSUInteger kATE_SIZE = sizeof(CH_ATE_NODE);
 	id object;
 	while ((object = [self nextObject]))
 		[array addObject:object];
+	[collection release];
+	collection = nil;
 	return [array autorelease];
 }
 
@@ -156,8 +164,11 @@ static NSUInteger kATE_SIZE = sizeof(CH_ATE_NODE);
 		case CHTraversePreOrder:
 			currentNode = ATE_TOP;
 			ATE_POP();
-			if (currentNode == NULL)
+			if (currentNode == NULL) {
+				[collection release];
+				collection = nil;
 				return nil;
+			}
 			if (currentNode->right != NULL) {
 				ATE_PUSH(currentNode->right);
 			}
@@ -167,8 +178,11 @@ static NSUInteger kATE_SIZE = sizeof(CH_ATE_NODE);
 			return currentNode->object;
 			
 		case CHTraverseInOrder:
-			if (stack == NULL && currentNode == NULL)
+			if (stack == NULL && currentNode == NULL) {
+				[collection release];
+				collection = nil;
 				return nil;
+			}
 			while (currentNode != NULL) {
 				ATE_PUSH(currentNode);
 				currentNode = currentNode->left;
@@ -181,8 +195,11 @@ static NSUInteger kATE_SIZE = sizeof(CH_ATE_NODE);
 			return tempObject;
 			
 		case CHTraverseReverseOrder:
-			if (stack == NULL && currentNode == NULL)
+			if (stack == NULL && currentNode == NULL) {
+				[collection release];
+				collection = nil;
 				return nil;
+			}
 			while (currentNode != NULL) {
 				ATE_PUSH(currentNode);
 				currentNode = currentNode->right;
@@ -196,8 +213,11 @@ static NSUInteger kATE_SIZE = sizeof(CH_ATE_NODE);
 			
 		case CHTraversePostOrder:
 			// This algorithm from: http://www.johny.ca/blog/archives/05/03/04/
-			if (stack == NULL && currentNode == NULL)
+			if (stack == NULL && currentNode == NULL) {
+				[collection release];
+				collection = nil;
 				return nil;
+			}
 			while (1) {
 				while (currentNode != NULL) {
 					ATE_PUSH(currentNode);
@@ -219,8 +239,11 @@ static NSUInteger kATE_SIZE = sizeof(CH_ATE_NODE);
 			
 		case CHTraverseLevelOrder:
 			currentNode = ATE_FRONT;
-			if (currentNode == NULL)
+			if (currentNode == NULL) {
+				[collection release];
+				collection = nil;
 				return nil;
+			}
 			ATE_DEQUEUE();
 			if (currentNode->left != NULL) {
 				ATE_ENQUEUE(currentNode->left);
@@ -546,10 +569,10 @@ CHAnderssonTreeNode* split(CHAnderssonTreeNode *node) {
 - (NSEnumerator*) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order {
 	if (root == NULL)
 		return nil;
-	
-	return [[[CHAnderssonTreeEnumerator alloc] initWithRoot:root
-                                    traversalOrder:order
-                                   mutationPointer:&mutations] autorelease];
+	return [[[CHAnderssonTreeEnumerator alloc] initWithTree:self
+                                                       root:root
+                                             traversalOrder:order
+                                            mutationPointer:&mutations] autorelease];
 }
 
 #pragma mark <NSFastEnumeration> Methods

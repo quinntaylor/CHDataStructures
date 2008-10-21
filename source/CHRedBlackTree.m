@@ -106,6 +106,7 @@
 {
 	CHTraversalOrder traversalOrder;
 	@private
+	CHRedBlackTree *collection;
 	struct RBNode *currentNode;
 	BOOL hasStarted;
 	BOOL beenLeft;
@@ -117,11 +118,14 @@
 /**
  Create an enumerator which traverses a given (sub)tree in the specified order.
  
+ @param tree The tree collection that is being enumerated. This collection is to be
+             retained while the enumerator has not exhausted all its objects.
  @param root The root node of the (sub)tree whose elements are to be enumerated.
  @param order The traversal order to use for enumerating the given (sub)tree.
  @param mutations A pointer to the collection's count of mutations, for invalidation.
  */
-- (id) initWithRoot:(CHRedBlackTreeNode*)root
+- (id) initWithTree:(CHRedBlackTree*)tree
+               root:(CHRedBlackTreeNode*)root
      traversalOrder:(CHTraversalOrder)order
     mutationPointer:(unsigned long*)mutations;
 
@@ -149,12 +153,14 @@
 
 @implementation CHRedBlackTreeEnumerator
 
-- (id) initWithRoot:(CHRedBlackTreeNode*)root
+- (id) initWithTree:(CHRedBlackTree*)tree
+               root:(CHRedBlackTreeNode*)root
      traversalOrder:(CHTraversalOrder)order
     mutationPointer:(unsigned long*)mutations
 {
 	if ([super init] == nil || !isValidTraversalOrder(order))
 		return nil;
+	collection = (root != NULL) ? collection = [tree retain] : nil;
 //	currentNode = ___;
 	traversalOrder = order;
 	beenLeft = YES;
@@ -172,6 +178,8 @@
 	id object;
 	while ((object = [self nextObject]))
 		[array addObject:object];
+	[collection release];
+	collection = nil;
 	return [array autorelease];
 }
 
@@ -389,10 +397,10 @@ static CHRedBlackTreeNode * _rotateWithRightChild(CHRedBlackTreeNode *rightChild
 	CHRedBlackTreeNode *root = [header right];
 	if (root == sentinel)
 		return nil;
-	
-	return [[[CHRedBlackTreeEnumerator alloc] initWithRoot:root
-	                                      traversalOrder:order
-	                                     mutationPointer:&mutations] autorelease];
+	return [[[CHRedBlackTreeEnumerator alloc] initWithTree:self
+                                                      root:root
+                                            traversalOrder:order
+                                           mutationPointer:&mutations] autorelease];
 }
 
 @end
