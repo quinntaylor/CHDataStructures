@@ -41,10 +41,8 @@
  and returns NSOrderedAscending, NSOrderedSame, or NSOrderedDescending as the
  receiver is less than, equal to, or greater than the argument, respectively. (See
  NSComparisonResult in NSObjCRuntime.h for details.) 
- 
- @todo Add support for NSCoding and NSCopying.
  */
-@protocol CHHeap <NSObject, NSFastEnumeration>
+@protocol CHHeap <NSObject, NSCoding, NSCopying, NSFastEnumeration>
 
 /**
  Initialize a heap with ascending ordering and no objects.
