@@ -87,6 +87,15 @@
 - (void) addObject:(id)anObject;
 
 /**
+ Adds the objects in a given array to this heap, then re-establish the heap property.
+ After all the objects have been inserted, objects are percolated down the heap as
+ necessary, starting from @a count/2 and decrementing to 0.
+ 
+ @param anArray An array of objects to add to the heap.
+ */
+- (void) addObjectsFromArray:(NSArray*)anArray;
+
+/**
  Examine the first object in the heap without removing it.
  
  @return The first object in the heap, or <code>nil</code> if the heap is empty.

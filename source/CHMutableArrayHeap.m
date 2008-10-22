@@ -26,6 +26,41 @@
 
 @implementation CHMutableArrayHeap
 
+- (void) _heapifyFromIndex:(NSUInteger)parentIndex {
+	// Bubble node at the given index down until the heap property is again satisfied
+	id parent, leftChild, rightChild;
+	NSUInteger leftIndex, rightIndex;
+	
+	NSUInteger arraySize = [array count];
+	while (parentIndex < arraySize / 2) {
+		leftIndex = parentIndex * 2 + 1;
+		rightIndex = parentIndex * 2 + 2;
+		
+		// Since a binary heap is always a complete tree, the left will never be nil.
+		parent = [array objectAtIndex:parentIndex];
+		leftChild = [array objectAtIndex:leftIndex];
+		rightChild = (rightIndex < arraySize) ? [array objectAtIndex:rightIndex] : nil;
+		if (rightChild == nil || [leftChild compare:rightChild] == sortOrder) {
+			if ([parent compare:leftChild] != sortOrder) {
+				[array exchangeObjectAtIndex:parentIndex withObjectAtIndex:leftIndex];
+				parentIndex = leftIndex;
+			}
+			else
+				return;	
+		}
+		else {
+			if ([parent compare:rightChild] != sortOrder) {
+				[array exchangeObjectAtIndex:parentIndex withObjectAtIndex:rightIndex];
+				parentIndex = rightIndex;
+			}
+			else
+				return;
+		}
+	}
+}
+
+#pragma mark -
+
 - (void) dealloc {
 	[sortDescriptor release];
 	[super dealloc];
@@ -56,8 +91,7 @@
 	sortDescriptor = [[NSSortDescriptor alloc]
                        initWithKey:nil
                          ascending:(sortOrder == NSOrderedAscending)];
-	for (id anObject in anArray)
-		[self addObject:anObject];
+	[self addObjectsFromArray:anArray];
 	return self;
 }
 
@@ -108,22 +142,32 @@
 - (void) addObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
-	else {
-		++mutations;
-		[array addObject:anObject];
-		// Bubble the new object up the heap if necessary
-		NSUInteger parent;
-		NSUInteger i = [array count] - 1;
-		while (i > 0) {
-			parent = (i-1) / 2;
-			if ([[array objectAtIndex:parent] compare:[array objectAtIndex:i]] != sortOrder) {
-				[array exchangeObjectAtIndex:parent withObjectAtIndex:i];
-				i = parent;
-			}
-			else
-				break;
+	++mutations;
+	[array addObject:anObject];
+	// Bubble the new object (added at the end of the array) up the heap as necessary
+	NSUInteger parent;
+	NSUInteger i = [array count] - 1;
+	while (i > 0) {
+		parent = (i-1) / 2;
+		if ([[array objectAtIndex:parent] compare:[array objectAtIndex:i]] != sortOrder)
+		{
+			[array exchangeObjectAtIndex:parent withObjectAtIndex:i];
+			i = parent;
 		}
-	}	
+		else
+			break;
+	}
+}
+
+- (void) addObjectsFromArray:(NSArray*)anArray {
+	if (anArray == nil)
+		return;
+	++mutations;
+	[array addObjectsFromArray:anArray];
+	// heapify
+	NSUInteger index = [array count]/2;
+	while (0 < index--)
+		[self _heapifyFromIndex:index];
 }
 
 - (id) firstObject {
@@ -135,54 +179,25 @@
 }
 		
 - (void) removeFirstObject {
-	NSUInteger arraySize = [array count];
 	@try {
-		[array exchangeObjectAtIndex:0 withObjectAtIndex:(arraySize-1)];
+		[array exchangeObjectAtIndex:0 withObjectAtIndex:([array count]-1)];
 		[array removeLastObject];
-		--arraySize;
+		++mutations;
+		// Bubble the swapped node down until the heap property is again satisfied
+		[self _heapifyFromIndex:0];
 	}
-	@catch (NSException *exception) {
-		return;
-	}
-	++mutations;
-	// Bubble the new root node down until the heap property is again satisfied
-	id parent;
-	id leftChild;
-	id rightChild;
-	NSUInteger parentIndex = 0;
-	NSUInteger leftIndex;
-	NSUInteger rightIndex;
-
-	while (parentIndex < arraySize / 2) {
-		leftIndex = parentIndex * 2 + 1;
-		rightIndex = parentIndex * 2 + 2;
-		
-		// Since a binary heap is always a complete tree, the left will never be nil.
-		parent = [array objectAtIndex:parentIndex];
-		leftChild = [array objectAtIndex:leftIndex];
-		rightChild = (rightIndex < arraySize) ? [array objectAtIndex:rightIndex] : nil;
-		if (rightChild == nil || [leftChild compare:rightChild] == sortOrder) {
-			if ([parent compare:leftChild] != sortOrder) {
-				[array exchangeObjectAtIndex:parentIndex withObjectAtIndex:leftIndex];
-				parentIndex = leftIndex;
-			}
-			else
-				parentIndex = arraySize;	
-		}
-		else {
-			if ([parent compare:rightChild] != sortOrder) {
-				[array exchangeObjectAtIndex:parentIndex withObjectAtIndex:rightIndex];
-				parentIndex = rightIndex;
-			}
-			else
-				parentIndex = arraySize;
-		}
-	}
+	@catch (NSException *exception) {}
 }
 
 - (void) removeObject:(id)anObject {
-	[array removeObject:anObject];
-	++mutations;
+	NSUInteger index = [array indexOfObject:anObject];
+	if (index != NSNotFound) {
+		[array exchangeObjectAtIndex:index withObjectAtIndex:([array count]-1)];
+		[array removeLastObject];
+		++mutations;
+		// Bubble the swapped node down until the heap property is again satisfied
+		[self _heapifyFromIndex:index];
+	}
 }
 
 - (void) removeAllObjects {
@@ -190,29 +205,12 @@
 	++mutations;
 }
 
-- (NSArray*) allObjects {
+- (NSArray*) sortedObjects {
 	return [array sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
 }
 
-- (NSEnumerator*) objectEnumerator {
+- (NSEnumerator*) sortedObjectEnumerator {
 	return [[self allObjects] objectEnumerator];
-}
-
-#pragma mark Unsupported Operations
-
-- (NSUInteger) indexOfObject:(id)anObject {
-	CHUnsupportedOperationException([self class], _cmd);
-	return 0;
-}
-
-- (NSUInteger) indexOfObjectIdenticalTo:(id)anObject {
-	CHUnsupportedOperationException([self class], _cmd);
-	return 0;
-}
-
-- (id) objectAtIndex:(NSUInteger)index {
-	CHUnsupportedOperationException([self class], _cmd);
-	return nil;
 }
 
 @end
