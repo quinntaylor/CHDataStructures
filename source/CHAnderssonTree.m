@@ -453,6 +453,9 @@ CHAnderssonTreeNode* split(CHAnderssonTreeNode *node) {
 			current = current->right;
 		}
 	}
+	current = ATE_TOP;
+	ATE_POP();
+
 	if (nodeToDelete != NULL)  {
 		nodeToDelete->object = current->object;
 		nodeToDelete->level = current->level;

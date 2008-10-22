@@ -21,8 +21,8 @@ static BOOL gcDisabled;
 
 - (void) setUp {
 	tree = [[CHAnderssonTree alloc] init];
-	testArray = [NSArray arrayWithObjects:
-				 @"B", @"N", @"C", @"L", @"D", @"J", @"E", @"H", @"K", @"M", @"O", @"G", @"A", @"I", @"F", nil];
+	testArray = [NSArray arrayWithObjects:@"B",@"N",@"C",@"L",@"D",@"J",@"E",
+				 @"H",@"K",@"M",@"O",@"G",@"A",@"I",@"F",nil];
 	// Creates the tree from: Weiss pg. 645
 }
 
@@ -192,6 +192,20 @@ static BOOL gcDisabled;
 	STAssertEqualObjects([e nextObject], @"K", @"-nextObject is wrong.");
 	
 	STAssertNil([e nextObject], @"-nextObject should return nil.");
+}
+
+- (void) testRemove {
+	NSArray *correctLevelOrder;
+	for (id object in testArray)
+		[tree addObject:object];
+
+	[tree removeObject: @"J"];
+	correctLevelOrder = [NSArray arrayWithObjects:@"E",@"C",@"L",@"A",@"D",
+						 @"H",@"N",@"B",@"F",@"I",@"M",@"O",@"G",@"K",nil];
+	e = [tree objectEnumeratorWithTraversalOrder:CHTraverseLevelOrder];
+	STAssertTrue([[e allObjects] isEqualToArray:correctLevelOrder], @"Bad order");
+	
+	
 }
 
 @end
