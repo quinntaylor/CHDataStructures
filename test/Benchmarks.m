@@ -275,7 +275,7 @@ void benchmarkHeap(Class testClass) {
 	for (NSArray *array in testArrays)
 		printf("\t%-8d", [array count]);
 	
-	printf("\naddObject:         ");
+	printf("\naddObject:          ");
 	for (NSArray *array in testArrays) {
 		heap = [[testClass alloc] init];
 		startTime = timestamp();
@@ -349,6 +349,29 @@ void benchmarkTree(Class testClass) {
 		printf("\t%-8d", [array count]);
 	}	
 	
+	printf("\naddObject:          ");
+	for (NSArray *array in testArrays) {
+		tree = [[testClass alloc] init];
+		startTime = timestamp();
+		for (id anObject in array)
+			[tree addObject:anObject];
+		printf("\t%f", timestamp() - startTime);
+		[tree release];
+	}
+	
+	printf("\nremoveMinObject:    ");
+	for (NSArray *array in testArrays) {
+		tree = [[testClass alloc] init];
+		for (id anObject in array)
+			[tree addObject:anObject];
+		startTime = timestamp();
+		arrayCount = [array count];
+		for (item = 1; item <= arrayCount; item++)
+			[tree removeObject:[tree findMin]];
+		printf("\t%f", timestamp() - startTime);
+		[tree release];
+	}
+	
 	printf("\nNSEnumerator       ");
 	for (NSArray *array in testArrays) {
 		tree = [[testClass alloc] init];
@@ -369,37 +392,46 @@ void benchmarkTree(Class testClass) {
 
 int main (int argc, const char * argv[]) {
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-	
+
 	NSUInteger size, item, limit = 1000000;
 	testArrays = [[NSMutableArray alloc] init];
 	for (size = 1; size <= limit; size *= 10) {
-		NSMutableArray *array = (size == 1)
-			? [[NSMutableArray alloc] init]
-			: [[testArrays lastObject] mutableCopy]; // reuse elements in previous
+		NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:size+1];
+		[array addObjectsFromArray:[testArrays lastObject]];
 		for (item = [array count]+1; item <= size; item++)
 			[array addObject:[NSNumber numberWithUnsignedInteger:item]];
 		[testArrays addObject:array];
 		[array release];
 	}
 	
-	CHQuietLog(@"\n<Deque> Implemenations");
+	CHQuietLog(@"\n<CHDeque> Implemenations");
 	benchmarkDeque([CHMutableArrayDeque class]);
 	benchmarkDeque([CHListDeque class]);
 
-	CHQuietLog(@"\n<Queue> Implemenations");
+	CHQuietLog(@"\n<CHQueue> Implemenations");
 	benchmarkQueue([CHMutableArrayQueue class]);
 	benchmarkQueue([CHListQueue class]);
-
-	CHQuietLog(@"\n<Stack> Implemenations");
+	
+	CHQuietLog(@"\n<CHStack> Implemenations");
 	benchmarkStack([CHMutableArrayStack class]);
 	benchmarkStack([CHListStack class]);
+	
+	// Create more disordered arrays of values for testing heap and tree subclasses
+	[testArrays removeAllObjects];
+	for (size = 1; size <= limit; size *= 10) {
+		NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:size+1];
+		for (item = 1; item <= size; item++)
+			[array addObject:[NSNumber numberWithUnsignedInteger:(item*7%size)]];
+		[testArrays addObject:array];
+		[array release];
+	}
 
-	CHQuietLog(@"\n<Heap> Implemenations");
+	CHQuietLog(@"\n<CHHeap> Implemenations");
 	benchmarkHeap([CHMutableArrayHeap class]);
 
-//	CHQuietLog(@"\n<Tree> Implemenations");
+	CHQuietLog(@"\n<CHTree> Implemenations");
 //	benchmarkTree([CHUnbalancedTree class]);
-//	benchmarkTree([CHAnderssonTree class]);
+	benchmarkTree([CHAnderssonTree class]);
 //	benchmarkTree([CHRedBlackTree class]);
 	
 	[testArrays release];
