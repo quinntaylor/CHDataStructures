@@ -453,23 +453,25 @@ CHAnderssonTreeNode* split(CHAnderssonTreeNode *node) {
 			current = current->right;
 		}
 	}
+	if (nodeToDelete == NULL) {  // the specified object was not found
+		while (stack != NULL)
+			ATE_POP(); // deallocate the wrappers for all nodes pushed to the stack
+		return;
+	}
+
 	current = ATE_TOP;
 	ATE_POP();
-
-	if (nodeToDelete != NULL)  {
-		nodeToDelete->object = current->object;
-		nodeToDelete->level = current->level;
-		current = current->right;
-	}
-	else
-		return; // the specified object was not found
+	nodeToDelete->object = current->object;
+	nodeToDelete->level = current->level;
+	// TODO: Is this where the malloced struct for the node needs to be freed?
+	current = current->right;
 			
 	CHAnderssonTreeNode *previous = NULL;
 	while (stack != NULL)  {
 		current = ATE_TOP;
 		ATE_POP();
-		if(previous != NULL) {
-			if([current->object compare:previous->object] < 0)
+		if (previous != NULL) {
+			if ([current->object compare:previous->object] == NSOrderedAscending)
 				current->right = previous;
 			else
 				current->left = previous;
@@ -477,18 +479,20 @@ CHAnderssonTreeNode* split(CHAnderssonTreeNode *node) {
 		if ((current->left != NULL && current->left->level < current->level - 1) || 
 			(current->right != NULL && current->right->level < current->level - 1)) 
 		{
-			--current->level;
+			--(current->level);
 			if (current->right->level > current->level)
 				current->right->level = current->level;
-			current = skew(current);
-			current->right = skew(current->right);
+			current               = skew(current);
+			current->right        = skew(current->right);
 			current->right->right = skew(current->right->right);
-			current = split(current);
-			current->right = split(current->right);
+			current               = split(current);
+			current->right        = split(current->right);
 		}
 		previous = current;
 	}
 	root = current;
+	--count;
+	++mutations;
 }
 
 /**
