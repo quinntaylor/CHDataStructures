@@ -238,7 +238,7 @@
 		E4ADBB220E88174200B570BC /* CHUnbalancedTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHUnbalancedTree.h; path = source/CHUnbalancedTree.h; sourceTree = "<group>"; };
 		E4ADBB230E88174200B570BC /* CHUnbalancedTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHUnbalancedTree.m; path = source/CHUnbalancedTree.m; sourceTree = "<group>"; };
 		E4ADBB7E0E8828C500B570BC /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
-		E4ADBB7F0E8828C500B570BC /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		E4ADBB7F0E8828C500B570BC /* LICENSE.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = LICENSE.html; sourceTree = "<group>"; };
 		E4ADBC990E88412C00B570BC /* CHAbstractTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHAbstractTree.m; path = source/CHAbstractTree.m; sourceTree = "<group>"; };
 		E4CFCDB00E8FD18300B0253A /* docs.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = docs.html; sourceTree = "<group>"; };
 		E4CFCDB10E8FD18300B0253A /* Doxyfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Doxyfile; path = doxygen/Doxyfile; sourceTree = "<group>"; };
@@ -314,7 +314,7 @@
 		089C1665FE841158C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				E4ADBB7F0E8828C500B570BC /* LICENSE */,
+				E4ADBB7F0E8828C500B570BC /* LICENSE.html */,
 				E4ADBB7E0E8828C500B570BC /* README */,
 				089C1666FE841158C02AAC07 /* InfoPlist.strings */,
 				E473C9890E9331FA005CA997 /* Unit Testing-Info.plist */,

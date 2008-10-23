@@ -1,26 +1,24 @@
-//  CHTree.h
-//  CHDataStructures.framework
+/*
+ CHTree.h
+ CHDataStructures.framework -- Objective-C versions of common data structures.
+ Copyright (C) 2008, Quinn Taylor for BYU CocoaHeads <http://cocoaheads.byu.edu>
+ Copyright (C) 2002, Phillip Morelock <http://www.phillipmorelock.com>
+ 
+ This library is free software: you can redistribute it and/or modify it under
+ the terms of the GNU Lesser General Public License as published by the Free
+ Software Foundation, either under version 3 of the License, or (at your option)
+ any later version.
+ 
+ This library is distributed in the hope that it will be useful, but WITHOUT ANY
+ WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+ 
+ You should have received a copy of the GNU General Public License along with
+ this library.  If not, see <http://www.gnu.org/copyleft/lesser.html>.
+ */
 
-/************************
- A Cocoa DataStructuresFramework
- Copyright (C) 2002  Phillip Morelock in the United States
- http://www.phillipmorelock.com
- Other copyrights for this specific file as acknowledged herein.
- 
- This library is free software; you can redistribute it and/or
- modify it under the terms of the GNU Lesser General Public
- License as published by the Free Software Foundation; either
- version 2.1 of the License, or (at your option) any later version.
- 
- This library is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- Lesser General Public License for more details.
- 
- You should have received a copy of the GNU Lesser General Public
- License along with this library; if not, write to the Free Software
- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *******************************/
+#import <Foundation/Foundation.h>
+#import "Util.h"
 
 /**
  @file CHTree.h
@@ -28,10 +26,6 @@
  A <a href="http://en.wikipedia.org/wiki/Tree_(data_structure)">tree</a> protocol
  which specifes an interface for N-ary tree structures.
  */
-
-#import <Foundation/Foundation.h>
-#import "Util.h"
-//#import "CHStack.h"
 
 /**
  A set of constant values denoting the order in which to traverse a tree structure.

@@ -16,7 +16,7 @@ Jay Wardell
 Gordon Worley  redbird@rbisland.cx  http://www.rbisland.cx/
 ///////ArrayHeap
 
-This entire package and all files underneath it are licensed to you under the GNU LGPL -- which can be found verbatim in the LICENSE file.  What this basically means is that anyone can use this package for any purpose -- but there are very important restrictions, so you must read that file before using the source in this package.  My current personal official release of this software in source form only can be found at http://www.phillipmorelock.com/examples/cocoadata/DataFrame.sit
+This entire package and all files underneath it are licensed to you under the GNU LGPL -- which can be found verbatim in the LICENSE.html file.  What this basically means is that anyone can use this package for any purpose -- but there are very important restrictions, so you must read that file before using the source in this package.  My current personal official release of this software in source form only can be found at http://www.phillipmorelock.com/examples/cocoadata/DataFrame.sit
 
 As well, this README file is considered a source file under the LGPL and you must include it if you redistribute the library in source form under the LGPL.  If you change the library, you should make your own additional README and include it with the source, describing your changes.  If you contribute to the library by giving me source, you may keep your copyright or assign it to me, but you must agree to license it through the library's LGPL license.
 
