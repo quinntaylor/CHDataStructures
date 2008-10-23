@@ -57,7 +57,7 @@
  This framework provides Objective-C protocols for and implementations of common
  data structures which are currently beyond the purview of Apple's extensive and
  flexible <a href="http://developer.apple.com/cocoa/">Cocoa frameworks</a>. The
- collections which are a part of Cocoa (NSArray, NSDictionary, NSSet, etc.) ar
+ collections which are a part of Cocoa (NSArray, NSDictionary, NSSet, etc.) are
  highly optimized and amenable to many situations. Even so, sometimes the use of
  an honest-to-goodness stack, queue, linked list, tree, etc. can greatly improve
  the clarity and comprehensibility of code.
@@ -75,7 +75,7 @@
  - CHStack
  - CHTree
  
- We specifically target <a href="http://www.apple.com/macosx/">Mac OS X</a>, but
+ This framework targets <a href="http://www.apple.com/macosx/">Mac OS X</a>, but
  most of the code could be easily ported to other Objective-C environments, such
  as <a href="http://www.gnustep.org">GNUStep</a>. However, such efforts would be
  better accomplished by forking this project rather than integrating with it,
@@ -84,8 +84,8 @@
  <ol>
  <li>Accommodating multiple environments dramatically increases code complexity,
      and consequently the effort required to test, maintain, and improve it.
- <li>Mac OS X is by far the most prevalent Objective-C environment in use, and a
-     needlessly bloated framework binary is a disservice to any developer.
+ <li>OS X is by far the most prevalent Objective-C environment in use, and
+     bigger, slower library binaries are a disservice to any developer.
  </ol>
  
  This framework is free software: you can redistribute it and/or modify it under
@@ -98,5 +98,5 @@
  please <a href="mailto:me@phillipmorelock.com?subject=DataStructuresFramework">
  email me</a>. I am very receptive to help, criticism, flames, whatever.
  
-         &mdash; <a href="http://www.phillipmorelock.com/">Phillip Morelock</a>, 2002
+   &mdash; <a href="http://homepage.mac.com/quinntaylor/">Quinn Taylor</a>, 2008
  */

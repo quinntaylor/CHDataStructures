@@ -4,7 +4,7 @@
 # Project related configuration options
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
-PROJECT_NAME           = "DataStructures.framework"
+PROJECT_NAME           = "CHDataStructures.framework"
 PROJECT_NUMBER         = 
 OUTPUT_DIRECTORY       = docs
 CREATE_SUBDIRS         = NO

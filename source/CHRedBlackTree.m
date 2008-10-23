@@ -383,6 +383,11 @@ static CHRedBlackTreeNode * _rotateWithRightChild(CHRedBlackTreeNode *rightChild
 	return [[self _findNode: target] object];
 }
 
+/**
+ @param anObject The object to be removed from the tree if present.
+ 
+ @todo Implement <code>-removeObject:</code> method, including rebalancing.
+ */
 - (void) removeObject:(id)anObject {
 	CHUnsupportedOperationException([self class], _cmd);
 	// TODO: Next release, very difficult, my fu is no match for it right this minute.
