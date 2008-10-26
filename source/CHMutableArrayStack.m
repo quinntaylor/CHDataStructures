@@ -24,8 +24,7 @@
 - (id) initWithArray:(NSArray*)anArray {
 	if ([self init] == nil)
 		return nil;
-	for (id anObject in anArray)
-		[array addObject:anObject];
+	[array addObjectsFromArray:anArray];
 	return self;
 }
 
