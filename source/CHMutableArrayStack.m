@@ -22,8 +22,7 @@
 @implementation CHMutableArrayStack
 
 - (id) initWithArray:(NSArray*)anArray {
-	if ([self init] == nil)
-		return nil;
+	if ([self init] == nil) return nil;
 	[array addObjectsFromArray:anArray];
 	return self;
 }

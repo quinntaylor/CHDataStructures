@@ -33,8 +33,7 @@
             withLeft:(CHRedBlackTreeNode*)theLeft
            withRight:(CHRedBlackTreeNode*)theRight
 {
-	if ([super init] == nil)
-		return nil;
+	if ([super init] == nil) return nil;
 	color = nBLACK;
 	object = [theObject retain];
 	left = [theLeft retain];
@@ -294,8 +293,7 @@ static CHRedBlackTreeNode * _rotateWithRightChild(CHRedBlackTreeNode *rightChild
 #pragma mark - Public Methods
 
 - (id) init {
-	if ([super init] == nil)
-		return nil;
+	if ([super init] == nil) return nil;
 	sentinel = [[CHRedBlackTreeNode alloc] init];
 	[sentinel setLeft:sentinel];
 	[sentinel setRight:sentinel];

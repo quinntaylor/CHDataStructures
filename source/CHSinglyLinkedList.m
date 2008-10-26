@@ -71,8 +71,7 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
           startNode:(CHSinglyLinkedListNode*)startNode
     mutationPointer:(unsigned long*)mutations;
 {
-	if ([super init] == nil)
-		return nil;
+	if ([super init] == nil) return nil;
 	collection = (startNode != NULL) ? collection = [list retain] : nil;
 	current = startNode; // If startNode is NULL, nothing will be returned, anyway.
 	mutationCount = *mutations;
@@ -138,8 +137,7 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 }
 
 - (id) init {
-	if ([super init] == nil)
-		return nil;
+	if ([super init] == nil) return nil;
 	head = NULL;
 	tail = NULL;
 	listSize = 0;
@@ -148,8 +146,7 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 }
 
 - (id) initWithArray:(NSArray*)anArray {
-	if ([self init] == nil)
-		return nil;
+	if ([self init] == nil) return nil;
 	for (id anObject in anArray)
 		[self appendObject:anObject];
 	return self;
@@ -167,8 +164,7 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
  @param decoder An unarchiver object.
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super init] == nil)
-		return nil;
+	if ([super init] == nil) return nil;
 	for (id anObject in [decoder decodeObjectForKey:@"objects"])
 		[self appendObject:anObject];
 	return self;

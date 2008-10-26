@@ -25,16 +25,15 @@
  Only to be called from concrete child classes to initialize shared variables.
  */
 - (id) init {
-	if ([super init] == nil)
-		return nil;
+	if ([super init] == nil) return nil;
 	count = 0;
 	mutations = 0;
 	return self;
 }
 
 - (id) initWithArray:(NSArray*)anArray {
-	if ([self init] == nil) // call the subclass -init, which calls [super init] here
-		return nil;
+	// Call the concrete subclass' -init, which calls [super init] declared here
+	if ([self init] == nil) return nil;
 	for (id anObject in anArray)
 		[self addObject:anObject];
 	return self;
@@ -48,8 +47,7 @@
  @param decoder An unarchiver object.
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super init] == nil)
-		return nil;
+	if ([super init] == nil) return nil;
 	count = 0;
 	mutations = 0;
 	for (id anObject in [decoder decodeObjectForKey:@"objects"])

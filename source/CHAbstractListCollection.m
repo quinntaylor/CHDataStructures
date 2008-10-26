@@ -27,16 +27,14 @@
 }
 
 - (id) initWithArray:(NSArray*)anArray {
-	if ([self init] == nil)
-		return nil;
+	if ([self init] == nil) return nil;
 	for (id anObject in anArray)
 		[list appendObject:anObject];
 	return self;
 }
 
 - (id) initWithList:(id<CHLinkedList>)aList {
-	if ([self init] == nil)
-		return nil;
+	if ([self init] == nil) return nil;
 	for (id anObject in aList)
 		[list appendObject:anObject];
 	return self;
@@ -50,8 +48,7 @@
  @param decoder An unarchiver object.
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super init] == nil)
-		return nil;
+	if ([super init] == nil) return nil;
 	list = [[decoder decodeObjectForKey:@"list"] retain];
 	return self;
 }

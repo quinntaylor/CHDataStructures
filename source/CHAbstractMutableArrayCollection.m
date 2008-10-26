@@ -30,8 +30,7 @@
  Initialize a collection with no objects.
  */
 - (id) init {
-	if ([super init] == nil)
-		return nil;
+	if ([super init] == nil) return nil;
 	array = [[NSMutableArray alloc] init];
 	return self;
 }
@@ -40,8 +39,7 @@
  Initialize a collection with the contents of the given array.
  */
 - (id) initWithArray:(NSArray*)anArray {
-	if ([super init] == nil)
-		return nil;
+	if ([super init] == nil) return nil;
 	array = [anArray mutableCopy];
 	return self;
 }
@@ -54,8 +52,7 @@
  @param decoder An unarchiver object.
  */
 - (id) initWithCoder:(NSCoder*)decoder {
-	if ([super init] == nil)
-		return nil;
+	if ([super init] == nil) return nil;
 	array = [[decoder decodeObjectForKey:@"array"] retain];
 	return self;
 }

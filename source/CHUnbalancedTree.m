@@ -362,8 +362,7 @@ static struct CHUnbalancedTreeNode * _removeNode(struct CHUnbalancedTreeNode *no
 @implementation CHUnbalancedTree
 
 - (id) init {
-	if ([super init] == nil)
-		return nil;
+	if ([super init] == nil) return nil;
 	root = NULL;
 	return self;
 }

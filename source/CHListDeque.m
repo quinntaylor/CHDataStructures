@@ -29,8 +29,7 @@
 @implementation CHListDeque
 
 - (id) init {
-	if ([super init] == nil)
-		return nil;
+	if ([super init] == nil) return nil;
 	list = [[CHDoublyLinkedList alloc] init];
 	return self;
 }

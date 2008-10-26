@@ -77,8 +77,8 @@
 }
 
 - (id) initWithOrdering:(NSComparisonResult)order array:(NSArray*)anArray {
-	if ([super init] == nil) // Parent's initializer allocates the actual array
-		return nil;
+	// Parent's initializer allocates the actual array
+	if ([super init] == nil) return nil;
 	if (order != NSOrderedAscending && order != NSOrderedDescending)
 		[NSException raise:NSInvalidArgumentException
 		            format:@"Must provide a valid sort ordering."];

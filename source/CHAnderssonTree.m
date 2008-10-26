@@ -299,8 +299,7 @@ CHAnderssonTreeNode* split(CHAnderssonTreeNode *node) {
 #pragma mark - Public Methods
 
 - (id) init {
-	if ([super init] == nil)
-		return nil;
+	if ([super init] == nil) return nil;
 	root = NULL;
 	return self;
 }

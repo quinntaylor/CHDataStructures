@@ -27,15 +27,13 @@
 @implementation CHListStack
 
 - (id) init {
-	if ([super init] == nil)
-		return nil;
+	if ([super init] == nil) return nil;
 	list = [[CHSinglyLinkedList alloc] init];
 	return self;
 }
 
 - (id) initWithArray:(NSArray*)anArray {
-	if ([self init] == nil)
-		return nil;
+	if ([self init] == nil) return nil;
 	for (id anObject in anArray)
 		[list prependObject:anObject];
 	return self;
