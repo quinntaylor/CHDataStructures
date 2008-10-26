@@ -37,6 +37,7 @@
 - (void) tearDown {
 	[deque release];
 }
+
 - (void) testPrependObject {
 	STAssertThrows([deque prependObject:nil], @"Should raise nilArgumentException.");
 
