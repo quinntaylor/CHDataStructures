@@ -38,6 +38,8 @@
 	[deque release];
 }
 - (void) testPrependObject {
+	STAssertThrows([deque prependObject:nil], @"Should raise nilArgumentException.");
+
 	STAssertEquals([deque count], 0u, @"-count is incorrect.");
 	for (id object in testArray)
 		[deque prependObject:object];
@@ -49,6 +51,8 @@
 }
 
 - (void) testAppendObject {
+	STAssertThrows([deque appendObject:nil], @"Should raise nilArgumentException.");
+
 	STAssertEquals([deque count], 0u, @"-count is incorrect.");
 	for (id object in testArray)
 		[deque appendObject:object];
@@ -85,6 +89,8 @@
 	STAssertEqualObjects([deque firstObject], @"C", @"-firstObject is wrong.");
 	[deque removeFirstObject];
 	STAssertEqualObjects([deque firstObject], nil, @"-firstObject is wrong.");
+	STAssertNoThrow([deque removeFirstObject],
+					@"Should never raise an exception, even when empty.");
 	STAssertEquals([deque count], 0u, @"-count is incorrect.");
 }
 
@@ -98,6 +104,8 @@
 	STAssertEqualObjects([deque lastObject], @"A", @"-lastObject is wrong.");
 	[deque removeLastObject];
 	STAssertEqualObjects([deque lastObject], nil, @"-removeLastObject is wrong.");
+	STAssertNoThrow([deque removeLastObject],
+					@"Should never raise an exception, even when empty.");
 	STAssertEquals([deque count], 0u, @"-count is incorrect.");
 }
 

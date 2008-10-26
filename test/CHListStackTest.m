@@ -38,6 +38,15 @@
 	[stack release];
 }
 
+- (void) testInitWithArray {
+	[stack release];
+	stack = [[CHListStack alloc] initWithArray:testArray];
+	STAssertEquals([stack count], 3u, @"-count is incorrect.");
+	NSArray *stackOrder = [NSArray arrayWithObjects:@"C", @"B", @"A", nil];
+	STAssertEqualObjects([stack allObjects], stackOrder,
+						 @"Bad array ordering on -initWithArray:");
+}
+
 - (void) testCountAndPushObject {
 	STAssertThrows([stack pushObject:nil], @"Should raise nilArgumentException.");
 	

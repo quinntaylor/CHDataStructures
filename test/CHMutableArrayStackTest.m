@@ -20,22 +20,46 @@
 #import <SenTestingKit/SenTestingKit.h>
 #import "CHMutableArrayStack.h"
 
-@interface CHMutableArrayStackTest : SenTestCase {
-	CHMutableArrayStack *stack;
-	NSArray *testArray;
-}
+@interface CHMutableArrayStack (Test)
+
+- (NSArray*) array;
+
 @end
 
+@implementation CHMutableArrayStack (Test)
+
+- (NSArray*) array {
+	return array;
+}
+
+@end
+
+#pragma mark -
+
+@interface CHMutableArrayStackTest : SenTestCase {
+	CHMutableArrayStack *stack;
+	NSArray *testArray, *stackOrder;
+}
+@end
 
 @implementation CHMutableArrayStackTest
 
 - (void) setUp {
 	stack = [[CHMutableArrayStack alloc] init];
 	testArray = [NSArray arrayWithObjects:@"A", @"B", @"C", nil];
+	stackOrder = [NSArray arrayWithObjects:@"C", @"B", @"A", nil];
 }
 
 - (void) tearDown {
 	[stack release];
+}
+
+- (void) testInitWithArray {
+	[stack release];
+	stack = [[CHMutableArrayStack alloc] initWithArray:testArray];
+	STAssertEquals([stack count], 3u, @"-count is incorrect.");
+	STAssertEqualObjects([stack array], testArray,
+						 @"Bad array ordering on -initWithArray:");
 }
 
 - (void) testCountAndPushObject {
@@ -70,6 +94,50 @@
 	STAssertEquals([stack count], 0u, @"-count is incorrect.");
 	[stack popObject];
 	STAssertEquals([stack count], 0u, @"-count is incorrect.");
+}
+
+- (void) testAllObjects {
+	for (id object in testArray)
+		[stack pushObject:object];
+	
+	NSArray *allObjects = [stack allObjects];
+	STAssertEquals([allObjects count], 3u, @"-count is incorrect.");
+	STAssertEqualObjects(allObjects, stackOrder,
+						 @"Bad ordering from -allObjects.");
+}
+
+- (void) testObjectEnumerator {
+	for (id object in testArray)
+		[stack pushObject:object];
+	
+	STAssertEqualObjects([[stack objectEnumerator] allObjects], stackOrder,
+						 @"Bad ordering from -objectEnumerator.");
+	NSUInteger count = 0;
+	NSEnumerator *e = [stack objectEnumerator];
+	while ([e nextObject])
+		count++;
+	STAssertEquals(count, 3u, @"-objectEnumerator had wrong object count.");
+}
+
+- (void) testReverseObjectEnumerator {
+	for (id object in testArray)
+		[stack pushObject:object];
+	
+	STAssertEqualObjects([[stack reverseObjectEnumerator] allObjects], testArray,
+						 @"Bad ordering from -reverseObjectEnumerator.");
+	NSUInteger count = 0;
+	NSEnumerator *e = [stack reverseObjectEnumerator];
+	while ([e nextObject])
+		count++;
+	STAssertEquals(count, 3u, @"-reverseObjectEnumerator had wrong object count.");
+}
+
+- (void) testDescription {
+	for (id object in testArray)
+		[stack pushObject:object];
+
+	STAssertEqualObjects([stack description], [stackOrder description],
+						 @"-description uses bad ordering.");
 }
 
 @end

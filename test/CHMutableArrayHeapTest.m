@@ -23,6 +23,7 @@
 @interface CHMutableArrayHeap (Test)
 
 - (NSArray*) array;
+- (unsigned long) mutations;
 - (NSComparisonResult) sortOrder;
 
 @end
@@ -31,6 +32,10 @@
 
 - (NSArray*) array {
 	return array;
+}
+
+- (unsigned long) mutations {
+	return mutations;
 }
 
 - (NSComparisonResult) sortOrder {
@@ -82,7 +87,19 @@
 
 #pragma mark -
 
+- (void) testInit {
+	[heap release];
+	heap = [[CHMutableArrayHeap alloc] initWithArray:testArray];
+}
+
+- (void) testInvalidInit {
+	STAssertThrows([[CHMutableArrayHeap alloc]
+					initWithOrdering:0], @"Invalid ordering not detected.");
+}
+
 - (void) testAddObject {
+	STAssertThrows([heap addObject:nil], @"Should raise nilArgumentException.");
+	
 	STAssertEquals([heap count], 0u, @"-count is incorrect.");
 	for (id anObject in testArray) {
 		[heap addObject:anObject];
@@ -115,6 +132,9 @@
 		STAssertEquals([heap count], --count, @"-count is incorrect.");	
 		[self verifyHeapProperty];
 	}
+	
+	STAssertNoThrow([heap removeFirstObject],
+					@"Should never raise an exception, even when empty.");
 }
 
 - (void) testRemoveObject {
@@ -124,6 +144,15 @@
 	[heap removeObject:@"F"];
 	STAssertEquals([heap count], 8u, @"-count is incorrect.");
 	[self verifyHeapProperty];
+}
+
+- (void) testRemoveAllObjects {
+	[heap addObjectsFromArray:testArray];
+	unsigned long mutations = [heap mutations];
+	STAssertEquals([heap count], 9u, @"-count is incorrect.");
+	[heap removeAllObjects];
+	STAssertEquals([heap count], 0u, @"-count is incorrect.");
+	STAssertEquals([heap mutations], mutations+1, @"Mutations should increase.");
 }
 
 @end

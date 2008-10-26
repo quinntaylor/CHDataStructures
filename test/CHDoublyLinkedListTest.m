@@ -51,6 +51,21 @@ static BOOL gcDisabled;
 	STAssertEqualObjects([list lastObject], nil, @"-lastObject should be nil.");
 }
 
+- (void) testInitWithArray {
+	[list release];
+    list = [[CHDoublyLinkedList alloc] initWithArray:testArray];
+	STAssertEquals([list count], 3u, @"-count is incorrect.");
+	STAssertEqualObjects([list allObjects], testArray,
+						 @"Bad array ordering on -initWithArray:");
+}
+
+- (void) testDescription {
+	for (id object in testArray)
+		[list appendObject:object];
+	STAssertEqualObjects([list description], [testArray description],
+						 @"-description uses bad ordering.");
+}
+
 #pragma mark Insertion and Access
 
 - (void) testAppendObject {
