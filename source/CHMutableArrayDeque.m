@@ -44,11 +44,7 @@
 }
 
 - (id) lastObject {
-	@try {
-		return [array lastObject];
-	}
-	@catch (NSException *exception) {}
-	return nil;
+	return [array lastObject];
 }
 
 - (void) removeFirstObject {
