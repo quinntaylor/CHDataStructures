@@ -115,8 +115,19 @@
 }
 
 - (BOOL) containsObject:(id)anObject {
-	CHUnsupportedOperationException([self class], _cmd);
-	return NO;
+	return (BOOL) CHUnsupportedOperationException([self class], _cmd);
+}
+
+- (id) findMin {
+	return (id) CHUnsupportedOperationException([self class], _cmd);
+}
+
+- (id) findMax {
+	return (id) CHUnsupportedOperationException([self class], _cmd);
+}
+
+- (id) findObject:(id)anObject {
+	return (id) CHUnsupportedOperationException([self class], _cmd);
 }
 
 - (void) removeObject:(id)element {
@@ -127,24 +138,8 @@
 	CHUnsupportedOperationException([self class], _cmd);
 }
 
-- (id) findMin {
-	CHUnsupportedOperationException([self class], _cmd);
-	return nil;
-}
-
-- (id) findMax {
-	CHUnsupportedOperationException([self class], _cmd);
-	return nil;
-}
-
-- (id) findObject:(id)anObject {
-	CHUnsupportedOperationException([self class], _cmd);
-	return nil;
-}
-
 - (NSEnumerator*) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order {
-	CHUnsupportedOperationException([self class], _cmd);
-	return nil;
+	return (NSEnumerator*) CHUnsupportedOperationException([self class], _cmd);
 }
 
 /**
@@ -162,8 +157,7 @@
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len
 {
-	CHUnsupportedOperationException([self class], _cmd);
-	return 0;
+	return CHUnsupportedOperationException([self class], _cmd);
 }
 
 @end

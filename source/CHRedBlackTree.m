@@ -152,8 +152,7 @@
      traversalOrder:(CHTraversalOrder)order
     mutationPointer:(unsigned long*)mutations
 {
-	if ([super init] == nil || !isValidTraversalOrder(order))
-		return nil;
+	if ([super init] == nil || !isValidTraversalOrder(order)) return nil;
 	collection = (root != NULL) ? collection = [tree retain] : nil;
 //	currentNode = ___;
 	traversalOrder = order;

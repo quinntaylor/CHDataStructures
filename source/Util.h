@@ -74,10 +74,11 @@ static void CHMutatedCollectionException(Class theClass, SEL method) {
 
  Currently, there is no support for calling this function from a C function.
  */
-static void CHUnsupportedOperationException(Class theClass, SEL method) {
+static int CHUnsupportedOperationException(Class theClass, SEL method) {
 	[NSException raise:NSInternalInconsistencyException
 				format:@"[%@ %s] -- Unsupported operation.",
 					   theClass, sel_getName(method)];
+	return 0;
 }
 
 static void CHQuietLog(NSString *format, ...) {

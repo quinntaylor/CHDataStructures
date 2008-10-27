@@ -123,8 +123,7 @@ static NSUInteger kATE_SIZE = sizeof(CH_ATE_NODE);
      traversalOrder:(CHTraversalOrder)order
     mutationPointer:(unsigned long*)mutations
 {
-	if ([super init] == nil || !isValidTraversalOrder(order))
-		return nil;
+	if ([super init] == nil || !isValidTraversalOrder(order)) return nil;
 	stack = NULL;
 	traversalOrder = order;
 	collection = (root != NULL) ? collection = [tree retain] : nil;
@@ -147,6 +146,14 @@ static NSUInteger kATE_SIZE = sizeof(CH_ATE_NODE);
 	while (queue != NULL)
 		ATE_DEQUEUE();
 	[super dealloc];
+}
+
+- (void) finalize {
+	while (stack != NULL)
+		ATE_POP();
+	while (queue != NULL)
+		ATE_DEQUEUE();
+	[super finalize];
 }
 
 - (NSArray*) allObjects {
@@ -252,10 +259,8 @@ static NSUInteger kATE_SIZE = sizeof(CH_ATE_NODE);
 			if (currentNode->right != NULL)
 				ATE_ENQUEUE(currentNode->right);
 			return currentNode->object;
-			
-		default:
-			return nil;
 	}
+	return nil;
 }
 
 @end
@@ -400,8 +405,8 @@ CHAnderssonTreeNode* split(CHAnderssonTreeNode *node) {
 - (id) findMax {
 	CHAnderssonTreeNode *currentNode = root;
 	while (currentNode != NULL) {
-		if(currentNode->right != NULL)
-			currentNode = currentNode->left;
+		if (currentNode->right != NULL)
+			currentNode = currentNode->right;
 		else
 			return currentNode->object;
 	}	
@@ -410,7 +415,7 @@ CHAnderssonTreeNode* split(CHAnderssonTreeNode *node) {
 
 - (BOOL) containsObject:(id)anObject {
 	if (anObject == nil)
-		CHNilArgumentException([self class], _cmd);
+		return NO;
 	
 	CHAnderssonTreeNode *currentNode = root;
 	NSComparisonResult comparison;

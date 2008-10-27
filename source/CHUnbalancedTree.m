@@ -122,8 +122,7 @@ static NSUInteger kUTE_SIZE = sizeof(CH_UTE_NODE);
      traversalOrder:(CHTraversalOrder)order
     mutationPointer:(unsigned long*)mutations
 {
-	if ([super init] == nil || !isValidTraversalOrder(order))
-		return nil;
+	if ([super init] == nil || !isValidTraversalOrder(order)) return nil;
 	stack = NULL;
 	traversalOrder = order;
 	collection = (root != NULL) ? collection = [tree retain] : nil;
@@ -146,6 +145,14 @@ static NSUInteger kUTE_SIZE = sizeof(CH_UTE_NODE);
 	while (queue != NULL)
 		UTE_DEQUEUE();
 	[super dealloc];
+}
+
+- (void) finalize {
+	while (stack != NULL)
+		UTE_POP();
+	while (queue != NULL)
+		UTE_DEQUEUE();
+	[super finalize];
 }
 
 - (NSArray*) allObjects {
@@ -251,10 +258,8 @@ static NSUInteger kUTE_SIZE = sizeof(CH_UTE_NODE);
 			if (currentNode->right != NULL)
 				UTE_ENQUEUE(currentNode->right);
 			return currentNode->object;
-			
-		default:
-			return nil;
 	}
+	return nil;
 }
 
 @end
@@ -262,25 +267,6 @@ static NSUInteger kUTE_SIZE = sizeof(CH_UTE_NODE);
 #pragma mark -
 
 #pragma mark C Functions for Optimized Operations
-
-static struct CHUnbalancedTreeNode * _findMaxWithStarter(struct CHUnbalancedTreeNode *starter) {
-	//see comment in findMinWithStarter for explanation
-	struct CHUnbalancedTreeNode *bar, *foo = starter;
-	while ((bar = foo->right) != nil)
-		foo = bar;
-	return foo;	
-}
-
-static struct CHUnbalancedTreeNode * _findMinWithStarter(struct CHUnbalancedTreeNode *starter) {
-	struct CHUnbalancedTreeNode *bar, *foo = starter;
-	
-	//a subtle nil test here -- note the terminating semicolon
-	//when foo->left points to nil, we return foo because
-	//there is nothing more to the left.
-	while ((bar = foo->left) != nil)
-		foo = bar;
-	return foo;
-}
 
 // TODO: C function to locate a node; use for contains/find/remove a single object.
 
@@ -348,7 +334,13 @@ static struct CHUnbalancedTreeNode * _removeNode(struct CHUnbalancedTreeNode *no
 			//3. set our present node's object pointer to the replacement object
 			//4. fix the parent pointer of the to-be-freed node
 			[node->object release];
-			oldRoot = _findMinWithStarter(node->right);
+			
+			oldRoot = treeRoot;
+			while (oldRoot != NULL && oldRoot->left != NULL) {
+				oldRoot = oldRoot->left;
+			}
+			
+			
 			node->object = oldRoot->object;
 			oldRoot->parent->left = NULL;
 			free(oldRoot);
@@ -449,11 +441,25 @@ static struct CHUnbalancedTreeNode * _removeNode(struct CHUnbalancedTreeNode *no
 }
 
 - (id) findMax {
-	return (_findMaxWithStarter(root))->object;
+	CHUnbalancedTreeNode *currentNode = root;
+	while (currentNode != NULL) {
+		if (currentNode->right != NULL)
+			currentNode = currentNode->right;
+		else
+			return currentNode->object;
+	}
+	return nil; // empty tree
 }
 
 - (id) findMin {
-	return (_findMinWithStarter(root))->object;
+	CHUnbalancedTreeNode *currentNode = root;
+	while (currentNode != NULL) {
+		if (currentNode->left != NULL)
+			currentNode = currentNode->left;
+		else
+			return currentNode->object;
+	}
+	return nil; // empty tree
 }
 
 - (id) findObject:(id)anObject {
@@ -491,7 +497,7 @@ static struct CHUnbalancedTreeNode * _removeNode(struct CHUnbalancedTreeNode *no
 			currentNode = currentNode->right;
 		else if (comparison == NSOrderedSame) {
 			++mutations;
-			_removeNode(currentNode, root);
+			_removeNode(currentNode, root); // TODO: refactor code back to here
 			--count;
 			return;
 		}
