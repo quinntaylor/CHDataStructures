@@ -266,91 +266,6 @@ static NSUInteger kUTE_SIZE = sizeof(CH_UTE_NODE);
 
 #pragma mark -
 
-#pragma mark C Functions for Optimized Operations
-
-// TODO: C function to locate a node; use for contains/find/remove a single object.
-
-static struct CHUnbalancedTreeNode * _removeNode(struct CHUnbalancedTreeNode *node,
-											   struct CHUnbalancedTreeNode *treeRoot) {
-	if (node == NULL)
-		return NULL;
-	
-	struct CHUnbalancedTreeNode *oldRoot;
-	
-	if (node->left == NULL) {
-		if (node->right == NULL) { // both children are NULL
-			// Remove reference to this node from parent
-			if (node->parent->left == node)
-				node->parent->left = NULL;
-			else
-				node->parent->right = NULL;
-			// Release resources associated with this node
-			[node->object release];
-			if (node != treeRoot)
-				free(node);
-			return NULL;
-		}
-		else { // only right exists, so replace current with right subtree
-			oldRoot = node;
-			node = node->right;
-			node->parent = oldRoot->parent;
-			
-			//fix the parent's pointers.
-			if (node->parent != NULL) {
-				if (node->parent->left == oldRoot) 
-					node->parent->left = node;
-				else if (node->parent->right == oldRoot)
-					node->parent->right = node; 
-			}
-			
-			[oldRoot->object release];
-			free(oldRoot);
-			return node;
-		}
-	} else { //left was not nil
-		if (node->right == NULL) {
-			oldRoot = node;
-			node = node->left;
-			node->parent = oldRoot->parent;
-			
-			//fix the parent's pointers.
-			if (node->parent != NULL)
-			{
-				if (node->parent->left == oldRoot) 
-					node->parent->left = node;
-				else if (node->parent->right == oldRoot)
-					node->parent->right = node; 
-			}
-			
-			[oldRoot->object release];
-			free(oldRoot);
-			return node;
-		} else {
-			//now of course this is the usual -- both L & R nodes exist
-		
-			//replace our node with the node at the leftmost of its right subtree.
-			//1. release our present node's object
-			//2. find the node we will destroy after plucking its object
-			//3. set our present node's object pointer to the replacement object
-			//4. fix the parent pointer of the to-be-freed node
-			[node->object release];
-			
-			oldRoot = treeRoot;
-			while (oldRoot != NULL && oldRoot->left != NULL) {
-				oldRoot = oldRoot->left;
-			}
-			
-			
-			node->object = oldRoot->object;
-			oldRoot->parent->left = NULL;
-			free(oldRoot);
-			return node;
-		}
-	}
-}
-
-#pragma mark -
-
 @implementation CHUnbalancedTree
 
 - (id) init {
@@ -496,12 +411,56 @@ static struct CHUnbalancedTreeNode * _removeNode(struct CHUnbalancedTreeNode *no
 		else if (comparison == NSOrderedDescending)
 			currentNode = currentNode->right;
 		else if (comparison == NSOrderedSame) {
+			[currentNode->object release]; // Always release value to be removed
+			CHUnbalancedTreeNode *replacement;
+			// The most complex case: removing a node with 2 non-null children
+			// (Replace object with the leftmost object in the right subtree.)
+			if (currentNode->left != NULL && currentNode->right != NULL) {
+				// Find minimum node in the right-child subtree, "steal" object
+				replacement = currentNode->right;
+				while (replacement != NULL && replacement->left != NULL)
+					replacement = replacement->left;
+				currentNode->object = replacement->object;
+				// Fix parent's child pointer and parent of replacement's child
+				if (replacement->parent == currentNode) {
+					currentNode->right = replacement->right;
+					if (replacement->right != NULL)
+						replacement->right->parent = replacement->parent;
+				}
+				else if (replacement->right == NULL) {
+					replacement->parent->left = NULL;
+				} 
+				else {
+					replacement->parent->left = replacement->right;
+					replacement->right->parent = replacement->parent;
+				}
+				free(replacement);
+			}
+			// One or both of the child pointers are null
+			else {
+				// If there is a non-null child, find replacement, link to parent
+				if (currentNode->left != NULL)
+					replacement = currentNode->left;
+				else
+					replacement = currentNode->right;
+				if (replacement != NULL)
+					replacement->parent = currentNode->parent;
+
+				// Redirect child reference from parent to replacement node
+				if (currentNode->parent != NULL) {
+					if (currentNode->parent->left == currentNode)
+						currentNode->parent->left = replacement;
+					else
+						currentNode->parent->right = replacement;
+				}
+				free(currentNode);
+			}
 			++mutations;
-			_removeNode(currentNode, root); // TODO: refactor code back to here
 			--count;
-			return;
+			currentNode = NULL;
 		}
 	}
+	// Falls through to here if the specified node is not found in the tree.
 }
 
 /**
