@@ -19,74 +19,7 @@
 
 #import "CHRedBlackTree.h"
 
-@implementation CHRedBlackTreeNode
-
-- (id) init {
-	return [self initWithObject:nil withLeft:nil withRight:nil];
-}
-
-- (id) initWithObject:(id)theObject {
-	return [self initWithObject:theObject withLeft:nil withRight:nil];
-}
-
-- (id) initWithObject:(id)theObject
-            withLeft:(CHRedBlackTreeNode*)theLeft
-           withRight:(CHRedBlackTreeNode*)theRight
-{
-	if ([super init] == nil) return nil;
-	color = nBLACK;
-	object = [theObject retain];
-	left = [theLeft retain];
-	right = [theRight retain];
-	return self;
-}
-
-- (void) dealloc {
-	[left release];
-	[right release];
-	[object release];
-	[super dealloc];
-}
-
-- (CHRedBlackTreeNode*) left {
-	return left;
-}
-
-- (CHRedBlackTreeNode*) right {
-	return right;
-}
-
-- (id) object {
-	return object;
-}
-
-- (BOOL) color {
-	return color;
-}
-
-- (void) setColor:(BOOL)newColor {
-	color = newColor;
-}
-
-- (void) setLeft:(CHRedBlackTreeNode*)newLeft {
-	[newLeft retain];
-	[left release];
-	left = newLeft;
-}
-
-- (void) setRight:(CHRedBlackTreeNode*)newRight {
-	[newRight retain];
-	[right release];
-	right = newRight;
-}
-
-- (void) setObject:(id)newObject {
-	[newObject retain];
-	[object release];
-	object = newObject;
-}
-
-@end
+static NSUInteger kCHRedBlackTreeNode = sizeof(CHRedBlackTreeNode);
 
 #pragma mark -
 
@@ -197,18 +130,18 @@
 
 #pragma mark C Functions for Optimized Operations
 
-static CHRedBlackTreeNode * _rotateWithLeftChild(CHRedBlackTreeNode *leftChild) {
-	CHRedBlackTreeNode *l1 = [leftChild left];
-	[leftChild setLeft: [l1 right]];
-	[l1 setRight:leftChild];
-	return l1;
+static CHRedBlackTreeNode * _rotateNodeWithLeftChild(CHRedBlackTreeNode *node) {
+	CHRedBlackTreeNode *leftChild = node->left;
+	node->left = leftChild->right;
+	leftChild->right = node;
+	return leftChild;
 }
 
-static CHRedBlackTreeNode * _rotateWithRightChild(CHRedBlackTreeNode *rightChild) {
-	CHRedBlackTreeNode *r1 = [rightChild right];
-	[rightChild setRight: [r1 left]];
-	[r1 setLeft:rightChild];
-	return r1;
+static CHRedBlackTreeNode * _rotateNodeWithRightChild(CHRedBlackTreeNode *node) {
+	CHRedBlackTreeNode *rightChild = node->right;
+	node->right = rightChild->left;
+	rightChild->left = node;
+	return rightChild;
 }
 
 #pragma mark -
@@ -224,20 +157,20 @@ static CHRedBlackTreeNode * _rotateWithRightChild(CHRedBlackTreeNode *rightChild
 	if (node == header)
 		return 1;
 	else
-		return [x compare:[node object]];
+		return [x compare:node->object];
 }
 
 - (CHRedBlackTreeNode*) _findNode:(id)target {
 	//we make the sentinel's object == target ... so we will eventually find it no matter what
-	[sentinel setObject:target];
-	current = [header right];
+	sentinel->object = target;
+	current = header->right;
 	
-	while(1)
-	{
-		if ([target compare:[current object]] < 0)
-			current = [current left];
-		else if ([target compare:[current object]] > 0)
-			current = [current right];
+	while (1) {
+		NSComparisonResult comparison = [current->object compare:target];
+		if (comparison == NSOrderedDescending)
+			current = current->left;
+		else if (comparison == NSOrderedAscending)
+			current = current->right;
 		else if (current != sentinel)
 			return current;
 		else
@@ -246,33 +179,27 @@ static CHRedBlackTreeNode * _rotateWithRightChild(CHRedBlackTreeNode *rightChild
 }
 
 - (CHRedBlackTreeNode*) _rotate:(id)x onAncestor:(CHRedBlackTreeNode*)ancestor {
-	if ([self _compare:x withNode:ancestor] < 0) 	{
-		[ancestor setLeft:(
-						   [self _compare:x withNode:[ancestor left]] < 0 ?
-						   (_rotateWithLeftChild([ancestor left])) : 
-						   (_rotateWithRightChild([ancestor left]))
-						  )];
-		
-		return [ancestor left];
+	if ([self _compare:x withNode:ancestor] < 0) {
+		ancestor->left = ([self _compare:x withNode:ancestor->left] < 0)
+			? _rotateNodeWithLeftChild(ancestor->left)
+			: _rotateNodeWithRightChild(ancestor->left);
+		return ancestor->left;
 	}
-	else 	{
-		[ancestor setRight:(
-							[self _compare:x withNode:[ancestor right]] < 0 ?
-							(_rotateWithLeftChild([ancestor right])) : 
-							(_rotateWithRightChild([ancestor right]))
-							)];
-		
-		return [ancestor right];
+	else {
+		ancestor->right = ([self _compare:x withNode:ancestor->right] < 0)
+			? _rotateNodeWithLeftChild(ancestor->right)
+			: _rotateNodeWithRightChild(ancestor->right);
+		return ancestor->right;
 	}
 }
 
 - (void) _reorient:(id)x {
-	[current setColor: nRED];
-	[[current left] setColor: nBLACK];
-	[[current right] setColor: nBLACK];
+	current->color = nRED;
+	current->left->color = nBLACK;
+	current->right->color = nBLACK;
 	
-	if ([parent color] == nRED) 	{
-		[grandparent setColor: nRED];
+	if (parent->color == nRED) 	{
+		grandparent->color = nRED;
 		
 		if (([self _compare:x withNode:grandparent] < 0) !=
 			([self _compare:x withNode:parent] < 0))
@@ -281,30 +208,30 @@ static CHRedBlackTreeNode * _rotateWithRightChild(CHRedBlackTreeNode *rightChild
 		}
 		
 		current = [self _rotate:x onAncestor:greatgrandparent];
-		
-		[current setColor: nBLACK];
+		current->color = nBLACK;
 	}
 	
 	//always reset root to black
-	[[header right] setColor: nBLACK];
+	header->right->color = nBLACK;
 }
 
 #pragma mark - Public Methods
 
 - (id) init {
 	if ([super init] == nil) return nil;
-	sentinel = [[CHRedBlackTreeNode alloc] init];
-	[sentinel setLeft:sentinel];
-	[sentinel setRight:sentinel];
-	header = [[CHRedBlackTreeNode alloc] init];
-	[header setLeft:sentinel];
-	[header setRight:sentinel];
+	sentinel = malloc(kCHRedBlackTreeNode);
+	sentinel->left  = sentinel;
+	sentinel->right = sentinel;
+	header = malloc(kCHRedBlackTreeNode);
+	header->left  = sentinel;
+	header->right = sentinel;
 	return self;
 }
 
 - (void) dealloc {
-	[header release];
-	[sentinel release];
+	[self removeAllObjects];
+	free(header);
+	free(sentinel);
 	[super dealloc];
 }
 
@@ -319,14 +246,14 @@ static CHRedBlackTreeNode * _rotateWithRightChild(CHRedBlackTreeNode *rightChild
 	// TODO: Send -retain to the object when added
 
 	current = parent = grandparent = header;
-	[sentinel setObject:object];
+	sentinel->object = object;
 	
 	while ([self _compare:object withNode:current] != 0) 	{
 		greatgrandparent = grandparent; grandparent = parent; parent = current;
-		current = [self _compare:object withNode:current] < 0 ? [current left] : [current right];
+		current = [self _compare:object withNode:current] < 0 ? current->left : current->right;
 		
 		// this is where we check for the bad case of red parent and red sibling of parent
-		if ([[current left] color] == nRED && [[current right] color] == nRED)
+		if (current->left->color == nRED && current->right->color == nRED)
 			[self _reorient:object];
 	}
 	
@@ -334,14 +261,15 @@ static CHRedBlackTreeNode * _rotateWithRightChild(CHRedBlackTreeNode *rightChild
 	if (current != sentinel)
 		return;
 	
-	current = [[CHRedBlackTreeNode alloc] initWithObject:object 
-									withLeft:sentinel 
-								   withRight:sentinel ];
-	
+	current = malloc(kCHRedBlackTreeNode);
+	current->object = object;
+	current->left = sentinel;
+	current->right = sentinel;
+		
 	if ([self _compare:object withNode:parent] < 0)
-		[parent setLeft:current];
+		parent->left = current;
 	else
-		[parent setRight:current];
+		parent->right = current;
 	
 	// one last reorientation check...
 	[self _reorient:object];
@@ -355,29 +283,26 @@ static CHRedBlackTreeNode * _rotateWithRightChild(CHRedBlackTreeNode *rightChild
 
 - (id) findMax {
 	parent = nil;
-	current = [header right];
-	
-	while(current != sentinel) {
+	current = header->right;
+	while (current != sentinel) {
 		parent = current;
-		current = [current right];
+		current = current->right;
 	}
-	
-	return [parent object];
+	return parent->object;
 }
 
 - (id) findMin {
 	parent = nil;
-	current = [header right];
-	
+	current = header->right;
 	while (current != sentinel) {
 		parent = current;
-		current = [current left];
+		current = current->left;
 	}
-	return [parent object];
+	return parent->object;
 }
 
 - (id) findObject:(id)target {
-	return [[self _findNode: target] object];
+	return [self _findNode: target]->object;
 }
 
 /**
@@ -396,7 +321,7 @@ static CHRedBlackTreeNode * _rotateWithRightChild(CHRedBlackTreeNode *rightChild
 }
 
 - (NSEnumerator*) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order {
-	CHRedBlackTreeNode *root = [header right];
+	CHRedBlackTreeNode *root = header->right;
 	if (root == sentinel)
 		return nil;
 	return [[[CHRedBlackTreeEnumerator alloc] initWithTree:self

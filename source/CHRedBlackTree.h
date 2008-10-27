@@ -23,34 +23,13 @@
 #define nRED 0
 #define nBLACK 1
 
-#pragma mark -
-
-// A node for use by CHRedBlackTree for internal storage and representation.
-// TODO: Replace getters/setters with Objective-C 2.0 properties, or class with struct.
-@interface CHRedBlackTreeNode : NSObject 
-{
-	BOOL color;
-	CHRedBlackTreeNode *left;
-	CHRedBlackTreeNode *right;
-	id object;
-}
-
-- (id) initWithObject:(id)theObject;
-- (id) initWithObject:(id)theObject
-             withLeft:(CHRedBlackTreeNode*)theLeft
-            withRight:(CHRedBlackTreeNode*)theRight;
-
-- (BOOL) color;
-- (CHRedBlackTreeNode*) left;
-- (CHRedBlackTreeNode*) right;
-- (id) object;
-
-- (void) setColor:(BOOL)newColor;
-- (void) setLeft:(CHRedBlackTreeNode*)newLeft;
-- (void) setRight:(CHRedBlackTreeNode*)newRight;
-- (void) setObject:(id)newObject;
-
-@end
+// A node for use by CHUnbalancedTree for internal storage and representation.
+typedef struct CHRedBlackTreeNode {
+	id object;		/**< The object stored in a particular node. */
+	struct CHRedBlackTreeNode *left;	/**< The left child node, if any. */
+	struct CHRedBlackTreeNode *right;	/**< The right child node, if any. */
+	BOOL color;                         /**< The node's color, red or black. */
+} CHRedBlackTreeNode;
 
 #pragma mark -
 
