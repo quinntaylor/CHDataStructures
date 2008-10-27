@@ -61,14 +61,6 @@
 	STAssertThrows([tree findObject:nil], @"Should raise exception, abstract.");
 }
 
-- (void) testObjectEnumerator {
-	STAssertThrows([tree objectEnumerator], @"Should raise exception, abstract.");
-}
-
-- (void) testReverseObjectEnumerator {
-	STAssertThrows([tree reverseObjectEnumerator], @"Should raise exception, abstract.");
-}
-
 - (void) testObjectEnumeratorWithTraversalOrder {
 	STAssertThrows([tree reverseObjectEnumerator], @"Should raise exception, abstract.");
 }

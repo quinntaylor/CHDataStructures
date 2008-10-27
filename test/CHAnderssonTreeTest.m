@@ -30,7 +30,7 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 
 @interface CHAnderssonTreeTest : SenTestCase {
 	CHAnderssonTree *tree;
-	NSArray *testArray;
+	NSArray *objects;
 	NSArray *order, *correct;
 }
 @end
@@ -43,7 +43,7 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 
 - (void) setUp {
 	tree = [[CHAnderssonTree alloc] init];
-	testArray = [NSArray arrayWithObjects:@"B",@"N",@"C",@"L",@"D",@"J",@"E",
+	objects = [NSArray arrayWithObjects:@"B",@"N",@"C",@"L",@"D",@"J",@"E",
 				 @"H",@"K",@"M",@"O",@"G",@"A",@"I",@"F",nil];
 	// Creates the tree from: Weiss pg. 645
 }
@@ -53,10 +53,45 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 }
 
 - (void) testAddObject {
+	STAssertThrows([tree addObject:nil], @"Should raise an exception.");
+	
 	STAssertEquals([tree count], 0u, @"-count is incorrect.");
-	for (id object in testArray)
+	for (id object in objects)
 		[tree addObject:object];
 	STAssertEquals([tree count], 15u, @"-count is incorrect.");
+	
+	// Test adding identical object--should be replaced, and count stay the same
+	[tree addObject:@"A"];
+	STAssertEquals([tree count], 15u, @"-count is incorrect.");
+}
+
+- (void) testContainsObject {
+	for (id object in objects)
+		[tree addObject:object];
+	STAssertTrue([tree containsObject:@"A"], @"-containsObject should be true.");
+	STAssertFalse([tree containsObject:@"Z"], @"-containsObject should be true.");
+	STAssertFalse([tree containsObject:nil], @"Should not raise an exception.");	
+}
+
+- (void) testFindMin {
+	STAssertNil([tree findMin], @"-findMin should return nil for empty tree.");
+	for (id object in objects)
+		[tree addObject:object];
+	STAssertEqualObjects([tree findMin], @"A", @"-findMin is incorrect.");
+}
+
+- (void) testFindMax {
+	STAssertNil([tree findMax], @"-findMax should return nil for empty tree.");
+	for (id object in objects)
+		[tree addObject:object];
+	STAssertEqualObjects([tree findMax], @"O", @"-findMax is incorrect.");
+}
+
+- (void) testFindObject {
+	for (id object in objects)
+		[tree addObject:object];
+	STAssertEqualObjects([tree findObject:@"A"], @"A", @"Should exist and match.");
+	STAssertNil([tree findObject:@"Z"], @"Should not be found in tree.");
 }
 
 - (void) testObjectEnumerator {
@@ -69,7 +104,7 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 		STAssertEquals([tree retainCount], 1u, @"Should not retain collection");
 	
 	// Enumerator should retain collection when it has 1+ objects, release when 0
-	for (id object in testArray)
+	for (id object in objects)
 		[tree addObject:object];
 	if (gcDisabled)
 		STAssertEquals([tree retainCount], 1u, @"Wrong retain count");
@@ -97,10 +132,39 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 	[pool drain]; // Force deallocation of enumerator
 	if (gcDisabled)
 		STAssertEquals([tree retainCount], 1u, @"Enumerator should release collection");
+	
+	// Test mutation in the middle of enumeration
+	e = [tree objectEnumerator];
+	[tree addObject:@"Z"];
+	STAssertThrows([e nextObject], @"Should raise mutation exception.");
+	STAssertThrows([e allObjects], @"Should raise mutation exception.");
+	BOOL raisedException = NO;
+	@try {
+		for (id object in tree)
+			[tree addObject:@"123"];
+	}
+	@catch (NSException *exception) {
+		raisedException = YES;
+	}
+	STAssertTrue(raisedException, @"Should raise mutation exception.");
+
+	// Test deallocation in the middle of enumeration
+	pool  = [[NSAutoreleasePool alloc] init];
+	e = [tree objectEnumerator];
+	[e nextObject];
+	[e nextObject];
+	e = nil;
+	[pool drain]; // Will cause enumerator to be deallocated
+	
+	pool  = [[NSAutoreleasePool alloc] init];
+	e = [tree objectEnumeratorWithTraversalOrder:CHTraverseLevelOrder];
+	[e nextObject];
+	e = nil;
+	[pool drain]; // Will cause enumerator to be deallocated
 }
 
 - (void) testTraversalInOrder {
-	for (id object in testArray)
+	for (id object in objects)
 		[tree addObject:object];
 	correct = [NSArray arrayWithObjects:@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",
 					@"I",@"J",@"K",@"L",@"M",@"N",@"O",nil];
@@ -109,7 +173,7 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 }
 
 - (void) testTraversalReverseOrder {
-	for (id object in testArray)
+	for (id object in objects)
 		[tree addObject:object];
 	correct = [NSArray arrayWithObjects:@"O",@"N",@"M",@"L",@"K",@"J",@"I",@"H",
 					@"G",@"F",@"E",@"D",@"C",@"B",@"A",nil];
@@ -118,7 +182,7 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 }
 
 - (void) testTraversalPreOrder {
-	for (id object in testArray)
+	for (id object in objects)
 		[tree addObject:object];
 	order = [[tree objectEnumeratorWithTraversalOrder:CHTraversePreOrder] allObjects];	
 	correct = [NSArray arrayWithObjects:@"E",@"C",@"A",@"B",@"D",@"L",@"H",@"F",
@@ -127,7 +191,7 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 }
 
 - (void) testTraversalPostOrder {
-	for (id object in testArray)
+	for (id object in objects)
 		[tree addObject:object];
 	order = [[tree objectEnumeratorWithTraversalOrder:CHTraversePostOrder] allObjects];	
 	correct = [NSArray arrayWithObjects:@"B",@"A",@"D",@"C",@"G",@"F",@"I",@"K",
@@ -136,7 +200,7 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 }
 
 - (void) testTraversalLevelOrder {
-	for (id object in testArray)
+	for (id object in objects)
 		[tree addObject:object];
 
 	order = [[tree objectEnumeratorWithTraversalOrder:CHTraverseLevelOrder] allObjects];
@@ -146,8 +210,13 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 }
 
 - (void) testRemoveObject {
-	for (id object in testArray)
+	STAssertThrows([tree removeObject:nil], @"Should raise an exception.");
+
+	for (id object in objects)
 		[tree addObject:object];
+	STAssertEquals([tree count], 15u, @"-count is incorrect.");
+	[tree removeObject:@"Z"]; // doesn't exist, shouldn't change the tree/count
+	STAssertEquals([tree count], 15u, @"-count is incorrect.");
 
 	[tree removeObject:@"J"];
 	order = [[tree objectEnumeratorWithTraversalOrder:CHTraverseLevelOrder] allObjects];
@@ -266,6 +335,18 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 	STAssertTrue([order isEqualToArray:correct], badOrder(order, correct));
 	STAssertEquals([order count], 1u, @"-count is incorrect.");
 	STAssertEquals([tree count],  1u, @"-count is incorrect.");
+}
+
+- (void) testNSFastEnumeration {
+	NSUInteger number, previous = 0;
+	for (number = 1; number <= 32; number++)
+		[tree addObject:[NSNumber numberWithUnsignedInteger:number]];
+	for (NSNumber *object in tree) {
+		number = [object unsignedIntegerValue];
+		STAssertTrue(previous < number,
+					 @"Objects should be enumerated in ascending order.");
+		previous = number;
+	}
 }
 
 @end
