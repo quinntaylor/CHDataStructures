@@ -140,4 +140,13 @@
 						 @"-description uses bad ordering.");
 }
 
+- (void) testNSFastEnumeration {
+	NSUInteger number, expected = 32;
+	for (number = 1; number <= expected; number++)
+		[stack pushObject:[NSNumber numberWithUnsignedInteger:number]];
+	for (NSNumber *object in stack)
+		STAssertEquals([object unsignedIntegerValue], expected--,
+					 @"Objects should be enumerated in descending order.");
+}
+
 @end

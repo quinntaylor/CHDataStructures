@@ -306,17 +306,13 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 }
 
 - (void) testNSFastEnumeration {
-	NSUInteger number, previous = 0;
+	NSUInteger number, expected;
 	for (number = 1; number <= 32; number++)
 		[tree addObject:[NSNumber numberWithUnsignedInteger:number]];
-	for (NSNumber *object in tree) {
-		number = [object unsignedIntegerValue];
-		STAssertTrue(previous < number,
-						 @"Objects should be enumerated in ascending order.");
-		previous = number;
-	}
+	expected = 1;
+	for (NSNumber *object in tree)
+		STAssertEquals([object unsignedIntegerValue], expected++,
+					   @"Objects should be enumerated in descending order.");
 }
-
-
 
 @end
