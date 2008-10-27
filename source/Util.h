@@ -20,16 +20,16 @@
 /**
  @file Util.h
  
- A group of utility C functions for simplifying common operations in the framework.
+ A group of utility C functions for simplifying common exceptions and logging.
  */
 
 /**
  Convenience function for raising an exception for an invalid range (index).
  
- @param theClass The class object for the originator of the exception. Callers should
-        pass the result of <code>[self class]</code> for this parameter.
- @param method The method selector where the problem originated. Callers should pass
-        <code>_cmd</code> for this parameter.
+ @param theClass The class object for the originator of the exception. Callers
+        should pass the result of <code>[self class]</code> for this parameter.
+ @param method The method selector where the problem originated. Callers should
+        pass <code>_cmd</code> for this parameter.
  @param index The offending index passed to the receiver.
  @param elements The number of elements present in the receiver.
  
@@ -43,12 +43,12 @@ static void CHIndexOutOfRangeException(Class theClass, SEL method,
 }
 
 /**
- Convenience function for raising an exception for an invalid nil object argument.
+ Convenience function for raising an exception on an invalid nil object argument.
  
- @param theClass The class object for the originator of the exception. Callers should
-        pass the result of <code>[self class]</code> for this parameter.
- @param method The method selector where the problem originated. Callers should pass
-        <code>_cmd</code> for this parameter.
+ @param theClass The class object for the originator of the exception. Callers
+        should pass the result of <code>[self class]</code> for this parameter.
+ @param method The method selector where the problem originated. Callers should
+        pass <code>_cmd</code> for this parameter.
  
  Currently, there is no support for calling this function from a C function.
  */
@@ -58,6 +58,16 @@ static void CHNilArgumentException(Class theClass, SEL method) {
 					   theClass, sel_getName(method)];
 }
 
+/**
+ Convenience function for raising an exception when a collection is mutated.
+ 
+ @param theClass The class object for the originator of the exception. Callers
+        should pass the result of <code>[self class]</code> for this parameter.
+ @param method The method selector where the problem originated. Callers should
+        pass <code>_cmd</code> for this parameter.
+ 
+ Currently, there is no support for calling this function from a C function.
+ */
 static void CHMutatedCollectionException(Class theClass, SEL method) {
 	[NSException raise:NSGenericException
                 format:@"[%@ %s] -- Collection was mutated while being enumerated.",
@@ -67,11 +77,11 @@ static void CHMutatedCollectionException(Class theClass, SEL method) {
 /**
  Convenience function for raising an exception for un-implemented functionality.
  
- @param theClass The class object for the originator of the exception. Callers should
-        pass the result of <code>[self class]</code> for this parameter.
- @param method The method selector where the problem originated. Callers should pass
-        <code>_cmd</code> for this parameter. 
-
+ @param theClass The class object for the originator of the exception. Callers
+        should pass the result of <code>[self class]</code> for this parameter.
+ @param method The method selector where the problem originated. Callers should
+        pass <code>_cmd</code> for this parameter.
+ 
  Currently, there is no support for calling this function from a C function.
  */
 static int CHUnsupportedOperationException(Class theClass, SEL method) {
