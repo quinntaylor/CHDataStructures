@@ -39,13 +39,12 @@
 
 @end
 
-
 #pragma mark -
 
 @interface CHAbstractMutableArrayCollectionTest : SenTestCase
 {
 	CHAbstractMutableArrayCollection *collection;	
-	NSArray *testArray;
+	NSArray *objects;
 }
 
 @end
@@ -54,7 +53,7 @@
 
 - (void) setUp {
 	collection = [[CHAbstractMutableArrayCollection alloc] init];
-	testArray = [NSArray arrayWithObjects:@"A", @"B", @"C", nil];
+	objects = [NSArray arrayWithObjects:@"A", @"B", @"C", nil];
 }
 
 - (void) tearDown {
@@ -64,11 +63,11 @@
 #pragma mark -
 
 - (void) testNSCoding {
-	for (id object in testArray)
+	for (id object in objects)
 		[collection addObject:object];
 	STAssertEquals([collection count], 3u, @"-count is incorrect.");
 	NSArray *order = [[collection objectEnumerator] allObjects];
-	STAssertEqualObjects(order, testArray, @"Wrong ordering before archiving.");
+	STAssertEqualObjects(order, objects, @"Wrong ordering before archiving.");
 	
 	NSString *filePath = @"/tmp/array-collection.archive";
 	[NSKeyedArchiver archiveRootObject:collection toFile:filePath];
@@ -77,11 +76,11 @@
 	collection = [[NSKeyedUnarchiver unarchiveObjectWithFile:filePath] retain];
 	STAssertEquals([collection count], 3u, @"-count is incorrect.");
 	order = [[collection objectEnumerator] allObjects];
-	STAssertEqualObjects(order, testArray, @"Wrong ordering on reconstruction.");
+	STAssertEqualObjects(order, objects, @"Wrong ordering on reconstruction.");
 }
 
 - (void) testNSCopying {
-	for (id object in testArray)
+	for (id object in objects)
 		[collection addObject:object];
 	CHAbstractMutableArrayCollection *collection2 = [collection copy];
 	STAssertNotNil(collection2, @"-copy should not return nil for valid collection.");
@@ -122,7 +121,7 @@
 }
 
 - (void) testContainsObject {
-	for (id object in testArray)
+	for (id object in objects)
 		[collection addObject:object];
 	STAssertTrue([collection containsObject:@"A"], @"Should contain object");
 	STAssertTrue([collection containsObject:@"B"], @"Should contain object");
@@ -140,7 +139,7 @@
 }
 
 - (void) testIndexOfObject {
-	for (id object in testArray)
+	for (id object in objects)
 		[collection addObject:object];
 	STAssertEquals([collection indexOfObject:@"A"], 0u, @"Wrong index for object");
 	STAssertEquals([collection indexOfObject:@"B"], 1u, @"Wrong index for object");
@@ -163,7 +162,7 @@
 }
 
 - (void) testObjectAtIndex {
-	for (id object in testArray)
+	for (id object in objects)
 		[collection addObject:object];
 	STAssertThrows([collection objectAtIndex:-1], @"Bad index should raise exception");
 	STAssertEqualObjects([collection objectAtIndex:0], @"A", @"Wrong object at index");
@@ -179,7 +178,7 @@
 	STAssertNotNil(allObjects, @"Array should not be nil");
 	STAssertEquals([allObjects count], 0u, @"Incorrect array length.");
 	
-	for (id object in testArray)
+	for (id object in objects)
 		[collection addObject:object];
 	allObjects = [collection allObjects];
 	STAssertNotNil(allObjects, @"Array should not be nil");
@@ -187,7 +186,7 @@
 }
 
 - (void) testRemoveObject {
-	for (id object in testArray)
+	for (id object in objects)
 		[collection addObject:object];
 	
 	STAssertEquals([collection count], 3u, @"-count is incorrect.");
@@ -201,7 +200,7 @@
 
 - (void) testRemoveAllObjects {
 	STAssertEquals([collection count], 0u, @"-count is incorrect.");
-	for (id object in testArray)
+	for (id object in objects)
 		[collection addObject:object];
 	STAssertEquals([collection count], 3u, @"-count is incorrect.");
 	[collection removeAllObjects];
@@ -222,9 +221,9 @@
 }
 
 - (void) testDescription {
-	for (id object in testArray)
+	for (id object in objects)
 		[collection addObject:object];
-	STAssertEqualObjects([collection description], [testArray description],
+	STAssertEqualObjects([collection description], [objects description],
 						 @"-description uses bad ordering.");
 }
 

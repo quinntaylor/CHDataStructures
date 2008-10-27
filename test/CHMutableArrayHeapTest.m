@@ -48,7 +48,7 @@
 
 @interface CHMutableArrayHeapTest : SenTestCase {
 	CHMutableArrayHeap *heap;
-	NSArray *testArray;
+	NSArray *objects;
 }
 @end
 
@@ -56,7 +56,7 @@
 
 - (void) setUp {
 	heap = [[CHMutableArrayHeap alloc] init];
-	testArray = [NSArray arrayWithObjects:
+	objects = [NSArray arrayWithObjects:
 						  @"I",@"H",@"G",@"F",@"E",@"D",@"C",@"B",@"A",nil];
 }
 
@@ -67,8 +67,8 @@
 #pragma mark -
 
 - (void) testNSCoding {
-	for (id object in testArray)
-		[heap addObject:object];
+	for (id anObject in objects)
+		[heap addObject:anObject];
 	STAssertEquals([heap count], 9u, @"-count is incorrect.");
 	NSArray *order = [heap array];
 	NSArray *correct = [NSArray arrayWithObjects:
@@ -86,8 +86,8 @@
 }
 
 - (void) testNSCopying {
-	for (id object in testArray)
-		[heap addObject:object];
+	for (id anObject in objects)
+		[heap addObject:anObject];
 	CHAbstractMutableArrayCollection *heap2 = [heap copy];
 	STAssertNotNil(heap2, @"-copy should not return nil for valid heap.");
 	STAssertEquals([heap2 count], 9u, @"-count is incorrect.");
@@ -132,7 +132,7 @@
 
 - (void) testInit {
 	[heap release];
-	heap = [[CHMutableArrayHeap alloc] initWithArray:testArray];
+	heap = [[CHMutableArrayHeap alloc] initWithArray:objects];
 }
 
 - (void) testInvalidInit {
@@ -144,7 +144,7 @@
 	STAssertThrows([heap addObject:nil], @"Should raise nilArgumentException.");
 	
 	STAssertEquals([heap count], 0u, @"-count is incorrect.");
-	for (id anObject in testArray) {
+	for (id anObject in objects) {
 		[heap addObject:anObject];
 		[self verifyHeapProperty];
 	}
@@ -152,17 +152,17 @@
 }
 
 - (void) testAddObjectsFromArray {
-	[heap addObjectsFromArray:testArray];
+	[heap addObjectsFromArray:objects];
 	[self verifyHeapProperty];
 }
 
 - (void) testFirstObject {
-	[heap addObjectsFromArray:testArray];
+	[heap addObjectsFromArray:objects];
 	STAssertEqualObjects([heap firstObject], @"A", @"-firstObject returned bad value.");
 }
 
 - (void) testRemoveFirstObject {
-	[heap addObjectsFromArray:testArray];
+	[heap addObjectsFromArray:objects];
 
 	NSComparisonResult order = [heap sortOrder];
 	id object, lastObject = nil;
@@ -181,7 +181,7 @@
 }
 
 - (void) testRemoveObject {
-	[heap addObjectsFromArray:testArray];
+	[heap addObjectsFromArray:objects];
 	
 	STAssertEquals([heap count], 9u, @"-count is incorrect.");
 	[heap removeObject:@"F"];
@@ -190,12 +190,34 @@
 }
 
 - (void) testRemoveAllObjects {
-	[heap addObjectsFromArray:testArray];
+	[heap addObjectsFromArray:objects];
 	unsigned long mutations = [heap mutations];
 	STAssertEquals([heap count], 9u, @"-count is incorrect.");
 	[heap removeAllObjects];
 	STAssertEquals([heap count], 0u, @"-count is incorrect.");
 	STAssertEquals([heap mutations], mutations+1, @"Mutations should increase.");
+}
+
+- (void) testObjectEnumerator {
+	NSEnumerator *e;
+	NSArray *allObjects;
+	
+	e = [heap objectEnumerator];
+	STAssertNotNil(e, @"-objectEnumerator should never return nil.");
+	STAssertNil([e nextObject], @"-nextObject should return nil.");
+	e = [heap objectEnumerator];
+	allObjects = [e allObjects];
+	STAssertNotNil(allObjects, @"-allObjects should not return nil.");
+	STAssertEquals([allObjects count], 0u, @"-count is incorrect.");
+	
+	[heap addObjectsFromArray:objects];
+	e = [heap objectEnumerator];
+	STAssertNotNil(e, @"-objectEnumerator should never return nil.");
+	STAssertNotNil([e nextObject], @"-nextObject should not return nil.");
+	e = [heap objectEnumerator];
+	allObjects = [e allObjects];
+	STAssertNotNil(allObjects, @"-allObjects should not return nil.");
+	STAssertEquals([allObjects count], [objects count], @"-count is incorrect.");
 }
 
 @end

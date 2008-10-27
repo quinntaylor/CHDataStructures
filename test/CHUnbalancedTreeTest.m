@@ -57,7 +57,7 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 - (void) testNSCoding {
 	for (id object in objects)
 		[tree addObject:object];
-	STAssertEquals([tree count], 9u, @"-count is incorrect.");
+	STAssertEquals([tree count], [objects count], @"-count is incorrect.");
 	order = [[tree objectEnumeratorWithTraversalOrder:CHTraverseLevelOrder]
 			 allObjects];
 	STAssertEqualObjects(order, objects, @"Wrong ordering before archiving.");
@@ -67,7 +67,7 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 	[tree release];
 	
 	tree = [[NSKeyedUnarchiver unarchiveObjectWithFile:filePath] retain];
-	STAssertEquals([tree count], 9u, @"-count is incorrect.");
+	STAssertEquals([tree count], [objects count], @"-count is incorrect.");
 	order = [[tree objectEnumeratorWithTraversalOrder:CHTraverseLevelOrder]
 			 allObjects];
 	STAssertEqualObjects(order, objects, @"Wrong ordering on reconstruction.");
@@ -78,19 +78,22 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 		[tree addObject:object];
 	id<CHTree> tree2 = [tree copy];
 	STAssertNotNil(tree2, @"-copy should not return nil for valid tree.");
-	STAssertEquals([tree2 count], 9u, @"-count is incorrect.");
+	STAssertEquals([tree2 count], [objects count], @"-count is incorrect.");
 	STAssertEqualObjects([tree allObjects], [tree2 allObjects], @"Unequal trees.");
 	[tree2 release];
 }
 
 - (void) testNSFastEnumeration {
-	NSUInteger number, expected;
+	NSUInteger number, expected, count = 0;
 	for (number = 1; number <= 32; number++)
 		[tree addObject:[NSNumber numberWithUnsignedInteger:number]];
 	expected = 1;
-	for (NSNumber *object in tree)
+	for (NSNumber *object in tree) {
 		STAssertEquals([object unsignedIntegerValue], expected++,
-					   @"Objects should be enumerated in ascending order.");
+		               @"Objects should be enumerated in ascending order.");
+		++count;
+	}
+	STAssertEquals(count, 32u, @"Count of enumerated items is incorrect.");
 }
 
 #pragma mark -
@@ -98,7 +101,7 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 - (void) testInitWithArray {
 	[tree release];
 	tree = [[CHUnbalancedTree alloc] initWithArray:objects];
-	STAssertEquals([tree count], 9u, @"-count is incorrect.");
+	STAssertEquals([tree count], [objects count], @"-count is incorrect.");
 	
 }
 
@@ -108,11 +111,11 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 	STAssertEquals([tree count], 0u, @"-count is incorrect.");
 	for (id object in objects)
 		[tree addObject:object];
-	STAssertEquals([tree count], 9u, @"-count is incorrect.");
+	STAssertEquals([tree count], [objects count], @"-count is incorrect.");
 	
 	// Test adding identical object--should be replaced, and count stay the same
 	[tree addObject:@"A"];
-	STAssertEquals([tree count], 9u, @"-count is incorrect.");
+	STAssertEquals([tree count], [objects count], @"-count is incorrect.");
 }
 
 - (void) testContainsObject {
@@ -158,7 +161,7 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 		[tree addObject:object];
 	
 	NSSet *set = [tree contentsAsSet];
-	STAssertEquals([set count], 9u, @"-[NSSet count] is incorrect.");
+	STAssertEquals([set count], [objects count], @"-[NSSet count] is incorrect.");
 	
 	for (id anObject in objects)
 		STAssertTrue([set containsObject:anObject], @"Should contain object.");
@@ -300,17 +303,17 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 
 	for (id object in objects)
 		[tree addObject:object];
-	STAssertEquals([tree count], 9u, @"-count is incorrect.");
+	STAssertEquals([tree count], [objects count], @"-count is incorrect.");
 	[tree removeObject:@"Z"];
-	STAssertEquals([tree count], 9u, @"-count is incorrect.");
+	STAssertEquals([tree count], [objects count], @"-count is incorrect.");
 	[tree removeObject:@"A"];
-	STAssertEquals([tree count], 8u, @"-count is incorrect.");	
+	STAssertEquals([tree count], [objects count]-1, @"-count is incorrect.");	
 }
 
 - (void) testRemoveAllObjects {
 	for (id object in objects)
 		[tree addObject:object];
-	STAssertEquals([tree count], 9u, @"-count is incorrect.");
+	STAssertEquals([tree count], [objects count], @"-count is incorrect.");
 	[tree removeAllObjects];
 	STAssertEquals([tree count], 0u, @"-count is incorrect.");
 }

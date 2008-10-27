@@ -5,7 +5,7 @@
 #import <CHDataStructures/CHDataStructures.h>
 #import <sys/time.h>
 
-static NSMutableArray *testArrays;
+static NSMutableArray *objects;
 static NSUInteger item, arrayCount;
 struct timeval timeOfDay;
 static double startTime;
@@ -23,11 +23,11 @@ void benchmarkDeque(Class testClass) {
 	id<CHDeque> deque;
 	
 	printf("(Operation)         ");
-	for (NSArray *array in testArrays)
+	for (NSArray *array in objects)
 		printf("\t%-8d", [array count]);
 
 	printf("\nprependObject:    ");
-	for (NSArray *array in testArrays) {
+	for (NSArray *array in objects) {
 		deque = [[testClass alloc] init];
 		startTime = timestamp();
 		for (id anObject in array)
@@ -37,7 +37,7 @@ void benchmarkDeque(Class testClass) {
 	}
 	
 	printf("\nappendObject:     ");
-	for (NSArray *array in testArrays) {
+	for (NSArray *array in objects) {
 		deque = [[testClass alloc] init];
 		startTime = timestamp();
 		for (id anObject in array)
@@ -47,7 +47,7 @@ void benchmarkDeque(Class testClass) {
 	}
 	
 	printf("\nremoveFirstObject: ");
-	for (NSArray *array in testArrays) {
+	for (NSArray *array in objects) {
 		deque = [[testClass alloc] init];
 		arrayCount = [array count];
 		for (id anObject in array)
@@ -60,7 +60,7 @@ void benchmarkDeque(Class testClass) {
 	}
 	
 	printf("\nremoveLastObject:  ");
-	for (NSArray *array in testArrays) {
+	for (NSArray *array in objects) {
 		deque = [[testClass alloc] init];
 		arrayCount = [array count];
 		for (id anObject in array)
@@ -73,7 +73,7 @@ void benchmarkDeque(Class testClass) {
 	}
 
 	printf("\nremoveAllObjects:  ");
-	for (NSArray *array in testArrays) {
+	for (NSArray *array in objects) {
 		deque = [[testClass alloc] init];
 		arrayCount = [array count];
 		for (id anObject in array)
@@ -85,7 +85,7 @@ void benchmarkDeque(Class testClass) {
 	}
 
 	printf("\nNSEnumerator       ");
-	for (NSArray *array in testArrays) {
+	for (NSArray *array in objects) {
 		deque = [[testClass alloc] init];
 		arrayCount = [array count];
 		for (id anObject in array)
@@ -100,7 +100,7 @@ void benchmarkDeque(Class testClass) {
 	}
 	
 	printf("\nNSFastEnumeration  ");
-	for (NSArray *array in testArrays) {
+	for (NSArray *array in objects) {
 		deque = [[testClass alloc] init];
 		arrayCount = [array count];
 		for (id anObject in array)
@@ -123,11 +123,11 @@ void benchmarkQueue(Class testClass) {
 	id<CHQueue> queue;
 	
 	printf("(Operation)         ");
-	for (NSArray *array in testArrays)
+	for (NSArray *array in objects)
 		printf("\t%-8d", [array count]);
 	
 	printf("\naddObject:         ");
-	for (NSArray *array in testArrays) {
+	for (NSArray *array in objects) {
 		queue = [[testClass alloc] init];
 		startTime = timestamp();
 		for (id anObject in array)
@@ -137,7 +137,7 @@ void benchmarkQueue(Class testClass) {
 	}
 	
 	printf("\nremoveFirstObject:  ");
-	for (NSArray *array in testArrays) {
+	for (NSArray *array in objects) {
 		queue = [[testClass alloc] init];
 		for (id anObject in array)
 			[queue addObject:anObject];
@@ -150,7 +150,7 @@ void benchmarkQueue(Class testClass) {
 	}
 	
 	printf("\nremoveAllObjects:  ");
-	for (NSArray *array in testArrays) {
+	for (NSArray *array in objects) {
 		queue = [[testClass alloc] init];
 		for (id anObject in array)
 			[queue addObject:anObject];
@@ -161,7 +161,7 @@ void benchmarkQueue(Class testClass) {
 	}
 	
 	printf("\nNSEnumerator       ");
-	for (NSArray *array in testArrays) {
+	for (NSArray *array in objects) {
 		queue = [[testClass alloc] init];
 		for (id anObject in array)
 			[queue addObject:anObject];
@@ -175,7 +175,7 @@ void benchmarkQueue(Class testClass) {
 	}
 	
 	printf("\nNSFastEnumeration  ");
-	for (NSArray *array in testArrays) {
+	for (NSArray *array in objects) {
 		queue = [[testClass alloc] init];
 		for (id anObject in array)
 			[queue addObject:anObject];
@@ -198,11 +198,11 @@ void benchmarkStack(Class testClass) {
 	id<CHStack> stack;
 	
 	printf("(Operation)         ");
-	for (NSArray *array in testArrays)
+	for (NSArray *array in objects)
 		printf("\t%-8d", [array count]);
 	
 	printf("\npushObject:       ");
-	for (NSArray *array in testArrays) {
+	for (NSArray *array in objects) {
 		stack = [[testClass alloc] init];
 		startTime = timestamp();
 		for (id anObject in array)
@@ -212,7 +212,7 @@ void benchmarkStack(Class testClass) {
 	}
 	
 	printf("\npopObject:        ");
-	for (NSArray *array in testArrays) {
+	for (NSArray *array in objects) {
 		stack = [[testClass alloc] init];
 		for (id anObject in array)
 			[stack pushObject:anObject];
@@ -225,7 +225,7 @@ void benchmarkStack(Class testClass) {
 	}
 	
 	printf("\nremoveAllObjects:  ");
-	for (NSArray *array in testArrays) {
+	for (NSArray *array in objects) {
 		stack = [[testClass alloc] init];
 		for (id anObject in array)
 			[stack pushObject:anObject];
@@ -236,7 +236,7 @@ void benchmarkStack(Class testClass) {
 	}
 	
 	printf("\nNSEnumerator       ");
-	for (NSArray *array in testArrays) {
+	for (NSArray *array in objects) {
 		stack = [[testClass alloc] init];
 		for (id anObject in array)
 			[stack pushObject:anObject];
@@ -250,7 +250,7 @@ void benchmarkStack(Class testClass) {
 	}
 	
 	printf("\nNSFastEnumeration  ");
-	for (NSArray *array in testArrays) {
+	for (NSArray *array in objects) {
 		stack = [[testClass alloc] init];
 		for (id anObject in array)
 			[stack pushObject:anObject];
@@ -272,11 +272,11 @@ void benchmarkHeap(Class testClass) {
 	id<CHHeap> heap;
 
 	printf("(Operation)         ");
-	for (NSArray *array in testArrays)
+	for (NSArray *array in objects)
 		printf("\t%-8d", [array count]);
 	
 	printf("\naddObject:          ");
-	for (NSArray *array in testArrays) {
+	for (NSArray *array in objects) {
 		heap = [[testClass alloc] init];
 		startTime = timestamp();
 		for (id anObject in array)
@@ -286,7 +286,7 @@ void benchmarkHeap(Class testClass) {
 	}
 	
 	printf("\nremoveFirstObject:  ");
-	for (NSArray *array in testArrays) {
+	for (NSArray *array in objects) {
 		heap = [[testClass alloc] init];
 		for (id anObject in array)
 			[heap addObject:anObject];
@@ -299,7 +299,7 @@ void benchmarkHeap(Class testClass) {
 	}
 	
 	printf("\nremoveAllObjects:  ");
-	for (NSArray *array in testArrays) {
+	for (NSArray *array in objects) {
 		heap = [[testClass alloc] init];
 		for (id anObject in array)
 			[heap addObject:anObject];
@@ -309,7 +309,7 @@ void benchmarkHeap(Class testClass) {
 		[heap release];
 	}
 	printf("\nNSEnumerator       ");
-	for (NSArray *array in testArrays) {
+	for (NSArray *array in objects) {
 		heap = [[testClass alloc] init];
 		for (id anObject in array)
 			[heap addObject:anObject];
@@ -323,7 +323,7 @@ void benchmarkHeap(Class testClass) {
 	}
 
 	printf("\nNSFastEnumeration  ");
-	for (NSArray *array in testArrays) {
+	for (NSArray *array in objects) {
 		heap = [[testClass alloc] init];
 		for (id anObject in array)
 			[heap addObject:anObject];
@@ -345,12 +345,12 @@ void benchmarkTree(Class testClass) {
 	id<CHTree> tree;
 	
 	printf("(Operation)         ");
-	for (NSArray *array in testArrays) {
+	for (NSArray *array in objects) {
 		printf("\t%-8d", [array count]);
 	}	
 	
 	printf("\naddObject:          ");
-	for (NSArray *array in testArrays) {
+	for (NSArray *array in objects) {
 		tree = [[testClass alloc] init];
 		startTime = timestamp();
 		for (id anObject in array)
@@ -360,7 +360,7 @@ void benchmarkTree(Class testClass) {
 	}
 	
 	printf("\nremoveMinObject:    ");
-	for (NSArray *array in testArrays) {
+	for (NSArray *array in objects) {
 		tree = [[testClass alloc] init];
 		for (id anObject in array)
 			[tree addObject:anObject];
@@ -373,7 +373,7 @@ void benchmarkTree(Class testClass) {
 	}
 	
 	printf("\nNSEnumerator       ");
-	for (NSArray *array in testArrays) {
+	for (NSArray *array in objects) {
 		tree = [[testClass alloc] init];
 		for (id anObject in array)
 			[tree addObject:anObject];
@@ -394,13 +394,13 @@ int main (int argc, const char * argv[]) {
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 
 	NSUInteger size, item, limit = 1000000;
-	testArrays = [[NSMutableArray alloc] init];
+	objects = [[NSMutableArray alloc] init];
 	for (size = 1; size <= limit; size *= 10) {
 		NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:size+1];
-		[array addObjectsFromArray:[testArrays lastObject]];
+		[array addObjectsFromArray:[objects lastObject]];
 		for (item = [array count]+1; item <= size; item++)
 			[array addObject:[NSNumber numberWithUnsignedInteger:item]];
-		[testArrays addObject:array];
+		[objects addObject:array];
 		[array release];
 	}
 	
@@ -417,12 +417,12 @@ int main (int argc, const char * argv[]) {
 	benchmarkStack([CHListStack class]);
 	
 	// Create more disordered arrays of values for testing heap and tree subclasses
-	[testArrays removeAllObjects];
+	[objects removeAllObjects];
 	for (size = 1; size <= limit; size *= 10) {
 		NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:size+1];
 		for (item = 1; item <= size; item++)
 			[array addObject:[NSNumber numberWithUnsignedInteger:(item*7%size)]];
-		[testArrays addObject:array];
+		[objects addObject:array];
 		[array release];
 	}
 
@@ -434,7 +434,7 @@ int main (int argc, const char * argv[]) {
 	benchmarkTree([CHAnderssonTree class]);
 //	benchmarkTree([CHRedBlackTree class]);
 	
-	[testArrays release];
+	[objects release];
 
 	[pool drain];
 	return 0;

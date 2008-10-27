@@ -22,7 +22,7 @@
 
 @interface CHListStackTest : SenTestCase {
 	CHListStack *stack;
-	NSArray *testArray;
+	NSArray *objects;
 }
 @end
 
@@ -31,7 +31,7 @@
 
 - (void) setUp {
 	stack = [[CHListStack alloc] init];
-	testArray = [NSArray arrayWithObjects:@"A", @"B", @"C", nil];
+	objects = [NSArray arrayWithObjects:@"A", @"B", @"C", nil];
 }
 
 - (void) tearDown {
@@ -40,45 +40,49 @@
 
 - (void) testInitWithArray {
 	[stack release];
-	stack = [[CHListStack alloc] initWithArray:testArray];
-	STAssertEquals([stack count], 3u, @"-count is incorrect.");
+	stack = [[CHListStack alloc] initWithArray:objects];
+	STAssertEquals([stack count], [objects count], @"-count is incorrect.");
 	NSArray *stackOrder = [NSArray arrayWithObjects:@"C", @"B", @"A", nil];
 	STAssertEqualObjects([stack allObjects], stackOrder,
-						 @"Bad array ordering on -initWithArray:");
+						 @"Bad ordering on -initWithArray:");
 }
 
 - (void) testCountAndPushObject {
 	STAssertThrows([stack pushObject:nil], @"Should raise nilArgumentException.");
 	
 	STAssertEquals([stack count], 0u, @"-count is incorrect.");
-	for (id object in testArray)
-		[stack pushObject:object];
-	STAssertEquals([stack count], 3u, @"-count is incorrect.");
+	for (id anObject in objects)
+		[stack pushObject:anObject];
+	STAssertEquals([stack count], [objects count], @"-count is incorrect.");
 	
 	STAssertThrows([stack pushObject:nil], @"Should raise nilArgumentException.");
 }
 
 - (void) testTopObjectAndPopObject {
-	for (id object in testArray)
-		[stack pushObject:object];
+	for (id anObject in objects)
+		[stack pushObject:anObject];
 	
-	STAssertEquals([stack count], 3u, @"-count is incorrect.");
+	NSUInteger expected = [objects count];
+	STAssertEquals([stack count], expected, @"-count is incorrect.");
 	STAssertEqualObjects([stack topObject], @"C", @"-topObject is wrong.");
-	STAssertEquals([stack count], 3u, @"-count is incorrect.");
+	STAssertEquals([stack count], expected, @"-count is incorrect.");
 	[stack popObject];
-	STAssertEquals([stack count], 2u, @"-count is incorrect.");
+	--expected;
+	STAssertEquals([stack count], expected, @"-count is incorrect.");
 	STAssertEqualObjects([stack topObject], @"B", @"-topObject is wrong.");
-	STAssertEquals([stack count], 2u, @"-count is incorrect.");
+	STAssertEquals([stack count], expected, @"-count is incorrect.");
 	[stack popObject];
-	STAssertEquals([stack count], 1u, @"-count is incorrect.");
+	--expected;
+	STAssertEquals([stack count], expected, @"-count is incorrect.");
 	STAssertEqualObjects([stack topObject], @"A", @"-topObject is wrong.");
-	STAssertEquals([stack count], 1u, @"-count is incorrect.");
+	STAssertEquals([stack count], expected, @"-count is incorrect.");
 	[stack popObject];
-	STAssertEquals([stack count], 0u, @"-count is incorrect.");
+	--expected;
+	STAssertEquals([stack count], expected, @"-count is incorrect.");
 	STAssertNil([stack topObject], @"-topObject should return nil.");
-	STAssertEquals([stack count], 0u, @"-count is incorrect.");
+	STAssertEquals([stack count], expected, @"-count is incorrect.");
 	[stack popObject];
-	STAssertEquals([stack count], 0u, @"-count is incorrect.");
+	STAssertEquals([stack count], expected, @"-count is incorrect.");
 }
 
 @end

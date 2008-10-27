@@ -22,7 +22,7 @@
 
 @interface CHListDequeTest : SenTestCase {
 	CHListDeque *deque;
-	NSArray *testArray;
+	NSArray *objects;
 }
 @end
 
@@ -31,7 +31,7 @@
 
 - (void) setUp {
 	deque = [[CHListDeque alloc] init];
-	testArray = [NSArray arrayWithObjects:@"A", @"B", @"C", nil];
+	objects = [NSArray arrayWithObjects:@"A", @"B", @"C", nil];
 }
 
 - (void) tearDown {
@@ -42,8 +42,8 @@
 	STAssertThrows([deque prependObject:nil], @"Should raise nilArgumentException.");
 	
 	STAssertEquals([deque count], 0u, @"-count is incorrect.");
-	for (id object in testArray)
-		[deque prependObject:object];
+	for (id anObject in objects)
+		[deque prependObject:anObject];
 	STAssertEquals([deque count], 3u, @"-count is incorrect.");
 	NSEnumerator *e = [deque objectEnumerator];
 	STAssertEqualObjects([e nextObject], @"C", @"-nextObject is wrong.");
@@ -55,8 +55,8 @@
 	STAssertThrows([deque appendObject:nil], @"Should raise nilArgumentException.");
 	
 	STAssertEquals([deque count], 0u, @"-count is incorrect.");
-	for (id object in testArray)
-		[deque appendObject:object];
+	for (id anObject in objects)
+		[deque appendObject:anObject];
 	STAssertEquals([deque count], 3u, @"-count is incorrect.");
 	NSEnumerator *e = [deque objectEnumerator];
 	STAssertEqualObjects([e nextObject], @"A", @"-nextObject is wrong.");
@@ -66,23 +66,23 @@
 
 - (void) testFirstObject {
 	STAssertEqualObjects([deque firstObject], nil, @"-firstObject is wrong.");
-	for (id object in testArray) {
-		[deque prependObject:object];
-		STAssertEqualObjects([deque firstObject], object, @"-firstObject is wrong.");
+	for (id anObject in objects) {
+		[deque prependObject:anObject];
+		STAssertEqualObjects([deque firstObject], anObject, @"-firstObject is wrong.");
 	}
 }
 
 - (void) testLastObject {
 	STAssertEqualObjects([deque lastObject], nil, @"-lastObject is wrong.");
-	for (id object in testArray) {
-		[deque appendObject:object];
-		STAssertEqualObjects([deque lastObject], object, @"-lastObject is wrong.");
+	for (id anObject in objects) {
+		[deque appendObject:anObject];
+		STAssertEqualObjects([deque lastObject], anObject, @"-lastObject is wrong.");
 	}	
 }
 
 - (void) testRemoveFirstObject {
-	for (id object in testArray)
-		[deque appendObject:object];
+	for (id anObject in objects)
+		[deque appendObject:anObject];
 	STAssertEqualObjects([deque firstObject], @"A", @"-firstObject is wrong.");
 	[deque removeFirstObject];
 	STAssertEqualObjects([deque firstObject], @"B", @"-firstObject is wrong.");
@@ -96,8 +96,8 @@
 }
 
 - (void) testRemoveLastObject {
-	for (id object in testArray)
-		[deque appendObject:object];
+	for (id anObject in objects)
+		[deque appendObject:anObject];
 	STAssertEqualObjects([deque lastObject], @"C", @"-lastObject is wrong.");
 	[deque removeLastObject];
 	STAssertEqualObjects([deque lastObject], @"B", @"-lastObject is wrong.");
@@ -111,8 +111,8 @@
 }
 
 - (void) testReverseObjectEnumerator {
-	for (id object in testArray)
-		[deque appendObject:object];
+	for (id anObject in objects)
+		[deque appendObject:anObject];
 	NSEnumerator *e = [deque reverseObjectEnumerator];
 	STAssertEqualObjects([e nextObject], @"C", @"-nextObject is wrong.");
 	STAssertEqualObjects([e nextObject], @"B", @"-nextObject is wrong.");

@@ -22,7 +22,7 @@
 
 @interface CHListQueueTest : SenTestCase {
 	CHListQueue *queue;
-	NSArray *testArray;
+	NSArray *objects;
 }
 @end
 
@@ -31,48 +31,60 @@
 
 - (void) setUp {
 	queue = [[CHListQueue alloc] init];
-	testArray = [NSArray arrayWithObjects:@"A", @"B", @"C", nil];
+	objects = [NSArray arrayWithObjects:@"A", @"B", @"C", nil];
 }
 
 - (void) tearDown {
 	[queue release];
 }
 
+- (void) testInitWithArray {
+	[queue release];
+	queue = [[CHListQueue alloc] initWithArray:objects];
+	STAssertEquals([queue count], [objects count], @"-count is incorrect.");
+	STAssertEqualObjects([queue allObjects], objects,
+						 @"Bad ordering on -initWithArray:");
+}
+
 - (void) testAddObjectAndCount {
 	STAssertThrows([queue addObject:nil], @"Should raise nilArgumentException.");
 	
 	STAssertEquals([queue count], 0u, @"-count is incorrect.");
-	for (id object in testArray)
-		[queue addObject:object];
-	STAssertEquals([queue count], 3u, @"-count is incorrect.");
+	for (id anObject in objects)
+		[queue addObject:anObject];
+	STAssertEquals([queue count], [objects count], @"-count is incorrect.");
 	
 	STAssertThrows([queue addObject:nil], @"Should raise nilArgumentException.");
 }
 
 - (void) testNextObjectAndRemoveNextObject {
-	for (id object in testArray)
-		[queue addObject:object];
+	for (id anObject in objects)
+		[queue addObject:anObject];
 	
-	STAssertEquals([queue count], 3u, @"-count is incorrect.");
+	NSUInteger expected = [objects count];
+	STAssertEquals([queue count], expected, @"-count is incorrect.");
 	STAssertEqualObjects([queue firstObject], @"A", @"-firstObject is wrong.");
 	STAssertEqualObjects([queue firstObject], @"A", @"-firstObject is wrong.");
-	STAssertEquals([queue count], 3u, @"-count is incorrect.");
+	STAssertEquals([queue count], expected, @"-count is incorrect.");
 	[queue removeFirstObject];
-	STAssertEquals([queue count], 2u, @"-count is incorrect.");
+	--expected;
+	STAssertEquals([queue count], expected, @"-count is incorrect.");
 	STAssertEqualObjects([queue firstObject], @"B", @"-firstObject is wrong.");
-	STAssertEquals([queue count], 2u, @"-count is incorrect.");
+	STAssertEquals([queue count], expected, @"-count is incorrect.");
 	[queue removeFirstObject];
-	STAssertEquals([queue count], 1u, @"-count is incorrect.");
+	--expected;
+	STAssertEquals([queue count], expected, @"-count is incorrect.");
 	STAssertEqualObjects([queue firstObject], @"C", @"-firstObject is wrong.");
-	STAssertEquals([queue count], 1u, @"-count is incorrect.");
+	STAssertEquals([queue count], expected, @"-count is incorrect.");
 	[queue removeFirstObject];
-	STAssertEquals([queue count], 0u, @"-count is incorrect.");
+	--expected;
+	STAssertEquals([queue count], expected, @"-count is incorrect.");
 	STAssertNil([queue firstObject], @"-firstObject should return nil.");
-	STAssertEquals([queue count], 0u, @"-count is incorrect.");
+	STAssertEquals([queue count], expected, @"-count is incorrect.");
 	[queue removeFirstObject];
-	STAssertEquals([queue count], 0u, @"-count is incorrect.");
+	STAssertEquals([queue count], expected, @"-count is incorrect.");
 	STAssertNil([queue firstObject], @"-firstObject should return nil.");
-	STAssertEquals([queue count], 0u, @"-count is incorrect.");
+	STAssertEquals([queue count], expected, @"-count is incorrect.");
 }
 
 @end

@@ -22,7 +22,7 @@
 
 @interface CHRedBlackTreeTest : SenTestCase {
 	CHRedBlackTree *tree;
-	NSArray *testArray;
+	NSArray *object;
 }
 @end
 
@@ -31,7 +31,7 @@
 
 - (void) setUp {
 	tree = [[CHRedBlackTree alloc] init];
-	testArray = [NSArray arrayWithObjects:
+	object = [NSArray arrayWithObjects:
 				 @"F", @"B", @"A", @"D", @"C", @"E", @"G", @"I", @"H", nil];
 	// Creates the tree from: http://en.wikipedia.org/wiki/Tree_traversal#Example
 }
