@@ -150,16 +150,6 @@ static CHRedBlackTreeNode * _rotateNodeWithRightChild(CHRedBlackTreeNode *node) 
 
 #pragma mark - Private Methods
 
-/**
- * This method deals simply with our header on every comparison.
- */
-- (int) _compare:(id)x withNode:(CHRedBlackTreeNode*)node {
-	if (node == header)
-		return 1;
-	else
-		return [x compare:node->object];
-}
-
 - (CHRedBlackTreeNode*) _findNode:(id)target {
 	//we make the sentinel's object == target ... so we will eventually find it no matter what
 	sentinel->object = target;
@@ -179,14 +169,14 @@ static CHRedBlackTreeNode * _rotateNodeWithRightChild(CHRedBlackTreeNode *node) 
 }
 
 - (CHRedBlackTreeNode*) _rotate:(id)x onAncestor:(CHRedBlackTreeNode*)ancestor {
-	if ([self _compare:x withNode:ancestor] < 0) {
-		ancestor->left = ([self _compare:x withNode:ancestor->left] < 0)
+	if ([x compare:ancestor->object] < 0) {
+		ancestor->left = ([x compare:ancestor->left->object] < 0)
 			? _rotateNodeWithLeftChild(ancestor->left)
 			: _rotateNodeWithRightChild(ancestor->left);
 		return ancestor->left;
 	}
 	else {
-		ancestor->right = ([self _compare:x withNode:ancestor->right] < 0)
+		ancestor->right = ([x compare:ancestor->right->object] < 0)
 			? _rotateNodeWithLeftChild(ancestor->right)
 			: _rotateNodeWithRightChild(ancestor->right);
 		return ancestor->right;
@@ -201,8 +191,7 @@ static CHRedBlackTreeNode * _rotateNodeWithRightChild(CHRedBlackTreeNode *node) 
 	if (parent->color == nRED) 	{
 		grandparent->color = nRED;
 		
-		if (([self _compare:x withNode:grandparent] < 0) !=
-			([self _compare:x withNode:parent] < 0))
+		if (([x compare:grandparent->object] < 0) != ([x compare:parent->object] < 0))
 		{
 			parent = [self _rotate:x onAncestor:grandparent];
 		}
@@ -211,7 +200,7 @@ static CHRedBlackTreeNode * _rotateNodeWithRightChild(CHRedBlackTreeNode *node) 
 		current->color = nBLACK;
 	}
 	
-	//always reset root to black
+	// Always reset root to black
 	header->right->color = nBLACK;
 }
 
@@ -235,7 +224,10 @@ static CHRedBlackTreeNode * _rotateNodeWithRightChild(CHRedBlackTreeNode *node) 
 	[super dealloc];
 }
 
-- (void) addObject:(id)object {
+- (void) addObject:(id)anObject {
+	if (anObject == nil)
+		CHNilArgumentException([self class], _cmd);
+
 	/*
 	 Basically, as you walk down the tree to insert, if the present node has two red
 	 children, you color it red and change the two children to black. If its parent is
@@ -243,37 +235,39 @@ static CHRedBlackTreeNode * _rotateNodeWithRightChild(CHRedBlackTreeNode *node) 
 	 you changed it). Returns NO only when a compare: == 0 object already exists in the tree
 	 */
 
-	// TODO: Send -retain to the object when added
-
+	++mutations;
+	sentinel->object = anObject;
 	current = parent = grandparent = header;
-	sentinel->object = object;
 	
-	while ([self _compare:object withNode:current] != 0) 	{
-		greatgrandparent = grandparent; grandparent = parent; parent = current;
-		current = [self _compare:object withNode:current] < 0 ? current->left : current->right;
+	NSComparisonResult comparison;
+	while ((comparison = [anObject compare:current->object]) != NSOrderedSame) 	{
+		greatgrandparent = grandparent;
+		grandparent = parent;
+		parent = current;
+		current = comparison < 0 ? current->left : current->right;
 		
-		// this is where we check for the bad case of red parent and red sibling of parent
+		// Check for the bad case of red parent and red sibling of parent
 		if (current->left->color == nRED && current->right->color == nRED)
-			[self _reorient:object];
+			[self _reorient:anObject];
 	}
 	
 	// return if a sentinel didn't result (i.e., we didn't get to nil)
 	if (current != sentinel)
 		return;
 	
+	++count;
 	current = malloc(kCHRedBlackTreeNode);
-	current->object = object;
+	current->object = [anObject retain];
 	current->left = sentinel;
 	current->right = sentinel;
 		
-	if ([self _compare:object withNode:parent] < 0)
+	if ([anObject compare:parent->object] < 0)
 		parent->left = current;
 	else
 		parent->right = current;
 	
 	// one last reorientation check...
-	[self _reorient:object];
-	return;
+	[self _reorient:anObject];
 }
 
 - (BOOL) containsObject:(id)anObject {
