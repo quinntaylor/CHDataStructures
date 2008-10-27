@@ -566,6 +566,7 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [ ${CONFIGURATION} = 'Release' ]\nthen\n\t# http://www.red-sweater.com/blog/23/automatic-build-sub-versioning-in-xcode\n\tSVN_REVISION=`svnversion | perl -p -e 's/(\\d+:)(\\d+M?S?)/\\$2/'`\n\n\tif [ $SVN_REVISION = 'exported' ]\n\tthen\n\t\tDATE=`date '+%Y-%m-%d'`\n\t\tDISK_IMAGE_NAME=${PRODUCT_NAME}\\ \\(${DATE}\\)\n\t\tDISK_IMAGE_FILE=${PRODUCT_NAME}-${DATE}.dmg\n\telse\n\t\tDISK_IMAGE_NAME=${PRODUCT_NAME}\\ \\(r${SVN_REVISION}\\)\n\t\tDISK_IMAGE_FILE=${PRODUCT_NAME}-r${SVN_REVISION}.dmg\n\tfi\n\t\n\tSOURCE_DIRECTORY=${TEMP_FILES_DIR}/temp\t\n\trm -rf   \"${SOURCE_DIRECTORY}\"/CHDataStructures.framework/\n\tmkdir -p \"${SOURCE_DIRECTORY}\"/CHDataStructures.framework/\n\n\tcp -R build/Release/CHDataStructures.framework/ \"${SOURCE_DIRECTORY}\"/CHDataStructures.framework/\n\tcp LICENSE.html \"${SOURCE_DIRECTORY}\"\n\tcp README.html \"${SOURCE_DIRECTORY}\"\n\t\n\trm -f \"${DISK_IMAGE_FILE}\"\n\thdiutil create -fs HFS+ -volname \"${DISK_IMAGE_NAME}\" -srcfolder \"${SOURCE_DIRECTORY}\" \"${DISK_IMAGE_FILE}\"\n\thdiutil internet-enable -yes \"${DISK_IMAGE_FILE}\"\nfi\n";
+			showEnvVarsInLog = 0;
 		};
 		E473CB530E9346CB005CA997 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -578,7 +579,8 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n\n# Run gcov on the framework getting tested\nif [ \"${CONFIGURATION}\" = 'Debug' ]; then\n\tFRAMEWORK_NAME=CHDataStructures\n\tFRAMEWORK_OBJ_DIR=${OBJROOT}/${FRAMEWORK_NAME}.build/${CONFIGURATION}/Framework.build/Objects-normal/${NATIVE_ARCH}\necho ${FRAMEWORK_OBJ_DIR}\n\tmkdir -p coverage\n\tpushd coverage\n\tfor path in `find \"${OBJROOT}\" -name *.gcda`; do\n\t\tgcov --object-directory \"${FRAMEWORK_OBJ_DIR}\" ${path##*/}\n\tdone\n\tpopd\nfi";
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n\n# Run gcov on the framework getting tested\nif [ \"${CONFIGURATION}\" = 'Debug' ]; then\n\tFRAMEWORK_NAME=CHDataStructures\n\tFRAMEWORK_TARGET=Framework\n\tFRAMEWORK_OBJ_DIR=${OBJROOT}/${FRAMEWORK_NAME}.build/${CONFIGURATION}/${FRAMEWORK_TARGET}.build/Objects-normal/${NATIVE_ARCH}\necho ${FRAMEWORK_OBJ_DIR}\n\tmkdir -p coverage\n\tpushd coverage\n\tfor path in `find \"${OBJROOT}\" -name *.gcda`; do\n\t\tgcov --object-directory \"${FRAMEWORK_OBJ_DIR}\" ${path##*/}\n\tdone\n\tpopd\nfi";
+			showEnvVarsInLog = 0;
 		};
 		E4FE76D70E89556A00971EE6 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
