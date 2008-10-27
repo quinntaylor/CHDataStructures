@@ -62,7 +62,7 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 			 allObjects];
 	STAssertEqualObjects(order, objects, @"Wrong ordering before archiving.");
 	
-	NSString *filePath = @"tree.archive";
+	NSString *filePath = @"/tmp/tree.archive";
 	[NSKeyedArchiver archiveRootObject:tree toFile:filePath];
 	[tree release];
 	
@@ -81,6 +81,16 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 	STAssertEquals([tree2 count], 9u, @"-count is incorrect.");
 	STAssertEqualObjects([tree allObjects], [tree2 allObjects], @"Unequal trees.");
 	[tree2 release];
+}
+
+- (void) testNSFastEnumeration {
+	NSUInteger number, expected;
+	for (number = 1; number <= 32; number++)
+		[tree addObject:[NSNumber numberWithUnsignedInteger:number]];
+	expected = 1;
+	for (NSNumber *object in tree)
+		STAssertEquals([object unsignedIntegerValue], expected++,
+					   @"Objects should be enumerated in ascending order.");
 }
 
 #pragma mark -
@@ -303,16 +313,6 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 	STAssertEquals([tree count], 9u, @"-count is incorrect.");
 	[tree removeAllObjects];
 	STAssertEquals([tree count], 0u, @"-count is incorrect.");
-}
-
-- (void) testNSFastEnumeration {
-	NSUInteger number, expected;
-	for (number = 1; number <= 32; number++)
-		[tree addObject:[NSNumber numberWithUnsignedInteger:number]];
-	expected = 1;
-	for (NSNumber *object in tree)
-		STAssertEquals([object unsignedIntegerValue], expected++,
-					   @"Objects should be enumerated in descending order.");
 }
 
 @end

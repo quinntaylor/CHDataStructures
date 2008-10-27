@@ -64,6 +64,49 @@
 	[heap release];
 }
 
+#pragma mark -
+
+- (void) testNSCoding {
+	for (id object in testArray)
+		[heap addObject:object];
+	STAssertEquals([heap count], 9u, @"-count is incorrect.");
+	NSArray *order = [heap array];
+	NSArray *correct = [NSArray arrayWithObjects:
+						@"A",@"B",@"D",@"C",@"G",@"H",@"E",@"I",@"F",nil];
+	STAssertEqualObjects(order, correct, @"Wrong ordering before archiving.");
+	
+	NSString *filePath = @"/tmp/array-heap.archive";
+	[NSKeyedArchiver archiveRootObject:heap toFile:filePath];
+	[heap release];
+	
+	heap = [[NSKeyedUnarchiver unarchiveObjectWithFile:filePath] retain];
+	STAssertEquals([heap count], 9u, @"-count is incorrect.");
+	order = [heap array];
+	STAssertEqualObjects(order, correct, @"Wrong ordering on reconstruction.");
+}
+
+- (void) testNSCopying {
+	for (id object in testArray)
+		[heap addObject:object];
+	CHAbstractMutableArrayCollection *heap2 = [heap copy];
+	STAssertNotNil(heap2, @"-copy should not return nil for valid heap.");
+	STAssertEquals([heap2 count], 9u, @"-count is incorrect.");
+	STAssertEqualObjects([heap allObjects], [heap2 allObjects], @"Unequal heaps.");
+	[heap2 release];
+}
+
+- (void) testNSFastEnumeration {
+	NSUInteger number, expected;
+	for (number = 1; number <= 32; number++)
+		[heap addObject:[NSNumber numberWithUnsignedInteger:number]];
+	expected = 1;
+	for (NSNumber *object in heap)
+		STAssertEquals([object unsignedIntegerValue], expected++,
+					   @"Objects should be enumerated in ascending order.");
+}
+
+#pragma mark -
+
 - (void) verifyHeapProperty {
 	NSArray *array = [heap array];
 	NSComparisonResult order = [heap sortOrder];

@@ -61,6 +61,47 @@
 	[collection release];
 }
 
+#pragma mark -
+
+- (void) testNSCoding {
+	for (id object in testArray)
+		[collection addObject:object];
+	STAssertEquals([collection count], 3u, @"-count is incorrect.");
+	NSArray *order = [[collection objectEnumerator] allObjects];
+	STAssertEqualObjects(order, testArray, @"Wrong ordering before archiving.");
+	
+	NSString *filePath = @"/tmp/array-collection.archive";
+	[NSKeyedArchiver archiveRootObject:collection toFile:filePath];
+	[collection release];
+	
+	collection = [[NSKeyedUnarchiver unarchiveObjectWithFile:filePath] retain];
+	STAssertEquals([collection count], 3u, @"-count is incorrect.");
+	order = [[collection objectEnumerator] allObjects];
+	STAssertEqualObjects(order, testArray, @"Wrong ordering on reconstruction.");
+}
+
+- (void) testNSCopying {
+	for (id object in testArray)
+		[collection addObject:object];
+	CHAbstractMutableArrayCollection *collection2 = [collection copy];
+	STAssertNotNil(collection2, @"-copy should not return nil for valid collection.");
+	STAssertEquals([collection2 count], 3u, @"-count is incorrect.");
+	STAssertEqualObjects([collection allObjects], [collection2 allObjects], @"Unequal collections.");
+	[collection2 release];
+}
+
+- (void) testNSFastEnumeration {
+	NSUInteger number, expected;
+	for (number = 1; number <= 32; number++)
+		[collection addObject:[NSNumber numberWithUnsignedInteger:number]];
+	expected = 1;
+	for (NSNumber *object in collection)
+		STAssertEquals([object unsignedIntegerValue], expected++,
+					   @"Objects should be enumerated in ascending order.");
+}
+
+#pragma mark -
+
 - (void) testInit {
 	STAssertNotNil(collection, @"collection should not be nil");
 }
