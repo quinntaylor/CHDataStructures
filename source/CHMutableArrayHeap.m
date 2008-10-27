@@ -93,8 +93,7 @@
 #pragma mark <NSCoding> methods
 
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super initWithCoder:decoder] == nil)
-		return nil;
+	if ([super initWithCoder:decoder] == nil) return nil;
 	sortOrder = [decoder decodeIntForKey:@"sortOrder"];
 	sortDescriptor = [[NSSortDescriptor alloc]
                        initWithKey:nil

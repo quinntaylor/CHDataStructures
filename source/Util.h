@@ -36,7 +36,7 @@
  Currently, there is no support for calling this function from a C function.
  */
 static void CHIndexOutOfRangeException(Class theClass, SEL method,
-						   NSUInteger index, NSUInteger elements) {
+                                       NSUInteger index, NSUInteger elements) {
 	[NSException raise:NSRangeException
                 format:@"[%@ %s] -- Index (%d) out of range (0-%d).",
                        theClass, sel_getName(method), index, elements-1];

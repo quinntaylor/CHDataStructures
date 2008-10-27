@@ -95,7 +95,7 @@
  <a href="http://www.phillipmorelock.com/examples/cocoadata/">this web page</a>.
   
  If you would like to contribute to the library or let me know that you use it,
- please <a href="mailto:me@phillipmorelock.com?subject=DataStructuresFramework">
+ please <a href="mailto:quinntaylor@mac.com?subject=CHDataStructures.framework">
  email me</a>. I am very receptive to help, criticism, flames, whatever.
  
    &mdash; <a href="http://homepage.mac.com/quinntaylor/">Quinn Taylor</a>, 2008
