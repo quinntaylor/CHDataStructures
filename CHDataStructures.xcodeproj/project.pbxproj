@@ -102,6 +102,7 @@
 		E4ADBB400E88174200B570BC /* CHUnbalancedTree.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB220E88174200B570BC /* CHUnbalancedTree.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4ADBB410E88174200B570BC /* CHUnbalancedTree.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB230E88174200B570BC /* CHUnbalancedTree.m */; };
 		E4ADBC9A0E88412C00B570BC /* CHAbstractTree.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBC990E88412C00B570BC /* CHAbstractTree.m */; };
+		E4B1AD180EB580BC00B43ADA /* CHAbstractTreeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4B1AD170EB580BC00B43ADA /* CHAbstractTreeTest.m */; };
 		E4D4996A0E93CD1300434CBA /* CHDoublyLinkedListTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D499690E93CD1300434CBA /* CHDoublyLinkedListTest.m */; };
 		E4DCD17A0EA7B0DF006383FC /* CHDataStructures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* CHDataStructures.framework */; };
 		E4FE77C70E8978C300971EE6 /* CHTree.h in Headers */ = {isa = PBXBuildFile; fileRef = E4FE77C60E8978C300971EE6 /* CHTree.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -240,6 +241,7 @@
 		E4ADBB7E0E8828C500B570BC /* README.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = README.html; sourceTree = "<group>"; };
 		E4ADBB7F0E8828C500B570BC /* LICENSE.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = LICENSE.html; sourceTree = "<group>"; };
 		E4ADBC990E88412C00B570BC /* CHAbstractTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHAbstractTree.m; path = source/CHAbstractTree.m; sourceTree = "<group>"; };
+		E4B1AD170EB580BC00B43ADA /* CHAbstractTreeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHAbstractTreeTest.m; path = test/CHAbstractTreeTest.m; sourceTree = "<group>"; };
 		E4CFCDB00E8FD18300B0253A /* docs.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = docs.html; sourceTree = "<group>"; };
 		E4CFCDB10E8FD18300B0253A /* Doxyfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Doxyfile; path = doxygen/Doxyfile; sourceTree = "<group>"; };
 		E4CFCDB20E8FD18300B0253A /* doxygen-cocoa-tags.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "doxygen-cocoa-tags.xml"; path = "doxygen/doxygen-cocoa-tags.xml"; sourceTree = "<group>"; };
@@ -377,6 +379,7 @@
 		E473C9A70E933350005CA997 /* Unit Tests */ = {
 			isa = PBXGroup;
 			children = (
+				E4B1AD170EB580BC00B43ADA /* CHAbstractTreeTest.m */,
 				E4A720C50EA78DCE00E0AC21 /* CHAbstractListCollectionTest.m */,
 				E4A720CA0EA78DFB00E0AC21 /* CHAbstractMutableArrayCollectionTest.m */,
 				E40D18050E94519F007F39D8 /* CHAnderssonTreeTest.m */,
@@ -642,6 +645,7 @@
 				E40D18720E94577F007F39D8 /* CHListDequeTest.m in Sources */,
 				E4A720C60EA78DCE00E0AC21 /* CHAbstractListCollectionTest.m in Sources */,
 				E4A720CB0EA78DFB00E0AC21 /* CHAbstractMutableArrayCollectionTest.m in Sources */,
+				E4B1AD180EB580BC00B43ADA /* CHAbstractTreeTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
