@@ -20,8 +20,8 @@
 #import <Foundation/Foundation.h>
 #import "CHAbstractTree.h"
 
-#define nRED 0
-#define nBLACK 1
+#define kRED 1
+#define kBLACK 0
 
 // A node for use by CHUnbalancedTree for internal storage and representation.
 typedef struct CHRedBlackTreeNode {
@@ -54,8 +54,8 @@ typedef struct CHRedBlackTreeNode {
  */
 @interface CHRedBlackTree : CHAbstractTree
 {
-	CHRedBlackTreeNode *header;   // links to the root -- eliminates special cases
-	CHRedBlackTreeNode *sentinel; // always black, stands in for nil
+	CHRedBlackTreeNode *root;
+	CHRedBlackTreeNode *sentinel; // Always black, stands in for NULL leaf node
 
 	@private
 	CHRedBlackTreeNode *current;

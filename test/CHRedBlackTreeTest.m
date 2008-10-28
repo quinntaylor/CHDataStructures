@@ -40,4 +40,55 @@
 	[tree release];
 }
 
+- (void) testEmptyTree {
+	STAssertEquals([tree count], 0u, @"-count is incorrect.");
+}
+
+- (void) testAddObject {
+	STAssertThrows([tree addObject:nil], @"Should raise exception on nil.");
+	
+	[tree addObject:@"B"];
+	[tree addObject:@"A"];
+	[tree addObject:@"C"];
+	STAssertEquals([tree count], 3u, @"-count is incorrect.");
+	[tree addObject:@"C"];
+	STAssertEquals([tree count], 3u, @"-count is incorrect.");
+}
+
+- (void) testContainsObject {
+	STAssertFalse([tree containsObject:@"A"], @"Should not contain any nodes.");
+
+	[tree addObject:@"B"];
+	[tree addObject:@"A"];
+	[tree addObject:@"C"];
+	STAssertTrue([tree containsObject:@"A"], @"Should contain this value.");
+	STAssertFalse([tree containsObject:@"Z"], @"Should NOT contain this value.");
+}
+
+- (void) testFindMin {
+	STAssertNil([tree findMin], @"Should return nil when empty.");
+	[tree addObject:@"B"];
+	[tree addObject:@"A"];
+	[tree addObject:@"C"];
+	STAssertEqualObjects([tree findMin], @"A", @"-findMin is incorrect.");
+}
+
+- (void) testFindMax {
+	STAssertNil([tree findMax], @"Should return nil when empty.");
+	[tree addObject:@"B"];
+	[tree addObject:@"A"];
+	[tree addObject:@"C"];
+	STAssertEqualObjects([tree findMax], @"C", @"-findMax is incorrect.");	
+}
+
+- (void) testFindObject {
+	STAssertNil([tree findObject:@"A"], @"Should return nil when empty.");
+	[tree addObject:@"B"];
+	[tree addObject:@"A"];
+	[tree addObject:@"C"];
+	STAssertEqualObjects([tree findObject:@"A"], @"A", @"-findObject is wrong.");	
+	STAssertEqualObjects([tree findObject:@"B"], @"B", @"-findObject is wrong.");	
+	STAssertEqualObjects([tree findObject:@"C"], @"C", @"-findObject is wrong.");	
+}
+
 @end
