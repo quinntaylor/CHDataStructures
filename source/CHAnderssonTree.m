@@ -24,12 +24,12 @@ static NSUInteger kCHAnderssonTreeNodeSize = sizeof(CHAnderssonTreeNode);
 #pragma mark Enumeration Struct & Macros
 
 // A struct for use by CHAnderssonTreeEnumerator to maintain traversal state.
-typedef struct CH_ATE_NODE {
+typedef struct ATE_NODE {
 	struct CHAnderssonTreeNode *node;
-	struct CH_ATE_NODE *next;
-} CH_ATE_NODE;
+	struct ATE_NODE *next;
+} ATE_NODE;
 
-static NSUInteger kATE_SIZE = sizeof(CH_ATE_NODE);
+static NSUInteger kATE_SIZE = sizeof(ATE_NODE);
 
 #pragma mark - Stack Operations
 
@@ -72,10 +72,10 @@ static NSUInteger kATE_SIZE = sizeof(CH_ATE_NODE);
 	CHAnderssonTree *collection;
 	CHAnderssonTreeNode *currentNode; /**< The next node that is to be returned. */
 	id tempObject;         /**< Temporary variable, holds the object to be returned.*/
-	CH_ATE_NODE *stack;     /**< Pointer to the top of a stack for most traversals. */
-	CH_ATE_NODE *queue;     /**< Pointer to the head of a queue for level-order. */
-	CH_ATE_NODE *queueTail; /**< Pointer to the tail of a queue for level-order. */
-	CH_ATE_NODE *tmp;       /**< Temporary variable for stack and queue operations. */
+	ATE_NODE *stack;     /**< Pointer to the top of a stack for most traversals. */
+	ATE_NODE *queue;     /**< Pointer to the head of a queue for level-order. */
+	ATE_NODE *queueTail; /**< Pointer to the tail of a queue for level-order. */
+	ATE_NODE *tmp;       /**< Temporary variable for stack and queue operations. */
 	unsigned long mutationCount;
 	unsigned long *mutationPtr;
 }
@@ -172,20 +172,6 @@ static NSUInteger kATE_SIZE = sizeof(CH_ATE_NODE);
 	if (mutationCount != *mutationPtr)
 		CHMutatedCollectionException([self class], _cmd);
 	switch (traversalOrder) {
-		case CHTraversePreOrder:
-			currentNode = ATE_TOP;
-			ATE_POP();
-			if (currentNode == NULL) {
-				[collection release];
-				collection = nil;
-				return nil;
-			}
-			if (currentNode->right != NULL)
-				ATE_PUSH(currentNode->right);
-			if (currentNode->left != NULL)
-				ATE_PUSH(currentNode->left);
-			return currentNode->object;
-			
 		case CHTraverseInOrder:
 			if (stack == NULL && currentNode == NULL) {
 				[collection release];
@@ -219,6 +205,20 @@ static NSUInteger kATE_SIZE = sizeof(CH_ATE_NODE);
 			tempObject = currentNode->object;
 			currentNode = currentNode->left;
 			return tempObject;
+		case CHTraversePreOrder:
+			currentNode = ATE_TOP;
+			ATE_POP();
+			if (currentNode == NULL) {
+				[collection release];
+				collection = nil;
+				return nil;
+			}
+			if (currentNode->right != NULL)
+				ATE_PUSH(currentNode->right);
+			if (currentNode->left != NULL)
+				ATE_PUSH(currentNode->left);
+			return currentNode->object;
+			
 			
 		case CHTraversePostOrder:
 			// This algorithm from: http://www.johny.ca/blog/archives/05/03/04/
@@ -320,8 +320,8 @@ CHAnderssonTreeNode* split(CHAnderssonTreeNode *node) {
 	
 	CHAnderssonTreeNode *current = root;
 	CHAnderssonTreeNode *previous = NULL;
-	CH_ATE_NODE *stack = NULL;
-	CH_ATE_NODE *tmp;
+	ATE_NODE *stack = NULL;
+	ATE_NODE *tmp;
 	NSComparisonResult comparison;
 	
 	while (current != NULL) {
@@ -375,20 +375,15 @@ CHAnderssonTreeNode* split(CHAnderssonTreeNode *node) {
 	root = current;
 }
 
-- (id) findObject:(id)target {
+- (id) findMax {
 	CHAnderssonTreeNode *currentNode = root;
-	NSComparisonResult comparison;	
 	while (currentNode != NULL) {
-		comparison = [(currentNode->object) compare:target];
-		if (comparison == NSOrderedAscending)
+		if (currentNode->right != NULL)
 			currentNode = currentNode->right;
-		else if (comparison == NSOrderedDescending)
-			currentNode = currentNode->left;
-		else if (comparison == NSOrderedSame) {
+		else
 			return currentNode->object;
-		}
-	}
-	return nil; // object not found
+	}	
+	return nil; // empty tree
 }
 
 - (id) findMin {
@@ -402,15 +397,22 @@ CHAnderssonTreeNode* split(CHAnderssonTreeNode *node) {
 	return nil; // empty tree
 }
 
-- (id) findMax {
+- (id) findObject:(id)anObject {
+	if (anObject == nil)
+		return nil;
 	CHAnderssonTreeNode *currentNode = root;
+	NSComparisonResult comparison;	
 	while (currentNode != NULL) {
-		if (currentNode->right != NULL)
+		comparison = [(currentNode->object) compare:anObject];
+		if (comparison == NSOrderedAscending)
 			currentNode = currentNode->right;
-		else
+		else if (comparison == NSOrderedDescending)
+			currentNode = currentNode->left;
+		else if (comparison == NSOrderedSame) {
 			return currentNode->object;
-	}	
-	return nil; // empty tree
+		}
+	}
+	return nil; // object not found
 }
 
 - (BOOL) containsObject:(id)anObject {
@@ -437,8 +439,8 @@ CHAnderssonTreeNode* split(CHAnderssonTreeNode *node) {
 	
 	CHAnderssonTreeNode *current = root;
 	CHAnderssonTreeNode *nodeToDelete = NULL;
-	CH_ATE_NODE *stack = NULL;
-	CH_ATE_NODE *tmp;
+	ATE_NODE *stack = NULL;
+	ATE_NODE *tmp;
 	NSComparisonResult comparison;
 	
 	while (current != NULL) {
@@ -505,9 +507,9 @@ CHAnderssonTreeNode* split(CHAnderssonTreeNode *node) {
 		return;
 
 	CHAnderssonTreeNode *currentNode;
-	CH_ATE_NODE *queue = NULL;
-	CH_ATE_NODE *queueTail = NULL;
-	CH_ATE_NODE *tmp;
+	ATE_NODE *queue = NULL;
+	ATE_NODE *queueTail = NULL;
+	ATE_NODE *tmp;
 	
 	ATE_ENQUEUE(root);
 	while (1) {
@@ -541,7 +543,7 @@ CHAnderssonTreeNode* split(CHAnderssonTreeNode *node) {
                                      count:(NSUInteger)len
 {
 	CHAnderssonTreeNode *currentNode;
-	CH_ATE_NODE *stack, *tmp; 
+	ATE_NODE *stack, *tmp; 
 	
 	// For the first call, start at leftmost node, otherwise start at last saved node
 	if (state->state == 0) {
@@ -555,7 +557,7 @@ CHAnderssonTreeNode* split(CHAnderssonTreeNode *node) {
 	}
 	else {
 		currentNode = (CHAnderssonTreeNode*) state->state;
-		stack = (CH_ATE_NODE*) state->extra[0];
+		stack = (ATE_NODE*) state->extra[0];
 	}
 	
 	// Accumulate objects from the tree until we reach all nodes or the maximum limit

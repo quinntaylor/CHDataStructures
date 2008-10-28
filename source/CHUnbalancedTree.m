@@ -171,20 +171,6 @@ static NSUInteger kUTE_SIZE = sizeof(CH_UTE_NODE);
 	if (mutationCount != *mutationPtr)
 		CHMutatedCollectionException([self class], _cmd);
 	switch (traversalOrder) {
-		case CHTraversePreOrder:
-			currentNode = UTE_TOP;
-			UTE_POP();
-			if (currentNode == NULL) {
-				[collection release];
-				collection = nil;
-				return nil;
-			}
-			if (currentNode->right != NULL)
-				UTE_PUSH(currentNode->right);
-			if (currentNode->left != NULL)
-				UTE_PUSH(currentNode->left);
-			return currentNode->object;
-			
 		case CHTraverseInOrder:
 			if (stack == NULL && currentNode == NULL) {
 				[collection release];
@@ -218,6 +204,20 @@ static NSUInteger kUTE_SIZE = sizeof(CH_UTE_NODE);
 			tempObject = currentNode->object;
 			currentNode = currentNode->left;
 			return tempObject;
+			
+		case CHTraversePreOrder:
+			currentNode = UTE_TOP;
+			UTE_POP();
+			if (currentNode == NULL) {
+				[collection release];
+				collection = nil;
+				return nil;
+			}
+			if (currentNode->right != NULL)
+				UTE_PUSH(currentNode->right);
+			if (currentNode->left != NULL)
+				UTE_PUSH(currentNode->left);
+			return currentNode->object;
 			
 		case CHTraversePostOrder:
 			// This algorithm from: http://www.johny.ca/blog/archives/05/03/04/
@@ -380,8 +380,7 @@ static NSUInteger kUTE_SIZE = sizeof(CH_UTE_NODE);
 - (id) findObject:(id)anObject {
 	if (anObject == nil)
 		return nil;
-	
-	struct CHUnbalancedTreeNode *currentNode = root;
+	CHUnbalancedTreeNode *currentNode = root;
 	while (currentNode != NULL) {
 		short comparison = [anObject compare:(currentNode->object)];
 		if (comparison == NSOrderedAscending)

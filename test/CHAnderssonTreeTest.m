@@ -22,16 +22,16 @@
 
 static BOOL gcDisabled;
 
-static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
-	return [[[NSString stringWithFormat:@"Should be %@, not %@", correctOrder, order]
+static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct) {
+	return [[[NSString stringWithFormat:@"%@ should be %@, was %@",
+			  traversal, correct, order]
 			 stringByReplacingOccurrencesOfString:@"\n" withString:@""]
-			 stringByReplacingOccurrencesOfString:@"    " withString:@""];
+			stringByReplacingOccurrencesOfString:@"    " withString:@""];
 }
 
 @interface CHAnderssonTreeTest : SenTestCase {
 	CHAnderssonTree *tree;
-	NSArray *objects;
-	NSArray *order, *correct;
+	NSArray *objects, *order, *correct;
 }
 @end
 
@@ -45,7 +45,7 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 	tree = [[CHAnderssonTree alloc] init];
 	objects = [NSArray arrayWithObjects:@"B",@"N",@"C",@"L",@"D",@"J",@"E",
 				 @"H",@"K",@"M",@"O",@"G",@"A",@"I",@"F",nil];
-	// Creates the tree from: Weiss pg. 645
+	// When inserted in this order, creates the tree from: Weiss pg. 645
 }
 
 - (void) tearDown {
@@ -62,7 +62,7 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 			 allObjects];
 	correct = [NSArray arrayWithObjects:@"E",@"C",@"L",@"A",@"D",@"H",@"N",@"B",
 			   @"F",@"J",@"M",@"O",@"G",@"I",@"K",nil];
-	STAssertEqualObjects(order, correct, @"Wrong ordering before archiving.");
+	STAssertTrue([order isEqualToArray:correct], @"Wrong ordering before archiving.");
 	
 	NSString *filePath = @"/tmp/tree.archive";
 	[NSKeyedArchiver archiveRootObject:tree toFile:filePath];
@@ -72,7 +72,7 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 	STAssertEquals([tree count], [objects count], @"-count is incorrect.");
 	order = [[tree objectEnumeratorWithTraversalOrder:CHTraverseLevelOrder]
 			 allObjects];
-	STAssertEqualObjects(order, correct, @"Wrong ordering on reconstruction.");
+	STAssertTrue([order isEqualToArray:correct], @"Wrong ordering on reconstruction.");
 }
 
 - (void) testNSCopying {
@@ -121,7 +121,52 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 	STAssertFalse([tree containsObject:nil], @"Should not raise an exception.");	
 }
 
+- (void) testContentsAsArrayUsingTraversalOrder {
+	for (id object in objects)
+		[tree addObject:object];
+	
+	order = [tree contentsAsArrayUsingTraversalOrder:CHTraverseInOrder];
+	correct = [NSArray arrayWithObjects:@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",
+			   @"I",@"J",@"K",@"L",@"M",@"N",@"O",nil];
+	STAssertTrue([order isEqualToArray:correct],
+	             badOrder(@"CHTraverseInOrder", order, correct));
+	
+	order = [tree contentsAsArrayUsingTraversalOrder:CHTraverseReverseOrder];
+	correct = [NSArray arrayWithObjects:@"O",@"N",@"M",@"L",@"K",@"J",@"I",@"H",
+			   @"G",@"F",@"E",@"D",@"C",@"B",@"A",nil];
+	STAssertTrue([order isEqualToArray:correct],
+	             badOrder(@"CHTraverseReverseOrder", order, correct));
+	
+	order = [tree contentsAsArrayUsingTraversalOrder:CHTraversePreOrder];
+	correct = [NSArray arrayWithObjects:@"E",@"C",@"A",@"B",@"D",@"L",@"H",@"F",
+			   @"G",@"J",@"I",@"K",@"N",@"M",@"O",nil];
+	STAssertTrue([order isEqualToArray:correct],
+	             badOrder(@"CHTraversePreOrder", order, correct));
+	
+	order = [tree contentsAsArrayUsingTraversalOrder:CHTraversePostOrder];
+	correct = [NSArray arrayWithObjects:@"B",@"A",@"D",@"C",@"G",@"F",@"I",@"K",
+			   @"J",@"H",@"M",@"O",@"N",@"L",@"E",nil];
+	STAssertTrue([order isEqualToArray:correct],
+	             badOrder(@"CHTraversePostOrder", order, correct));
+	
+	order = [tree contentsAsArrayUsingTraversalOrder:CHTraverseLevelOrder];
+	correct = [NSArray arrayWithObjects:@"E",@"C",@"L",@"A",@"D",@"H",@"N",@"B",
+			   @"F",@"J",@"M",@"O",@"G",@"I",@"K",nil];
+	STAssertTrue([order isEqualToArray:correct],
+	             badOrder(@"CHTraverseLevelOrder", order, correct));
+}
+
+- (void) testContentsAsSet {
+	for (id object in objects)
+		[tree addObject:object];
+	NSSet *set = [tree contentsAsSet];
+	STAssertEquals([set count], [objects count], @"-[NSSet count] is incorrect.");
+	for (id anObject in objects)
+		STAssertTrue([set containsObject:anObject], @"Should contain object.");
+}
+
 - (void) testFindMin {
+	STAssertNoThrow([tree findMin], @"Should not raise an exception.");
 	STAssertNil([tree findMin], @"-findMin should return nil for empty tree.");
 	for (id object in objects)
 		[tree addObject:object];
@@ -129,6 +174,7 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 }
 
 - (void) testFindMax {
+	STAssertNoThrow([tree findMax], @"Should not raise an exception.");
 	STAssertNil([tree findMax], @"-findMax should return nil for empty tree.");
 	for (id object in objects)
 		[tree addObject:object];
@@ -136,6 +182,9 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 }
 
 - (void) testFindObject {
+	STAssertNil([tree findObject:nil], @"Should return nil when given nil.");	
+	STAssertNoThrow([tree findObject:@"A"], @"Should not raise an exception.");
+	STAssertNil([tree findObject:@"A"], @"Should return nil when empty.");
 	for (id object in objects)
 		[tree addObject:object];
 	STAssertEqualObjects([tree findObject:@"A"], @"A", @"Should exist and match.");
@@ -211,52 +260,6 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 	[pool drain]; // Will cause enumerator to be deallocated
 }
 
-- (void) testTraversalInOrder {
-	for (id object in objects)
-		[tree addObject:object];
-	correct = [NSArray arrayWithObjects:@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",
-					@"I",@"J",@"K",@"L",@"M",@"N",@"O",nil];
-	order = [[tree objectEnumeratorWithTraversalOrder:CHTraverseInOrder] allObjects];	
-	STAssertTrue([order isEqualToArray:correct], badOrder(order, correct));
-}
-
-- (void) testTraversalReverseOrder {
-	for (id object in objects)
-		[tree addObject:object];
-	correct = [NSArray arrayWithObjects:@"O",@"N",@"M",@"L",@"K",@"J",@"I",@"H",
-					@"G",@"F",@"E",@"D",@"C",@"B",@"A",nil];
-	order = [[tree objectEnumeratorWithTraversalOrder:CHTraverseReverseOrder] allObjects];
-	STAssertTrue([order isEqualToArray:correct], badOrder(order, correct));
-}
-
-- (void) testTraversalPreOrder {
-	for (id object in objects)
-		[tree addObject:object];
-	order = [[tree objectEnumeratorWithTraversalOrder:CHTraversePreOrder] allObjects];	
-	correct = [NSArray arrayWithObjects:@"E",@"C",@"A",@"B",@"D",@"L",@"H",@"F",
-					@"G",@"J",@"I",@"K",@"N",@"M",@"O",nil];
-	STAssertTrue([order isEqualToArray:correct], badOrder(order, correct));
-}
-
-- (void) testTraversalPostOrder {
-	for (id object in objects)
-		[tree addObject:object];
-	order = [[tree objectEnumeratorWithTraversalOrder:CHTraversePostOrder] allObjects];	
-	correct = [NSArray arrayWithObjects:@"B",@"A",@"D",@"C",@"G",@"F",@"I",@"K",
-					@"J",@"H",@"M",@"O",@"N",@"L",@"E",nil];
-	STAssertTrue([order isEqualToArray:correct], badOrder(order, correct));
-}
-
-- (void) testTraversalLevelOrder {
-	for (id object in objects)
-		[tree addObject:object];
-
-	order = [[tree objectEnumeratorWithTraversalOrder:CHTraverseLevelOrder] allObjects];
-	correct = [NSArray arrayWithObjects:@"E",@"C",@"L",@"A",@"D",@"H",@"N",@"B",
-					@"F",@"J",@"M",@"O",@"G",@"I",@"K",nil];
-	STAssertTrue([order isEqualToArray:correct], badOrder(order, correct));
-}
-
 - (void) testRemoveObject {
 	STAssertThrows([tree removeObject:nil], @"Should raise an exception.");
 
@@ -271,7 +274,7 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 	correct = [NSArray arrayWithObjects:@"E",@"C",@"L",@"A",@"D",@"H",@"N",@"B",@"F",
 			   @"I",@"M",@"O",@"G",@"K",nil];
 	STAssertFalse([order containsObject:@"J"], @"Object was not properly removed.");
-	STAssertTrue([order isEqualToArray:correct], badOrder(order, correct));
+	STAssertTrue([order isEqualToArray:correct], badOrder(@"CHTraverseLevelOrder", order, correct));
 	STAssertEquals([order count], 14u, @"-count is incorrect.");
 	STAssertEquals([tree count],  14u, @"-count is incorrect.");
 	
@@ -280,7 +283,7 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 	correct = [NSArray arrayWithObjects:@"E",@"C",@"H",@"A",@"D",@"F",@"L",@"B",@"G",
 			   @"I",@"M",@"K",@"O",nil];
 	STAssertFalse([order containsObject:@"N"], @"Object was not properly removed.");
-	STAssertTrue([order isEqualToArray:correct], badOrder(order, correct));
+	STAssertTrue([order isEqualToArray:correct], badOrder(@"CHTraverseLevelOrder", order, correct));
 	STAssertEquals([order count], 13u, @"-count is incorrect.");
 	STAssertEquals([tree count],  13u, @"-count is incorrect.");
 	
@@ -289,7 +292,7 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 	correct = [NSArray arrayWithObjects:@"E",@"C",@"I",@"A",@"D",@"F",@"L",@"B",@"G",
 			   @"K",@"M",@"O",nil];
 	STAssertFalse([order containsObject:@"H"], @"Object was not properly removed.");
-	STAssertTrue([order isEqualToArray:correct], badOrder(order, correct));
+	STAssertTrue([order isEqualToArray:correct], badOrder(@"CHTraverseLevelOrder", order, correct));
 	STAssertEquals([order count], 12u, @"-count is incorrect.");
 	STAssertEquals([tree count],  12u, @"-count is incorrect.");
 	
@@ -298,7 +301,7 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 	correct = [NSArray arrayWithObjects:@"E",@"B",@"I",@"A",@"C",@"F",@"L",@"G",@"K",
 			   @"M",@"O",nil];
 	STAssertFalse([order containsObject:@"D"], @"Object was not properly removed.");
-	STAssertTrue([order isEqualToArray:correct], badOrder(order, correct));
+	STAssertTrue([order isEqualToArray:correct], badOrder(@"CHTraverseLevelOrder", order, correct));
 	STAssertEquals([order count], 11u, @"-count is incorrect.");
 	STAssertEquals([tree count],  11u, @"-count is incorrect.");
 	
@@ -307,7 +310,7 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 	correct = [NSArray arrayWithObjects:@"I",@"E",@"L",@"A",@"F",@"K",@"M",@"B",@"G",
 			   @"O",nil];
 	STAssertFalse([order containsObject:@"C"], @"Object was not properly removed.");
-	STAssertTrue([order isEqualToArray:correct], badOrder(order, correct));
+	STAssertTrue([order isEqualToArray:correct], badOrder(@"CHTraverseLevelOrder", order, correct));
 	STAssertEquals([order count], 10u, @"-count is incorrect.");
 	STAssertEquals([tree count],  10u, @"-count is incorrect.");
 	
@@ -316,7 +319,7 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 	correct = [NSArray arrayWithObjects:@"I",@"E",@"M",@"A",@"F",@"L",@"O",@"B",@"G",
 			   nil];
 	STAssertFalse([order containsObject:@"K"], @"Object was not properly removed.");
-	STAssertTrue([order isEqualToArray:correct], badOrder(order, correct));
+	STAssertTrue([order isEqualToArray:correct], badOrder(@"CHTraverseLevelOrder", order, correct));
 	STAssertEquals([order count], 9u, @"-count is incorrect.");
 	STAssertEquals([tree count],  9u, @"-count is incorrect.");
 	
@@ -324,7 +327,7 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 	order = [[tree objectEnumeratorWithTraversalOrder:CHTraverseLevelOrder] allObjects];
 	correct = [NSArray arrayWithObjects:@"E",@"A",@"I",@"B",@"F",@"L",@"G",@"O",nil];
 	STAssertFalse([order containsObject:@"M"], @"Object was not properly removed.");
-	STAssertTrue([order isEqualToArray:correct], badOrder(order, correct));
+	STAssertTrue([order isEqualToArray:correct], badOrder(@"CHTraverseLevelOrder", order, correct));
 	STAssertEquals([order count], 8u, @"-count is incorrect.");
 	STAssertEquals([tree count],  8u, @"-count is incorrect.");
 	
@@ -332,7 +335,7 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 	order = [[tree objectEnumeratorWithTraversalOrder:CHTraverseLevelOrder] allObjects];
 	correct = [NSArray arrayWithObjects:@"E",@"A",@"I",@"F",@"L",@"G",@"O",nil];
 	STAssertFalse([order containsObject:@"B"], @"Object was not properly removed.");
-	STAssertTrue([order isEqualToArray:correct], badOrder(order, correct));
+	STAssertTrue([order isEqualToArray:correct], badOrder(@"CHTraverseLevelOrder", order, correct));
 	STAssertEquals([order count], 7u, @"-count is incorrect.");
 	STAssertEquals([tree count],  7u, @"-count is incorrect.");
 	
@@ -340,7 +343,7 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 	order = [[tree objectEnumeratorWithTraversalOrder:CHTraverseLevelOrder] allObjects];
 	correct = [NSArray arrayWithObjects:@"F",@"E",@"I",@"G",@"L",@"O",nil];
 	STAssertFalse([order containsObject:@"A"], @"Object was not properly removed.");
-	STAssertTrue([order isEqualToArray:correct], badOrder(order, correct));
+	STAssertTrue([order isEqualToArray:correct], badOrder(@"CHTraverseLevelOrder", order, correct));
 	STAssertEquals([order count], 6u, @"-count is incorrect.");
 	STAssertEquals([tree count],  6u, @"-count is incorrect.");
 	
@@ -348,7 +351,7 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 	correct = [NSArray arrayWithObjects:@"F",@"E",@"L",@"I",@"O",nil];
 	order = [[tree objectEnumeratorWithTraversalOrder:CHTraverseLevelOrder] allObjects];
 	STAssertFalse([order containsObject:@"G"], @"Object was not properly removed.");
-	STAssertTrue([order isEqualToArray:correct], badOrder(order, correct));
+	STAssertTrue([order isEqualToArray:correct], badOrder(@"CHTraverseLevelOrder", order, correct));
 	STAssertEquals([order count], 5u, @"-count is incorrect.");
 	STAssertEquals([tree count],  5u, @"-count is incorrect.");
 	
@@ -356,7 +359,7 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 	order = [[tree objectEnumeratorWithTraversalOrder:CHTraverseLevelOrder] allObjects];
 	correct = [NSArray arrayWithObjects:@"I",@"F",@"L",@"O",nil];
 	STAssertFalse([order containsObject:@"E"], @"Object was not properly removed.");
-	STAssertTrue([order isEqualToArray:correct], badOrder(order, correct));
+	STAssertTrue([order isEqualToArray:correct], badOrder(@"CHTraverseLevelOrder", order, correct));
 	STAssertEquals([order count], 4u, @"-count is incorrect.");
 	STAssertEquals([tree count],  4u, @"-count is incorrect.");
 	
@@ -364,7 +367,7 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 	order = [[tree objectEnumeratorWithTraversalOrder:CHTraverseLevelOrder] allObjects];
 	correct = [NSArray arrayWithObjects:@"L",@"I",@"O",nil];
 	STAssertFalse([order containsObject:@"F"], @"Object was not properly removed.");
-	STAssertTrue([order isEqualToArray:correct], badOrder(order, correct));
+	STAssertTrue([order isEqualToArray:correct], badOrder(@"CHTraverseLevelOrder", order, correct));
 	STAssertEquals([order count], 3u, @"-count is incorrect.");
 	STAssertEquals([tree count],  3u, @"-count is incorrect.");
 	
@@ -372,7 +375,7 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 	order = [[tree objectEnumeratorWithTraversalOrder:CHTraverseLevelOrder] allObjects];
 	correct = [NSArray arrayWithObjects:@"I",@"O",nil];
 	STAssertFalse([order containsObject:@"L"], @"Object was not properly removed.");
-	STAssertTrue([order isEqualToArray:correct], badOrder(order, correct));
+	STAssertTrue([order isEqualToArray:correct], badOrder(@"CHTraverseLevelOrder", order, correct));
 	STAssertEquals([order count], 2u, @"-count is incorrect.");
 	STAssertEquals([tree count],  2u, @"-count is incorrect.");
 	
@@ -380,7 +383,7 @@ static NSString* badOrder(NSArray *order, NSArray *correctOrder) {
 	order = [[tree objectEnumeratorWithTraversalOrder:CHTraverseLevelOrder] allObjects];
 	correct = [NSArray arrayWithObjects:@"O",nil];
 	STAssertFalse([order containsObject:@"I"], @"Object was not properly removed.");
-	STAssertTrue([order isEqualToArray:correct], badOrder(order, correct));
+	STAssertTrue([order isEqualToArray:correct], badOrder(@"CHTraverseLevelOrder", order, correct));
 	STAssertEquals([order count], 1u, @"-count is incorrect.");
 	STAssertEquals([tree count],  1u, @"-count is incorrect.");
 }

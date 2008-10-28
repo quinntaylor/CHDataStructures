@@ -78,11 +78,7 @@
 #pragma mark Concrete Implementations
 
 - (NSArray*) contentsAsArrayUsingTraversalOrder:(CHTraversalOrder)order {
-	NSMutableArray *array = [[NSMutableArray alloc] init];
-	for (id object in [self objectEnumeratorWithTraversalOrder:order]) {
-		[array addObject:object];
-	}
-	return [array autorelease]; // Currently a mutable array, but doesn't affect tree
+	return [[self objectEnumeratorWithTraversalOrder:order] allObjects];
 }
 
 - (NSSet*) contentsAsSet {

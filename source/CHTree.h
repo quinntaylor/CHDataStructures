@@ -157,12 +157,16 @@ typedef short CHTraversalOrder;
 - (NSUInteger) count;
 
 /**
- Return the maximum (rightmost) object in the tree.
+ Returns the maximum (rightmost) object in the tree.
+ 
+ @return The maximum (rightmost) object in the tree, or <code>nil</code> if empty.
  */
 - (id) findMax;
 
 /**
- Return the minimum (leftmost) object in the tree.
+ Returns the minimum (leftmost) object in the tree.
+ 
+ @return The minimum (leftmost) object in the tree, or <code>nil</code> if empty.
  */
 - (id) findMin;
 

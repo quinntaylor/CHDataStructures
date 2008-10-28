@@ -59,10 +59,13 @@ if(queue==tmp)queue=NULL;if(queueTail==tmp)queueTail=NULL;}
 	CHTraversalOrder traversalOrder;
 	@private
 	CHRedBlackTree *collection;
-	struct RBNode *currentNode;
-	BOOL hasStarted;
-	BOOL beenLeft;
-	BOOL beenRight;
+	CHRedBlackTreeNode *currentNode;
+	CHRedBlackTreeNode *sentinelNode;
+	id tempObject;         /**< Temporary variable, holds the object to be returned.*/
+	RBTE_NODE *stack;     /**< Pointer to the top of a stack for most traversals. */
+	RBTE_NODE *queue;     /**< Pointer to the head of a queue for level-order. */
+	RBTE_NODE *queueTail; /**< Pointer to the tail of a queue for level-order. */
+	RBTE_NODE *tmp;       /**< Temporary variable for stack and queue operations. */
 	unsigned long mutationCount;
 	unsigned long *mutationPtr;
 }
@@ -73,11 +76,13 @@ if(queue==tmp)queue=NULL;if(queueTail==tmp)queueTail=NULL;}
  @param tree The tree collection that is being enumerated. This collection is to be
              retained while the enumerator has not exhausted all its objects.
  @param root The root node of the (sub)tree whose elements are to be enumerated.
+ @param sentinel The sentinel value used at the leaves of this red-black tree.
  @param order The traversal order to use for enumerating the given (sub)tree.
  @param mutations A pointer to the collection's count of mutations, for invalidation.
  */
 - (id) initWithTree:(CHRedBlackTree*)tree
                root:(CHRedBlackTreeNode*)root
+           sentinel:(CHRedBlackTreeNode*)sentinel
      traversalOrder:(CHTraversalOrder)order
     mutationPointer:(unsigned long*)mutations;
 
@@ -107,16 +112,23 @@ if(queue==tmp)queue=NULL;if(queueTail==tmp)queueTail=NULL;}
 
 - (id) initWithTree:(CHRedBlackTree*)tree
                root:(CHRedBlackTreeNode*)root
+           sentinel:(CHRedBlackTreeNode*)sentinel
      traversalOrder:(CHTraversalOrder)order
     mutationPointer:(unsigned long*)mutations
 {
 	if ([super init] == nil || !isValidTraversalOrder(order)) return nil;
-	collection = (root != NULL) ? collection = [tree retain] : nil;
-//	currentNode = ___;
+	stack = NULL;
 	traversalOrder = order;
-	beenLeft = YES;
-	beenRight = NO;
-	hasStarted = NO;
+	collection = (root != sentinel) ? collection = [tree retain] : nil;
+	if (traversalOrder == CHTraverseLevelOrder) {
+		RBTE_ENQUEUE(root);
+	} else if (traversalOrder == CHTraversePreOrder) {
+		RBTE_PUSH(root);
+	} else {
+		currentNode = root;
+	}
+	sentinel->object = nil;
+	sentinelNode = sentinel;
 	mutationCount = *mutations;
 	mutationPtr = mutations;
 	return self;
@@ -145,7 +157,96 @@ if(queue==tmp)queue=NULL;if(queueTail==tmp)queueTail=NULL;}
 - (id) nextObject {
 	if (mutationCount != *mutationPtr)
 		CHMutatedCollectionException([self class], _cmd);
-	// TODO: Copy enumeration logic from UnbalancedTree
+
+	switch (traversalOrder) {
+		case CHTraverseInOrder:
+			if (stack == NULL && currentNode == sentinelNode) {
+				[collection release];
+				collection = nil;
+				return nil;
+			}
+			while (currentNode != sentinelNode) {
+				RBTE_PUSH(currentNode);
+				currentNode = currentNode->left;
+				// TODO: How to not push/pop leaf nodes unnecessarily?
+			}
+			currentNode = RBTE_TOP; // Save top node for return value
+			RBTE_POP();
+			tempObject = currentNode->object;
+			currentNode = currentNode->right;
+			return tempObject;
+			
+		case CHTraverseReverseOrder:
+			if (stack == NULL && currentNode == sentinelNode) {
+				[collection release];
+				collection = nil;
+				return nil;
+			}
+			while (currentNode != sentinelNode) {
+				RBTE_PUSH(currentNode);
+				currentNode = currentNode->right;
+				// TODO: How to not push/pop leaf nodes unnecessarily?
+			}
+			currentNode = RBTE_TOP; // Save top node for return value
+			RBTE_POP();
+			tempObject = currentNode->object;
+			currentNode = currentNode->left;
+			return tempObject;
+			
+		case CHTraversePreOrder:
+			currentNode = RBTE_TOP;
+			RBTE_POP();
+			if (currentNode == NULL) {
+				[collection release];
+				collection = nil;
+				return nil;
+			}
+			if (currentNode->right != sentinelNode)
+				RBTE_PUSH(currentNode->right);
+			if (currentNode->left != sentinelNode)
+				RBTE_PUSH(currentNode->left);
+			return currentNode->object;
+			
+		case CHTraversePostOrder:
+			// This algorithm from: http://www.johny.ca/blog/archives/05/03/04/
+			if (stack == NULL && currentNode == sentinelNode) {
+				[collection release];
+				collection = nil;
+				return nil;
+			}
+			while (1) {
+				while (currentNode != sentinelNode) {
+					RBTE_PUSH(currentNode);
+					currentNode = currentNode->left;
+				}
+				// A null entry indicates that we've traversed the right subtree
+				if (RBTE_TOP != NULL) {
+					currentNode = RBTE_TOP->right;
+					RBTE_PUSH(NULL);
+					// TODO: explore how to not use null pad for leaf nodes
+				}
+				else {
+					RBTE_POP(); // ignore the null pad
+					tempObject = RBTE_TOP->object;
+					RBTE_POP();
+					return tempObject;
+				}				
+			}
+			
+		case CHTraverseLevelOrder:
+			currentNode = RBTE_FRONT;
+			if (currentNode == NULL) {
+				[collection release];
+				collection = nil;
+				return nil;
+			}
+			RBTE_DEQUEUE();
+			if (currentNode->left != sentinelNode)
+				RBTE_ENQUEUE(currentNode->left);
+			if (currentNode->right != sentinelNode)
+				RBTE_ENQUEUE(currentNode->right);
+			return currentNode->object;
+	}
 	return nil;
 }
 
@@ -235,6 +336,7 @@ CHRedBlackTreeNode* _rotateObjectOnAncestor(id x, CHRedBlackTreeNode *ancestor) 
 	 object already exists in the tree.
 	 */
 
+	++mutations;
 	current = parent = grandparent = root;
 	sentinel->object = anObject;
 	
@@ -308,12 +410,14 @@ CHRedBlackTreeNode* _rotateObjectOnAncestor(id x, CHRedBlackTreeNode *ancestor) 
 	return current->object;
 }
 
-- (id) findObject:(id)target {
-	sentinel->object = target; // Set it so the target value is always "found".
+- (id) findObject:(id)anObject {
+	if (anObject == nil)
+		return nil;
+	sentinel->object = anObject; // Make sure the target value is always "found"
 	current = root;
 	NSComparisonResult comparison;
 	while (1) {
-		comparison = [current->object compare:target];
+		comparison = [current->object compare:anObject];
 		if (comparison == NSOrderedDescending)
 			current = current->left;
 		else if (comparison == NSOrderedAscending)
@@ -362,8 +466,58 @@ CHRedBlackTreeNode* _rotateObjectOnAncestor(id x, CHRedBlackTreeNode *ancestor) 
 - (NSEnumerator*) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order {
 	return [[[CHRedBlackTreeEnumerator alloc] initWithTree:self
                                                       root:root
+                                                  sentinel:sentinel
                                             traversalOrder:order
                                            mutationPointer:&mutations] autorelease];
+}
+
+#pragma mark <NSFastEnumeration> Methods
+
+- (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
+                                   objects:(id*)stackbuf
+                                     count:(NSUInteger)len
+{
+	CHRedBlackTreeNode *currentNode;
+	RBTE_NODE *stack, *tmp; 
+	
+	// For the first call, start at leftmost node, otherwise start at last saved node
+	if (state->state == 0) {
+		currentNode = root;
+		state->itemsPtr = stackbuf;
+		state->mutationsPtr = &mutations;
+		stack = NULL;
+		sentinel->object = nil;
+	}
+	else if (state->state == 1) {
+		return 0;		
+	}
+	else {
+		currentNode = (CHRedBlackTreeNode*) state->state;
+		stack = (RBTE_NODE*) state->extra[0];
+	}
+	
+	// Accumulate objects from the tree until we reach all nodes or the maximum limit
+	NSUInteger batchCount = 0;
+	while ( (currentNode != sentinel || stack != NULL) && batchCount < len) {
+		while (currentNode != sentinel) {
+			RBTE_PUSH(currentNode);
+			currentNode = currentNode->left;
+			// TODO: How to not push/pop leaf nodes unnecessarily?
+		}
+		currentNode = RBTE_TOP; // Save top node for return value
+		RBTE_POP();
+		stackbuf[batchCount] = currentNode->object;
+		currentNode = currentNode->right;
+		batchCount++;
+	}
+	
+	if (currentNode == sentinel && stack == NULL)
+		state->state = 1; // used as a termination flag
+	else {
+		state->state = (unsigned long) currentNode;
+		state->extra[0] = (unsigned long) stack;
+	}
+	return batchCount;
 }
 
 @end
