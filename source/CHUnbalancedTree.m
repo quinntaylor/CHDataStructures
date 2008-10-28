@@ -24,12 +24,12 @@ static NSUInteger kUnbalancedTreeNodeSize = sizeof(CHUnbalancedTreeNode);
 #pragma mark Enumeration Struct & Macros
 
 // A struct for use by CHUnbalancedTreeEnumerator to maintain traversal state.
-typedef struct CH_UTE_NODE {
+typedef struct UTE_NODE {
 	struct CHUnbalancedTreeNode *node;
-	struct CH_UTE_NODE *next;
-} CH_UTE_NODE;
+	struct UTE_NODE *next;
+} UTE_NODE;
 
-static NSUInteger kUTE_SIZE = sizeof(CH_UTE_NODE);
+static NSUInteger kUTE_SIZE = sizeof(UTE_NODE);
 
 #pragma mark - Stack Operations
 
@@ -71,10 +71,10 @@ static NSUInteger kUTE_SIZE = sizeof(CH_UTE_NODE);
 	CHUnbalancedTree *collection;
 	CHUnbalancedTreeNode *currentNode; /**< The next node that is to be returned. */
 	id tempObject;       /**< Temporary variable, holds the object to be returned.*/
-	CH_UTE_NODE *stack;     /**< Pointer to the top of a stack for most traversals. */
-	CH_UTE_NODE *queue;     /**< Pointer to the head of a queue for level-order. */
-	CH_UTE_NODE *queueTail; /**< Pointer to the tail of a queue for level-order. */
-	CH_UTE_NODE *tmp;       /**< Temporary variable for stack and queue operations. */
+	UTE_NODE *stack;     /**< Pointer to the top of a stack for most traversals. */
+	UTE_NODE *queue;     /**< Pointer to the head of a queue for level-order. */
+	UTE_NODE *queueTail; /**< Pointer to the tail of a queue for level-order. */
+	UTE_NODE *tmp;       /**< Temporary variable for stack and queue operations. */
 	unsigned long mutationCount;
 	unsigned long *mutationPtr;
 }
@@ -473,9 +473,9 @@ static NSUInteger kUTE_SIZE = sizeof(CH_UTE_NODE);
 		return;
 	
 	CHUnbalancedTreeNode *currentNode;
-	CH_UTE_NODE *queue	 = NULL;
-	CH_UTE_NODE *queueTail = NULL;
-	CH_UTE_NODE *tmp;
+	UTE_NODE *queue	 = NULL;
+	UTE_NODE *queueTail = NULL;
+	UTE_NODE *tmp;
 	
 	UTE_ENQUEUE(root);
 	while (1) {
@@ -509,7 +509,7 @@ static NSUInteger kUTE_SIZE = sizeof(CH_UTE_NODE);
                                      count:(NSUInteger)len
 {
 	CHUnbalancedTreeNode *currentNode;
-	CH_UTE_NODE *stack, *tmp; 
+	UTE_NODE *stack, *tmp; 
 	
 	// For the first call, start at leftmost node, otherwise start at last saved node
 	if (state->state == 0) {
@@ -523,7 +523,7 @@ static NSUInteger kUTE_SIZE = sizeof(CH_UTE_NODE);
 	}
 	else {
 		currentNode = (CHUnbalancedTreeNode*) state->state;
-		stack = (CH_UTE_NODE*) state->extra[0];
+		stack = (UTE_NODE*) state->extra[0];
 	}
 
 	// Accumulate objects from the tree until we reach all nodes or the maximum limit
