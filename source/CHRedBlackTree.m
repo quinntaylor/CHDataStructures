@@ -19,7 +19,7 @@
 
 #import "CHRedBlackTree.h"
 
-static NSUInteger kCHRedBlackTreeNode = sizeof(CHRedBlackTreeNode);
+static NSUInteger kCHRedBlackTreeNodeSize = sizeof(CHRedBlackTreeNode);
 
 #pragma mark Enumeration Struct & Macros
 
@@ -254,6 +254,38 @@ if(queue==tmp)queue=NULL;if(queueTail==tmp)queueTail=NULL;}
 
 #pragma mark -
 
+static id headerObject = nil;
+
+// A fake object that resides in the header node for a tree.
+@interface CHRedBlackHeader : NSObject
+
++ (id) headerObject;
+
+@end
+
+@implementation CHRedBlackHeader
+
+// Return a singleton instance of CHRedBlackHeader, creating it if necessary.
++ (id) headerObject {
+	if (headerObject == nil)
+		headerObject = [[CHRedBlackHeader alloc] init];
+	return headerObject;
+}
+
+// Always indicate that the other object should appear to the right side.
+// Note that to work correctly, headerObject must be the receiver of compare:
+- (NSComparisonResult) compare:(id)otherObject {
+	return NSOrderedAscending;
+}
+
+- (NSUInteger) length {
+	return 0;
+}
+
+@end
+
+#pragma mark -
+
 #pragma mark C Functions for Optimized Operations
 
 CHRedBlackTreeNode * _rotateNodeWithLeftChild(CHRedBlackTreeNode *node) {
@@ -271,15 +303,17 @@ CHRedBlackTreeNode * _rotateNodeWithRightChild(CHRedBlackTreeNode *node) {
 }
 
 CHRedBlackTreeNode* _rotateObjectOnAncestor(id anObject, CHRedBlackTreeNode *ancestor) {
-	if ([anObject compare:ancestor->object] < 0) {
-		return ancestor->left = ([anObject compare:ancestor->left->object] < 0)
-			? _rotateNodeWithLeftChild(ancestor->left)
-			: _rotateNodeWithRightChild(ancestor->left);
+	if ([ancestor->object compare:anObject] == NSOrderedDescending) {
+		return ancestor->left =
+			([ancestor->left->object compare:anObject] == NSOrderedDescending)
+				? _rotateNodeWithLeftChild(ancestor->left)
+				: _rotateNodeWithRightChild(ancestor->left);
 	}
 	else {
-		return ancestor->right = ([anObject compare:ancestor->right->object] < 0)
-			? _rotateNodeWithLeftChild(ancestor->right)
-			: _rotateNodeWithRightChild(ancestor->right);
+		return ancestor->right =
+			([ancestor->right->object compare:anObject] == NSOrderedDescending)
+				? _rotateNodeWithLeftChild(ancestor->right)
+				: _rotateNodeWithRightChild(ancestor->right);
 	}
 }
 
@@ -295,55 +329,59 @@ CHRedBlackTreeNode* _rotateObjectOnAncestor(id anObject, CHRedBlackTreeNode *anc
 	current->right->color = kBLACK;
 	if (parent->color == kRED) 	{
 		grandparent->color = kRED;
-		if ([anObject compare:grandparent->object] != [anObject compare:parent->object])
+		if ([grandparent->object compare:anObject] != [parent->object compare:anObject])
 			parent = _rotateObjectOnAncestor(anObject, grandparent);
 		current = _rotateObjectOnAncestor(anObject, greatgrandparent);
 		current->color = kBLACK;
 	}
-	root->color = kBLACK;  // Always reset root to black
+	header->right->color = kBLACK;  // Always reset root to black
 }
 
 #pragma mark - Public Methods
 
 - (id) init {
 	if ([super init] == nil) return nil;
-	sentinel = malloc(kCHRedBlackTreeNode);
+	sentinel = malloc(kCHRedBlackTreeNodeSize);
 	sentinel->object = nil;
 	sentinel->color = kBLACK;
 	sentinel->right = sentinel;
 	sentinel->left = sentinel;
-	root = sentinel;
+	header = malloc(kCHRedBlackTreeNodeSize);
+	header->object = [CHRedBlackHeader headerObject];
+	header->color = kBLACK;
+	header->left = sentinel;
+	header->right = sentinel;
 	return self;
 }
 
 - (void) dealloc {
 	[self removeAllObjects];
+	free(header);
 	free(sentinel);
 	[super dealloc];
 }
 
+/*
+ Basically, as you walk down the tree to insert, if the present node has two
+ red children, you color it red and change the two children to black. If its
+ parent is red, the tree must be rotated. (Just change the root's color back
+ to black if you changed it). Returns without incrementing the count if the
+ object already exists in the tree.
+ */
 - (void) addObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
 
-	/*
-	 Basically, as you walk down the tree to insert, if the present node has two
-	 red children, you color it red and change the two children to black. If its
-	 parent is red, the tree must be rotated. (Just change the root's color back
-	 to black if you changed it). Returns without incrementing the count if the
-	 object already exists in the tree.
-	 */
-
 	++mutations;
-	current = parent = grandparent = root;
+	current = parent = grandparent = header;
 	sentinel->object = anObject;
 	
 	NSComparisonResult comparison;
-	while (comparison = [anObject compare:current->object]) {
+	while (comparison = [current->object compare:anObject]) {
 		greatgrandparent = grandparent;
 		grandparent = parent;
 		parent = current;
-		current = (comparison < 0) ? current->left : current->right;
+		current = (comparison == NSOrderedDescending) ? current->left : current->right;
 		
 		// Check for the bad case of red parent and red sibling of parent
 		if (current->left->color == kRED && current->right->color == kRED)
@@ -359,17 +397,12 @@ CHRedBlackTreeNode* _rotateObjectOnAncestor(id anObject, CHRedBlackTreeNode *anc
 	}
 	
 	++count;
-	current = malloc(kCHRedBlackTreeNode);
+	current = malloc(kCHRedBlackTreeNodeSize);
 	current->object = [anObject retain];
 	current->left = sentinel;
 	current->right = sentinel;
 	
-	if (root == sentinel) {
-		root = current;
-		return;
-	}
-	
-	if ([anObject compare:parent->object] < 0)
+	if ([parent->object compare:anObject] == NSOrderedDescending)
 		parent->left = current;
 	else
 		parent->right = current;
@@ -378,23 +411,28 @@ CHRedBlackTreeNode* _rotateObjectOnAncestor(id anObject, CHRedBlackTreeNode *anc
 }
 
 - (BOOL) containsObject:(id)anObject {
-	current = root;
+	if (anObject == nil)
+		return NO;
+	sentinel->object = anObject; // Make sure the target value is always "found"
+	current = header->right;
 	NSComparisonResult comparison;
-	while (current != sentinel) {
+	while (1) {
 		comparison = [current->object compare:anObject];
 		if (comparison == NSOrderedDescending)
 			current = current->left;
 		else if (comparison == NSOrderedAscending)
 			current = current->right;
-		else
+		else if (current != sentinel)
 			return YES;
+		else
+			break;
 	}
 	return NO;
 }
 
 - (id) findMax {
 	sentinel->object = nil;
-	current = root;
+	current = header->right;
 	while (current->right != sentinel)
 		current = current->right;
 	return current->object;
@@ -402,7 +440,7 @@ CHRedBlackTreeNode* _rotateObjectOnAncestor(id anObject, CHRedBlackTreeNode *anc
 
 - (id) findMin {
 	sentinel->object = nil;
-	current = root;
+	current = header->right;
 	while (current->left != sentinel)
 		current = current->left;
 	return current->object;
@@ -412,7 +450,7 @@ CHRedBlackTreeNode* _rotateObjectOnAncestor(id anObject, CHRedBlackTreeNode *anc
 	if (anObject == nil)
 		return nil;
 	sentinel->object = anObject; // Make sure the target value is always "found"
-	current = root;
+	current = header->right;
 	NSComparisonResult comparison;
 	while (1) {
 		comparison = [current->object compare:anObject];
@@ -443,7 +481,7 @@ CHRedBlackTreeNode* _rotateObjectOnAncestor(id anObject, CHRedBlackTreeNode *anc
 	RBTE_NODE *queueTail = NULL;
 	RBTE_NODE *tmp;
 	
-	RBTE_ENQUEUE(root);
+	RBTE_ENQUEUE(header->right);
 	while (1) {
 		currentNode = RBTE_FRONT;
 		if (currentNode == NULL)
@@ -456,14 +494,14 @@ CHRedBlackTreeNode* _rotateObjectOnAncestor(id anObject, CHRedBlackTreeNode *anc
 		[currentNode->object release];
 		free(currentNode);
 	}
-	root = sentinel;
+	header->right = sentinel;
 	count = 0;
 	++mutations;
 }
 
 - (NSEnumerator*) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order {
 	return [[[CHRedBlackTreeEnumerator alloc] initWithTree:self
-                                                      root:root
+                                                      root:header->right
                                                   sentinel:sentinel
                                             traversalOrder:order
                                            mutationPointer:&mutations] autorelease];
@@ -478,9 +516,9 @@ CHRedBlackTreeNode* _rotateObjectOnAncestor(id anObject, CHRedBlackTreeNode *anc
 	CHRedBlackTreeNode *currentNode;
 	RBTE_NODE *stack, *tmp; 
 	
-	// For the first call, start at leftmost node, otherwise start at last saved node
+	// For the first call, start at root node, otherwise start at last saved node
 	if (state->state == 0) {
-		currentNode = root;
+		currentNode = header->right;
 		state->itemsPtr = stackbuf;
 		state->mutationsPtr = &mutations;
 		stack = NULL;

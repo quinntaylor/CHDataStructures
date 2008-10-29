@@ -224,6 +224,34 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	STAssertEquals([tree count], [objects count], @"-count is incorrect.");
 }
 
+- (void) testAddObjectsAscending {
+	objects = [NSArray arrayWithObjects:@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",
+			   @"I",@"J",@"K",@"L",@"M",@"N",@"O",@"P",@"Q",@"R",nil];
+	for (id anObject in objects)
+		[tree addObject:anObject];
+	STAssertEquals([tree count], [objects count], @"-count is incorrect.");
+	
+	order = [tree contentsAsArrayUsingTraversalOrder:CHTraverseLevelOrder];
+	correct = [NSArray arrayWithObjects:@"H",@"D",@"L",@"B",@"F",@"J",@"N",@"A",
+			   @"C",@"E",@"G",@"I",@"K",@"M",@"P",@"O",@"Q",@"R",nil];
+	STAssertTrue([order isEqualToArray:correct],
+	             badOrder(@"Level order", order, correct));
+}
+
+- (void) testAddObjectsDescending {
+	objects = [NSArray arrayWithObjects:@"R",@"Q",@"P",@"O",@"N",@"M",@"L",@"K",
+			   @"J",@"I",@"H",@"G",@"F",@"E",@"D",@"C",@"B",@"A",nil];
+	for (id anObject in objects)
+		[tree addObject:anObject];
+	STAssertEquals([tree count], [objects count], @"-count is incorrect.");
+	
+	order = [tree contentsAsArrayUsingTraversalOrder:CHTraverseLevelOrder];
+	correct = [NSArray arrayWithObjects:@"K",@"G",@"O",@"E",@"I",@"M",@"Q",@"C",
+			   @"F",@"H",@"J",@"L",@"N",@"P",@"R",@"B",@"D",@"A",nil];
+	STAssertTrue([order isEqualToArray:correct],
+	             badOrder(@"Level order", order, correct));
+}
+
 - (void) testContainsObject {
 	STAssertFalse([tree containsObject:@"A"], @"Should not contain any nodes.");
 	for (id anObject in objects)

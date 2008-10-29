@@ -54,7 +54,8 @@ typedef struct CHRedBlackTreeNode {
  */
 @interface CHRedBlackTree : CHAbstractTree
 {
-	CHRedBlackTreeNode *root;
+	CHRedBlackTreeNode *header;   // links to the root -- eliminates special cases
+//	CHRedBlackTreeNode *root;
 	CHRedBlackTreeNode *sentinel; // Always black, stands in for NULL leaf node
 
 	@private
