@@ -278,10 +278,6 @@ static id headerObject = nil;
 	return NSOrderedAscending;
 }
 
-- (NSUInteger) length {
-	return 0;
-}
-
 @end
 
 #pragma mark -

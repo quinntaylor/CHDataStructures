@@ -47,7 +47,8 @@
  @param decoder An unarchiver object.
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super init] == nil) return nil;
+	// Gives concrete child class a chance to initialize its own state
+	if ([self init] == nil) return nil;
 	count = 0;
 	mutations = 0;
 	for (id anObject in [decoder decodeObjectForKey:@"objects"])
