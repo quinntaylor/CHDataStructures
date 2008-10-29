@@ -28,12 +28,14 @@
 <h4>&copy; 2008 <a href="http://homepage.mac.com/quinntaylor/">Quinn Taylor</a> &mdash; BYU CocoaHeads<br />
 &copy; 2002 <a href="http://www.phillipmorelock.com/">Phillip Morelock</a> &mdash; Los Angeles, CA</h4>
 </div>
+
 <h2>Overview</h2>
-<p>This framework is an attempt to create a library of standard data structures
-  which can be used in any Objective-C program, for educational purposes, or as
-  a foundation for other data structures to build on. Data structures in this
-  framework adopt Objective-C protocols that define the functionality of and API
-  for interacting with any implementation thereof, regardless of its internals.
+<p><strong>CHDataStructures.framework</strong> is an attempt to create a library
+  of standard data structures which can be used in any Objective-C program, for
+  educational purposes or as a foundation for other data structures to build on.
+  Data structures in this framework adopt Objective-C protocols that define the
+  functionality of and API for interacting with any implementation thereof,
+  regardless of its internals.</p>
 <p>This framework provides Objective-C implementations of common data structures
   which are currently beyond the purview of Apple's extensive and flexible
   <a href="http://developer.apple.com/cocoa/">Cocoa frameworks</a>. Collections
@@ -75,9 +77,26 @@
   based on the time and memory complexity on the implementations.</p>
   
 <p>Binaries and source code for the framework is available
-  <a href="http://www.phillipmorelock.com/examples/cocoadata/">here</a>. It is
+  <a href="http://cocoaheads.byu.edu/code/CHDataStructures/">here</a>. It is
   organized in an Xcode project with all relevant dependencies, but could also
   be built by hand if you're masochistic or just like a challenge.</p>
+
+<p>The original page for the framework when it was maintained by Phillip Morelock
+  was <a href="http://www.phillipmorelock.com/examples/cocoadata/"> here.</a></p>
+
+<h2>Known Issues</h2>
+
+<p>The codebase is still very much in the active development and debugging phase.
+  There are several problems that we're working on and should resolve soon:
+  <ul>
+    <li>CHAnderssonTree doesn't yet remove items correctly.</li>
+    <li>CHRedBlackTree doesn't yet remove items at all.</li>
+    <li>CHRedBlackTree doesn't construct the correct tree when adding objects.</li>
+  </ul>
+</p>
+
+<p>These problems are manifested by errors in the unit tests. Any help you can
+  offer with resolving these issues would be welcomed enthusiastically!</p>
 
 <h2>License Information</h2>
 <p>This framework (library) is free software and is licensed to you under the
