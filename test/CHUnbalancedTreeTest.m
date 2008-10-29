@@ -262,7 +262,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	correct = [NSArray arrayWithObjects:@"F",@"B",@"G",@"A",@"D",@"I",@"C",@"E",
 			   @"H",nil];
 	STAssertTrue([order isEqualToArray:correct],
-						 badOrder(@"CHTraverseLevelOrder", order, correct));
+						 badOrder(@"Level order", order, correct));
 }
 
 - (void) testRemoveObject {
