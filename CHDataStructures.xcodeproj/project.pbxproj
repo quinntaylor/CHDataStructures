@@ -72,6 +72,7 @@
 		E44773A20E913C89000889F7 /* Util.h in Headers */ = {isa = PBXBuildFile; fileRef = E44773A10E913C89000889F7 /* Util.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E44B57660E95538600F9DD1A /* CHDataStructures.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* CHDataStructures.framework */; };
 		E44B59C70E95852400F9DD1A /* Benchmarks.m in Sources */ = {isa = PBXBuildFile; fileRef = E44B58C40E95820400F9DD1A /* Benchmarks.m */; };
+		E4723A720EB91B7A006FE465 /* Util.m in Sources */ = {isa = PBXBuildFile; fileRef = E4723A710EB91B7A006FE465 /* Util.m */; };
 		E473CB870E9348F5005CA997 /* CHSinglyLinkedListTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E473CA3D0E93346B005CA997 /* CHSinglyLinkedListTest.m */; };
 		E48860BA0EA66072000F132A /* CHAbstractListCollection.h in Headers */ = {isa = PBXBuildFile; fileRef = E48860B80EA66072000F132A /* CHAbstractListCollection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E48860BB0EA66072000F132A /* CHAbstractListCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = E48860B90EA66072000F132A /* CHAbstractListCollection.m */; };
@@ -208,6 +209,7 @@
 		E44773A10E913C89000889F7 /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Util.h; path = source/Util.h; sourceTree = "<group>"; };
 		E44B58C40E95820400F9DD1A /* Benchmarks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Benchmarks.m; path = test/Benchmarks.m; sourceTree = "<group>"; };
 		E44B59B40E95850F00F9DD1A /* Benchmarks */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Benchmarks; sourceTree = BUILT_PRODUCTS_DIR; };
+		E4723A710EB91B7A006FE465 /* Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Util.m; path = source/Util.m; sourceTree = "<group>"; };
 		E473C9890E9331FA005CA997 /* Unit Testing-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Unit Testing-Info.plist"; path = "resources/Unit Testing-Info.plist"; sourceTree = "<group>"; };
 		E473C99E0E93333C005CA997 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		E473CA3D0E93346B005CA997 /* CHSinglyLinkedListTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHSinglyLinkedListTest.m; path = test/CHSinglyLinkedListTest.m; sourceTree = "<group>"; };
@@ -372,6 +374,7 @@
 				E4ADBB1D0E88174200B570BC /* CHStack.h */,
 				E4FE77C60E8978C300971EE6 /* CHTree.h */,
 				E44773A10E913C89000889F7 /* Util.h */,
+				E4723A710EB91B7A006FE465 /* Util.m */,
 			);
 			name = "Protocols & Utils";
 			sourceTree = "<group>";
@@ -618,6 +621,7 @@
 				E40D184E0E945580007F39D8 /* CHListDeque.m in Sources */,
 				E48860BB0EA66072000F132A /* CHAbstractListCollection.m in Sources */,
 				E48860C40EA660A1000F132A /* CHAbstractMutableArrayCollection.m in Sources */,
+				E4723A720EB91B7A006FE465 /* Util.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

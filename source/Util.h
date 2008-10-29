@@ -17,6 +17,8 @@
  this library.  If not, see <http://www.gnu.org/copyleft/lesser.html>.
  */
 
+#import <Foundation/Foundation.h>
+
 /**
  @file Util.h
  
@@ -35,12 +37,8 @@
  
  Currently, there is no support for calling this function from a C function.
  */
-static void CHIndexOutOfRangeException(Class theClass, SEL method,
-                                       NSUInteger index, NSUInteger elements) {
-	[NSException raise:NSRangeException
-                format:@"[%@ %s] -- Index (%d) out of range (0-%d).",
-                       theClass, sel_getName(method), index, elements-1];
-}
+extern void CHIndexOutOfRangeException(Class theClass, SEL method,
+                                       NSUInteger index, NSUInteger elements);
 
 /**
  Convenience function for raising an exception on an invalid nil object argument.
@@ -52,11 +50,7 @@ static void CHIndexOutOfRangeException(Class theClass, SEL method,
  
  Currently, there is no support for calling this function from a C function.
  */
-static void CHNilArgumentException(Class theClass, SEL method) {
-	[NSException raise:NSInternalInconsistencyException
-				format:@"[%@ %s] -- Invalid nil argument.",
-					   theClass, sel_getName(method)];
-}
+extern void CHNilArgumentException(Class theClass, SEL method);
 
 /**
  Convenience function for raising an exception when a collection is mutated.
@@ -68,11 +62,7 @@ static void CHNilArgumentException(Class theClass, SEL method) {
  
  Currently, there is no support for calling this function from a C function.
  */
-static void CHMutatedCollectionException(Class theClass, SEL method) {
-	[NSException raise:NSGenericException
-                format:@"[%@ %s] -- Collection was mutated while being enumerated.",
-                       theClass, sel_getName(method)];
-}
+extern void CHMutatedCollectionException(Class theClass, SEL method);
 
 /**
  Convenience function for raising an exception for un-implemented functionality.
@@ -84,20 +74,9 @@ static void CHMutatedCollectionException(Class theClass, SEL method) {
  
  Currently, there is no support for calling this function from a C function.
  */
-static int CHUnsupportedOperationException(Class theClass, SEL method) {
-	[NSException raise:NSInternalInconsistencyException
-				format:@"[%@ %s] -- Unsupported operation.",
-					   theClass, sel_getName(method)];
-	return 0;
-}
+extern int CHUnsupportedOperationException(Class theClass, SEL method);
 
-static void CHQuietLog(NSString *format, ...) {
-    // Get a reference to the arguments that follow the format paramter
-    va_list argList;
-    va_start(argList, format);
-    // Perform format string argument substitution, reinstate %% escapes, then print
-    NSString *s = [[[NSString alloc] initWithFormat:format arguments:argList] autorelease];
-    printf("%s\n", [[s stringByReplacingOccurrencesOfString:@"%%"
-                                                 withString:@"%%%%"] UTF8String]);
-    va_end(argList);
-}
+/**
+ 
+ */
+extern void CHQuietLog(NSString *format, ...);
