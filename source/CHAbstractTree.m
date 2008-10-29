@@ -82,10 +82,7 @@
 }
 
 - (NSSet*) contentsAsSet {
-	NSMutableSet *set = [[NSMutableSet alloc] init];
-	for (id object in [self objectEnumeratorWithTraversalOrder:CHTraversePreOrder])
-		[set addObject:object];
-	return [set autorelease];
+	return [NSSet setWithArray:[[self objectEnumeratorWithTraversalOrder:CHTraversePreOrder] allObjects]];
 }
 
 - (NSUInteger) count {

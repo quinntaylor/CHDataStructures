@@ -270,18 +270,16 @@ CHRedBlackTreeNode * _rotateNodeWithRightChild(CHRedBlackTreeNode *node) {
 	return rightChild;
 }
 
-CHRedBlackTreeNode* _rotateObjectOnAncestor(id x, CHRedBlackTreeNode *ancestor) {
-	if ([x compare:ancestor->object] < 0) {
-		ancestor->left = ([x compare:ancestor->left->object] < 0)
+CHRedBlackTreeNode* _rotateObjectOnAncestor(id anObject, CHRedBlackTreeNode *ancestor) {
+	if ([anObject compare:ancestor->object] < 0) {
+		return ancestor->left = ([anObject compare:ancestor->left->object] < 0)
 			? _rotateNodeWithLeftChild(ancestor->left)
 			: _rotateNodeWithRightChild(ancestor->left);
-		return ancestor->left;
 	}
 	else {
-		ancestor->right = ([x compare:ancestor->right->object] < 0)
+		return ancestor->right = ([anObject compare:ancestor->right->object] < 0)
 			? _rotateNodeWithLeftChild(ancestor->right)
 			: _rotateNodeWithRightChild(ancestor->right);
-		return ancestor->right;
 	}
 }
 
@@ -291,15 +289,15 @@ CHRedBlackTreeNode* _rotateObjectOnAncestor(id x, CHRedBlackTreeNode *ancestor) 
 
 #pragma mark - Private Methods
 
-- (void) _reorient:(id)x {
+- (void) _reorient:(id)anObject {
 	current->color = kRED;
 	current->left->color = kBLACK;
 	current->right->color = kBLACK;
 	if (parent->color == kRED) 	{
 		grandparent->color = kRED;
-		if ([x compare:grandparent->object] != [x compare:parent->object])
-			parent = _rotateObjectOnAncestor(x, grandparent);
-		current = _rotateObjectOnAncestor(x, greatgrandparent);
+		if ([anObject compare:grandparent->object] != [anObject compare:parent->object])
+			parent = _rotateObjectOnAncestor(anObject, grandparent);
+		current = _rotateObjectOnAncestor(anObject, greatgrandparent);
 		current->color = kBLACK;
 	}
 	root->color = kBLACK;  // Always reset root to black
