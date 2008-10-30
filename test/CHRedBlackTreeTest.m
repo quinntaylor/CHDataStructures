@@ -58,11 +58,11 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	for (id object in objects)
 		[tree addObject:object];
 	STAssertEquals([tree count], [objects count], @"-count is incorrect.");
-	order = [[tree objectEnumeratorWithTraversalOrder:CHTraverseLevelOrder]
-			 allObjects];
+	order = [tree contentsAsArrayUsingTraversalOrder:CHTraverseLevelOrder];
 	correct = [NSArray arrayWithObjects:@"E",@"C",@"K",@"B",@"D",@"I",@"M",@"A",
 			   @"G",@"J",@"L",@"N",@"F",@"H",nil];
-	STAssertEqualObjects(order, correct, @"Wrong ordering before archiving.");
+	STAssertEqualObjects(order, correct,
+	                     badOrder(@"Before encode, level order", order, correct));
 	
 	NSString *filePath = @"/tmp/tree.archive";
 	[NSKeyedArchiver archiveRootObject:tree toFile:filePath];
@@ -70,9 +70,9 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	
 	tree = [[NSKeyedUnarchiver unarchiveObjectWithFile:filePath] retain];
 	STAssertEquals([tree count], [objects count], @"-count is incorrect.");
-	order = [[tree objectEnumeratorWithTraversalOrder:CHTraverseLevelOrder]
-			 allObjects];
-	STAssertEqualObjects(order, correct, @"Wrong ordering on reconstruction.");
+	order = [tree contentsAsArrayUsingTraversalOrder:CHTraverseLevelOrder];
+	STAssertEqualObjects(order, correct,
+	                     badOrder(@"After decode, level order", order, correct));
 }
 
 - (void) testNSCopying {
@@ -108,9 +108,6 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 - (void) testAddObject {
 	STAssertThrows([tree addObject:nil], @"Should raise an exception.");
 	
-	objects = [NSArray arrayWithObjects:@"B",@"M",@"C",@"K",@"D",@"I",@"E",@"G",
-			   @"J",@"L",@"N",@"F",@"A",@"H",nil];
-
 	NSEnumerator *e = [objects objectEnumerator];
 	NSUInteger count = 0;
 	STAssertEquals([tree count], count, @"-count is incorrect.");
