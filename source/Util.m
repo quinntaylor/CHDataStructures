@@ -22,36 +22,41 @@
 void CHIndexOutOfRangeException(Class theClass, SEL method,
                                        NSUInteger index, NSUInteger elements) {
 	[NSException raise:NSRangeException
-                format:@"[%@ %s] -- Index (%d) out of range (0-%d).",
-	 theClass, sel_getName(method), index, elements-1];
+	            format:@"[%@ %s] -- Index (%d) out of range (0-%d).",
+	                   theClass, sel_getName(method), index, elements-1];
 }
 
 void CHNilArgumentException(Class theClass, SEL method) {
 	[NSException raise:NSInternalInconsistencyException
-				format:@"[%@ %s] -- Invalid nil argument.",
-	 theClass, sel_getName(method)];
+	            format:@"[%@ %s] -- Invalid nil argument.",
+	                   theClass, sel_getName(method)];
 }
 
 void CHMutatedCollectionException(Class theClass, SEL method) {
 	[NSException raise:NSGenericException
-                format:@"[%@ %s] -- Collection was mutated while being enumerated.",
-	 theClass, sel_getName(method)];
+	            format:@"[%@ %s] -- Collection was mutated while being enumerated.",
+	                   theClass, sel_getName(method)];
 }
 
 int CHUnsupportedOperationException(Class theClass, SEL method) {
 	[NSException raise:NSInternalInconsistencyException
-				format:@"[%@ %s] -- Unsupported operation.",
-	 theClass, sel_getName(method)];
+	            format:@"[%@ %s] -- Unsupported operation.",
+	                   theClass, sel_getName(method)];
 	return 0;
 }
 
 void CHQuietLog(NSString *format, ...) {
-    // Get a reference to the arguments that follow the format paramter
+    if (format == nil) {
+        printf("nil\n");
+        return;
+    }
+    // Get a reference to the arguments that follow the format parameter
     va_list argList;
     va_start(argList, format);
     // Perform format string argument substitution, reinstate %% escapes, then print
-    NSString *s = [[[NSString alloc] initWithFormat:format arguments:argList] autorelease];
+    NSString *s = [[NSString alloc] initWithFormat:format arguments:argList];
     printf("%s\n", [[s stringByReplacingOccurrencesOfString:@"%%"
                                                  withString:@"%%%%"] UTF8String]);
+	[s release];
     va_end(argList);
 }
