@@ -78,14 +78,6 @@
 
 #pragma mark Concrete Implementations
 
-- (NSArray*) contentsAsArrayUsingTraversalOrder:(CHTraversalOrder)order {
-	return [[self objectEnumeratorWithTraversalOrder:order] allObjects];
-}
-
-- (NSSet*) contentsAsSet {
-	return [NSSet setWithArray:[[self objectEnumeratorWithTraversalOrder:CHTraversePreOrder] allObjects]];
-}
-
 - (NSUInteger) count {
 	return count;
 }
@@ -99,7 +91,11 @@
 }
 
 - (NSArray*) allObjects {
-	return [[self objectEnumeratorWithTraversalOrder:CHTraverseAscending] allObjects];
+	return [self allObjectsWithTraversalOrder:CHTraverseAscending];
+}
+
+- (NSArray*) allObjectsWithTraversalOrder:(CHTraversalOrder)order {
+	return [[self objectEnumeratorWithTraversalOrder:order] allObjects];
 }
 
 #pragma mark Unsupported Implementations

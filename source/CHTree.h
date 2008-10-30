@@ -136,21 +136,6 @@ typedef enum {
 - (BOOL) containsObject:(id)anObject;
 
 /**
- Creates an NSArray which contains the objects in this tree.
- The tree traversal ordering (in-order, pre-order, post-order) must be specified.
- The object traversed last will be at the end of the array.
- 
- @param order The traversal order to use for enumerating the given tree.
- */
-- (NSArray*) contentsAsArrayUsingTraversalOrder:(CHTraversalOrder)order;
-
-/**
- Creates an NSSet which contains the objects in this tree. Generally uses a pre-order
- traversal, since it uses less space, is extremely fast, and sets are unordered.
- */
-- (NSSet*) contentsAsSet;
-
-/**
  Returns the number of objects currently in the tree.
  */
 - (NSUInteger) count;
@@ -191,12 +176,22 @@ typedef enum {
 - (void) removeAllObjects;
 
 /**
- Returns an array containing the objects in this tree in ascending sorted order.
+ Returns an NSArray containing the objects in this tree in ascending order.
  
  @return An array containing the objects in this tree. If the tree is empty, the
          array is also empty.
  */
 - (NSArray*) allObjects;
+
+/**
+ Returns an NSArray which contains the objects in this tree in a given ordering.
+ The object traversed last will appear last in the array.
+ 
+ @param order The traversal order to use for enumerating the given tree.
+ @return An array containing the objects in this tree. If the tree is empty, the
+         array is also empty.
+ */
+- (NSArray*) allObjectsWithTraversalOrder:(CHTraversalOrder)order;
 
 /**
  Returns an enumerator that accesses each object using the specified traversal order.
