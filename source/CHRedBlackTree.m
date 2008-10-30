@@ -159,7 +159,7 @@ if(queue==tmp)queue=NULL;if(queueTail==tmp)queueTail=NULL;}
 		CHMutatedCollectionException([self class], _cmd);
 
 	switch (traversalOrder) {
-		case CHTraverseInOrder:
+		case CHTraverseAscending:
 			if (stack == NULL && currentNode == sentinelNode) {
 				[collection release];
 				collection = nil;
@@ -176,7 +176,7 @@ if(queue==tmp)queue=NULL;if(queueTail==tmp)queueTail=NULL;}
 			currentNode = currentNode->right;
 			return tempObject;
 			
-		case CHTraverseReverseOrder:
+		case CHTraverseDescending:
 			if (stack == NULL && currentNode == sentinelNode) {
 				[collection release];
 				collection = nil;

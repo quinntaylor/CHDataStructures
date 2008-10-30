@@ -31,16 +31,15 @@
  A set of constant values denoting the order in which to traverse a tree structure.
  For details, see: http://en.wikipedia.org/wiki/Tree_traversal#Traversal_methods
  */
-enum _CHTraversalOrder {
-	CHTraverseInOrder,      /**< Visit left subtree, ROOT, then right subtree. */
-	CHTraverseReverseOrder, /**< Visit right subtree, ROOT, then left subtree. */
-	CHTraversePreOrder,     /**< Visit ROOT, left subtree, then right subtree. */
-	CHTraversePostOrder,    /**< Visit left subtree, right subtree, then ROOT. */
-	CHTraverseLevelOrder    /**< Visit nodes on each level left-right, top-bottom. */
-};
-typedef short CHTraversalOrder;
+typedef enum {
+	CHTraverseAscending,   /**< Visit left subtree, node, then right subtree. */
+	CHTraverseDescending,  /**< Visit right subtree, node, then left subtree. */
+	CHTraversePreOrder,    /**< Visit node, left subtree, then right subtree. */
+	CHTraversePostOrder,   /**< Visit left subtree, right subtree, then node. */
+	CHTraverseLevelOrder   /**< Visit nodes from left-right, top-bottom. */
+} CHTraversalOrder;
 
-#define isValidTraversalOrder(o) (o>=CHTraverseInOrder && o<=CHTraverseLevelOrder)
+#define isValidTraversalOrder(o) (o>=CHTraverseAscending && o<=CHTraverseLevelOrder)
 
 /**
  A <a href="http://en.wikipedia.org/wiki/Tree_(data_structure)">tree</a> protocol
@@ -90,8 +89,8 @@ typedef short CHTraversalOrder;
  
  These orderings correspond to the following constants, also declared in CHTree.h:
  
- - <code>CHTraverseInOrder</code>
- - <code>CHTraverseReverseOrder</code>
+ - <code>CHTraverseAscending</code>
+ - <code>CHTraverseDescending</code>
  - <code>CHTraversePreOrder</code>
  - <code>CHTraversePostOrder</code>
  - <code>CHTraverseLevelOrder</code>

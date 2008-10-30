@@ -265,35 +265,35 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	for (id object in objects)
 		[tree addObject:object];
 	
-	order = [tree contentsAsArrayUsingTraversalOrder:CHTraverseInOrder];
+	order = [tree contentsAsArrayUsingTraversalOrder:CHTraverseAscending];
 	correct = [NSArray arrayWithObjects:@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",
 			   @"I",@"J",@"K",@"L",@"M",@"N",nil];
 	STAssertTrue([order isEqualToArray:correct],
-	             badOrder(@"CHTraverseInOrder", order, correct));
+	             badOrder(@"Ascending order", order, correct));
 	
-	order = [tree contentsAsArrayUsingTraversalOrder:CHTraverseReverseOrder];
+	order = [tree contentsAsArrayUsingTraversalOrder:CHTraverseDescending];
 	correct = [NSArray arrayWithObjects:@"N",@"M",@"L",@"K",@"J",@"I",@"H",@"G",
 			   @"F",@"E",@"D",@"C",@"B",@"A",nil];
 	STAssertTrue([order isEqualToArray:correct],
-	             badOrder(@"CHTraverseReverseOrder", order, correct));
+	             badOrder(@"Descending order", order, correct));
 	
 	order = [tree contentsAsArrayUsingTraversalOrder:CHTraversePreOrder];
 	correct = [NSArray arrayWithObjects:@"E",@"C",@"B",@"A",@"D",@"K",@"I",@"G",
 			   @"F",@"H",@"J",@"M",@"L",@"N",nil];
 	STAssertTrue([order isEqualToArray:correct],
-	             badOrder(@"CHTraversePreOrder", order, correct));
+	             badOrder(@"Pre-order", order, correct));
 	
 	order = [tree contentsAsArrayUsingTraversalOrder:CHTraversePostOrder];
 	correct = [NSArray arrayWithObjects:@"A",@"B",@"D",@"C",@"F",@"H",@"G",@"J",
 			   @"I",@"L",@"N",@"M",@"K",@"E",nil];
 	STAssertTrue([order isEqualToArray:correct],
-	             badOrder(@"CHTraversePostOrder", order, correct));
+	             badOrder(@"Post-order", order, correct));
 	
 	order = [tree contentsAsArrayUsingTraversalOrder:CHTraverseLevelOrder];
 	correct = [NSArray arrayWithObjects:@"E",@"C",@"K",@"B",@"D",@"I",@"M",@"A",
 			   @"G",@"J",@"L",@"N",@"F",@"H",nil];
 	STAssertTrue([order isEqualToArray:correct],
-	             badOrder(@"Level order", order, correct));
+	             badOrder(@"Level-order", order, correct));
 }
 
 - (void) testContentsAsSet {

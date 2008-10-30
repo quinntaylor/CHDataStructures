@@ -171,7 +171,7 @@ static NSUInteger kUTE_SIZE = sizeof(UTE_NODE);
 	if (mutationCount != *mutationPtr)
 		CHMutatedCollectionException([self class], _cmd);
 	switch (traversalOrder) {
-		case CHTraverseInOrder:
+		case CHTraverseAscending:
 			if (stack == NULL && currentNode == NULL) {
 				[collection release];
 				collection = nil;
@@ -188,7 +188,7 @@ static NSUInteger kUTE_SIZE = sizeof(UTE_NODE);
 			currentNode = currentNode->right;
 			return tempObject;
 			
-		case CHTraverseReverseOrder:
+		case CHTraverseDescending:
 			if (stack == NULL && currentNode == NULL) {
 				[collection release];
 				collection = nil;

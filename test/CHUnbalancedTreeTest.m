@@ -235,35 +235,35 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	for (id object in objects)
 		[tree addObject:object];
 	
-	order = [tree contentsAsArrayUsingTraversalOrder:CHTraverseInOrder];
+	order = [tree contentsAsArrayUsingTraversalOrder:CHTraverseAscending];
 	correct = [NSArray arrayWithObjects:@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",
 			   @"I",nil];
 	STAssertTrue([order isEqualToArray:correct],
-						 badOrder(@"CHTraverseInOrder", order, correct));
+	             badOrder(@"Ascending order", order, correct));
 	
-	order = [tree contentsAsArrayUsingTraversalOrder:CHTraverseReverseOrder];
+	order = [tree contentsAsArrayUsingTraversalOrder:CHTraverseDescending];
 	correct = [NSArray arrayWithObjects:@"I",@"H",@"G",@"F",@"E",@"D",@"C",@"B",
 			   @"A",nil];
 	STAssertTrue([order isEqualToArray:correct],
-						 badOrder(@"CHTraverseReverseOrder", order, correct));
+	             badOrder(@"Descending order", order, correct));
 	
 	order = [tree contentsAsArrayUsingTraversalOrder:CHTraversePreOrder];
 	correct = [NSArray arrayWithObjects:@"F",@"B",@"A",@"D",@"C",@"E",@"G",@"I",
 			   @"H",nil];
 	STAssertTrue([order isEqualToArray:correct],
-						 badOrder(@"CHTraversePreOrder", order, correct));
+	             badOrder(@"Pre-order", order, correct));
 	
 	order = [tree contentsAsArrayUsingTraversalOrder:CHTraversePostOrder];
 	correct = [NSArray arrayWithObjects:@"A",@"C",@"E",@"D",@"B",@"H",@"I",@"G",
 			   @"F",nil];
 	STAssertTrue([order isEqualToArray:correct],
-						 badOrder(@"CHTraversePostOrder", order, correct));
+	             badOrder(@"Post-order", order, correct));
 	
 	order = [tree contentsAsArrayUsingTraversalOrder:CHTraverseLevelOrder];
 	correct = [NSArray arrayWithObjects:@"F",@"B",@"G",@"A",@"D",@"I",@"C",@"E",
 			   @"H",nil];
 	STAssertTrue([order isEqualToArray:correct],
-						 badOrder(@"Level order", order, correct));
+	             badOrder(@"Level-order", order, correct));
 }
 
 - (void) testRemoveObject {

@@ -91,15 +91,15 @@
 }
 
 - (NSEnumerator*) objectEnumerator {
-	return [self objectEnumeratorWithTraversalOrder:CHTraverseInOrder];
+	return [self objectEnumeratorWithTraversalOrder:CHTraverseAscending];
 }
 
 - (NSEnumerator*) reverseObjectEnumerator {
-	return [self objectEnumeratorWithTraversalOrder:CHTraverseReverseOrder];
+	return [self objectEnumeratorWithTraversalOrder:CHTraverseDescending];
 }
 
 - (NSArray*) allObjects {
-	return [[self objectEnumeratorWithTraversalOrder:CHTraverseInOrder] allObjects];
+	return [[self objectEnumeratorWithTraversalOrder:CHTraverseAscending] allObjects];
 }
 
 #pragma mark Unsupported Implementations
