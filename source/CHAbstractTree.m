@@ -98,6 +98,10 @@
 	return [[self objectEnumeratorWithTraversalOrder:order] allObjects];
 }
 
+- (NSString*) description {
+	return [[self allObjects] description];
+}
+
 #pragma mark Unsupported Implementations
 
 - (void) addObject:(id)anObject {

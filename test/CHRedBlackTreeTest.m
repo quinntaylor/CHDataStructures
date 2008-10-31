@@ -29,6 +29,58 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 			stringByReplacingOccurrencesOfString:@"    " withString:@""];
 }
 
+#pragma mark -
+
+@interface CHRedBlackTree (Test)
+
+- (BOOL) verify;
+- (NSUInteger) _verifySubtreeAtNode:(CHRedBlackTreeNode*)node;
+
+@end
+
+@implementation CHRedBlackTree (Test)
+
+- (BOOL) verify {
+	sentinel->object = nil;
+	return ([self _verifySubtreeAtNode:header->right] != 0);
+}
+
+// Recursive method for verifying that red-black properties are not violated.
+- (NSUInteger) _verifySubtreeAtNode:(CHRedBlackTreeNode*)node {
+	if (node == sentinel)
+		return 1;
+	/* Test for consecutive red links */
+	if (node->color == kRED) {
+		if (node->left->color == kRED || node->right->color == kRED) {
+			[NSException raise:NSInternalInconsistencyException
+						format:@"Consecutive red below %@", node->object];
+		}
+	}
+	NSUInteger leftBlackHeight  = [self _verifySubtreeAtNode:node->left];
+	NSUInteger rightBlackHeight = [self _verifySubtreeAtNode:node->left];
+	/* Test for invalid binary search tree */
+	if ([node->left->object compare:node->object] == NSOrderedDescending ||
+		[node->right->object compare:node->object] == NSOrderedAscending)
+	{
+		[NSException raise:NSInternalInconsistencyException
+		            format:@"Binary tree violation below %@", node->object];
+	}
+	/* Test for black height mismatch */
+	if (leftBlackHeight != rightBlackHeight && leftBlackHeight != 0) {
+		[NSException raise:NSInternalInconsistencyException
+		            format:@"Black height violation below %@", node->object];
+	}
+	/* Count black links */
+	if (leftBlackHeight != 0 && rightBlackHeight != 0)
+		return (node->color == kRED) ? leftBlackHeight : leftBlackHeight + 1;
+	else
+		return 0;
+}
+
+@end
+
+#pragma mark -
+
 @interface CHRedBlackTreeTest : SenTestCase {
 	CHRedBlackTree *tree;
 	NSArray *objects, *order, *correct;
@@ -118,6 +170,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	correct = [NSArray arrayWithObjects:@"B",nil];
 	STAssertTrue([order isEqualToArray:correct],
 	             badOrder(@"Level order", order, correct));
+	STAssertNoThrow([tree verify], @"Not a valid red-black tree!");
 	
 	[tree addObject:[e nextObject]]; // M
 	STAssertEquals([tree count], ++count, @"-count is incorrect.");
@@ -125,6 +178,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	correct = [NSArray arrayWithObjects:@"B",@"M",nil];
 	STAssertTrue([order isEqualToArray:correct],
 	             badOrder(@"Level order", order, correct));
+	STAssertNoThrow([tree verify], @"Not a valid red-black tree!");
 	
 	[tree addObject:[e nextObject]]; // C
 	STAssertEquals([tree count], ++count, @"-count is incorrect.");
@@ -132,6 +186,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	correct = [NSArray arrayWithObjects:@"C",@"B",@"M",nil];
 	STAssertTrue([order isEqualToArray:correct],
 	             badOrder(@"Level order", order, correct));
+	STAssertNoThrow([tree verify], @"Not a valid red-black tree!");
 	
 	[tree addObject:[e nextObject]]; // K
 	STAssertEquals([tree count], ++count, @"-count is incorrect.");
@@ -139,6 +194,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	correct = [NSArray arrayWithObjects:@"C",@"B",@"M",@"K",nil];
 	STAssertTrue([order isEqualToArray:correct],
 	             badOrder(@"Level order", order, correct));
+	STAssertNoThrow([tree verify], @"Not a valid red-black tree!");
 	
 	[tree addObject:[e nextObject]]; // D
 	STAssertEquals([tree count], ++count, @"-count is incorrect.");
@@ -146,6 +202,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	correct = [NSArray arrayWithObjects:@"C",@"B",@"K",@"D",@"M",nil];
 	STAssertTrue([order isEqualToArray:correct],
 	             badOrder(@"Level order", order, correct));
+	STAssertNoThrow([tree verify], @"Not a valid red-black tree!");
 	
 	[tree addObject:[e nextObject]]; // I
 	STAssertEquals([tree count], ++count, @"-count is incorrect.");
@@ -153,6 +210,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	correct = [NSArray arrayWithObjects:@"C",@"B",@"K",@"D",@"M",@"I",nil];
 	STAssertTrue([order isEqualToArray:correct],
 	             badOrder(@"Level order", order, correct));
+	STAssertNoThrow([tree verify], @"Not a valid red-black tree!");
 	
 	[tree addObject:[e nextObject]]; // E
 	STAssertEquals([tree count], ++count, @"-count is incorrect.");
@@ -160,6 +218,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	correct = [NSArray arrayWithObjects:@"C",@"B",@"K",@"E",@"M",@"D",@"I",nil];
 	STAssertTrue([order isEqualToArray:correct],
 	             badOrder(@"Level order", order, correct));
+	STAssertNoThrow([tree verify], @"Not a valid red-black tree!");
 	
 	[tree addObject:[e nextObject]]; // G
 	STAssertEquals([tree count], ++count, @"-count is incorrect.");
@@ -168,6 +227,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 			   nil];
 	STAssertTrue([order isEqualToArray:correct],
 	             badOrder(@"Level order", order, correct));
+	STAssertNoThrow([tree verify], @"Not a valid red-black tree!");
 	
 	[tree addObject:[e nextObject]]; // J
 	STAssertEquals([tree count], ++count, @"-count is incorrect.");
@@ -176,7 +236,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 			   @"J",nil];
 	STAssertTrue([order isEqualToArray:correct],
 	             badOrder(@"Level order", order, correct));
-	
+	STAssertNoThrow([tree verify], @"Not a valid red-black tree!");
 	
 	[tree addObject:[e nextObject]]; // L
 	STAssertEquals([tree count], ++count, @"-count is incorrect.");
@@ -185,6 +245,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 			   @"J",@"L",nil];
 	STAssertTrue([order isEqualToArray:correct],
 	             badOrder(@"Level order", order, correct));
+	STAssertNoThrow([tree verify], @"Not a valid red-black tree!");
 	
 	[tree addObject:[e nextObject]]; // N
 	STAssertEquals([tree count], ++count, @"-count is incorrect.");
@@ -193,6 +254,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 			   @"J",@"L",@"N",nil];
 	STAssertTrue([order isEqualToArray:correct],
 	             badOrder(@"Level order", order, correct));
+	STAssertNoThrow([tree verify], @"Not a valid red-black tree!");
 	
 	[tree addObject:[e nextObject]]; // F
 	STAssertEquals([tree count], ++count, @"-count is incorrect.");
@@ -201,6 +263,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 			   @"J",@"L",@"N",@"F",nil];
 	STAssertTrue([order isEqualToArray:correct],
 	             badOrder(@"Level order", order, correct));
+	STAssertNoThrow([tree verify], @"Not a valid red-black tree!");
 	
 	[tree addObject:[e nextObject]]; // A
 	STAssertEquals([tree count], ++count, @"-count is incorrect.");
@@ -209,6 +272,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 			   @"G",@"J",@"L",@"N",@"F",nil];
 	STAssertTrue([order isEqualToArray:correct],
 	             badOrder(@"Level order", order, correct));
+	STAssertNoThrow([tree verify], @"Not a valid red-black tree!");
 	
 	[tree addObject:[e nextObject]]; // H
 	STAssertEquals([tree count], ++count, @"-count is incorrect.");
@@ -217,6 +281,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 			   @"G",@"J",@"L",@"N",@"F",@"H",nil];
 	STAssertTrue([order isEqualToArray:correct],
 	             badOrder(@"Level order", order, correct));
+	STAssertNoThrow([tree verify], @"Not a valid red-black tree!");
 	
 	// Test adding identical object--should be replaced, and count stay the same
 	[tree addObject:@"A"];
@@ -235,6 +300,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 			   @"C",@"E",@"G",@"I",@"K",@"M",@"P",@"O",@"Q",@"R",nil];
 	STAssertTrue([order isEqualToArray:correct],
 	             badOrder(@"Level order", order, correct));
+	STAssertNoThrow([tree verify], @"Not a valid red-black tree!");
 }
 
 - (void) testAddObjectsDescending {
@@ -249,6 +315,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 			   @"F",@"H",@"J",@"L",@"N",@"P",@"R",@"B",@"D",@"A",nil];
 	STAssertTrue([order isEqualToArray:correct],
 	             badOrder(@"Level order", order, correct));
+	STAssertNoThrow([tree verify], @"Not a valid red-black tree!");
 }
 
 - (void) testContainsObject {
@@ -402,6 +469,15 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	STAssertEquals([tree count], [objects count], @"-count is incorrect.");
 	[tree removeObject:@"Z"];
 	STAssertEquals([tree count], [objects count], @"-count is incorrect.");
+	
+	NSUInteger count = [objects count];
+	for (id anObject in objects) {
+		[tree removeObject:anObject];
+		STAssertEquals([tree count], --count, @"-count is incorrect.");
+		STAssertNoThrow([tree verify], @"Not a valid red-black tree: %@",
+						[tree debugDescription]);
+	}
+
 }
 
 - (void) testRemoveAllObjects {
