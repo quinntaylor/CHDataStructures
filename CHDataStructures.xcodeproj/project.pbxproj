@@ -67,6 +67,8 @@
 		E442DFA80E8F1BDF00BD62F6 /* CHDataStructures.h in Headers */ = {isa = PBXBuildFile; fileRef = E442DFA70E8F1BDF00BD62F6 /* CHDataStructures.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E442DFB80E8F1E6D00BD62F6 /* CHAnderssonTree.h in Headers */ = {isa = PBXBuildFile; fileRef = E442DFB60E8F1E6D00BD62F6 /* CHAnderssonTree.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E442DFB90E8F1E6D00BD62F6 /* CHAnderssonTree.m in Sources */ = {isa = PBXBuildFile; fileRef = E442DFB70E8F1E6D00BD62F6 /* CHAnderssonTree.m */; };
+		E445580B0EBCB70A00D9C482 /* CHAVLTree.h in Headers */ = {isa = PBXBuildFile; fileRef = E44558090EBCB70A00D9C482 /* CHAVLTree.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E445580C0EBCB70A00D9C482 /* CHAVLTree.m in Sources */ = {isa = PBXBuildFile; fileRef = E445580A0EBCB70A00D9C482 /* CHAVLTree.m */; };
 		E44771F40E912491000889F7 /* CHMutableArrayDeque.h in Headers */ = {isa = PBXBuildFile; fileRef = E44771F20E912491000889F7 /* CHMutableArrayDeque.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E44771F50E912491000889F7 /* CHMutableArrayDeque.m in Sources */ = {isa = PBXBuildFile; fileRef = E44771F30E912491000889F7 /* CHMutableArrayDeque.m */; };
 		E44773A20E913C89000889F7 /* Util.h in Headers */ = {isa = PBXBuildFile; fileRef = E44773A10E913C89000889F7 /* Util.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -204,6 +206,8 @@
 		E442DFA70E8F1BDF00BD62F6 /* CHDataStructures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHDataStructures.h; path = source/CHDataStructures.h; sourceTree = "<group>"; };
 		E442DFB60E8F1E6D00BD62F6 /* CHAnderssonTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHAnderssonTree.h; path = source/CHAnderssonTree.h; sourceTree = "<group>"; };
 		E442DFB70E8F1E6D00BD62F6 /* CHAnderssonTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHAnderssonTree.m; path = source/CHAnderssonTree.m; sourceTree = "<group>"; };
+		E44558090EBCB70A00D9C482 /* CHAVLTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHAVLTree.h; path = source/CHAVLTree.h; sourceTree = "<group>"; };
+		E445580A0EBCB70A00D9C482 /* CHAVLTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHAVLTree.m; path = source/CHAVLTree.m; sourceTree = "<group>"; };
 		E44771F20E912491000889F7 /* CHMutableArrayDeque.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHMutableArrayDeque.h; path = source/CHMutableArrayDeque.h; sourceTree = "<group>"; };
 		E44771F30E912491000889F7 /* CHMutableArrayDeque.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHMutableArrayDeque.m; path = source/CHMutableArrayDeque.m; sourceTree = "<group>"; };
 		E44773A10E913C89000889F7 /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Util.h; path = source/Util.h; sourceTree = "<group>"; };
@@ -337,6 +341,8 @@
 				E442DFB70E8F1E6D00BD62F6 /* CHAnderssonTree.m */,
 				E4FE77C90E8978DD00971EE6 /* CHAbstractTree.h */,
 				E4ADBC990E88412C00B570BC /* CHAbstractTree.m */,
+				E44558090EBCB70A00D9C482 /* CHAVLTree.h */,
+				E445580A0EBCB70A00D9C482 /* CHAVLTree.m */,
 				E4ADBB1E0E88174200B570BC /* CHDoublyLinkedList.h */,
 				E4ADBB1F0E88174200B570BC /* CHDoublyLinkedList.m */,
 				E40D184A0E945580007F39D8 /* CHListDeque.h */,
@@ -450,6 +456,7 @@
 				E4FE77C70E8978C300971EE6 /* CHTree.h in Headers */,
 				E4ADBB400E88174200B570BC /* CHUnbalancedTree.h in Headers */,
 				E44773A20E913C89000889F7 /* Util.h in Headers */,
+				E445580B0EBCB70A00D9C482 /* CHAVLTree.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -622,6 +629,7 @@
 				E48860BB0EA66072000F132A /* CHAbstractListCollection.m in Sources */,
 				E48860C40EA660A1000F132A /* CHAbstractMutableArrayCollection.m in Sources */,
 				E4723A720EB91B7A006FE465 /* Util.m in Sources */,
+				E445580C0EBCB70A00D9C482 /* CHAVLTree.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -29,6 +29,7 @@
 
 // Classes
 #import "CHAnderssonTree.h"
+#import "CHAVLTree.h"
 #import "CHDoublyLinkedList.h"
 #import "CHListDeque.h"
 #import "CHListQueue.h"
