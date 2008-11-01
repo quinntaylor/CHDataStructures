@@ -68,7 +68,7 @@ static NSUInteger kUTE_SIZE = sizeof(UTE_NODE);
 @interface CHUnbalancedTreeEnumerator : NSEnumerator {
 	CHTraversalOrder traversalOrder; /**< Order in which to traverse the tree. */
 	@private
-	CHUnbalancedTree *collection;
+	id<CHTree> collection;
 	CHUnbalancedTreeNode *currentNode; /**< The next node that is to be returned. */
 	id tempObject;       /**< Temporary variable, holds the object to be returned.*/
 	UTE_NODE *stack;     /**< Pointer to the top of a stack for most traversals. */
@@ -88,7 +88,7 @@ static NSUInteger kUTE_SIZE = sizeof(UTE_NODE);
  @param order The traversal order to use for enumerating the given (sub)tree.
  @param mutations A pointer to the collection's count of mutations, for invalidation.
  */
-- (id) initWithTree:(CHUnbalancedTree*)tree
+- (id) initWithTree:(id<CHTree>)tree
                root:(CHUnbalancedTreeNode*)root
      traversalOrder:(CHTraversalOrder)order
     mutationPointer:(unsigned long*)mutations;
@@ -117,7 +117,7 @@ static NSUInteger kUTE_SIZE = sizeof(UTE_NODE);
 
 @implementation CHUnbalancedTreeEnumerator
 
-- (id) initWithTree:(CHUnbalancedTree*)tree
+- (id) initWithTree:(id<CHTree>)tree
                root:(CHUnbalancedTreeNode*)root
      traversalOrder:(CHTraversalOrder)order
     mutationPointer:(unsigned long*)mutations

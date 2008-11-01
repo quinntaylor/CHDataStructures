@@ -38,3 +38,62 @@
 }
 
 @end
+
+#pragma mark -
+
+/**
+ A node used by balanced binary trees for internal storage and representation.
+ 
+ The nested anonymous union and structs are to provide flexibility for dealing
+ with various types of trees and access. The first union—with pointers to the
+ struct itself—provide 2 ways to access child nodes at the same memory address,
+ based on what is most convenient and efficient. (e.g. 'left' is equivalent to
+ 'link[0]', and 'right' is equivalent to 'link[1]'). The second union—with the
+ NSUInteger values—allows the same node to be used in several different balanced
+ trees, while preserving useful semantic meaning appropriate for each algorithm.
+ */
+typedef struct CHBalancedTreeNode {
+	id object;                           /**< The object stored in the node. */
+	union {
+		struct {
+			struct CHBalancedTreeNode *left;   /**< Link to left child node. */
+			struct CHBalancedTreeNode *right;  /**< Link to right child node. */
+		};
+		struct CHBalancedTreeNode *link[2]; /**< Links to left/right childen. */
+	};
+	union {
+		NSUInteger color;         /**< The node's color (for red-black trees) */
+		NSUInteger height;        /**< The node's height (for AVL trees) */
+		NSUInteger level;         /**< The node's level (for Andersson trees) */
+	};
+} CHBalancedTreeNode;
+
+
+#pragma mark Enumeration Struct & Macros
+
+// A struct used by balanced binary tree enumerators to maintain traversal state
+typedef struct CHTREE_NODE {
+	struct CHBalancedTreeNode *node;
+	struct CHTREE_NODE *next;
+} CHTREE_NODE;
+
+// Stack Operations
+
+#define CHTREE_PUSH(o) \
+        {tmp=malloc(kCHTREE_SIZE);tmp->node=o;tmp->next=stack;stack=tmp;}
+#define CHTREE_POP() \
+        {if(stack!=NULL){tmp=stack;stack=stack->next;free(tmp);}}
+#define CHTREE_TOP \
+        ((stack!=NULL)?stack->node:NULL)
+
+// Queue Operations
+
+#define CHTREE_ENQUEUE(o) \
+        {tmp=malloc(kCHTREE_SIZE);tmp->node=o;tmp->next=NULL;\
+        if(queue==NULL){queue=tmp;queueTail=tmp;}\
+        queueTail->next=tmp;queueTail=queueTail->next;}
+#define CHTREE_DEQUEUE() \
+        {if(queue!=NULL){tmp=queue;queue=queue->next;free(tmp);}\
+        if(queue==tmp)queue=NULL;if(queueTail==tmp)queueTail=NULL;}
+#define CHTREE_FRONT \
+        ((queue!=NULL)?queue->node:NULL)

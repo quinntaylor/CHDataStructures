@@ -19,34 +19,8 @@
 
 #import "CHAnderssonTree.h"
 
-static NSUInteger kCHAnderssonTreeNodeSize = sizeof(CHAnderssonTreeNode);
-
-#pragma mark Enumeration Struct & Macros
-
-// A struct for use by CHAnderssonTreeEnumerator to maintain traversal state.
-typedef struct ATE_NODE {
-	struct CHAnderssonTreeNode *node;
-	struct ATE_NODE *next;
-} ATE_NODE;
-
-static NSUInteger kATE_SIZE = sizeof(ATE_NODE);
-
-#pragma mark - Stack Operations
-
-#define ATE_PUSH(o) {tmp=malloc(kATE_SIZE);tmp->node=o;tmp->next=stack;stack=tmp;}
-#define ATE_POP()   {if(stack!=NULL){tmp=stack;stack=stack->next;free(tmp);}}
-#define ATE_TOP     ((stack!=NULL)?stack->node:NULL)
-
-#pragma mark - Queue Operations
-
-#define ATE_ENQUEUE(o) {tmp=malloc(kATE_SIZE);tmp->node=o;tmp->next=NULL;\
-                         if(queue==NULL){queue=tmp;queueTail=tmp;}\
-                         queueTail->next=tmp;queueTail=queueTail->next;}
-#define ATE_DEQUEUE()  {if(queue!=NULL){tmp=queue;queue=queue->next;free(tmp);}\
-                         if(queue==tmp)queue=NULL;if(queueTail==tmp)queueTail=NULL;}
-#define ATE_FRONT      ((queue!=NULL)?queue->node:NULL)
-
-#pragma mark -
+static NSUInteger kCHBalancedTreeNodeSize = sizeof(CHBalancedTreeNode);
+static NSUInteger kCHTREE_SIZE = sizeof(CHTREE_NODE);
 
 /**
  An NSEnumerator for traversing an CHAnderssonTree in a specified order.
@@ -69,13 +43,13 @@ static NSUInteger kATE_SIZE = sizeof(ATE_NODE);
 {
 	CHTraversalOrder traversalOrder; /**< Order in which to traverse the tree. */
 	@private
-	CHAnderssonTree *collection;
-	CHAnderssonTreeNode *currentNode; /**< The next node that is to be returned. */
+	id<CHTree> collection;
+	CHBalancedTreeNode *currentNode; /**< The next node that is to be returned. */
 	id tempObject;         /**< Temporary variable, holds the object to be returned.*/
-	ATE_NODE *stack;     /**< Pointer to the top of a stack for most traversals. */
-	ATE_NODE *queue;     /**< Pointer to the head of a queue for level-order. */
-	ATE_NODE *queueTail; /**< Pointer to the tail of a queue for level-order. */
-	ATE_NODE *tmp;       /**< Temporary variable for stack and queue operations. */
+	CHTREE_NODE *stack;     /**< Pointer to the top of a stack for most traversals. */
+	CHTREE_NODE *queue;     /**< Pointer to the head of a queue for level-order. */
+	CHTREE_NODE *queueTail; /**< Pointer to the tail of a queue for level-order. */
+	CHTREE_NODE *tmp;       /**< Temporary variable for stack and queue operations. */
 	unsigned long mutationCount;
 	unsigned long *mutationPtr;
 }
@@ -89,8 +63,8 @@ static NSUInteger kATE_SIZE = sizeof(ATE_NODE);
  @param order The traversal order to use for enumerating the given (sub)tree.
  @param mutations A pointer to the collection's count of mutations, for invalidation.
  */
-- (id) initWithTree:(CHAnderssonTree*)tree
-               root:(CHAnderssonTreeNode*)root
+- (id) initWithTree:(id<CHTree>)tree
+               root:(CHBalancedTreeNode*)root
      traversalOrder:(CHTraversalOrder)order
     mutationPointer:(unsigned long*)mutations;
 
@@ -118,8 +92,8 @@ static NSUInteger kATE_SIZE = sizeof(ATE_NODE);
 
 @implementation CHAnderssonTreeEnumerator
 
-- (id) initWithTree:(CHAnderssonTree*)tree
-               root:(CHAnderssonTreeNode*)root
+- (id) initWithTree:(id<CHTree>)tree
+               root:(CHBalancedTreeNode*)root
      traversalOrder:(CHTraversalOrder)order
     mutationPointer:(unsigned long*)mutations
 {
@@ -128,9 +102,9 @@ static NSUInteger kATE_SIZE = sizeof(ATE_NODE);
 	traversalOrder = order;
 	collection = (root != NULL) ? collection = [tree retain] : nil;
 	if (traversalOrder == CHTraverseLevelOrder) {
-		ATE_ENQUEUE(root);
+		CHTREE_ENQUEUE(root);
 	} else if (traversalOrder == CHTraversePreOrder) {
-		ATE_PUSH(root);
+		CHTREE_PUSH(root);
 	} else {
 		currentNode = root;
 	}
@@ -142,17 +116,17 @@ static NSUInteger kATE_SIZE = sizeof(ATE_NODE);
 - (void) dealloc {
 	[collection release];
 	while (stack != NULL)
-		ATE_POP();
+		CHTREE_POP();
 	while (queue != NULL)
-		ATE_DEQUEUE();
+		CHTREE_DEQUEUE();
 	[super dealloc];
 }
 
 - (void) finalize {
 	while (stack != NULL)
-		ATE_POP();
+		CHTREE_POP();
 	while (queue != NULL)
-		ATE_DEQUEUE();
+		CHTREE_DEQUEUE();
 	[super finalize];
 }
 
@@ -179,12 +153,12 @@ static NSUInteger kATE_SIZE = sizeof(ATE_NODE);
 				return nil;
 			}
 			while (currentNode != NULL) {
-				ATE_PUSH(currentNode);
+				CHTREE_PUSH(currentNode);
 				currentNode = currentNode->left;
 				// TODO: How to not push/pop leaf nodes unnecessarily?
 			}
-			currentNode = ATE_TOP; // Save top node for return value
-			ATE_POP();
+			currentNode = CHTREE_TOP; // Save top node for return value
+			CHTREE_POP();
 			tempObject = currentNode->object;
 			currentNode = currentNode->right;
 			return tempObject;
@@ -196,27 +170,27 @@ static NSUInteger kATE_SIZE = sizeof(ATE_NODE);
 				return nil;
 			}
 			while (currentNode != NULL) {
-				ATE_PUSH(currentNode);
+				CHTREE_PUSH(currentNode);
 				currentNode = currentNode->right;
 				// TODO: How to not push/pop leaf nodes unnecessarily?
 			}
-			currentNode = ATE_TOP; // Save top node for return value
-			ATE_POP();
+			currentNode = CHTREE_TOP; // Save top node for return value
+			CHTREE_POP();
 			tempObject = currentNode->object;
 			currentNode = currentNode->left;
 			return tempObject;
 		case CHTraversePreOrder:
-			currentNode = ATE_TOP;
-			ATE_POP();
+			currentNode = CHTREE_TOP;
+			CHTREE_POP();
 			if (currentNode == NULL) {
 				[collection release];
 				collection = nil;
 				return nil;
 			}
 			if (currentNode->right != NULL)
-				ATE_PUSH(currentNode->right);
+				CHTREE_PUSH(currentNode->right);
 			if (currentNode->left != NULL)
-				ATE_PUSH(currentNode->left);
+				CHTREE_PUSH(currentNode->left);
 			return currentNode->object;
 			
 			
@@ -229,35 +203,35 @@ static NSUInteger kATE_SIZE = sizeof(ATE_NODE);
 			}
 			while (1) {
 				while (currentNode != NULL) {
-					ATE_PUSH(currentNode);
+					CHTREE_PUSH(currentNode);
 					currentNode = currentNode->left;
 				}
 				// A null entry indicates that we've traversed the right subtree
-				if (ATE_TOP != NULL) {
-					currentNode = ATE_TOP->right;
-					ATE_PUSH(NULL);
+				if (CHTREE_TOP != NULL) {
+					currentNode = CHTREE_TOP->right;
+					CHTREE_PUSH(NULL);
 					// TODO: explore how to not use null pad for leaf nodes
 				}
 				else {
-					ATE_POP(); // ignore the null pad
-					tempObject = ATE_TOP->object;
-					ATE_POP();
+					CHTREE_POP(); // ignore the null pad
+					tempObject = CHTREE_TOP->object;
+					CHTREE_POP();
 					return tempObject;
 				}				
 			}
 			
 		case CHTraverseLevelOrder:
-			currentNode = ATE_FRONT;
+			currentNode = CHTREE_FRONT;
 			if (currentNode == NULL) {
 				[collection release];
 				collection = nil;
 				return nil;
 			}
-			ATE_DEQUEUE();
+			CHTREE_DEQUEUE();
 			if (currentNode->left != NULL)
-				ATE_ENQUEUE(currentNode->left);
+				CHTREE_ENQUEUE(currentNode->left);
 			if (currentNode->right != NULL)
-				ATE_ENQUEUE(currentNode->right);
+				CHTREE_ENQUEUE(currentNode->right);
 			return currentNode->object;
 	}
 	return nil;
@@ -267,17 +241,13 @@ static NSUInteger kATE_SIZE = sizeof(ATE_NODE);
 
 #pragma mark -
 
-@implementation CHAnderssonTree
-
-#pragma mark - Private Functions
-
 /**
  Skew primitive for AA-trees.
  @param node The node that roots the sub-tree.
  */
-CHAnderssonTreeNode* skew(CHAnderssonTreeNode *node) {
+CHBalancedTreeNode* skew(CHBalancedTreeNode *node) {
 	if (node->left != NULL && node->left->level == node->level) {
-		CHAnderssonTreeNode *other = node->left;
+		CHBalancedTreeNode *other = node->left;
 		node->left = other->right;
 		other->right = node;
 		return other;
@@ -289,10 +259,10 @@ CHAnderssonTreeNode* skew(CHAnderssonTreeNode *node) {
  Split primitive for AA-trees.
  @param node The node that roots the sub-tree.
  */
-CHAnderssonTreeNode* split(CHAnderssonTreeNode *node) {
+CHBalancedTreeNode* split(CHBalancedTreeNode *node) {
 	if (node->right != NULL && node->right->right != NULL && node->right->right->level == node->level)
 	{
-		CHAnderssonTreeNode *other = node->right;
+		CHBalancedTreeNode *other = node->right;
 		node->right = other->left;
 		other->left = node;
 		other->level++;
@@ -301,7 +271,7 @@ CHAnderssonTreeNode* split(CHAnderssonTreeNode *node) {
 	return node;
 }
 
-#pragma mark - Public Methods
+@implementation CHAnderssonTree
 
 - (id) init {
 	if ([super init] == nil) return nil;
@@ -318,14 +288,14 @@ CHAnderssonTreeNode* split(CHAnderssonTreeNode *node) {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
 	
-	CHAnderssonTreeNode *current = root;
-	CHAnderssonTreeNode *previous = NULL;
-	ATE_NODE *stack = NULL;
-	ATE_NODE *tmp;
+	CHBalancedTreeNode *current = root;
+	CHBalancedTreeNode *previous = NULL;
+	CHTREE_NODE *stack = NULL;
+	CHTREE_NODE *tmp;
 	NSComparisonResult comparison;
 	
 	while (current != NULL) {
-		ATE_PUSH(current);
+		CHTREE_PUSH(current);
 		comparison = [(current->object) compare:anObject];
 		if (comparison == NSOrderedAscending)
 			current = current->right;
@@ -341,7 +311,7 @@ CHAnderssonTreeNode* split(CHAnderssonTreeNode *node) {
 	}
 	
 	if (current == NULL) {
-		CHAnderssonTreeNode *newNode = malloc(kCHAnderssonTreeNodeSize);
+		CHBalancedTreeNode *newNode = malloc(kCHBalancedTreeNodeSize);
 		++count;
 		++mutations;
 		newNode->object = [anObject retain];
@@ -352,7 +322,7 @@ CHAnderssonTreeNode* split(CHAnderssonTreeNode *node) {
 			root = newNode;
 			return;
 		}
-		current = ATE_TOP;
+		current = CHTREE_TOP;
 		if (comparison == NSOrderedAscending)
 			current->right = newNode;
 		else if (comparison == NSOrderedDescending)
@@ -360,8 +330,8 @@ CHAnderssonTreeNode* split(CHAnderssonTreeNode *node) {
 	}	
 	
 	while (stack != NULL) {
-		current = ATE_TOP;
-		ATE_POP();
+		current = CHTREE_TOP;
+		CHTREE_POP();
 		if (previous != NULL) {
 			if ([(current->object) compare:(previous->object)] < 0)
 				current->right = previous;
@@ -376,7 +346,7 @@ CHAnderssonTreeNode* split(CHAnderssonTreeNode *node) {
 }
 
 - (id) findMax {
-	CHAnderssonTreeNode *currentNode = root;
+	CHBalancedTreeNode *currentNode = root;
 	while (currentNode != NULL) {
 		if (currentNode->right != NULL)
 			currentNode = currentNode->right;
@@ -387,7 +357,7 @@ CHAnderssonTreeNode* split(CHAnderssonTreeNode *node) {
 }
 
 - (id) findMin {
-	CHAnderssonTreeNode *currentNode = root;
+	CHBalancedTreeNode *currentNode = root;
 	while (currentNode != NULL) {
 		if (currentNode->left != NULL)
 			currentNode = currentNode->left;
@@ -400,7 +370,7 @@ CHAnderssonTreeNode* split(CHAnderssonTreeNode *node) {
 - (id) findObject:(id)anObject {
 	if (anObject == nil)
 		return nil;
-	CHAnderssonTreeNode *currentNode = root;
+	CHBalancedTreeNode *currentNode = root;
 	NSComparisonResult comparison;	
 	while (currentNode != NULL) {
 		comparison = [(currentNode->object) compare:anObject];
@@ -419,7 +389,7 @@ CHAnderssonTreeNode* split(CHAnderssonTreeNode *node) {
 	if (anObject == nil)
 		return NO;
 	
-	CHAnderssonTreeNode *currentNode = root;
+	CHBalancedTreeNode *currentNode = root;
 	NSComparisonResult comparison;
 	while (currentNode != NULL) {
 		comparison = [(currentNode->object) compare:anObject];
@@ -437,14 +407,14 @@ CHAnderssonTreeNode* split(CHAnderssonTreeNode *node) {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
 	
-	CHAnderssonTreeNode *current = root;
-	CHAnderssonTreeNode *nodeToDelete = NULL;
-	ATE_NODE *stack = NULL;
-	ATE_NODE *tmp;
+	CHBalancedTreeNode *current = root;
+	CHBalancedTreeNode *nodeToDelete = NULL;
+	CHTREE_NODE *stack = NULL;
+	CHTREE_NODE *tmp;
 	NSComparisonResult comparison;
 	
 	while (current != NULL) {
-		ATE_PUSH(current);
+		CHTREE_PUSH(current);
 		comparison = [(current->object) compare:anObject];
 		if (comparison == NSOrderedDescending)
 			current = current->left;
@@ -456,21 +426,21 @@ CHAnderssonTreeNode* split(CHAnderssonTreeNode *node) {
 	}
 	if (nodeToDelete == NULL) {  // the specified object was not found
 		while (stack != NULL)
-			ATE_POP(); // deallocate the wrappers for all nodes pushed to the stack
+			CHTREE_POP(); // deallocate the wrappers for all nodes pushed to the stack
 		return;
 	}
 
-	current = ATE_TOP;
-	ATE_POP();
+	current = CHTREE_TOP;
+	CHTREE_POP();
 	nodeToDelete->object = current->object;
 	nodeToDelete->level = current->level;
 	// TODO: Is this where the malloced struct for the node needs to be freed?
 	current = current->right;
 			
-	CHAnderssonTreeNode *previous = NULL;
+	CHBalancedTreeNode *previous = NULL;
 	while (stack != NULL)  {
-		current = ATE_TOP;
-		ATE_POP();
+		current = CHTREE_TOP;
+		CHTREE_POP();
 		if (previous != NULL) {
 			if ([current->object compare:previous->object] == NSOrderedAscending)
 				current->right = previous;
@@ -506,21 +476,21 @@ CHAnderssonTreeNode* split(CHAnderssonTreeNode *node) {
 	if (count == 0)
 		return;
 
-	CHAnderssonTreeNode *currentNode;
-	ATE_NODE *queue = NULL;
-	ATE_NODE *queueTail = NULL;
-	ATE_NODE *tmp;
+	CHBalancedTreeNode *currentNode;
+	CHTREE_NODE *queue = NULL;
+	CHTREE_NODE *queueTail = NULL;
+	CHTREE_NODE *tmp;
 	
-	ATE_ENQUEUE(root);
+	CHTREE_ENQUEUE(root);
 	while (1) {
-		currentNode = ATE_FRONT;
+		currentNode = CHTREE_FRONT;
 		if (currentNode == NULL)
 			break;
-		ATE_DEQUEUE();
+		CHTREE_DEQUEUE();
 		if (currentNode->left != NULL)
-			ATE_ENQUEUE(currentNode->left);
+			CHTREE_ENQUEUE(currentNode->left);
 		if (currentNode->right != NULL)
-			ATE_ENQUEUE(currentNode->right);
+			CHTREE_ENQUEUE(currentNode->right);
 		[currentNode->object release];
 		free(currentNode);
 	}
@@ -542,8 +512,8 @@ CHAnderssonTreeNode* split(CHAnderssonTreeNode *node) {
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len
 {
-	CHAnderssonTreeNode *currentNode;
-	ATE_NODE *stack, *tmp; 
+	CHBalancedTreeNode *currentNode;
+	CHTREE_NODE *stack, *tmp; 
 	
 	// For the first call, start at leftmost node, otherwise start at last saved node
 	if (state->state == 0) {
@@ -556,20 +526,20 @@ CHAnderssonTreeNode* split(CHAnderssonTreeNode *node) {
 		return 0;		
 	}
 	else {
-		currentNode = (CHAnderssonTreeNode*) state->state;
-		stack = (ATE_NODE*) state->extra[0];
+		currentNode = (CHBalancedTreeNode*) state->state;
+		stack = (CHTREE_NODE*) state->extra[0];
 	}
 	
 	// Accumulate objects from the tree until we reach all nodes or the maximum limit
 	NSUInteger batchCount = 0;
 	while ( (currentNode != NULL || stack != NULL) && batchCount < len) {
 		while (currentNode != NULL) {
-			ATE_PUSH(currentNode);
+			CHTREE_PUSH(currentNode);
 			currentNode = currentNode->left;
 			// TODO: How to not push/pop leaf nodes unnecessarily?
 		}
-		currentNode = ATE_TOP; // Save top node for return value
-		ATE_POP();
+		currentNode = CHTREE_TOP; // Save top node for return value
+		CHTREE_POP();
 		stackbuf[batchCount] = currentNode->object;
 		currentNode = currentNode->right;
 		batchCount++;

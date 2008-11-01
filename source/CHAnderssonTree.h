@@ -20,14 +20,6 @@
 #import <Foundation/Foundation.h>
 #import "CHAbstractTree.h"
 
-// A node for use by CHAnderssonTree for internal storage and representation.
-typedef struct CHAnderssonTreeNode {
-	id object;                         /**< The object stored in the node. */
-	struct CHAnderssonTreeNode *left;  /**< The left child node, if any. */
-	struct CHAnderssonTreeNode *right; /**< The right child node, if any. */
-	NSUInteger level;                  /**< The level of this node in the tree. */
-} CHAnderssonTreeNode;
-
 /**
  An <a href="http://en.wikipedia.org/wiki/AA_tree">AA-tree</a>, a balanced binary
  tree with guaranteed O(log n) access. This is an Objective-C port of the AA-tree
@@ -51,7 +43,7 @@ typedef struct CHAnderssonTreeNode {
 @interface CHAnderssonTree : CHAbstractTree
 {
 	/** A pointer to the root of the tree, set to <code>NULL</code> if empty. */
-	CHAnderssonTreeNode *root;
+	CHBalancedTreeNode *root;
 }
 
 @end

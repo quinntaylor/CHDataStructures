@@ -34,7 +34,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 @interface CHRedBlackTree (Test)
 
 - (BOOL) verify;
-- (NSUInteger) _verifySubtreeAtNode:(CHRedBlackTreeNode*)node;
+- (NSUInteger) verifySubtreeAtNode:(CHBalancedTreeNode*)node;
 
 @end
 
@@ -42,11 +42,11 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 
 - (BOOL) verify {
 	sentinel->object = nil;
-	return ([self _verifySubtreeAtNode:header->right] != 0);
+	return ([self verifySubtreeAtNode:header->right] != 0);
 }
 
 // Recursive method for verifying that red-black properties are not violated.
-- (NSUInteger) _verifySubtreeAtNode:(CHRedBlackTreeNode*)node {
+- (NSUInteger) verifySubtreeAtNode:(CHBalancedTreeNode*)node {
 	if (node == sentinel)
 		return 1;
 	/* Test for consecutive red links */
@@ -56,11 +56,11 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 						format:@"Consecutive red below %@", node->object];
 		}
 	}
-	NSUInteger leftBlackHeight  = [self _verifySubtreeAtNode:node->left];
-	NSUInteger rightBlackHeight = [self _verifySubtreeAtNode:node->left];
+	NSUInteger leftBlackHeight  = [self verifySubtreeAtNode:node->left];
+	NSUInteger rightBlackHeight = [self verifySubtreeAtNode:node->left];
 	/* Test for invalid binary search tree */
-	if ([node->left->object compare:node->object] == NSOrderedDescending ||
-		[node->right->object compare:node->object] == NSOrderedAscending)
+	if ([node->left->object compare:(node->object)] == NSOrderedDescending ||
+		[node->right->object compare:(node->object)] == NSOrderedAscending)
 	{
 		[NSException raise:NSInternalInconsistencyException
 		            format:@"Binary tree violation below %@", node->object];

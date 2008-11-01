@@ -20,26 +20,8 @@
 #import <Foundation/Foundation.h>
 #import "CHAbstractTree.h"
 
-#define kRED 1
 #define kBLACK 0
-
-// A node for use by CHUnbalancedTree for internal storage and representation.
-// The nested anonymous union and structs provide 2 ways to access children at
-// the same memory addresses, based on what is most convenient and efficient.
-// ('left' is equivalent to 'link[0]', and 'right' is equivalent to 'link[1]')
-typedef struct CHRedBlackTreeNode {
-	id object;                           /**< The object stored in the node. */
-	union {
-		struct {
-			struct CHRedBlackTreeNode *left;   /**< Link to left child node. */
-			struct CHRedBlackTreeNode *right;  /**< Link to right child node. */
-		};
-		struct CHRedBlackTreeNode *link[2]; /**< Links to left/right childen. */
-	};
-	BOOL color;                          /**< The node's color, red or black. */	
-} CHRedBlackTreeNode;
-
-#pragma mark -
+#define kRED 1
 
 /**
  A <a href="http://en.wikipedia.org/wiki/Red-black_trees">Red-Black tree</a>, a
@@ -62,15 +44,21 @@ typedef struct CHRedBlackTreeNode {
  */
 @interface CHRedBlackTree : CHAbstractTree
 {
-	CHRedBlackTreeNode *header;   // links to the root -- eliminates special cases
-//	CHRedBlackTreeNode *root;
-	CHRedBlackTreeNode *sentinel; // Always black, stands in for NULL leaf node
+	CHBalancedTreeNode *header;   // Links to the root -- eliminates special cases
+	CHBalancedTreeNode *sentinel; // Stands in for NULL leaf node; always kBLACK
 
 	@private
-	CHRedBlackTreeNode *current;
-	CHRedBlackTreeNode *parent;
-	CHRedBlackTreeNode *grandparent;
-	CHRedBlackTreeNode *greatgrandparent;
+	CHBalancedTreeNode *current;
+	CHBalancedTreeNode *parent;
+	CHBalancedTreeNode *grandparent;
+	CHBalancedTreeNode *greatgrandparent;
 }
 
+/**
+ Represent detailed information about a red-black tree, printed in level order.
+ This method is called by the "print-object" ("po") command in the gdb console,
+ but can also be called directly in code. Intended only for testing purposes.
+ */
+- (NSString*) debugDescription;
+	
 @end

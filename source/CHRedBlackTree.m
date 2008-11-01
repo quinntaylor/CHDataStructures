@@ -19,34 +19,8 @@
 
 #import "CHRedBlackTree.h"
 
-static NSUInteger kCHRedBlackTreeNodeSize = sizeof(CHRedBlackTreeNode);
-
-#pragma mark Enumeration Struct & Macros
-
-// A struct for use by CHUnbalancedTreeEnumerator to maintain traversal state.
-typedef struct RBTE_NODE {
-	struct CHRedBlackTreeNode *node;
-	struct RBTE_NODE *next;
-} RBTE_NODE;
-
-static NSUInteger kRBTE_SIZE = sizeof(RBTE_NODE);
-
-#pragma mark - Stack Operations
-
-#define RBTE_PUSH(o) {tmp=malloc(kRBTE_SIZE);tmp->node=o;tmp->next=stack;stack=tmp;}
-#define RBTE_POP()   {if(stack!=NULL){tmp=stack;stack=stack->next;free(tmp);}}
-#define RBTE_TOP     ((stack!=NULL)?stack->node:NULL)
-
-#pragma mark - Queue Operations
-
-#define RBTE_ENQUEUE(o) {tmp=malloc(kRBTE_SIZE);tmp->node=o;tmp->next=NULL;\
-if(queue==NULL){queue=tmp;queueTail=tmp;}\
-queueTail->next=tmp;queueTail=queueTail->next;}
-#define RBTE_DEQUEUE()  {if(queue!=NULL){tmp=queue;queue=queue->next;free(tmp);}\
-if(queue==tmp)queue=NULL;if(queueTail==tmp)queueTail=NULL;}
-#define RBTE_FRONT      ((queue!=NULL)?queue->node:NULL)
-
-#pragma mark -
+static NSUInteger kCHBalancedTreeNodeSize = sizeof(CHBalancedTreeNode);
+static NSUInteger kCHTREE_SIZE = sizeof(CHTREE_NODE);
 
 /**
  An NSEnumerator for traversing a CHRedBlackTree in a specified order.
@@ -58,14 +32,14 @@ if(queue==tmp)queue=NULL;if(queueTail==tmp)queueTail=NULL;}
 {
 	CHTraversalOrder traversalOrder;
 	@private
-	CHRedBlackTree *collection;
-	CHRedBlackTreeNode *currentNode;
-	CHRedBlackTreeNode *sentinelNode;
+	id<CHTree> collection;
+	CHBalancedTreeNode *currentNode;
+	CHBalancedTreeNode *sentinelNode;
 	id tempObject;         /**< Temporary variable, holds the object to be returned.*/
-	RBTE_NODE *stack;     /**< Pointer to the top of a stack for most traversals. */
-	RBTE_NODE *queue;     /**< Pointer to the head of a queue for level-order. */
-	RBTE_NODE *queueTail; /**< Pointer to the tail of a queue for level-order. */
-	RBTE_NODE *tmp;       /**< Temporary variable for stack and queue operations. */
+	CHTREE_NODE *stack;     /**< Pointer to the top of a stack for most traversals. */
+	CHTREE_NODE *queue;     /**< Pointer to the head of a queue for level-order. */
+	CHTREE_NODE *queueTail; /**< Pointer to the tail of a queue for level-order. */
+	CHTREE_NODE *tmp;       /**< Temporary variable for stack and queue operations. */
 	unsigned long mutationCount;
 	unsigned long *mutationPtr;
 }
@@ -80,9 +54,9 @@ if(queue==tmp)queue=NULL;if(queueTail==tmp)queueTail=NULL;}
  @param order The traversal order to use for enumerating the given (sub)tree.
  @param mutations A pointer to the collection's count of mutations, for invalidation.
  */
-- (id) initWithTree:(CHRedBlackTree*)tree
-               root:(CHRedBlackTreeNode*)root
-           sentinel:(CHRedBlackTreeNode*)sentinel
+- (id) initWithTree:(id<CHTree>)tree
+               root:(CHBalancedTreeNode*)root
+           sentinel:(CHBalancedTreeNode*)sentinel
      traversalOrder:(CHTraversalOrder)order
     mutationPointer:(unsigned long*)mutations;
 
@@ -110,9 +84,9 @@ if(queue==tmp)queue=NULL;if(queueTail==tmp)queueTail=NULL;}
 
 @implementation CHRedBlackTreeEnumerator
 
-- (id) initWithTree:(CHRedBlackTree*)tree
-               root:(CHRedBlackTreeNode*)root
-           sentinel:(CHRedBlackTreeNode*)sentinel
+- (id) initWithTree:(id<CHTree>)tree
+               root:(CHBalancedTreeNode*)root
+           sentinel:(CHBalancedTreeNode*)sentinel
      traversalOrder:(CHTraversalOrder)order
     mutationPointer:(unsigned long*)mutations
 {
@@ -122,9 +96,9 @@ if(queue==tmp)queue=NULL;if(queueTail==tmp)queueTail=NULL;}
 	collection = (root != sentinel) ? collection = [tree retain] : nil;
 	if (traversalOrder == CHTraverseLevelOrder) {
 		queue = NULL;
-		RBTE_ENQUEUE(root);
+		CHTREE_ENQUEUE(root);
 	} else if (traversalOrder == CHTraversePreOrder) {
-		RBTE_PUSH(root);
+		CHTREE_PUSH(root);
 	} else {
 		currentNode = root;
 	}
@@ -167,12 +141,12 @@ if(queue==tmp)queue=NULL;if(queueTail==tmp)queueTail=NULL;}
 				return nil;
 			}
 			while (currentNode != sentinelNode) {
-				RBTE_PUSH(currentNode);
+				CHTREE_PUSH(currentNode);
 				currentNode = currentNode->left;
 				// TODO: How to not push/pop leaf nodes unnecessarily?
 			}
-			currentNode = RBTE_TOP; // Save top node for return value
-			RBTE_POP();
+			currentNode = CHTREE_TOP; // Save top node for return value
+			CHTREE_POP();
 			tempObject = currentNode->object;
 			currentNode = currentNode->right;
 			return tempObject;
@@ -184,28 +158,28 @@ if(queue==tmp)queue=NULL;if(queueTail==tmp)queueTail=NULL;}
 				return nil;
 			}
 			while (currentNode != sentinelNode) {
-				RBTE_PUSH(currentNode);
+				CHTREE_PUSH(currentNode);
 				currentNode = currentNode->right;
 				// TODO: How to not push/pop leaf nodes unnecessarily?
 			}
-			currentNode = RBTE_TOP; // Save top node for return value
-			RBTE_POP();
+			currentNode = CHTREE_TOP; // Save top node for return value
+			CHTREE_POP();
 			tempObject = currentNode->object;
 			currentNode = currentNode->left;
 			return tempObject;
 			
 		case CHTraversePreOrder:
-			currentNode = RBTE_TOP;
-			RBTE_POP();
+			currentNode = CHTREE_TOP;
+			CHTREE_POP();
 			if (currentNode == NULL) {
 				[collection release];
 				collection = nil;
 				return nil;
 			}
 			if (currentNode->right != sentinelNode)
-				RBTE_PUSH(currentNode->right);
+				CHTREE_PUSH(currentNode->right);
 			if (currentNode->left != sentinelNode)
-				RBTE_PUSH(currentNode->left);
+				CHTREE_PUSH(currentNode->left);
 			return currentNode->object;
 			
 		case CHTraversePostOrder:
@@ -217,35 +191,35 @@ if(queue==tmp)queue=NULL;if(queueTail==tmp)queueTail=NULL;}
 			}
 			while (1) {
 				while (currentNode != sentinelNode) {
-					RBTE_PUSH(currentNode);
+					CHTREE_PUSH(currentNode);
 					currentNode = currentNode->left;
 				}
 				// A null entry indicates that we've traversed the right subtree
-				if (RBTE_TOP != NULL) {
-					currentNode = RBTE_TOP->right;
-					RBTE_PUSH(NULL);
+				if (CHTREE_TOP != NULL) {
+					currentNode = CHTREE_TOP->right;
+					CHTREE_PUSH(NULL);
 					// TODO: explore how to not use null pad for leaf nodes
 				}
 				else {
-					RBTE_POP(); // ignore the null pad
-					tempObject = RBTE_TOP->object;
-					RBTE_POP();
+					CHTREE_POP(); // ignore the null pad
+					tempObject = CHTREE_TOP->object;
+					CHTREE_POP();
 					return tempObject;
 				}				
 			}
 			
 		case CHTraverseLevelOrder:
-			currentNode = RBTE_FRONT;
+			currentNode = CHTREE_FRONT;
 			if (currentNode == NULL) {
 				[collection release];
 				collection = nil;
 				return nil;
 			}
-			RBTE_DEQUEUE();
+			CHTREE_DEQUEUE();
 			if (currentNode->left != sentinelNode)
-				RBTE_ENQUEUE(currentNode->left);
+				CHTREE_ENQUEUE(currentNode->left);
 			if (currentNode->right != sentinelNode)
-				RBTE_ENQUEUE(currentNode->right);
+				CHTREE_ENQUEUE(currentNode->right);
 			return currentNode->object;
 	}
 	return nil;
@@ -285,8 +259,8 @@ static id headerObject = nil;
 
 #pragma mark C Functions for Optimized Operations
 
-CHRedBlackTreeNode * _rotateNodeWithLeftChild(CHRedBlackTreeNode *node) {
-	CHRedBlackTreeNode *leftChild = node->left;
+CHBalancedTreeNode * _rotateNodeWithLeftChild(CHBalancedTreeNode *node) {
+	CHBalancedTreeNode *leftChild = node->left;
 	node->left = leftChild->right;
 	leftChild->right = node;
 	node->color = kRED;
@@ -294,8 +268,8 @@ CHRedBlackTreeNode * _rotateNodeWithLeftChild(CHRedBlackTreeNode *node) {
 	return leftChild;
 }
 
-CHRedBlackTreeNode * _rotateNodeWithRightChild(CHRedBlackTreeNode *node) {
-	CHRedBlackTreeNode *rightChild = node->right;
+CHBalancedTreeNode * _rotateNodeWithRightChild(CHBalancedTreeNode *node) {
+	CHBalancedTreeNode *rightChild = node->right;
 	node->right = rightChild->left;
 	rightChild->left = node;
 	node->color = kRED;
@@ -303,7 +277,7 @@ CHRedBlackTreeNode * _rotateNodeWithRightChild(CHRedBlackTreeNode *node) {
 	return rightChild;
 }
 
-CHRedBlackTreeNode* _rotateObjectOnAncestor(id anObject, CHRedBlackTreeNode *ancestor) {
+CHBalancedTreeNode* _rotateObjectOnAncestor(id anObject, CHBalancedTreeNode *ancestor) {
 	if ([ancestor->object compare:anObject] == NSOrderedDescending) {
 		return ancestor->left =
 			([ancestor->left->object compare:anObject] == NSOrderedDescending)
@@ -318,8 +292,8 @@ CHRedBlackTreeNode* _rotateObjectOnAncestor(id anObject, CHRedBlackTreeNode *anc
 	}
 }
 
-CHRedBlackTreeNode* singleRotate(CHRedBlackTreeNode *node, BOOL goingRight) {
-	CHRedBlackTreeNode *save = node->link[!goingRight];
+CHBalancedTreeNode* singleRotate(CHBalancedTreeNode *node, BOOL goingRight) {
+	CHBalancedTreeNode *save = node->link[!goingRight];
 	node->link[!goingRight] = save->link[goingRight];
 	save->link[goingRight] = node;
 	node->color = kRED;
@@ -327,7 +301,7 @@ CHRedBlackTreeNode* singleRotate(CHRedBlackTreeNode *node, BOOL goingRight) {
 	return save;
 }
 
-CHRedBlackTreeNode* doubleRotate(CHRedBlackTreeNode *node, BOOL goingRight) {
+CHBalancedTreeNode* doubleRotate(CHBalancedTreeNode *node, BOOL goingRight) {
 	node->link[!goingRight] = singleRotate(node->link[!goingRight], !goingRight);
 	return singleRotate(node, goingRight);	
 }
@@ -358,13 +332,13 @@ CHRedBlackTreeNode* doubleRotate(CHRedBlackTreeNode *node, BOOL goingRight) {
 
 - (id) init {
 	if ([super init] == nil) return nil;
-	sentinel = malloc(kCHRedBlackTreeNodeSize);
+	sentinel = malloc(kCHBalancedTreeNodeSize);
 	sentinel->object = nil;
 	sentinel->color = kBLACK;
 	sentinel->right = sentinel;
 	sentinel->left = sentinel;
 	
-	header = malloc(kCHRedBlackTreeNodeSize);
+	header = malloc(kCHBalancedTreeNodeSize);
 	header->object = [CHRedBlackHeader headerObject];
 	header->color = kBLACK;
 	header->left = sentinel;
@@ -431,7 +405,7 @@ CHRedBlackTreeNode* doubleRotate(CHRedBlackTreeNode *node, BOOL goingRight) {
 	}
 	
 	++count;
-	current = malloc(kCHRedBlackTreeNodeSize);
+	current = malloc(kCHBalancedTreeNodeSize);
 	current->object = [anObject retain];
 	current->left = sentinel;
 	current->right = sentinel;
@@ -448,18 +422,9 @@ CHRedBlackTreeNode* doubleRotate(CHRedBlackTreeNode *node, BOOL goingRight) {
 	sentinel->object = anObject; // Make sure the target value is always "found"
 	current = header->right;
 	NSComparisonResult comparison;
-	while (1) {
-		comparison = [current->object compare:anObject];
-		if (comparison == NSOrderedDescending)
-			current = current->left;
-		else if (comparison == NSOrderedAscending)
-			current = current->right;
-		else if (current != sentinel)
-			return YES;
-		else
-			break;
-	}
-	return NO;
+	while (comparison = [current->object compare:anObject]) // while not equal
+		current = current->link[comparison == NSOrderedAscending]; // R on YES
+	return (current != sentinel);
 }
 
 - (id) findMax {
@@ -484,17 +449,9 @@ CHRedBlackTreeNode* doubleRotate(CHRedBlackTreeNode *node, BOOL goingRight) {
 	sentinel->object = anObject; // Make sure the target value is always "found"
 	current = header->right;
 	NSComparisonResult comparison;
-	while (1) {
-		comparison = [current->object compare:anObject];
-		if (comparison == NSOrderedDescending)
-			current = current->left;
-		else if (comparison == NSOrderedAscending)
-			current = current->right;
-		else if (current != sentinel)
-			return current->object;
-		else
-			return nil;
-	}
+	while (comparison = [current->object compare:anObject]) // while not equal
+		current = current->link[comparison == NSOrderedAscending]; // R on YES
+	return (current != sentinel) ? current->object : nil;
 }
 
 - (void) removeObject:(id)anObject {
@@ -506,7 +463,7 @@ CHRedBlackTreeNode* doubleRotate(CHRedBlackTreeNode *node, BOOL goingRight) {
 	++mutations;
 	grandparent = parent = current = header;
 	sentinel->object = anObject;
-	CHRedBlackTreeNode *found = NULL, *sibling;
+	CHBalancedTreeNode *found = NULL, *sibling;
 	NSComparisonResult comparison;
 	BOOL isGoingRight = YES, prevWentRight = YES;
 	while (current->link[isGoingRight] != sentinel) {
@@ -534,7 +491,7 @@ CHRedBlackTreeNode* doubleRotate(CHRedBlackTreeNode *node, BOOL goingRight) {
 						current->color = kRED;
 					}
 					else {
-						CHRedBlackTreeNode *tempNode =
+						CHBalancedTreeNode *tempNode =
 							grandparent->link[(grandparent->right == parent)];
 						if (sibling->link[prevWentRight]->color == kRED)
 							tempNode = doubleRotate(parent, prevWentRight);
@@ -563,21 +520,21 @@ CHRedBlackTreeNode* doubleRotate(CHRedBlackTreeNode *node, BOOL goingRight) {
 }
 
 - (void) removeAllObjects {
-	CHRedBlackTreeNode *currentNode;
-	RBTE_NODE *queue	 = NULL;
-	RBTE_NODE *queueTail = NULL;
-	RBTE_NODE *tmp;
+	CHBalancedTreeNode *currentNode;
+	CHTREE_NODE *queue	 = NULL;
+	CHTREE_NODE *queueTail = NULL;
+	CHTREE_NODE *tmp;
 	
-	RBTE_ENQUEUE(header->right);
+	CHTREE_ENQUEUE(header->right);
 	while (1) {
-		currentNode = RBTE_FRONT;
+		currentNode = CHTREE_FRONT;
 		if (currentNode == NULL)
 			break;
-		RBTE_DEQUEUE();
+		CHTREE_DEQUEUE();
 		if (currentNode->left != sentinel)
-			RBTE_ENQUEUE(currentNode->left);
+			CHTREE_ENQUEUE(currentNode->left);
 		if (currentNode->right != sentinel)
-			RBTE_ENQUEUE(currentNode->right);
+			CHTREE_ENQUEUE(currentNode->right);
 		[currentNode->object release];
 		free(currentNode);
 	}
@@ -600,8 +557,8 @@ CHRedBlackTreeNode* doubleRotate(CHRedBlackTreeNode *node, BOOL goingRight) {
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len
 {
-	CHRedBlackTreeNode *currentNode;
-	RBTE_NODE *stack, *tmp; 
+	CHBalancedTreeNode *currentNode;
+	CHTREE_NODE *stack, *tmp; 
 	
 	// For the first call, start at root node, otherwise start at last saved node
 	if (state->state == 0) {
@@ -615,20 +572,20 @@ CHRedBlackTreeNode* doubleRotate(CHRedBlackTreeNode *node, BOOL goingRight) {
 		return 0;		
 	}
 	else {
-		currentNode = (CHRedBlackTreeNode*) state->state;
-		stack = (RBTE_NODE*) state->extra[0];
+		currentNode = (CHBalancedTreeNode*) state->state;
+		stack = (CHTREE_NODE*) state->extra[0];
 	}
 	
 	// Accumulate objects from the tree until we reach all nodes or the maximum limit
 	NSUInteger batchCount = 0;
 	while ( (currentNode != sentinel || stack != NULL) && batchCount < len) {
 		while (currentNode != sentinel) {
-			RBTE_PUSH(currentNode);
+			CHTREE_PUSH(currentNode);
 			currentNode = currentNode->left;
 			// TODO: How to not push/pop leaf nodes unnecessarily?
 		}
-		currentNode = RBTE_TOP; // Save top node for return value
-		RBTE_POP();
+		currentNode = CHTREE_TOP; // Save top node for return value
+		CHTREE_POP();
 		stackbuf[batchCount] = currentNode->object;
 		currentNode = currentNode->right;
 		batchCount++;
@@ -643,30 +600,25 @@ CHRedBlackTreeNode* doubleRotate(CHRedBlackTreeNode *node, BOOL goingRight) {
 	return batchCount;
 }
 
-/**
- Represent detailed information about a red-black tree, printed in level order.
- -debugDescription is called by "print-object" ("po") in the gdb console.
- */
 - (NSString*) debugDescription {
 	NSMutableString *description = [NSMutableString stringWithFormat:
 									@"<%@: 0x%x> = {\n", [self class], self];
-	CHRedBlackTreeNode *currentNode;
-	RBTE_NODE *queue = NULL, *queueTail = NULL, *tmp;
-	RBTE_ENQUEUE(header->right);
+	CHBalancedTreeNode *currentNode;
+	CHTREE_NODE *queue = NULL, *queueTail = NULL, *tmp;
+	CHTREE_ENQUEUE(header->right);
 	
+	sentinel->object = nil;
 	while (currentNode != sentinel && queue != NULL) {
-		currentNode = RBTE_FRONT;
-		RBTE_DEQUEUE();
+		currentNode = CHTREE_FRONT;
+		CHTREE_DEQUEUE();
 		if (currentNode->left != sentinel)
-			RBTE_ENQUEUE(currentNode->left);
+			CHTREE_ENQUEUE(currentNode->left);
 		if (currentNode->right != sentinel)
-			RBTE_ENQUEUE(currentNode->right);
+			CHTREE_ENQUEUE(currentNode->right);
 		// Append entry for the current node, including color and children
 		[description appendFormat:@"\t%@ : %@ -> %@ and %@\n",
 		 ((currentNode->color == kRED) ? @"RED  " : @"BLACK"),
-		 currentNode->object,
-		 (currentNode->left == sentinel) ? nil : currentNode->left->object,
-		 (currentNode->right == sentinel) ? nil : currentNode->right->object];
+		 currentNode->object, currentNode->left->object, currentNode->right->object];
 	}
 	[description appendString:@"}"];
 	return description;
