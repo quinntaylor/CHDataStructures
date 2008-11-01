@@ -155,3 +155,27 @@
 }
 
 @end
+
+
+#pragma mark -
+
+
+static CHAbstractTreeHeaderObject *headerObject = nil;
+
+@implementation CHAbstractTreeHeaderObject
+
++ (id) headerObject {
+	if (headerObject == nil)
+		headerObject = [[CHAbstractTreeHeaderObject alloc] init];
+	return headerObject;
+}
+
+- (NSComparisonResult) compare:(id)otherObject {
+	return NSOrderedAscending;
+}
+
+- (NSString*) description {
+	return @"<CHAbstractTreeHeaderObject>";
+}
+
+@end

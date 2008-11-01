@@ -44,10 +44,9 @@
  */
 @interface CHRedBlackTree : CHAbstractTree
 {
-	CHBalancedTreeNode *header;   // Links to the root -- eliminates special cases
-	CHBalancedTreeNode *sentinel; // Stands in for NULL leaf node; always kBLACK
-
 	@private
+	CHBalancedTreeNode *header; // Links to the root -- eliminates special cases
+	CHBalancedTreeNode *sentinel; // Represents a NULL leaf node; always kBLACK
 	CHBalancedTreeNode *current;
 	CHBalancedTreeNode *parent;
 	CHBalancedTreeNode *grandparent;
@@ -55,7 +54,7 @@
 }
 
 /**
- Represent detailed information about a red-black tree, printed in level order.
+ Represent detailed information about a Red-Black tree, printed in level order.
  This method is called by the "print-object" ("po") command in the gdb console,
  but can also be called directly in code. Intended only for testing purposes.
  */

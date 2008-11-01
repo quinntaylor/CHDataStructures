@@ -36,8 +36,39 @@
 	NSUInteger count; /**< A count of how many elements are currently in the tree. */
 	unsigned long mutations; /**< Used to track mutations for NSFastEnumeration. */
 }
+@end
+
+
+/**
+ A dummy object that resides in the header node for a tree. Using a header node
+ can simplify insertion logic by eliminating the need to check whether the root
+ is null. In such cases, the tree root is generally stored as the right child of
+ the header. In order to always proceed to the right child when traversing down
+ the tree, instances of this class always return <code>NSOrderedAscending</code>
+ when called as the receiver of the <code>-compare:</code> method.
+ */
+@interface CHAbstractTreeHeaderObject : NSObject
+
+/**
+ Returns the singleton instance of this class.
+ 
+ @return The singleton instance of this class.
+ */
++ (id) headerObject;
+// NOTE: The singleton is declared as a static variable in CHAbstractTree.m.
+
+/**
+ Always indicate that the other object should appear to the right side. @b Note:
+ To work correctly, this object @b must be the receiver of the -compare: message.
+ 
+ @param otherObject The object to be compared to the receiver.
+ @return <code>NSOrderedAscending</code>, indicating that traversal should go to
+         the right child of the containing tree node.
+ */
+- (NSComparisonResult) compare:(id)otherObject;
 
 @end
+
 
 #pragma mark -
 

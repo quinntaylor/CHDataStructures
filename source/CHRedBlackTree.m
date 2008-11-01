@@ -50,7 +50,7 @@ static NSUInteger kCHTREE_SIZE = sizeof(CHTREE_NODE);
  @param tree The tree collection that is being enumerated. This collection is to be
              retained while the enumerator has not exhausted all its objects.
  @param root The root node of the (sub)tree whose elements are to be enumerated.
- @param sentinel The sentinel value used at the leaves of this red-black tree.
+ @param sentinel The sentinel value used at the leaves of this Red-Black tree.
  @param order The traversal order to use for enumerating the given (sub)tree.
  @param mutations A pointer to the collection's count of mutations, for invalidation.
  */
@@ -229,35 +229,7 @@ static NSUInteger kCHTREE_SIZE = sizeof(CHTREE_NODE);
 
 #pragma mark -
 
-static id headerObject = nil;
-
-// A fake object that resides in the header node for a tree.
-@interface CHRedBlackHeader : NSObject
-
-+ (id) headerObject;
-
-@end
-
-@implementation CHRedBlackHeader
-
-// Return a singleton instance of CHRedBlackHeader, creating it if necessary.
-+ (id) headerObject {
-	if (headerObject == nil)
-		headerObject = [[CHRedBlackHeader alloc] init];
-	return headerObject;
-}
-
-// Always indicate that the other object should appear to the right side.
-// Note that to work correctly, headerObject must be the receiver of compare:
-- (NSComparisonResult) compare:(id)otherObject {
-	return NSOrderedAscending;
-}
-
-@end
-
-#pragma mark -
-
-#pragma mark C Functions for Optimized Operations
+// C Functions for Optimized Operations
 
 CHBalancedTreeNode * _rotateNodeWithLeftChild(CHBalancedTreeNode *node) {
 	CHBalancedTreeNode *leftChild = node->left;
@@ -339,7 +311,7 @@ CHBalancedTreeNode* doubleRotate(CHBalancedTreeNode *node, BOOL goingRight) {
 	sentinel->left = sentinel;
 	
 	header = malloc(kCHBalancedTreeNodeSize);
-	header->object = [CHRedBlackHeader headerObject];
+	header->object = [CHAbstractTreeHeaderObject headerObject];
 	header->color = kBLACK;
 	header->left = sentinel;
 	header->right = sentinel;
@@ -521,15 +493,12 @@ CHBalancedTreeNode* doubleRotate(CHBalancedTreeNode *node, BOOL goingRight) {
 
 - (void) removeAllObjects {
 	CHBalancedTreeNode *currentNode;
-	CHTREE_NODE *queue	 = NULL;
+	CHTREE_NODE *queue = NULL;
 	CHTREE_NODE *queueTail = NULL;
 	CHTREE_NODE *tmp;
 	
 	CHTREE_ENQUEUE(header->right);
-	while (1) {
-		currentNode = CHTREE_FRONT;
-		if (currentNode == NULL)
-			break;
+	while (currentNode = CHTREE_FRONT) {
 		CHTREE_DEQUEUE();
 		if (currentNode->left != sentinel)
 			CHTREE_ENQUEUE(currentNode->left);
@@ -566,7 +535,6 @@ CHBalancedTreeNode* doubleRotate(CHBalancedTreeNode *node, BOOL goingRight) {
 		state->itemsPtr = stackbuf;
 		state->mutationsPtr = &mutations;
 		stack = NULL;
-		sentinel->object = nil;
 	}
 	else if (state->state == 1) {
 		return 0;		
