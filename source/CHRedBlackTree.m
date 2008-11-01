@@ -318,6 +318,20 @@ CHRedBlackTreeNode* _rotateObjectOnAncestor(id anObject, CHRedBlackTreeNode *anc
 	}
 }
 
+CHRedBlackTreeNode* singleRotate(CHRedBlackTreeNode *node, BOOL goingRight) {
+	CHRedBlackTreeNode *save = node->link[!goingRight];
+	node->link[!goingRight] = save->link[goingRight];
+	save->link[goingRight] = node;
+	node->color = kRED;
+	save->color = kBLACK;
+	return save;
+}
+
+CHRedBlackTreeNode* doubleRotate(CHRedBlackTreeNode *node, BOOL goingRight) {
+	node->link[!goingRight] = singleRotate(node->link[!goingRight], !goingRight);
+	return singleRotate(node, goingRight);	
+}
+
 #pragma mark -
 
 @implementation CHRedBlackTree
@@ -383,11 +397,29 @@ CHRedBlackTreeNode* _rotateObjectOnAncestor(id anObject, CHRedBlackTreeNode *anc
 	NSComparisonResult comparison;
 	while (comparison = [current->object compare:anObject]) {
 		greatgrandparent = grandparent, grandparent = parent, parent = current;
-		current = (comparison == NSOrderedDescending) ? current->left : current->right;
+		current = current->link[comparison == NSOrderedAscending];
 		
 		// Check for the bad case of red parent and red sibling of parent
-		if (current->left->color == kRED && current->right->color == kRED)
-			[self _reorient:anObject];
+		if (current->left->color == kRED && current->right->color == kRED) {
+			// Simple red violation: resolve with color flip
+			current->color = kRED;
+			current->left->color = kBLACK;
+			current->right->color = kBLACK;
+			
+			// Hard red violation: rotations necessary
+			if (parent->color == kRED) {
+//				BOOL lastWentRight = (grandparent->right == parent);
+//				greatgrandparent->link[greatgrandparent->right == grandparent]
+//					= (parent->link[lastWentRight])
+//						? singleRotate(grandparent, !lastWentRight)
+//						: doubleRotate(grandparent, !lastWentRight);
+				grandparent->color = kRED;
+				if ([grandparent->object compare:anObject] != [parent->object compare:anObject])
+					parent = _rotateObjectOnAncestor(anObject, grandparent);
+				current = _rotateObjectOnAncestor(anObject, greatgrandparent);
+				current->color = kBLACK;
+			}
+		}
 	}
 	
 	// If we didn't end up at a sentinel, replace the existing value and return.
@@ -404,10 +436,8 @@ CHRedBlackTreeNode* _rotateObjectOnAncestor(id anObject, CHRedBlackTreeNode *anc
 	current->left = sentinel;
 	current->right = sentinel;
 	
-	if ([parent->object compare:anObject] == NSOrderedDescending)
-		parent->left = current;
-	else
-		parent->right = current;
+	parent->link[([parent->object compare:anObject] == NSOrderedAscending)] = current;
+	
 	// one last reorientation check...
 	[self _reorient:anObject];
 }
@@ -467,18 +497,6 @@ CHRedBlackTreeNode* _rotateObjectOnAncestor(id anObject, CHRedBlackTreeNode *anc
 	}
 }
 
-#define childInDirection(node,goingRight) \
-        ((goingRight) ? node->right : node->left)
-
-#define singleRotate(node,goingRight) \
-        ((goingRight) ? _rotateNodeWithLeftChild(node) \
-                      : _rotateNodeWithRightChild(node))
-
-/**
- @param anObject The object to be removed from the tree if present.
- 
- @todo Implement <code>-removeObject:</code> method, including rebalancing.
- */
 - (void) removeObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
@@ -488,83 +506,60 @@ CHRedBlackTreeNode* _rotateObjectOnAncestor(id anObject, CHRedBlackTreeNode *anc
 	++mutations;
 	grandparent = parent = current = header;
 	sentinel->object = anObject;
-
 	CHRedBlackTreeNode *found = NULL, *sibling;
-	NSComparisonResult comparison = NSOrderedAscending;
+	NSComparisonResult comparison;
 	BOOL isGoingRight = YES, prevWentRight = YES;
-	while (childInDirection(current, isGoingRight) != sentinel) {
+	while (current->link[isGoingRight] != sentinel) {
 		grandparent = parent;
 		parent = current;
-		current = childInDirection(current, isGoingRight);
-		
-//		CHLocationLog(@"0x%x = %@", current, current->object);
-		
+		current = current->link[isGoingRight];
 		comparison = [current->object compare:anObject];
 		prevWentRight = isGoingRight;
 		isGoingRight = (comparison != NSOrderedDescending);
-		
-		// Save a pointer to a matching node; removal comes outside the loop
 		if (comparison == NSOrderedSame)
-			found = current;
+			found = current; // Save a pointer; removal happens outside the loop
 		
 		// There are only potential violations when removing a black node.
 		// If so, push the child red node down using rotations and color flips.
-		if (current->color != kRED && childInDirection(current, isGoingRight)->color != kRED) {
-			if (childInDirection(current, !isGoingRight)->color == kRED)
-//				parent = childInDirection(parent, prevWentRight) = (isGoingRight)
-//					? _rotateNodeWithLeftChild(current) : _rotateNodeWithRightChild(current);
-				parent = _rotateObjectOnAncestor(childInDirection(current, !isGoingRight)->object, parent);
+		if (current->color != kRED && current->link[isGoingRight]->color != kRED) {
+			if (current->link[!isGoingRight]->color == kRED)
+				parent = parent->link[prevWentRight] = singleRotate(current, isGoingRight);
 			else {
-				sibling = childInDirection(parent, !prevWentRight);
+				sibling = parent->link[prevWentRight];
 				if (sibling != sentinel) {
-					if (sibling->left->color != kRED && sibling->right->color != kRED) {
+					if (sibling->left->color == kBLACK && sibling->right->color == kBLACK) {
+						// If sibling's children are both black, do a color flip
 						parent->color = kBLACK;
 						sibling->color = kRED;
 						current->color = kRED;
 					}
 					else {
-						BOOL tempGoingRight = (grandparent->right == parent);
-						
-						if (childInDirection(sibling, prevWentRight)->color == kRED) {
-							if (prevWentRight) {
-								parent->left = _rotateNodeWithRightChild(parent->left);
-								childInDirection(grandparent, tempGoingRight) = _rotateNodeWithLeftChild(parent);
-							} else {
-								parent->right = _rotateNodeWithLeftChild(parent->right);
-								childInDirection(grandparent, tempGoingRight) = _rotateNodeWithRightChild(parent);
-							}
-						}
-						else if (childInDirection(sibling, !prevWentRight)->color == kRED)
-							childInDirection(grandparent, tempGoingRight) = (prevWentRight)
-								? _rotateNodeWithLeftChild(parent) : _rotateNodeWithRightChild(parent);
-						
+						CHRedBlackTreeNode *tempNode =
+							grandparent->link[(grandparent->right == parent)];
+						if (sibling->link[prevWentRight]->color == kRED)
+							tempNode = doubleRotate(parent, prevWentRight);
+						else if (sibling->link[!prevWentRight]->color == kRED)
+							tempNode = singleRotate(parent, prevWentRight);
 						/* Ensure correct coloring */
-						CHRedBlackTreeNode *temp = childInDirection(grandparent,tempGoingRight);
-						current->color = temp->color = kRED;
-						temp->left->color = kBLACK;
-						temp->right->color = kBLACK;
+						current->color = tempNode->color = kRED;
+						tempNode->left->color = kBLACK;
+						tempNode->right->color = kBLACK;
 					}
-				}
+				} // if (sibling != sentinel)
 			}
 		}
 	}
 	
-	/* Replace and remove the saved node */
+	// Transfer replacement value up to outgoing node, remove the "donor" node.
     if (found != NULL) {
 		[found->object release];
 		found->object = current->object;
-		CHRedBlackTreeNode *temp = (current->left == sentinel)
-		                           ? current->right : current->left;
-		if (parent->right == current)
-			parent->right = temp;
-		else
-			parent->left = temp;
+		parent->link[(parent->right == current)]
+			= current->link[(current->left == sentinel)];
 		free(current);
 		--count;
     }
-	
-	/* Make the root black for simplified logic */
-	header->right->color = kBLACK;
+	header->right->color = kBLACK; // Make the root black for simplified logic
 }
 
 - (void) removeAllObjects {
@@ -673,7 +668,6 @@ CHRedBlackTreeNode* _rotateObjectOnAncestor(id anObject, CHRedBlackTreeNode *anc
 		 (currentNode->left == sentinel) ? nil : currentNode->left->object,
 		 (currentNode->right == sentinel) ? nil : currentNode->right->object];
 	}
-	
 	[description appendString:@"}"];
 	return description;
 }
