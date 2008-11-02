@@ -20,16 +20,6 @@
 #import <Foundation/Foundation.h>
 #import "CHAbstractTree.h"
 
-// A node for use by CHUnbalancedTree for internal storage and representation.
-typedef struct CHUnbalancedTreeNode {
-	id object;		/**< The object stored in a particular node. */
-	struct CHUnbalancedTreeNode *left;	/**< The left child node, if any. */
-	struct CHUnbalancedTreeNode *right;	/**< The right child node, if any. */
-	struct CHUnbalancedTreeNode *parent;	/**< Link to the parent node, if any. */
-} CHUnbalancedTreeNode;
-
-#pragma mark -
-
 /**
  A simple, unbalanced binary tree that <b>does not</b> guarantee O(log n) access.
  Even though the tree is never balanced when items are added or removed, access is
@@ -39,9 +29,17 @@ typedef struct CHUnbalancedTreeNode {
  */
 @interface CHUnbalancedTree : CHAbstractTree
 {
-	/** A pointer to the root of the tree, set to <code>NULL</code> if empty. */
-	CHUnbalancedTreeNode *root;
+	@private
+	CHTreeNode *header; // Links to the root -- eliminates special cases
+	CHTreeNode *sentinel; // Represents a NULL leaf node; always kBLACK
 }
+
+/**
+ Represent detailed information about an unbalanced tree, printed in level order.
+ This method is called by the "print-object" ("po") command in the gdb console,
+ but can also be called directly in code. Intended only for testing purposes.
+ */
+- (NSString*) debugDescription;
 
 @end
 

@@ -43,8 +43,8 @@
 @interface CHAnderssonTree : CHAbstractTree
 {
 	@private
-	CHBalancedTreeNode *header; // Links to the root -- eliminates special cases
-	CHBalancedTreeNode *sentinel; // Represents a NULL leaf node; reduces checks
+	CHTreeNode *header; // Links to the root -- eliminates special cases
+	CHTreeNode *sentinel; // Represents a NULL leaf node; reduces checks
 }
 
 /**

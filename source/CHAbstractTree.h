@@ -83,48 +83,48 @@
  NSUInteger values—allows the same node to be used in several different balanced
  trees, while preserving useful semantic meaning appropriate for each algorithm.
  */
-typedef struct CHBalancedTreeNode {
+typedef struct CHTreeNode {
 	id object;                           /**< The object stored in the node. */
 	union {
 		struct {
-			struct CHBalancedTreeNode *left;   /**< Link to left child node. */
-			struct CHBalancedTreeNode *right;  /**< Link to right child node. */
+			struct CHTreeNode *left;   /**< Link to left child node. */
+			struct CHTreeNode *right;  /**< Link to right child node. */
 		};
-		struct CHBalancedTreeNode *link[2]; /**< Links to left/right childen. */
+		struct CHTreeNode *link[2]; /**< Links to left/right childen. */
 	};
 	union {
 		NSUInteger color;         /**< The node's color (for red-black trees) */
 		NSUInteger height;        /**< The node's height (for AVL trees) */
 		NSUInteger level;         /**< The node's level (for Andersson trees) */
 	};
-} CHBalancedTreeNode;
+} CHTreeNode;
 
-
+#pragma mark -
 #pragma mark Enumeration Struct & Macros
 
 // A struct used by balanced binary tree enumerators to maintain traversal state
-typedef struct CHTREE_NODE {
-	struct CHBalancedTreeNode *node;
-	struct CHTREE_NODE *next;
-} CHTREE_NODE;
+typedef struct CHTreeListNode {
+	struct CHTreeNode *node;
+	struct CHTreeListNode *next;
+} CHTreeListNode;
 
 // Stack Operations
 
-#define CHTREE_PUSH(o) \
-        {tmp=malloc(kCHTREE_SIZE);tmp->node=o;tmp->next=stack;stack=tmp;}
-#define CHTREE_POP() \
+#define CHTreeList_PUSH(o) \
+        {tmp=malloc(kCHTreeListNodeSize);tmp->node=o;tmp->next=stack;stack=tmp;}
+#define CHTreeList_POP() \
         {if(stack!=NULL){tmp=stack;stack=stack->next;free(tmp);}}
-#define CHTREE_TOP \
+#define CHTreeList_TOP \
         ((stack!=NULL)?stack->node:NULL)
 
 // Queue Operations
 
-#define CHTREE_ENQUEUE(o) \
-        {tmp=malloc(kCHTREE_SIZE);tmp->node=o;tmp->next=NULL;\
+#define CHTreeList_ENQUEUE(o) \
+        {tmp=malloc(kCHTreeListNodeSize);tmp->node=o;tmp->next=NULL;\
         if(queue==NULL){queue=tmp;queueTail=tmp;}\
         queueTail->next=tmp;queueTail=queueTail->next;}
-#define CHTREE_DEQUEUE() \
+#define CHTreeList_DEQUEUE() \
         {if(queue!=NULL){tmp=queue;queue=queue->next;free(tmp);}\
         if(queue==tmp)queue=NULL;if(queueTail==tmp)queueTail=NULL;}
-#define CHTREE_FRONT \
+#define CHTreeList_FRONT \
         ((queue!=NULL)?queue->node:NULL)

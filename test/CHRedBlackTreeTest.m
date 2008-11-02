@@ -34,7 +34,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 @interface CHRedBlackTree (Test)
 
 - (BOOL) verify;
-- (NSUInteger) verifySubtreeAtNode:(CHBalancedTreeNode*)node;
+- (NSUInteger) verifySubtreeAtNode:(CHTreeNode*)node;
 
 @end
 
@@ -46,7 +46,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 }
 
 // Recursive method for verifying that red-black properties are not violated.
-- (NSUInteger) verifySubtreeAtNode:(CHBalancedTreeNode*)node {
+- (NSUInteger) verifySubtreeAtNode:(CHTreeNode*)node {
 	if (node == sentinel)
 		return 1;
 	/* Test for consecutive red links */

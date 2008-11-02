@@ -22,8 +22,8 @@
 
 @interface CHAVLTree : CHAbstractTree
 {
-	CHBalancedTreeNode *header; // Links to the root -- eliminates special cases
-	CHBalancedTreeNode *sentinel; // Represents a NULL leaf node; always kBLACK
+	CHTreeNode *header; // Links to the root -- eliminates special cases
+	CHTreeNode *sentinel; // Represents a NULL leaf node; always kBLACK
 }
 
 @end

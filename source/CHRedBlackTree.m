@@ -19,8 +19,8 @@
 
 #import "CHRedBlackTree.h"
 
-static NSUInteger kCHBalancedTreeNodeSize = sizeof(CHBalancedTreeNode);
-static NSUInteger kCHTREE_SIZE = sizeof(CHTREE_NODE);
+static NSUInteger kCHTreeNodeSize = sizeof(CHTreeNode);
+static NSUInteger kCHTreeListNodeSize = sizeof(CHTreeListNode);
 
 /**
  An NSEnumerator for traversing a CHRedBlackTree in a specified order.
@@ -33,13 +33,13 @@ static NSUInteger kCHTREE_SIZE = sizeof(CHTREE_NODE);
 	CHTraversalOrder traversalOrder;
 	@private
 	id<CHTree> collection;
-	CHBalancedTreeNode *currentNode;
-	CHBalancedTreeNode *sentinelNode;
+	CHTreeNode *currentNode;
+	CHTreeNode *sentinelNode;
 	id tempObject;         /**< Temporary variable, holds the object to be returned.*/
-	CHTREE_NODE *stack;     /**< Pointer to the top of a stack for most traversals. */
-	CHTREE_NODE *queue;     /**< Pointer to the head of a queue for level-order. */
-	CHTREE_NODE *queueTail; /**< Pointer to the tail of a queue for level-order. */
-	CHTREE_NODE *tmp;       /**< Temporary variable for stack and queue operations. */
+	CHTreeListNode *stack;     /**< Pointer to the top of a stack for most traversals. */
+	CHTreeListNode *queue;     /**< Pointer to the head of a queue for level-order. */
+	CHTreeListNode *queueTail; /**< Pointer to the tail of a queue for level-order. */
+	CHTreeListNode *tmp;       /**< Temporary variable for stack and queue operations. */
 	unsigned long mutationCount;
 	unsigned long *mutationPtr;
 }
@@ -55,8 +55,8 @@ static NSUInteger kCHTREE_SIZE = sizeof(CHTREE_NODE);
  @param mutations A pointer to the collection's count of mutations, for invalidation.
  */
 - (id) initWithTree:(id<CHTree>)tree
-               root:(CHBalancedTreeNode*)root
-           sentinel:(CHBalancedTreeNode*)sentinel
+               root:(CHTreeNode*)root
+           sentinel:(CHTreeNode*)sentinel
      traversalOrder:(CHTraversalOrder)order
     mutationPointer:(unsigned long*)mutations;
 
@@ -85,8 +85,8 @@ static NSUInteger kCHTREE_SIZE = sizeof(CHTREE_NODE);
 @implementation CHRedBlackTreeEnumerator
 
 - (id) initWithTree:(id<CHTree>)tree
-               root:(CHBalancedTreeNode*)root
-           sentinel:(CHBalancedTreeNode*)sentinel
+               root:(CHTreeNode*)root
+           sentinel:(CHTreeNode*)sentinel
      traversalOrder:(CHTraversalOrder)order
     mutationPointer:(unsigned long*)mutations
 {
@@ -96,9 +96,9 @@ static NSUInteger kCHTREE_SIZE = sizeof(CHTREE_NODE);
 	collection = (root != sentinel) ? collection = [tree retain] : nil;
 	if (traversalOrder == CHTraverseLevelOrder) {
 		queue = NULL;
-		CHTREE_ENQUEUE(root);
+		CHTreeList_ENQUEUE(root);
 	} else if (traversalOrder == CHTraversePreOrder) {
-		CHTREE_PUSH(root);
+		CHTreeList_PUSH(root);
 	} else {
 		currentNode = root;
 	}
@@ -141,12 +141,12 @@ static NSUInteger kCHTREE_SIZE = sizeof(CHTREE_NODE);
 				return nil;
 			}
 			while (currentNode != sentinelNode) {
-				CHTREE_PUSH(currentNode);
+				CHTreeList_PUSH(currentNode);
 				currentNode = currentNode->left;
 				// TODO: How to not push/pop leaf nodes unnecessarily?
 			}
-			currentNode = CHTREE_TOP; // Save top node for return value
-			CHTREE_POP();
+			currentNode = CHTreeList_TOP; // Save top node for return value
+			CHTreeList_POP();
 			tempObject = currentNode->object;
 			currentNode = currentNode->right;
 			return tempObject;
@@ -158,28 +158,28 @@ static NSUInteger kCHTREE_SIZE = sizeof(CHTREE_NODE);
 				return nil;
 			}
 			while (currentNode != sentinelNode) {
-				CHTREE_PUSH(currentNode);
+				CHTreeList_PUSH(currentNode);
 				currentNode = currentNode->right;
 				// TODO: How to not push/pop leaf nodes unnecessarily?
 			}
-			currentNode = CHTREE_TOP; // Save top node for return value
-			CHTREE_POP();
+			currentNode = CHTreeList_TOP; // Save top node for return value
+			CHTreeList_POP();
 			tempObject = currentNode->object;
 			currentNode = currentNode->left;
 			return tempObject;
 			
 		case CHTraversePreOrder:
-			currentNode = CHTREE_TOP;
-			CHTREE_POP();
+			currentNode = CHTreeList_TOP;
+			CHTreeList_POP();
 			if (currentNode == NULL) {
 				[collection release];
 				collection = nil;
 				return nil;
 			}
 			if (currentNode->right != sentinelNode)
-				CHTREE_PUSH(currentNode->right);
+				CHTreeList_PUSH(currentNode->right);
 			if (currentNode->left != sentinelNode)
-				CHTREE_PUSH(currentNode->left);
+				CHTreeList_PUSH(currentNode->left);
 			return currentNode->object;
 			
 		case CHTraversePostOrder:
@@ -191,35 +191,35 @@ static NSUInteger kCHTREE_SIZE = sizeof(CHTREE_NODE);
 			}
 			while (1) {
 				while (currentNode != sentinelNode) {
-					CHTREE_PUSH(currentNode);
+					CHTreeList_PUSH(currentNode);
 					currentNode = currentNode->left;
 				}
 				// A null entry indicates that we've traversed the right subtree
-				if (CHTREE_TOP != NULL) {
-					currentNode = CHTREE_TOP->right;
-					CHTREE_PUSH(NULL);
+				if (CHTreeList_TOP != NULL) {
+					currentNode = CHTreeList_TOP->right;
+					CHTreeList_PUSH(NULL);
 					// TODO: explore how to not use null pad for leaf nodes
 				}
 				else {
-					CHTREE_POP(); // ignore the null pad
-					tempObject = CHTREE_TOP->object;
-					CHTREE_POP();
+					CHTreeList_POP(); // ignore the null pad
+					tempObject = CHTreeList_TOP->object;
+					CHTreeList_POP();
 					return tempObject;
 				}				
 			}
 			
 		case CHTraverseLevelOrder:
-			currentNode = CHTREE_FRONT;
+			currentNode = CHTreeList_FRONT;
 			if (currentNode == NULL) {
 				[collection release];
 				collection = nil;
 				return nil;
 			}
-			CHTREE_DEQUEUE();
+			CHTreeList_DEQUEUE();
 			if (currentNode->left != sentinelNode)
-				CHTREE_ENQUEUE(currentNode->left);
+				CHTreeList_ENQUEUE(currentNode->left);
 			if (currentNode->right != sentinelNode)
-				CHTREE_ENQUEUE(currentNode->right);
+				CHTreeList_ENQUEUE(currentNode->right);
 			return currentNode->object;
 	}
 	return nil;
@@ -231,8 +231,8 @@ static NSUInteger kCHTREE_SIZE = sizeof(CHTREE_NODE);
 
 // C Functions for Optimized Operations
 
-CHBalancedTreeNode * _rotateNodeWithLeftChild(CHBalancedTreeNode *node) {
-	CHBalancedTreeNode *leftChild = node->left;
+CHTreeNode * _rotateNodeWithLeftChild(CHTreeNode *node) {
+	CHTreeNode *leftChild = node->left;
 	node->left = leftChild->right;
 	leftChild->right = node;
 	node->color = kRED;
@@ -240,8 +240,8 @@ CHBalancedTreeNode * _rotateNodeWithLeftChild(CHBalancedTreeNode *node) {
 	return leftChild;
 }
 
-CHBalancedTreeNode * _rotateNodeWithRightChild(CHBalancedTreeNode *node) {
-	CHBalancedTreeNode *rightChild = node->right;
+CHTreeNode * _rotateNodeWithRightChild(CHTreeNode *node) {
+	CHTreeNode *rightChild = node->right;
 	node->right = rightChild->left;
 	rightChild->left = node;
 	node->color = kRED;
@@ -249,7 +249,7 @@ CHBalancedTreeNode * _rotateNodeWithRightChild(CHBalancedTreeNode *node) {
 	return rightChild;
 }
 
-CHBalancedTreeNode* _rotateObjectOnAncestor(id anObject, CHBalancedTreeNode *ancestor) {
+CHTreeNode* _rotateObjectOnAncestor(id anObject, CHTreeNode *ancestor) {
 	if ([ancestor->object compare:anObject] == NSOrderedDescending) {
 		return ancestor->left =
 			([ancestor->left->object compare:anObject] == NSOrderedDescending)
@@ -264,8 +264,8 @@ CHBalancedTreeNode* _rotateObjectOnAncestor(id anObject, CHBalancedTreeNode *anc
 	}
 }
 
-CHBalancedTreeNode* singleRotate(CHBalancedTreeNode *node, BOOL goingRight) {
-	CHBalancedTreeNode *save = node->link[!goingRight];
+CHTreeNode* singleRotate(CHTreeNode *node, BOOL goingRight) {
+	CHTreeNode *save = node->link[!goingRight];
 	node->link[!goingRight] = save->link[goingRight];
 	save->link[goingRight] = node;
 	node->color = kRED;
@@ -273,7 +273,7 @@ CHBalancedTreeNode* singleRotate(CHBalancedTreeNode *node, BOOL goingRight) {
 	return save;
 }
 
-CHBalancedTreeNode* doubleRotate(CHBalancedTreeNode *node, BOOL goingRight) {
+CHTreeNode* doubleRotate(CHTreeNode *node, BOOL goingRight) {
 	node->link[!goingRight] = singleRotate(node->link[!goingRight], !goingRight);
 	return singleRotate(node, goingRight);	
 }
@@ -304,13 +304,13 @@ CHBalancedTreeNode* doubleRotate(CHBalancedTreeNode *node, BOOL goingRight) {
 
 - (id) init {
 	if ([super init] == nil) return nil;
-	sentinel = malloc(kCHBalancedTreeNodeSize);
+	sentinel = malloc(kCHTreeNodeSize);
 	sentinel->object = nil;
 	sentinel->color = kBLACK;
 	sentinel->right = sentinel;
 	sentinel->left = sentinel;
 	
-	header = malloc(kCHBalancedTreeNodeSize);
+	header = malloc(kCHTreeNodeSize);
 	header->object = [CHAbstractTreeHeaderObject headerObject];
 	header->color = kBLACK;
 	header->left = sentinel;
@@ -377,7 +377,7 @@ CHBalancedTreeNode* doubleRotate(CHBalancedTreeNode *node, BOOL goingRight) {
 	}
 	
 	++count;
-	current = malloc(kCHBalancedTreeNodeSize);
+	current = malloc(kCHTreeNodeSize);
 	current->object = [anObject retain];
 	current->left = sentinel;
 	current->right = sentinel;
@@ -435,7 +435,7 @@ CHBalancedTreeNode* doubleRotate(CHBalancedTreeNode *node, BOOL goingRight) {
 	++mutations;
 	grandparent = parent = current = header;
 	sentinel->object = anObject;
-	CHBalancedTreeNode *found = NULL, *sibling;
+	CHTreeNode *found = NULL, *sibling;
 	NSComparisonResult comparison;
 	BOOL isGoingRight = YES, prevWentRight = YES;
 	while (current->link[isGoingRight] != sentinel) {
@@ -463,7 +463,7 @@ CHBalancedTreeNode* doubleRotate(CHBalancedTreeNode *node, BOOL goingRight) {
 						current->color = kRED;
 					}
 					else {
-						CHBalancedTreeNode *tempNode =
+						CHTreeNode *tempNode =
 							grandparent->link[(grandparent->right == parent)];
 						if (sibling->link[prevWentRight]->color == kRED)
 							tempNode = doubleRotate(parent, prevWentRight);
@@ -492,18 +492,18 @@ CHBalancedTreeNode* doubleRotate(CHBalancedTreeNode *node, BOOL goingRight) {
 }
 
 - (void) removeAllObjects {
-	CHBalancedTreeNode *currentNode;
-	CHTREE_NODE *queue = NULL;
-	CHTREE_NODE *queueTail = NULL;
-	CHTREE_NODE *tmp;
+	CHTreeNode *currentNode;
+	CHTreeListNode *queue = NULL;
+	CHTreeListNode *queueTail = NULL;
+	CHTreeListNode *tmp;
 	
-	CHTREE_ENQUEUE(header->right);
-	while (currentNode = CHTREE_FRONT) {
-		CHTREE_DEQUEUE();
+	CHTreeList_ENQUEUE(header->right);
+	while (currentNode = CHTreeList_FRONT) {
+		CHTreeList_DEQUEUE();
 		if (currentNode->left != sentinel)
-			CHTREE_ENQUEUE(currentNode->left);
+			CHTreeList_ENQUEUE(currentNode->left);
 		if (currentNode->right != sentinel)
-			CHTREE_ENQUEUE(currentNode->right);
+			CHTreeList_ENQUEUE(currentNode->right);
 		[currentNode->object release];
 		free(currentNode);
 	}
@@ -526,8 +526,8 @@ CHBalancedTreeNode* doubleRotate(CHBalancedTreeNode *node, BOOL goingRight) {
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len
 {
-	CHBalancedTreeNode *currentNode;
-	CHTREE_NODE *stack, *tmp; 
+	CHTreeNode *currentNode;
+	CHTreeListNode *stack, *tmp; 
 	
 	// For the first call, start at root node, otherwise start at last saved node
 	if (state->state == 0) {
@@ -540,20 +540,20 @@ CHBalancedTreeNode* doubleRotate(CHBalancedTreeNode *node, BOOL goingRight) {
 		return 0;		
 	}
 	else {
-		currentNode = (CHBalancedTreeNode*) state->state;
-		stack = (CHTREE_NODE*) state->extra[0];
+		currentNode = (CHTreeNode*) state->state;
+		stack = (CHTreeListNode*) state->extra[0];
 	}
 	
 	// Accumulate objects from the tree until we reach all nodes or the maximum limit
 	NSUInteger batchCount = 0;
 	while ( (currentNode != sentinel || stack != NULL) && batchCount < len) {
 		while (currentNode != sentinel) {
-			CHTREE_PUSH(currentNode);
+			CHTreeList_PUSH(currentNode);
 			currentNode = currentNode->left;
 			// TODO: How to not push/pop leaf nodes unnecessarily?
 		}
-		currentNode = CHTREE_TOP; // Save top node for return value
-		CHTREE_POP();
+		currentNode = CHTreeList_TOP; // Save top node for return value
+		CHTreeList_POP();
 		stackbuf[batchCount] = currentNode->object;
 		currentNode = currentNode->right;
 		batchCount++;
@@ -571,18 +571,18 @@ CHBalancedTreeNode* doubleRotate(CHBalancedTreeNode *node, BOOL goingRight) {
 - (NSString*) debugDescription {
 	NSMutableString *description = [NSMutableString stringWithFormat:
 									@"<%@: 0x%x> = {\n", [self class], self];
-	CHBalancedTreeNode *currentNode;
-	CHTREE_NODE *queue = NULL, *queueTail = NULL, *tmp;
-	CHTREE_ENQUEUE(header->right);
+	CHTreeNode *currentNode;
+	CHTreeListNode *queue = NULL, *queueTail = NULL, *tmp;
+	CHTreeList_ENQUEUE(header->right);
 	
 	sentinel->object = nil;
 	while (currentNode != sentinel && queue != NULL) {
-		currentNode = CHTREE_FRONT;
-		CHTREE_DEQUEUE();
+		currentNode = CHTreeList_FRONT;
+		CHTreeList_DEQUEUE();
 		if (currentNode->left != sentinel)
-			CHTREE_ENQUEUE(currentNode->left);
+			CHTreeList_ENQUEUE(currentNode->left);
 		if (currentNode->right != sentinel)
-			CHTREE_ENQUEUE(currentNode->right);
+			CHTreeList_ENQUEUE(currentNode->right);
 		// Append entry for the current node, including color and children
 		[description appendFormat:@"\t%@ : %@ -> %@ and %@\n",
 		 ((currentNode->color == kRED) ? @"RED  " : @"BLACK"),

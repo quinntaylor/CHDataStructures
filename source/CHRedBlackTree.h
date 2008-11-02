@@ -45,12 +45,12 @@
 @interface CHRedBlackTree : CHAbstractTree
 {
 	@private
-	CHBalancedTreeNode *header; // Links to the root -- eliminates special cases
-	CHBalancedTreeNode *sentinel; // Represents a NULL leaf node; always kBLACK
-	CHBalancedTreeNode *current;
-	CHBalancedTreeNode *parent;
-	CHBalancedTreeNode *grandparent;
-	CHBalancedTreeNode *greatgrandparent;
+	CHTreeNode *header; // Links to the root -- eliminates special cases
+	CHTreeNode *sentinel; // Represents a NULL leaf node; always kBLACK
+	CHTreeNode *current;
+	CHTreeNode *parent;
+	CHTreeNode *grandparent;
+	CHTreeNode *greatgrandparent;
 }
 
 /**
