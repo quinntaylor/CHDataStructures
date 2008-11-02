@@ -165,10 +165,6 @@ NSUInteger kCHTreeListNodeSize = sizeof(CHTreeListNode);
 
 #pragma mark Concrete Implementations
 
-- (NSUInteger) count {
-	return count;
-}
-
 - (NSArray*) allObjects {
 	return [self allObjectsWithTraversalOrder:CHTraverseAscending];
 }
@@ -177,19 +173,16 @@ NSUInteger kCHTreeListNodeSize = sizeof(CHTreeListNode);
 	return [[self objectEnumeratorWithTraversalOrder:order] allObjects];
 }
 
-- (NSString*) description {
-	return [[self allObjectsWithTraversalOrder:CHTraverseAscending] description];
+- (BOOL) containsObject:(id)anObject {
+	return ([self findObject:anObject] != nil);
 }
 
-- (BOOL) containsObject:(id)anObject {
-	if (anObject == nil)
-		return NO;
-	sentinel->object = anObject; // Make sure the target value is always "found"
-	CHTreeNode *current = header->right;
-	NSComparisonResult comparison;
-	while (comparison = [current->object compare:anObject]) // while not equal
-		current = current->link[comparison == NSOrderedAscending]; // R on YES
-	return (current != sentinel);
+- (NSUInteger) count {
+	return count;
+}
+
+- (NSString*) description {
+	return [[self allObjectsWithTraversalOrder:CHTraverseAscending] description];
 }
 
 - (id) findMax {
@@ -249,16 +242,16 @@ NSUInteger kCHTreeListNodeSize = sizeof(CHTreeListNode);
 	++mutations;
 }
 
+- (NSEnumerator*) objectEnumerator {
+	return [self objectEnumeratorWithTraversalOrder:CHTraverseAscending];
+}
+
 - (NSEnumerator*) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order {
 	return [[[CHTreeEnumerator alloc] initWithTree:self
 	                                          root:header->right
 	                                      sentinel:sentinel
 	                                traversalOrder:order
 	                               mutationPointer:&mutations] autorelease];
-}
-
-- (NSEnumerator*) objectEnumerator {
-	return [self objectEnumeratorWithTraversalOrder:CHTraverseAscending];
 }
 
 - (NSEnumerator*) reverseObjectEnumerator {
