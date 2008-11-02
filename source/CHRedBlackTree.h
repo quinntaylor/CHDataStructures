@@ -25,11 +25,12 @@
 
 /**
  A <a href="http://en.wikipedia.org/wiki/Red-black_trees">Red-Black tree</a>, a
- balanced binary tree with guaranteed O(log n) access. This is an Objective-C port of
- the Red-Black tree from <i>"Data Structures and Problem Solving Using Java"</i>
- by Mark Allen Weiss, published by Addison Wesley. Method names have been changed to
- match the APIs of existing Cocoa collections classes provided by Apple, and several
- optimizations in straight C have been made to optimize speed and memory usage.
+ balanced binary search tree with guaranteed O(log n) access. The algorithms for
+ insertion and removal in this implementation have been adapted from code in the
+ <a href="http://eternallyconfuzzled.com/tuts/datastructures/jsw_tut_rbtree.aspx">
+ Red-Black trees tutorial</a>, which is in the public domain, courtesy of <a href=
+ "http://eternallyconfuzzled.com/">Julienne Walker</a>. Method names have been
+ changed to match the APIs of existing Cocoa collections provided by Apple.
 
  A Red-Black tree has four fundamental rules: (taken from the book mentioned above)
  <ol>
@@ -44,20 +45,10 @@
  */
 @interface CHRedBlackTree : CHAbstractTree
 {
-	@private
-	CHTreeNode *header; // Links to the root -- eliminates special cases
-	CHTreeNode *sentinel; // Represents a NULL leaf node; always kBLACK
 	CHTreeNode *current;
 	CHTreeNode *parent;
 	CHTreeNode *grandparent;
 	CHTreeNode *greatgrandparent;
 }
 
-/**
- Represent detailed information about a Red-Black tree, printed in level order.
- This method is called by the "print-object" ("po") command in the gdb console,
- but can also be called directly in code. Intended only for testing purposes.
- */
-- (NSString*) debugDescription;
-	
 @end

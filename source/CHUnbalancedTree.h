@@ -21,25 +21,18 @@
 #import "CHAbstractTree.h"
 
 /**
- A simple, unbalanced binary tree that <b>does not</b> guarantee O(log n) access.
+ A simple unbalanced binary tree that <b>does not</b> guarantee O(log n) access.
+ The algorithms for insertion and removal have been adapted from code in the
+ <a href="http://eternallyconfuzzled.com/tuts/datastructures/jsw_tut_bst1.aspx">
+ Binary Search Trees tutorial</a>, which is in the public domain, courtesy of
+ <a href="http://eternallyconfuzzled.com/">Julienne Walker</a>. Method names have
+ been changed to match the APIs of existing Cocoa collections provided by Apple.
+ 
  Even though the tree is never balanced when items are added or removed, access is
  <b>at worst</b> linear if the tree essentially degenerates into a linked list.
  This class is fast, and without stack risk because it works without recursion.
- In release 0.4.0, nodes objects were changed to C structs for enhanced performance.
  */
 @interface CHUnbalancedTree : CHAbstractTree
-{
-	@private
-	CHTreeNode *header; // Links to the root -- eliminates special cases
-	CHTreeNode *sentinel; // Represents a NULL leaf node; always kBLACK
-}
-
-/**
- Represent detailed information about an unbalanced tree, printed in level order.
- This method is called by the "print-object" ("po") command in the gdb console,
- but can also be called directly in code. Intended only for testing purposes.
- */
-- (NSString*) debugDescription;
 
 @end
 

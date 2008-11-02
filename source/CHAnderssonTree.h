@@ -22,11 +22,12 @@
 
 /**
  An <a href="http://en.wikipedia.org/wiki/AA_tree">AA-tree</a>, a balanced binary
- tree with guaranteed O(log n) access. This is an Objective-C port of the AA-tree
- from <i>"Data Structures and Problem Solving Using Java"</i> by Mark Allen Weiss,
- published by Addison Wesley. Method names have been changed to match the APIs of
- existing Cocoa collections classes provided by Apple, and several optimizations
- in straight C have been made to optimize speed and memory usage.
+ search tree with guaranteed O(log n) access. The algorithms for insertion and
+ removal have been adapted from code in the
+ <a href="http://eternallyconfuzzled.com/tuts/datastructures/jsw_tut_andersson.aspx">
+ Andersson Tree tutorial</a>, which is in the public domain, courtesy of <a href=
+ "http://eternallyconfuzzled.com/">Julienne Walker</a>. Method names have been
+ changed to match the APIs of existing Cocoa collections provided by Apple.
  
  An <i>Arne Andersson tree</i> is similar to a RedBlackTree, but with a simple
  restriction that simplifies maintenance operations for balancing the tree.
@@ -41,17 +42,5 @@
  but an AA-tree tends to be flatter, which results in slightly faster search.
  */
 @interface CHAnderssonTree : CHAbstractTree
-{
-	@private
-	CHTreeNode *header; // Links to the root -- eliminates special cases
-	CHTreeNode *sentinel; // Represents a NULL leaf node; reduces checks
-}
-
-/**
- Represent detailed information about an Andersson tree, printed in level order.
- This method is called by the "print-object" ("po") command in the gdb console,
- but can also be called directly in code. Intended only for testing purposes.
- */
-- (NSString*) debugDescription;
 
 @end

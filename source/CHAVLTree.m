@@ -25,33 +25,8 @@
 	CHUnsupportedOperationException([self class], _cmd);
 }
 
-- (BOOL) containsObject:(id)anObject {
-	return (BOOL) CHUnsupportedOperationException([self class], _cmd);
-}
-
-- (id) findMin {
-	return (id) CHUnsupportedOperationException([self class], _cmd);
-}
-
-- (id) findMax {
-	return (id) CHUnsupportedOperationException([self class], _cmd);
-}
-
-- (id) findObject:(id)anObject {
-	return (id) CHUnsupportedOperationException([self class], _cmd);
-}
-
 - (void) removeObject:(id)element {
 	CHUnsupportedOperationException([self class], _cmd);
 }
-
-- (void) removeAllObjects {
-	CHUnsupportedOperationException([self class], _cmd);
-}
-
-- (NSEnumerator*) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order {
-	return (NSEnumerator*) CHUnsupportedOperationException([self class], _cmd);
-}
-
 
 @end

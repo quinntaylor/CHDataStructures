@@ -20,10 +20,15 @@
 #import <Foundation/Foundation.h>
 #import "CHAbstractTree.h"
 
+/**
+ An <a href="http://en.wikipedia.org/wiki/Avl_tree">AVL tree</a>, a balanced
+ binary search tree with guaranteed O(log n) access. The algorithms for insertion
+ and removal in this implementation have been adapted from code in the
+ <a href="http://eternallyconfuzzled.com/tuts/datastructures/jsw_tut_avl.aspx">
+ AVL trees tutorial</a>, which is in the public domain, courtesy of <a href=
+ "http://eternallyconfuzzled.com/">Julienne Walker</a>. Method names have been
+ changed to match the APIs of existing Cocoa collections provided by Apple.
+ */
 @interface CHAVLTree : CHAbstractTree
-{
-	CHTreeNode *header; // Links to the root -- eliminates special cases
-	CHTreeNode *sentinel; // Represents a NULL leaf node; always kBLACK
-}
 
 @end
