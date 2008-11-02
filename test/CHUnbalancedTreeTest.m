@@ -278,37 +278,40 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	[tree removeObject:@"A"];
 	STAssertEquals([tree count], [objects count]-1, @"-count is incorrect.");
 	correct = [NSArray arrayWithObjects:@"F",@"B",@"C",@"E",@"D",@"J",@"I",@"G",@"H",@"K",nil];
-	STAssertEqualObjects([tree allObjectsWithTraversalOrder:CHTraversePreOrder],
-	                     correct, @"Bad pre-ordering after removing node.");
+	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
+	STAssertTrue([order isEqualToArray:correct], badOrder(@"Pre-order", order, correct));
+	
 	[tree removeObject:@"K"];
 	STAssertEquals([tree count], [objects count]-2, @"-count is incorrect.");
 	correct = [NSArray arrayWithObjects:@"F",@"B",@"C",@"E",@"D",@"J",@"I",@"G",@"H",nil];
-	STAssertEqualObjects([tree allObjectsWithTraversalOrder:CHTraversePreOrder],
-	                     correct, @"Bad pre-ordering after removing node.");
+	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
+	STAssertTrue([order isEqualToArray:correct], badOrder(@"Pre-order", order, correct));
 
 	// 2 - Remove a node with only a right child
 	[tree removeObject:@"C"];
 	STAssertEquals([tree count], [objects count]-3, @"-count is incorrect.");
 	correct = [NSArray arrayWithObjects:@"F",@"B",@"E",@"D",@"J",@"I",@"G",@"H",nil];
-	STAssertEqualObjects([tree allObjectsWithTraversalOrder:CHTraversePreOrder],
-	                     correct, @"Bad pre-ordering after removing node.");
+	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
+	STAssertTrue([order isEqualToArray:correct], badOrder(@"Pre-order", order, correct));
+	
 	[tree removeObject:@"B"];
 	STAssertEquals([tree count], [objects count]-4, @"-count is incorrect.");
 	correct = [NSArray arrayWithObjects:@"F",@"E",@"D",@"J",@"I",@"G",@"H",nil];
-	STAssertEqualObjects([tree allObjectsWithTraversalOrder:CHTraversePreOrder],
-	                     correct, @"Bad pre-ordering after removing node.");
+	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
+	STAssertTrue([order isEqualToArray:correct], badOrder(@"Pre-order", order, correct));
 	
 	// 3 - Remove a node with only a left child
 	[tree removeObject:@"I"];
 	STAssertEquals([tree count], [objects count]-5, @"-count is incorrect.");
 	correct = [NSArray arrayWithObjects:@"F",@"E",@"D",@"J",@"G",@"H",nil];
-	STAssertEqualObjects([tree allObjectsWithTraversalOrder:CHTraversePreOrder],
-	                     correct, @"Bad pre-ordering after removing node.");
+	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
+	STAssertTrue([order isEqualToArray:correct], badOrder(@"Pre-order", order, correct));
+
 	[tree removeObject:@"J"];
 	STAssertEquals([tree count], [objects count]-6, @"-count is incorrect.");
 	correct = [NSArray arrayWithObjects:@"F",@"E",@"D",@"G",@"H",nil];
-	STAssertEqualObjects([tree allObjectsWithTraversalOrder:CHTraversePreOrder],
-	                     correct, @"Bad pre-ordering after removing node.");
+	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
+	STAssertTrue([order isEqualToArray:correct], badOrder(@"Pre-order", order, correct));
 	
 	// 4 - Remove a node with two children
 	[tree release];
@@ -318,23 +321,26 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	[tree removeObject:@"B"];
 	STAssertEquals([tree count], [objects count]-1, @"-count is incorrect.");
 	correct = [NSArray arrayWithObjects: @"C",@"A",@"E",@"D",@"F",nil];
-	STAssertEqualObjects([tree allObjectsWithTraversalOrder:CHTraversePreOrder],
-	                     correct, @"Bad pre-ordering after removing node.");
+	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
+	STAssertTrue([order isEqualToArray:correct], badOrder(@"Pre-order", order, correct));
+
 	[tree removeObject:@"C"];
 	STAssertEquals([tree count], [objects count]-2, @"-count is incorrect.");
 	correct = [NSArray arrayWithObjects: @"D",@"A",@"E",@"F",nil];
-	STAssertEqualObjects([tree allObjectsWithTraversalOrder:CHTraversePreOrder],
-	                     correct, @"Bad pre-ordering after removing node.");
+	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
+	STAssertTrue([order isEqualToArray:correct], badOrder(@"Pre-order", order, correct));
+
 	[tree removeObject:@"D"];
 	STAssertEquals([tree count], [objects count]-3, @"-count is incorrect.");
 	correct = [NSArray arrayWithObjects: @"E",@"A",@"F",nil];
-	STAssertEqualObjects([tree allObjectsWithTraversalOrder:CHTraversePreOrder],
-	                     correct, @"Bad pre-ordering after removing node.");
+	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
+	STAssertTrue([order isEqualToArray:correct], badOrder(@"Pre-order", order, correct));
+
 	[tree removeObject:@"E"];
 	STAssertEquals([tree count], [objects count]-4, @"-count is incorrect.");
 	correct = [NSArray arrayWithObjects: @"F",@"A",nil];
-	STAssertEqualObjects([tree allObjectsWithTraversalOrder:CHTraversePreOrder],
-	                     correct, @"Bad pre-ordering after removing node.");
+	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
+	STAssertTrue([order isEqualToArray:correct], badOrder(@"Pre-order", order, correct));
 }
 
 - (void) testRemoveAllObjects {
