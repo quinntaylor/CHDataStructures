@@ -359,15 +359,25 @@ void benchmarkTree(Class testClass) {
 		[tree release];
 	}
 	
-	printf("\nremoveMinObject:    ");
+	printf("\nfindObject:         ");
+	for (NSArray *array in objects) {
+		tree = [[testClass alloc] init];
+		startTime = timestamp();
+		for (id anObject in array)
+			[tree findObject:anObject];
+		printf("\t%f", timestamp() - startTime);
+		[tree release];
+	}
+
+	printf("\nremoveObject:       ");
 	for (NSArray *array in objects) {
 		tree = [[testClass alloc] init];
 		for (id anObject in array)
 			[tree addObject:anObject];
-		startTime = timestamp();
 		arrayCount = [array count];
-		for (item = 1; item <= arrayCount; item++)
-			[tree removeObject:[tree findMin]];
+		startTime = timestamp();
+		for (id anObject in array)
+			[tree removeObject:anObject];
 		printf("\t%f", timestamp() - startTime);
 		[tree release];
 	}
@@ -430,10 +440,11 @@ int main (int argc, const char * argv[]) {
 	benchmarkHeap([CHMutableArrayHeap class]);
 
 	CHQuietLog(@"\n<CHTree> Implemenations");
-//	benchmarkTree([CHUnbalancedTree class]);
 	benchmarkTree([CHAnderssonTree class]);
-//	benchmarkTree([CHRedBlackTree class]);
+	benchmarkTree([CHRedBlackTree class]);
+//	benchmarkTree([CHUnbalancedTree class]);
 	
+	CHQuietLog(@"");
 	[objects release];
 
 	[pool drain];
