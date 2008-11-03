@@ -194,20 +194,16 @@ CHTreeNode* _split(CHTreeNode *node) {
 	header->right = current;
 	--count;
 	++mutations;
-	 */
+	*/
 }
-
-
-
 
 - (NSString*) debugDescription {
 	NSMutableString *description = [NSMutableString stringWithFormat:
-									@"<%@: 0x%x> = {\n", [self class], self];
+	                                @"<%@: 0x%x> = {\n", [self class], self];
 	CHTreeNode *current;
 	CHTreeListNode *queue = NULL, *queueTail = NULL, *tmp;
 	CHTreeList_ENQUEUE(header->right);
 	
-	sentinel->object = nil;
 	while (current != sentinel && queue != NULL) {
 		current = CHTreeList_FRONT;
 		CHTreeList_DEQUEUE();

@@ -445,8 +445,4 @@ static CHTreeHeaderObject *headerObject = nil;
 	return NSOrderedAscending;
 }
 
-- (NSString*) description {
-	return @"<CHTreeHeaderObject>";
-}
-
 @end

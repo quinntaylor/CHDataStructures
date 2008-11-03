@@ -225,12 +225,11 @@ CHTreeNode* doubleRotate(CHTreeNode *node, BOOL goingRight) {
 
 - (NSString*) debugDescription {
 	NSMutableString *description = [NSMutableString stringWithFormat:
-									@"<%@: 0x%x> = {\n", [self class], self];
+	                                @"<%@: 0x%x> = {\n", [self class], self];
 	CHTreeNode *currentNode;
 	CHTreeListNode *queue = NULL, *queueTail = NULL, *tmp;
 	CHTreeList_ENQUEUE(header->right);
 	
-	sentinel->object = nil;
 	while (currentNode != sentinel && queue != NULL) {
 		currentNode = CHTreeList_FRONT;
 		CHTreeList_DEQUEUE();
