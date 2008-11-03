@@ -34,18 +34,18 @@ extern NSUInteger kCHTreeNodeSize, kCHTreeListNodeSize;
  trees, while preserving useful semantic meaning appropriate for each algorithm.
  */
 typedef struct CHTreeNode {
-	id object;                           /**< The object stored in the node. */
+	id object;                        /**< The object stored in the node. */
 	union {
 		struct {
-			struct CHTreeNode *left;   /**< Link to left child node. */
-			struct CHTreeNode *right;  /**< Link to right child node. */
+			struct CHTreeNode *left;  /**< Link to left child node. */
+			struct CHTreeNode *right; /**< Link to right child node. */
 		};
-		struct CHTreeNode *link[2]; /**< Links to left/right childen. */
+		struct CHTreeNode *link[2];   /**< Links to left and right childen. */
 	};
 	union {
-		NSUInteger color;         /**< The node's color (for red-black trees) */
-		NSUInteger height;        /**< The node's height (for AVL trees) */
-		NSUInteger level;         /**< The node's level (for Andersson trees) */
+		NSUInteger color;             /**< The node's color (red-black trees) */
+		NSUInteger height;            /**< The node's height (AVL trees) */
+		NSUInteger level;             /**< The node's level (Andersson trees) */
 	};
 } CHTreeNode;
 
@@ -81,25 +81,32 @@ typedef struct CHTreeListNode {
 
 #pragma mark -
 
+
 /**
- An abstract CHTree implementation with some default method implementations. Methods
- for insertion, search, removal and order-specific enumeration must be re-implemented
- by child classes so as to conform to their inner workings. The methods defined in
- this abstract class rely on the implementations of such operations, so they cannot
- be implemented here.
+ An abstract CHTree implementation with some default method implementations. The
+ methods for search, size, and enumeration are implemented in this class, as are
+ implementations of NSCoding, NSCopying, and NSFastEnumeration. This works since
+ each child class uses the CHTreeNode struct. Each child class must implement
+ \link #addObject: -addObject:\endlink and \link #removeObject: -removeObject:
+ \endlink so as to conform to their inner workings.
  
- Rather than enforcing that this class be abstract, the contract is implied. In any
- case, if this class is actually instantiated, it will be of little use since all the
- methods for insertion, removal, and search are unsupported and raise exceptions.
+ Rather than enforcing that this class be abstract, the contract is implied. If
+ this class were actually instantiated, it would be of little use since there is
+ attempts to insert or remove will result in runtime exceptions being raised.
+ 
+ Much of the code and algorithms for trees was distilled from information in the
+ <a href="http://eternallyconfuzzled.com/tuts/datastructures/jsw_tut_bst1.aspx">
+ Binary Search Trees tutorial</a>, which is in the public domain, courtesy of
+ <a href="http://eternallyconfuzzled.com/">Julienne Walker</a>. Method names have
+ been changed to match the APIs of existing Cocoa collections provided by Apple.
  */
 @interface CHAbstractTree : NSObject <CHTree>
 {
-	CHTreeNode *header; // Links to the root -- eliminates special cases
-	CHTreeNode *sentinel; // Represents a NULL leaf node; reduces checks
-	NSUInteger count; /**< A count of how many elements are currently in the tree. */
+	CHTreeNode *header;      /**< Dummy header that eliminates special cases. */
+	CHTreeNode *sentinel;    /**< Represents a NULL leaf node; reduces checks. */
+	NSUInteger count;        /**< The number of elements currently in the tree. */
 	unsigned long mutations; /**< Used to track mutations for NSFastEnumeration. */
 }
-
 @end
 
 
@@ -112,9 +119,9 @@ typedef struct CHTreeListNode {
  <li>Iterative algorithms are faster since they reduce overhead of function calls.
  </ol>
  
- Also, the stacks and queues used for storing traversal state are composed of C
- structs and <code>\#define</code> pseudo-functions to increase performance and
- reduce the required memory footprint by dynamically allocating as needed.
+ The stacks and queues used for storing traversal state use malloced C structs
+ and <code>\#define</code> pseudo-functions to increase performance and reduce
+ the required memory footprint by dynamically allocating as needed.
  
  Enumerators encapsulate their own state, and more than one may be active at once.
  However, like an enumerator for a mutable data structure, any instances of this
@@ -125,13 +132,12 @@ typedef struct CHTreeListNode {
 	CHTraversalOrder traversalOrder; /**< Order in which to traverse the tree. */
 	id<CHTree> collection;
 	CHTreeNode *current;
-	CHTreeNode *sentinelNode;
-	id tempObject;         /**< Temporary variable, holds the object to be returned.*/
-	CHTreeListNode *stack;     /**< Pointer to the top of a stack for most traversals. */
-	CHTreeListNode *queue;     /**< Pointer to the head of a queue for level-order. */
-	CHTreeListNode *queueTail; /**< Pointer to the tail of a queue for level-order. */
-	CHTreeListNode *tmp;       /**< Temporary variable for stack and queue operations. */
-	unsigned long mutationCount;
+	CHTreeNode *sentinelNode;  /**< The sentinel used in the tree being traversed. */
+	CHTreeListNode *stack;     /**< Pointer to top of a stack for most traversals. */
+	CHTreeListNode *queue;     /**< Pointer to head of a queue for level-order. */
+	CHTreeListNode *queueTail; /**< Pointer to tail of a queue for level-order. */
+	CHTreeListNode *tmp;       /**< Temp node for stack and queue operations. */
+	unsigned long mutationCount; /**< Stores the collection's initial mutation. */
 	unsigned long *mutationPtr;	
 }
 

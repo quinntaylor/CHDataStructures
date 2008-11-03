@@ -106,7 +106,6 @@ CHTreeNode* doubleRotate(CHTreeNode *node, BOOL goingRight) {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
 
-	++mutations;
 	grandparent = parent = current = header;
 	sentinel->object = anObject;
 	
@@ -138,24 +137,23 @@ CHTreeNode* doubleRotate(CHTreeNode *node, BOOL goingRight) {
 		}
 	}
 	
-	// If we didn't end up at a sentinel, replace the existing value and return.
+	++mutations;
+	[anObject retain];
 	if (current != sentinel) {
-		[anObject retain];
+		// If an existing node matched, simply replace the existing value.
 		[current->object release];
 		current->object = anObject;
-		return;
+	} else {
+		++count;
+		current = malloc(kCHTreeNodeSize);
+		current->object = anObject;
+		current->left = sentinel;
+		current->right = sentinel;
+		
+		parent->link[([parent->object compare:anObject] == NSOrderedAscending)] = current;
+		
+		[self _reorient:anObject]; // one last reorientation check...
 	}
-	
-	++count;
-	current = malloc(kCHTreeNodeSize);
-	current->object = [anObject retain];
-	current->left = sentinel;
-	current->right = sentinel;
-	
-	parent->link[([parent->object compare:anObject] == NSOrderedAscending)] = current;
-	
-	// one last reorientation check...
-	[self _reorient:anObject];
 }
 
 - (void) removeObject:(id)anObject {

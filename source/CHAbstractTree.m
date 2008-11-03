@@ -60,7 +60,8 @@ NSUInteger kCHTreeListNodeSize = sizeof(CHTreeListNode);
 }
 
 - (id) initWithArray:(NSArray*)anArray {
-	// Call the concrete subclass' -init, which calls [super init] declared here
+	// Allow concrete child class to have a chance to initialize its own state
+	// Calls the concrete subclass' -init, which calls [super init] declared here
 	if ([self init] == nil) return nil;
 	for (id anObject in anArray)
 		[self addObject:anObject];
@@ -70,24 +71,23 @@ NSUInteger kCHTreeListNodeSize = sizeof(CHTreeListNode);
 #pragma mark <NSCoding> methods
 
 /**
- Returns an object initialized from data in a given unarchiver.
+ Returns an object initialized from data in a given keyed unarchiver.
  
- @param decoder An unarchiver object.
+ @param decoder An keyed unarchiver object.
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	// Gives concrete child class a chance to initialize its own state
+	// Allow concrete child class to have a chance to initialize its own state
+	// Calls the concrete subclass' -init, which calls [super init] declared here
 	if ([self init] == nil) return nil;
-	count = 0;
-	mutations = 0;
 	for (id anObject in [decoder decodeObjectForKey:@"objects"])
 		[self addObject:anObject];
 	return self;
 }
 
 /**
- Encodes the receiver using a given archiver.
+ Encodes the receiver using a given keyed archiver.
  
- @param encoder An archiver object.
+ @param encoder An keyed archiver object.
  */
 - (void) encodeWithCoder:(NSCoder *)encoder {
 	NSEnumerator *e = [self objectEnumeratorWithTraversalOrder:CHTraverseLevelOrder];
@@ -96,6 +96,18 @@ NSUInteger kCHTreeListNodeSize = sizeof(CHTreeListNode);
 
 #pragma mark <NSCopying> methods
 
+/**
+ Returns a new instance that's a copy of the receiver. Invoked automatically by
+ the default <code>-copy</code> method inherited from NSObject.
+ 
+ @param zone Identifies an area of memory from which to allocate the new
+        instance. If zone is <code>NULL</code>, the new instance is allocated
+        from the default zone. (<code>-copy</code> invokes with a NULL param.)
+ 
+ The returned object is implicitly retained by the sender, who is responsible
+ for releasing it. Since the nature of storing data in trees is always the same,
+ copies returned by this method are always mutable.
+ */
 - (id) copyWithZone:(NSZone *)zone {
 	id<CHTree> newTree = [[[self class] alloc] init];
 	NSEnumerator *e = [self objectEnumeratorWithTraversalOrder:CHTraverseLevelOrder];
@@ -333,7 +345,7 @@ NSUInteger kCHTreeListNodeSize = sizeof(CHTreeListNode);
 		CHMutatedCollectionException([self class], _cmd);
 	
 	switch (traversalOrder) {
-		case CHTraverseAscending:
+		case CHTraverseAscending: {
 			if (stack == NULL && current == sentinelNode) {
 				[collection release];
 				collection = nil;
@@ -346,11 +358,12 @@ NSUInteger kCHTreeListNodeSize = sizeof(CHTreeListNode);
 			}
 			current = CHTreeList_TOP; // Save top node for return value
 			CHTreeList_POP();
-			tempObject = current->object;
+			id tempObject = current->object;
 			current = current->right;
 			return tempObject;
+		}
 			
-		case CHTraverseDescending:
+		case CHTraverseDescending: {
 			if (stack == NULL && current == sentinelNode) {
 				[collection release];
 				collection = nil;
@@ -363,11 +376,12 @@ NSUInteger kCHTreeListNodeSize = sizeof(CHTreeListNode);
 			}
 			current = CHTreeList_TOP; // Save top node for return value
 			CHTreeList_POP();
-			tempObject = current->object;
+			id tempObject = current->object;
 			current = current->left;
 			return tempObject;
+		}
 			
-		case CHTraversePreOrder:
+		case CHTraversePreOrder: {
 			current = CHTreeList_TOP;
 			CHTreeList_POP();
 			if (current == NULL) {
@@ -380,8 +394,9 @@ NSUInteger kCHTreeListNodeSize = sizeof(CHTreeListNode);
 			if (current->left != sentinelNode)
 				CHTreeList_PUSH(current->left);
 			return current->object;
+		}
 			
-		case CHTraversePostOrder:
+		case CHTraversePostOrder: {
 			// This algorithm from: http://www.johny.ca/blog/archives/05/03/04/
 			if (stack == NULL && current == sentinelNode) {
 				[collection release];
@@ -401,13 +416,14 @@ NSUInteger kCHTreeListNodeSize = sizeof(CHTreeListNode);
 				}
 				else {
 					CHTreeList_POP(); // ignore the null pad
-					tempObject = CHTreeList_TOP->object;
+					id tempObject = CHTreeList_TOP->object;
 					CHTreeList_POP();
 					return tempObject;
 				}				
 			}
+		}
 			
-		case CHTraverseLevelOrder:
+		case CHTraverseLevelOrder: {
 			current = CHTreeList_FRONT;
 			if (current == NULL) {
 				[collection release];
@@ -420,6 +436,7 @@ NSUInteger kCHTreeListNodeSize = sizeof(CHTreeListNode);
 			if (current->right != sentinelNode)
 				CHTreeList_ENQUEUE(current->right);
 			return current->object;
+		}
 	}
 	return nil;
 }

@@ -110,7 +110,7 @@ typedef enum {
  Initialize a tree with the contents of an array. Objects are added to the tree
  in the order they occur in the array.
  
- @param anArray An array containing object with which to populate a new deque.
+ @param anArray An array containing object with which to populate a new tree.
  */
 - (id) initWithArray:(NSArray*)anArray;
 
