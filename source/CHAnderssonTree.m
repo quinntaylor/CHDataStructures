@@ -147,8 +147,8 @@
 	}
 	
 	// Walk back up the path and rebalance as we go
-	BOOL isRightChild;
 	// Note that 'parent' always has the correct value coming into the loop
+	BOOL isRightChild;
 	while (current != NULL && stack->next != NULL) {
 		current = parent;
 		CHTreeList_POP();
