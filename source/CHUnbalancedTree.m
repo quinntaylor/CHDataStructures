@@ -75,26 +75,27 @@
 	if (current == sentinel)
 		return;
 
-	if (current->left != sentinel && current->right != sentinel) {
+	[current->object release]; // Object must be released in any case
+	--count;
+	++mutations;
+	if (current->left == sentinel || current->right == sentinel) {
+		// One or both of the child pointers are null, so removal is simpler
+		parent->link[parent->right == current]
+			= current->link[current->left == sentinel];
+		free(current);
+	} else {
 		// The most complex case: removing a node with 2 non-null children
 		// (Replace object with the leftmost object in the right subtree.)
-		CHTreeNode *replacement = current->right;
 		parent = current;
+		CHTreeNode *replacement = current->right;
 		while (replacement->left != sentinel) {
 			parent = replacement;
 			replacement = replacement->left;
 		}
-		[current->object release];
 		current->object = replacement->object;
 		parent->link[parent->right == replacement] = replacement->right;
 		free(replacement);
-	} else {
-		// One or both of the child pointers are null, so removal is simpler
-		parent->link[parent->right == current] = current->link[current->left == sentinel];
-		free(current);
 	}
-	++mutations;
-	--count;
 }
 
 - (NSString*) debugDescription {
