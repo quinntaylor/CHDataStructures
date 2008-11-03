@@ -38,36 +38,6 @@
 		++(node->level); \
 	} }
 
-/**
- Skew primitive for AA-trees.
- @param node The node that roots the sub-tree.
- */
-CHTreeNode* _skew(CHTreeNode *node) {
-	if (node->left->level == node->level) {
-		CHTreeNode *other = node->left;
-		node->left = other->right;
-		other->right = node;
-		return other;
-	}
-	return node;
-}
-
-/**
- Split primitive for AA-trees.
- @param node The node that roots the sub-tree.
- */
-CHTreeNode* _split(CHTreeNode *node) {
-	if (node->right->right->level == node->level)
-	{
-		CHTreeNode *other = node->right;
-		node->right = other->left;
-		other->left = node;
-		other->level++;
-		return other;
-	}
-	return node;
-}
-
 #pragma mark -
 
 @implementation CHAnderssonTree
@@ -134,83 +104,88 @@ CHTreeNode* _split(CHTreeNode *node) {
 - (void) removeObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
-	/*
-	sentinel->object = anObject;
 	
-	CHTreeNode *current = header->right;
-	CHTreeNode *nodeToDelete = NULL;
+	CHTreeNode *parent, *current = header;
 	CHTreeListNode *stack = NULL;
 	CHTreeListNode *tmp;
+
+	sentinel->object = anObject; // Assure that we stop at a leaf if not found.
 	NSComparisonResult comparison;
-	
-	while (current != sentinel) {
+	while (comparison = [current->object compare:anObject]) {
 		CHTreeList_PUSH(current);
-		comparison = [(current->object) compare:anObject];
-		if (comparison == NSOrderedDescending)
-			current = current->left;
-		else  {
-			if (comparison == NSOrderedSame)
-				nodeToDelete = current;
-			current = current->right;
-		}
+		current = current->link[comparison == NSOrderedAscending]; // R on YES
 	}
-	if (nodeToDelete == sentinel) {  // the specified object was not found
+	// Exit if the specified node was not found in the tree.
+	if (current == sentinel) {
 		while (stack != NULL)
-			CHTreeList_POP();  // deallocate wrappers for nodes pushed to the stack
+			CHTreeList_POP();  // deallocate wrappers for nodes on saved path
 		return;
 	}
-
-	current = CHTreeList_TOP;
-	CHTreeList_POP();
-	nodeToDelete->object = current->object;
-	nodeToDelete->level = current->level;
-	// TODO: Is this where the malloced struct for the node needs to be freed?
-	current = current->right;
-			
-	CHTreeNode *previous = NULL;
-	while (stack != NULL)  {
-		current = CHTreeList_TOP;
-		CHTreeList_POP();
-		if (previous != sentinel) {
-			if ([current->object compare:previous->object] == NSOrderedAscending)
-				current->right = previous;
-			else
-				current->left = previous;
-		}
-		if ((current->left != sentinel && current->left->level < current->level - 1) || 
-			(current->right != sentinel && current->right->level < current->level - 1)) 
-		{
-			--(current->level);
-			if (current->right->level > current->level)
-				current->right->level = current->level;
-			current               = _skew(current);
-			current->right        = _skew(current->right);
-			current->right->right = _skew(current->right->right);
-			current               = _split(current);
-			current->right        = _split(current->right);
-		}
-		previous = current;
-	}
-	header->right = current;
+	
+	[current->object release]; // Object must be released in any case
 	--count;
 	++mutations;
-	*/
+	if (current->left == sentinel || current->right == sentinel) {
+		// Single/zero child case -- replace node with non-nil child (if exists)
+		parent = CHTreeList_TOP;
+		parent->link[parent->right == current]
+			= current->link[current->left == sentinel];
+		free(current);
+	} else {
+		// Two child case -- replace with minimum object in right subtree
+		CHTreeList_PUSH(current); // Need to start here when rebalancing
+		parent = current;
+		CHTreeNode *replacement = current->right;
+		while (replacement->left != sentinel) {
+			CHTreeList_PUSH(parent = replacement);
+			replacement = replacement->left;
+		}
+		// Grab object from replacement node, steal its right child, deallocate
+		current->object = replacement->object;
+		parent->link[parent->right == replacement] = replacement->right;
+		free(replacement);
+	}
+	
+	// Walk back up the path and rebalance as we go
+	BOOL isRightChild;
+	// Note that 'parent' always has the correct value coming into the loop
+	while (current != NULL && stack->next != NULL) {
+		current = parent;
+		CHTreeList_POP();
+		parent = CHTreeList_TOP;
+		isRightChild = (parent->right == current);
+		
+		if (current->left->level < current->level-1 ||
+			current->right->level < current->level-1)
+		{
+			if (current->right->level > --(current->level)) {
+				current->right->level = current->level;
+			}
+			skew(current);
+			skew(current->right);
+			skew(current->right->right);
+			split(current);
+			split(current->right);
+		}
+		parent->link[isRightChild] = current;
+	}
 }
 
 - (NSString*) debugDescription {
 	NSMutableString *description = [NSMutableString stringWithFormat:
 	                                @"<%@: 0x%x> = {\n", [self class], self];
 	CHTreeNode *current;
-	CHTreeListNode *queue = NULL, *queueTail = NULL, *tmp;
-	CHTreeList_ENQUEUE(header->right);
+	CHTreeListNode *stack = NULL, *tmp;
+	CHTreeList_PUSH(header->right);
 	
-	while (current != sentinel && queue != NULL) {
-		current = CHTreeList_FRONT;
-		CHTreeList_DEQUEUE();
-		if (current->left != sentinel)
-			CHTreeList_ENQUEUE(current->left);
+	sentinel->object = nil;
+	while (current != sentinel && stack != NULL) {
+		current = CHTreeList_TOP;
+		CHTreeList_POP();
 		if (current->right != sentinel)
-			CHTreeList_ENQUEUE(current->right);
+			CHTreeList_PUSH(current->right);
+		if (current->left != sentinel)
+			CHTreeList_PUSH(current->left);
 		// Append entry for the current node, including color and children
 		[description appendFormat:@"\t%d : %@ -> %@ and %@\n",
 		 current->level, current->object,
