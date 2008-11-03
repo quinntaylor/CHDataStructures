@@ -49,6 +49,7 @@
 
 /* Begin PBXBuildFile section */
 		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
+		E400FCF40EBE15F300AC172B /* CHAVLTreeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E400FCF30EBE15F300AC172B /* CHAVLTreeTest.m */; };
 		E40D18060E94519F007F39D8 /* CHAnderssonTreeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D18050E94519F007F39D8 /* CHAnderssonTreeTest.m */; };
 		E40D18260E9452BB007F39D8 /* CHMutableArrayDequeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D181B0E9452BB007F39D8 /* CHMutableArrayDequeTest.m */; };
 		E40D18270E9452BB007F39D8 /* CHRedBlackTreeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D181C0E9452BB007F39D8 /* CHRedBlackTreeTest.m */; };
@@ -188,6 +189,7 @@
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = resources/English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* CHDataStructures.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CHDataStructures.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E400FCF30EBE15F300AC172B /* CHAVLTreeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHAVLTreeTest.m; path = test/CHAVLTreeTest.m; sourceTree = "<group>"; };
 		E40D18050E94519F007F39D8 /* CHAnderssonTreeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHAnderssonTreeTest.m; path = test/CHAnderssonTreeTest.m; sourceTree = "<group>"; };
 		E40D181B0E9452BB007F39D8 /* CHMutableArrayDequeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHMutableArrayDequeTest.m; path = test/CHMutableArrayDequeTest.m; sourceTree = "<group>"; };
 		E40D181C0E9452BB007F39D8 /* CHRedBlackTreeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHRedBlackTreeTest.m; path = test/CHRedBlackTreeTest.m; sourceTree = "<group>"; };
@@ -388,10 +390,11 @@
 		E473C9A70E933350005CA997 /* Unit Tests */ = {
 			isa = PBXGroup;
 			children = (
-				E4B1AD170EB580BC00B43ADA /* CHAbstractTreeTest.m */,
 				E4A720C50EA78DCE00E0AC21 /* CHAbstractListCollectionTest.m */,
 				E4A720CA0EA78DFB00E0AC21 /* CHAbstractMutableArrayCollectionTest.m */,
+				E4B1AD170EB580BC00B43ADA /* CHAbstractTreeTest.m */,
 				E40D18050E94519F007F39D8 /* CHAnderssonTreeTest.m */,
+				E400FCF30EBE15F300AC172B /* CHAVLTreeTest.m */,
 				E4D499690E93CD1300434CBA /* CHDoublyLinkedListTest.m */,
 				E40D18710E94577F007F39D8 /* CHListDequeTest.m */,
 				E40D18210E9452BB007F39D8 /* CHListQueueTest.m */,
@@ -660,6 +663,7 @@
 				E4A720C60EA78DCE00E0AC21 /* CHAbstractListCollectionTest.m in Sources */,
 				E4A720CB0EA78DFB00E0AC21 /* CHAbstractMutableArrayCollectionTest.m in Sources */,
 				E4B1AD180EB580BC00B43ADA /* CHAbstractTreeTest.m in Sources */,
+				E400FCF40EBE15F300AC172B /* CHAVLTreeTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
