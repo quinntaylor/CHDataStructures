@@ -1,0 +1,6 @@
+// Prefix header for all source files of the 'CHDataStructures' framework.
+
+#ifdef __OBJC__
+    #import <Foundation/Foundation.h>
+	#import "Util.h"
+#endif
