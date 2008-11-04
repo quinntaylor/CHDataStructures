@@ -63,7 +63,7 @@
 
 #pragma mark <NSFastEnumeration>
 
-// This overridden method returns the array contents in reverse order, like a stack.
+// Overriddes parent behavior to return array contents in reverse order
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len
@@ -71,7 +71,6 @@
 	if (state->state == 0)
 		state->extra[4] = (unsigned long) [array reverseObjectEnumerator];
 	NSEnumerator *enumerator = (NSEnumerator*) state->extra[4];
-	// Currently (in Leopard) the NSEnumerators from NSArray only return 1 each time
 	return [enumerator countByEnumeratingWithState:state objects:stackbuf count:len];
 }
 

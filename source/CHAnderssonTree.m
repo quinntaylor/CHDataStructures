@@ -71,7 +71,7 @@
 		current->object = anObject;
 		// No need to rebalance up the path since we didn't modify the structure
 		while (stack != NULL)
-			CHTreeList_POP();  // deallocate wrappers for nodes pushed to the stack		
+			CHTreeList_POP; // deallocate wrappers for nodes pushed to the stack		
 		return;
 	} else {
 		current = malloc(kCHTreeNodeSize);
@@ -82,7 +82,7 @@
 		++count;
 		// Link from parent as the proper child, based on last comparison
 		parent = CHTreeList_TOP;
-		CHTreeList_POP();
+		CHTreeList_POP;
 		comparison = [parent->object compare:anObject];
 		parent->link[comparison == NSOrderedAscending] = current; // R if YES
 	}
@@ -97,7 +97,7 @@
 		// Move to the next node up the path to the root
 		current = parent;
 		parent = CHTreeList_TOP;
-		CHTreeList_POP();
+		CHTreeList_POP;
 	}
 }
 
@@ -118,7 +118,7 @@
 	// Exit if the specified node was not found in the tree.
 	if (current == sentinel) {
 		while (stack != NULL)
-			CHTreeList_POP();  // deallocate wrappers for nodes on saved path
+			CHTreeList_POP;  // deallocate wrappers for nodes on saved path
 		return;
 	}
 	
@@ -151,7 +151,7 @@
 	BOOL isRightChild;
 	while (current != NULL && stack->next != NULL) {
 		current = parent;
-		CHTreeList_POP();
+		CHTreeList_POP;
 		parent = CHTreeList_TOP;
 		isRightChild = (parent->right == current);
 		
@@ -181,7 +181,7 @@
 	sentinel->object = nil;
 	while (current != sentinel && stack != NULL) {
 		current = CHTreeList_TOP;
-		CHTreeList_POP();
+		CHTreeList_POP;
 		if (current->right != sentinel)
 			CHTreeList_PUSH(current->right);
 		if (current->left != sentinel)

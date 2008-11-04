@@ -120,9 +120,9 @@
 - (id) lastObject;
 
 /**
- Returns an array containing the objects in this linked list, in the same order.
+ Returns an array with the objects in this linked list, ordered front to back.
  
- @return An array containing the objects in this linked list. If the list is empty,
+ @return An array with the objects in this linked list. If the list is empty,
          the array is also empty.
  */
 - (NSArray*) allObjects;
@@ -201,8 +201,8 @@
  
  @param anObject The object to remove from the list.
 
- If the list does not contain <i>anObject</i>, the method has no effect (although it
- does incur the overhead of searching the contents).
+ If the list does not contain <i>anObject</i>, there is no effect, although it
+ does incur the overhead of searching the contents.
  
  If you want to remove only the first object which matches <i>anObject</i>, use
  #indexOfObject: and #removeObjectAtIndex: instead.
@@ -214,8 +214,8 @@
  
  @param anObject The object to remove from the list.
  
- If the list does not contain <i>anObject</i>, the method has no effect (although it
- does incur the overhead of searching the contents).
+ If the list does not contain <i>anObject</i>, there is no effect, although it
+ does incur the overhead of searching the contents.
  
  If you want to remove only the first object which matches <i>anObject</i>, use
  #indexOfObjectIdenticalTo: and #removeObjectAtIndex: instead.

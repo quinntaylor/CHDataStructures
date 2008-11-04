@@ -43,27 +43,26 @@ typedef enum {
 
 /**
  A <a href="http://en.wikipedia.org/wiki/Tree_(data_structure)">tree</a> protocol
- which specifes an interface for N-ary tree structures. Defines methods to
- support insertion, removal, search, and element enumeration. This protocol works for
- trees where nodes have any number of children, not just binary trees. Although any
- conforming class must implement all these methods, they may document that certain of
- them are unsupported, and/or raise exceptions when they are called.
+ which specifes an interface for N-ary search tree structures. Defines methods to
+ support insertion, removal, search, and element enumeration. This protocol works
+ for trees where nodes have any number of children, not just binary trees. Though
+ any conforming class must implement all these methods, they may document that
+ certain of them are unsupported, and/or raise exceptions when they are called.
  
- Objects in a Tree are inserted according to their sorted order, so they must respond
- to the <code>compare:</code> selector, which accepts another object and returns one
- of <code>{NSOrderedAscending | NSOrderedSame | NSOrderedDescending}</code> as the
- receiver is less than, equal to, or greater than the argument, respectively. (See
- <code>NSComparisonResult</code> in NSObjCRuntime.h for details.)
+ Objects in a CHTree are stored according to their sorted order, so they must
+ respond to the <code>compare:</code> selector, which accepts another object and
+ returns one of <code>{NSOrderedAscending | NSOrderedSame | NSOrderedDescending}
+ </code> as the receiver is less than, equal to, or greater than the argument.
+ (See <code>NSComparisonResult</code> in NSObjCRuntime.h for details.)
  
- There are several methods for visiting each node in a tree data structure, known as
- <a href="http://en.wikipedia.org/wiki/Tree_traversal">tree traversal</a> techniques.
- (Traversal applies to N-ary trees, not just binary trees.) Whereas linked lists and
- arrays have one or two logical means of stepping through the elements, because trees
- are branching structures, there are many different ways to choose how to visit all
- of the nodes. There are 5 most commonly-used tree traversal methods; of these, 4 are
- <a href="http://en.wikipedia.org/wiki/Depth-first_traversal">depth-first</a> and 1
- is <a href="http://en.wikipedia.org/wiki/Breadth-first_traversal">breadth-first</a>.
- These methods are described below:
+ There are several methods for visiting each node in a tree data structure, known
+ as <a href="http://en.wikipedia.org/wiki/Tree_traversal">tree traversal</a>
+ techniques. (Traversal applies to N-ary trees, not just binary trees.) Whereas
+ linked lists and arrays have one or two logical means of stepping through the
+ elements, because trees are branching structures, there are many different ways
+ to choose how to visit all of the nodes. There are 5 most commonly-used tree
+ traversal methods; of these, 4 are depth first and 1 is breadth-first. These
+ methods are described below:
  
  <table align="center" width="100%" border="0" cellpadding="0">
  <tr>
@@ -87,7 +86,7 @@ typedef enum {
  </td></tr>
  </table>
  
- These orderings correspond to the following constants, also declared in CHTree.h:
+ These orderings correspond to the following constants, respectively:
  
  - <code>CHTraverseAscending</code>
  - <code>CHTraverseDescending</code>
@@ -95,9 +94,9 @@ typedef enum {
  - <code>CHTraversePostOrder</code>
  - <code>CHTraverseLevelOrder</code>
  
- These constants are used primarily with @link #objectEnumeratorWithTraversalOrder:
- -[Tree objectEnumeratorWithTraversalOrder:]@endlink to obtain an NSEnumerator that
- provides objects from the tree by traversing using the specified order.
+ These constants are used primarily with CHTreeEnumerator (obtained via @link
+ #objectEnumeratorWithTraversalOrder: -objectEnumeratorWithTraversalOrder:
+ \endlink) to access objects from a tree by traversing it in a specified order.
  */
 @protocol CHTree <NSObject, NSCoding, NSCopying, NSFastEnumeration>
 
@@ -116,22 +115,22 @@ typedef enum {
 
 /**
  Add an object to the tree. Ordering is based on an object's response to the
- <code>compare:</code> message. Since no duplicates are allowed, if the tree already
- has an object for which <code>compare:</code> returns <code>NSOrderedSame</code>,
- the old object is released and replaced by the new object.
+ <code>compare:</code> message. Since no duplicates are allowed, if the tree
+ already contains an object for which a <code>compare:</code> message returns
+ <code>NSOrderedSame</code>, that object is released and replaced by @a anObject.
  
- @param anObject The object to add to the queue; must not be <code>nil</code>, or an
-        <code>NSInvalidArgumentException</code> will be raised.
+ @param anObject The object to add to the queue; must not be <code>nil</code>,
+        or an <code>NSInvalidArgumentException</code> will be raised.
  */
 - (void) addObject:(id)anObject;
 
 /**
- Determines if the tree contains a given object (or one identical to it). Matches are
- based on an object's response to the <code>isEqual:</code> message.
+ Determines if the tree contains a given object (or one identical to it).
+ Matches are based on an object's response to the <code>isEqual:</code> message.
 
  @param anObject The object to test for membership in the queue.
- @return <code>YES</code> if <i>anObject</i> is present in the queue, <code>NO</code>
-         if it not present or <code>nil</code>.
+ @return <code>YES</code> if <i>anObject</i> is present in the queue,
+         <code>NO</code> if it not present or <code>nil</code>.
  */
 - (BOOL) containsObject:(id)anObject;
 
@@ -158,7 +157,7 @@ typedef enum {
  Return the object for which <code>compare:</code> returns <code>NSOrderedSame</code>.
  
  @param anObject The object to be matched and located in the tree.
- @return An object which matches @a anObject, or <code>nil</code> if none is found.
+ @return The object which matches @a anObject, or <code>nil</code> if none is found.
  */
 - (id) findObject:(id)anObject;
 
@@ -194,20 +193,20 @@ typedef enum {
 - (NSArray*) allObjectsWithTraversalOrder:(CHTraversalOrder)order;
 
 /**
- Returns an enumerator that accesses each object using the specified traversal order.
- The enumerator returned should never be nil; if the tree is empty, the enumerator
- will always return nil for -nextObject, and an empty array for -allObjects.
+ Returns an enumerator that accesses each object using the specified traversal
+ order. The enumerator returned should never be nil; if the tree is empty, the
+ enumerator will return nil for -nextObject, and an empty array for -allObjects.
  
- NOTE: When you use an enumerator, you must not modify the tree during enumeration.
+ NOTE: When using an enumerator, you must not modify the tree during enumeration.
  
- @param order The order in which an enumerator should traverse the nodes in the tree.
+ @param order The order in which an enumerator should traverse nodes in the tree.
  */
 - (NSEnumerator*) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order;
 
 /**
  Returns an enumerator that accesses each object in the tree in ascending order.
  
- NOTE: When you use an enumerator, you must not modify the tree during enumeration.
+ NOTE: When using an enumerator, you must not modify the tree during enumeration.
  
  @see @link #objectEnumeratorWithTraversalOrder:
       -[Tree objectEnumeratorWithTraversalOrder:] @endlink
@@ -217,7 +216,7 @@ typedef enum {
 /**
  Returns an enumerator that accesses each object in the tree in descending order.
  
- NOTE: When you use an enumerator, you must not modify the tree during enumeration.
+ NOTE: When using an enumerator, you must not modify the tree during enumeration.
  
  @see @link #objectEnumeratorWithTraversalOrder:
       -[Tree objectEnumeratorWithTraversalOrder:] @endlink

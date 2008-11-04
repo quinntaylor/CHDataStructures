@@ -31,7 +31,7 @@
  This class also contains concrete implementations for the following methods:
  
  <pre><code>
- - (id) initWithArray:
+ -(id) initWithArray:
  -(NSUInteger) count
  -(NSString*) description
  -(NSEnumerator*) objectEnumerator
@@ -47,8 +47,8 @@
  -(id) objectAtIndex:
  </code></pre>
 
- Rather than enforcing that this class be abstract, the contract is implied. In any
- case, instances of this class will be useless since there is no way to add objects.
+ Rather than enforcing that this class be abstract, the contract is implied. In
+ any case, an instance would be useless since there is no way to add objects.
  */
 @interface CHAbstractMutableArrayCollection : NSObject
 	<NSCoding, NSCopying, NSFastEnumeration>
@@ -56,9 +56,6 @@
 	/** The array used for storing the contents of the data collection. */
 	NSMutableArray *array;
 }
-
-// The methods below are undocumented so they don't cause duplicated documentation.
-// For details, see the subclasses of this class, or CHDeque, CHQueue, and CHStack.
 
 - (id) initWithArray:(NSArray*)anArray;
 - (NSUInteger) count;
@@ -73,6 +70,5 @@
 - (NSUInteger) indexOfObject:(id)anObject;
 - (NSUInteger) indexOfObjectIdenticalTo:(id)anObject;
 - (id) objectAtIndex:(NSUInteger)index;
-
 
 @end

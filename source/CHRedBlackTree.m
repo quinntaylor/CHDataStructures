@@ -230,7 +230,7 @@ CHTreeNode* doubleRotate(CHTreeNode *node, BOOL goingRight) {
 	
 	while (currentNode != sentinel && queue != NULL) {
 		currentNode = CHTreeList_FRONT;
-		CHTreeList_DEQUEUE();
+		CHTreeList_DEQUEUE;
 		if (currentNode->left != sentinel)
 			CHTreeList_ENQUEUE(currentNode->left);
 		if (currentNode->right != sentinel)

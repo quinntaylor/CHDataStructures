@@ -28,7 +28,7 @@
  <a href="http://eternallyconfuzzled.com/">Julienne Walker</a>. Method names have
  been changed to match the APIs of existing Cocoa collections provided by Apple.
  
- Even though the tree is never balanced when items are added or removed, access is
+ Even though the tree is not balanced when items are added or removed, access is
  <b>at worst</b> linear if the tree essentially degenerates into a linked list.
  This class is fast, and without stack risk because it works without recursion.
  */

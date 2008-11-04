@@ -107,7 +107,7 @@
 	
 	while (current != sentinel && queue != NULL) {
 		current = CHTreeList_FRONT;
-		CHTreeList_DEQUEUE();
+		CHTreeList_DEQUEUE;
 		if (current->left != sentinel)
 			CHTreeList_ENQUEUE(current->left);
 		if (current->right != sentinel)

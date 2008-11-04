@@ -62,7 +62,7 @@ typedef struct CHTreeListNode {
 
 #define CHTreeList_PUSH(o) \
         {tmp=malloc(kCHTreeListNodeSize);tmp->node=o;tmp->next=stack;stack=tmp;}
-#define CHTreeList_POP() \
+#define CHTreeList_POP \
         {if(stack!=NULL){tmp=stack;stack=stack->next;free(tmp);}}
 #define CHTreeList_TOP \
         ((stack!=NULL)?stack->node:NULL)
@@ -73,14 +73,13 @@ typedef struct CHTreeListNode {
         {tmp=malloc(kCHTreeListNodeSize);tmp->node=o;tmp->next=NULL;\
         if(queue==NULL){queue=tmp;queueTail=tmp;}\
         queueTail->next=tmp;queueTail=queueTail->next;}
-#define CHTreeList_DEQUEUE() \
+#define CHTreeList_DEQUEUE \
         {if(queue!=NULL){tmp=queue;queue=queue->next;free(tmp);}\
         if(queue==tmp)queue=NULL;if(queueTail==tmp)queueTail=NULL;}
 #define CHTreeList_FRONT \
         ((queue!=NULL)?queue->node:NULL)
 
 #pragma mark -
-
 
 /**
  An abstract CHTree implementation with some default method implementations. The
@@ -109,6 +108,7 @@ typedef struct CHTreeListNode {
 }
 @end
 
+#pragma mark -
 
 /**
  An NSEnumerator for traversing a CHAbstractTree subclass in a specified order.
@@ -130,15 +130,15 @@ typedef struct CHTreeListNode {
 @interface CHTreeEnumerator : NSEnumerator
 {
 	CHTraversalOrder traversalOrder; /**< Order in which to traverse the tree. */
-	id<CHTree> collection;
-	CHTreeNode *current;
-	CHTreeNode *sentinelNode;  /**< The sentinel used in the tree being traversed. */
-	CHTreeListNode *stack;     /**< Pointer to top of a stack for most traversals. */
-	CHTreeListNode *queue;     /**< Pointer to head of a queue for level-order. */
-	CHTreeListNode *queueTail; /**< Pointer to tail of a queue for level-order. */
+	id<CHTree> collection; /**< The source of enumerated objects. */
+	CHTreeNode *current; /**< The next node to be enumerated. */
+	CHTreeNode *sentinelNode;  /**< Sentinel used in the tree being traversed. */
+	CHTreeListNode *stack; /**< Pointer to top of a stack for most traversals. */
+	CHTreeListNode *queue;     /**< Pointer to head of queue for level-order. */
+	CHTreeListNode *queueTail; /**< Pointer to tail of queue for level-order. */
 	CHTreeListNode *tmp;       /**< Temp node for stack and queue operations. */
 	unsigned long mutationCount; /**< Stores the collection's initial mutation. */
-	unsigned long *mutationPtr;	
+	unsigned long *mutationPtr; /**< Pointer for checking changes in mutation. */
 }
 
 /**
@@ -177,6 +177,7 @@ typedef struct CHTreeListNode {
 
 @end
 
+#pragma mark -
 
 /**
  A dummy object that resides in the header node for a tree. Using a header node

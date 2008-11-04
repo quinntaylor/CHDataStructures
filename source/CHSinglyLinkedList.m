@@ -25,29 +25,29 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
  An NSEnumerator for traversing a CHSinglyLinkedList from front to back.
  */
 @interface CHSinglyLinkedListEnumerator : NSEnumerator {
-	CHSinglyLinkedList *collection;
-	CHSinglyLinkedListNode *current; /**< The next node that is to be enumerated. */
-	unsigned long mutationCount;
-	unsigned long *mutationPtr;
+	CHSinglyLinkedList *collection; /**< The source of enumerated objects. */
+	CHSinglyLinkedListNode *current; /**< The next node to be enumerated. */
+	unsigned long mutationCount; /**< Stores the collection's initial mutation. */
+	unsigned long *mutationPtr; /**< Pointer for checking changes in mutation. */
 }
 
 /**
- Create an enumerator which traverses a given list in the specified order.
+ Create an enumerator which traverses a singly-linked list from front to back.
  
- @param list The linked list collection being enumerated. This collection is to be
-             retained while the enumerator has not exhausted all its objects.
+ @param list The linked list collection being enumerated. This collection is to
+             be retained while the enumerator has not exhausted all its objects.
  @param startNode The node at which to begin the enumeration.
- @param mutations A pointer to the collection's count of mutations, for invalidation.
+ @param mutations A pointer to the collection's mutation count, for invalidation.
  */
 - (id) initWithList:(CHSinglyLinkedList*)list
           startNode:(CHSinglyLinkedListNode*)startNode
     mutationPointer:(unsigned long*)mutations;
 
 /**
- Returns the next object from the collection being enumerated.
+ Returns the next object in the collection being enumerated.
  
- @return The next object from the collection being enumerated, or <code>nil</code>
- when all objects have been enumerated.
+ @return The next object in the collection being enumerated, or <code>nil</code>
+         when all objects have been enumerated.
  */
 - (id) nextObject;
 
@@ -73,7 +73,7 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 {
 	if ([super init] == nil) return nil;
 	collection = (startNode != NULL) ? collection = [list retain] : nil;
-	current = startNode; // If startNode is NULL, nothing will be returned, anyway.
+	current = startNode; // If startNode is NULL, both methods will return nil.
 	mutationCount = *mutations;
 	mutationPtr = mutations;
 	return self;	
@@ -196,7 +196,7 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
                                      count:(NSUInteger)len
 {
 	CHSinglyLinkedListNode *currentNode;
-	// If this is the first call, start at head, otherwise start at last saved node
+	// On the first call, start at head, otherwise start at last saved node
 	if (state->state == 0) {
 		currentNode = head;
 		state->itemsPtr = stackbuf;
@@ -209,7 +209,7 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 		currentNode = (CHSinglyLinkedListNode*) state->state;
 	}
 	
-	// Accumulate objects from the list until we reach the tail, or the maximum limit
+	// Accumulate objects from the list until we reach the tail, or the maximum
 	NSUInteger batchCount = 0;
 	while (currentNode != NULL && batchCount < len) {
 		stackbuf[batchCount] = currentNode->object;
@@ -439,7 +439,7 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 		CHSinglyLinkedListNode *node, *temp;
 		NSUInteger nodeIndex;
 		findNodeBeforeIndex(index);
-		removeNode(node); // ++mutations, assigns the node being removed to 'temp'
+		removeNode(node); // ++mutations, assigns the node's address to 'temp'
 		if (tail == temp)
 			tail = node;
 	}

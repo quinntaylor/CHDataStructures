@@ -47,8 +47,8 @@
  -(id) objectAtIndex:
  </code></pre>
 
- Rather than enforcing that this class be abstract, the contract is implied. In any
- case, instances of this class will be useless since there is no way to add objects.
+ Rather than enforcing that this class be abstract, the contract is implied. In
+ any case, an instance would be useless since there is no way to add objects.
  */
 @interface CHAbstractListCollection : NSObject
 	<NSCoding, NSCopying, NSFastEnumeration>
@@ -58,12 +58,12 @@
 }
 
 /**
- Create a new collection with the contents of the given list.
+ Create a new collection with the contents of the given list. Intended only for
+ use by -copyWithZone: for making internal copies.
+ 
+ @param aList A CHLinkedList containing objects to be included in this list.
  */
 - (id) initWithList:(id<CHLinkedList>)aList;
-
-// These methods are undocumented here so they don't cause duplicated documentation.
-// For details, see the subclasses of this class, or CHDeque, CHQueue, and CHStack.
 
 - (id) initWithArray:(NSArray*)anArray;
 - (NSUInteger) count;

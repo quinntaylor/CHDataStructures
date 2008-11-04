@@ -107,8 +107,8 @@
  
  @param anObject The object to be removed from the heap.
  
- If the heap does not contain <i>anObject</i>, the method has no effect (although it
- does incur the overhead of searching the contents).
+ If the heap does not contain <i>anObject</i>, there is no effect, although it
+ does incur the overhead of searching the contents.
  */
 - (void) removeObject:(id)anObject;
 
@@ -160,7 +160,7 @@
  
  @return An enumerator that accesses each object in the heap in sorted order.
  
- NOTE: When you use an enumerator, you must not modify the heap during enumeration.
+ NOTE: When using an enumerator, you must not modify the heap during enumeration.
  
  @see #allObjects
  */

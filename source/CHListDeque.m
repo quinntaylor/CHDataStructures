@@ -20,11 +20,11 @@
 #import "CHListDeque.h"
 
 /**
- This implementation uses a CHDoublyLinkedList, since a deque supports insertion and
- removal at both ends, and removing from the tail of a singly-linked list is an O(n)
- operation. The trade-off to this speed increase is marginally higher storage cost,
- and marginally slower operations due to handling the reverse links. This also allows
- for reverse enumeration of objects in the deque.
+ This implementation uses a CHDoublyLinkedList, since a deque supports insertion
+ and removal at both ends, and removing from the tail of a singly-linked list is
+ an O(n) operation. The trade-off to this speed increase is marginally higher
+ storage cost, and marginally slower operations due to handling reverse links.
+ This also allows for reverse enumeration of objects in the deque.
  */
 @implementation CHListDeque
 

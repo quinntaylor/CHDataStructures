@@ -39,8 +39,8 @@
 - (id) init;
 
 /**
- Initialize a deque with the contents of an array. Objects are appended in the order
- they occur in the array.
+ Initialize a deque with the contents of an array. Objects are appended in the
+ order they occur in the array.
  
  @param anArray An array containing object with which to populate a new deque.
  */
@@ -49,16 +49,16 @@
 /**
  Add an object to the front of the deque.
  
- @param anObject The object to add to the deque; must not be <code>nil</code>, or an
-        <code>NSInvalidArgumentException</code> is raised.
+ @param anObject The object to add to the deque; must not be <code>nil</code>,
+        or an <code>NSInvalidArgumentException</code> is raised.
  */
 - (void) prependObject:(id)anObject;
 
 /**
  Add an object to the back of the deque.
  
- @param anObject The object to add to the deque; must not be <code>nil</code>, or an
-        <code>NSInvalidArgumentException</code> is raised.
+ @param anObject The object to add to the deque; must not be <code>nil</code>,
+        or an <code>NSInvalidArgumentException</code> is raised.
  */
 - (void) appendObject:(id)anObject;
 
@@ -91,8 +91,8 @@
  
  @param anObject The object to be removed from the deque.
  
- If the deque does not contain <i>anObject</i>, the method has no effect (although it
- does incur the overhead of searching the contents).
+ If the deque does not contain <i>anObject</i>, there is no effect, although it
+ does incur the overhead of searching the contents.
  */
 - (void) removeObject:(id)anObject;
 
@@ -102,9 +102,9 @@
 - (void) removeAllObjects;
 
 /**
- Returns an array containing the objects in this deque, ordered from front to back.
+ Returns an array with the objects in this deque, ordered from front to back.
  
- @return An array containing the objects in this deque. If the deque is empty, the
+ @return An array with the objects in this deque. If the deque is empty, the
          array is also empty.
  */
 - (NSArray*) allObjects;
@@ -137,14 +137,14 @@
 /**
  Returns an enumerator that accesses each object in the deque from front to back.
  
- NOTE: When you use an enumerator, you must not modify the deque during enumeration. 
+ NOTE: When using an enumerator, you must not modify the deque during enumeration. 
  */
 - (NSEnumerator*) objectEnumerator;
 
 /**
  Returns an enumerator that accesses each object in the deque from back to front.
  
- NOTE: When you use an enumerator, you must not modify the deque during enumeration. 
+ NOTE: When using an enumerator, you must not modify the deque during enumeration. 
  */
 - (NSEnumerator*) reverseObjectEnumerator;
 

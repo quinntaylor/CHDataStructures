@@ -25,38 +25,39 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
  An NSEnumerator for traversing a CHDoublyLinkedList in forward or reverse order.
  */
 @interface CHDoublyLinkedListEnumerator : NSEnumerator {
-	CHDoublyLinkedList *collection;
-	CHDoublyLinkedListNode *current; /**< The next node that is to be enumerated. */
+	CHDoublyLinkedList *collection; /**< The source of enumerated objects. */
+	CHDoublyLinkedListNode *current; /**< The next node to be enumerated. */
 	BOOL reverse; /**< Whether the enumerator is proceeding from back to front. */
-	unsigned long mutationCount;
-	unsigned long *mutationPtr;
+	unsigned long mutationCount; /**< Stores the collection's initial mutation. */
+	unsigned long *mutationPtr; /**< Pointer for checking changes in mutation. */
 }
 
 /**
- Create an enumerator which traverses a list starting from either the head or tail.
+ Create an enumerator which traverses a list in either forward or revers order.
  
- @param list The linked list collection being enumerated. This collection is to be
-        retained while the enumerator has not exhausted all its objects.
+ @param list The linked list collection being enumerated. This collection is to
+        be retained while the enumerator has not exhausted all its objects.
  @param startNode The node at which to begin the enumeration.
- @param mutations A pointer to the collection's count of mutations, for invalidation.
+ @param mutations A pointer to the collection's mutation count, for invalidation.
  
- The enumeration direction is inferred from the state of the provided start node. If
- <code>startNode->next</code> is <code>NULL</code>, enumeration proceeds from back to
- front; otherwise, enumeration proceeds from front to back. This works since the head
- and tail nodes always have NULL for their <code>prev</code> and <code>next</code>
- links, respectively. When there is only one node, order doesn't matter anyway.
+ The enumeration direction is inferred from the state of the provided start node.
+ If <code>startNode->next</code> is <code>NULL</code>, enumeration proceeds from
+ back to front; otherwise, enumeration proceeds from front to back. This works
+ since the head and tail nodes always have NULL for their <code>prev</code> and
+ <code>next</code> links, respectively. When there is only one node, order won't
+ matter anyway.
  
- This enumerator doesn't explicitly support enumerating over a sub-list of nodes. (If
- a node from the middle is provided, enumeration will proceed towards the tail.)
+ This enumerator doesn't support enumerating over a sub-list of nodes. (When a
+ node from the middle is provided, enumeration will proceed towards the tail.)
  */
 - (id) initWithList:(CHDoublyLinkedList*)list
           startNode:(CHDoublyLinkedListNode*)startNode
     mutationPointer:(unsigned long*)mutations;
 
 /**
- Returns the next object from the collection being enumerated.
+ Returns the next object in the collection being enumerated.
  
- @return The next object from the collection being enumerated, or <code>nil</code>
+ @return The next object in the collection being enumerated, or <code>nil</code>
          when all objects have been enumerated.
  */
 - (id) nextObject;
@@ -83,7 +84,7 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 {
 	if ([super init] == nil) return nil;
 	collection = (startNode != NULL) ? collection = [list retain] : nil;
-	current = startNode; // If startNode is NULL, nothing will be returned, anyway.
+	current = startNode; // If startNode is NULL, both methods will return nil.
 	if (startNode != NULL)
 		reverse = (startNode->next == nil) ? YES : NO;
 	mutationCount = *mutations;
@@ -127,7 +128,7 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 #pragma mark -
 
 // Sets "node" to point to the node found at the given index
-// Requires that "CHDoublyLinkedListNode *node" and "NSUInteger nodeIndex" be declared.
+// Must declare "CHDoublyLinkedListNode *node" and "NSUInteger nodeIndex" before
 #define findNodeAtIndex(i) \
         if (i<listSize/2) {\
             node=head; nodeIndex=0; while(i>nodeIndex++) node=node->next;\
@@ -208,7 +209,7 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
                                      count:(NSUInteger)len
 {
 	CHDoublyLinkedListNode *currentNode;
-	// If this is the first call, start at head, otherwise start at last saved node
+	// On the first call, start at head, otherwise start at last saved node
 	if (state->state == 0) {
 		currentNode = head;
 		state->itemsPtr = stackbuf;
@@ -221,7 +222,7 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 		currentNode = (CHDoublyLinkedListNode*) state->state;
 	}
 	
-	// Accumulate objects from the list until we reach the tail, or the maximum limit
+	// Accumulate objects from the list until we reach the tail, or the maximum
     NSUInteger batchCount = 0;
     while (currentNode != NULL && batchCount < len) {
         stackbuf[batchCount] = currentNode->object;

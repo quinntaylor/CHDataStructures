@@ -20,7 +20,7 @@
 #import <Foundation/Foundation.h>
 #import "CHLinkedList.h"
 
-// A struct for nodes in a CHDoublyLinkedList. Performance is faster than an object.
+// A struct for nodes in a CHDoublyLinkedList
 typedef struct CHDoublyLinkedListNode {
 	id object; /**< The object associated with this node in the list. */
 	struct CHDoublyLinkedListNode *next; /**< The next node in the list. */
@@ -30,11 +30,11 @@ typedef struct CHDoublyLinkedListNode {
 #pragma mark -
 
 /**
- A standard doubly-linked list implementation with pointers to head and tail. The
- extra 'previous' link allows for reverse enumeration and cheap removal from the tail
- of the list. The tradeoff is a little extra storage for each list node, and a little
- extra work when inserting and removing. Nodes are now represented with C structs
- rather than Obj-C classes, providing much faster performance.
+ A standard doubly-linked list implementation with pointers to head and tail.
+ The extra 'previous' link allows for reverse enumeration and cheap removal from
+ the tail of the list. The tradeoff is a little extra storage for each list node
+ and a little extra work when inserting and removing. Nodes are now represented
+ with C structs rather than Obj-C classes, providing much faster performance.
  */
 @interface CHDoublyLinkedList : NSObject <CHLinkedList> {
 	NSUInteger listSize; /**< The number of object currently stored in the list. */
@@ -46,7 +46,7 @@ typedef struct CHDoublyLinkedListNode {
 /**
  Returns an enumerator that accesses each object in the list from back to front.
  
- NOTE: When you use an enumerator, you must not modify the list during enumeration.
+ NOTE: When using an enumerator, you must not modify the list during enumeration.
  */
 - (NSEnumerator*) reverseObjectEnumerator;
 

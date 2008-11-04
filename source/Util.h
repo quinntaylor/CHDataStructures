@@ -104,9 +104,9 @@ extern void CHQuietLog(NSString *format, ...);
  */
 #ifndef CHLocationLog
 #define CHLocationLog(format,...) { \
-NSString *file = [[NSString alloc] initWithUTF8String:__FILE__]; \
-printf("[%s:%d] ", [[file lastPathComponent] UTF8String], __LINE__); \
-[file release]; \
-CHQuietLog((format),##__VA_ARGS__); \
+	NSString *file = [[NSString alloc] initWithUTF8String:__FILE__]; \
+	printf("[%s:%d] ", [[file lastPathComponent] UTF8String], __LINE__); \
+	[file release]; \
+	CHQuietLog((format),##__VA_ARGS__); \
 }
 #endif

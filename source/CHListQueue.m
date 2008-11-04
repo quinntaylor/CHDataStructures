@@ -20,9 +20,10 @@
 #import "CHListQueue.h"
 
 /**
- This implementation uses a CHSinglyLinkedList, since it's slightly faster than using
- a CHDoublyLinkedList, and requires a little less memory. Also, since it's a queue,
- it's unlikely that there is any need to enumerate over the object from back to front.
+ This implementation uses a CHSinglyLinkedList, since it's slightly faster than
+ using a CHDoublyLinkedList, and requires a little less memory. Also, since it's
+ a queue, it's unlikely that there is any need to enumerate over the object from
+ back to front.
  */
 @implementation CHListQueue
 

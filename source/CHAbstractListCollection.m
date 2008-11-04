@@ -67,12 +67,12 @@
 /**
  Returns a new instance that is a copy of the receiver.
  
- @param zone The zone identifies an area of memory from which to allocate for the new
-        instance. If zone is <code>NULL</code>, the instance is allocated from the
-        default zone, returned from the function <code>NSDefaultMallocZone</code>.
+ @param zone The zone identifies an area of memory from which to allocate the
+        new instance. If zone is <code>NULL</code>, the instance is allocated
+        from the default zone.
  
- The returned object is implicitly retained by the sender, who is responsible for
- releasing it. For this class and its children, all copies are mutable.
+ The returned object is implicitly retained by the sender, who is responsible
+ for releasing it. For this class and its children, all copies are mutable.
  */
 - (id) copyWithZone:(NSZone *)zone {
 	return [[[self class] alloc] initWithList:list];
@@ -81,14 +81,14 @@
 #pragma mark <NSFastEnumeration> Methods
 
 /**
- Returns by reference a C array of objects over which the sender should iterate, and
- as the return value the number of objects in the array.
+ Returns by reference a C array of objects over which the sender should iterate,
+ and as the return value the number of objects in the array.
  
- @param state Context information that is used in the enumeration to, in addition to
-        other possibilities, ensure that the collection has not been mutated.
+ @param state Context information that is used in the enumeration to ensure that
+        the collection has not been mutated, in addition to other possibilities.
  @param stackbuf A C array of objects over which the sender is to iterate.
  @param len The maximum number of objects to return in stackbuf.
- @return The number of objects returned in stackbuf, or 0 when iteration is finished.
+ @return The number of objects returned in stackbuf, or 0 when iteration is done.
  */
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf

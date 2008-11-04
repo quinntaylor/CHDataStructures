@@ -28,16 +28,16 @@
  balanced binary search tree with guaranteed O(log n) access. The algorithms for
  insertion and removal in this implementation have been adapted from code in the
  <a href="http://eternallyconfuzzled.com/tuts/datastructures/jsw_tut_rbtree.aspx">
- Red-Black trees tutorial</a>, which is in the public domain, courtesy of <a href=
- "http://eternallyconfuzzled.com/">Julienne Walker</a>. Method names have been
- changed to match the APIs of existing Cocoa collections provided by Apple.
+ Red-Black trees tutorial</a>, which is in the public domain, courtesy of
+ <a href="http://eternallyconfuzzled.com/">Julienne Walker</a>. Method names have
+ been changed to match the APIs of existing Cocoa collections provided by Apple.
 
- A Red-Black tree has four fundamental rules: (taken from the book mentioned above)
+ A Red-Black tree has four fundamental rules:
  <ol>
  <li>Every node is red or black.
  <li>The root is black.
  <li>If a node is red, its children must be black.
- <li>Every path from a node to a null link must contain the same number of black nodes.
+ <li>Every path from a node to a leaf contains the same number of black nodes.
  </ol>
  
  Also note that <code>nil</code> nodes are considered black for many purposes.

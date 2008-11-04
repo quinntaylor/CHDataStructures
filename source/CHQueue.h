@@ -23,21 +23,22 @@
 /**
  @file CHQueue.h
  
- A <a href="http://en.wikipedia.org/wiki/Queue_(data_structure)">queue</a> protocol
- with methods for <a href="http://en.wikipedia.org/wiki/FIFO">FIFO</a> ("First In,
- First Out") operations.
+ A <a href="http://en.wikipedia.org/wiki/Queue_(data_structure)">queue</a>
+ protocol with methods for <a href="http://en.wikipedia.org/wiki/FIFO">FIFO</a>
+ ("First In, First Out") operations.
  */
 
 /**
- A <a href="http://en.wikipedia.org/wiki/Queue_(data_structure)">queue</a> protocol
- with methods for <a href="http://en.wikipedia.org/wiki/FIFO">FIFO</a> ("First In,
- First Out") operations.
+ A <a href="http://en.wikipedia.org/wiki/Queue_(data_structure)">queue</a>
+ protocol with methods for <a href="http://en.wikipedia.org/wiki/FIFO">FIFO</a>
+ ("First In, First Out") operations.
  
- A queue is commonly compared to waiting in line. When objects are added, they go to
- the back of the line, and objects are always removed from the front of the line.
- These actions are accomplished using @link #addObject: -addObject:\endlink
- and @link #removeFirstObject -removeFirstObject\endlink, respectively. The frontmost
- object may be examined (not removed) using @link #firstObject -firstObject\endlink.
+ A queue is commonly compared to waiting in line. When objects are added, they
+ go to the back of the line, and objects are always removed from the front of
+ the line. These actions are accomplished using @link #addObject:
+ -addObject:\endlink and @link #removeFirstObject -removeFirstObject\endlink,
+ respectively. The frontmost object may be examined (not removed) using @link
+ #firstObject -firstObject\endlink.
  */
 @protocol CHQueue <NSObject, NSCoding, NSCopying, NSFastEnumeration>
 
@@ -47,8 +48,8 @@
 - (id) init;
 
 /**
- Initialize a queue with the contents of an array. Objects are enqueued in the order
- they occur in the array.
+ Initialize a queue with the contents of an array. Objects are enqueued in the
+ order they occur in the array.
  
  @param anArray An array containing object with which to populate a new queue.
  */
@@ -57,20 +58,21 @@
 /**
  Add an object to the back of the queue.
  
- @param anObject The object to add to the queue; must not be <code>nil</code>, or an
-        <code>NSInvalidArgumentException</code> will be raised.
+ @param anObject The object to add to the queue; must not be <code>nil</code>,
+        or an <code>NSInvalidArgumentException</code> will be raised.
  */
 - (void) addObject:(id)anObject;
 
 /**
  Examine the object at the front of the queue without removing it.
  
- @return The frontmost object in the queue, or <code>nil</code> if the queue is empty.
+ @return The frontmost object in the queue, or <code>nil</code> if the queue is
+         empty.
  */
 - (id) firstObject;
 
 /**
- Remove the front object in the queue; if it is already empty, there is no effect.
+ Remove the front object in the queue; no effect if the queue is already empty.
  */
 - (void) removeFirstObject;
 
@@ -79,8 +81,8 @@
  
  @param anObject The object to be removed from the queue.
  
- If the queue does not contain <i>anObject</i>, the method has no effect (although it
- does incur the overhead of searching the contents).
+ If the queue does not contain <i>anObject</i>, there is no effect, although it
+ does incur the overhead of searching the contents.
  */
 - (void) removeObject:(id)anObject;
 
@@ -90,9 +92,9 @@
 - (void) removeAllObjects;
 
 /**
- Returns an array containing the objects in this queue, ordered from front to back.
+ Returns an array with the objects in this queue, ordered from front to back.
  
- @return An array containing the objects in this queue. If the queue is empty, the
+ @return An array with the objects in this queue. If the queue is empty, the
          array is also empty.
  */
 - (NSArray*) allObjects;
@@ -105,27 +107,27 @@
 - (NSUInteger) count;
 
 /**
- Determines if a queue contains a given object, matched using <code>isEqual:</code>.
+ Checks if a queue contains a given object, matched using <code>isEqual:</code>.
  
  @param anObject The object to test for membership in the queue.
- @return <code>YES</code> if <i>anObject</i> is present in the queue, <code>NO</code>
-         if it not present or <code>nil</code>.
+ @return <code>YES</code> if <i>anObject</i> is present in the queue,
+         <code>NO</code>if it not present or <code>nil</code>.
  */
 - (BOOL) containsObject:(id)anObject;
 
 /**
- Determines if a queue contains a given object, matched using the == operator.
+ Checks if a queue contains a given object, matched using the == operator.
  
  @param anObject The object to test for membership in the queue.
- @return <code>YES</code> if <i>anObject</i> is present in the queue, <code>NO</code>
-         if it not present or <code>nil</code>.
+ @return <code>YES</code> if <i>anObject</i> is present in the queue,
+         <code>NO</code> if it not present or <code>nil</code>.
  */
 - (BOOL) containsObjectIdenticalTo:(id)anObject;
 
 /**
  Returns an enumerator that accesses each object in the queue from front to back.
  
- NOTE: When you use an enumerator, you must not modify the queue during enumeration. 
+ NOTE: When using an enumerator, you must not modify the queue during enumeration. 
  */
 - (NSEnumerator*) objectEnumerator;
 

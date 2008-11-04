@@ -122,12 +122,11 @@ NSUInteger kCHTreeListNodeSize = sizeof(CHTreeListNode);
  A method for NSFastEnumeration, called by <code><b>for</b> (type variable <b>in</b>
  collection)</code> constructs.
  
- @param state Context information that is used in the enumeration. In addition to
-        other possibilities, it can ensure that the collection has not been mutated.
- @param stackbuf A C array of objects over which the sender is to iterate. The method
-        generally saves objects directly to this array.
- @param len The maximum number of objects to return in <i>stackbuf</i>.
- @return The number of objects copied into the <i>stackbuf</i> array.
+ @param state Context information that is used in the enumeration to ensure that
+        the collection has not been mutated, in addition to other possibilities.
+ @param stackbuf A C array of objects over which the sender is to iterate.
+ @param len The maximum number of objects to return in stackbuf.
+ @return The number of objects returned in stackbuf, or 0 when iteration is done.
  */
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
@@ -160,7 +159,7 @@ NSUInteger kCHTreeListNodeSize = sizeof(CHTreeListNode);
 			// TODO: How to not push/pop leaf nodes unnecessarily?
 		}
 		current = CHTreeList_TOP; // Save top node for return value
-		CHTreeList_POP();
+		CHTreeList_POP;
 		stackbuf[batchCount] = current->object;
 		current = current->right;
 		batchCount++;
@@ -241,7 +240,7 @@ NSUInteger kCHTreeListNodeSize = sizeof(CHTreeListNode);
 	
 	CHTreeList_ENQUEUE(header->right);
 	while (current = CHTreeList_FRONT) {
-		CHTreeList_DEQUEUE();
+		CHTreeList_DEQUEUE;
 		if (current->left != sentinel)
 			CHTreeList_ENQUEUE(current->left);
 		if (current->right != sentinel)
@@ -314,17 +313,17 @@ NSUInteger kCHTreeListNodeSize = sizeof(CHTreeListNode);
 - (void) dealloc {
 	[collection release];
 	while (stack != NULL)
-		CHTreeList_POP();
+		CHTreeList_POP;
 	while (queue != NULL)
-		CHTreeList_DEQUEUE();
+		CHTreeList_DEQUEUE;
 	[super dealloc];
 }
 
 - (void) finalize {
 	while (stack != NULL)
-		CHTreeList_POP();
+		CHTreeList_POP;
 	while (queue != NULL)
-		CHTreeList_DEQUEUE();
+		CHTreeList_DEQUEUE;
 	[super finalize];
 }
 
@@ -357,7 +356,7 @@ NSUInteger kCHTreeListNodeSize = sizeof(CHTreeListNode);
 				// TODO: How to not push/pop leaf nodes unnecessarily?
 			}
 			current = CHTreeList_TOP; // Save top node for return value
-			CHTreeList_POP();
+			CHTreeList_POP;
 			id tempObject = current->object;
 			current = current->right;
 			return tempObject;
@@ -375,7 +374,7 @@ NSUInteger kCHTreeListNodeSize = sizeof(CHTreeListNode);
 				// TODO: How to not push/pop leaf nodes unnecessarily?
 			}
 			current = CHTreeList_TOP; // Save top node for return value
-			CHTreeList_POP();
+			CHTreeList_POP;
 			id tempObject = current->object;
 			current = current->left;
 			return tempObject;
@@ -383,7 +382,7 @@ NSUInteger kCHTreeListNodeSize = sizeof(CHTreeListNode);
 			
 		case CHTraversePreOrder: {
 			current = CHTreeList_TOP;
-			CHTreeList_POP();
+			CHTreeList_POP;
 			if (current == NULL) {
 				[collection release];
 				collection = nil;
@@ -415,9 +414,9 @@ NSUInteger kCHTreeListNodeSize = sizeof(CHTreeListNode);
 					// TODO: explore how to not use null pad for leaf nodes
 				}
 				else {
-					CHTreeList_POP(); // ignore the null pad
+					CHTreeList_POP; // ignore the null pad
 					id tempObject = CHTreeList_TOP->object;
-					CHTreeList_POP();
+					CHTreeList_POP;
 					return tempObject;
 				}				
 			}
@@ -430,7 +429,7 @@ NSUInteger kCHTreeListNodeSize = sizeof(CHTreeListNode);
 				collection = nil;
 				return nil;
 			}
-			CHTreeList_DEQUEUE();
+			CHTreeList_DEQUEUE;
 			if (current->left != sentinelNode)
 				CHTreeList_ENQUEUE(current->left);
 			if (current->right != sentinelNode)
