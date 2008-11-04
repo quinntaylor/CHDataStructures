@@ -57,14 +57,6 @@
 	id<CHLinkedList> list;
 }
 
-/**
- Create a new collection with the contents of the given list. Intended only for
- use by -copyWithZone: for making internal copies.
- 
- @param aList A CHLinkedList containing objects to be included in this list.
- */
-- (id) initWithList:(id<CHLinkedList>)aList;
-
 - (id) initWithArray:(NSArray*)anArray;
 - (NSUInteger) count;
 - (NSEnumerator*) objectEnumerator;

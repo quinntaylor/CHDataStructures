@@ -27,6 +27,7 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 @interface CHDoublyLinkedListEnumerator : NSEnumerator {
 	CHDoublyLinkedList *collection; /**< The source of enumerated objects. */
 	CHDoublyLinkedListNode *current; /**< The next node to be enumerated. */
+	CHDoublyLinkedListNode *sentinel; /**< The node that signifies completion. */
 	BOOL reverse; /**< Whether the enumerator is proceeding from back to front. */
 	unsigned long mutationCount; /**< Stores the collection's initial mutation. */
 	unsigned long *mutationPtr; /**< Pointer for checking changes in mutation. */
@@ -38,6 +39,9 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
  @param list The linked list collection being enumerated. This collection is to
         be retained while the enumerator has not exhausted all its objects.
  @param startNode The node at which to begin the enumeration.
+ @param endNode The node which signifies that enumerations should terminate.
+ @param direction The direction in which to enumerate. Should be either
+        <code>NSOrderedAscending</code> or <code>NSOrderedDescending</code>.
  @param mutations A pointer to the collection's mutation count, for invalidation.
  
  The enumeration direction is inferred from the state of the provided start node.
@@ -52,6 +56,8 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
  */
 - (id) initWithList:(CHDoublyLinkedList*)list
           startNode:(CHDoublyLinkedListNode*)startNode
+            endNode:(CHDoublyLinkedListNode*)endNode
+          direction:(NSComparisonResult)direction
     mutationPointer:(unsigned long*)mutations;
 
 /**
@@ -80,13 +86,20 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 
 - (id) initWithList:(CHDoublyLinkedList*)list
           startNode:(CHDoublyLinkedListNode*)startNode
+            endNode:(CHDoublyLinkedListNode*)endNode
+          direction:(NSComparisonResult)direction
     mutationPointer:(unsigned long*)mutations;
 {
 	if ([super init] == nil) return nil;
-	collection = (startNode != NULL) ? collection = [list retain] : nil;
-	current = startNode; // If startNode is NULL, both methods will return nil.
-	if (startNode != NULL)
-		reverse = (startNode->next == nil) ? YES : NO;
+	collection = ([list count] > 0) ? [list retain] : nil;
+	current = startNode;
+	sentinel = endNode;
+	if (direction != NSOrderedAscending && direction != NSOrderedDescending) {
+		[NSException raise:NSInternalInconsistencyException
+		            format:@"[%@ %s] -- Invalid enumeration direction.",
+		                   [self class], sel_getName(_cmd)];	
+	}	
+	reverse = (direction == NSOrderedDescending) ? YES : NO;
 	mutationCount = *mutations;
 	mutationPtr = mutations;
 	return self;
@@ -100,7 +113,7 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 - (id) nextObject {
 	if (mutationCount != *mutationPtr)
 		CHMutatedCollectionException([self class], _cmd);
-	if (current == NULL) {
+	if (current == sentinel) {
 		[collection release];
 		collection = nil;
 		return nil;
@@ -114,7 +127,7 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 	if (mutationCount != *mutationPtr)
 		CHMutatedCollectionException([self class], _cmd);
 	NSMutableArray *array = [[NSMutableArray alloc] init];
-	while (current != NULL) {
+	while (current != sentinel) {
 		[array addObject:current->object];
 		current = (reverse) ? current->prev : current->next;
 	}
@@ -130,17 +143,20 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 // Sets "node" to point to the node found at the given index
 // Must declare "CHDoublyLinkedListNode *node" and "NSUInteger nodeIndex" before
 #define findNodeAtIndex(i) \
-        if (i<listSize/2) {\
-            node=head; nodeIndex=0; while(i>nodeIndex++) node=node->next;\
-        } else {\
-            node=tail; nodeIndex=listSize-1; while(i<nodeIndex--) node=node->prev;\
-        }
+	if (i > count || i < 0) \
+		CHIndexOutOfRangeException([self class], _cmd, index, count); \
+	if (i<count/2) {\
+		node=head->next; nodeIndex=0; while(i>nodeIndex++) node=node->next;\
+	} else {\
+		node=tail; nodeIndex=count; while(i<nodeIndex--) node=node->prev;\
+	}
 
 // Remove the node with a matching object, patch prev/next links around it
-#define removeNodeFromMiddle(node) { \
-        if (node->prev) node->prev->next = node->next; \
-        if (node->next) node->next->prev = node->prev; \
-        [node->object release]; free(node); --listSize; ++mutations; }
+#define removeNode(node) \
+	{ \
+		node->prev->next = node->next; node->next->prev = node->prev; \
+		[node->object release]; free(node); --count; ++mutations; \
+	}
 
 @implementation CHDoublyLinkedList
 
@@ -151,9 +167,15 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 
 - (id) init {
 	if ([super init] == nil) return nil;
-	head = NULL;
-	tail = NULL;
-	listSize = 0;
+	head = malloc(kCHDoublyLinkedListNodeSize);
+	tail = malloc(kCHDoublyLinkedListNodeSize);
+	head->object = nil;
+	head->next = tail;
+	head->prev = NULL;
+	tail->object = nil;
+	tail->next = NULL;
+	tail->prev = head;
+	count = 0;
 	mutations = 0;
 	return self;
 }
@@ -177,7 +199,7 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
  @param decoder An unarchiver object.
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super init] == nil) return nil;
+	if ([self init] == nil) return nil;
 	for (id anObject in [decoder decodeObjectForKey:@"objects"])
 		[self appendObject:anObject];
 	return self;
@@ -211,7 +233,7 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 	CHDoublyLinkedListNode *currentNode;
 	// On the first call, start at head, otherwise start at last saved node
 	if (state->state == 0) {
-		currentNode = head;
+		currentNode = head->next;
 		state->itemsPtr = stackbuf;
 		state->mutationsPtr = &mutations;
 	}
@@ -224,7 +246,7 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 	
 	// Accumulate objects from the list until we reach the tail, or the maximum
     NSUInteger batchCount = 0;
-    while (currentNode != NULL && batchCount < len) {
+    while (currentNode != tail && batchCount < len) {
         stackbuf[batchCount] = currentNode->object;
         currentNode = currentNode->next;
 		batchCount++;
@@ -241,74 +263,48 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 - (void) prependObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
-	CHDoublyLinkedListNode *new;
-	new = malloc(kCHDoublyLinkedListNodeSize);
-	new->object = [anObject retain];
-	new->next = head;
-	new->prev = NULL;
-	if (head != NULL)
-		head->prev = new;
-	head = new;
-	if (tail == NULL)
-		tail = new;
-	++listSize;
-	++mutations;
+	[self insertObject:anObject atIndex:0];
 }
 
 - (void) appendObject:(id)anObject {
 	if (anObject == nil)
-		CHNilArgumentException([self class], _cmd);	
-	CHDoublyLinkedListNode *new;
-	new = malloc(kCHDoublyLinkedListNodeSize);
-	new->object = [anObject retain];
-	new->next = NULL;
-	new->prev = tail;
-	if (tail == NULL)
-		head = new;
-	else
-		tail->next = new;
-	tail = new;
-	++listSize;
-	++mutations;
+		CHNilArgumentException([self class], _cmd);
+	[self insertObject:anObject atIndex:count];
 }
 
 - (void) insertObject:(id)anObject atIndex:(NSUInteger)index {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
-	if (index >= listSize || index < 0)
-		CHIndexOutOfRangeException([self class], _cmd, index, listSize);
 	
-	if (index == 0)
-		[self prependObject:anObject];
-	else {
-		CHDoublyLinkedListNode *node;
-		NSUInteger nodeIndex;
-		findNodeAtIndex(index);
-		
-		CHDoublyLinkedListNode *newNode;
-		newNode = malloc(kCHDoublyLinkedListNodeSize);
-		newNode->object = [anObject retain];
-		newNode->next = node;          // point to node previously at this index
-		newNode->prev = node->prev;    // point to preceding node
-		newNode->prev->next = newNode; // point preceding node to new node
-		node->prev = newNode;          // point next (displaced) node to new node
-		++listSize;
-		++mutations;
-	}
+	CHDoublyLinkedListNode *node;
+	NSUInteger nodeIndex;
+	findNodeAtIndex(index);
+	
+	CHDoublyLinkedListNode *newNode;
+	newNode = malloc(kCHDoublyLinkedListNodeSize);
+	newNode->object = [anObject retain];
+	newNode->next = node;          // point forward to displaced node
+	newNode->prev = node->prev;    // point backward to preceding node
+	newNode->prev->next = newNode; // point preceding node forward to new node
+	node->prev = newNode;          // point displaced node backward to new node
+	++count;
+	++mutations;
 }
 
 #pragma mark Access
 
 - (NSUInteger) count {
-	return listSize;
+	return count;
 }
 
 - (id) firstObject {
-	return (head != NULL) ? head->object : nil;
+	tail->object = nil;
+	return head->next->object; // nil if there are no objects between head/tail
 }
 
 - (id) lastObject {
-	return (tail != NULL) ? tail->object : nil;
+	head->object = nil;
+	return tail->prev->object; // nil if there are no objects between head/tail
 }
 
 - (NSArray*) allObjects {
@@ -317,16 +313,20 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 
 - (NSEnumerator*) objectEnumerator {
 	return [[[CHDoublyLinkedListEnumerator alloc]
-              initWithList:self
-			 	startNode:head
-          mutationPointer:&mutations] autorelease];
+	          initWithList:self
+	             startNode:head->next
+	               endNode:tail
+	             direction:NSOrderedAscending
+	       mutationPointer:&mutations] autorelease];
 }
 
 - (NSEnumerator*) reverseObjectEnumerator {
 	return [[[CHDoublyLinkedListEnumerator alloc]
-              initWithList:self
-                 startNode:tail
-           mutationPointer:&mutations] autorelease];
+	          initWithList:self
+	             startNode:tail->prev
+	               endNode:head
+	             direction:NSOrderedDescending
+	       mutationPointer:&mutations] autorelease];
 }
 
 #pragma mark Search
@@ -340,36 +340,30 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 }
 
 - (NSUInteger) indexOfObject:(id)anObject {
-	if (listSize > 0) {
-		CHDoublyLinkedListNode *current = head;
-		NSUInteger index = 0;
-		while (current != NULL) {
-			if ([current->object isEqual:anObject])
-				return index;
-			current = current->next;
-			++index;
-		}
+	CHDoublyLinkedListNode *current = head->next;
+	NSUInteger index = 0;
+	tail->object = anObject;
+	while (![current->object isEqual:anObject]) {
+		current = current->next;
+		++index;
 	}
-	return NSNotFound;
+	return (current == tail) ? NSNotFound : index;
 }
 
 - (NSUInteger) indexOfObjectIdenticalTo:(id)anObject {
-	if (listSize > 0) {
-		CHDoublyLinkedListNode *current = head;
-		NSUInteger index = 0;
-		while (current != NULL) {
-			if (current->object == anObject)
-				return index;
-			current = current->next;
-			++index;
-		}
+	CHDoublyLinkedListNode *current = head->next;
+	NSUInteger index = 0;
+	tail->object = anObject;
+	while (current->object != anObject) {
+		current = current->next;
+		++index;
 	}
-	return NSNotFound;
+	return (current == tail) ? NSNotFound : index;
 }
 
 - (id) objectAtIndex:(NSUInteger)index {
-	if (index >= listSize || index < 0)
-		CHIndexOutOfRangeException([self class], _cmd, index, listSize);
+	if (index >= count || index < 0)
+		CHIndexOutOfRangeException([self class], _cmd, index, count);
 	
 	CHDoublyLinkedListNode *node;
 	NSUInteger nodeIndex;
@@ -380,102 +374,73 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 #pragma mark Removal
 
 - (void) removeFirstObject {
-	if (listSize == 0)
+	if (count == 0)
 		return;
-	CHDoublyLinkedListNode *old = head;
-	[head->object release];
-	head = head->next;
-	if (tail == old)
-		tail = NULL;
-	if (head)
-		head->prev = NULL;
-	free(old);
-	--listSize;
-	++mutations;
+	CHDoublyLinkedListNode *node = head->next;
+	removeNode(node); // don't use head->next directly; macro treats as L-value
 }
 
 - (void) removeLastObject {
-	if (listSize == 0)
+	if (count == 0)
 		return;
-	CHDoublyLinkedListNode *old = tail;
-	[tail->object release];
-	tail = tail->prev;
-	if (tail)
-		tail->next = NULL;
-	if (head == old)
-		head = NULL;
-	free(old);
-	--listSize;
-	++mutations;
+	CHDoublyLinkedListNode *node = tail->prev;
+	removeNode(node); // don't use tail->prev directly; macro treats as L-value
 }
 
 - (void) removeObject:(id)anObject {
-	if (listSize == 0)
+	if (count == 0)
 		return;
-	if ([head->object isEqual:anObject]) {
-		[self removeFirstObject];
-		return;
-	}
-	CHDoublyLinkedListNode *node = head, *temp;
+	tail->object = anObject;
+	CHDoublyLinkedListNode *node = head->next, *temp;
 	do {
-		while (node != NULL && ![node->object isEqual:anObject])
+		while ([node->object compare:anObject] != NSOrderedSame)
 			node = node->next;
-		if (node != NULL) {
+		if (node != tail) {
 			temp = node->next;
-			removeNodeFromMiddle(node);
+			removeNode(node);
 			node = temp;
 		}
-	} while (node != NULL);
+	} while (node != tail);
 }
 
 - (void) removeObjectIdenticalTo:(id)anObject {
-	if (listSize == 0)
+	if (count == 0)
 		return;
-	if (head->object == anObject) {
-		[self removeFirstObject];
-		return;
-	}
-	CHDoublyLinkedListNode *node = head, *temp;
+	tail->object = anObject;
+	CHDoublyLinkedListNode *node = head->next, *temp;
 	do {
-		while (node != NULL && node->object != anObject)
+		while (node->object != anObject)
 			node = node->next;
-		if (node != NULL) {
+		if (node != tail) {
 			temp = node->next;
-			removeNodeFromMiddle(node);
+			removeNode(node);
 			node = temp;
 		}
-	} while (node != NULL);
+	} while (node != tail);
 }
 
 - (void) removeObjectAtIndex:(NSUInteger)index {
-	if (index >= listSize || index < 0)
-		CHIndexOutOfRangeException([self class], _cmd, index, listSize);
-	
-	if (index == 0)
-		[self removeFirstObject];
-	else if (index == (listSize - 1))
-		[self removeLastObject];
+	CHDoublyLinkedListNode *node;
+	NSUInteger nodeIndex;
+	if (index >= count)
+		CHIndexOutOfRangeException([self class], _cmd, index, count);
 	else {
-		CHDoublyLinkedListNode *node;
-		NSUInteger nodeIndex;
 		findNodeAtIndex(index);
-		if (node != NULL)
-			removeNodeFromMiddle(node);
+		removeNode(node);
 	}
 }
 
 - (void) removeAllObjects {
-	if (listSize > 0) {
-		CHDoublyLinkedListNode *temp;
-		while (head != NULL) {
-			temp = head;
-			head = head->next;
-			[temp->object release];
-			free(temp);
-		}
-		tail = NULL;
-		listSize = 0;
+	CHDoublyLinkedListNode *node = head->next, *temp;
+	while (node != tail) {
+		temp = node->next;
+		[node->object release];
+		free(node);
+		node = temp;
 	}
+	head->next = tail;
+	tail->prev = head;
+	count = 0;
 	++mutations;
 }
 

@@ -33,13 +33,6 @@
 	return self;
 }
 
-- (id) initWithList:(id<CHLinkedList>)aList {
-	if ([self init] == nil) return nil;
-	for (id anObject in aList)
-		[list appendObject:anObject];
-	return self;
-}
-
 #pragma mark <NSCoding> methods
 
 /**
@@ -49,6 +42,7 @@
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super init] == nil) return nil;
+	[list release]; // Call to subclass init is in case of other initializations
 	list = [[decoder decodeObjectForKey:@"list"] retain];
 	return self;
 }
@@ -75,7 +69,10 @@
  for releasing it. For this class and its children, all copies are mutable.
  */
 - (id) copyWithZone:(NSZone *)zone {
-	return [[[self class] alloc] initWithList:list];
+	id copy = [[[self class] alloc] init];
+	for (id anObject in self)
+		[copy addObject:anObject];
+	return copy;
 }
 
 #pragma mark <NSFastEnumeration> Methods

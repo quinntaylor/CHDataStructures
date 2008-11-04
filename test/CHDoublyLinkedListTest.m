@@ -75,6 +75,7 @@ static BOOL gcDisabled;
 	NSString *filePath = @"/tmp/list.archive";
 	[NSKeyedArchiver archiveRootObject:list toFile:filePath];
 	[list release];
+	
 	list = [[NSKeyedUnarchiver unarchiveObjectWithFile:filePath] retain];
 	STAssertEquals([list count], [objects count], @"-count is incorrect.");
 	STAssertEqualObjects([list allObjects], objects,
@@ -156,12 +157,12 @@ static BOOL gcDisabled;
 	               @"Should raise an exception on nil.");
 	
 	STAssertThrows([list insertObject:@"D" atIndex:-1], @"Should raise NSRangeException.");
-	STAssertThrows([list insertObject:@"D" atIndex:0], @"Should raise NSRangeException.");
+	STAssertThrows([list insertObject:@"D" atIndex:1], @"Should raise NSRangeException.");
 	
 	for (id anObject in objects)
 		[list appendObject:anObject];
 	STAssertEquals([list count], [objects count], @"-count is incorrect.");
-	STAssertThrows([list insertObject:@"D" atIndex:3], @"Should raise NSRangeException.");
+	STAssertThrows([list insertObject:@"D" atIndex:4], @"Should raise NSRangeException.");
 	// Try inserting in the middle
 	[list insertObject:@"D" atIndex:1];
 	STAssertEquals([list count], [objects count]+1, @"-count is incorrect.");
@@ -314,12 +315,15 @@ static BOOL gcDisabled;
 	
 	[list removeFirstObject];
 	STAssertEquals([list count], 1u, @"-count is incorrect.");
-	STAssertEquals([list head], [list tail], @"head and tail should be the same.");
+	STAssertEqualObjects([list firstObject], @"C", @"-firstObject is wrong.");
+	STAssertEqualObjects([list lastObject],  @"C", @"-lastObject is wrong.");
+	STAssertEquals([list head]->next, [list tail]->prev,
+				   @"head and tail should point to the same object.");
 	
 	[list removeFirstObject];
 	STAssertEquals([list count], 0u, @"-count is incorrect.");
-	STAssertTrue([list head] == NULL, @"head should be NULL.");
-	STAssertTrue([list tail] == NULL, @"tail should be NULL.");
+	STAssertTrue([list head]->next == [list tail], @"head should point to tail.");
+	STAssertTrue([list tail]->prev == [list head], @"tail should point to head.");
 }
 
 - (void) testRemoveLastObject {
@@ -335,12 +339,13 @@ static BOOL gcDisabled;
 
 	[list removeLastObject];
 	STAssertEquals([list count], 1u, @"-count is incorrect.");
-	STAssertEquals([list head], [list tail], @"head and tail should be the same.");
+	STAssertEquals([list head]->next, [list tail]->prev,
+				   @"head and tail should point to the same object.");
 	
 	[list removeLastObject];
 	STAssertEquals([list count], 0u, @"-count is incorrect.");
-	STAssertTrue([list head] == NULL, @"head should be NULL.");
-	STAssertTrue([list tail] == NULL, @"tail should be NULL.");
+	STAssertTrue([list head]->next == [list tail], @"head should point to tail.");
+	STAssertTrue([list tail]->prev == [list head], @"tail should point to head.");
 }
 
 - (void) testRemoveObject {

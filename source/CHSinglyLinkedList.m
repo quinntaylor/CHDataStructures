@@ -127,7 +127,7 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 // Remove the node with a matching object, steal its 'next' link for my own
 #define removeNode(node) \
         { temp = node->next; node->next = temp->next; \
-        [temp->object release]; free(temp); --listSize; ++mutations;}
+        [temp->object release]; free(temp); --count; ++mutations;}
 
 @implementation CHSinglyLinkedList
 
@@ -140,7 +140,7 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 	if ([super init] == nil) return nil;
 	head = NULL;
 	tail = NULL;
-	listSize = 0;
+	count = 0;
 	mutations = 0;
 	return self;
 }
@@ -235,7 +235,7 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 	head = new;
 	if (tail == NULL)
 		tail = new;
-	++listSize;
+	++count;
 	++mutations;
 }
 
@@ -251,15 +251,15 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 	else
 		tail->next = new;
 	tail = new;
-	++listSize;
+	++count;
 	++mutations;
 }
 
 - (void) insertObject:(id)anObject atIndex:(NSUInteger)index {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
-	if (index >= listSize || index < 0)
-		CHIndexOutOfRangeException([self class], _cmd, index, listSize);
+	if (index >= count || index < 0)
+		CHIndexOutOfRangeException([self class], _cmd, index, count);
 	
 	if (index == 0)
 		[self prependObject:anObject];
@@ -273,7 +273,7 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 		new->object = [anObject retain];
 		new->next = node->next;
 		node->next = new;
-		++listSize;
+		++count;
 		++mutations;
 	}
 }
@@ -281,7 +281,7 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 #pragma mark Access
 
 - (NSUInteger) count {
-	return listSize;
+	return count;
 }
 
 - (id) firstObject {
@@ -314,7 +314,7 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 }
 
 - (NSUInteger) indexOfObject:(id)anObject {
-	if (listSize > 0) {
+	if (count > 0) {
 		CHSinglyLinkedListNode *current = head;
 		NSUInteger index = 0;
 		while (current != NULL) {
@@ -328,7 +328,7 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 }
 
 - (NSUInteger) indexOfObjectIdenticalTo:(id)anObject {
-	if (listSize > 0) {
+	if (count > 0) {
 		CHSinglyLinkedListNode *current = head;
 		NSUInteger index = 0;
 		while (current != NULL) {
@@ -342,8 +342,8 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 }
 
 - (id) objectAtIndex:(NSUInteger)index {
-	if (index >= listSize || index < 0)
-		CHIndexOutOfRangeException([self class], _cmd, index, listSize);
+	if (index >= count || index < 0)
+		CHIndexOutOfRangeException([self class], _cmd, index, count);
 	
 	CHSinglyLinkedListNode *node;
 	NSUInteger nodeIndex;
@@ -355,7 +355,7 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 #pragma mark Removal
 
 - (void) removeFirstObject {
-	if (listSize == 0)
+	if (count == 0)
 		return;
 	CHSinglyLinkedListNode *old = head;
 	[head->object release];
@@ -363,18 +363,18 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 	if (tail == old)
 		tail = NULL;
 	free(old);
-	--listSize;
+	--count;
 	++mutations;
 }
 
 - (void) removeLastObject {
-	if (listSize == 0)
+	if (count == 0)
 		return;
 	if (head == tail) {
 		[head->object release];
 		free(head);
 		head = tail = NULL;
-		listSize = 0;
+		count = 0;
 		++mutations;
 	}
 	// This is the expensive part: O(n) instead of O(1) for doubly-linked lists
@@ -388,13 +388,13 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 		free(tail);
 		old->next = NULL;
 		tail = old;
-		--listSize;
+		--count;
 		++mutations;
 	}
 }
 
 - (void) removeObject:(id)anObject {
-	if (listSize == 0)
+	if (count == 0)
 		return;
 	if ([head->object isEqual:anObject]) {
 		[self removeFirstObject];
@@ -412,7 +412,7 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 }
 
 - (void) removeObjectIdenticalTo:(id)anObject {
-	if (listSize == 0)
+	if (count == 0)
 		return;
 	if (head->object == anObject) {
 		[self removeFirstObject];
@@ -430,8 +430,8 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 }
 
 - (void) removeObjectAtIndex:(NSUInteger)index {
-	if (index >= listSize || index < 0)
-		CHIndexOutOfRangeException([self class], _cmd, index, listSize);
+	if (index >= count || index < 0)
+		CHIndexOutOfRangeException([self class], _cmd, index, count);
 	
 	if (index == 0)
 		[self removeFirstObject];
@@ -446,7 +446,7 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 }
 
 - (void) removeAllObjects {
-	if (listSize > 0) {
+	if (count > 0) {
 		CHSinglyLinkedListNode *temp;
 		while (head != NULL) {
 			temp = head;
@@ -455,7 +455,7 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 			free(temp);
 		}
 		tail = NULL;
-		listSize = 0;
+		count = 0;
 	}
 	++mutations;
 }

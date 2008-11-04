@@ -37,9 +37,9 @@ typedef struct CHDoublyLinkedListNode {
  with C structs rather than Obj-C classes, providing much faster performance.
  */
 @interface CHDoublyLinkedList : NSObject <CHLinkedList> {
-	NSUInteger listSize; /**< The number of object currently stored in the list. */
-	CHDoublyLinkedListNode *head; /**< A pointer to the front node of the list. */
-	CHDoublyLinkedListNode *tail;   /**< A pointer to the back node of the list. */
+	NSUInteger count; /**< The number of objects currently in the list. */
+	CHDoublyLinkedListNode *head; /**< A dummy node at the front of the list. */
+	CHDoublyLinkedListNode *tail;   /**< A dummy node at the back of the list. */
 	unsigned long mutations; /**< Used to track mutations for NSFastEnumeration. */
 }
 

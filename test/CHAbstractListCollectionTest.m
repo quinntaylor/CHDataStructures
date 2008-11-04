@@ -93,7 +93,8 @@
 	CHAbstractListCollection *collection2 = [collection copy];
 	STAssertNotNil(collection2, @"-copy should not return nil for valid collection.");
 	STAssertEquals([collection2 count], 3u, @"-count is incorrect.");
-	STAssertEqualObjects([collection allObjects], [collection2 allObjects], @"Unequal collections.");
+	STAssertEqualObjects([collection allObjects], [collection2 allObjects],
+						 @"Unequal collections.");
 	[collection2 release];
 }
 
@@ -119,34 +120,8 @@
 	STAssertEquals([collection count], 3u, @"-count is incorrect.");
 	STAssertEqualObjects([collection allObjects], objects,
 						 @"Bad array ordering on -initWithArray:");
-}
-
-- (void) testInitWithList {
-	[collection release];
 	
-	CHDoublyLinkedList *aListS = [[CHDoublyLinkedList alloc] init];
-	[aListS appendObject:@"A"];
-	[aListS appendObject:@"B"];
-	[aListS appendObject:@"C"];
-	collection = [[CHAbstractListCollection alloc] initWithList:aListS];
-	[aListS release];
-	
-	STAssertTrue([[collection list] isMemberOfClass:[CHSinglyLinkedList class]], @"Failed to create a singly linked list");
 	NSEnumerator *enumerator = [collection objectEnumerator];
-	STAssertEqualObjects([enumerator nextObject], @"A", @"-nextObject is wrong");
-	STAssertEqualObjects([enumerator nextObject], @"B", @"-nextObject is wrong");
-	STAssertEqualObjects([enumerator nextObject], @"C", @"-nextObject is wrong");
-	STAssertNil([enumerator nextObject], @"-nextObject should return Nil");
-	
-	CHSinglyLinkedList *aListD = [[CHSinglyLinkedList alloc] init];
-	[aListD appendObject:@"A"];
-	[aListD appendObject:@"B"];
-	[aListD appendObject:@"C"];
-	collection = [[CHAbstractListCollection alloc] initWithList:aListD];
-	[aListD release];
-	
-	STAssertTrue([[collection list] isMemberOfClass:[CHSinglyLinkedList class]], @"Failed to create a singly linked list");
-	enumerator = [collection objectEnumerator];
 	STAssertEqualObjects([enumerator nextObject], @"A", @"-nextObject is wrong");
 	STAssertEqualObjects([enumerator nextObject], @"B", @"-nextObject is wrong");
 	STAssertEqualObjects([enumerator nextObject], @"C", @"-nextObject is wrong");

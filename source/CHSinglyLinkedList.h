@@ -38,7 +38,7 @@ typedef struct CHSinglyLinkedListNode {
  */
 
 @interface CHSinglyLinkedList : NSObject <CHLinkedList> {
-	NSUInteger listSize; /**< The number of object currently stored in a list. */
+	NSUInteger count; /**< The number of object currently stored in a list. */
 	CHSinglyLinkedListNode *head;  /**< A pointer to the front node of a list. */
 	CHSinglyLinkedListNode *tail;  /**< A pointer to the back node of a list. */
 	unsigned long mutations; /**< Used to track mutations for NSFastEnumeration. */
