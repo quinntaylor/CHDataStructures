@@ -70,4 +70,47 @@
 - (NSUInteger) indexOfObjectIdenticalTo:(id)anObject;
 - (id) objectAtIndex:(NSUInteger)index;
 
+#pragma mark Adopted Protocols
+
+/**
+ Returns a new instance that's a copy of the receiver. Invoked automatically by
+ the default <code>-copy</code> method inherited from NSObject.
+ 
+ @param zone Identifies an area of memory from which to allocate the new
+        instance. If zone is <code>NULL</code>, the new instance is allocated
+        from the default zone. (<code>-copy</code> invokes with a NULL param.)
+ 
+ The returned object is implicitly retained by the sender, who is responsible
+ for releasing it. Copies returned by this method are always mutable.
+ */
+- (id) copyWithZone:(NSZone *)zone;
+
+/**
+ Returns an object initialized from data in a given keyed unarchiver.
+ 
+ @param decoder An unarchiver object.
+ */
+- (id) initWithCoder:(NSCoder *)decoder;
+
+/**
+ Encodes the receiver using a given keyed archiver.
+ 
+ @param encoder An archiver object.
+ */
+- (void) encodeWithCoder:(NSCoder *)encoder;
+
+/**
+ A method for NSFastEnumeration, called by <code><b>for</b> (type variable
+ <b>in</b> collection)</code> constructs.
+ 
+ @param state Context information that is used in the enumeration to ensure that
+        the collection has not been mutated, in addition to other possibilities.
+ @param stackbuf A C array of objects over which the sender is to iterate.
+ @param len The maximum number of objects to return in stackbuf.
+ @return The number of objects returned in stackbuf, or 0 when iteration is done.
+ */
+- (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
+                                   objects:(id*)stackbuf
+                                     count:(NSUInteger)len;
+
 @end

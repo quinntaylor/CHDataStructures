@@ -119,8 +119,8 @@ NSUInteger kCHTreeListNodeSize = sizeof(CHTreeListNode);
 #pragma mark <NSFastEnumeration> Methods
 
 /**
- A method for NSFastEnumeration, called by <code><b>for</b> (type variable <b>in</b>
- collection)</code> constructs.
+ A method for NSFastEnumeration, called by <code><b>for</b> (type variable
+ <b>in</b> collection)</code> constructs.
  
  @param state Context information that is used in the enumeration to ensure that
         the collection has not been mutated, in addition to other possibilities.

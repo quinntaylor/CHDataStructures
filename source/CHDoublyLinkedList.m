@@ -217,6 +217,16 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 
 #pragma mark <NSCopying> Methods
 
+/**
+ Returns a new instance that is a copy of the receiver.
+ 
+ @param zone The zone identifies an area of memory from which to allocate the
+        new instance. If zone is <code>NULL</code>, the instance is allocated
+        from the default zone.
+ 
+ The returned object is implicitly retained by the sender, who is responsible
+ for releasing it. For this class and its children, all copies are mutable.
+ */
 - (id) copyWithZone:(NSZone *)zone {
 	CHDoublyLinkedList *newList = [[CHDoublyLinkedList alloc] init];
 	for (id anObject in self)
@@ -226,6 +236,16 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 
 #pragma mark <NSFastEnumeration> Methods
 
+/**
+ Returns by reference a C array of objects over which the sender should iterate,
+ and as the return value the number of objects in the array.
+ 
+ @param state Context information that is used in the enumeration to ensure that
+        the collection has not been mutated, in addition to other possibilities.
+ @param stackbuf A C array of objects over which the sender is to iterate.
+ @param len The maximum number of objects to return in stackbuf.
+ @return The number of objects returned in stackbuf, or 0 when iteration is done.
+ */
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len
@@ -340,9 +360,9 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 }
 
 - (NSUInteger) indexOfObject:(id)anObject {
-	CHDoublyLinkedListNode *current = head->next;
 	NSUInteger index = 0;
 	tail->object = anObject;
+	CHDoublyLinkedListNode *current = head->next;
 	while (![current->object isEqual:anObject]) {
 		current = current->next;
 		++index;
@@ -351,9 +371,9 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 }
 
 - (NSUInteger) indexOfObjectIdenticalTo:(id)anObject {
-	CHDoublyLinkedListNode *current = head->next;
 	NSUInteger index = 0;
 	tail->object = anObject;
+	CHDoublyLinkedListNode *current = head->next;
 	while (current->object != anObject) {
 		current = current->next;
 		++index;
@@ -362,7 +382,7 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 }
 
 - (id) objectAtIndex:(NSUInteger)index {
-	if (index >= count || index < 0)
+	if (index >= count)
 		CHIndexOutOfRangeException([self class], _cmd, index, count);
 	
 	CHDoublyLinkedListNode *node;
@@ -420,14 +440,13 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 }
 
 - (void) removeObjectAtIndex:(NSUInteger)index {
-	CHDoublyLinkedListNode *node;
-	NSUInteger nodeIndex;
 	if (index >= count)
 		CHIndexOutOfRangeException([self class], _cmd, index, count);
-	else {
-		findNodeAtIndex(index);
-		removeNode(node);
-	}
+	
+	CHDoublyLinkedListNode *node;
+	NSUInteger nodeIndex;
+	findNodeAtIndex(index);
+	removeNode(node);
 }
 
 - (void) removeAllObjects {
