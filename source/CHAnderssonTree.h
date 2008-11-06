@@ -29,17 +29,34 @@
  "http://eternallyconfuzzled.com/">Julienne Walker</a>. Method names have been
  changed to match the APIs of existing Cocoa collections provided by Apple.
  
- An <i>Arne Andersson tree</i> is similar to a RedBlackTree, but with a simple
- restriction that simplifies maintenance operations for balancing the tree.
- Rather than balancing all 7 possible subtrees of 2 and 3 nodes, an AA-tree need
- only be concerned with 2, so consequently only 2 operations (called <i>skew</i>
- and <i>split</i>, or left and right rotations, respectively) are required.
+ An <i>Arne Andersson tree</i> is similar to a Red-Black tree, but with a simple
+ restriction that simplifies maintenance operations for balancing the tree: red
+ nodes (which represent horizontal links to subtrees) are only allowed as the
+ right child of a node. Thus, rather than balancing all 7 possible subtrees of 2
+ and 3 nodes, an AA-tree need only be concerned with 2, so consequently only 2
+ operations (called <i>skew</i> and <i>split</i>) are required. These operations
+ are designed to eliminate red nodes on the left side and consecutive red nodes
+ on the right side, respectively, and are illustrated below:
+ 
+ <table align="center" border="0" cellpadding="0">
+ <tr>
+ <th style="vertical-align: top">
+	Figure 1 - The <code>skew</code> operation
+	@image html aa-tree-skew.png
+ </th>
+ <td width="50"></td>
+ <th style="vertical-align: top">
+	Figure 2 - The <code>split</code> operation
+	@image html aa-tree-split.png
+ </th>
+ </table>
 
- The performance of an AA-tree is equivalent to the performance of a Red-Black
- tree. While an AA-tree makes more rotations than a Red-Black tree, the simpler
- algorithms tend to be faster, and all of this balances out to result in similar
- performance. A Red-Black tree has more consistent performance than an AA-tree,
- but an AA-tree tends to be flatter, which results in slightly faster search.
+ Performance of an AA-tree is roughly equivalent to that of a Red-Black tree.
+ While an AA-tree makes more rotations than a Red-Black tree, the algorithms are
+ simpler to understand and tend to be somewhat faster, and all of this balances
+ out to result in similar performance. A Red-Black tree is more consistent in
+ its performance than an AA-tree, but an AA-tree tends to be flatter, which
+ results in slightly faster search.
  */
 @interface CHAnderssonTree : CHAbstractTree
 
