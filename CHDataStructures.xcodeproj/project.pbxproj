@@ -475,6 +475,7 @@
 			buildConfigurationList = 1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "Framework" */;
 			buildPhases = (
 				8DC2EF500486A6940098B216 /* Headers */,
+				E49D7EA60EC261AF007C7837 /* ShellScript */,
 				8DC2EF520486A6940098B216 /* Resources */,
 				8DC2EF540486A6940098B216 /* Sources */,
 				8DC2EF560486A6940098B216 /* Frameworks */,
@@ -597,6 +598,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n\n# Run gcov on the framework getting tested\nif [ \"${CONFIGURATION}\" = 'Debug' ]; then\n\tFRAMEWORK_NAME=CHDataStructures\n\tFRAMEWORK_TARGET=Framework\n\tFRAMEWORK_OBJ_DIR=${OBJROOT}/${FRAMEWORK_NAME}.build/${CONFIGURATION}/${FRAMEWORK_TARGET}.build/Objects-normal/${NATIVE_ARCH}\necho ${FRAMEWORK_OBJ_DIR}\n\tmkdir -p coverage\n\tpushd coverage\n\tfor path in `find \"${OBJROOT}\" -name *.gcda`; do\n\t\tgcov --object-directory \"${FRAMEWORK_OBJ_DIR}\" ${path##*/}\n\tdone\n\tpopd\nfi";
+			showEnvVarsInLog = 0;
+		};
+		E49D7EA60EC261AF007C7837 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ ${CONFIGURATION} = 'Release' ]\nthen\n\techo\n\techo \"Stripping documentation comments from public header files\"\n\tdirectory=\"build/Release/CHDataStructures.framework/Headers\"\n\tfor file in `ls build/Release/CHDataStructures.framework/Headers ` ; do\n\t\tdoxygen/strip_comments --input $directory/$file -J > /tmp/$file\n\t\tmv /tmp/$file $directory/\n\tdone\nfi";
 			showEnvVarsInLog = 0;
 		};
 		E4FE76D70E89556A00971EE6 /* ShellScript */ = {
