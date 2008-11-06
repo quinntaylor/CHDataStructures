@@ -29,28 +29,58 @@
  "http://eternallyconfuzzled.com/">Julienne Walker</a>. Method names have been
  changed to match the APIs of existing Cocoa collections provided by Apple.
  
- An <i>Arne Andersson tree</i> is similar to a Red-Black tree, but with a simple
- restriction that simplifies maintenance operations for balancing the tree: red
- nodes (which represent horizontal links to subtrees) are only allowed as the
- right child of a node. Thus, rather than balancing all 7 possible subtrees of 2
- and 3 nodes, an AA-tree need only be concerned with 2, so consequently only 2
- operations (called <i>skew</i> and <i>split</i>) are required. These operations
- are designed to eliminate red nodes on the left side and consecutive red nodes
- on the right side, respectively, and are illustrated below:
+ The AA-tree (named after its creator, Arne Andersson) is extremely similar to a
+ Red-Black tree. Both are abstractions of B-trees designed to make insertion and
+ removal easier to understand and implement. In a red-black tree, a red node
+ represents a horizontal link to a subtree rooted at the same level. In the
+ AA-tree, horizontal links are represented by storing a node's level, not color.
+ (A node whose level is the same as its parent is equivalent to a "red" node.)
+ 
+ Similar to a red-black tree, there are several rules which must be true for an
+ AA-tree to remain valid:
+ 
+ <ol>
+ <li>The level of a leaf node is one.</li>
+ <li>The level of a left child is less than that of its parent.</li>
+ <li>The level of a right child is less than or equal to that of its parent.</li>
+ <li>The level of a right grandchild is less than that of its grandparent.</li>
+ <li>Every node of level greater than one must have two children.</li>
+ </ol>
+
+ The AA-tree was invented to simplify the algorithms for balancing an abstract
+ B-tree, and does so with  a simple restriction: horizontal links ("red nodes")
+ are only allowed as the right child of a node. Thus, rather than balancing all
+ 7 possible subtrees of 2 and 3 nodes (shown in Figure 1) when removing, an
+ AA-tree need only be concerned with 2: the first and last shapes in the figure.
+ 
+ <div align="center"><b>Figure 1 - All possible 2- and 3-node subtrees</b></div>
+ @image html aa-tree-shapes.png
+ 
+ Consequently, only two primitive balancing operations are necessary. The
+ <code>skew</code> operation eliminates red nodes as left children, while the
+ <code>split</code> operation eliminates consecutive right-child red nodes.
+ (Both of these operations are depicted in the figures below.)
  
  <table align="center" border="0" cellpadding="0">
  <tr>
  <th style="vertical-align: top">
-	Figure 1 - The <code>skew</code> operation
+	Figure 2 - The skew operation
 	@image html aa-tree-skew.png
  </th>
  <td width="50"></td>
  <th style="vertical-align: top">
-	Figure 2 - The <code>split</code> operation
+	Figure 3 - The split operation
 	@image html aa-tree-split.png
  </th>
  </table>
-
+ 
+ If we represent both the level of nodes and the implicit red color, an AA-tree
+ looks like the following example:
+ 
+ <div align="center"><b>Figure 4 - A sample AA-tree with node levels.</b></div>
+ @image html aa-tree-sample.png
+ 
+ 
  Performance of an AA-tree is roughly equivalent to that of a Red-Black tree.
  While an AA-tree makes more rotations than a Red-Black tree, the algorithms are
  simpler to understand and tend to be somewhat faster, and all of this balances

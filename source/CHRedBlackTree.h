@@ -34,14 +34,19 @@
 
  A Red-Black tree has four fundamental rules:
  <ol>
- <li>Every node is red or black.
- <li>The root is black.
- <li>If a node is red, its children must be black.
- <li>Every path from a node to a leaf contains the same number of black nodes.
+ <li>Every node is red or black.</li>
+ <li>The root of the tree is black.</li>
+ <li>If a node is red, both of its children must be black.</li>
+ <li>Every path from a node to a leaf has the same number of black nodes.</li>
  </ol>
  
- Also note that <code>nil</code> nodes are considered black for many purposes.
- This is really hard to make work right. For me at least.
+ <div align="center"><b>Figure 1 - A sample red-black tree</b></div>
+ @image html red-black-tree.png
+ 
+ The sentinel node (which appears whenever a child link would be null) is always
+ colored black. The algorithms for balancing red-black trees can be made to work
+ without explicitly representing the nil leaf children, but they work better and
+ with much less heartache if those links are present.
  */
 @interface CHRedBlackTree : CHAbstractTree
 {

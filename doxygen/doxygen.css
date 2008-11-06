@@ -162,6 +162,10 @@ img.formulaInl {
 	vertical-align: middle;
 }
 
+div.contents div img {
+	margin: 10px 0;	
+}
+
 /* @group Code Colorization */
 
 span.keyword {
