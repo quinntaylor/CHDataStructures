@@ -109,15 +109,13 @@ int main (int argc, const char *argv[]) {
 				break;
 			
 			case STRING_LITERAL:
-				if (thisChar == '"' && prevChar != '\\')
-					currentState = SOURCE;
-				else if (thisChar == '\n' && prevChar != '\\')
+				if (thisChar == '"' && prevChar != '\\')  // Account for \" char
 					currentState = SOURCE;
 				printf("%C", thisChar);
 				break;
 				
 			case CHAR_LITERAL:
-				if (thisChar == '\'' && prevChar != '\\')
+				if (thisChar == '\'' && prevChar != '\\') // Account for \' char
 					currentState = SOURCE;
 				printf("%C", thisChar);
 				break;
@@ -152,7 +150,7 @@ int main (int argc, const char *argv[]) {
 					if (!stripCStyle)
 						printf("/*%C", thisChar);
 					currentState = COMMENT_CSTYLE;
-					thisChar = 0; // prevents exiting block comment on /*/
+					thisChar = 0;  // Prevents counting "/*/" as a block comment
 				}
 				break;
 				
