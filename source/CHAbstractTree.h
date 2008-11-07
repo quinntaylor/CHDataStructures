@@ -46,7 +46,7 @@ typedef struct CHTreeNode {
 		NSUInteger color;             /**< A node's color (CHRedBlackTree) */
 		NSUInteger level;             /**< A node's level (CHAnderssonTree) */
 		NSInteger balance;            /**< A node's balance factor (CHAVLTree) */
-		NSInteger priority;           /**< A node's priority (CHTreap) */
+		NSUInteger priority;          /**< A node's priority value (CHTreap) */
 	};
 } CHTreeNode;
 

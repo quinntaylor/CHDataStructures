@@ -405,7 +405,7 @@ int main (int argc, const char * argv[]) {
 	NSUInteger size, item, limit = 100000;
 	objects = [[NSMutableArray alloc] init];
 	
-	/*
+/*
 	for (size = 1; size <= limit; size *= 10) {
 		NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:size+1];
 		[array addObjectsFromArray:[objects lastObject]];
@@ -436,16 +436,17 @@ int main (int argc, const char * argv[]) {
 		[objects addObject:array];
 		[array release];
 	}
-/*
-	CHQuietLog(@"\n<CHHeap> Implemenations");
-	benchmarkHeap([CHMutableArrayHeap class]);
-*/
+
 	CHQuietLog(@"\n<CHTree> Implemenations");
 	benchmarkTree([CHAnderssonTree class]);
-	benchmarkTree([CHRedBlackTree class]);
 	benchmarkTree([CHAVLTree class]);
-//	benchmarkTree([CHUnbalancedTree class]);
+	benchmarkTree([CHRedBlackTree class]);
+	benchmarkTree([CHTreap class]);
+	//	benchmarkTree([CHUnbalancedTree class]);
 	
+	CHQuietLog(@"\n<CHHeap> Implemenations");
+	benchmarkHeap([CHMutableArrayHeap class]);
+
 	CHQuietLog(@"");
 	[objects release];
 

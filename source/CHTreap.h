@@ -35,11 +35,11 @@
  
  Notice that, unlike a binary heap, a treap need not be a <i>complete tree</i>,
  which is a tree where every level is complete, with the possible exception of
- the lowest level, in which case any gaps must occur only on the right side.
- Also, the priority can be any numerical value—it doesn't matter whether it's an
- int or a float, positive or negative, signed or unsigned, as long as the range
- is large enough to accommodate the number of objects that may be present in the
- treap. Priorities are also not strictly required to be unique, but it can help.
+ the lowest level, in which case any gaps must occur only on the level's right
+ side. Also, the priority can be any numerical value—they can be integer or 
+ floatint point, positive or negative, signed or unsigned, as long as the range
+ is large enough to accommodate the number of objects that may be added to the
+ treap. Priorities are not strictly required to be unique, but it can help.
  
  Nodes are reordered to satisfy the heap property using rotations involving only
  two nodes, which change the position of children in the tree, but leave the
@@ -50,11 +50,11 @@
  
  Since subtrees may be rotated to satisfy the heap property without violating
  the BST property, these two properties never conflict. In fact, for a given set
- of objects and priorities, there is only one treap structure that can satisfy
- both properties. In practice, when the priority for each node is truly random,
- the tree is relatively well balanced, with expected height of Θ(log n). Treap
- performance is extremely fast on average, with a small risk of slow performance
- in random worst cases, which tend to be quite rare in practice.
+ of objects and unique priorities, there is only one treap structure that can
+ satisfy both properties. In practice, when the priority for each node is truly
+ random, the tree is relatively well balanced, with expected height of Θ(log n).
+ Treap performance is extremely fast on average, with a small risk of slow
+ performance in random worst cases, which tend to be quite rare in practice.
  
  Insertion is a cross between standard BST insertion and heap insertion: a new
  leaf node is created in the appropriate sorted location, and a random value is
@@ -72,10 +72,50 @@
  <a href="http://sims.berkeley.edu/~aragon/pubs/rst89.pdf">PDF original</a> or
  <a href="http://www-tcs.cs.uni-sb.de/Papers/rst.ps">PostScript revision</a>)
  
- <b>R. Seidel and C. R. Aragon. Randomized Binary Search Trees.<br>
- <em>Algorithmica</em>, 16(4/5):464-497, 1996.
- </b>
+ <center>
+   <b>R. Seidel and C. R. Aragon. "Randomized Search Trees."
+   <em>Algorithmica</em>, 16(4/5):464-497, 1996.</b>
+ </center>
  */
 @interface CHTreap : CHAbstractTree
+{
+	// For some reason, if these empty braces aren't here, Doxygen goes wacky...
+	// This only happens when methods are declared below, and the effect is that
+	// the inherited methods and attributes are not represented for the class.
+}
+
+/**
+ Add an object to the tree with a randomly-generated priority value. This
+ encourages (but doesn't necessarily guarantee) well-balanced treaps. Random
+ numbers are generated using <code>arc4random</code> and cast as an NSUInteger.
+ 
+ @param anObject The object to add to the queue; must not be <code>nil</code>,
+ or an <code>NSInvalidArgumentException</code> will be raised.
+ 
+ @see #addObject:withPriority:
+ */
+- (void) addObject:(id)anObject;
+
+/**
+ Add an object to the treap using a given priority value. Ordering is based on
+ an object's response to the <code>compare:</code> message. Since no duplicates
+ are allowed, if the tree already contains an object for which
+ <code>compare:</code> returns <code>NSOrderedSame</code>, that object is
+ released and replaced by @a anObject.
+
+ @param anObject The object to add to the queue; must not be <code>nil</code>,
+        or an <code>NSInvalidArgumentException</code> will be raised.
+ @param priority The priority value to be paired with the object being inserted.
+        Higher values percolate to the top. If @a anObject already exists in the
+        treap, this value is ignored, and the existing priority is maintained.
+ 
+ Using a specific priority value for an object allows the user to impose a heap
+ ordering by giving higher priorities to objects that should bubble towards the
+ top, and lower priorities to objects that should bubble towards the bottom. In
+ theory, this makes it significantly faster to retrieve commonly searched-for
+ items, at the possible cost of a less-balanced treap overall, depending on the
+ mapping of priorities and the sorted order of the objects. Use with caution.
+ */
+- (void) addObject:(id)anObject withPriority:(NSUInteger)priority;
 
 @end

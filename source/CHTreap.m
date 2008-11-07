@@ -30,6 +30,10 @@
 }
 
 - (void) addObject:(id)anObject {
+	[self addObject:anObject withPriority:(NSUInteger)arc4random()];
+}
+
+- (void) addObject:(id)anObject withPriority:(NSUInteger)priority {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
 	
@@ -58,7 +62,7 @@
 		current->object = anObject;
 		current->left   = sentinel;
 		current->right  = sentinel;
-		current->priority = arc4random() % ((unsigned)RAND_MAX + 1);
+		current->priority = priority;
 		++count;
 		// Link from parent as the proper child, based on last comparison
 		parent = CHTreeList_TOP;
