@@ -65,6 +65,50 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	STAssertEquals([tree count], [objects count], @"-count is incorrect.");
 }
 
+- (void) testAddObjectOneAtATime {
+	STAssertThrows([tree addObject:nil], @"Should raise an exception.");
+	
+	[tree addObject:@"B"];
+	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
+	correct = [NSArray arrayWithObjects:@"B",nil];
+	STAssertTrue([order isEqualToArray:correct],
+	             badOrder(@"Pre-order", order, correct));
+	
+	[tree addObject:@"N"];
+	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
+	correct = [NSArray arrayWithObjects:@"B",@"N",nil];
+	STAssertTrue([order isEqualToArray:correct],
+	             badOrder(@"Pre-order", order, correct));
+	
+	[tree addObject:@"C"];
+	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
+	correct = [NSArray arrayWithObjects:@"C",@"B",@"N",nil];
+	STAssertTrue([order isEqualToArray:correct],
+	             badOrder(@"Pre-order", order, correct));
+	
+	[tree addObject:@"L"];
+	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
+	correct = [NSArray arrayWithObjects:@"C",@"B",@"N",@"L",nil];
+	STAssertTrue([order isEqualToArray:correct],
+	             badOrder(@"Pre-order", order, correct));
+	
+	[tree addObject:@"D"];
+	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
+	correct = [NSArray arrayWithObjects:@"C",@"B",@"L",@"D",@"N",nil];
+	STAssertTrue([order isEqualToArray:correct],
+	             badOrder(@"Pre-order", order, correct));
+	
+	[tree addObject:@"J"];
+	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
+	correct = [NSArray arrayWithObjects:@"D",@"C",@"B",@"L",@"J",@"N",nil];
+	STAssertTrue([order isEqualToArray:correct],
+	             badOrder(@"Pre-order", order, correct));
+	
+	// Test adding identical object--should be replaced, and count stay the same
+	//[tree addObject:@"A"];
+	//STAssertEquals([tree count], [objects count], @"-count is incorrect.");
+}
+
 
 - (void) testAllObjectsWithTraversalOrder {
 	for (id object in objects)

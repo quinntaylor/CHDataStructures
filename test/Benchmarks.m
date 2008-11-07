@@ -402,9 +402,10 @@ void benchmarkTree(Class testClass) {
 
 int main (int argc, const char * argv[]) {
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-
-	NSUInteger size, item, limit = 1000000;
+	NSUInteger size, item, limit = 100000;
 	objects = [[NSMutableArray alloc] init];
+	
+	/*
 	for (size = 1; size <= limit; size *= 10) {
 		NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:size+1];
 		[array addObjectsFromArray:[objects lastObject]];
@@ -425,7 +426,7 @@ int main (int argc, const char * argv[]) {
 	CHQuietLog(@"\n<CHStack> Implemenations");
 	benchmarkStack([CHMutableArrayStack class]);
 	benchmarkStack([CHListStack class]);
-	
+*/	
 	// Create more disordered arrays of values for testing heap and tree subclasses
 	[objects removeAllObjects];
 	for (size = 1; size <= limit; size *= 10) {
@@ -435,13 +436,14 @@ int main (int argc, const char * argv[]) {
 		[objects addObject:array];
 		[array release];
 	}
-
+/*
 	CHQuietLog(@"\n<CHHeap> Implemenations");
 	benchmarkHeap([CHMutableArrayHeap class]);
-
+*/
 	CHQuietLog(@"\n<CHTree> Implemenations");
 	benchmarkTree([CHAnderssonTree class]);
 	benchmarkTree([CHRedBlackTree class]);
+	benchmarkTree([CHAVLTree class]);
 //	benchmarkTree([CHUnbalancedTree class]);
 	
 	CHQuietLog(@"");

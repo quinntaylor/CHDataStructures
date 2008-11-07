@@ -44,8 +44,8 @@ typedef struct CHTreeNode {
 	};
 	union {
 		NSUInteger color;             /**< The node's color (red-black trees) */
-		NSUInteger height;            /**< The node's height (AVL trees) */
 		NSUInteger level;             /**< The node's level (Andersson trees) */
+		NSInteger balance;            /**< A node's balance factor (AVL trees) */
 	};
 } CHTreeNode;
 
