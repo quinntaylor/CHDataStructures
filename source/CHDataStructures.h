@@ -40,6 +40,7 @@
 #import "CHMutableArrayStack.h"
 #import "CHRedBlackTree.h"
 #import "CHSinglyLinkedList.h"
+#import "CHTreap.h"
 #import "CHUnbalancedTree.h"
 
 // Utilities

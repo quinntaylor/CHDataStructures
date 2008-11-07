@@ -43,9 +43,10 @@ typedef struct CHTreeNode {
 		struct CHTreeNode *link[2];   /**< Links to left and right childen. */
 	};
 	union {
-		NSUInteger color;             /**< The node's color (red-black trees) */
-		NSUInteger level;             /**< The node's level (Andersson trees) */
-		NSInteger balance;            /**< A node's balance factor (AVL trees) */
+		NSUInteger color;             /**< A node's color (CHRedBlackTree) */
+		NSUInteger level;             /**< A node's level (CHAnderssonTree) */
+		NSInteger balance;            /**< A node's balance factor (CHAVLTree) */
+		NSInteger priority;           /**< A node's priority (CHTreap) */
 	};
 } CHTreeNode;
 
@@ -106,6 +107,9 @@ typedef struct CHTreeListNode {
 	NSUInteger count;        /**< The number of elements currently in the tree. */
 	unsigned long mutations; /**< Used to track mutations for NSFastEnumeration. */
 }
+
+// This is declared to prevent compile warnings, but is undocumented in purpose.
+- (NSString*) debugDescription;
 
 #pragma mark Adopted Protocols
 

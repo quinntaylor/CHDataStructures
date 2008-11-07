@@ -269,6 +269,10 @@ NSUInteger kCHTreeListNodeSize = sizeof(CHTreeListNode);
 	return [self objectEnumeratorWithTraversalOrder:CHTraverseDescending];
 }
 
+- (NSString*) debugDescription {
+	return [self description];
+}
+
 #pragma mark Unsupported Implementations
 
 - (void) addObject:(id)anObject {
