@@ -21,12 +21,12 @@
 
 @implementation CHTreap
 
-/* Two-way single rotation */
-#define singleRotation(root,dir) {       \
-	CHTreeNode *save = root->link[!dir]; \
-	root->link[!dir] = save->link[dir];  \
-	save->link[dir] = root;              \
-	root = save;                         \
+// Two-way single rotation; 'dir' is the side to which the root should rotate.
+#define singleRotation(node,dir,parent) {       \
+	CHTreeNode *save = node->link[!dir]; \
+	node->link[!dir] = save->link[dir];  \
+	save->link[dir] = node;              \
+	parent->link[(parent->right == node)] = save; \
 }
 
 - (id) init {
@@ -50,7 +50,6 @@
 	
 	CHTreeNode *parent, *current = header;
 	CHTreeListNode *stack = NULL, *tmp;
-	BOOL isRightChild;
 	int direction;
 	
 	sentinel->object = anObject; // Assure that we find a spot to insert
@@ -71,14 +70,12 @@
 		// Assign new priority; bubble down if needed, or just wait to bubble up
 		current->priority = priority;
 		while (current->left != current->right) { // sentinel check
-			isRightChild = (parent->right == current);
 			direction = (current->right->priority > current->left->priority);
 			if (current->priority >= current->link[direction]->priority)
 				break;
-			singleRotation(current, !direction);
-			parent->link[isRightChild] = current;
+			singleRotation(current, !direction, parent);
 			parent = current;
-			current = parent->link[!direction];
+			current = current->link[!direction];
 		}
 	} else {
 		current = malloc(kCHTreeNodeSize);
@@ -95,12 +92,9 @@
 	// Trace back up the path, rotating as we go to satisfy the heap property.
 	// Loop exits once the heap property is satisfied, even after bubble down.
 	while (parent != header && current->priority > parent->priority) {
-		// Rotate child up, and parent down to opposite subtree
-		isRightChild = (CHTreeList_TOP->right == parent);
+		// Rotate current up, and parent down to opposite subtree
 		direction = (parent->left == current);
-		parent->link[!direction] = current->link[direction];
-		current->link[direction] = parent;
-		CHTreeList_TOP->link[isRightChild] = current;
+		singleRotation(parent, direction, CHTreeList_TOP);
 		// Move to the next node up the path to the root
 		parent = CHTreeList_TOP;
 		CHTreeList_POP;
@@ -113,8 +107,32 @@
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
 	
-	// TODO: Implement remove
-	CHUnsupportedOperationException([self class], _cmd);
+	CHTreeNode *parent, *current = header;
+	NSComparisonResult comparison;
+	int direction;
+	
+	// First, we must locate the object to be removed, or we exit if not found
+	sentinel->object = anObject; // Assure that we stop at a sentinel leaf node
+	while (comparison = [current->object compare:anObject]) {
+		parent = current;
+		current = current->link[comparison == NSOrderedAscending]; // R on YES
+	}
+	
+	if (current != sentinel) {
+		// Percolate node down the tree, always rotating towards lower priority
+		BOOL isRightChild;
+		while (current->left != current->right) { // sentinel check
+			direction = (current->right->priority > current->left->priority);
+			isRightChild = (parent->right == current);
+			singleRotation(current, !direction, parent);
+			parent = parent->link[isRightChild];
+		}
+		parent->link[parent->right == current] = sentinel;
+		[current->object release];
+		free(current);
+		--count;
+	}
+	++mutations;
 }
 
 - (NSInteger) priorityForObject:(id)anObject {
@@ -130,7 +148,8 @@
 
 - (NSString*) debugDescription {
 	NSMutableString *description = [NSMutableString stringWithFormat:
-	                                @"<%@: 0x%x> = {\n", [self class], self];
+	                                @"<%@: 0x%x> [%d objects]= {\n",
+	                                [self class], self, count];
 	CHTreeNode *currentNode;
 	CHTreeListNode *queue = NULL, *queueTail = NULL, *tmp;
 	CHTreeList_ENQUEUE(header->right);

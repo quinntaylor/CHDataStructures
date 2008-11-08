@@ -107,7 +107,6 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 		// Can't test a specific order because of randomly-assigned priorities
 		STAssertNoThrow([tree verify], @"Not a valid treap: %@",
 						[tree debugDescription]);
-		CHLocationLog([tree debugDescription]);
 	}
 	
 	// Test adding an existing object to the treap
@@ -258,15 +257,23 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	// Test removing nil
 	STAssertThrows([tree removeObject:nil], @"Should raise an exception.");
 	
+	CHLocationLog([tree debugDescription]);
+	
 	// Test removing a node which doesn't occur in the tree
 	STAssertEquals([tree count], [objects count], @"-count is incorrect.");
 	[tree removeObject:@"Z"];
 	STAssertEquals([tree count], [objects count], @"-count is incorrect.");
 	
+	[tree removeObject:@"B"];
+//	CHLocationLog([tree debugDescription]);
+	
+	
 	NSUInteger count = [objects count];
 	for (id anObject in objects) {
 		[tree removeObject:anObject];
-		STAssertEquals([tree count], --count, @"-count is incorrect.");
+		CHLocationLog([tree debugDescription]);
+		STAssertEquals([tree count], --count,
+					   @"-count is incorrect after removing %@.", anObject);
 		STAssertNoThrow([tree verify], @"Not a valid treap: %@",
 						[tree debugDescription]);
 	}
