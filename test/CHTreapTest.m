@@ -85,7 +85,6 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 
 @end
 
-
 @implementation CHTreapTest
 
 - (void) setUp {
@@ -108,15 +107,19 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 		// Can't test a specific order because of randomly-assigned priorities
 		STAssertNoThrow([tree verify], @"Not a valid treap: %@",
 						[tree debugDescription]);
+		CHLocationLog([tree debugDescription]);
 	}
 	
-	// Test adding
+	// Test adding an existing object to the treap
 	STAssertEquals([tree count], [objects count], @"-count is incorrect.");
 	[tree addObject:@"A"];
 	STAssertEquals([tree count], [objects count], @"-count is incorrect.");
 }
 
 - (void) testAddObjectWithPriority {
+	STAssertThrows([tree addObject:@"foo" withPriority:NSIntegerMax],
+				   @"Should raise an exception.");
+	
 	NSUInteger priority = 0;
 	NSEnumerator *e = [objects objectEnumerator];
 	
@@ -199,7 +202,6 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 			   @"G",@"L",@"I",@"K",nil];
 	STAssertTrue([order isEqualToArray:correct],
 	             badOrder(@"Pre-order", order, correct));
-	CHLocationLog([tree debugDescription]);
 	
 	[tree addObject:[e nextObject] withPriority:(++priority)]; // J
 	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
@@ -207,8 +209,6 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 			   @"G",@"I",@"M",@"L",@"K",nil];
 	STAssertTrue([order isEqualToArray:correct],
 	             badOrder(@"Pre-order", order, correct));
-	CHLocationLog([tree debugDescription]);
-	
 }
 
 - (void) testAllObjectsWithTraversalOrder {
@@ -226,6 +226,29 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 			   @"E",@"D",@"C",@"B",@"A",nil];
 	STAssertTrue([order isEqualToArray:correct],
 	             badOrder(@"Descending order", order, correct));
+	
+	// Test adding an existing object to the treap
+	STAssertEquals([tree count], [objects count], @"-count is incorrect.");
+	[tree addObject:@"A" withPriority:NSIntegerMin];
+	STAssertEquals([tree count], [objects count], @"-count is incorrect.");	
+}
+
+- (void) testPriorityForObject {
+	STAssertEquals([tree priorityForObject:nil], NSNotFound,
+	               @"Priority should indicate that the object is absent.");
+	STAssertEquals([tree priorityForObject:@"Z"], NSNotFound,
+	               @"Priority should indicate that the object is absent.");
+
+	NSInteger priority = 0;
+	for (id object in objects)
+		[tree addObject:object withPriority:(++priority)];
+	
+	STAssertEquals([tree priorityForObject:nil], NSNotFound,
+	               @"Priority should indicate that the object is absent.");
+	STAssertEquals([tree priorityForObject:@"Z"], NSNotFound,
+	               @"Priority should indicate that the object is absent.");
+	
+	// TODO: Verify actual priorities.
 }
 
 - (void) testRemoveObject {

@@ -21,7 +21,7 @@
 
 @implementation CHTreap
 
-/* Two way single rotation */
+/* Two-way single rotation */
 #define singleRotation(root,dir) {       \
 	CHTreeNode *save = root->link[!dir]; \
 	root->link[!dir] = save->link[dir];  \
@@ -29,16 +29,29 @@
 	root = save;                         \
 }
 
-- (void) addObject:(id)anObject {
-	[self addObject:anObject withPriority:(NSUInteger)arc4random()];
+- (id) init {
+	if ([super init] == nil) return nil;
+	header->priority = NSIntegerMax;
+	sentinel->priority = NSIntegerMin;
+	return self;
 }
 
-- (void) addObject:(id)anObject withPriority:(NSUInteger)priority {
+- (void) addObject:(id)anObject {
+	[self addObject:anObject withPriority:(arc4random() % NSNotFound)];
+}
+
+- (void) addObject:(id)anObject withPriority:(NSInteger)priority {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
+	if (priority == NSNotFound)
+		[NSException raise:NSInternalInconsistencyException
+		            format:@"[%@ %s] -- Invalid priority, out of range: %d.",
+		                   [self class], sel_getName(_cmd), priority];
 	
 	CHTreeNode *parent, *current = header;
 	CHTreeListNode *stack = NULL, *tmp;
+	BOOL isRightChild;
+	int direction;
 	
 	sentinel->object = anObject; // Assure that we find a spot to insert
 	NSComparisonResult comparison;
@@ -46,6 +59,8 @@
 		CHTreeList_PUSH(current);
 		current = current->link[comparison == NSOrderedAscending]; // R on YES
 	}
+	parent = CHTreeList_TOP;
+	CHTreeList_POP;
 
 	++mutations;
 	[anObject retain]; // Must retain whether replacing value or adding new node
@@ -53,10 +68,18 @@
 		// Replace the existing object with the new object.
 		[current->object release];
 		current->object = anObject;
-		// No need to rebalance up the path since we didn't modify the structure
-		while (stack != NULL)
-			CHTreeList_POP; // Deallocate wrappers for nodes pushed to the stack		
-		return;
+		// Assign new priority; bubble down if needed, or just wait to bubble up
+		current->priority = priority;
+		while (current->left != current->right) { // sentinel check
+			isRightChild = (parent->right == current);
+			direction = (current->right->priority > current->left->priority);
+			if (current->priority >= current->link[direction]->priority)
+				break;
+			singleRotation(current, !direction);
+			parent->link[isRightChild] = current;
+			parent = current;
+			current = parent->link[!direction];
+		}
 	} else {
 		current = malloc(kCHTreeNodeSize);
 		current->object = anObject;
@@ -64,28 +87,20 @@
 		current->right  = sentinel;
 		current->priority = priority;
 		++count;
-		// Link from parent as the proper child, based on last comparison
-		parent = CHTreeList_TOP;
-		CHTreeList_POP;
+		// Link from parent as the correct child, based on the last comparison
 		comparison = [parent->object compare:anObject];
 		parent->link[comparison == NSOrderedAscending] = current; // R if YES
 	}
 	
-	// Trace back up the path, rotating as we go to satisfy the heap property
-	BOOL isRightChild;
-	int direction;
-	while (parent != header) {
+	// Trace back up the path, rotating as we go to satisfy the heap property.
+	// Loop exits once the heap property is satisfied, even after bubble down.
+	while (parent != header && current->priority > parent->priority) {
+		// Rotate child up, and parent down to opposite subtree
 		isRightChild = (CHTreeList_TOP->right == parent);
-		if (current->priority > parent->priority) {
-			// Rotate child up, and parent down to opposite subtree
-			direction = (parent->left == current);
-			parent->link[!direction] = current->link[direction];
-			current->link[direction] = parent;
-			CHTreeList_TOP->link[isRightChild] = current;
-		}
-		else
-			break; // We can stop once the heap property has been satisfied.
-		
+		direction = (parent->left == current);
+		parent->link[!direction] = current->link[direction];
+		current->link[direction] = parent;
+		CHTreeList_TOP->link[isRightChild] = current;
 		// Move to the next node up the path to the root
 		parent = CHTreeList_TOP;
 		CHTreeList_POP;
@@ -97,11 +112,20 @@
 - (void) removeObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
-	if (header->right == sentinel)
-		return;
 	
 	// TODO: Implement remove
 	CHUnsupportedOperationException([self class], _cmd);
+}
+
+- (NSInteger) priorityForObject:(id)anObject {
+	if (anObject == nil)
+		return NSNotFound;
+	sentinel->object = anObject; // Make sure the target value is always "found"
+	CHTreeNode *current = header->right;
+	NSComparisonResult comparison;
+	while (comparison = [current->object compare:anObject]) // while not equal
+		current = current->link[comparison == NSOrderedAscending]; // R on YES
+	return (current != sentinel) ? current->priority : NSNotFound;
 }
 
 - (NSString*) debugDescription {
