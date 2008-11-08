@@ -247,12 +247,34 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	STAssertEquals([tree priorityForObject:@"Z"], NSNotFound,
 	               @"Priority should indicate that the object is absent.");
 	
-	// TODO: Verify actual priorities.
+	// Inserting from 'objects' with these priorities creates a known ordering.
+	int priorities[] = {8,11,13,12,1,4,5,9,6,3,10,7,2};
+	
+	int index = 0;
+	[tree removeAllObjects];
+	for (id anObject in objects) {
+		[tree addObject:anObject withPriority:(priorities[index++])];
+		[tree verify];
+	}
+	
+	// Verify that the assigned priorities are what we expect
+	index = 0;
+	for (id anObject in objects)
+		STAssertEquals([tree priorityForObject:anObject], priorities[index++],
+		               @"Wrong priority for object '%@'.", anObject);
+	
+	// Verify the required tree structure with these objects and priorities.
+	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
+	correct = [NSArray arrayWithObjects:@"K",@"B",@"A",@"D",@"C",@"G",@"F",@"E",
+	           @"H",@"J",@"I",@"M",@"L",nil];
+	STAssertTrue([order isEqualToArray:correct],
+	             badOrder(@"Pre-order", order, correct));
 }
 
 - (void) testRemoveObject {
-	for (id object in objects)
-		[tree addObject:object];
+	
+	for (id anObject in objects)
+		[tree addObject:anObject];
 	
 	// Test removing nil
 	STAssertThrows([tree removeObject:nil], @"Should raise an exception.");
@@ -263,21 +285,21 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	STAssertEquals([tree count], [objects count], @"-count is incorrect.");
 	[tree removeObject:@"Z"];
 	STAssertEquals([tree count], [objects count], @"-count is incorrect.");
-	
-	[tree removeObject:@"B"];
-//	CHLocationLog([tree debugDescription]);
-	
-	
+		
 	NSUInteger count = [objects count];
 	for (id anObject in objects) {
 		[tree removeObject:anObject];
-		CHLocationLog([tree debugDescription]);
+		CHLocationLog(@"Remove %@\n%@", anObject, [tree debugDescription]);
 		STAssertEquals([tree count], --count,
 					   @"-count is incorrect after removing %@.", anObject);
 		STAssertNoThrow([tree verify], @"Not a valid treap: %@",
 						[tree debugDescription]);
 	}
 	
+	// Test removing a node which has been removed from the tree
+	STAssertEquals([tree count], 0u, @"-count is incorrect.");
+	[tree removeObject:@"A"];
+	STAssertEquals([tree count], 0u, @"-count is incorrect.");
 }
 
 @end

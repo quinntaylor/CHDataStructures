@@ -148,23 +148,26 @@
 
 - (NSString*) debugDescription {
 	NSMutableString *description = [NSMutableString stringWithFormat:
-	                                @"<%@: 0x%x> [%d objects]= {\n",
+	                                @"<%@: 0x%x> [%d objects] = {",
 	                                [self class], self, count];
 	CHTreeNode *currentNode;
 	CHTreeListNode *queue = NULL, *queueTail = NULL, *tmp;
-	CHTreeList_ENQUEUE(header->right);
-	sentinel->object = nil;
-	while (currentNode != sentinel && queue != NULL) {
-		currentNode = CHTreeList_FRONT;
-		CHTreeList_DEQUEUE;
-		if (currentNode->left != sentinel)
-			CHTreeList_ENQUEUE(currentNode->left);
-		if (currentNode->right != sentinel)
-			CHTreeList_ENQUEUE(currentNode->right);
-		// Append entry for the current node, including color and children
-		[description appendFormat:@"\t%10d : %@ -> %@ and %@\n",
-		 currentNode->priority, currentNode->object,
-		 currentNode->left->object, currentNode->right->object];
+	if (count > 0) {
+		CHTreeList_ENQUEUE(header->right);
+		[description appendString:@"\n"];
+		sentinel->object = nil;
+		while (currentNode != sentinel && queue != NULL) {
+			currentNode = CHTreeList_FRONT;
+			CHTreeList_DEQUEUE;
+			if (currentNode->left != sentinel)
+				CHTreeList_ENQUEUE(currentNode->left);
+			if (currentNode->right != sentinel)
+				CHTreeList_ENQUEUE(currentNode->right);
+			// Append entry for the current node, including color and children
+			[description appendFormat:@"\t%10d : %@ -> %@ and %@\n",
+			 currentNode->priority, currentNode->object,
+			 currentNode->left->object, currentNode->right->object];
+		}
 	}
 	[description appendString:@"}"];
 	return description;
