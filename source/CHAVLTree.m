@@ -20,54 +20,52 @@
 #import "CHAVLTree.h"
 
 /* Two way single rotation */
-#define singleRotation(root,dir) {             \
-CHTreeNode *save = root->link[!dir]; \
-root->link[!dir] = save->link[dir];      \
-save->link[dir] = root;                  \
-root = save;                             \
+#define singleRotation(root,dir) {       \
+    CHTreeNode *save = root->link[!dir]; \
+    root->link[!dir] = save->link[dir];  \
+    save->link[dir] = root;              \
+    root = save;                         \
 }
 
 /* Two way double rotation */
-#define doubleRotation(root,dir) {                        \
-CHTreeNode *save = root->link[!dir]->link[dir]; \
-root->link[!dir]->link[dir] = save->link[!dir];     \
-save->link[!dir] = root->link[!dir];                \
-root->link[!dir] = save;                            \
-save = root->link[!dir];                            \
-root->link[!dir] = save->link[dir];                 \
-save->link[dir] = root;                             \
-root = save;                                        \
+#define doubleRotation(root,dir) {                  \
+    CHTreeNode *save = root->link[!dir]->link[dir]; \
+    root->link[!dir]->link[dir] = save->link[!dir]; \
+    save->link[!dir] = root->link[!dir];            \
+    root->link[!dir] = save;                        \
+    save = root->link[!dir];                        \
+    root->link[!dir] = save->link[dir];             \
+    save->link[dir] = root;                         \
+    root = save;                                    \
 }
 
 /* Adjust balance before double rotation */
-#define adjustBalance(root,dir,bal) { \
-	CHTreeNode *n = root->link[dir];     \
-	CHTreeNode *nn = n->link[!dir];      \
-	if ( nn->balance == 0 )                  \
-		root->balance = n->balance = 0;        \
-		else if ( nn->balance == bal ) {         \
-		root->balance = -bal;                  \
-		n->balance = 0;                        \
-	}                                        \
-	else { /* nn->balance == -bal */         \
-		root->balance = 0;                     \
-		n->balance = bal;                      \
-	}                                        \
-	nn->balance = 0;                         \
+#define adjustBalance(root,dir,bal) {    \
+    CHTreeNode *n = root->link[dir];     \
+    CHTreeNode *nn = n->link[!dir];      \
+    if (nn->balance == 0)                \
+        root->balance = n->balance = 0;  \
+    else if (nn->balance == bal) {       \
+        root->balance = -bal;            \
+        n->balance = 0;                  \
+    } else { /* nn->balance == -bal */   \
+        root->balance = 0;               \
+        n->balance = bal;                \
+    }                                    \
+    nn->balance = 0;                     \
 }
 
 /* Rebalance after insertion */
-#define insertBalance(root,dir) {     \
-	CHTreeNode *n = root->link[dir];     \
-	int bal = dir == 0 ? -1 : +1;            \
-	if ( n->balance == bal ) {               \
-		root->balance = n->balance = 0;        \
-		singleRotation( root, !dir );             \
-	}                                        \
-	else { /* n->balance == -bal */          \
-		adjustBalance( root, dir, bal ); \
-		doubleRotation( root, !dir );             \
-	}                                        \
+#define insertBalance(root,dir) {       \
+    CHTreeNode *n = root->link[dir];    \
+    int bal = dir == 0 ? -1 : +1;       \
+    if (n->balance == bal) {            \
+        root->balance = n->balance = 0; \
+        singleRotation(root, !dir);     \
+    } else { /* n->balance == -bal */   \
+        adjustBalance(root, dir, bal);  \
+        doubleRotation(root, !dir);     \
+    }                                   \
 }
 
 @implementation CHAVLTree
@@ -77,19 +75,18 @@ root = save;                                        \
 		CHNilArgumentException([self class], _cmd);
 	
 	CHTreeNode *parent, *save, *current = header;
-	CHTreeListNode *stack = NULL, *tmp;
+	CHTreeNode **stack;
+	NSUInteger stackSize, elementsInStack;
+	CHTreeStack_INIT(stack);
 	
 	sentinel->object = anObject; // Assure that we find a spot to insert
 	NSComparisonResult comparison;
 	while (comparison = [current->object compare:anObject]) {
-		CHTreeList_PUSH(current);
-		if(current != header)
-		{
-			if(current->balance != 0)
-				save = current;
-		}
-		else
+		CHTreeStack_PUSH(current);
+		if (current == header)
 			save = current->right;
+		else if (current->balance != 0)
+			save = current;
 		current = current->link[comparison == NSOrderedAscending]; // R on YES
 	}
 	
@@ -100,8 +97,7 @@ root = save;                                        \
 		[current->object release];
 		current->object = anObject;
 		// No need to rebalance up the path since we didn't modify the structure
-		while (stack != NULL)
-			CHTreeList_POP; // deallocate wrappers for nodes pushed to the stack		
+		free(stack);		
 		return;
 	} else {
 		current = malloc(kCHTreeNodeSize);
@@ -111,8 +107,7 @@ root = save;                                        \
 		current->balance  = 0;
 		++count;
 		// Link from parent as the proper child, based on last comparison
-		parent = CHTreeList_TOP;
-		CHTreeList_POP;
+		parent = CHTreeStack_POP;
 		comparison = [parent->object compare:anObject];
 		parent->link[comparison == NSOrderedAscending] = current; // R if YES
 	}
@@ -127,28 +122,25 @@ root = save;                                        \
 		isRightChild = (parent->right == current);
 		//determine the balance modification
 		
-		if(!stopBalancing)
-		{
-			if(isRightChild)
+		if (!stopBalancing) {
+			if (isRightChild)
 				parent->balance++;
 			else
 				parent->balance--;
 		}
-		if(parent == save)
-			
+		if (parent == save)
 		
 		//terminate or rebalance as necessary
 		//if the balance factor is out of wack
-			if(parent == save) {
-				if(parent->balance > 1 || parent->balance < -1) {
+			if (parent == save) {
+				if (parent->balance > 1 || parent->balance < -1) {
 					insertBalance(parent, isRightChild);
 				}
 				stopBalancing = 1;
 			}
 		// Move to the next node up the path to the root
 		current = parent;
-		parent = CHTreeList_TOP;
-		CHTreeList_POP;
+		parent = CHTreeStack_POP;
 		
 		//need to link the parent to the current
 		comparison = [parent->object compare:current->object];
@@ -157,6 +149,7 @@ root = save;                                        \
 	//as long as the headers object value is always less than the middle of the
 	//tree this will work, what is teh default value?
 	//parent->right = current
+	free(stack);
 }
 
 - (void) removeObject:(id)anObject {

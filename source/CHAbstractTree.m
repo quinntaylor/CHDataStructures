@@ -133,43 +133,49 @@ NSUInteger kCHTreeListNodeSize = sizeof(CHTreeListNode);
                                      count:(NSUInteger)len
 {
 	CHTreeNode *current;
-	CHTreeListNode *stack, *tmp; 
+	CHTreeNode **stack;
+	NSUInteger stackSize, elementsInStack;
 	
-	// For the first call, start at leftmost node, otherwise start at last saved node
+	// For the first call, start at leftmost node, otherwise the last saved node
 	if (state->state == 0) {
-		current = header->right;
 		state->itemsPtr = stackbuf;
 		state->mutationsPtr = &mutations;
-		stack = NULL;
+		current = header->right;
+		CHTreeStack_INIT(stack);
 	}
 	else if (state->state == 1) {
 		return 0;		
 	}
 	else {
 		current = (CHTreeNode*) state->state;
-		stack = (CHTreeListNode*) state->extra[0];
+		stack = (CHTreeNode**) state->extra[0];
+		stackSize = (NSUInteger) state->extra[1];
+		elementsInStack = (NSUInteger) state->extra[2];
 	}
 	
 	// Accumulate objects from the tree until we reach all nodes or the maximum
 	NSUInteger batchCount = 0;
-	while ( (current != sentinel || stack != NULL) && batchCount < len) {
+	while ( (current != sentinel || elementsInStack > 0) && batchCount < len) {
 		while (current != sentinel) {
-			CHTreeList_PUSH(current);
+			CHTreeStack_PUSH(current);
 			current = current->left;
 			// TODO: How to not push/pop leaf nodes unnecessarily?
 		}
-		current = CHTreeList_TOP; // Save top node for return value
-		CHTreeList_POP;
+		current = CHTreeStack_POP; // Save top node for return value
 		stackbuf[batchCount] = current->object;
 		current = current->right;
 		batchCount++;
 	}
 	
-	if (current == sentinel && stack == NULL)
+	if (current == sentinel && elementsInStack == 0) {
+		free(stack);
 		state->state = 1; // used as a termination flag
+	}
 	else {
 		state->state = (unsigned long) current;
 		state->extra[0] = (unsigned long) stack;
+		state->extra[1] = (unsigned long) stackSize;
+		state->extra[2] = (unsigned long) elementsInStack;
 	}
 	return batchCount;
 }
@@ -297,13 +303,13 @@ NSUInteger kCHTreeListNodeSize = sizeof(CHTreeListNode);
     mutationPointer:(unsigned long*)mutations
 {
 	if ([super init] == nil || !isValidTraversalOrder(order)) return nil;
-	stack = NULL;
 	traversalOrder = order;
 	collection = (root != sentinel) ? collection = [tree retain] : nil;
+	CHTreeStack_INIT(stack);
 	if (traversalOrder == CHTraverseLevelOrder) {
 		CHTreeList_ENQUEUE(root);
 	} else if (traversalOrder == CHTraversePreOrder) {
-		CHTreeList_PUSH(root);
+		CHTreeStack_PUSH(root);
 	} else {
 		current = root;
 	}
@@ -316,16 +322,14 @@ NSUInteger kCHTreeListNodeSize = sizeof(CHTreeListNode);
 
 - (void) dealloc {
 	[collection release];
-	while (stack != NULL)
-		CHTreeList_POP;
+	free(stack);	
 	while (queue != NULL)
 		CHTreeList_DEQUEUE;
 	[super dealloc];
 }
 
 - (void) finalize {
-	while (stack != NULL)
-		CHTreeList_POP;
+	free(stack);	
 	while (queue != NULL)
 		CHTreeList_DEQUEUE;
 	[super finalize];
@@ -349,79 +353,74 @@ NSUInteger kCHTreeListNodeSize = sizeof(CHTreeListNode);
 	
 	switch (traversalOrder) {
 		case CHTraverseAscending: {
-			if (stack == NULL && current == sentinelNode) {
+			if (elementsInStack == 0 && current == sentinelNode) {
 				[collection release];
 				collection = nil;
 				return nil;
 			}
 			while (current != sentinelNode) {
-				CHTreeList_PUSH(current);
+				CHTreeStack_PUSH(current);
 				current = current->left;
 				// TODO: How to not push/pop leaf nodes unnecessarily?
 			}
-			current = CHTreeList_TOP; // Save top node for return value
-			CHTreeList_POP;
+			current = CHTreeStack_POP; // Save top node for return value
 			id tempObject = current->object;
 			current = current->right;
 			return tempObject;
 		}
 			
 		case CHTraverseDescending: {
-			if (stack == NULL && current == sentinelNode) {
+			if (elementsInStack == 0 && current == sentinelNode) {
 				[collection release];
 				collection = nil;
 				return nil;
 			}
 			while (current != sentinelNode) {
-				CHTreeList_PUSH(current);
+				CHTreeStack_PUSH(current);
 				current = current->right;
 				// TODO: How to not push/pop leaf nodes unnecessarily?
 			}
-			current = CHTreeList_TOP; // Save top node for return value
-			CHTreeList_POP;
+			current = CHTreeStack_POP; // Save top node for return value
 			id tempObject = current->object;
 			current = current->left;
 			return tempObject;
 		}
 			
 		case CHTraversePreOrder: {
-			current = CHTreeList_TOP;
-			CHTreeList_POP;
+			current = CHTreeStack_POP;
 			if (current == NULL) {
 				[collection release];
 				collection = nil;
 				return nil;
 			}
 			if (current->right != sentinelNode)
-				CHTreeList_PUSH(current->right);
+				CHTreeStack_PUSH(current->right);
 			if (current->left != sentinelNode)
-				CHTreeList_PUSH(current->left);
+				CHTreeStack_PUSH(current->left);
 			return current->object;
 		}
 			
 		case CHTraversePostOrder: {
 			// This algorithm from: http://www.johny.ca/blog/archives/05/03/04/
-			if (stack == NULL && current == sentinelNode) {
+			if (elementsInStack == 0 && current == sentinelNode) {
 				[collection release];
 				collection = nil;
 				return nil;
 			}
 			while (1) {
 				while (current != sentinelNode) {
-					CHTreeList_PUSH(current);
+					CHTreeStack_PUSH(current);
 					current = current->left;
 				}
 				// A null entry indicates that we've traversed the right subtree
-				if (CHTreeList_TOP != NULL) {
-					current = CHTreeList_TOP->right;
-					CHTreeList_PUSH(NULL);
-					// TODO: explore how to not use null pad for leaf nodes
+				if (CHTreeStack_TOP != NULL) {
+					current = CHTreeStack_TOP->right;
+					CHTreeStack_PUSH(NULL);
+					// TODO: How to not push a null pad for leaf nodes?
 				}
 				else {
-					CHTreeList_POP; // ignore the null pad
-					id tempObject = CHTreeList_TOP->object;
-					CHTreeList_POP;
-					return tempObject;
+					CHTreeStack_POP; // ignore the null pad
+					return CHTreeStack_POP->object;
 				}				
 			}
 		}
@@ -446,10 +445,7 @@ NSUInteger kCHTreeListNodeSize = sizeof(CHTreeListNode);
 
 @end
 
-
-
 #pragma mark -
-
 
 static CHTreeHeaderObject *headerObject = nil;
 

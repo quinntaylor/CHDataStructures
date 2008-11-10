@@ -49,20 +49,21 @@
 		                   [self class], sel_getName(_cmd), priority];
 	
 	CHTreeNode *parent, *current = header;
-	CHTreeListNode *stack = NULL, *tmp;
-	int direction;
+	CHTreeNode **stack;
+	NSUInteger stackSize, elementsInStack;
+	CHTreeStack_INIT(stack);
 	
 	sentinel->object = anObject; // Assure that we find a spot to insert
 	NSComparisonResult comparison;
 	while (comparison = [current->object compare:anObject]) {
-		CHTreeList_PUSH(current);
+		CHTreeStack_PUSH(current);
 		current = current->link[comparison == NSOrderedAscending]; // R on YES
 	}
-	parent = CHTreeList_TOP;
-	CHTreeList_POP;
+	parent = CHTreeStack_POP;
 
 	++mutations;
 	[anObject retain]; // Must retain whether replacing value or adding new node
+	int direction;
 	if (current != sentinel) {
 		// Replace the existing object with the new object.
 		[current->object release];
@@ -94,13 +95,11 @@
 	while (parent != header && current->priority > parent->priority) {
 		// Rotate current up, and parent down to opposite subtree
 		direction = (parent->left == current);
-		singleRotation(parent, direction, CHTreeList_TOP);
+		singleRotation(parent, direction, CHTreeStack_TOP);
 		// Move to the next node up the path to the root
-		parent = CHTreeList_TOP;
-		CHTreeList_POP;
+		parent = CHTreeStack_POP;
 	}
-	while (stack != NULL)
-		CHTreeList_POP;
+	free(stack);
 }
 
 - (void) removeObject:(id)anObject {

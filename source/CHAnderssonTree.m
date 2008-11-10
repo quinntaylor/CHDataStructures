@@ -54,12 +54,14 @@
 		CHNilArgumentException([self class], _cmd);
 	
 	CHTreeNode *parent, *current = header;
-	CHTreeListNode *stack = NULL, *tmp;
+	CHTreeNode **stack;
+	NSUInteger stackSize, elementsInStack;
+	CHTreeStack_INIT(stack);
 	
 	sentinel->object = anObject; // Assure that we find a spot to insert
 	NSComparisonResult comparison;
 	while (comparison = [current->object compare:anObject]) {
-		CHTreeList_PUSH(current);
+		CHTreeStack_PUSH(current);
 		current = current->link[comparison == NSOrderedAscending]; // R on YES
 	}
 	
@@ -70,8 +72,7 @@
 		[current->object release];
 		current->object = anObject;
 		// No need to rebalance up the path since we didn't modify the structure
-		while (stack != NULL)
-			CHTreeList_POP; // deallocate wrappers for nodes pushed to the stack		
+		free(stack);
 		return;
 	} else {
 		current = malloc(kCHTreeNodeSize);
@@ -81,8 +82,7 @@
 		current->level  = 1;
 		++count;
 		// Link from parent as the proper child, based on last comparison
-		parent = CHTreeList_TOP;
-		CHTreeList_POP;
+		parent = CHTreeStack_POP;
 		comparison = [parent->object compare:anObject];
 		parent->link[comparison == NSOrderedAscending] = current; // R if YES
 	}
@@ -96,9 +96,9 @@
 		parent->link[isRightChild] = current;
 		// Move to the next node up the path to the root
 		current = parent;
-		parent = CHTreeList_TOP;
-		CHTreeList_POP;
+		parent = CHTreeStack_POP;
 	}
+	free(stack);
 }
 
 - (void) removeObject:(id)anObject {
@@ -106,19 +106,19 @@
 		CHNilArgumentException([self class], _cmd);
 	
 	CHTreeNode *parent, *current = header;
-	CHTreeListNode *stack = NULL;
-	CHTreeListNode *tmp;
-
+	CHTreeNode **stack;
+	NSUInteger stackSize, elementsInStack;
+	CHTreeStack_INIT(stack);
+	
 	sentinel->object = anObject; // Assure that we stop at a leaf if not found.
 	NSComparisonResult comparison;
 	while (comparison = [current->object compare:anObject]) {
-		CHTreeList_PUSH(current);
+		CHTreeStack_PUSH(current);
 		current = current->link[comparison == NSOrderedAscending]; // R on YES
 	}
 	// Exit if the specified node was not found in the tree.
 	if (current == sentinel) {
-		while (stack != NULL)
-			CHTreeList_POP;  // deallocate wrappers for nodes on saved path
+		free(stack);
 		return;
 	}
 	
@@ -127,17 +127,17 @@
 	++mutations;
 	if (current->left == sentinel || current->right == sentinel) {
 		// Single/zero child case -- replace node with non-nil child (if exists)
-		parent = CHTreeList_TOP;
+		parent = CHTreeStack_TOP;
 		parent->link[parent->right == current]
 			= current->link[current->left == sentinel];
 		free(current);
 	} else {
 		// Two child case -- replace with minimum object in right subtree
-		CHTreeList_PUSH(current); // Need to start here when rebalancing
+		CHTreeStack_PUSH(current); // Need to start here when rebalancing
 		parent = current;
 		CHTreeNode *replacement = current->right;
 		while (replacement->left != sentinel) {
-			CHTreeList_PUSH(parent = replacement);
+			CHTreeStack_PUSH(parent = replacement);
 			replacement = replacement->left;
 		}
 		// Grab object from replacement node, steal its right child, deallocate
@@ -149,10 +149,10 @@
 	// Walk back up the path and rebalance as we go
 	// Note that 'parent' always has the correct value coming into the loop
 	BOOL isRightChild;
-	while (current != NULL && stack->next != NULL) {
+	while (current != NULL && elementsInStack > 1) {
 		current = parent;
-		CHTreeList_POP;
-		parent = CHTreeList_TOP;
+		CHTreeStack_POP;
+		parent = CHTreeStack_TOP;
 		isRightChild = (parent->right == current);
 		
 		if (current->left->level < current->level-1 ||
@@ -169,28 +169,31 @@
 		}
 		parent->link[isRightChild] = current;
 	}
+	free(stack);
 }
 
 - (NSString*) debugDescription {
 	NSMutableString *description = [NSMutableString stringWithFormat:
 	                                @"<%@: 0x%x> = {\n", [self class], self];
 	CHTreeNode *current;
-	CHTreeListNode *stack = NULL, *tmp;
-	CHTreeList_PUSH(header->right);
+	CHTreeNode **stack;
+	NSUInteger stackSize, elementsInStack;
+	CHTreeStack_INIT(stack);
 	
 	sentinel->object = nil;
+	CHTreeStack_PUSH(header->right);	
 	while (current != sentinel && stack != NULL) {
-		current = CHTreeList_TOP;
-		CHTreeList_POP;
+		current = CHTreeStack_POP;
 		if (current->right != sentinel)
-			CHTreeList_PUSH(current->right);
+			CHTreeStack_PUSH(current->right);
 		if (current->left != sentinel)
-			CHTreeList_PUSH(current->left);
+			CHTreeStack_PUSH(current->left);
 		// Append entry for the current node, including color and children
 		[description appendFormat:@"\t%d : %@ -> %@ and %@\n",
 		 current->level, current->object,
 		 current->left->object, current->right->object];
 	}
+	free(stack);
 	[description appendString:@"}"];
 	return description;
 }

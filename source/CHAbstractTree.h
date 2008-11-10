@@ -61,12 +61,18 @@ typedef struct CHTreeListNode {
 
 #pragma mark - Stack Operations
 
-#define CHTreeList_PUSH(o) \
-        {tmp=malloc(kCHTreeListNodeSize);tmp->node=o;tmp->next=stack;stack=tmp;}
-#define CHTreeList_POP \
-        {if(stack!=NULL){tmp=stack;stack=stack->next;free(tmp);}}
-#define CHTreeList_TOP \
-        ((stack!=NULL)?stack->node:NULL)
+#define CHTreeStack_INIT(stack) { \
+	stackSize = 32; \
+	stack = malloc(stackSize * kCHTreeNodeSize); \
+	elementsInStack = 0; \
+}
+#define CHTreeStack_PUSH(obj) { \
+	stack[elementsInStack++] = obj; \
+	if (elementsInStack >= stackSize) \
+		stack = realloc(stack, (stackSize*=2)); \
+}
+#define CHTreeStack_POP ((elementsInStack) ? stack[--elementsInStack] : NULL)
+#define CHTreeStack_TOP ((elementsInStack) ? stack[elementsInStack-1] : NULL)
 
 #pragma mark - Queue Operations
 
@@ -181,12 +187,15 @@ typedef struct CHTreeListNode {
 	id<CHTree> collection; /**< The source of enumerated objects. */
 	CHTreeNode *current; /**< The next node to be enumerated. */
 	CHTreeNode *sentinelNode;  /**< Sentinel used in the tree being traversed. */
-	CHTreeListNode *stack; /**< Pointer to top of a stack for most traversals. */
 	CHTreeListNode *queue;     /**< Pointer to head of queue for level-order. */
 	CHTreeListNode *queueTail; /**< Pointer to tail of queue for level-order. */
 	CHTreeListNode *tmp;       /**< Temp node for stack and queue operations. */
 	unsigned long mutationCount; /**< Stores the collection's initial mutation. */
 	unsigned long *mutationPtr; /**< Pointer for checking changes in mutation. */
+
+	CHTreeNode **stack; /**< Pointer to top of a stack for most traversals. */
+	NSUInteger stackSize;
+	NSUInteger elementsInStack;
 }
 
 /**
