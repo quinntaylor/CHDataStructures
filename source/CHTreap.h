@@ -23,21 +23,22 @@
 /**
  A <a href="http://en.wikipedia.org/wiki/Treap">Treap</a>, a balanced binary
  tree with O(log n) access in general, and improbable worst cases. The name
- treap is a portmanteau of "tree" and "heap", which is fitting since treaps
- exhibit properties of both binary search trees and heaps. Each node in a treap
- contains an object and a priority value which is unrelated to the object. Nodes
- in a treap are arranged such that the objects are ordered as in a binary search
- tree, and the priorities are ordered to obey the heap property (every node must
- have a higher priority than both its children). A sample treap is presented
- below, with priorities shown below the nodes.
+ "treap" is a portmanteau of "tree" and "heap", which is fitting since treaps
+ exhibit properties of both binary search trees and heaps.
  
- @image html treap-sample.png "Figure 1 - A sample treap."
+ Each node in a treap contains an object and a priority value, which may be
+ arbitrarily-selected. Nodes in a treap are arranged such that the objects are
+ ordered as in a binary search tree, and the priorities are ordered to obey the
+ heap property (every node must have a higher priority than both its children).
+ A sample treap is presented below, with priorities shown below the nodes.
+ 
+ @image html treap-sample.png "Figure 1 - A sample treap with node priorities."
  
  Notice that, unlike a binary heap, a treap need not be a <i>complete tree</i>,
  which is a tree where every level is complete, with the possible exception of
  the lowest level, in which case any gaps must occur only on the level's right
  side. Also, the priority can be any numerical value—they can be integer or 
- floatint point, positive or negative, signed or unsigned, as long as the range
+ floating point, positive or negative, signed or unsigned, as long as the range
  is large enough to accommodate the number of objects that may be added to the
  treap. Priorities are not strictly required to be unique, but it can help.
  
@@ -68,14 +69,19 @@
  the priorities should also be swapped, and the successor be bubbled up until
  the heap property is again satisfied, an approach quite similar to insertion.)
  
- The principles of treaps were originally described in the following paper: (See
- <a href="http://sims.berkeley.edu/~aragon/pubs/rst89.pdf">PDF original</a> or
- <a href="http://www-tcs.cs.uni-sb.de/Papers/rst.ps">PostScript revision</a>)
+ This treap implementation adds two methods to those in the CHTree protocol:
+ - \link #addObject:withPriority: -addObject:withPriority: \endlink
+ - \link #priorityForObject: -priorityForObject: \endlink
  
- <center>
-   <b>R. Seidel and C. R. Aragon. "Randomized Search Trees."
-   <em>Algorithmica</em>, 16(4/5):464-497, 1996.</b>
- </center>
+ Treaps were originally described in the following paper:
+ 
+ <div style="margin: 0 25px; font-weight: bold;">
+	 R. Seidel and C. R. Aragon. "Randomized Search Trees."<br>
+	 <em>Algorithmica</em>, 16(4/5):464-497, 1996.
+ </div>
+ 
+ (See <a href="http://sims.berkeley.edu/~aragon/pubs/rst89.pdf">PDF original</a>
+ or <a href="http://www-tcs.cs.uni-sb.de/Papers/rst.ps">PostScript revision</a>)
  */
 @interface CHTreap : CHAbstractTree
 {

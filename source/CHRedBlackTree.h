@@ -40,13 +40,31 @@
  <li>Every path from a node to a leaf has the same number of black nodes.</li>
  </ol>
  
- <div align="center"><b>Figure 1 - A sample red-black tree</b></div>
+ <div align="center"><b>Figure 1 - A sample Red-Black tree</b></div>
  @image html red-black-tree.png
  
  The sentinel node (which appears whenever a child link would be null) is always
- colored black. The algorithms for balancing red-black trees can be made to work
+ colored black. The algorithms for balancing Red-Black trees can be made to work
  without explicitly representing the nil leaf children, but they work better and
  with much less heartache if those links are present.
+ 
+ Red-Black trees were originally described in the following papers:
+ 
+ <div style="margin: 0 25px 10px; font-weight: bold;">
+ R. Bayer. "Binary B-Trees for Virtual Memory." <em>ACM-SIGFIDET Workshop on
+ Data Description, 1971</em>, San Diego, California, Session 5B, p. 219-235.
+ </div>
+ 
+ <div style="margin: 0 25px 10px; font-weight: bold;">
+ R. Bayer and E. M. McCreight. "Organization and Maintenance of Large Ordered
+ Indexes." <em>Acta Informatica</em> 1, 173-189, 1972.
+ </div>
+ 
+ <div style="margin: 0 25px; font-weight: bold;">
+ L. J. Guibas and R. Sedgewick. "A dichromatic framework for balanced trees."
+ <em>19th Annual Symposium on Foundations of Computer Science</em>, pp.8-21,
+ 1978. (<a href="http://dx.doi.org/10.1109/SFCS.1978.3">DOI link to IEEE</a>)
+ </div>
  */
 @interface CHRedBlackTree : CHAbstractTree
 {
