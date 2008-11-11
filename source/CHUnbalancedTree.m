@@ -98,26 +98,4 @@
 	}
 }
 
-- (NSString*) debugDescription {
-	NSMutableString *description = [NSMutableString stringWithFormat:
-	                                @"<%@: 0x%x> = {\n", [self class], self];
-	CHTreeNode *current;
-	CHTreeListNode *queue = NULL, *queueTail = NULL, *tmp;
-	CHTreeList_ENQUEUE(header->right);
-	
-	while (current != sentinel && queue != NULL) {
-		current = CHTreeList_FRONT;
-		CHTreeList_DEQUEUE;
-		if (current->left != sentinel)
-			CHTreeList_ENQUEUE(current->left);
-		if (current->right != sentinel)
-			CHTreeList_ENQUEUE(current->right);
-		// Append entry for the current node, including color and children
-		[description appendFormat:@"\t%@ -> %@ and %@\n",
-		 current->object, current->left->object, current->right->object];
-	}
-	[description appendString:@"}"];
-	return description;
-}
-
 @end

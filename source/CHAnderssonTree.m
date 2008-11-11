@@ -172,30 +172,4 @@
 	free(stack);
 }
 
-- (NSString*) debugDescription {
-	NSMutableString *description = [NSMutableString stringWithFormat:
-	                                @"<%@: 0x%x> = {\n", [self class], self];
-	CHTreeNode *current;
-	CHTreeNode **stack;
-	NSUInteger stackSize, elementsInStack;
-	CHTreeStack_INIT(stack);
-	
-	sentinel->object = nil;
-	CHTreeStack_PUSH(header->right);	
-	while (current != sentinel && stack != NULL) {
-		current = CHTreeStack_POP;
-		if (current->right != sentinel)
-			CHTreeStack_PUSH(current->right);
-		if (current->left != sentinel)
-			CHTreeStack_PUSH(current->left);
-		// Append entry for the current node, including color and children
-		[description appendFormat:@"\t%d : %@ -> %@ and %@\n",
-		 current->level, current->object,
-		 current->left->object, current->right->object];
-	}
-	free(stack);
-	[description appendString:@"}"];
-	return description;
-}
-
 @end

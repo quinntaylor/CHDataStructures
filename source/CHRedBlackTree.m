@@ -221,27 +221,4 @@ CHTreeNode* doubleRotate(CHTreeNode *node, BOOL goingRight) {
 	header->right->color = kBLACK; // Make the root black for simplified logic
 }
 
-- (NSString*) debugDescription {
-	NSMutableString *description = [NSMutableString stringWithFormat:
-	                                @"<%@: 0x%x> = {\n", [self class], self];
-	CHTreeNode *currentNode;
-	CHTreeListNode *queue = NULL, *queueTail = NULL, *tmp;
-	CHTreeList_ENQUEUE(header->right);
-	
-	while (currentNode != sentinel && queue != NULL) {
-		currentNode = CHTreeList_FRONT;
-		CHTreeList_DEQUEUE;
-		if (currentNode->left != sentinel)
-			CHTreeList_ENQUEUE(currentNode->left);
-		if (currentNode->right != sentinel)
-			CHTreeList_ENQUEUE(currentNode->right);
-		// Append entry for the current node, including color and children
-		[description appendFormat:@"\t%@ : %@ -> %@ and %@\n",
-		 ((currentNode->color == kRED) ? @"RED  " : @"BLACK"),
-		 currentNode->object, currentNode->left->object, currentNode->right->object];
-	}
-	[description appendString:@"}"];
-	return description;
-}
-
 @end
