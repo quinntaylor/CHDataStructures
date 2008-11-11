@@ -21,7 +21,6 @@
 
 // Definitions of variables declared as 'extern' in CHAbstractTree.h
 NSUInteger kCHTreeNodeSize = sizeof(CHTreeNode);
-NSUInteger kCHTreeListNodeSize = sizeof(CHTreeListNode);
 
 @implementation CHAbstractTree
 
@@ -240,20 +239,20 @@ NSUInteger kCHTreeListNodeSize = sizeof(CHTreeListNode);
 		return;
 	
 	CHTreeNode *current;
-	CHTreeListNode *queue = NULL;
-	CHTreeListNode *queueTail = NULL;
-	CHTreeListNode *tmp;
-	
-	CHTreeList_ENQUEUE(header->right);
-	while (current = CHTreeList_FRONT) {
-		CHTreeList_DEQUEUE;
+	CHTreeNode **queue;
+	NSUInteger queueSize, queueHead, queueTail;
+	CHTreeQueue_INIT(queue);
+	CHTreeQueue_ENQUEUE(header->right);
+	while (current = ((queueHead == queueTail) ? NULL : queue[queueHead])) {
+		CHTreeQueue_DEQUEUE;
 		if (current->left != sentinel)
-			CHTreeList_ENQUEUE(current->left);
+			CHTreeQueue_ENQUEUE(current->left);
 		if (current->right != sentinel)
-			CHTreeList_ENQUEUE(current->right);
+			CHTreeQueue_ENQUEUE(current->right);
 		[current->object release];
 		free(current);
 	}
+	free(queue);
 	header->right = sentinel;
 	count = 0;
 	++mutations;
@@ -304,10 +303,11 @@ NSUInteger kCHTreeListNodeSize = sizeof(CHTreeListNode);
 {
 	if ([super init] == nil || !isValidTraversalOrder(order)) return nil;
 	traversalOrder = order;
-	collection = (root != sentinel) ? collection = [tree retain] : nil;
+	collection = (root != sentinel) ? [tree retain] : nil;
 	CHTreeStack_INIT(stack);
+	CHTreeQueue_INIT(queue);
 	if (traversalOrder == CHTraverseLevelOrder) {
-		CHTreeList_ENQUEUE(root);
+		CHTreeQueue_ENQUEUE(root);
 	} else if (traversalOrder == CHTraversePreOrder) {
 		CHTreeStack_PUSH(root);
 	} else {
@@ -322,16 +322,14 @@ NSUInteger kCHTreeListNodeSize = sizeof(CHTreeListNode);
 
 - (void) dealloc {
 	[collection release];
-	free(stack);	
-	while (queue != NULL)
-		CHTreeList_DEQUEUE;
+	free(stack);
+	free(queue);
 	[super dealloc];
 }
 
 - (void) finalize {
 	free(stack);	
-	while (queue != NULL)
-		CHTreeList_DEQUEUE;
+	free(queue);
 	[super finalize];
 }
 
@@ -426,17 +424,18 @@ NSUInteger kCHTreeListNodeSize = sizeof(CHTreeListNode);
 		}
 			
 		case CHTraverseLevelOrder: {
-			current = CHTreeList_FRONT;
+			current = CHTreeQueue_FRONT;
+			CHTreeQueue_DEQUEUE;
 			if (current == NULL) {
 				[collection release];
 				collection = nil;
+				free(queue);
 				return nil;
 			}
-			CHTreeList_DEQUEUE;
 			if (current->left != sentinelNode)
-				CHTreeList_ENQUEUE(current->left);
+				CHTreeQueue_ENQUEUE(current->left);
 			if (current->right != sentinelNode)
-				CHTreeList_ENQUEUE(current->right);
+				CHTreeQueue_ENQUEUE(current->right);
 			return current->object;
 		}
 	}

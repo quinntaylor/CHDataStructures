@@ -20,8 +20,6 @@
 #import <Foundation/Foundation.h>
 #import "CHTree.h"
 
-extern NSUInteger kCHTreeNodeSize, kCHTreeListNodeSize;
-
 /**
  A node used by binary search trees for internal storage and representation.
  
@@ -29,8 +27,8 @@ extern NSUInteger kCHTreeNodeSize, kCHTreeListNodeSize;
  with various types of trees and access. The first union—with pointers to the
  struct itself—provide 2 ways to access child nodes at the same memory address,
  based on what is most convenient and efficient. (e.g. 'left' is equivalent to
- 'link[0]', and 'right' is equivalent to 'link[1]'). The second union—with the
- NSUInteger values—allows the same node to be used in several different balanced
+ 'link[0]', and 'right' is equivalent to 'link[1]'). The second union (which has
+ integer fields) allows the same node to be used in several different balanced
  trees, while preserving useful semantic meaning appropriate for each algorithm.
  */
 typedef struct CHTreeNode {
@@ -50,22 +48,17 @@ typedef struct CHTreeNode {
 	};
 } CHTreeNode;
 
-#pragma mark -
-#pragma mark Enumeration Struct & Macros
+extern NSUInteger kCHTreeNodeSize;
 
-// A struct used to maintain state when traversing tree nodes
-typedef struct CHTreeListNode {
-	struct CHTreeNode *node;
-	struct CHTreeListNode *next;
-} CHTreeListNode;
 
-#pragma mark - Stack Operations
+#pragma mark Stack Macros
 
 #define CHTreeStack_INIT(stack) { \
-	stackSize = 32; \
+	stackSize = 16; \
 	stack = malloc(stackSize * kCHTreeNodeSize); \
 	elementsInStack = 0; \
 }
+// Since this stack starts at 0 and goes to N-1, resizing is pretty simple.
 #define CHTreeStack_PUSH(obj) { \
 	stack[elementsInStack++] = obj; \
 	if (elementsInStack >= stackSize) \
@@ -74,17 +67,28 @@ typedef struct CHTreeListNode {
 #define CHTreeStack_POP ((elementsInStack) ? stack[--elementsInStack] : NULL)
 #define CHTreeStack_TOP ((elementsInStack) ? stack[elementsInStack-1] : NULL)
 
-#pragma mark - Queue Operations
+#pragma mark Queue Macros
 
-#define CHTreeList_ENQUEUE(o) \
-        {tmp=malloc(kCHTreeListNodeSize);tmp->node=o;tmp->next=NULL;\
-        if(queue==NULL){queue=tmp;queueTail=tmp;}\
-        queueTail->next=tmp;queueTail=queueTail->next;}
-#define CHTreeList_DEQUEUE \
-        {if(queue!=NULL){tmp=queue;queue=queue->next;free(tmp);}\
-        if(queue==tmp)queue=NULL;if(queueTail==tmp)queueTail=NULL;}
-#define CHTreeList_FRONT \
-        ((queue!=NULL)?queue->node:NULL)
+#define CHTreeQueue_INIT(queue) { \
+	queueSize = 16; \
+	queue = malloc(queueSize * kCHTreeNodeSize); \
+	queueHead = queueTail = 0; \
+}
+// This queue is a circular array, so resizing it takes a little extra care.
+#define CHTreeQueue_ENQUEUE(obj) { \
+	queue[queueTail++] = obj; \
+	queueTail %= queueSize; \
+	if (queueHead == queueTail) { \
+		queue = realloc(queue, queueSize*2); \
+		memcpy(queue+queueSize, queue, queueTail*4); \
+		queueTail += queueSize; \
+		queueSize *= 2; \
+	} \
+}
+#define CHTreeQueue_DEQUEUE \
+	if (queueHead != queueTail) queueHead = (queueHead + 1) % queueSize
+#define CHTreeQueue_FRONT \
+	((queueHead == queueTail) ? NULL : queue[queueHead])
 
 #pragma mark -
 
@@ -187,15 +191,12 @@ typedef struct CHTreeListNode {
 	id<CHTree> collection; /**< The source of enumerated objects. */
 	CHTreeNode *current; /**< The next node to be enumerated. */
 	CHTreeNode *sentinelNode;  /**< Sentinel used in the tree being traversed. */
-	CHTreeListNode *queue;     /**< Pointer to head of queue for level-order. */
-	CHTreeListNode *queueTail; /**< Pointer to tail of queue for level-order. */
-	CHTreeListNode *tmp;       /**< Temp node for stack and queue operations. */
 	unsigned long mutationCount; /**< Stores the collection's initial mutation. */
 	unsigned long *mutationPtr; /**< Pointer for checking changes in mutation. */
 
-	CHTreeNode **stack; /**< Pointer to top of a stack for most traversals. */
-	NSUInteger stackSize;
-	NSUInteger elementsInStack;
+	CHTreeNode **stack, **queue;
+	NSUInteger stackSize, elementsInStack;
+	NSUInteger queueSize, queueHead, queueTail;
 }
 
 /**
