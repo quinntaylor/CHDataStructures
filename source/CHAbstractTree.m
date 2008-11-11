@@ -229,30 +229,32 @@ NSUInteger kCHTreeNodeSize = sizeof(CHTreeNode);
 }
 
 /**
- Frees all the nodes in the tree and releases the objects they point to. The pointer
- to the root node remains NULL until an object is added to the tree. Uses a linked
- list to store the objects waiting to be deleted; in a binary tree, no more than half
- of the nodes will be on the queue.
+ Frees all nodes in the tree and releases the objects they point to. The pointer
+ to the root node is reset to the sentinel, and element count is reset to zero.
+ This method deletes nodes using a pre-order traversal by pushing child nodes on
+ a stack. This approach generally requires less space than level-order traversal
+ since it is depth-first rather than breadth-first, and should be faster, too.
  */
 - (void) removeAllObjects {
 	if (count == 0)
 		return;
 	
+	CHTreeNode **stack;
+	NSUInteger stackSize, elementsInStack;
+	CHTreeStack_INIT(stack);
+	CHTreeStack_PUSH(header->right);
+
 	CHTreeNode *current;
-	CHTreeNode **queue;
-	NSUInteger queueSize, queueHead, queueTail;
-	CHTreeQueue_INIT(queue);
-	CHTreeQueue_ENQUEUE(header->right);
-	while (current = ((queueHead == queueTail) ? NULL : queue[queueHead])) {
-		CHTreeQueue_DEQUEUE;
-		if (current->left != sentinel)
-			CHTreeQueue_ENQUEUE(current->left);
+	while (current = CHTreeStack_POP) {
 		if (current->right != sentinel)
-			CHTreeQueue_ENQUEUE(current->right);
+			CHTreeStack_PUSH(current->right);
+		if (current->left != sentinel)
+			CHTreeStack_PUSH(current->left);
 		[current->object release];
 		free(current);
 	}
-	free(queue);
+	free(stack);
+
 	header->right = sentinel;
 	count = 0;
 	++mutations;
@@ -275,7 +277,28 @@ NSUInteger kCHTreeNodeSize = sizeof(CHTreeNode);
 }
 
 - (NSString*) debugDescription {
-	return [self description];
+	NSMutableString *description = [NSMutableString stringWithFormat:
+	                                @"<%@: 0x%x> = {\n", [self class], self];
+	CHTreeNode *current;
+	CHTreeNode **stack;
+	NSUInteger stackSize, elementsInStack;
+	CHTreeStack_INIT(stack);
+	
+	sentinel->object = nil;
+	CHTreeStack_PUSH(header->right);	
+	while (current != sentinel && stack != NULL) {
+		current = CHTreeStack_POP;
+		if (current->right != sentinel)
+			CHTreeStack_PUSH(current->right);
+		if (current->left != sentinel)
+			CHTreeStack_PUSH(current->left);
+		// Append entry for the current node, including children
+		[description appendFormat:@"\t%@ -> %@ and %@\n",
+		 current->object, current->left->object, current->right->object];
+	}
+	free(stack);
+	[description appendString:@"}"];
+	return description;
 }
 
 #pragma mark Unsupported Implementations
