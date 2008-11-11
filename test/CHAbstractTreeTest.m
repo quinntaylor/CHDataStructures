@@ -21,6 +21,7 @@
 #import "CHAbstractTree.h"
 #import "CHAnderssonTree.h"
 #import "CHRedBlackTree.h"
+#import "CHTreap.h"
 #import "CHUnbalancedTree.h"
 
 static BOOL gcDisabled;
@@ -62,7 +63,8 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	nonEmptyTrees = [[NSArray alloc] initWithObjects:outsideTree, insideTree,
 					 zigzagTree, nil];
 	treeClasses = [NSArray arrayWithObjects:[CHAnderssonTree class],
-				   [CHRedBlackTree class], [CHUnbalancedTree class], nil];
+				   [CHRedBlackTree class], [CHUnbalancedTree class],
+				   [CHTreap class], nil];
 }
 
 - (void) tearDown {
@@ -336,6 +338,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 		tree = [[NSKeyedUnarchiver unarchiveObjectWithFile:filePath] retain];
 		STAssertEquals([tree count], [objects count], @"-count is incorrect.");
 		after = [tree allObjectsWithTraversalOrder:CHTraverseLevelOrder];
+		if (theClass != [CHTreap class])
 		STAssertEqualObjects(before, after,
 							 badOrder(@"Bad order after decode", before, after));
 		[tree release];
@@ -356,6 +359,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 		copy = [tree copyWithZone:nil];
 		STAssertNotNil(copy, @"-copy should not return nil for valid tree.");
 		STAssertEquals([copy count], [objects count], @"-count is incorrect.");
+		if (theClass != [CHTreap class])
 		STAssertEqualObjects([tree allObjectsWithTraversalOrder:CHTraverseLevelOrder],
 							 [copy allObjectsWithTraversalOrder:CHTraverseLevelOrder],
 							 @"Unequal trees.");
