@@ -21,6 +21,7 @@
 
 // Definitions of variables declared as 'extern' in CHAbstractTree.h
 NSUInteger kCHTreeNodeSize = sizeof(CHTreeNode);
+NSUInteger kPointerSize = sizeof(void*);
 
 @implementation CHAbstractTree
 

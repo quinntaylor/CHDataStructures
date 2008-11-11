@@ -49,7 +49,7 @@ typedef struct CHTreeNode {
 } CHTreeNode;
 
 extern NSUInteger kCHTreeNodeSize;
-
+extern NSUInteger kPointerSize;
 
 #pragma mark Stack Macros
 
@@ -70,17 +70,18 @@ extern NSUInteger kCHTreeNodeSize;
 #pragma mark Queue Macros
 
 #define CHTreeQueue_INIT(queue) { \
-	queueSize = 16; \
+	queueSize = 32; \
 	queue = malloc(queueSize * kCHTreeNodeSize); \
 	queueHead = queueTail = 0; \
 }
 // This queue is a circular array, so resizing it takes a little extra care.
+// (memcpy() take the destination address, source address, and number of bytes.)
 #define CHTreeQueue_ENQUEUE(obj) { \
 	queue[queueTail++] = obj; \
 	queueTail %= queueSize; \
 	if (queueHead == queueTail) { \
 		queue = realloc(queue, queueSize*2); \
-		memcpy(queue+queueSize, queue, queueTail*4); \
+		memcpy(queue+queueSize, queue, queueTail * kPointerSize); \
 		queueTail += queueSize; \
 		queueSize *= 2; \
 	} \

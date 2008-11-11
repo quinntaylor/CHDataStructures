@@ -402,7 +402,7 @@ void benchmarkTree(Class testClass) {
 
 int main (int argc, const char * argv[]) {
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-	NSUInteger size, item, limit = 100000;
+	NSUInteger size, item, limit = 1000000;
 	objects = [[NSMutableArray alloc] init];
 	
 /*
@@ -438,10 +438,10 @@ int main (int argc, const char * argv[]) {
 	}
 
 	CHQuietLog(@"\n<CHTree> Implemenations");
-	benchmarkTree([CHAnderssonTree class]);
-	benchmarkTree([CHAVLTree class]);
 	benchmarkTree([CHRedBlackTree class]);
 	benchmarkTree([CHTreap class]);
+	benchmarkTree([CHAnderssonTree class]);
+	benchmarkTree([CHAVLTree class]);
 	//	benchmarkTree([CHUnbalancedTree class]);
 	
 	CHQuietLog(@"\n<CHHeap> Implemenations");
