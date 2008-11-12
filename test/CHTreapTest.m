@@ -103,16 +103,16 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	NSUInteger count = 0;
 	for (id anObject in objects) {
 		[tree addObject:anObject];
-		STAssertEquals([tree count], ++count, @"-count is incorrect.");
+		STAssertEquals([tree count], ++count, @"Incorrect count.");
 		// Can't test a specific order because of randomly-assigned priorities
 		STAssertNoThrow([tree verify], @"Not a valid treap: %@",
 						[tree debugDescription]);
 	}
 	
 	// Test adding an existing object to the treap
-	STAssertEquals([tree count], [objects count], @"-count is incorrect.");
+	STAssertEquals([tree count], [objects count], @"Incorrect count.");
 	[tree addObject:@"A"];
-	STAssertEquals([tree count], [objects count], @"-count is incorrect.");
+	STAssertEquals([tree count], [objects count], @"Incorrect count.");
 }
 
 - (void) testAddObjectWithPriority {
@@ -227,9 +227,9 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	             badOrder(@"Descending order", order, correct));
 	
 	// Test adding an existing object to the treap
-	STAssertEquals([tree count], [objects count], @"-count is incorrect.");
+	STAssertEquals([tree count], [objects count], @"Incorrect count.");
 	[tree addObject:@"A" withPriority:NSIntegerMin];
-	STAssertEquals([tree count], [objects count], @"-count is incorrect.");	
+	STAssertEquals([tree count], [objects count], @"Incorrect count.");	
 }
 
 - (void) testPriorityForObject {
@@ -282,9 +282,9 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	CHLocationLog([tree debugDescription]);
 	
 	// Test removing a node which doesn't occur in the tree
-	STAssertEquals([tree count], [objects count], @"-count is incorrect.");
+	STAssertEquals([tree count], [objects count], @"Incorrect count.");
 	[tree removeObject:@"Z"];
-	STAssertEquals([tree count], [objects count], @"-count is incorrect.");
+	STAssertEquals([tree count], [objects count], @"Incorrect count.");
 		
 	NSUInteger count = [objects count];
 	for (id anObject in objects) {
@@ -297,9 +297,9 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	}
 	
 	// Test removing a node which has been removed from the tree
-	STAssertEquals([tree count], 0u, @"-count is incorrect.");
+	STAssertEquals([tree count], 0u, @"Incorrect count.");
 	[tree removeObject:@"A"];
-	STAssertEquals([tree count], 0u, @"-count is incorrect.");
+	STAssertEquals([tree count], 0u, @"Incorrect count.");
 }
 
 @end

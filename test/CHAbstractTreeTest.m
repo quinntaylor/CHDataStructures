@@ -170,9 +170,9 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 }
 
 - (void) testEmptyTree {
-	for (Class theClass in treeClasses) {
-		id<CHTree> tree = [[theClass alloc] init];
-		STAssertEquals([tree count], 0u, @"-count is incorrect.");
+	for (Class aClass in treeClasses) {
+		id<CHTree> tree = [[aClass alloc] init];
+		STAssertEquals([tree count], 0u, @"Incorrect count.");
 		[tree release];
 	}
 }
@@ -220,12 +220,12 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 
 - (void) testInitWithArray {
 	id<CHTree> tree = [[CHUnbalancedTree alloc] initWithArray:objects];
-	STAssertEquals([tree count], [objects count], @"-count is incorrect.");
+	STAssertEquals([tree count], [objects count], @"Incorrect count.");
 }
 
 - (void) testObjectEnumerator {
-	for (Class theClass in treeClasses) {
-		id<CHTree> tree = [[theClass alloc] init];
+	for (Class aClass in treeClasses) {
+		id<CHTree> tree = [[aClass alloc] init];
 	
 		// Enumerator shouldn't retain collection if there are no objects
 		if (gcDisabled)
@@ -297,8 +297,8 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 }
 
 - (void) testReverseObjectEnumerator {
-	for (Class theClass in treeClasses) {
-		id<CHTree> tree = [[theClass alloc] initWithArray:objects];
+	for (Class aClass in treeClasses) {
+		id<CHTree> tree = [[aClass alloc] initWithArray:objects];
 	
 		NSEnumerator *e = [tree reverseObjectEnumerator];
 		for (id anObject in [NSArray arrayWithObjects:@"E",@"D",@"C",@"B",@"A",nil]) {
@@ -308,14 +308,14 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 }
 
 - (void) testRemoveAllObjects {
-	STAssertEquals([emptyTree count], 0u, @"-count is incorrect.");
+	STAssertEquals([emptyTree count], 0u, @"Incorrect count.");
 	[emptyTree removeAllObjects];
-	STAssertEquals([emptyTree count], 0u, @"-count is incorrect.");	
+	STAssertEquals([emptyTree count], 0u, @"Incorrect count.");	
 	
 	for (id<CHTree> tree in nonEmptyTrees) {
-		STAssertEquals([tree count], [objects count], @"-count is incorrect.");
+		STAssertEquals([tree count], [objects count], @"Incorrect count.");
 		[tree removeAllObjects];
-		STAssertEquals([tree count], 0u, @"-count is incorrect.");
+		STAssertEquals([tree count], 0u, @"Incorrect count.");
 	}
 }
 
@@ -326,9 +326,9 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	objects = [NSArray arrayWithObjects:@"B",@"M",@"C",@"K",@"D",@"I",@"E",@"G",
 			   @"J",@"L",@"N",@"F",@"A",@"H",nil];
 	NSArray *before, *after;
-	for (Class theClass in treeClasses) {
-		tree = [[theClass alloc] initWithArray:objects];
-		STAssertEquals([tree count], [objects count], @"-count is incorrect.");
+	for (Class aClass in treeClasses) {
+		tree = [[aClass alloc] initWithArray:objects];
+		STAssertEquals([tree count], [objects count], @"Incorrect count.");
 		before = [tree allObjectsWithTraversalOrder:CHTraverseLevelOrder];
 		
 		NSString *filePath = @"/tmp/tree.archive";
@@ -336,9 +336,9 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 		[tree release];
 		
 		tree = [[NSKeyedUnarchiver unarchiveObjectWithFile:filePath] retain];
-		STAssertEquals([tree count], [objects count], @"-count is incorrect.");
+		STAssertEquals([tree count], [objects count], @"Incorrect count.");
 		after = [tree allObjectsWithTraversalOrder:CHTraverseLevelOrder];
-		if (theClass != [CHTreap class])
+		if (aClass != [CHTreap class])
 		STAssertEqualObjects(before, after,
 							 badOrder(@"Bad order after decode", before, after));
 		[tree release];
@@ -347,19 +347,19 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 
 - (void) testNSCopying {
 	id<CHTree> tree, copy;
-	for (Class theClass in treeClasses) {
-		tree = [[theClass alloc] init];
+	for (Class aClass in treeClasses) {
+		tree = [[aClass alloc] init];
 		copy = [tree copyWithZone:nil];
 		STAssertNotNil(copy, @"-copy should not return nil for valid tree.");
-		STAssertEquals([copy count], 0u, @"-count is incorrect.");
+		STAssertEquals([copy count], 0u, @"Incorrect count.");
 		[copy release];
 
 		for (id anObject in objects)
 			[tree addObject:anObject];
 		copy = [tree copyWithZone:nil];
 		STAssertNotNil(copy, @"-copy should not return nil for valid tree.");
-		STAssertEquals([copy count], [objects count], @"-count is incorrect.");
-		if (theClass != [CHTreap class])
+		STAssertEquals([copy count], [objects count], @"Incorrect count.");
+		if (aClass != [CHTreap class])
 		STAssertEqualObjects([tree allObjectsWithTraversalOrder:CHTraverseLevelOrder],
 							 [copy allObjectsWithTraversalOrder:CHTraverseLevelOrder],
 							 @"Unequal trees.");
@@ -371,8 +371,8 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 - (void) testNSFastEnumeration {
 	id<CHTree> tree;
 	NSUInteger limit = 32; // NSFastEnumeration asks for 16 objects at a time
-	for (Class theClass in treeClasses) {
-		tree = [[theClass alloc] init];
+	for (Class aClass in treeClasses) {
+		tree = [[aClass alloc] init];
 		NSUInteger number, expected, count = 0;
 		for (number = 1; number <= limit; number++)
 			[tree addObject:[NSNumber numberWithUnsignedInteger:number]];

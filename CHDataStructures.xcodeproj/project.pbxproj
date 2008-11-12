@@ -51,17 +51,11 @@
 		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 		E400FCF40EBE15F300AC172B /* CHAVLTreeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E400FCF30EBE15F300AC172B /* CHAVLTreeTest.m */; };
 		E40D18060E94519F007F39D8 /* CHAnderssonTreeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D18050E94519F007F39D8 /* CHAnderssonTreeTest.m */; };
-		E40D18260E9452BB007F39D8 /* CHMutableArrayDequeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D181B0E9452BB007F39D8 /* CHMutableArrayDequeTest.m */; };
 		E40D18270E9452BB007F39D8 /* CHRedBlackTreeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D181C0E9452BB007F39D8 /* CHRedBlackTreeTest.m */; };
-		E40D18280E9452BB007F39D8 /* CHListStackTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D181D0E9452BB007F39D8 /* CHListStackTest.m */; };
 		E40D18290E9452BB007F39D8 /* CHUnbalancedTreeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D181E0E9452BB007F39D8 /* CHUnbalancedTreeTest.m */; };
-		E40D182A0E9452BB007F39D8 /* CHMutableArrayStackTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D181F0E9452BB007F39D8 /* CHMutableArrayStackTest.m */; };
-		E40D182C0E9452BB007F39D8 /* CHListQueueTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D18210E9452BB007F39D8 /* CHListQueueTest.m */; };
-		E40D182D0E9452BB007F39D8 /* CHMutableArrayHeapTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D18220E9452BB007F39D8 /* CHMutableArrayHeapTest.m */; };
-		E40D182F0E9452BB007F39D8 /* CHMutableArrayQueueTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D18240E9452BB007F39D8 /* CHMutableArrayQueueTest.m */; };
+		E40D182D0E9452BB007F39D8 /* CHHeapTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D18220E9452BB007F39D8 /* CHHeapTest.m */; };
 		E40D184D0E945580007F39D8 /* CHListDeque.h in Headers */ = {isa = PBXBuildFile; fileRef = E40D184A0E945580007F39D8 /* CHListDeque.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E40D184E0E945580007F39D8 /* CHListDeque.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D184B0E945580007F39D8 /* CHListDeque.m */; };
-		E40D18720E94577F007F39D8 /* CHListDequeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D18710E94577F007F39D8 /* CHListDequeTest.m */; };
 		E41035280EC409B900C2CFB9 /* CHTreap.h in Headers */ = {isa = PBXBuildFile; fileRef = E41035260EC409B900C2CFB9 /* CHTreap.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E41035290EC409B900C2CFB9 /* CHTreap.m in Sources */ = {isa = PBXBuildFile; fileRef = E41035270EC409B900C2CFB9 /* CHTreap.m */; };
 		E410360F0EC424E600C2CFB9 /* CHTreapTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E410360E0EC424E600C2CFB9 /* CHTreapTest.m */; };
@@ -113,6 +107,9 @@
 		E4D4996A0E93CD1300434CBA /* CHDoublyLinkedListTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D499690E93CD1300434CBA /* CHDoublyLinkedListTest.m */; };
 		E4DCD17A0EA7B0DF006383FC /* CHDataStructures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* CHDataStructures.framework */; };
 		E4E7C1270EC0CACE009B19D7 /* CHDataStructures_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = E4E7C1260EC0CACE009B19D7 /* CHDataStructures_Prefix.pch */; };
+		E4FD52CD0ECA8589006D9FF8 /* CHDequeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FD52CC0ECA8589006D9FF8 /* CHDequeTest.m */; };
+		E4FD52F60ECA8A9F006D9FF8 /* CHQueueTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FD52F50ECA8A9F006D9FF8 /* CHQueueTest.m */; };
+		E4FD53030ECA9212006D9FF8 /* CHStackTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FD53020ECA9212006D9FF8 /* CHStackTest.m */; };
 		E4FE77C70E8978C300971EE6 /* CHTree.h in Headers */ = {isa = PBXBuildFile; fileRef = E4FE77C60E8978C300971EE6 /* CHTree.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4FE77CA0E8978DD00971EE6 /* CHAbstractTree.h in Headers */ = {isa = PBXBuildFile; fileRef = E4FE77C90E8978DD00971EE6 /* CHAbstractTree.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
@@ -195,17 +192,11 @@
 		8DC2EF5B0486A6940098B216 /* CHDataStructures.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CHDataStructures.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E400FCF30EBE15F300AC172B /* CHAVLTreeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHAVLTreeTest.m; path = test/CHAVLTreeTest.m; sourceTree = "<group>"; };
 		E40D18050E94519F007F39D8 /* CHAnderssonTreeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHAnderssonTreeTest.m; path = test/CHAnderssonTreeTest.m; sourceTree = "<group>"; };
-		E40D181B0E9452BB007F39D8 /* CHMutableArrayDequeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHMutableArrayDequeTest.m; path = test/CHMutableArrayDequeTest.m; sourceTree = "<group>"; };
 		E40D181C0E9452BB007F39D8 /* CHRedBlackTreeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHRedBlackTreeTest.m; path = test/CHRedBlackTreeTest.m; sourceTree = "<group>"; };
-		E40D181D0E9452BB007F39D8 /* CHListStackTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHListStackTest.m; path = test/CHListStackTest.m; sourceTree = "<group>"; };
 		E40D181E0E9452BB007F39D8 /* CHUnbalancedTreeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHUnbalancedTreeTest.m; path = test/CHUnbalancedTreeTest.m; sourceTree = "<group>"; };
-		E40D181F0E9452BB007F39D8 /* CHMutableArrayStackTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHMutableArrayStackTest.m; path = test/CHMutableArrayStackTest.m; sourceTree = "<group>"; };
-		E40D18210E9452BB007F39D8 /* CHListQueueTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHListQueueTest.m; path = test/CHListQueueTest.m; sourceTree = "<group>"; };
-		E40D18220E9452BB007F39D8 /* CHMutableArrayHeapTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHMutableArrayHeapTest.m; path = test/CHMutableArrayHeapTest.m; sourceTree = "<group>"; };
-		E40D18240E9452BB007F39D8 /* CHMutableArrayQueueTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHMutableArrayQueueTest.m; path = test/CHMutableArrayQueueTest.m; sourceTree = "<group>"; };
+		E40D18220E9452BB007F39D8 /* CHHeapTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHHeapTest.m; path = test/CHHeapTest.m; sourceTree = "<group>"; };
 		E40D184A0E945580007F39D8 /* CHListDeque.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHListDeque.h; path = source/CHListDeque.h; sourceTree = "<group>"; };
 		E40D184B0E945580007F39D8 /* CHListDeque.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHListDeque.m; path = source/CHListDeque.m; sourceTree = "<group>"; };
-		E40D18710E94577F007F39D8 /* CHListDequeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHListDequeTest.m; path = test/CHListDequeTest.m; sourceTree = "<group>"; };
 		E41035260EC409B900C2CFB9 /* CHTreap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHTreap.h; path = source/CHTreap.h; sourceTree = "<group>"; };
 		E41035270EC409B900C2CFB9 /* CHTreap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHTreap.m; path = source/CHTreap.m; sourceTree = "<group>"; };
 		E410360E0EC424E600C2CFB9 /* CHTreapTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHTreapTest.m; path = test/CHTreapTest.m; sourceTree = "<group>"; };
@@ -263,6 +254,9 @@
 		E4CFCDB30E8FD18300B0253A /* doxygen.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = doxygen.css; path = doxygen/doxygen.css; sourceTree = "<group>"; };
 		E4D499690E93CD1300434CBA /* CHDoublyLinkedListTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHDoublyLinkedListTest.m; path = test/CHDoublyLinkedListTest.m; sourceTree = "<group>"; };
 		E4E7C1260EC0CACE009B19D7 /* CHDataStructures_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHDataStructures_Prefix.pch; path = source/CHDataStructures_Prefix.pch; sourceTree = "<group>"; };
+		E4FD52CC0ECA8589006D9FF8 /* CHDequeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHDequeTest.m; path = test/CHDequeTest.m; sourceTree = "<group>"; };
+		E4FD52F50ECA8A9F006D9FF8 /* CHQueueTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHQueueTest.m; path = test/CHQueueTest.m; sourceTree = "<group>"; };
+		E4FD53020ECA9212006D9FF8 /* CHStackTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHStackTest.m; path = test/CHStackTest.m; sourceTree = "<group>"; };
 		E4FE77C60E8978C300971EE6 /* CHTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHTree.h; path = source/CHTree.h; sourceTree = "<group>"; };
 		E4FE77C90E8978DD00971EE6 /* CHAbstractTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHAbstractTree.h; path = source/CHAbstractTree.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -406,16 +400,13 @@
 				E4B1AD170EB580BC00B43ADA /* CHAbstractTreeTest.m */,
 				E40D18050E94519F007F39D8 /* CHAnderssonTreeTest.m */,
 				E400FCF30EBE15F300AC172B /* CHAVLTreeTest.m */,
+				E4FD52CC0ECA8589006D9FF8 /* CHDequeTest.m */,
 				E4D499690E93CD1300434CBA /* CHDoublyLinkedListTest.m */,
-				E40D18710E94577F007F39D8 /* CHListDequeTest.m */,
-				E40D18210E9452BB007F39D8 /* CHListQueueTest.m */,
-				E40D181D0E9452BB007F39D8 /* CHListStackTest.m */,
-				E40D181B0E9452BB007F39D8 /* CHMutableArrayDequeTest.m */,
-				E40D18220E9452BB007F39D8 /* CHMutableArrayHeapTest.m */,
-				E40D18240E9452BB007F39D8 /* CHMutableArrayQueueTest.m */,
-				E40D181F0E9452BB007F39D8 /* CHMutableArrayStackTest.m */,
+				E40D18220E9452BB007F39D8 /* CHHeapTest.m */,
+				E4FD52F50ECA8A9F006D9FF8 /* CHQueueTest.m */,
 				E40D181C0E9452BB007F39D8 /* CHRedBlackTreeTest.m */,
 				E473CA3D0E93346B005CA997 /* CHSinglyLinkedListTest.m */,
+				E4FD53020ECA9212006D9FF8 /* CHStackTest.m */,
 				E410360E0EC424E600C2CFB9 /* CHTreapTest.m */,
 				E40D181E0E9452BB007F39D8 /* CHUnbalancedTreeTest.m */,
 			);
@@ -681,20 +672,17 @@
 				E473CB870E9348F5005CA997 /* CHSinglyLinkedListTest.m in Sources */,
 				E4D4996A0E93CD1300434CBA /* CHDoublyLinkedListTest.m in Sources */,
 				E40D18060E94519F007F39D8 /* CHAnderssonTreeTest.m in Sources */,
-				E40D18260E9452BB007F39D8 /* CHMutableArrayDequeTest.m in Sources */,
 				E40D18270E9452BB007F39D8 /* CHRedBlackTreeTest.m in Sources */,
-				E40D18280E9452BB007F39D8 /* CHListStackTest.m in Sources */,
 				E40D18290E9452BB007F39D8 /* CHUnbalancedTreeTest.m in Sources */,
-				E40D182A0E9452BB007F39D8 /* CHMutableArrayStackTest.m in Sources */,
-				E40D182C0E9452BB007F39D8 /* CHListQueueTest.m in Sources */,
-				E40D182D0E9452BB007F39D8 /* CHMutableArrayHeapTest.m in Sources */,
-				E40D182F0E9452BB007F39D8 /* CHMutableArrayQueueTest.m in Sources */,
-				E40D18720E94577F007F39D8 /* CHListDequeTest.m in Sources */,
+				E40D182D0E9452BB007F39D8 /* CHHeapTest.m in Sources */,
 				E4A720C60EA78DCE00E0AC21 /* CHAbstractListCollectionTest.m in Sources */,
 				E4A720CB0EA78DFB00E0AC21 /* CHAbstractMutableArrayCollectionTest.m in Sources */,
 				E4B1AD180EB580BC00B43ADA /* CHAbstractTreeTest.m in Sources */,
 				E400FCF40EBE15F300AC172B /* CHAVLTreeTest.m in Sources */,
 				E410360F0EC424E600C2CFB9 /* CHTreapTest.m in Sources */,
+				E4FD52CD0ECA8589006D9FF8 /* CHDequeTest.m in Sources */,
+				E4FD52F60ECA8A9F006D9FF8 /* CHQueueTest.m in Sources */,
+				E4FD53030ECA9212006D9FF8 /* CHStackTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

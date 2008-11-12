@@ -73,7 +73,7 @@
 - (void) testNSCoding {
 	for (id object in objects)
 		[collection addObject:object];
-	STAssertEquals([collection count], 3u, @"-count is incorrect.");
+	STAssertEquals([collection count], 3u, @"Incorrect count.");
 	NSArray *order = [[collection objectEnumerator] allObjects];
 	STAssertEqualObjects(order, objects, @"Wrong ordering before archiving.");
 	
@@ -82,7 +82,7 @@
 	[collection release];
 	
 	collection = [[NSKeyedUnarchiver unarchiveObjectWithFile:filePath] retain];
-	STAssertEquals([collection count], 3u, @"-count is incorrect.");
+	STAssertEquals([collection count], 3u, @"Incorrect count.");
 	order = [[collection objectEnumerator] allObjects];
 	STAssertEqualObjects(order, objects, @"Wrong ordering on reconstruction.");
 }
@@ -92,7 +92,7 @@
 		[collection addObject:object];
 	CHAbstractListCollection *collection2 = [collection copy];
 	STAssertNotNil(collection2, @"-copy should not return nil for valid collection.");
-	STAssertEquals([collection2 count], 3u, @"-count is incorrect.");
+	STAssertEquals([collection2 count], 3u, @"Incorrect count.");
 	STAssertEqualObjects([collection allObjects], [collection2 allObjects],
 						 @"Unequal collections.");
 	[collection2 release];
@@ -117,21 +117,21 @@
 - (void) testInitWithArray {
 	[collection release];
 	collection = [[CHAbstractListCollection alloc] initWithArray:objects];
-	STAssertEquals([collection count], 3u, @"-count is incorrect.");
+	STAssertEquals([collection count], 3u, @"Incorrect count.");
 	STAssertEqualObjects([collection allObjects], objects,
 						 @"Bad array ordering on -initWithArray:");
 	
 	NSEnumerator *enumerator = [collection objectEnumerator];
-	STAssertEqualObjects([enumerator nextObject], @"A", @"-nextObject is wrong");
-	STAssertEqualObjects([enumerator nextObject], @"B", @"-nextObject is wrong");
-	STAssertEqualObjects([enumerator nextObject], @"C", @"-nextObject is wrong");
+	STAssertEqualObjects([enumerator nextObject], @"A", @"Wrong -nextObject.");
+	STAssertEqualObjects([enumerator nextObject], @"B", @"Wrong -nextObject.");
+	STAssertEqualObjects([enumerator nextObject], @"C", @"Wrong -nextObject.");
 	STAssertNil([enumerator nextObject], @"-nextObject should return Nil");
 }
 
 - (void) testCount {
-	STAssertEquals([collection count], 0u, @"-count is incorrect.");
+	STAssertEquals([collection count], 0u, @"Incorrect count.");
 	[collection addObject:@"Hello, World!"];
-	STAssertEquals([collection count], 1u, @"-count is incorrect.");
+	STAssertEquals([collection count], 1u, @"Incorrect count.");
 }
 
 - (void) testContainsObject {
@@ -203,22 +203,22 @@
 	for (id object in objects)
 		[collection addObject:object];
 
-	STAssertEquals([collection count], 3u, @"-count is incorrect.");
+	STAssertEquals([collection count], 3u, @"Incorrect count.");
 	[collection removeObject:@"A"];
-	STAssertEquals([collection count], 2u, @"-count is incorrect.");
+	STAssertEquals([collection count], 2u, @"Incorrect count.");
 	[collection removeObject:@"A"];
-	STAssertEquals([collection count], 2u, @"-count is incorrect.");
+	STAssertEquals([collection count], 2u, @"Incorrect count.");
 	[collection removeObject:@"Z"];
-	STAssertEquals([collection count], 2u, @"-count is incorrect.");
+	STAssertEquals([collection count], 2u, @"Incorrect count.");
 }
 
 - (void) testRemoveAllObjects {
-	STAssertEquals([collection count], 0u, @"-count is incorrect.");
+	STAssertEquals([collection count], 0u, @"Incorrect count.");
 	for (id object in objects)
 		[collection addObject:object];
-	STAssertEquals([collection count], 3u, @"-count is incorrect.");
+	STAssertEquals([collection count], 3u, @"Incorrect count.");
 	[collection removeAllObjects];
-	STAssertEquals([collection count], 0u, @"-count is incorrect.");
+	STAssertEquals([collection count], 0u, @"Incorrect count.");
 }
 
 - (void) testObjectEnumerator {

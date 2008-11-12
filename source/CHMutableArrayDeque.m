@@ -29,6 +29,8 @@
 }
 
 - (void) prependObjectsFromArray:(NSArray*)anArray {
+	if (anArray == nil)
+		return;
 	[array insertObjects:anArray atIndexes:
 	   [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [anArray count])]];
 }

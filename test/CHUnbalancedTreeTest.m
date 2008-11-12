@@ -52,14 +52,14 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 - (void) testAddObject {
 	STAssertThrows([tree addObject:nil], @"Should raise an exception.");
 	
-	STAssertEquals([tree count], 0u, @"-count is incorrect.");
+	STAssertEquals([tree count], 0u, @"Incorrect count.");
 	for (id object in objects)
 		[tree addObject:object];
-	STAssertEquals([tree count], [objects count], @"-count is incorrect.");
+	STAssertEquals([tree count], [objects count], @"Incorrect count.");
 	
 	// Test adding identical object--should be replaced, and count stay the same
 	[tree addObject:@"A"];
-	STAssertEquals([tree count], [objects count], @"-count is incorrect.");
+	STAssertEquals([tree count], [objects count], @"Incorrect count.");
 	
 	order = [tree allObjectsWithTraversalOrder:CHTraverseLevelOrder];
 	STAssertTrue([order isEqualToArray:objects],
@@ -112,47 +112,47 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	STAssertThrows([tree removeObject:nil], @"Should raise an exception.");
 
 	// Test removing a node which doesn't occur in the tree
-	STAssertEquals([tree count], [objects count], @"-count is incorrect.");
+	STAssertEquals([tree count], [objects count], @"Incorrect count.");
 	[tree removeObject:@"Z"];
-	STAssertEquals([tree count], [objects count], @"-count is incorrect.");
+	STAssertEquals([tree count], [objects count], @"Incorrect count.");
 
 	// Test remove and subsequent pre-order of nodes for 4 broad possible cases
 	
 	// 1 - Remove a node with no children
 	[tree removeObject:@"A"];
-	STAssertEquals([tree count], [objects count]-1, @"-count is incorrect.");
+	STAssertEquals([tree count], [objects count]-1, @"Incorrect count.");
 	correct = [NSArray arrayWithObjects:@"F",@"B",@"C",@"E",@"D",@"J",@"I",@"G",@"H",@"K",nil];
 	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
 	STAssertTrue([order isEqualToArray:correct], badOrder(@"Pre-order", order, correct));
 	
 	[tree removeObject:@"K"];
-	STAssertEquals([tree count], [objects count]-2, @"-count is incorrect.");
+	STAssertEquals([tree count], [objects count]-2, @"Incorrect count.");
 	correct = [NSArray arrayWithObjects:@"F",@"B",@"C",@"E",@"D",@"J",@"I",@"G",@"H",nil];
 	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
 	STAssertTrue([order isEqualToArray:correct], badOrder(@"Pre-order", order, correct));
 
 	// 2 - Remove a node with only a right child
 	[tree removeObject:@"C"];
-	STAssertEquals([tree count], [objects count]-3, @"-count is incorrect.");
+	STAssertEquals([tree count], [objects count]-3, @"Incorrect count.");
 	correct = [NSArray arrayWithObjects:@"F",@"B",@"E",@"D",@"J",@"I",@"G",@"H",nil];
 	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
 	STAssertTrue([order isEqualToArray:correct], badOrder(@"Pre-order", order, correct));
 	
 	[tree removeObject:@"B"];
-	STAssertEquals([tree count], [objects count]-4, @"-count is incorrect.");
+	STAssertEquals([tree count], [objects count]-4, @"Incorrect count.");
 	correct = [NSArray arrayWithObjects:@"F",@"E",@"D",@"J",@"I",@"G",@"H",nil];
 	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
 	STAssertTrue([order isEqualToArray:correct], badOrder(@"Pre-order", order, correct));
 	
 	// 3 - Remove a node with only a left child
 	[tree removeObject:@"I"];
-	STAssertEquals([tree count], [objects count]-5, @"-count is incorrect.");
+	STAssertEquals([tree count], [objects count]-5, @"Incorrect count.");
 	correct = [NSArray arrayWithObjects:@"F",@"E",@"D",@"J",@"G",@"H",nil];
 	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
 	STAssertTrue([order isEqualToArray:correct], badOrder(@"Pre-order", order, correct));
 
 	[tree removeObject:@"J"];
-	STAssertEquals([tree count], [objects count]-6, @"-count is incorrect.");
+	STAssertEquals([tree count], [objects count]-6, @"Incorrect count.");
 	correct = [NSArray arrayWithObjects:@"F",@"E",@"D",@"G",@"H",nil];
 	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
 	STAssertTrue([order isEqualToArray:correct], badOrder(@"Pre-order", order, correct));
@@ -163,25 +163,25 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	tree = [[CHUnbalancedTree alloc] initWithArray:objects];
 
 	[tree removeObject:@"B"];
-	STAssertEquals([tree count], [objects count]-1, @"-count is incorrect.");
+	STAssertEquals([tree count], [objects count]-1, @"Incorrect count.");
 	correct = [NSArray arrayWithObjects: @"C",@"A",@"E",@"D",@"F",nil];
 	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
 	STAssertTrue([order isEqualToArray:correct], badOrder(@"Pre-order", order, correct));
 
 	[tree removeObject:@"C"];
-	STAssertEquals([tree count], [objects count]-2, @"-count is incorrect.");
+	STAssertEquals([tree count], [objects count]-2, @"Incorrect count.");
 	correct = [NSArray arrayWithObjects: @"D",@"A",@"E",@"F",nil];
 	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
 	STAssertTrue([order isEqualToArray:correct], badOrder(@"Pre-order", order, correct));
 
 	[tree removeObject:@"D"];
-	STAssertEquals([tree count], [objects count]-3, @"-count is incorrect.");
+	STAssertEquals([tree count], [objects count]-3, @"Incorrect count.");
 	correct = [NSArray arrayWithObjects: @"E",@"A",@"F",nil];
 	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
 	STAssertTrue([order isEqualToArray:correct], badOrder(@"Pre-order", order, correct));
 
 	[tree removeObject:@"E"];
-	STAssertEquals([tree count], [objects count]-4, @"-count is incorrect.");
+	STAssertEquals([tree count], [objects count]-4, @"Incorrect count.");
 	correct = [NSArray arrayWithObjects: @"F",@"A",nil];
 	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
 	STAssertTrue([order isEqualToArray:correct], badOrder(@"Pre-order", order, correct));

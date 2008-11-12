@@ -70,13 +70,13 @@ static BOOL gcDisabled;
 - (void) testNSCoding {
 	for (id anObject in objects)
 		[list appendObject:anObject];
-	STAssertEquals([list count], [objects count], @"-count is incorrect.");
+	STAssertEquals([list count], [objects count], @"Incorrect count.");
 	
 	NSString *filePath = @"/tmp/list.archive";
 	[NSKeyedArchiver archiveRootObject:list toFile:filePath];
 	[list release];
 	list = [[NSKeyedUnarchiver unarchiveObjectWithFile:filePath] retain];
-	STAssertEquals([list count], [objects count], @"-count is incorrect.");
+	STAssertEquals([list count], [objects count], @"Incorrect count.");
 	STAssertEqualObjects([list allObjects], objects,
 	                     @"Wrong ordering on reconstruction.");
 }
@@ -86,7 +86,7 @@ static BOOL gcDisabled;
 		[list appendObject:anObject];
 	CHSinglyLinkedList *list2 = [list copy];
 	STAssertNotNil(list2, @"-copy should not return nil for valid list.");
-	STAssertEquals([list2 count], [objects count], @"-count is incorrect.");
+	STAssertEquals([list2 count], [objects count], @"Incorrect count.");
 	STAssertEqualObjects([list allObjects], [list2 allObjects], @"Unequal lists.");
 	[list2 release];
 }
@@ -107,7 +107,7 @@ static BOOL gcDisabled;
 
 - (void) testEmptyList {
 	STAssertNotNil(list, @"list should not be nil");
-	STAssertEquals([list count], 0u, @"-count is incorrect.");
+	STAssertEquals([list count], 0u, @"Incorrect count.");
 	STAssertEqualObjects([list firstObject], nil, @"-firstObject should be nil.");	
 	STAssertEqualObjects([list lastObject], nil, @"-lastObject should be nil.");
 }
@@ -115,7 +115,7 @@ static BOOL gcDisabled;
 - (void) testInitWithArray {
 	[list release];
     list = [[CHSinglyLinkedList alloc] initWithArray:objects];
-	STAssertEquals([list count], [objects count], @"-count is incorrect.");
+	STAssertEquals([list count], [objects count], @"Incorrect count.");
 	STAssertEqualObjects([list allObjects], objects,
 						 @"Bad array ordering on -initWithArray:");
 }
@@ -135,7 +135,7 @@ static BOOL gcDisabled;
 	for (id anObject in objects)
 		[list appendObject:anObject];
 	
-	STAssertEquals([list count], [objects count], @"-count is incorrect.");
+	STAssertEquals([list count], [objects count], @"Incorrect count.");
 	STAssertEqualObjects([list firstObject], @"A", @"-firstObject is wrong.");
 	STAssertEqualObjects([list lastObject], @"C", @"-lastObject is wrong.");
 }
@@ -146,7 +146,7 @@ static BOOL gcDisabled;
 	for (id anObject in objects)
 		[list prependObject:anObject];
 	
-	STAssertEquals([list count], [objects count], @"-count is incorrect.");
+	STAssertEquals([list count], [objects count], @"Incorrect count.");
 	STAssertEqualObjects([list firstObject], @"C", @"-firstObject is wrong.");
 	STAssertEqualObjects([list lastObject],  @"A", @"-lastObject is wrong.");
 }
@@ -160,16 +160,16 @@ static BOOL gcDisabled;
 	
 	for (id anObject in objects)
 		[list appendObject:anObject];
-	STAssertEquals([list count], [objects count], @"-count is incorrect.");
+	STAssertEquals([list count], [objects count], @"Incorrect count.");
 	STAssertThrows([list insertObject:@"D" atIndex:3], @"Should raise NSRangeException.");
 	// Try inserting in the middle
 	[list insertObject:@"D" atIndex:1];
-	STAssertEquals([list count], [objects count]+1, @"-count is incorrect.");
+	STAssertEquals([list count], [objects count]+1, @"Incorrect count.");
 	STAssertEqualObjects([list objectAtIndex:1], @"D", @"-objectAtIndex: is wrong.");
 	STAssertEqualObjects([list objectAtIndex:2], @"B", @"-objectAtIndex: is wrong.");
 	// Try inserting at the beginning
 	[list insertObject:@"E" atIndex:0];
-	STAssertEquals([list count], [objects count]+2, @"-count is incorrect.");
+	STAssertEquals([list count], [objects count]+2, @"Incorrect count.");
 	STAssertEqualObjects([list objectAtIndex:0], @"E", @"-objectAtIndex: is wrong.");
 	STAssertEqualObjects([list objectAtIndex:1], @"A", @"-objectAtIndex: is wrong.");
 	STAssertEqualObjects([list objectAtIndex:2], @"D", @"-objectAtIndex: is wrong.");
@@ -195,9 +195,9 @@ static BOOL gcDisabled;
 	if (gcDisabled)
 		STAssertEquals([list retainCount], 2u, @"Enumerator should retain collection");
 	
-	STAssertEqualObjects([e nextObject], @"A", @"-nextObject is wrong.");
-	STAssertEqualObjects([e nextObject], @"B", @"-nextObject is wrong.");
-	STAssertEqualObjects([e nextObject], @"C", @"-nextObject is wrong.");
+	STAssertEqualObjects([e nextObject], @"A", @"Wrong -nextObject.");
+	STAssertEqualObjects([e nextObject], @"B", @"Wrong -nextObject.");
+	STAssertEqualObjects([e nextObject], @"C", @"Wrong -nextObject.");
 	
 	if (gcDisabled)
 		STAssertEquals([list retainCount], 2u, @"Collection should still be retained");
@@ -212,7 +212,7 @@ static BOOL gcDisabled;
 	if (gcDisabled)
 		STAssertEquals([list retainCount], 1u, @"Enumerator should release collection");
 	STAssertNotNil(array, @"Array should not be nil");
-	STAssertEquals([array count], [objects count], @"-count is incorrect.");
+	STAssertEquals([array count], [objects count], @"Incorrect count.");
 	STAssertEqualObjects([array objectAtIndex:0], @"A", @"Object order is wrong.");
 	STAssertEqualObjects([array lastObject],      @"C", @"Object order is wrong.");
 	
@@ -308,16 +308,16 @@ static BOOL gcDisabled;
 		[list appendObject:anObject];
 	
 	[list removeFirstObject];
-	STAssertEquals([list count], 2u, @"-count is incorrect.");
+	STAssertEquals([list count], 2u, @"Incorrect count.");
 	STAssertEqualObjects([list firstObject], @"B", @"-firstObject is wrong.");
 	STAssertEqualObjects([list lastObject],  @"C", @"-lastObject is wrong.");
 	
 	[list removeFirstObject];
-	STAssertEquals([list count], 1u, @"-count is incorrect.");
+	STAssertEquals([list count], 1u, @"Incorrect count.");
 	STAssertEquals([list head], [list tail], @"head and tail should be the same.");
 	
 	[list removeFirstObject];
-	STAssertEquals([list count], 0u, @"-count is incorrect.");
+	STAssertEquals([list count], 0u, @"Incorrect count.");
 	STAssertTrue([list head] == NULL, @"head should be NULL.");
 	STAssertTrue([list tail] == NULL, @"tail should be NULL.");
 }
@@ -329,16 +329,16 @@ static BOOL gcDisabled;
 		[list appendObject:anObject];
 	
 	[list removeLastObject];
-	STAssertEquals([list count], 2u, @"-count is incorrect.");
+	STAssertEquals([list count], 2u, @"Incorrect count.");
 	STAssertEqualObjects([list firstObject], @"A", @"-firstObject is wrong.");
 	STAssertEqualObjects([list lastObject],  @"B", @"-lastObject is wrong.");
 
 	[list removeLastObject];
-	STAssertEquals([list count], 1u, @"-count is incorrect.");
+	STAssertEquals([list count], 1u, @"Incorrect count.");
 	STAssertEquals([list head], [list tail], @"head and tail should be the same.");
 
 	[list removeLastObject];
-	STAssertEquals([list count], 0u, @"-count is incorrect.");
+	STAssertEquals([list count], 0u, @"Incorrect count.");
 	STAssertTrue([list head] == NULL, @"head should be NULL.");
 	STAssertTrue([list tail] == NULL, @"tail should be NULL.");
 }
@@ -350,17 +350,17 @@ static BOOL gcDisabled;
 		[list appendObject:anObject];
 	
 	[list removeObject:@"B"];
-	STAssertEquals([list count], 2u, @"-count is incorrect.");
+	STAssertEquals([list count], 2u, @"Incorrect count.");
 	STAssertEqualObjects([list firstObject], @"A", @"-firstObject is wrong.");
 	STAssertEqualObjects([list lastObject],  @"C", @"-lastObject is wrong.");
 
 	[list removeObject:@"A"];
-	STAssertEquals([list count], 1u, @"-count is incorrect.");
+	STAssertEquals([list count], 1u, @"Incorrect count.");
 	STAssertEqualObjects([list firstObject], @"C", @"-firstObject is wrong.");
 	STAssertEqualObjects([list lastObject],  @"C", @"-lastObject is wrong.");
 
 	[list removeObject:@"C"];
-	STAssertEquals([list count], 0u, @"-count is incorrect.");
+	STAssertEquals([list count], 0u, @"Incorrect count.");
 	STAssertNil([list firstObject], @"-firstObject should return nil.");
 	STAssertNil([list lastObject], @"-lastObject should return nil.");
 	
@@ -372,9 +372,9 @@ static BOOL gcDisabled;
 	[list appendObject:@"Z"];
 	[list appendObject:@"C"];
 	
-	STAssertEquals([list count], 6u, @"-count is incorrect.");
+	STAssertEquals([list count], 6u, @"Incorrect count.");
 	[list removeObject:@"Z"];
-	STAssertEquals([list count], 3u, @"-count is incorrect.");
+	STAssertEquals([list count], 3u, @"Incorrect count.");
 	STAssertEqualObjects([list objectAtIndex:0], @"A", @"Wrong object at index.");
 	STAssertEqualObjects([list objectAtIndex:1], @"B", @"Wrong object at index.");
 	STAssertEqualObjects([list objectAtIndex:2], @"C", @"Wrong object at index.");	
@@ -383,11 +383,11 @@ static BOOL gcDisabled;
 - (void) testRemoveObjectIdenticalTo {
 	NSString *a = [NSString stringWithFormat:@"A"];
 	[list appendObject:a];
-	STAssertEquals([list count], 1u, @"-count is incorrect.");
+	STAssertEquals([list count], 1u, @"Incorrect count.");
 	[list removeObjectIdenticalTo:@"A"];
-	STAssertEquals([list count], 1u, @"-count is incorrect.");
+	STAssertEquals([list count], 1u, @"Incorrect count.");
 	[list removeObjectIdenticalTo:a];
-	STAssertEquals([list count], 0u, @"-count is incorrect.");
+	STAssertEquals([list count], 0u, @"Incorrect count.");
 	
 	// Test removing all instances of an object
 	[list appendObject:@"A"];
@@ -397,9 +397,9 @@ static BOOL gcDisabled;
 	[list appendObject:@"C"];
 	[list appendObject:[NSString stringWithFormat:@"Z"]];
 	
-	STAssertEquals([list count], 6u, @"-count is incorrect.");
+	STAssertEquals([list count], 6u, @"Incorrect count.");
 	[list removeObjectIdenticalTo:@"Z"];
-	STAssertEquals([list count], 4u, @"-count is incorrect.");
+	STAssertEquals([list count], 4u, @"Incorrect count.");
 	STAssertEqualObjects([list objectAtIndex:0], @"A", @"Wrong object at index.");
 	STAssertEqualObjects([list objectAtIndex:1], @"B", @"Wrong object at index.");
 	STAssertEqualObjects([list objectAtIndex:2], @"C", @"Wrong object at index.");	
@@ -414,24 +414,24 @@ static BOOL gcDisabled;
 	STAssertThrows([list removeObjectAtIndex:-1], @"Should raise NSRangeException.");
 	
 	[list removeObjectAtIndex:2];
-	STAssertEquals([list count], 2u, @"-count is incorrect.");
+	STAssertEquals([list count], 2u, @"Incorrect count.");
 	STAssertEqualObjects([list firstObject], @"A", @"-firstObject is wrong.");
 	STAssertEqualObjects([list lastObject],  @"B", @"-lastObject is wrong.");
 
 	[list removeObjectAtIndex:0];
-	STAssertEquals([list count], 1u, @"-count is incorrect.");
+	STAssertEquals([list count], 1u, @"Incorrect count.");
 	STAssertEqualObjects([list firstObject], @"B", @"-firstObject is wrong.");
 	STAssertEqualObjects([list lastObject],  @"B", @"-lastObject is wrong.");
 	
 	[list removeObjectAtIndex:0];
-	STAssertEquals([list count], 0u, @"-count is incorrect.");
+	STAssertEquals([list count], 0u, @"Incorrect count.");
 
 	// Test removing from an index in the middle
 	for (id anObject in objects)
 		[list appendObject:anObject];
 	
 	[list removeObjectAtIndex:1];
-	STAssertEquals([list count], 2u, @"-count is incorrect.");
+	STAssertEquals([list count], 2u, @"Incorrect count.");
 	STAssertEqualObjects([list firstObject], @"A", @"-firstObject is wrong.");
 	STAssertEqualObjects([list lastObject],  @"C", @"-lastObject is wrong.");
 }
@@ -439,9 +439,9 @@ static BOOL gcDisabled;
 - (void) testRemoveAllObjects {
 	for (id anObject in objects)
 		[list appendObject:anObject];
-	STAssertEquals([list count], [objects count], @"-count is incorrect.");
+	STAssertEquals([list count], [objects count], @"Incorrect count.");
 	[list removeAllObjects];
-	STAssertEquals([list count], 0u, @"-count is incorrect.");
+	STAssertEquals([list count], 0u, @"Incorrect count.");
 }
 
 @end
