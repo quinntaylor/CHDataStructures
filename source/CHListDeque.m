@@ -40,10 +40,18 @@
 	[list prependObject:anObject];
 }
 
+- (void) prependObjectsFromArray:(NSArray*)anArray {
+	[list prependObjectsFromArray:anArray];
+}
+
 - (void) appendObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
 	[list appendObject:anObject];
+}
+
+- (void) appendObjectsFromArray:(NSArray*)anArray {
+	[list appendObjectsFromArray:anArray];
 }
 
 - (id) firstObject {

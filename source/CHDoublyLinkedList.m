@@ -286,10 +286,20 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 	[self insertObject:anObject atIndex:0];
 }
 
+- (void) prependObjectsFromArray:(NSArray*)anArray {
+	for (id anObject in [anArray reverseObjectEnumerator])
+		[self insertObject:anObject atIndex:0];
+}
+
 - (void) appendObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
 	[self insertObject:anObject atIndex:count];
+}
+
+- (void) appendObjectsFromArray:(NSArray*)anArray {
+	for (id anObject in anArray)
+		[self insertObject:anObject atIndex:count];
 }
 
 - (void) insertObject:(id)anObject atIndex:(NSUInteger)index {

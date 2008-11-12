@@ -64,6 +64,13 @@
 - (void) addObject:(id)anObject;
 
 /**
+ Add the objects contained in a given array to the back of the queue.
+ 
+ @param anArray An array of objects to add to the back of the queue.
+ */
+- (void) addObjectsFromArray:(NSArray*)anArray;
+
+/**
  Examine the object at the front of the queue without removing it.
  
  @return The frontmost object in the queue, or <code>nil</code> if the queue is

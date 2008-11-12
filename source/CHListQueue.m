@@ -40,6 +40,11 @@
 		[list appendObject:anObject];
 }
 
+- (void) addObjectsFromArray:(NSArray*)anArray {
+	[list appendObjectsFromArray:anArray];
+}
+
+
 - (id) firstObject {
 	return [list firstObject];
 }

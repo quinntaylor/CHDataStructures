@@ -62,6 +62,14 @@
 - (void) pushObject:(id)anObject;
 
 /**
+ Add the objects contained in a given array to the top of the stack.
+ 
+ @param anArray An array of objects to add to the top of the stack. Objects are
+        pushed in the order they appear in the array.
+ */
+- (void) pushObjectsFromArray:(NSArray*)anArray;
+
+/**
  Examine the object on the top of the stack without removing it.
  
  @return The topmost object from the stack.

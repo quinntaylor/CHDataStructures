@@ -55,12 +55,28 @@
 - (void) prependObject:(id)anObject;
 
 /**
+ Add the objects contained in a given array to the front of the deque.
+ 
+ @param anArray An array of objects to add to the front of the deque. The first
+        object in @a anArray will also be the first object in the deque.
+ */
+- (void) prependObjectsFromArray:(NSArray*)anArray;
+
+/**
  Add an object to the back of the deque.
  
  @param anObject The object to add to the deque; must not be <code>nil</code>,
         or an <code>NSInvalidArgumentException</code> is raised.
  */
 - (void) appendObject:(id)anObject;
+
+/**
+ Add the objects contained in a given array to the back of the deque.
+ 
+ @param anArray An array of objects to add to the back of the deque. The last
+        object in @a anArray will also be the last object in the deque.
+ */
+- (void) appendObjectsFromArray:(NSArray*)anArray;
 
 /**
  Examine the first object in the deque without removing it.

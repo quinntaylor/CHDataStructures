@@ -75,12 +75,28 @@
 - (void) prependObject:(id)anObject;
 
 /**
+ Add the objects contained in a given array to the front of the linked list.
+ 
+ @param anArray An array of objects to add to the front of the linked list. The
+        first object in @a anArray will also be the first object in the list.
+ */
+- (void) prependObjectsFromArray:(NSArray*)anArray;
+
+/**
  Add an object to the back of the list.
  
  @param anObject The object to add to the list; must not be <code>nil</code>, or an
         <code>NSInvalidArgumentException</code> is raised.
  */
 - (void) appendObject:(id)anObject;
+
+/**
+ Add the objects contained in a given array to the back of the linked list.
+ 
+ @param anArray An array of objects to add to the back of the linked list. The
+        last object in @a anArray will also be the last object in the list.
+ */
+- (void) appendObjectsFromArray:(NSArray*)anArray;
 
 /**
  Inserts a given object at a given index. If <i>index</i> is already occupied, then

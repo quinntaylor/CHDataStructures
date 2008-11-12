@@ -35,8 +35,9 @@ typedef struct CHSinglyLinkedListNode {
  the tail of the list is O(n), rather than O(1). However, other operations are
  slightly faster. Nodes are now represented with C structs rather than Obj-C
  classes, providing much faster performance.
+ 
+ @todo Refactor to use head and tail nodes like CHDoublyLinkedList.
  */
-
 @interface CHSinglyLinkedList : NSObject <CHLinkedList> {
 	NSUInteger count; /**< The number of object currently stored in a list. */
 	CHSinglyLinkedListNode *head;  /**< A pointer to the front node of a list. */

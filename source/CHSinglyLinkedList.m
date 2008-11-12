@@ -259,6 +259,20 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 	++mutations;
 }
 
+- (void) prependObjectsFromArray:(NSArray*)anArray {
+	CHSinglyLinkedListNode *new;
+	for (id anObject in [anArray reverseObjectEnumerator]) {
+		new = malloc(kSinglyLinkedListNodeSize);
+		new->object = [anObject retain];
+		new->next = head;
+		head = new;
+		if (tail == NULL)
+			tail = new;
+	}
+	count += [anArray count];
+	++mutations;
+}
+
 - (void) appendObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
@@ -272,6 +286,22 @@ static NSUInteger kSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 		tail->next = new;
 	tail = new;
 	++count;
+	++mutations;
+}
+
+- (void) appendObjectsFromArray:(NSArray*)anArray {
+	CHSinglyLinkedListNode *new;
+	for (id anObject in anArray) {
+		new = malloc(kSinglyLinkedListNodeSize);
+		new->object = [anObject retain];
+		new->next = NULL;
+		if (tail == NULL)
+			head = new;
+		else
+			tail->next = new;
+		tail = new;
+	}
+	count += [anArray count];
 	++mutations;
 }
 

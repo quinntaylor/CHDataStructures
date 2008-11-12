@@ -34,6 +34,10 @@
 		[array addObject:anObject];
 }
 
+- (void) pushObjectsFromArray:(NSArray*)anArray {
+	[array addObjectsFromArray:anArray];
+}
+
 - (id) topObject {
 	return [array lastObject];
 }
