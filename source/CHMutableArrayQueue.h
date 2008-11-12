@@ -22,8 +22,12 @@
 #import "CHAbstractMutableArrayCollection.h"
 
 /**
+ @file CHMutableArrayQueue.h
  A simple CHQueue implemented using an NSMutableArray.
- See the protocol definition for CHQueue to understand the programming contract.
+ */
+
+/**
+ A simple CHQueue implemented using an NSMutableArray.
  */
 @interface CHMutableArrayQueue : CHAbstractMutableArrayCollection <CHQueue>
 

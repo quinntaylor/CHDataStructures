@@ -23,6 +23,11 @@
 #import "CHSinglyLinkedList.h"
 
 /**
+ @file CHListQueue.h
+ A simple CHQueue implemented using a CHSinglyLinkedList.
+ */
+
+/**
  A simple CHQueue implemented using a CHSinglyLinkedList.
  */
 @interface CHListQueue : CHAbstractListCollection <CHQueue>

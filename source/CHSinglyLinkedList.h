@@ -20,6 +20,11 @@
 #import <Foundation/Foundation.h>
 #import "CHLinkedList.h"
 
+/**
+ @file CHSinglyLinkedList.h
+ A standard singly-linked list implementation with pointers to head and tail.
+ */
+
 // A struct for nodes in a CHSinglyLinkedList
 typedef struct CHSinglyLinkedListNode {
 	id object; /**< The object associated with this node in the list. */

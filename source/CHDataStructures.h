@@ -50,7 +50,7 @@
 /**
  @file CHDataStructures.h
  
- An umbrella header which imports the important header files from the framework.
+ An umbrella header which imports the public header files for the framework
  */
 
 /**

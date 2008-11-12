@@ -22,8 +22,12 @@
 #import "CHAbstractMutableArrayCollection.h"
 
 /**
+ @file CHMutableArrayStack.h
  A simple CHStack implemented using an NSMutableArray.
- See the protocol definition for CHStack to understand the programming contract.
+ */
+
+/**
+ A simple CHStack implemented using an NSMutableArray.
  */
 @interface CHMutableArrayStack : CHAbstractMutableArrayCollection <CHStack>
 

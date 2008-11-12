@@ -20,6 +20,11 @@
 #import <Foundation/Foundation.h>
 #import "CHLinkedList.h"
 
+/**
+ @file CHDoublyLinkedList.h
+ A standard doubly-linked list implementation with pointers to head and tail.
+ */
+
 // A struct for nodes in a CHDoublyLinkedList
 typedef struct CHDoublyLinkedListNode {
 	id object; /**< The object associated with this node in the list. */

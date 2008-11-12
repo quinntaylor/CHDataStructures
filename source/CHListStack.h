@@ -23,6 +23,11 @@
 #import "CHSinglyLinkedList.h"
 
 /**
+ @file CHListStack.h
+ A simple CHStack implemented using a CHSinglyLinkedList.
+ */
+
+/**
  A simple CHStack implemented using a CHSinglyLinkedList.
  */
 @interface CHListStack : CHAbstractListCollection <CHStack>

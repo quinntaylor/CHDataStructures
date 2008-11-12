@@ -22,8 +22,12 @@
 #import "CHAbstractMutableArrayCollection.h"
 
 /**
+ @file CHMutableArrayHeap.h
  A simple CHHeap implemented using an NSMutableArray.
- See the protocol definition for CHHeap to understand the programming contract.
+ */
+
+/**
+ A simple CHHeap implemented using an NSMutableArray.
  */
 @interface CHMutableArrayHeap : CHAbstractMutableArrayCollection <CHHeap>
 {

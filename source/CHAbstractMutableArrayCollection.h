@@ -20,9 +20,14 @@
 #import <Foundation/Foundation.h>
 
 /**
- An abstract class which implements many common behaviors of array-based collections.
- This class has a single instance variable on which all the implemented methods act,
- and also conforms to several protocols:
+ @file CHAbstractMutableArrayCollection.h
+ An abstract class which implements common behaviors of array-based collections.
+ */
+
+/**
+ An abstract class which implements common behaviors of array-based collections.
+ This class has a single instance variable on which all the implemented methods
+ act, and also conforms to several protocols:
  
  - NSCoding
  - NSCopying

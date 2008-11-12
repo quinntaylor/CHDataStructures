@@ -23,13 +23,13 @@
 /**
  @file CHLinkedList.h
  
- A <a href="http://en.wikipedia.org/wiki/Linked_list">linked list</a> protocol with
- methods that work in singly- or doubly-linked lists.
+ A <a href="http://en.wikipedia.org/wiki/Linked_list">linked list</a> protocol
+ with methods that work for singly- or doubly-linked lists.
  */
 
 /**
- A <a href="http://en.wikipedia.org/wiki/Linked_list">linked list</a> protocol with
- methods that work in singly- or doubly-linked lists.
+ A <a href="http://en.wikipedia.org/wiki/Linked_list">linked list</a> protocol
+ with methods that work for singly- or doubly-linked lists.
  
  This type of data structure is useful for storing sparse data that will be traversed
  often. (Linked lists are very memory efficient when dealing with sparse data, unlike

@@ -21,6 +21,12 @@
 #import "CHAbstractTree.h"
 
 /**
+ @file CHAVLTree.h
+ An <a href="http://en.wikipedia.org/wiki/Avl_tree">AVL tree</a> implementation
+ of CHTree.
+ */
+
+/**
  An <a href="http://en.wikipedia.org/wiki/Avl_tree">AVL tree</a>, a balanced
  binary search tree with guaranteed O(log n) access. The algorithms for insertion
  and removal in this implementation have been adapted from code in the

@@ -21,6 +21,12 @@
 #import "CHAbstractTree.h"
 
 /**
+ @file CHTreap.h
+ A <a href="http://en.wikipedia.org/wiki/Treap">Treap</a> implementation of
+ CHTree.
+ */
+
+/**
  A <a href="http://en.wikipedia.org/wiki/Treap">Treap</a>, a balanced binary
  tree with O(log n) access in general, and improbable worst cases. The name
  "treap" is a portmanteau of "tree" and "heap", which is fitting since treaps

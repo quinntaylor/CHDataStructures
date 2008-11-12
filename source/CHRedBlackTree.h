@@ -24,6 +24,12 @@
 #define kRED 1
 
 /**
+ @file CHRedBlackTree.h
+ A <a href="http://en.wikipedia.org/wiki/Red-black_trees">Red-Black tree</a>
+ implementation of CHTree.
+ */
+
+/**
  A <a href="http://en.wikipedia.org/wiki/Red-black_trees">Red-Black tree</a>, a
  balanced binary search tree with guaranteed O(log n) access. The algorithms for
  insertion and removal in this implementation have been adapted from code in the

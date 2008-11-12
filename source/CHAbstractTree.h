@@ -21,6 +21,11 @@
 #import "CHTree.h"
 
 /**
+ @file CHAbstractTree.h
+ An abstract CHTree implementation with many default method implementations.
+ */
+
+/**
  A node used by binary search trees for internal storage and representation.
  
  The nested anonymous union and structs are to provide flexibility for dealing
@@ -94,7 +99,7 @@ extern NSUInteger kPointerSize;
 #pragma mark -
 
 /**
- An abstract CHTree implementation with some default method implementations. The
+ An abstract CHTree implementation with many default method implementations. The
  methods for search, size, and enumeration are implemented in this class, as are
  implementations of NSCoding, NSCopying, and NSFastEnumeration. This works since
  each child class uses the CHTreeNode struct. Each child class must implement

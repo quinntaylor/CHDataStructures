@@ -23,8 +23,12 @@
 #import "CHDoublyLinkedList.h"
 
 /**
+ @file CHListDeque.h
  A simple CHDeque implemented using a CHDoublyLinkedList.
- See the protocol definition for CHDeque to understand the programming contract.
+ */
+
+/**
+ A simple CHDeque implemented using a CHDoublyLinkedList.
  */
 @interface CHListDeque : CHAbstractListCollection <CHDeque>
 

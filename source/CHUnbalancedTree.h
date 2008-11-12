@@ -21,6 +21,11 @@
 #import "CHAbstractTree.h"
 
 /**
+ @file CHUnbalancedTree.h
+ A generic, unbalanced implementation of CHTree.
+ */
+
+/**
  A simple unbalanced binary tree that <b>does not</b> guarantee O(log n) access.
  The algorithms for insertion and removal have been adapted from code in the
  <a href="http://eternallyconfuzzled.com/tuts/datastructures/jsw_tut_bst1.aspx">

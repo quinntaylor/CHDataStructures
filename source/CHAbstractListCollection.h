@@ -21,9 +21,14 @@
 #import "CHLinkedList.h"
 
 /**
- An abstract class which implements many common behaviors of list-based collections.
- This class has a single instance variable on which all the implemented methods act,
- and also conforms to several protocols:
+ @file CHAbstractListCollection.h
+ An abstract class which implements common behaviors of list-based collections.
+ */
+
+/**
+ An abstract class which implements common behaviors of list-based collections.
+ This class has a single instance variable on which all the implemented methods
+ act, and also conforms to several protocols:
  
  - NSCoding
  - NSCopying
