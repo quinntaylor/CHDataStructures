@@ -137,7 +137,7 @@ static BOOL gcDisabled;
 		[list appendObject:anObject];
 	
 	STAssertEquals([list count], [objects count], @"Incorrect count.");
-	STAssertEqualObjects([list firstObject], @"A", @"-firstObject is wrong.");
+	STAssertEqualObjects([list firstObject], @"A", @"Wrong -firstObject.");
 	STAssertEqualObjects([list lastObject], @"C", @"-lastObject is wrong.");
 }
 
@@ -148,7 +148,7 @@ static BOOL gcDisabled;
 		[list prependObject:anObject];
 	
 	STAssertEquals([list count], [objects count], @"Incorrect count.");
-	STAssertEqualObjects([list firstObject], @"C", @"-firstObject is wrong.");
+	STAssertEqualObjects([list firstObject], @"C", @"Wrong -firstObject.");
 	STAssertEqualObjects([list lastObject],  @"A", @"-lastObject is wrong.");
 }
 
@@ -310,12 +310,12 @@ static BOOL gcDisabled;
 	
 	[list removeFirstObject];
 	STAssertEquals([list count], 2u, @"Incorrect count.");
-	STAssertEqualObjects([list firstObject], @"B", @"-firstObject is wrong.");
+	STAssertEqualObjects([list firstObject], @"B", @"Wrong -firstObject.");
 	STAssertEqualObjects([list lastObject],  @"C", @"-lastObject is wrong.");
 	
 	[list removeFirstObject];
 	STAssertEquals([list count], 1u, @"Incorrect count.");
-	STAssertEqualObjects([list firstObject], @"C", @"-firstObject is wrong.");
+	STAssertEqualObjects([list firstObject], @"C", @"Wrong -firstObject.");
 	STAssertEqualObjects([list lastObject],  @"C", @"-lastObject is wrong.");
 	STAssertEquals([list head]->next, [list tail]->prev,
 				   @"head and tail should point to the same object.");
@@ -334,7 +334,7 @@ static BOOL gcDisabled;
 	
 	[list removeLastObject];
 	STAssertEquals([list count], 2u, @"Incorrect count.");
-	STAssertEqualObjects([list firstObject], @"A", @"-firstObject is wrong.");
+	STAssertEqualObjects([list firstObject], @"A", @"Wrong -firstObject.");
 	STAssertEqualObjects([list lastObject],  @"B", @"-lastObject is wrong.");
 
 	[list removeLastObject];
@@ -356,12 +356,12 @@ static BOOL gcDisabled;
 	
 	[list removeObject:@"B"];
 	STAssertEquals([list count], 2u, @"Incorrect count.");
-	STAssertEqualObjects([list firstObject], @"A", @"-firstObject is wrong.");
+	STAssertEqualObjects([list firstObject], @"A", @"Wrong -firstObject.");
 	STAssertEqualObjects([list lastObject],  @"C", @"-lastObject is wrong.");
 	
 	[list removeObject:@"A"];
 	STAssertEquals([list count], 1u, @"Incorrect count.");
-	STAssertEqualObjects([list firstObject], @"C", @"-firstObject is wrong.");
+	STAssertEqualObjects([list firstObject], @"C", @"Wrong -firstObject.");
 	STAssertEqualObjects([list lastObject],  @"C", @"-lastObject is wrong.");
 	
 	[list removeObject:@"C"];
@@ -420,12 +420,12 @@ static BOOL gcDisabled;
 	
 	[list removeObjectAtIndex:2];
 	STAssertEquals([list count], 2u, @"Incorrect count.");
-	STAssertEqualObjects([list firstObject], @"A", @"-firstObject is wrong.");
+	STAssertEqualObjects([list firstObject], @"A", @"Wrong -firstObject.");
 	STAssertEqualObjects([list lastObject],  @"B", @"-lastObject is wrong.");
 	
 	[list removeObjectAtIndex:0];
 	STAssertEquals([list count], 1u, @"Incorrect count.");
-	STAssertEqualObjects([list firstObject], @"B", @"-firstObject is wrong.");
+	STAssertEqualObjects([list firstObject], @"B", @"Wrong -firstObject.");
 	STAssertEqualObjects([list lastObject],  @"B", @"-lastObject is wrong.");
 	
 	[list removeObjectAtIndex:0];
@@ -437,7 +437,7 @@ static BOOL gcDisabled;
 	
 	[list removeObjectAtIndex:1];
 	STAssertEquals([list count], 2u, @"Incorrect count.");
-	STAssertEqualObjects([list firstObject], @"A", @"-firstObject is wrong.");
+	STAssertEqualObjects([list firstObject], @"A", @"Wrong -firstObject.");
 	STAssertEqualObjects([list lastObject],  @"C", @"-lastObject is wrong.");
 }
 

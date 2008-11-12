@@ -84,18 +84,18 @@
 		
 		NSUInteger expected = [objects count];
 		STAssertEquals([queue count], expected, @"Incorrect count.");
-		STAssertEqualObjects([queue firstObject], @"A", @"-firstObject is wrong.");
-		STAssertEqualObjects([queue firstObject], @"A", @"-firstObject is wrong.");
+		STAssertEqualObjects([queue firstObject], @"A", @"Wrong -firstObject.");
+		STAssertEqualObjects([queue firstObject], @"A", @"Wrong -firstObject.");
 		STAssertEquals([queue count], expected, @"Incorrect count.");
 		[queue removeFirstObject];
 		--expected;
 		STAssertEquals([queue count], expected, @"Incorrect count.");
-		STAssertEqualObjects([queue firstObject], @"B", @"-firstObject is wrong.");
+		STAssertEqualObjects([queue firstObject], @"B", @"Wrong -firstObject.");
 		STAssertEquals([queue count], expected, @"Incorrect count.");
 		[queue removeFirstObject];
 		--expected;
 		STAssertEquals([queue count], expected, @"Incorrect count.");
-		STAssertEqualObjects([queue firstObject], @"C", @"-firstObject is wrong.");
+		STAssertEqualObjects([queue firstObject], @"C", @"Wrong -firstObject.");
 		STAssertEquals([queue count], expected, @"Incorrect count.");
 		[queue removeFirstObject];
 		--expected;
