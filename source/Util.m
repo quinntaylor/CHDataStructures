@@ -1,5 +1,5 @@
 /*
- Util.c
+ Util.m
  CHDataStructures.framework -- Objective-C versions of common data structures.
  Copyright (C) 2008, Quinn Taylor for BYU CocoaHeads <http://cocoaheads.byu.edu>
  Copyright (C) 2002, Phillip Morelock <http://www.phillipmorelock.com>
@@ -19,44 +19,47 @@
 
 #import "Util.h"
 
-void CHIndexOutOfRangeException(Class theClass, SEL method,
-                                       NSUInteger index, NSUInteger elements) {
+void CHIndexOutOfRangeException(Class aClass, SEL method,
+                                NSUInteger index, NSUInteger elements) {
 	[NSException raise:NSRangeException
 	            format:@"[%@ %s] -- Index (%d) out of range (0-%d).",
-	                   theClass, sel_getName(method), index, elements-1];
+	                   aClass, sel_getName(method), index, elements-1];
 }
 
-void CHNilArgumentException(Class theClass, SEL method) {
+void CHInvalidArgumentException(Class aClass, SEL method, NSString *string) {
 	[NSException raise:NSInternalInconsistencyException
-	            format:@"[%@ %s] -- Invalid nil argument.",
-	                   theClass, sel_getName(method)];
+	            format:@"[%@ %s] -- %@",
+	                   aClass, sel_getName(method), string];
 }
 
-void CHMutatedCollectionException(Class theClass, SEL method) {
+void CHNilArgumentException(Class aClass, SEL method) {
+	CHInvalidArgumentException(aClass, method, @"Invalid nil argument.");
+}
+
+void CHMutatedCollectionException(Class aClass, SEL method) {
 	[NSException raise:NSGenericException
-	            format:@"[%@ %s] -- Collection was mutated while being enumerated.",
-	                   theClass, sel_getName(method)];
+	            format:@"[%@ %s] -- Collection was mutated during enumeration.",
+	                   aClass, sel_getName(method)];
 }
 
-int CHUnsupportedOperationException(Class theClass, SEL method) {
+void CHUnsupportedOperationException(Class aClass, SEL method) {
 	[NSException raise:NSInternalInconsistencyException
 	            format:@"[%@ %s] -- Unsupported operation.",
-	                   theClass, sel_getName(method)];
-	return 0;
+	                   aClass, sel_getName(method)];
 }
 
 void CHQuietLog(NSString *format, ...) {
-    if (format == nil) {
-        printf("nil\n");
-        return;
-    }
-    // Get a reference to the arguments that follow the format parameter
-    va_list argList;
-    va_start(argList, format);
-    // Perform format string argument substitution, reinstate %% escapes, then print
-    NSString *s = [[NSString alloc] initWithFormat:format arguments:argList];
-    printf("%s\n", [[s stringByReplacingOccurrencesOfString:@"%%"
-                                                 withString:@"%%%%"] UTF8String]);
+	if (format == nil) {
+		printf("(null)\n");
+		return;
+	}
+	// Get a reference to the arguments that follow the format parameter
+	va_list argList;
+	va_start(argList, format);
+	// Do format string argument substitution, reinstate %% escapes, then print
+	NSString *s = [[NSString alloc] initWithFormat:format arguments:argList];
+	printf("%s\n", [[s stringByReplacingOccurrencesOfString:@"%%"
+											 withString:@"%%%%"] UTF8String]);
 	[s release];
-    va_end(argList);
+	va_end(argList);
 }

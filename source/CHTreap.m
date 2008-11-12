@@ -44,10 +44,8 @@
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
 	if (priority == NSNotFound)
-		[NSException raise:NSInternalInconsistencyException
-		            format:@"[%@ %s] -- Invalid priority, out of range: %d.",
-		                   [self class], sel_getName(_cmd), priority];
-	
+		CHInvalidArgumentException([self class], _cmd,
+		                           @"Invalid priority: cannot be NSNotFound.");
 	CHTreeNode *parent, *current = header;
 	CHTreeNode **stack;
 	NSUInteger stackSize, elementsInStack;
@@ -93,10 +91,9 @@
 	// Trace back up the path, rotating as we go to satisfy the heap property.
 	// Loop exits once the heap property is satisfied, even after bubble down.
 	while (parent != header && current->priority > parent->priority) {
-		// Rotate current up, and parent down to opposite subtree
+		// Rotate current node up, push parent down to opposite subtree.
 		direction = (parent->left == current);
 		singleRotation(parent, direction, CHTreeStack_TOP);
-		// Move to the next node up the path to the root
 		parent = CHTreeStack_POP;
 	}
 	free(stack);
@@ -143,6 +140,39 @@
 	while (comparison = [current->object compare:anObject]) // while not equal
 		current = current->link[comparison == NSOrderedAscending]; // R on YES
 	return (current != sentinel) ? current->priority : NSNotFound;
+}
+
+- (void) debugDescriptionWithString:(NSMutableString*)description
+                   forSubtreeAtNode:(CHTreeNode*)node
+                         withIndent:(NSUInteger)level
+{
+	if (node == sentinel)
+		return;
+	
+	[description appendFormat:@"  [%11d]  ", node->priority];
+	for (int i = 0; i < level; i++)
+		[description appendString:@"  "];
+	[description appendFormat:@"%@\n", node->object];
+	
+	if (node != sentinel) {
+		[self debugDescriptionWithString:description
+                        forSubtreeAtNode:node->left
+                              withIndent:(level+1)];
+		[self debugDescriptionWithString:description
+                        forSubtreeAtNode:node->right
+                              withIndent:(level+1)];
+	}
+}
+
+- (NSString*) debugDescription {
+	NSMutableString *description = [NSMutableString stringWithFormat:
+	                                @"<%@: 0x%x> = {\n", [self class], self];
+	sentinel->object = @"∅";
+	[self debugDescriptionWithString:description
+                    forSubtreeAtNode:header->right
+                          withIndent:0];
+	[description appendString:@"}"];
+	return description;
 }
 
 @end

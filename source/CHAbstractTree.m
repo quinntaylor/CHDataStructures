@@ -287,8 +287,7 @@ NSUInteger kPointerSize = sizeof(void*);
 	
 	sentinel->object = nil;
 	CHTreeStack_PUSH(header->right);	
-	while (current != sentinel && stack != NULL) {
-		current = CHTreeStack_POP;
+	while (current = CHTreeStack_POP) {
 		if (current->right != sentinel)
 			CHTreeStack_PUSH(current->right);
 		if (current->left != sentinel)

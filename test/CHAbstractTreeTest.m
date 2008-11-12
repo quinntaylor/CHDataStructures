@@ -169,6 +169,20 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 						 @"-description returns incorrect string.");
 }
 
+- (void) testDebugDescription {
+	NSMutableString *expected = [NSMutableString string];
+	[expected appendFormat:@"<CHUnbalancedTree: 0x%x> = {\n", zigzagTree];
+	[expected appendString:@"\tA -> (null) and E\n"];
+	[expected appendString:@"\tE -> B and (null)\n"];
+	[expected appendString:@"\tB -> (null) and D\n"];
+	[expected appendString:@"\tD -> C and (null)\n"];
+	[expected appendString:@"\tC -> (null) and (null)\n"];
+	[expected appendString:@"}"];
+	
+	STAssertEqualObjects([zigzagTree debugDescription], expected,
+						 @"Wrong string from -debugDescription.");
+}
+
 - (void) testEmptyTree {
 	for (Class aClass in treeClasses) {
 		id<CHTree> tree = [[aClass alloc] init];

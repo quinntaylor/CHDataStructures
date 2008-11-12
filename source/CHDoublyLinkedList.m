@@ -40,8 +40,8 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
         be retained while the enumerator has not exhausted all its objects.
  @param startNode The node at which to begin the enumeration.
  @param endNode The node which signifies that enumerations should terminate.
- @param direction The direction in which to enumerate. Should be either
-        <code>NSOrderedAscending</code> or <code>NSOrderedDescending</code>.
+ @param direction The direction in which to enumerate. If greater than zero, uses
+        <code>NSOrderedDescending</code>, else <code>NSOrderedAscending</code>.
  @param mutations A pointer to the collection's mutation count, for invalidation.
  
  The enumeration direction is inferred from the state of the provided start node.
@@ -94,12 +94,7 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 	collection = ([list count] > 0) ? [list retain] : nil;
 	current = startNode;
 	sentinel = endNode;
-	if (direction != NSOrderedAscending && direction != NSOrderedDescending) {
-		[NSException raise:NSInternalInconsistencyException
-		            format:@"[%@ %s] -- Invalid enumeration direction.",
-		                   [self class], sel_getName(_cmd)];	
-	}	
-	reverse = (direction == NSOrderedDescending) ? YES : NO;
+	reverse = (direction > 0) ? YES : NO;
 	mutationCount = *mutations;
 	mutationPtr = mutations;
 	return self;
@@ -271,7 +266,7 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
         currentNode = currentNode->next;
 		batchCount++;
     }
-	if (currentNode == NULL)
+	if (currentNode == tail)
 		state->state = 1; // used as a termination flag
 	else
 		state->state = (unsigned long)currentNode;

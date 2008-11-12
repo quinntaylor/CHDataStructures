@@ -80,8 +80,7 @@
 	// Parent's initializer allocates the actual array
 	if ([super init] == nil) return nil;
 	if (order != NSOrderedAscending && order != NSOrderedDescending)
-		[NSException raise:NSInvalidArgumentException
-		            format:@"Must provide a valid sort ordering."];
+		CHInvalidArgumentException([self class], _cmd, @"Invalid sort order.");
 	sortOrder = order;
 	sortDescriptor = [[NSSortDescriptor alloc]
                        initWithKey:nil

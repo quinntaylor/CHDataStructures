@@ -129,6 +129,29 @@ static BOOL gcDisabled;
 
 #pragma mark Insertion and Access
 
+- (void) testPrependObject {
+	STAssertThrows([list prependObject:nil], @"Should raise an exception on nil.");
+	
+	for (id anObject in objects)
+		[list prependObject:anObject];
+	
+	STAssertEquals([list count], [objects count], @"Incorrect count.");
+	STAssertEqualObjects([list firstObject], @"C", @"Wrong -firstObject.");
+	STAssertEqualObjects([list lastObject],  @"A", @"-lastObject is wrong.");
+}
+
+- (void) testPrependObjectsFromArray {
+	STAssertNoThrow([list prependObjectsFromArray:nil],
+					@"Should never raise an exception.");
+	STAssertEquals([list count], 0u, @"Incorrect count.");
+	
+	[list prependObjectsFromArray:objects];
+	
+	STAssertEquals([list count], [objects count], @"Incorrect count.");
+	STAssertEqualObjects([list firstObject], @"A", @"Wrong -firstObject.");
+	STAssertEqualObjects([list lastObject],  @"C", @"-lastObject is wrong.");
+}
+
 - (void) testAppendObject {
 	STAssertThrows([list appendObject:nil], @"Should raise an exception on nil.");
 	
@@ -140,15 +163,16 @@ static BOOL gcDisabled;
 	STAssertEqualObjects([list lastObject], @"C", @"-lastObject is wrong.");
 }
 
-- (void) testPrependObject {
-	STAssertThrows([list prependObject:nil], @"Should raise an exception on nil.");
+- (void) testAppendObjectsFromArray {
+	STAssertNoThrow([list appendObjectsFromArray:nil],
+					@"Should never raise an exception.");
+	STAssertEquals([list count], 0u, @"Incorrect count.");
 	
-	for (id anObject in objects)
-		[list prependObject:anObject];
+	[list appendObjectsFromArray:objects];
 	
 	STAssertEquals([list count], [objects count], @"Incorrect count.");
-	STAssertEqualObjects([list firstObject], @"C", @"Wrong -firstObject.");
-	STAssertEqualObjects([list lastObject],  @"A", @"-lastObject is wrong.");
+	STAssertEqualObjects([list firstObject], @"A", @"Wrong -firstObject.");
+	STAssertEqualObjects([list lastObject],  @"C", @"-lastObject is wrong.");
 }
 
 - (void) testInsertObjectAtIndex {

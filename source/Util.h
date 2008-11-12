@@ -28,7 +28,7 @@
 /**
  Convenience function for raising an exception for an invalid range (index).
  
- @param theClass The class object for the originator of the exception. Callers
+ @param aClass The class object for the originator of the exception. Callers
         should pass the result of <code>[self class]</code> for this parameter.
  @param method The method selector where the problem originated. Callers should
         pass <code>_cmd</code> for this parameter.
@@ -37,44 +37,57 @@
  
  Currently, there is no support for calling this function from a C function.
  */
-extern void CHIndexOutOfRangeException(Class theClass, SEL method,
+extern void CHIndexOutOfRangeException(Class aClass, SEL method,
                                        NSUInteger index, NSUInteger elements);
+
+/**
+ Convenience function for raising an exception on an invalid argument.
+
+ @param aClass The class object for the originator of the exception. Callers
+        should pass the result of <code>[self class]</code> for this parameter.
+ @param method The method selector where the problem originated. Callers should
+        pass <code>_cmd</code> for this parameter.
+ @param str An NSString describing the offending invalid argument.
+ */
+extern void CHInvalidArgumentException(Class aClass, SEL method, NSString *str);
 
 /**
  Convenience function for raising an exception on an invalid nil object argument.
  
- @param theClass The class object for the originator of the exception. Callers
+ @param aClass The class object for the originator of the exception. Callers
         should pass the result of <code>[self class]</code> for this parameter.
  @param method The method selector where the problem originated. Callers should
         pass <code>_cmd</code> for this parameter.
  
  Currently, there is no support for calling this function from a C function.
+ 
+ @see CHInvalidArgumentException
  */
-extern void CHNilArgumentException(Class theClass, SEL method);
+extern void CHNilArgumentException(Class aClass, SEL method);
 
 /**
  Convenience function for raising an exception when a collection is mutated.
  
- @param theClass The class object for the originator of the exception. Callers
+ @param aClass The class object for the originator of the exception. Callers
         should pass the result of <code>[self class]</code> for this parameter.
  @param method The method selector where the problem originated. Callers should
         pass <code>_cmd</code> for this parameter.
  
  Currently, there is no support for calling this function from a C function.
  */
-extern void CHMutatedCollectionException(Class theClass, SEL method);
+extern void CHMutatedCollectionException(Class aClass, SEL method);
 
 /**
  Convenience function for raising an exception for un-implemented functionality.
  
- @param theClass The class object for the originator of the exception. Callers
+ @param aClass The class object for the originator of the exception. Callers
         should pass the result of <code>[self class]</code> for this parameter.
  @param method The method selector where the problem originated. Callers should
         pass <code>_cmd</code> for this parameter.
  
  Currently, there is no support for calling this function from a C function.
  */
-extern int CHUnsupportedOperationException(Class theClass, SEL method);
+extern void CHUnsupportedOperationException(Class aClass, SEL method);
 
 /**
  Provides a more terse alternative to NSLog() which accepts the same parameters.
