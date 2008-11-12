@@ -24,7 +24,7 @@
 <body>
 <div align="center">
 <h1>CHDataStructures.framework</h1>
-<h2>Version 1.0.2 &mdash; 4 November 2008</h2>
+<h2>Version 1.0.3 &mdash; 12 November 2008</h2>
 <h4>&copy; 2008 <a href="http://homepage.mac.com/quinntaylor/">Quinn Taylor</a> &mdash; BYU CocoaHeads<br />
 &copy; 2002 <a href="http://www.phillipmorelock.com/">Phillip Morelock</a> &mdash; Los Angeles, CA</h4>
 </div>
@@ -70,7 +70,7 @@
   performance has gained greater emphasis, but the primary motivation is to
   provide friendly, intuitive Objective-C interfaces for data structures, not to
   maximize speed at any cost, which sometimes happens with C++ and the STL. The
-  algorithms should all be sound (i.e., you won't get O(n) performance where it
+  algorithms should all be sound (i.e., you won't get O(n) performance when it
   should be O(log n) or O(1), etc.) and perform quite well in general. If your
   choice of data structure type and implementation are dependent on performance
   or memory usage, it would be wise to run the benchmarks from Xcode and choose
@@ -117,24 +117,33 @@
 
 <p>Major contributors are listed below, alphabetically by last name:</p>
 <ul>
+  <li><strong>Jason Casebolt</strong> (<a href="mailto:caseb106@gmail.com">Email</a>)
+    <ul>
+      <li>Much of the code for AA-tree and AVL tree, as well as unit tests.</li>
+    </ul>
+  </li>
   <li><strong>Max Horn</strong> (<a href="mailto:max@quendi.de">Email</a>, <a href="http://www.quendi.de/">Website</a>)
     <ul>
-      <li>Ideas, example code, and impmetus for conversions to C for speed.</li>
+      <li>Ideas, example code, and impetus for conversions to C for speed.</li>
       <li>Bugfixes and ideas for interface consistency.</li>
     </ul>
   </li>
   <li><strong>Phillip Morelock</strong> (<a href="mailto:me@phillipmorelock.com">Email</a>, <a href="http://www.phillipmorelock.com/">Website</a>)
     <ul>
-      <li>Project inception, initial version, conversion of internals to straight C, maintenance.</li>
+      <li>Project inception, initial implementation, conversion of internals to
+	      straight C, maintenance.</li>
       <li>Protocols and implementations for stacks, queues, linked lists, and trees.</li>
     </ul>
   </li>
   <li><strong>Quinn Taylor</strong> (<a href="mailto:quinntaylor@mac.com">Email</a>, <a href="http://homepage.mac.com/quinntaylor/">Website</a>)
     <ul>
       <li>Conversion to <code>.xcodeproj</code> format, organization of project resources, use of Objective-C 2.0 features.</li>
-	  <li>Refactoring of protocols for performance, clarity, and compatibility with the Cocoa frameworks.</li>
-	  <li>Improvements to code comments; configured auto-generated documentation using <a href="http://doxygen.org">Doxygen</a>.</li>
-	  <li>Addition of <a href="http://www.sente.ch/software/ocunit/">OCUnit</a> unit tests, code coverage, and simple benchmarking for speed comparisons.</li>
+	  <li>Refactoring of protocols for performance, clarity, and compatibility
+	      with the Cocoa frameworks.</li>
+	  <li>Improvements to code comments; configured auto-generated documentation
+	      using <a href="http://doxygen.org">Doxygen</a>.</li>
+	  <li>Addition of <a href="http://www.sente.ch/software/ocunit/">OCUnit</a>
+	      unit tests, code coverage, and a simple benchmarking driver.</li>
 	  <li>Bugfixes and new features, including abstract classes and more Cocoa-like exception handling.</li>
     </ul>
   </li>
@@ -145,7 +154,7 @@
   </li>
   <li><strong>Gordon Worley</strong> (<a href="mailto:redbird@mac.com">Email</a>, <a href="http://web.mac.com/redbird/">Website</a>)
     <ul>
-      <li>Heap protocol and initial implementation using NSMutableArray.</li>
+      <li>Heap protocol and initial implementation using <a href="http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSMutableArray_Class/">NSMutableArray</a>.</li>
     </ul>
   </li>
 </ul>
