@@ -19,6 +19,19 @@
 			name = Deployment;
 			productName = "Disk Image";
 		};
+		E46300C30ECBF0F500E1AF73 /* Coverage */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = E46300DC0ECBF16300E1AF73 /* Build configuration list for PBXAggregateTarget "Coverage" */;
+			buildPhases = (
+				E46300C20ECBF0F500E1AF73 /* ShellScript */,
+			);
+			dependencies = (
+				E46300C70ECBF11200E1AF73 /* PBXTargetDependency */,
+				E46300CF0ECBF15200E1AF73 /* PBXTargetDependency */,
+			);
+			name = Coverage;
+			productName = Coverage;
+		};
 		E4FAE15B0E968F1B007BB1F9 /* All */ = {
 			isa = PBXAggregateTarget;
 			buildConfigurationList = E4FAE1670E968F3F007BB1F9 /* Build configuration list for PBXAggregateTarget "All" */;
@@ -30,6 +43,7 @@
 				E4FAE1610E968F20007BB1F9 /* PBXTargetDependency */,
 				E43C87A50EA3E19500B3B31E /* PBXTargetDependency */,
 				E4FAE1650E968F20007BB1F9 /* PBXTargetDependency */,
+				E46300CB0ECBF11D00E1AF73 /* PBXTargetDependency */,
 			);
 			name = All;
 			productName = All;
@@ -136,6 +150,27 @@
 			proxyType = 1;
 			remoteGlobalIDString = E43C87680EA3D35500B3B31E;
 			remoteInfo = "Disk Image";
+		};
+		E46300C60ECBF11200E1AF73 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E473CB540E9346CB005CA997;
+			remoteInfo = "Unit Testing";
+		};
+		E46300CA0ECBF11D00E1AF73 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E46300C30ECBF0F500E1AF73;
+			remoteInfo = Coverage;
+		};
+		E46300CE0ECBF15200E1AF73 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E44B59B30E95850F00F9DD1A;
+			remoteInfo = Benchmarks;
 		};
 		E4A721A90EA7AEFB00E0AC21 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -552,6 +587,7 @@
 				E473CB540E9346CB005CA997 /* Unit Testing */,
 				E43C87680EA3D35500B3B31E /* Deployment */,
 				E44B59B30E95850F00F9DD1A /* Benchmarks */,
+				E46300C30ECBF0F500E1AF73 /* Coverage */,
 				E4FAE15B0E968F1B007BB1F9 /* All */,
 			);
 		};
@@ -590,6 +626,20 @@
 			shellScript = "if [ ${CONFIGURATION} = 'Release' ]\nthen\n\t# http://www.red-sweater.com/blog/23/automatic-build-sub-versioning-in-xcode\n\tSVN_REVISION=`svnversion | perl -p -e 's/(\\d+:)(\\d+M?S?)/\\$2/'`\n\n\tif [ $SVN_REVISION = 'exported' ]\n\tthen\n\t\tDATE=`date '+%Y-%m-%d'`\n\t\tDISK_IMAGE_NAME=${PRODUCT_NAME}\\ \\(${DATE}\\)\n\t\tDISK_IMAGE_FILE=${PRODUCT_NAME}-${DATE}.dmg\n\telse\n\t\tDISK_IMAGE_NAME=${PRODUCT_NAME}\\ \\(r${SVN_REVISION}\\)\n\t\tDISK_IMAGE_FILE=${PRODUCT_NAME}-r${SVN_REVISION}.dmg\n\tfi\n\t\n\tSOURCE_DIRECTORY=${TEMP_FILES_DIR}/temp\t\n\trm -rf   \"${SOURCE_DIRECTORY}\"/CHDataStructures.framework/\n\tmkdir -p \"${SOURCE_DIRECTORY}\"/CHDataStructures.framework/\n\n\tcp -R build/Release/CHDataStructures.framework/ \"${SOURCE_DIRECTORY}\"/CHDataStructures.framework/\n\tcp LICENSE.html \"${SOURCE_DIRECTORY}\"\n\tcp README.html \"${SOURCE_DIRECTORY}\"\n\t\n\trm -f \"${DISK_IMAGE_FILE}\"\n\thdiutil create -fs HFS+ -volname \"${DISK_IMAGE_NAME}\" -srcfolder \"${SOURCE_DIRECTORY}\" \"${DISK_IMAGE_FILE}\"\n\thdiutil internet-enable -yes \"${DISK_IMAGE_FILE}\"\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		E46300C20ECBF0F500E1AF73 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run gcov on the framework getting tested, generate HTML report\nif [ \"${CONFIGURATION}\" = 'Debug' ]; then\n\tFRAMEWORK_NAME=CHDataStructures\n\tFRAMEWORK_TARGET=Framework\n\tFRAMEWORK_OBJ_DIR=${OBJROOT}/${FRAMEWORK_NAME}.build/${CONFIGURATION}/${FRAMEWORK_TARGET}.build/Objects-normal/${NATIVE_ARCH}\necho ${FRAMEWORK_OBJ_DIR}\n\n\tmkdir coverage\n\tcd coverage\n\tfor path in `find \"${OBJROOT}\" -name *.gcda`; do\n\t\tgcov --object-directory \"${FRAMEWORK_OBJ_DIR}\" ${path##*/}\n\tdone\n\t../tools/lcov/geninfo \"${FRAMEWORK_OBJ_DIR}\"\n\t../tools/lcov/genhtml \"${FRAMEWORK_OBJ_DIR}\"/*.info \\\n\t\t--title CHDataStructures --num-spaces 4 --css-file ../tools/lcov/styles.css\nfi";
+			showEnvVarsInLog = 0;
+		};
 		E473CB530E9346CB005CA997 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -601,7 +651,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n\n# Run gcov on the framework getting tested, generate HTML report\nif [ \"${CONFIGURATION}\" = 'Debug' ]; then\n\tFRAMEWORK_NAME=CHDataStructures\n\tFRAMEWORK_TARGET=Framework\n\tFRAMEWORK_OBJ_DIR=${OBJROOT}/${FRAMEWORK_NAME}.build/${CONFIGURATION}/${FRAMEWORK_TARGET}.build/Objects-normal/${NATIVE_ARCH}\necho ${FRAMEWORK_OBJ_DIR}\n\n\tmkdir coverage\n\tcd coverage\n\tfor path in `find \"${OBJROOT}\" -name *.gcda`; do\n\t\tgcov --object-directory \"${FRAMEWORK_OBJ_DIR}\" ${path##*/}\n\tdone\n\t../tools/lcov/geninfo \"${FRAMEWORK_OBJ_DIR}\"\n\t../tools/lcov/genhtml \"${FRAMEWORK_OBJ_DIR}\"/*.info \\\n\t\t--title CHDataStructures --num-spaces 4 --css-file ../tools/lcov/styles.css\nfi";
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"";
 			showEnvVarsInLog = 0;
 		};
 		E49D7EA60EC261AF007C7837 /* ShellScript */ = {
@@ -707,6 +757,21 @@
 			isa = PBXTargetDependency;
 			target = E43C87680EA3D35500B3B31E /* Deployment */;
 			targetProxy = E43C87A40EA3E19500B3B31E /* PBXContainerItemProxy */;
+		};
+		E46300C70ECBF11200E1AF73 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E473CB540E9346CB005CA997 /* Unit Testing */;
+			targetProxy = E46300C60ECBF11200E1AF73 /* PBXContainerItemProxy */;
+		};
+		E46300CB0ECBF11D00E1AF73 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E46300C30ECBF0F500E1AF73 /* Coverage */;
+			targetProxy = E46300CA0ECBF11D00E1AF73 /* PBXContainerItemProxy */;
+		};
+		E46300CF0ECBF15200E1AF73 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E44B59B30E95850F00F9DD1A /* Benchmarks */;
+			targetProxy = E46300CE0ECBF15200E1AF73 /* PBXContainerItemProxy */;
 		};
 		E4A721AA0EA7AEFB00E0AC21 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -898,6 +963,27 @@
 			};
 			name = Release;
 		};
+		E46300C40ECBF0F600E1AF73 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = Coverage;
+			};
+			name = Debug;
+		};
+		E46300C50ECBF0F600E1AF73 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				PRODUCT_NAME = Coverage;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 		E473CB580E9346CB005CA997 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1031,6 +1117,15 @@
 			buildConfigurations = (
 				E44B59B80E95851000F9DD1A /* Debug */,
 				E44B59B90E95851000F9DD1A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E46300DC0ECBF16300E1AF73 /* Build configuration list for PBXAggregateTarget "Coverage" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E46300C40ECBF0F600E1AF73 /* Debug */,
+				E46300C50ECBF0F600E1AF73 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
