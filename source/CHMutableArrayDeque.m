@@ -31,8 +31,9 @@
 - (void) prependObjectsFromArray:(NSArray*)anArray {
 	if (anArray == nil)
 		return;
+	NSRange range = {0, [anArray count]};
 	[array insertObjects:anArray atIndexes:
-	   [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [anArray count])]];
+	   [NSIndexSet indexSetWithIndexesInRange:range]];
 }
 
 - (void) appendObject:(id)anObject {
