@@ -601,7 +601,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n\n# Run gcov on the framework getting tested\nif [ \"${CONFIGURATION}\" = 'Debug' ]; then\n\tFRAMEWORK_NAME=CHDataStructures\n\tFRAMEWORK_TARGET=Framework\n\tFRAMEWORK_OBJ_DIR=${OBJROOT}/${FRAMEWORK_NAME}.build/${CONFIGURATION}/${FRAMEWORK_TARGET}.build/Objects-normal/${NATIVE_ARCH}\necho ${FRAMEWORK_OBJ_DIR}\n\tmkdir -p coverage\n\tpushd coverage\n\tfor path in `find \"${OBJROOT}\" -name *.gcda`; do\n\t\tgcov --object-directory \"${FRAMEWORK_OBJ_DIR}\" ${path##*/}\n\tdone\n\tpopd\nfi";
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n\n# Run gcov on the framework getting tested, generate HTML report\nif [ \"${CONFIGURATION}\" = 'Debug' ]; then\n\tFRAMEWORK_NAME=CHDataStructures\n\tFRAMEWORK_TARGET=Framework\n\tFRAMEWORK_OBJ_DIR=${OBJROOT}/${FRAMEWORK_NAME}.build/${CONFIGURATION}/${FRAMEWORK_TARGET}.build/Objects-normal/${NATIVE_ARCH}\necho ${FRAMEWORK_OBJ_DIR}\n\n\trm -rf coverage/*\n\tmkdir coverage\n\tcd coverage\n\tfor path in `find \"${OBJROOT}\" -name *.gcda`; do\n\t\tgcov --object-directory \"${FRAMEWORK_OBJ_DIR}\" ${path##*/}\n\tdone\n\t../tools/lcov/geninfo \"${FRAMEWORK_OBJ_DIR}\"\n\t../tools/lcov/genhtml \"${FRAMEWORK_OBJ_DIR}\"/*.info\nfi";
 			showEnvVarsInLog = 0;
 		};
 		E49D7EA60EC261AF007C7837 /* ShellScript */ = {
@@ -615,7 +615,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ ${CONFIGURATION} = 'Release' ]\nthen\n\techo\n\techo \"Stripping documentation comments from public header files\"\n\tdirectory=\"build/Release/CHDataStructures.framework/Headers\"\n\tfor file in `ls $directory` ; do\n\t\tdoxygen/strip_comments.py --input $directory/$file -JL > /tmp/$file\n\t\tmv /tmp/$file $directory/\n\tdone\nfi";
+			shellScript = "if [ ${CONFIGURATION} = 'Release' ]\nthen\n\techo\n\techo \"Stripping documentation comments from public header files\"\n\tdirectory=\"build/Release/CHDataStructures.framework/Headers\"\n\tfor file in `ls $directory` ; do\n\t\ttools/strip_comments.py --input $directory/$file -JL > /tmp/$file\n\t\tmv /tmp/$file $directory/\n\tdone\nfi";
 			showEnvVarsInLog = 0;
 		};
 		E4FE76D70E89556A00971EE6 /* ShellScript */ = {
