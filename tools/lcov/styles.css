@@ -1,0 +1,307 @@
+/* @group General Styles */
+
+body
+{
+  color:            #000000;
+  background-color: #FFFFFF;
+}
+
+a:link
+{
+  color:           #284FA8;
+  text-decoration: underline;
+}
+
+a:visited
+{
+  color:           #00CB40;
+  text-decoration: underline;
+}
+
+a:active
+{
+  color:           #FF0040;
+  text-decoration: underline;
+}
+
+td.title
+{
+  text-align:     center;
+  padding-bottom: 10px;
+  font-family:    sans-serif;
+  font-size:      20pt;
+  font-style:     italic;
+  font-weight:    bold;
+}
+
+td.headerItem
+{
+  text-align:    right;
+  padding-right: 6px;
+  font-family:   sans-serif;
+  font-weight:   bold;
+}
+
+td.headerValue
+{
+  text-align:  left;
+  color:       #284FA8;
+  font-family: sans-serif;
+  font-weight: bold;
+}
+
+td.legendItem
+{
+  text-align:      right;
+  padding-right:   6px;
+  padding-top:     10px;
+  padding-bottom:  2px;
+  font-family:     sans-serif;
+  font-weight:     bold;
+}
+
+td.legendValue
+{
+  text-align:      left;
+  padding-top:     10px;
+  padding-bottom:  2px;
+  color:           #000000;
+  font-family:     sans-serif;
+  font-weight:     bold;
+}
+
+td.ruler
+{
+  background-color: #6688D4;
+}
+
+td.versionInfo
+{
+  text-align:   center;
+  padding-top:  2px;
+  font-family:  sans-serif;
+  font-style:   italic;
+}
+
+/* @end */
+
+
+/* @group Header Styles */
+
+td.tableHead
+{
+  text-align:       center;
+  color:            #FFFFFF;
+  background-color: #6688D4;
+  font-family:      sans-serif;
+  font-size:        120%;
+  font-weight:      bold;
+}
+
+td.coverFile
+{
+  text-align:       left;
+  padding-left:     10px;
+  padding-right:    20px; 
+  color:            #284FA8;
+  background-color: #DAE7FE;
+  font-family:      monospace;
+}
+
+td.coverBar
+{
+  padding-left:     10px;
+  padding-right:    10px;
+  background-color: #DAE7FE;
+}
+
+td.coverBarOutline
+{
+  background-color: #000000;
+}
+
+/* @end */
+
+
+/* @group Coverage */
+
+span.coverLegendHi, span.coverLegendMed, span.coverLegendLo
+{
+  text-align:       center;
+  padding-left:     10px;
+  padding-right:    10px;
+}
+
+td.coverNumHi, td.coverNumMed, td.coverNumLo,
+td.coverPerHi, td.coverPerMed, td.coverPerLo
+{
+  text-align: right;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+td.coverPerHi, td.coverPerMed, td.coverPerLo
+{
+  font-weight: bold;
+}
+
+td.coverPerHi, td.coverNumHi, span.coverLegendHi
+{
+  background-color: #A7FC9D;
+}
+
+td.coverPerMed, td.coverNumMed, span.coverLegendMed
+{
+  background-color: #FFEA20;
+}
+
+td.coverPerLo, td.coverNumLo, span.coverLegendLo
+{
+  background-color: #FF0000;
+}
+
+/* @end */
+
+
+/* @group Show/Hide Details links */
+
+a.detail:link
+{
+  color: #B8D0FF;
+}
+
+a.detail:visited
+{
+  color: #B8D0FF;
+}
+
+a.detail:active
+{
+  color: #FFFFFF;
+}
+
+/* @end */
+
+
+/* @group File view (detail) */
+
+td.testNameHead
+{
+  text-align:       right;
+  padding-right:    10px;
+  background-color: #DAE7FE;
+  font-family:      sans-serif;
+  font-weight:      bold;
+}
+
+td.testLinesHead
+{
+  text-align:       center;
+  background-color: #DAE7FE;
+  font-family:      sans-serif;
+  font-weight:      bold;
+}
+
+td.testName
+{
+  text-align:       right;
+  padding-right:    10px;
+  background-color: #DAE7FE;
+}
+
+td.testPer
+{
+  text-align:       right;
+  padding-left:     10px;
+  padding-right:    10px; 
+  background-color: #DAE7FE;
+}
+
+td.testNum
+{
+  text-align:       right;
+  padding-left:     10px;
+  padding-right:    10px; 
+  background-color: #DAE7FE;
+}
+
+dt
+{
+  font-family: sans-serif;
+  font-weight: bold;
+}
+
+td.testDescription
+{
+  padding-top:      10px;
+  padding-left:     30px;
+  padding-bottom:   10px;
+  padding-right:    30px;
+  background-color: #DAE7FE;
+}
+
+/* @end */
+
+
+/* @group Source Code View */
+
+pre.source
+{
+  font-family: monospace;
+  white-space: pre;
+}
+
+span.lineNum
+{
+	background-color: #d5d5ff;
+}
+
+/* Lines which were executed */
+
+span.lineCov
+{
+  background-color: #beffbe;
+}
+
+span.LegendCov
+{
+  text-align:       center;
+  padding-left:     10px;
+  padding-right:    10px;
+  margin-right:     2px;
+  background-color: #beffbe;
+}
+
+/* Lines which were NOT executed */
+
+span.lineNoCov
+{
+  background-color: #ff9090
+}
+
+span.LegendNoCov
+{
+  text-align:       center;
+  padding-left:     10px;
+  padding-right:    10px;
+  margin-right:     2px;
+  background-color: #ff9090
+}
+
+/* Lines which were executed only in a previous version */
+
+span.lineDiffCov
+{
+  background-color: #f2f7b8;
+}
+
+span.LegendDiffCov
+{
+  text-align:       center;
+  padding-left:     10px;
+  padding-right:    10px;
+  background-color: #f2f7b8;
+}
+
+/* @end */
+
