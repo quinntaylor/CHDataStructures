@@ -405,7 +405,6 @@ int main (int argc, const char * argv[]) {
 	NSUInteger size, item, limit = 1000000;
 	objects = [[NSMutableArray alloc] init];
 	
-/*
 	for (size = 1; size <= limit; size *= 10) {
 		NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:size+1];
 		[array addObjectsFromArray:[objects lastObject]];
@@ -426,7 +425,7 @@ int main (int argc, const char * argv[]) {
 	CHQuietLog(@"\n<CHStack> Implemenations");
 	benchmarkStack([CHMutableArrayStack class]);
 	benchmarkStack([CHListStack class]);
-*/	
+	
 	// Create more disordered arrays of values for testing heap and tree subclasses
 	[objects removeAllObjects];
 	for (size = 1; size <= limit; size *= 10) {
