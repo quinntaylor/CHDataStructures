@@ -74,7 +74,7 @@
 		heap = [[aClass alloc] init];
 		for (id anObject in objects)
 			[heap addObject:anObject];
-		STAssertEquals([heap count], 9u, @"-count is incorrect.");
+		STAssertEquals([heap count], 9u, @"Incorrect count.");
 		STAssertTrue([heap isValid], @"Wrong ordering before archiving.");
 		
 		NSString *filePath = @"/tmp/array-heap.archive";
@@ -82,7 +82,7 @@
 		[heap release];
 		
 		heap = [[NSKeyedUnarchiver unarchiveObjectWithFile:filePath] retain];
-		STAssertEquals([heap count], 9u, @"-count is incorrect.");
+		STAssertEquals([heap count], 9u, @"Incorrect count.");
 		STAssertTrue([heap isValid], @"Wrong ordering on reconstruction.");
 		[heap release];
 	}
@@ -95,7 +95,7 @@
 			[heap addObject:anObject];
 		CHAbstractMutableArrayCollection *heap2 = [heap copyWithZone:nil];
 		STAssertNotNil(heap2, @"-copy should not return nil for valid heap.");
-		STAssertEquals([heap2 count], 9u, @"-count is incorrect.");
+		STAssertEquals([heap2 count], 9u, @"Incorrect count.");
 		STAssertEqualObjects([heap allObjects], [heap2 allObjects], @"Unequal heaps.");
 		[heap release];
 		[heap2 release];
@@ -147,12 +147,12 @@
 		heap = [[aClass alloc] init];
 		STAssertThrows([heap addObject:nil], @"Should raise nilArgumentException.");
 		
-		STAssertEquals([heap count], 0u, @"-count is incorrect.");
+		STAssertEquals([heap count], 0u, @"Incorrect count.");
 		for (id anObject in objects) {
 			[heap addObject:anObject];
 			STAssertTrue([heap isValid], @"Violation of heap property.");
 		}
-		STAssertEquals([heap count], 9u, @"-count is incorrect.");
+		STAssertEquals([heap count], 9u, @"Incorrect count.");
 		[heap release];
 	}
 }
@@ -187,7 +187,7 @@
 				STAssertEquals([lastObject compare:object], NSOrderedAscending,  @"Wrong ordering.");
 			lastObject = object;
 			[heap removeFirstObject];
-			STAssertEquals([heap count], --count, @"-count is incorrect.");	
+			STAssertEquals([heap count], --count, @"Incorrect count.");	
 			STAssertTrue([heap isValid], @"Violation of heap property.");
 		}
 		
@@ -202,9 +202,9 @@
 		heap = [[aClass alloc] init];
 		[heap addObjectsFromArray:objects];
 		
-		STAssertEquals([heap count], 9u, @"-count is incorrect.");
+		STAssertEquals([heap count], 9u, @"Incorrect count.");
 		[heap removeObject:@"F"];
-		STAssertEquals([heap count], 8u, @"-count is incorrect.");
+		STAssertEquals([heap count], 8u, @"Incorrect count.");
 		STAssertTrue([heap isValid], @"Violation of heap property.");
 		[heap release];
 	}
@@ -214,9 +214,9 @@
 	for (Class aClass in heapClasses) {
 		heap = [[aClass alloc] init];
 		[heap addObjectsFromArray:objects];
-		STAssertEquals([heap count], 9u, @"-count is incorrect.");
+		STAssertEquals([heap count], 9u, @"Incorrect count.");
 		[heap removeAllObjects];
-		STAssertEquals([heap count], 0u, @"-count is incorrect.");
+		STAssertEquals([heap count], 0u, @"Incorrect count.");
 		[heap release];
 	}
 }
@@ -233,7 +233,7 @@
 		e = [heap objectEnumerator];
 		allObjects = [e allObjects];
 		STAssertNotNil(allObjects, @"-allObjects should not return nil.");
-		STAssertEquals([allObjects count], 0u, @"-count is incorrect.");
+		STAssertEquals([allObjects count], 0u, @"Incorrect count.");
 		
 		[heap addObjectsFromArray:objects];
 		e = [heap objectEnumerator];
@@ -242,7 +242,7 @@
 		e = [heap objectEnumerator];
 		allObjects = [e allObjects];
 		STAssertNotNil(allObjects, @"-allObjects should not return nil.");
-		STAssertEquals([allObjects count], [objects count], @"-count is incorrect.");
+		STAssertEquals([allObjects count], [objects count], @"Incorrect count.");
 		[heap release];
 	}
 }

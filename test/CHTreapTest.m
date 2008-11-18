@@ -291,7 +291,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 		[tree removeObject:anObject];
 		CHLocationLog(@"Remove %@\n%@", anObject, [tree debugDescription]);
 		STAssertEquals([tree count], --count,
-					   @"-count is incorrect after removing %@.", anObject);
+					   @"Incorrect count after removing %@.", anObject);
 		STAssertNoThrow([tree verify], @"Not a valid treap: %@",
 						[tree debugDescription]);
 	}
