@@ -68,6 +68,26 @@
     }                                   \
 }
 
+/* Rebalance after deletion */
+#define removeBalance(root,dir,done) {     \
+	CHTreeNode *node = root->link[!dir];   \
+	int bal = (dir) ? +1 : -1;             \
+	if (node->balance == -bal) {           \
+		root->balance = node->balance = 0; \
+		singleRotation(root, dir);         \
+	}                                      \
+	else if (node->balance == bal) {       \
+		adjustBalance(root, !dir, -bal);   \
+		doubleRotation(root, dir);         \
+	}                                      \
+	else { /* n->balance == 0 */           \
+		root->balance = -bal;              \
+		node->balance = bal;               \
+		singleRotation(root, dir);         \
+		done = 1;                          \
+	}                                      \
+}
+
 @implementation CHAVLTree
 
 - (void) addObject:(id)anObject {
@@ -114,49 +134,135 @@
 	
 	// Trace back up the path, rebalancing as we go
 	BOOL isRightChild;
-	BOOL stopBalancing = 0;
+	BOOL keepBalancing = YES;
 	//depending on what header is, it might need to be the break point
 	//for this while loop so that it will not try to rebalance it because it
 	//will be horribly unbalanced
-	while (parent != header) {
+	while (keepBalancing && parent != header) {
 		isRightChild = (parent->right == current);
-		//determine the balance modification
+		// Update the balance factor
+		if (isRightChild)
+			parent->balance++;
+		else
+			parent->balance--;
 		
-		if (!stopBalancing) {
-			if (isRightChild)
-				parent->balance++;
-			else
-				parent->balance--;
+		// Rebalance if the balance factor is out of whack, otherwise terminate
+		if (parent == save) {
+			if (abs(parent->balance) > 1)
+				insertBalance(parent, isRightChild);
+			keepBalancing = NO;
 		}
-		if (parent == save)
-		
-		//terminate or rebalance as necessary
-		//if the balance factor is out of wack
-			if (parent == save) {
-				if (parent->balance > 1 || parent->balance < -1) {
-					insertBalance(parent, isRightChild);
-				}
-				stopBalancing = 1;
-			}
 		// Move to the next node up the path to the root
 		current = parent;
 		parent = CHTreeStack_POP;
-		
-		//need to link the parent to the current
+		// Link from parent as the proper child, based on last comparison
 		comparison = [parent->object compare:current->object];
 		parent->link[comparison == NSOrderedAscending] = current; // R if YES
 	}
-	//as long as the headers object value is always less than the middle of the
-	//tree this will work, what is teh default value?
-	//parent->right = current
 	free(stack);
 }
 
+/**
+ @todo Complete functionality for AVL removal
+ */
 - (void) removeObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
+	if (count == 0)
+		return;
 
-	CHUnsupportedOperationException([self class], _cmd); // TODO: Remove this
+	CHLocationLog(@"Remove: %@", anObject);
+
+	CHTreeNode *parent, *current = header;
+	CHTreeNode **stack;
+	NSUInteger stackSize, elementsInStack;
+	CHTreeStack_INIT(stack);
+
+	sentinel->object = anObject; // Assure that we stop at a leaf if not found.
+	NSComparisonResult comparison;
+	// Search down the node for the tree and save the path
+	while (comparison = [current->object compare:anObject]) {
+		CHTreeStack_PUSH(current);
+		current = current->link[comparison == NSOrderedAscending]; // R on YES
+	}
+	// Exit if the specified node was not found in the tree.
+	if (current == sentinel) {
+		free(stack);
+		return;
+	}
+	
+	[current->object release]; // Object must be released in any case
+	--count;
+	++mutations;
+	BOOL isRightChild;
+	if (current->left == sentinel || current->right == sentinel) {
+		// Single/zero child case -- replace node with non-nil child (if exists)
+		parent = CHTreeStack_TOP;
+		isRightChild = (parent->right == current);
+		parent->link[isRightChild] = current->link[current->left == sentinel];
+		free(current);
+	} else {
+		// Two child case -- replace with minimum object in right subtree
+		CHTreeStack_PUSH(current); // Need to start here when rebalancing
+		CHTreeNode *replacement = current->right;
+		while (replacement->left != sentinel) {
+			CHTreeStack_PUSH(replacement);
+			replacement = replacement->left;
+		}
+		parent = CHTreeStack_TOP;
+		// Grab object from replacement node, steal its right child, deallocate
+		current->object = replacement->object;
+		isRightChild = (parent->right == replacement);
+		parent->link[isRightChild] = replacement->right;
+		free(replacement);
+	}
+	
+	// Trace back up the search path, rebalancing as we go until we're done
+	BOOL done = NO;
+	while (!done && elementsInStack > 1) {
+		// Update the balance factor
+		if (isRightChild)
+			parent->balance--;
+		else
+			parent->balance++;
+		
+		if (abs(parent->balance) > 1) {
+			removeBalance(parent, isRightChild, done);			
+			parent->link[isRightChild] = current;
+		}
+		else if (parent->balance != 0)
+			break;
+		
+		current = parent;
+		CHTreeStack_POP;
+		parent = CHTreeStack_TOP;
+	}
+	free(stack);
 }
+
+- (NSString*) debugDescription {
+	NSMutableString *description = [NSMutableString stringWithFormat:
+	                                @"<%@: 0x%x> = {\n", [self class], self];
+	CHTreeNode *current;
+	CHTreeNode **stack;
+	NSUInteger stackSize, elementsInStack;
+	CHTreeStack_INIT(stack);
+	
+	sentinel->object = nil;
+	CHTreeStack_PUSH(header->right);	
+	while (current = CHTreeStack_POP) {
+		if (current->right != sentinel)
+			CHTreeStack_PUSH(current->right);
+		if (current->left != sentinel)
+			CHTreeStack_PUSH(current->left);
+		// Append entry for the current node, including children
+		[description appendFormat:@"\t[%2d]\t%@ -> %@ and %@\n",
+		 current->balance, current->object, current->left->object, current->right->object];
+	}
+	free(stack);
+	[description appendString:@"}"];
+	return description;
+}
+
 
 @end
