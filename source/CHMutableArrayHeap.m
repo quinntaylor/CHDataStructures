@@ -93,7 +93,7 @@
 
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super initWithCoder:decoder] == nil) return nil;
-	sortOrder = [decoder decodeIntForKey:@"sortOrder"];
+	sortOrder = [decoder decodeIntegerForKey:@"sortOrder"];
 	sortDescriptor = [[NSSortDescriptor alloc]
                        initWithKey:nil
                          ascending:(sortOrder == NSOrderedAscending)];
@@ -102,7 +102,7 @@
 
 - (void) encodeWithCoder:(NSCoder *)encoder {
 	[super encodeWithCoder:encoder];
-	[encoder encodeInt:sortOrder forKey:@"sortOrder"];
+	[encoder encodeInteger:sortOrder forKey:@"sortOrder"];
 }
 
 #pragma mark <NSCopying> Methods

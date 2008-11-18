@@ -137,9 +137,10 @@
 		parent = current;
 		CHTreeNode *replacement = current->right;
 		while (replacement->left != sentinel) {
-			CHTreeStack_PUSH(parent = replacement);
+			CHTreeStack_PUSH(replacement);
 			replacement = replacement->left;
 		}
+		parent = CHTreeStack_TOP;
 		// Grab object from replacement node, steal its right child, deallocate
 		current->object = replacement->object;
 		parent->link[parent->right == replacement] = replacement->right;
