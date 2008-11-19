@@ -308,45 +308,41 @@ NSUInteger kPointerSize = sizeof(void*);
 - (NSString*) dotGraphString {
 	NSMutableString *graph = [NSMutableString stringWithFormat:
 							  @"digraph %@\n{\n", [self className]];
-	if (header->right == sentinel)
-		[graph appendFormat:@"\t nil [fontsize=10,color=red];\n"];
-	else {
-		CHTreeNode *current;
-		CHTreeNode **stack;
-		NSUInteger stackSize, elementsInStack;
-		CHTreeStack_INIT(stack);
-		
-		NSString *sentinelFormat = @"\t nil%d [shape=point,color=white];\n";
-		NSUInteger sentinelCount = 1;
-		
-		CHTreeStack_PUSH(header->right);
-		while (current = CHTreeStack_POP) {
-			[graph appendString:[self dotStringForNode:current]];
-			
-			if (current->left != sentinel) {
-				[graph appendFormat:@"\t\"%@\" -> \"%@\";\n",
-				 current->object, current->left->object];
-				CHTreeStack_PUSH(current->left);
-			}
-			else {
-				[graph appendFormat:@"\t\"%@\" -> nil%d;\n",
-				 current->object, sentinelCount];
-				[graph appendFormat:sentinelFormat, sentinelCount++];
-			}
-			
-			if (current->right != sentinel) {
-				[graph appendFormat:@"\t\"%@\" -> \"%@\";\n",
-				 current->object, current->right->object];
-				CHTreeStack_PUSH(current->right);
-			}
-			else {
-				[graph appendFormat:@"\t\"%@\" -> nil%d;\n",
-				 current->object, sentinelCount];
-				[graph appendFormat:sentinelFormat, sentinelCount++];
-			}
-		}
-		free(stack);
+	if (header->right == sentinel) {
+		[graph appendFormat:@"  nil [fontsize=10,color=red];\n}\n"];
+		return graph;
 	}
+	
+	NSString *leftChild, *rightChild;
+	NSUInteger sentinelCount = 1;
+	sentinel->object = nil;
+	
+	CHTreeNode *current;
+	CHTreeNode **stack;
+	NSUInteger stackSize, elementsInStack;
+	CHTreeStack_INIT(stack);
+	CHTreeStack_PUSH(header->right);
+	while (current = CHTreeStack_POP) {
+		if (current->left != sentinel)
+			CHTreeStack_PUSH(current->left);
+		if (current->right != sentinel)
+			CHTreeStack_PUSH(current->right);
+		// Append entry for node with any subclass-specific customizations.
+		[graph appendString:[self dotStringForNode:current]];
+		// Append entry for edges from current node to both its children.
+		[graph appendFormat:@"  \"%@\" -> {%@;%@};\n", current->object,
+		 (leftChild = current->left->object)
+			? [NSString stringWithFormat:@"\"%@\"", leftChild]
+			: [NSString stringWithFormat:@"nil%d", sentinelCount++],
+		 (rightChild = current->right->object)
+			? [NSString stringWithFormat:@"\"%@\"", rightChild]
+			: [NSString stringWithFormat:@"nil%d", sentinelCount++]];
+	}
+	free(stack);
+
+	// Create entry for each null leaf node, then terminate the graph string
+	for (int i = 1; i <= sentinelCount; i++)
+		[graph appendFormat:@"  nil%d [shape=point,color=white];\n", i];
 	[graph appendString:@"}\n"];
 	return graph;
 }

@@ -302,4 +302,30 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	STAssertEquals([tree count], 0u, @"Incorrect count.");
 }
 
+- (void) testDebugDescriptionForNode {
+	CHTreeNode *sentinel = malloc(kCHTreeNodeSize);
+	sentinel->object = nil;
+	sentinel->left = sentinel->right = sentinel;
+	CHTreeNode *node = malloc(kCHTreeNodeSize);
+	node->object = [NSString stringWithString:@"A B C"];
+	node->left = node->right = sentinel;
+	node->priority = 123456789;
+	
+	STAssertEqualObjects([tree debugDescriptionForNode:node],
+						 @"	[  123456789]\t\"A B C\" -> \"(null)\" and \"(null)\"\n", nil);
+}
+
+- (void) testDotStringForNode {
+	CHTreeNode *sentinel = malloc(kCHTreeNodeSize);
+	sentinel->object = nil;
+	sentinel->left = sentinel->right = sentinel;
+	CHTreeNode *node = malloc(kCHTreeNodeSize);
+	node->object = [NSString stringWithString:@"A B C"];
+	node->left = node->right = sentinel;
+	node->priority = 123456789;
+	
+	STAssertEqualObjects([tree dotStringForNode:node],
+						 @"  \"A B C\" [label=\"A B C\\n123456789\"];\n", nil);
+}
+
 @end

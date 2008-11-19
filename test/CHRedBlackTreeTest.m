@@ -321,7 +321,32 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 		STAssertNoThrow([tree verify], @"Not a valid red-black tree: %@",
 						[tree debugDescription]);
 	}
+}
 
+- (void) testDebugDescriptionForNode {
+	CHTreeNode *sentinel = malloc(kCHTreeNodeSize);
+	sentinel->object = nil;
+	sentinel->left = sentinel->right = sentinel;
+	CHTreeNode *node = malloc(kCHTreeNodeSize);
+	node->object = [NSString stringWithString:@"A B C"];
+	node->left = node->right = sentinel;
+	node->color = kRED;
+	
+	STAssertEqualObjects([tree debugDescriptionForNode:node],
+						 @"	[ RED ]	\"A B C\" -> \"(null)\" and \"(null)\"\n", nil);
+}
+
+- (void) testDotStringForNode {
+	CHTreeNode *sentinel = malloc(kCHTreeNodeSize);
+	sentinel->object = nil;
+	sentinel->left = sentinel->right = sentinel;
+	CHTreeNode *node = malloc(kCHTreeNodeSize);
+	node->object = [NSString stringWithString:@"A B C"];
+	node->left = node->right = sentinel;
+	node->color = kRED;
+	
+	STAssertEqualObjects([tree dotStringForNode:node],
+						 @"  \"A B C\" [color=red];\n", nil);
 }
 
 @end
