@@ -54,7 +54,7 @@ CHTreeNode* _rotateObjectOnAncestor(id anObject, CHTreeNode *ancestor) {
 	}
 }
 
-CHTreeNode* singleRotate(CHTreeNode *node, BOOL goingRight) {
+CHTreeNode* singleRotation(CHTreeNode *node, BOOL goingRight) {
 	CHTreeNode *save = node->link[!goingRight];
 	node->link[!goingRight] = save->link[goingRight];
 	save->link[goingRight] = node;
@@ -63,9 +63,9 @@ CHTreeNode* singleRotate(CHTreeNode *node, BOOL goingRight) {
 	return save;
 }
 
-CHTreeNode* doubleRotate(CHTreeNode *node, BOOL goingRight) {
-	node->link[!goingRight] = singleRotate(node->link[!goingRight], !goingRight);
-	return singleRotate(node, goingRight);	
+CHTreeNode* doubleRotation(CHTreeNode *node, BOOL goingRight) {
+	node->link[!goingRight] = singleRotation(node->link[!goingRight], !goingRight);
+	return singleRotation(node, goingRight);	
 }
 
 #pragma mark -
@@ -126,8 +126,8 @@ CHTreeNode* doubleRotate(CHTreeNode *node, BOOL goingRight) {
 //				BOOL lastWentRight = (grandparent->right == parent);
 //				greatgrandparent->link[greatgrandparent->right == grandparent]
 //					= (parent->link[lastWentRight])
-//						? singleRotate(grandparent, !lastWentRight)
-//						: doubleRotate(grandparent, !lastWentRight);
+//						? singleRotation(grandparent, !lastWentRight)
+//						: doubleRotation(grandparent, !lastWentRight);
 				grandparent->color = kRED;
 				if ([grandparent->object compare:anObject] != [parent->object compare:anObject])
 					parent = _rotateObjectOnAncestor(anObject, grandparent);
@@ -182,7 +182,7 @@ CHTreeNode* doubleRotate(CHTreeNode *node, BOOL goingRight) {
 		// If so, push the child red node down using rotations and color flips.
 		if (current->color != kRED && current->link[isGoingRight]->color != kRED) {
 			if (current->link[!isGoingRight]->color == kRED)
-				parent = parent->link[prevWentRight] = singleRotate(current, isGoingRight);
+				parent = parent->link[prevWentRight] = singleRotation(current, isGoingRight);
 			else {
 				sibling = parent->link[prevWentRight];
 				if (sibling != sentinel) {
@@ -196,9 +196,9 @@ CHTreeNode* doubleRotate(CHTreeNode *node, BOOL goingRight) {
 						CHTreeNode *tempNode =
 							grandparent->link[(grandparent->right == parent)];
 						if (sibling->link[prevWentRight]->color == kRED)
-							tempNode = doubleRotate(parent, prevWentRight);
+							tempNode = doubleRotation(parent, prevWentRight);
 						else if (sibling->link[!prevWentRight]->color == kRED)
-							tempNode = singleRotate(parent, prevWentRight);
+							tempNode = singleRotation(parent, prevWentRight);
 						/* Ensure correct coloring */
 						current->color = tempNode->color = kRED;
 						tempNode->left->color = kBLACK;

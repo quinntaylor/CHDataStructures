@@ -192,7 +192,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	[expected appendFormat:@"  \"D\";\n  \"D\" -> {\"C\";nil4};\n"];
 	[expected appendFormat:@"  \"C\";\n  \"C\" -> {nil6;nil5};\n"];
 	for (int i = 1; i <= 6; i++)
-		[expected appendFormat:@"  nil%d [shape=point,color=white];\n", i];
+		[expected appendFormat:@"  nil%d [shape=point,color=red];\n", i];
 	[expected appendFormat:@"}\n"];
 	
 	STAssertEqualObjects([zigzagTree dotGraphString], expected,

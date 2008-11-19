@@ -19,73 +19,40 @@
 
 #import "CHAVLTree.h"
 
-/* Two way single rotation */
-#define singleRotation(root,dir) {       \
-    CHTreeNode *save = root->link[!dir]; \
-    root->link[!dir] = save->link[dir];  \
-    save->link[dir] = root;              \
-    root = save;                         \
+// Two-way single rotation
+static inline CHTreeNode* singleRotation(CHTreeNode *node, int dir) {
+    CHTreeNode *save = node->link[!dir];
+    node->link[!dir] = save->link[dir];
+    save->link[dir] = node;
+	return save;
 }
 
-/* Two way double rotation */
-#define doubleRotation(root,dir) {                  \
-    CHTreeNode *save = root->link[!dir]->link[dir]; \
-    root->link[!dir]->link[dir] = save->link[!dir]; \
-    save->link[!dir] = root->link[!dir];            \
-    root->link[!dir] = save;                        \
-    save = root->link[!dir];                        \
-    root->link[!dir] = save->link[dir];             \
-    save->link[dir] = root;                         \
-    root = save;                                    \
+// Two-way double rotation
+static inline CHTreeNode* doubleRotation(CHTreeNode *node, int dir) {
+    CHTreeNode *save = node->link[!dir]->link[dir];
+    node->link[!dir]->link[dir] = save->link[!dir];
+    save->link[!dir] = node->link[!dir];
+    node->link[!dir] = save;
+	
+    save = node->link[!dir];
+    node->link[!dir] = save->link[dir];
+    save->link[dir] = node;
+    return save;
 }
 
-/* Adjust balance before double rotation */
-#define adjustBalance(root,dir,bal) {    \
-    CHTreeNode *n = root->link[dir];     \
-    CHTreeNode *nn = n->link[!dir];      \
-    if (nn->balance == 0)                \
-        root->balance = n->balance = 0;  \
-    else if (nn->balance == bal) {       \
-        root->balance = -bal;            \
-        n->balance = 0;                  \
-    } else { /* nn->balance == -bal */   \
-        root->balance = 0;               \
-        n->balance = bal;                \
-    }                                    \
-    nn->balance = 0;                     \
-}
-
-/* Rebalance after insertion */
-#define insertBalance(root,dir) {       \
-    CHTreeNode *n = root->link[dir];    \
-    int bal = dir == 0 ? -1 : +1;       \
-    if (n->balance == bal) {            \
-        root->balance = n->balance = 0; \
-        singleRotation(root, !dir);     \
-    } else { /* n->balance == -bal */   \
-        adjustBalance(root, dir, bal);  \
-        doubleRotation(root, !dir);     \
-    }                                   \
-}
-
-/* Rebalance after deletion */
-#define removeBalance(root,dir,done) {     \
-	CHTreeNode *node = root->link[!dir];   \
-	int bal = (dir) ? +1 : -1;             \
-	if (node->balance == -bal) {           \
-		root->balance = node->balance = 0; \
-		singleRotation(root, dir);         \
-	}                                      \
-	else if (node->balance == bal) {       \
-		adjustBalance(root, !dir, -bal);   \
-		doubleRotation(root, dir);         \
-	}                                      \
-	else { /* n->balance == 0 */           \
-		root->balance = -bal;              \
-		node->balance = bal;               \
-		singleRotation(root, dir);         \
-		done = 1;                          \
-	}                                      \
+static inline void adjustBalance(CHTreeNode *root, int dir, int bal) {
+    CHTreeNode *n = root->link[dir];
+    CHTreeNode *nn = n->link[!dir];
+    if (nn->balance == 0)
+        root->balance = n->balance = 0;
+    else if (nn->balance == bal) {
+        root->balance = -bal;
+        n->balance = 0;
+    } else { // nn->balance == -bal
+        root->balance = 0;
+        n->balance = bal;
+    }
+    nn->balance = 0;
 }
 
 @implementation CHAVLTree
@@ -148,8 +115,17 @@
 		
 		if (parent == save) {
 			// Rebalance if the balance factor is out of whack, then terminate
-			if (abs(parent->balance) > 1)
-				insertBalance(parent, isRightChild);
+			if (abs(parent->balance) > 1) {
+				CHTreeNode *node = parent->link[isRightChild];
+				int bal = (isRightChild) ? +1 : -1;
+				if (node->balance == bal) {
+					parent->balance = node->balance = 0;
+					parent = singleRotation(parent, !isRightChild);
+				} else { // node->balance == -bal
+					adjustBalance(parent, isRightChild, bal);
+					parent = doubleRotation(parent, !isRightChild);
+				}
+			}
 			keepBalancing = NO;
 		}
 		// Move to the next node up the path to the root
@@ -190,11 +166,13 @@
 	--count;
 	++mutations;
 	CHTreeNode *replacement;
+	BOOL isRightChild;
 	if (current->left == sentinel || current->right == sentinel) {
 		// Single/zero child case -- replace node with non-nil child (if exists)
 		replacement = current->link[current->left == sentinel];
 		parent = CHTreeStack_POP;
-		parent->link[parent->right == current] = replacement;
+		isRightChild = (parent->right == current);
+		parent->link[isRightChild] = replacement;
 		free(current);
 		current = replacement;
 	} else {
@@ -208,16 +186,15 @@
 		// Grab object from replacement node, steal its right child, deallocate
 		current->object = replacement->object;
 		parent = CHTreeStack_POP;
-		parent->link[(parent->right == replacement)] = replacement->right;
+		isRightChild = (parent->right == replacement);
+		parent->link[isRightChild] = replacement->right;
 		current = replacement->right;
 		free(replacement);
 	}
 	
 	// Trace back up the search path, rebalancing as we go until we're done
-	BOOL isRightChild;
 	BOOL done = NO;
 	while (!done && elementsInStack > 0) {
-		isRightChild = (parent->right == current);
 		// Update the balance factor
 		if (isRightChild)
 			parent->balance--;
@@ -225,14 +202,31 @@
 			parent->balance++;
 		// If the subtree heights differ by more than 1, rebalance them
 		if (parent->balance > 1 || parent->balance < -1) {
-			removeBalance(parent, isRightChild, done);
+			CHTreeNode *node = parent->link[!isRightChild];
+			int bal = (isRightChild) ? +1 : -1;
+			if (node->balance == -bal) {
+				parent->balance = node->balance = 0;
+				parent = singleRotation(parent, isRightChild);
+			}
+			else if (node->balance == bal) {
+				adjustBalance(parent, !isRightChild, -bal);
+				parent = doubleRotation(parent, isRightChild);
+			}
+			else { // node->balance == 0
+				parent->balance = -bal;
+				node->balance = bal;
+				parent = singleRotation(parent, isRightChild);
+				done = YES;
+			}
 			comparison = [CHTreeStack_TOP->object compare:parent->object];
 			CHTreeStack_TOP->link[comparison == NSOrderedAscending] = parent;
 		}
 		else if (parent->balance != 0)
 			break;
+
 		current = parent;
 		parent = CHTreeStack_POP;
+		isRightChild = (parent->right == current);
 	}
 	free(stack);
 }

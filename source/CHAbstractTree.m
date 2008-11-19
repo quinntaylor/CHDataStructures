@@ -286,7 +286,8 @@ NSUInteger kPointerSize = sizeof(void*);
 	CHTreeStack_INIT(stack);
 	
 	sentinel->object = nil;
-	CHTreeStack_PUSH(header->right);	
+	if (header->right != sentinel)
+		CHTreeStack_PUSH(header->right);	
 	while (current = CHTreeStack_POP) {
 		if (current->right != sentinel)
 			CHTreeStack_PUSH(current->right);
@@ -310,40 +311,39 @@ NSUInteger kPointerSize = sizeof(void*);
 	NSMutableString *graph = [NSMutableString stringWithFormat:
 							  @"digraph %@\n{\n", [self className]];
 	if (header->right == sentinel) {
-		[graph appendFormat:@"  nil [color=red];\n}\n"];
-		return graph;
+		[graph appendFormat:@"  nil [color=red];\n"];
+	} else {
+		NSString *leftChild, *rightChild;
+		NSUInteger sentinelCount = 0;
+		sentinel->object = nil;
+		
+		CHTreeNode *current;
+		CHTreeNode **stack;
+		NSUInteger stackSize, elementsInStack;
+		CHTreeStack_INIT(stack);
+		CHTreeStack_PUSH(header->right);
+		while (current = CHTreeStack_POP) {
+			if (current->left != sentinel)
+				CHTreeStack_PUSH(current->left);
+			if (current->right != sentinel)
+				CHTreeStack_PUSH(current->right);
+			// Append entry for node with any subclass-specific customizations.
+			[graph appendString:[self dotStringForNode:current]];
+			// Append entry for edges from current node to both its children.
+			[graph appendFormat:@"  \"%@\" -> {%@;%@};\n", current->object,
+			 (leftChild = current->left->object)
+			    ? [NSString stringWithFormat:@"\"%@\"", leftChild]
+			    : [NSString stringWithFormat:@"nil%d", ++sentinelCount],
+			 (rightChild = current->right->object)
+			    ? [NSString stringWithFormat:@"\"%@\"", rightChild]
+			    : [NSString stringWithFormat:@"nil%d", ++sentinelCount]];
+		}
+		free(stack);
+		
+		// Create entry for each null leaf node (each nil is modeled separately)
+		for (int i = 1; i <= sentinelCount; i++)
+			[graph appendFormat:@"  nil%d [shape=point,color=red];\n", i];
 	}
-	
-	NSString *leftChild, *rightChild;
-	NSUInteger sentinelCount = 0;
-	sentinel->object = nil;
-	
-	CHTreeNode *current;
-	CHTreeNode **stack;
-	NSUInteger stackSize, elementsInStack;
-	CHTreeStack_INIT(stack);
-	CHTreeStack_PUSH(header->right);
-	while (current = CHTreeStack_POP) {
-		if (current->left != sentinel)
-			CHTreeStack_PUSH(current->left);
-		if (current->right != sentinel)
-			CHTreeStack_PUSH(current->right);
-		// Append entry for node with any subclass-specific customizations.
-		[graph appendString:[self dotStringForNode:current]];
-		// Append entry for edges from current node to both its children.
-		[graph appendFormat:@"  \"%@\" -> {%@;%@};\n", current->object,
-		 (leftChild = current->left->object)
-			? [NSString stringWithFormat:@"\"%@\"", leftChild]
-			: [NSString stringWithFormat:@"nil%d", ++sentinelCount],
-		 (rightChild = current->right->object)
-			? [NSString stringWithFormat:@"\"%@\"", rightChild]
-			: [NSString stringWithFormat:@"nil%d", ++sentinelCount]];
-	}
-	free(stack);
-
-	// Create entry for each null leaf node (each nil is modeled separately)
-	for (int i = 1; i <= sentinelCount; i++)
-		[graph appendFormat:@"  nil%d [shape=point,color=white];\n", i];
 	// Terminate the graph string, then return it
 	[graph appendString:@"}\n"];
 	return graph;

@@ -272,24 +272,21 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 }
 
 - (void) testRemoveObject {
-	
 	for (id anObject in objects)
 		[tree addObject:anObject];
 	
 	// Test removing nil
 	STAssertThrows([tree removeObject:nil], @"Should raise an exception.");
 	
-	CHLocationLog([tree debugDescription]);
-	
 	// Test removing a node which doesn't occur in the tree
 	STAssertEquals([tree count], [objects count], @"Incorrect count.");
 	[tree removeObject:@"Z"];
 	STAssertEquals([tree count], [objects count], @"Incorrect count.");
-		
+	
+	// Remove all nodes one by one, and test treap validity at each step
 	NSUInteger count = [objects count];
 	for (id anObject in objects) {
 		[tree removeObject:anObject];
-		CHLocationLog(@"Remove %@\n%@", anObject, [tree debugDescription]);
 		STAssertEquals([tree count], --count,
 					   @"Incorrect count after removing %@.", anObject);
 		STAssertNoThrow([tree verify], @"Not a valid treap: %@",

@@ -50,7 +50,7 @@ static NSMutableString *balanceErrors;
 	
 	if (!validBalanceFactors) {
 		[NSException raise:NSInternalInconsistencyException
-		            format:@"Violation of balance factors%@", balanceErrors];
+		            format:@"Violation of AVL balance factors%@", balanceErrors];
 	}
 }
 
@@ -92,14 +92,6 @@ static NSMutableString *balanceErrors;
 
 - (void) tearDown {
 	[tree release];
-}
-
-- (void) saveDotGraph {
-	NSString *dotGraph = [tree dotGraphString];
-	[dotGraph writeToFile:[@"~/Desktop/tree.dot" stringByExpandingTildeInPath]
-	           atomically:NO
-	             encoding:NSUTF8StringEncoding
-	                error:NULL];
 }
 
 - (void) testAddObject {
@@ -353,6 +345,40 @@ static NSMutableString *balanceErrors;
 	STAssertEquals([order count], expectedCount, @"Incorrect count.");
 	STAssertEquals([tree count],  expectedCount, @"Incorrect count.");
 	STAssertNoThrow([tree verifyBalanceFactors], nil);
+}
+
+- (void) testRemoveObjectDoubleLeft {
+	objects = [NSArray arrayWithObjects:@"F",@"B",@"J",@"A",@"D",@"H",@"K",@"C",
+			   @"E",@"G",@"I",nil];
+	[tree release];
+	tree = [[CHAVLTree alloc] initWithArray:objects];
+	
+	[tree removeObject:@"A"];
+	[tree removeObject:@"D"];
+	STAssertNoThrow([tree verifyBalanceFactors], nil);
+	STAssertEquals([tree count], [objects count] - 2, @"Incorrect count.");	
+	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
+	correct = [NSArray arrayWithObjects:@"F",@"C",@"B",@"E",@"J",@"H",@"G",@"I",
+			   @"K",nil];
+	STAssertTrue([order isEqualToArray:correct],
+				 badOrder(@"Pre-order", order, correct));
+}
+
+- (void) testRemoveObjectDoubleRight {
+	objects = [NSArray arrayWithObjects:@"F",@"B",@"J",@"A",@"D",@"H",@"K",@"C",
+			   @"E",@"G",@"I",nil];
+	[tree release];
+	tree = [[CHAVLTree alloc] initWithArray:objects];
+
+	[tree removeObject:@"K"];
+	[tree removeObject:@"G"];
+	STAssertNoThrow([tree verifyBalanceFactors], nil);
+	STAssertEquals([tree count], [objects count] - 2, @"Incorrect count.");	
+	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
+	correct = [NSArray arrayWithObjects:@"F",@"B",@"A",@"D",@"C",@"E",@"I",@"H",
+			   @"J",nil];
+	STAssertTrue([order isEqualToArray:correct],
+				 badOrder(@"Pre-order", order, correct));
 }
 
 - (void) testDebugDescriptionForNode {
