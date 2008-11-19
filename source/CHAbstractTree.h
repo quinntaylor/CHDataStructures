@@ -143,11 +143,13 @@ extern NSUInteger kPointerSize;
 - (NSString*) dotGraphString;
 
 /**
- Called by #dotGraphString to create DOT descriptions for each node in the tree.
+ Create a string DOT description for a node in the tree.
  Override in subclasses to display additional information for tree nodes.
  
  @param node The node for which to create a DOT language representation.
  @return A string representation of a node in the dot language.
+ 
+ @see dotGraphString
  */
 - (NSString*) dotStringForNode:(CHTreeNode*)node;
 

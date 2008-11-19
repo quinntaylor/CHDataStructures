@@ -162,9 +162,6 @@
 	free(stack);
 }
 
-/**
- @todo Complete functionality for AVL removal
- */
 - (void) removeObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
