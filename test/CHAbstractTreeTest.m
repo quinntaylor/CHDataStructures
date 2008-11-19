@@ -183,6 +183,22 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 						 @"Wrong string from -debugDescription.");
 }
 
+- (void) testDotGraphString {
+	NSMutableString *expected = [NSMutableString string];
+	[expected appendString:@"digraph CHUnbalancedTree\n{\n"];
+	[expected appendFormat:@"  \"A\";\n  \"A\" -> {nil1;\"E\"};\n"];
+	[expected appendFormat:@"  \"E\";\n  \"E\" -> {\"B\";nil2};\n"];
+	[expected appendFormat:@"  \"B\";\n  \"B\" -> {nil3;\"D\"};\n"];
+	[expected appendFormat:@"  \"D\";\n  \"D\" -> {\"C\";nil4};\n"];
+	[expected appendFormat:@"  \"C\";\n  \"C\" -> {nil6;nil5};\n"];
+	for (int i = 1; i <= 6; i++)
+		[expected appendFormat:@"  nil%d [shape=point,color=white];\n", i];
+	[expected appendFormat:@"}\n"];
+	
+	STAssertEqualObjects([zigzagTree dotGraphString], expected,
+						 @"Incorrect DOT graph string for tree.");
+}
+
 - (void) testEmptyTree {
 	for (Class aClass in treeClasses) {
 		id<CHTree> tree = [[aClass alloc] init];

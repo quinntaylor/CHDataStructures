@@ -293,7 +293,9 @@ NSUInteger kPointerSize = sizeof(void*);
 		if (current->left != sentinel)
 			CHTreeStack_PUSH(current->left);
 		// Append entry for the current node, including children
-		[description appendString:[self debugDescriptionForNode:current]];
+		[description appendFormat:@"\t%@ -> \"%@\" and \"%@\"\n",
+		 [self debugDescriptionForNode:current],
+		 current->left->object, current->right->object];
 	}
 	free(stack);
 	[description appendString:@"}"];
@@ -301,20 +303,19 @@ NSUInteger kPointerSize = sizeof(void*);
 }
 
 - (NSString*) debugDescriptionForNode:(CHTreeNode*)node {
-	return [NSString stringWithFormat:@"\t\"%@\" -> \"%@\" and \"%@\"\n",
-			node->object, node->left->object, node->right->object];
+	return [NSString stringWithFormat:@"\"%@\"", node->object];
 }
 
 - (NSString*) dotGraphString {
 	NSMutableString *graph = [NSMutableString stringWithFormat:
 							  @"digraph %@\n{\n", [self className]];
 	if (header->right == sentinel) {
-		[graph appendFormat:@"  nil [fontsize=10,color=red];\n}\n"];
+		[graph appendFormat:@"  nil [color=red];\n}\n"];
 		return graph;
 	}
 	
 	NSString *leftChild, *rightChild;
-	NSUInteger sentinelCount = 1;
+	NSUInteger sentinelCount = 0;
 	sentinel->object = nil;
 	
 	CHTreeNode *current;
@@ -333,16 +334,17 @@ NSUInteger kPointerSize = sizeof(void*);
 		[graph appendFormat:@"  \"%@\" -> {%@;%@};\n", current->object,
 		 (leftChild = current->left->object)
 			? [NSString stringWithFormat:@"\"%@\"", leftChild]
-			: [NSString stringWithFormat:@"nil%d", sentinelCount++],
+			: [NSString stringWithFormat:@"nil%d", ++sentinelCount],
 		 (rightChild = current->right->object)
 			? [NSString stringWithFormat:@"\"%@\"", rightChild]
-			: [NSString stringWithFormat:@"nil%d", sentinelCount++]];
+			: [NSString stringWithFormat:@"nil%d", ++sentinelCount]];
 	}
 	free(stack);
 
-	// Create entry for each null leaf node, then terminate the graph string
+	// Create entry for each null leaf node (each nil is modeled separately)
 	for (int i = 1; i <= sentinelCount; i++)
 		[graph appendFormat:@"  nil%d [shape=point,color=white];\n", i];
+	// Terminate the graph string, then return it
 	[graph appendString:@"}\n"];
 	return graph;
 }

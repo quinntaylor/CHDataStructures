@@ -143,8 +143,8 @@
 }
 
 - (NSString*) debugDescriptionForNode:(CHTreeNode*)node {
-	return [NSString stringWithFormat:@"\t[%11d]\t\"%@\" -> \"%@\" and \"%@\"\n",
-			node->priority, node->object, node->left->object, node->right->object];
+	return [NSString stringWithFormat:@"[%11d]\t\"%@\"",
+			node->priority, node->object];
 }
 
 - (NSString*) dotStringForNode:(CHTreeNode*)node {
