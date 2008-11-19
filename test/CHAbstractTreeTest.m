@@ -172,11 +172,11 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 - (void) testDebugDescription {
 	NSMutableString *expected = [NSMutableString string];
 	[expected appendFormat:@"<CHUnbalancedTree: 0x%x> = {\n", zigzagTree];
-	[expected appendString:@"\tA -> (null) and E\n"];
-	[expected appendString:@"\tE -> B and (null)\n"];
-	[expected appendString:@"\tB -> (null) and D\n"];
-	[expected appendString:@"\tD -> C and (null)\n"];
-	[expected appendString:@"\tC -> (null) and (null)\n"];
+	[expected appendString:@"\t\"A\" -> \"(null)\" and \"E\"\n"];
+	[expected appendString:@"\t\"E\" -> \"B\" and \"(null)\"\n"];
+	[expected appendString:@"\t\"B\" -> \"(null)\" and \"D\"\n"];
+	[expected appendString:@"\t\"D\" -> \"C\" and \"(null)\"\n"];
+	[expected appendString:@"\t\"C\" -> \"(null)\" and \"(null)\"\n"];
 	[expected appendString:@"}"];
 	
 	STAssertEqualObjects([zigzagTree debugDescription], expected,

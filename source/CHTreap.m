@@ -142,37 +142,14 @@
 	return (current != sentinel) ? current->priority : NSNotFound;
 }
 
-- (void) debugDescriptionWithString:(NSMutableString*)description
-                   forSubtreeAtNode:(CHTreeNode*)node
-                         withIndent:(NSUInteger)level
-{
-	if (node == sentinel)
-		return;
-	
-	[description appendFormat:@"  [%11d]  ", node->priority];
-	for (int i = 0; i < level; i++)
-		[description appendString:@"  "];
-	[description appendFormat:@"%@\n", node->object];
-	
-	if (node != sentinel) {
-		[self debugDescriptionWithString:description
-                        forSubtreeAtNode:node->left
-                              withIndent:(level+1)];
-		[self debugDescriptionWithString:description
-                        forSubtreeAtNode:node->right
-                              withIndent:(level+1)];
-	}
+- (NSString*) debugDescriptionForNode:(CHTreeNode*)node {
+	return [NSString stringWithFormat:@"\t[%11d]\t\"%@\" -> \"%@\" and \"%@\"\n",
+			node->priority, node->object, node->left->object, node->right->object];
 }
 
-- (NSString*) debugDescription {
-	NSMutableString *description = [NSMutableString stringWithFormat:
-	                                @"<%@: 0x%x> = {\n", [self class], self];
-	sentinel->object = @"∅";
-	[self debugDescriptionWithString:description
-                    forSubtreeAtNode:header->right
-                          withIndent:0];
-	[description appendString:@"}"];
-	return description;
+- (NSString*) dotStringForNode:(CHTreeNode*)node {
+	return [NSString stringWithFormat:@"  \"%@\" [label=\"%@\\n%d\"];\n",
+			node->object, node->object, node->priority];
 }
 
 @end

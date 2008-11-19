@@ -124,8 +124,32 @@ extern NSUInteger kPointerSize;
 	unsigned long mutations; /**< Used to track mutations for NSFastEnumeration. */
 }
 
-// This is declared to prevent compile warnings, but is undocumented in purpose.
+// Declared to prevent compile warnings, but undocumented on purpose.
 - (NSString*) debugDescription;
+
+// Declared to prevent compile warnings, but undocumented on purpose.
+// 
+- (NSString*) debugDescriptionForNode:(CHTreeNode*)node;
+
+/**
+ Produces a graph description in the DOT language for the receiver tree. A dot
+ graph can be rendered with GraphViz, OmniGraffle, dotty, or other tools. This
+ method uses an adaptation of an iterative pre-order traversal to organize the
+ diagram such that it renders in order like a binary search tree. Null sentinel
+ nodes are represented by arrows which point to empty space.
+ 
+ @return A graph description in the DOT language for the receiver tree.
+ */
+- (NSString*) dotGraphString;
+
+/**
+ Called by #dotGraphString to create DOT descriptions for each node in the tree.
+ Override in subclasses to display additional information for tree nodes.
+ 
+ @param node The node for which to create a DOT language representation.
+ @return A string representation of a node in the dot language.
+ */
+- (NSString*) dotStringForNode:(CHTreeNode*)node;
 
 #pragma mark Adopted Protocols
 

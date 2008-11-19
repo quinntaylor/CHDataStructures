@@ -221,4 +221,15 @@ CHTreeNode* doubleRotate(CHTreeNode *node, BOOL goingRight) {
 	header->right->color = kBLACK; // Make the root black for simplified logic
 }
 
+- (NSString*) debugDescriptionForNode:(CHTreeNode*)node {
+	return [NSString stringWithFormat:@"\t[%s]\t\"%@\" -> \"%@\" and \"%@\"\n",
+			(node->color == kBLACK) ? "BLACK" : " RED ",
+			node->object, node->left->object, node->right->object];
+}
+
+- (NSString*) dotStringForNode:(CHTreeNode*)node {
+	return [NSString stringWithFormat:@"  \"%@\" [color=%@];\n",
+			node->object, (node->color == kRED) ? @"red" : @"black"];
+}
+
 @end

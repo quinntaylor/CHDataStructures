@@ -293,12 +293,66 @@ NSUInteger kPointerSize = sizeof(void*);
 		if (current->left != sentinel)
 			CHTreeStack_PUSH(current->left);
 		// Append entry for the current node, including children
-		[description appendFormat:@"\t%@ -> %@ and %@\n",
-		 current->object, current->left->object, current->right->object];
+		[description appendString:[self debugDescriptionForNode:current]];
 	}
 	free(stack);
 	[description appendString:@"}"];
 	return description;
+}
+
+- (NSString*) debugDescriptionForNode:(CHTreeNode*)node {
+	return [NSString stringWithFormat:@"\t\"%@\" -> \"%@\" and \"%@\"\n",
+			node->object, node->left->object, node->right->object];
+}
+
+- (NSString*) dotGraphString {
+	NSMutableString *graph = [NSMutableString stringWithFormat:
+							  @"digraph %@\n{\n", [self className]];
+	if (header->right == sentinel)
+		[graph appendFormat:@"\t nil [fontsize=10,color=red];\n"];
+	else {
+		CHTreeNode *current;
+		CHTreeNode **stack;
+		NSUInteger stackSize, elementsInStack;
+		CHTreeStack_INIT(stack);
+		
+		NSString *sentinelFormat = @"\t nil%d [shape=point,color=white];\n";
+		NSUInteger sentinelCount = 1;
+		
+		CHTreeStack_PUSH(header->right);
+		while (current = CHTreeStack_POP) {
+			[graph appendString:[self dotStringForNode:current]];
+			
+			if (current->left != sentinel) {
+				[graph appendFormat:@"\t\"%@\" -> \"%@\";\n",
+				 current->object, current->left->object];
+				CHTreeStack_PUSH(current->left);
+			}
+			else {
+				[graph appendFormat:@"\t\"%@\" -> nil%d;\n",
+				 current->object, sentinelCount];
+				[graph appendFormat:sentinelFormat, sentinelCount++];
+			}
+			
+			if (current->right != sentinel) {
+				[graph appendFormat:@"\t\"%@\" -> \"%@\";\n",
+				 current->object, current->right->object];
+				CHTreeStack_PUSH(current->right);
+			}
+			else {
+				[graph appendFormat:@"\t\"%@\" -> nil%d;\n",
+				 current->object, sentinelCount];
+				[graph appendFormat:sentinelFormat, sentinelCount++];
+			}
+		}
+		free(stack);
+	}
+	[graph appendString:@"}\n"];
+	return graph;
+}
+
+- (NSString*) dotStringForNode:(CHTreeNode*)node {
+	return [NSString stringWithFormat:@"  \"%@\";\n", node->object];
 }
 
 #pragma mark Unsupported Implementations

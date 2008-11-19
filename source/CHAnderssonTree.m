@@ -173,4 +173,14 @@
 	free(stack);
 }
 
+- (NSString*) debugDescriptionForNode:(CHTreeNode*)node {
+	return [NSString stringWithFormat:@"\t[%2d]\t\"%@\" -> \"%@\" and \"%@\"\n",
+			node->level, node->object, node->left->object, node->right->object];
+}
+
+- (NSString*) dotStringForNode:(CHTreeNode*)node {
+	return [NSString stringWithFormat:@"  \"%@\" [label=\"%@\\n%d\"];\n",
+			node->object, node->object, node->level];
+}
+
 @end

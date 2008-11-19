@@ -146,8 +146,8 @@
 		else
 			parent->balance--;
 		
-		// Rebalance if the balance factor is out of whack, otherwise terminate
 		if (parent == save) {
+			// Rebalance if the balance factor is out of whack, then terminate
 			if (abs(parent->balance) > 1)
 				insertBalance(parent, isRightChild);
 			keepBalancing = NO;
@@ -171,8 +171,6 @@
 	if (count == 0)
 		return;
 
-	CHLocationLog(@"Remove: %@", anObject);
-
 	CHTreeNode *parent, *current = header;
 	CHTreeNode **stack;
 	NSUInteger stackSize, elementsInStack;
@@ -194,75 +192,62 @@
 	[current->object release]; // Object must be released in any case
 	--count;
 	++mutations;
-	BOOL isRightChild;
+	CHTreeNode *replacement;
 	if (current->left == sentinel || current->right == sentinel) {
 		// Single/zero child case -- replace node with non-nil child (if exists)
-		parent = CHTreeStack_TOP;
-		isRightChild = (parent->right == current);
-		parent->link[isRightChild] = current->link[current->left == sentinel];
+		replacement = current->link[current->left == sentinel];
+		parent = CHTreeStack_POP;
+		parent->link[parent->right == current] = replacement;
 		free(current);
+		current = replacement;
 	} else {
 		// Two child case -- replace with minimum object in right subtree
 		CHTreeStack_PUSH(current); // Need to start here when rebalancing
-		CHTreeNode *replacement = current->right;
+		replacement = current->right;
 		while (replacement->left != sentinel) {
 			CHTreeStack_PUSH(replacement);
 			replacement = replacement->left;
 		}
-		parent = CHTreeStack_TOP;
 		// Grab object from replacement node, steal its right child, deallocate
 		current->object = replacement->object;
-		isRightChild = (parent->right == replacement);
-		parent->link[isRightChild] = replacement->right;
+		parent = CHTreeStack_POP;
+		parent->link[(parent->right == replacement)] = replacement->right;
+		current = replacement->right;
 		free(replacement);
 	}
 	
 	// Trace back up the search path, rebalancing as we go until we're done
+	BOOL isRightChild;
 	BOOL done = NO;
-	while (!done && elementsInStack > 1) {
+	while (!done && elementsInStack > 0) {
+		isRightChild = (parent->right == current);
 		// Update the balance factor
 		if (isRightChild)
 			parent->balance--;
 		else
 			parent->balance++;
-		
-		if (abs(parent->balance) > 1) {
-			removeBalance(parent, isRightChild, done);			
-			parent->link[isRightChild] = current;
+		// If the subtree heights differ by more than 1, rebalance them
+		if (parent->balance > 1 || parent->balance < -1) {
+			removeBalance(parent, isRightChild, done);
+			comparison = [CHTreeStack_TOP->object compare:parent->object];
+			CHTreeStack_TOP->link[comparison == NSOrderedAscending] = parent;
 		}
 		else if (parent->balance != 0)
 			break;
-		
 		current = parent;
-		CHTreeStack_POP;
-		parent = CHTreeStack_TOP;
+		parent = CHTreeStack_POP;
 	}
 	free(stack);
 }
 
-- (NSString*) debugDescription {
-	NSMutableString *description = [NSMutableString stringWithFormat:
-	                                @"<%@: 0x%x> = {\n", [self class], self];
-	CHTreeNode *current;
-	CHTreeNode **stack;
-	NSUInteger stackSize, elementsInStack;
-	CHTreeStack_INIT(stack);
-	
-	sentinel->object = nil;
-	CHTreeStack_PUSH(header->right);	
-	while (current = CHTreeStack_POP) {
-		if (current->right != sentinel)
-			CHTreeStack_PUSH(current->right);
-		if (current->left != sentinel)
-			CHTreeStack_PUSH(current->left);
-		// Append entry for the current node, including children
-		[description appendFormat:@"\t[%2d]\t%@ -> %@ and %@\n",
-		 current->balance, current->object, current->left->object, current->right->object];
-	}
-	free(stack);
-	[description appendString:@"}"];
-	return description;
+- (NSString*) debugDescriptionForNode:(CHTreeNode*)node {
+	return [NSString stringWithFormat:@"\t[%2d]\t\"%@\" -> \"%@\" and \"%@\"\n",
+			node->balance, node->object, node->left->object, node->right->object];
 }
 
+- (NSString*) dotStringForNode:(CHTreeNode*)node {
+	return [NSString stringWithFormat:@"  \"%@\" [label=\"%@\\n%d\"];\n",
+			node->object, node->object, node->balance];
+}
 
 @end
