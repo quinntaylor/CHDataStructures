@@ -540,7 +540,7 @@ int main (int argc, const char * argv[]) {
 		[objectSet removeAllObjects];
 	}
 	
-	NSString *path = @"../../benchmarks/";
+	NSString *path = @"../../benchmark_data/";
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	if (![fileManager fileExistsAtPath:path])
 		[fileManager createDirectoryAtPath:path
