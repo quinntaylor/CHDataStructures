@@ -5,6 +5,31 @@
 #import <CHDataStructures/CHDataStructures.h>
 #import <sys/time.h>
 
+@interface CHAbstractTree (Height)
+- (NSUInteger) height;
+- (NSUInteger) heightOfSubtreeAtNode:(CHTreeNode*)node;
+@end
+
+@implementation CHAbstractTree (Height)
+
+- (NSUInteger) height {
+	return [self heightOfSubtreeAtNode:header->right];
+}
+
+- (NSUInteger) heightOfSubtreeAtNode:(CHTreeNode*)node {
+	if (node == sentinel)
+		return 0;
+	else {
+		NSUInteger leftHeight = [self heightOfSubtreeAtNode:node->left];
+		NSUInteger rightHeight = [self heightOfSubtreeAtNode:node->right];
+		return ((leftHeight > rightHeight) ? leftHeight : rightHeight) + 1;
+	}
+}
+
+@end
+
+#pragma mark -
+
 static NSMutableArray *objects;
 static NSUInteger item, arrayCount;
 struct timeval timeOfDay;
@@ -405,7 +430,7 @@ int main (int argc, const char * argv[]) {
 	NSUInteger size, item, limit = 1000000;
 	objects = [[NSMutableArray alloc] init];
 	
-	for (size = 1; size <= limit; size *= 10) {
+	for (size = 10; size <= limit; size *= 10) {
 		NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:size+1];
 		[array addObjectsFromArray:[objects lastObject]];
 		for (item = [array count]+1; item <= size; item++)
@@ -426,29 +451,117 @@ int main (int argc, const char * argv[]) {
 	benchmarkStack([CHMutableArrayStack class]);
 	benchmarkStack([CHListStack class]);
 	
-	// Create more disordered arrays of values for testing heap and tree subclasses
-	[objects removeAllObjects];
-	for (size = 1; size <= limit; size *= 10) {
-		NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:size+1];
-		for (item = 1; item <= size; item++)
-			[array addObject:[NSNumber numberWithUnsignedInteger:(item*7%size)]];
-		[objects addObject:array];
-		[array release];
-	}
-
-	CHQuietLog(@"\n<CHTree> Implemenations");
-	benchmarkTree([CHRedBlackTree class]);
-	benchmarkTree([CHTreap class]);
-	benchmarkTree([CHAnderssonTree class]);
-	benchmarkTree([CHAVLTree class]);
-	//	benchmarkTree([CHUnbalancedTree class]);
-	
-	CHQuietLog(@"\n<CHHeap> Implemenations");
-	benchmarkHeap([CHMutableArrayHeap class]);
-
-	CHQuietLog(@"");
 	[objects release];
 
+	
+	// Create more disordered sets of values for testing heap and tree subclasses
+
+	CHQuietLog(@"\n<CHTree> Implemenations");
+	
+	NSArray *testClasses = [NSArray arrayWithObjects:
+							[CHAnderssonTree class],
+							[CHAVLTree class],
+							[CHRedBlackTree class],
+							[CHTreap class],
+							[CHUnbalancedTree class],
+							nil];
+	NSMutableDictionary *treeResults = [NSMutableDictionary dictionary];
+	NSMutableDictionary *dictionary;
+	for (Class aClass in testClasses) {
+		dictionary = [NSMutableDictionary dictionary];
+		[dictionary setObject:[NSMutableArray array] forKey:@"addObject"];
+		[dictionary setObject:[NSMutableArray array] forKey:@"findObject"];
+		[dictionary setObject:[NSMutableArray array] forKey:@"removeObject"];
+		if ([aClass conformsToProtocol:@protocol(CHTree)])
+			[dictionary setObject:[NSMutableArray array] forKey:@"height"];
+		[treeResults setObject:dictionary forKey:[aClass className]];
+	}
+	
+	NSMutableSet *objectSet = [NSMutableSet set];
+	CHAbstractTree *tree;
+	double startTime, duration;
+	
+	limit = 100000;
+	NSUInteger reps  = 20;
+	NSUInteger scale = 1000000; // 10^6, which gives microseconds
+	
+	for (NSUInteger trial = 1; trial <= reps; trial++) {
+		printf("\nPass %u / %u", trial, reps);
+		for (NSUInteger size = 10; size <= limit; size *= 10) {
+			printf("\n%8u objects --", size);
+			// Create a set of N unique random numbers
+			NSAutoreleasePool *innerPool = [[NSAutoreleasePool alloc] init];
+			while ([objectSet count] < size)
+				[objectSet addObject:[NSNumber numberWithInt:arc4random()]];
+			[innerPool drain];
+			objects = [objectSet allObjects];
+			for (Class aClass in testClasses) {
+				printf(" %s", [[aClass className] UTF8String]);
+				dictionary = [treeResults objectForKey:[aClass className]];
+				
+				tree = [[aClass alloc] init];
+				
+				// addObject:
+				startTime = timestamp();
+				for (id anObject in objects)
+					[tree addObject:anObject];
+				duration = timestamp() - startTime;
+				[[dictionary objectForKey:@"addObject"] addObject:
+				 [NSString stringWithFormat:@"%u,%f", size, duration/size*scale]];
+				
+				// findObject:
+				int index = 0;
+				startTime = timestamp();
+				for (id anObject in objects) {
+					if (index++ % 4 != 0)
+						continue;
+					[tree containsObject:anObject];
+				}
+				duration = timestamp() - startTime;
+				[[dictionary objectForKey:@"findObject"] addObject:
+				 [NSString stringWithFormat:@"%u,%f", size, duration/size*scale]];
+				
+				// Maximum height
+				if ([aClass conformsToProtocol:@protocol(CHTree)])
+					[[dictionary objectForKey:@"height"] addObject:
+					 [NSString stringWithFormat:@"%u,%u", size, [tree height]]];
+				
+				// removeObject:
+				startTime = timestamp();
+				for (id anObject in objectSet)
+					[tree removeObject:anObject];
+				duration = timestamp() - startTime;
+				[[dictionary objectForKey:@"removeObject"] addObject:
+				 [NSString stringWithFormat:@"%u,%f", size, duration/size*scale]];
+				
+				[tree release];
+			}
+		}
+		[objectSet removeAllObjects];
+	}
+	
+	NSString *path = @"../../benchmarks/";
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	if (![fileManager fileExistsAtPath:path])
+		[fileManager createDirectoryAtPath:path
+			   withIntermediateDirectories:YES
+								attributes:nil
+									 error:NULL];
+	NSArray *results;
+	for (NSString *treeClass in [treeResults allKeys]) {
+		NSDictionary *resultSet = [treeResults objectForKey:treeClass];
+		for (NSString *operation in [resultSet allKeys]) {
+			results = [[resultSet objectForKey:operation]
+					   sortedArrayUsingSelector:@selector(compare:)];
+			[[results componentsJoinedByString:@"\n"]
+			 writeToFile:[path stringByAppendingFormat:@"%@-%@.txt",
+						  treeClass, operation]
+			 atomically:NO
+			 encoding:NSUTF8StringEncoding
+			 error:NULL];
+		}
+	}
+	
 	[pool drain];
 	return 0;
 }
