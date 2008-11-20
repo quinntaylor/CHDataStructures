@@ -481,6 +481,9 @@ int main (int argc, const char * argv[]) {
 	CHAbstractTree *tree;
 	double startTime, duration;
 	
+	NSUInteger jitteredSize; // For making sure scatterplot dots not overlap
+	NSInteger jitterOffset;
+
 	limit = 100000;
 	NSUInteger reps  = 20;
 	NSUInteger scale = 1000000; // 10^6, which gives microseconds
@@ -495,11 +498,12 @@ int main (int argc, const char * argv[]) {
 				[objectSet addObject:[NSNumber numberWithInt:arc4random()]];
 			[innerPool drain];
 			objects = [objectSet allObjects];
+			jitterOffset = -([testClasses count]/2);
 			for (Class aClass in testClasses) {
 				printf(" %s", [[aClass className] UTF8String]);
-				dictionary = [treeResults objectForKey:[aClass className]];
-				
 				tree = [[aClass alloc] init];
+				dictionary = [treeResults objectForKey:[aClass className]];
+				jitteredSize = size + (size * .1 * jitterOffset++);
 				
 				// addObject:
 				startTime = timestamp();
@@ -507,7 +511,8 @@ int main (int argc, const char * argv[]) {
 					[tree addObject:anObject];
 				duration = timestamp() - startTime;
 				[[dictionary objectForKey:@"addObject"] addObject:
-				 [NSString stringWithFormat:@"%u,%f", size, duration/size*scale]];
+				 [NSString stringWithFormat:@"%u,%f",
+				  jitteredSize, duration/size*scale]];
 				
 				// findObject:
 				int index = 0;
@@ -519,12 +524,14 @@ int main (int argc, const char * argv[]) {
 				}
 				duration = timestamp() - startTime;
 				[[dictionary objectForKey:@"findObject"] addObject:
-				 [NSString stringWithFormat:@"%u,%f", size, duration/size*scale]];
+				 [NSString stringWithFormat:@"%u,%f",
+				  jitteredSize, duration/size*scale]];
 				
 				// Maximum height
 				if ([aClass conformsToProtocol:@protocol(CHTree)])
 					[[dictionary objectForKey:@"height"] addObject:
-					 [NSString stringWithFormat:@"%u,%u", size, [tree height]]];
+					 [NSString stringWithFormat:@"%u,%u",
+					  jitteredSize, [tree height]]];
 				
 				// removeObject:
 				startTime = timestamp();
@@ -532,7 +539,8 @@ int main (int argc, const char * argv[]) {
 					[tree removeObject:anObject];
 				duration = timestamp() - startTime;
 				[[dictionary objectForKey:@"removeObject"] addObject:
-				 [NSString stringWithFormat:@"%u,%f", size, duration/size*scale]];
+				 [NSString stringWithFormat:@"%u,%f",
+				  jitteredSize, duration/size*scale]];
 				
 				[tree release];
 			}
