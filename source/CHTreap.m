@@ -46,6 +46,8 @@
 	if (priority == NSNotFound)
 		CHInvalidArgumentException([self class], _cmd,
 		                           @"Invalid priority: cannot be NSNotFound.");
+	++mutations;
+
 	CHTreeNode *parent, *current = header;
 	CHTreeNode **stack;
 	NSUInteger stackSize, elementsInStack;
@@ -59,7 +61,6 @@
 	}
 	parent = CHTreeStack_POP;
 
-	++mutations;
 	[anObject retain]; // Must retain whether replacing value or adding new node
 	int direction;
 	if (current != sentinel) {
@@ -102,6 +103,9 @@
 - (void) removeObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
+	if (count == 0)
+		return;
+	++mutations;
 	
 	CHTreeNode *parent, *current = header;
 	NSComparisonResult comparison;
@@ -128,7 +132,6 @@
 		free(current);
 		--count;
 	}
-	++mutations;
 }
 
 - (NSInteger) priorityForObject:(id)anObject {

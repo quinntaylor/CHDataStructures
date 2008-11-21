@@ -239,6 +239,7 @@ NSUInteger kPointerSize = sizeof(void*);
 - (void) removeAllObjects {
 	if (count == 0)
 		return;
+	++mutations;
 	
 	CHTreeNode **stack;
 	NSUInteger stackSize, elementsInStack;
@@ -258,7 +259,6 @@ NSUInteger kPointerSize = sizeof(void*);
 
 	header->right = sentinel;
 	count = 0;
-	++mutations;
 }
 
 - (NSEnumerator*) objectEnumerator {

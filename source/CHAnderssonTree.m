@@ -52,6 +52,7 @@
 - (void) addObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
+	++mutations;
 	
 	CHTreeNode *parent, *current = header;
 	CHTreeNode **stack;
@@ -65,7 +66,6 @@
 		current = current->link[comparison == NSOrderedAscending]; // R on YES
 	}
 	
-	++mutations;
 	[anObject retain]; // Must retain whether replacing value or adding new node
 	if (current != sentinel) {
 		// Replace the existing object with the new object.
@@ -104,6 +104,9 @@
 - (void) removeObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
+	if (count == 0)
+		return;
+	++mutations;
 	
 	CHTreeNode *parent, *current = header;
 	CHTreeNode **stack;
@@ -124,7 +127,6 @@
 	
 	[current->object release]; // Object must be released in any case
 	--count;
-	++mutations;
 	if (current->left == sentinel || current->right == sentinel) {
 		// Single/zero child case -- replace node with non-nil child (if exists)
 		parent = CHTreeStack_TOP;

@@ -24,9 +24,9 @@
 - (void) addObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
+	++mutations;
 	
 	CHTreeNode *parent = header, *current = header->right;
-	
 	sentinel->object = anObject; // Assure that we find a spot to insert
 	NSComparisonResult comparison;
 	while (comparison = [current->object compare:anObject]) {
@@ -34,7 +34,6 @@
 		current = current->link[comparison == NSOrderedAscending]; // R on YES
 	}
 	
-	++mutations;
 	[anObject retain]; // Must retain whether replacing value or adding new node
 	if (current != sentinel) {
 		// Replace the existing object with the new object.
@@ -60,8 +59,9 @@
 - (void) removeObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
-	if (header->right == sentinel)
+	if (count == 0)
 		return;
+	++mutations;
 	
 	CHTreeNode *parent, *current = header;
 	
@@ -77,7 +77,6 @@
 
 	[current->object release]; // Object must be released in any case
 	--count;
-	++mutations;
 	if (current->left == sentinel || current->right == sentinel) {
 		// One or both of the child pointers are null, so removal is simpler
 		parent->link[parent->right == current]

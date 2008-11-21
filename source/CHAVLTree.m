@@ -60,6 +60,7 @@ static inline void adjustBalance(CHTreeNode *root, int dir, int bal) {
 - (void) addObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
+	++mutations;
 	
 	CHTreeNode *parent, *save, *current = header;
 	CHTreeNode **stack;
@@ -77,7 +78,6 @@ static inline void adjustBalance(CHTreeNode *root, int dir, int bal) {
 		current = current->link[comparison == NSOrderedAscending]; // R on YES
 	}
 	
-	++mutations;
 	[anObject retain]; // Must retain whether replacing value or adding new node
 	if (current != sentinel) {
 		// Replace the existing object with the new object.
@@ -143,6 +143,7 @@ static inline void adjustBalance(CHTreeNode *root, int dir, int bal) {
 		CHNilArgumentException([self class], _cmd);
 	if (count == 0)
 		return;
+	++mutations;
 
 	CHTreeNode *parent, *current = header;
 	CHTreeNode **stack;
@@ -164,7 +165,6 @@ static inline void adjustBalance(CHTreeNode *root, int dir, int bal) {
 	
 	[current->object release]; // Object must be released in any case
 	--count;
-	++mutations;
 	CHTreeNode *replacement;
 	BOOL isRightChild;
 	if (current->left == sentinel || current->right == sentinel) {

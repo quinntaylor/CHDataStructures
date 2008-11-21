@@ -19,7 +19,9 @@
 
 #import <SenTestingKit/SenTestingKit.h>
 #import "CHAbstractTree.h"
+
 #import "CHAnderssonTree.h"
+#import "CHAVLTree.h"
 #import "CHRedBlackTree.h"
 #import "CHTreap.h"
 #import "CHUnbalancedTree.h"
@@ -62,9 +64,13 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 				  [NSArray arrayWithObjects:@"A",@"E",@"B",@"D",@"C",nil]];
 	nonEmptyTrees = [[NSArray alloc] initWithObjects:outsideTree, insideTree,
 					 zigzagTree, nil];
-	treeClasses = [NSArray arrayWithObjects:[CHAnderssonTree class],
-				   [CHRedBlackTree class], [CHUnbalancedTree class],
-				   [CHTreap class], nil];
+	treeClasses = [NSArray arrayWithObjects:
+				   [CHAnderssonTree class],
+				   [CHAVLTree class],
+				   [CHRedBlackTree class],
+				   [CHTreap class],
+				   [CHUnbalancedTree class],
+				   nil];
 }
 
 - (void) tearDown {
@@ -249,8 +255,11 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 }
 
 - (void) testInitWithArray {
-	id<CHTree> tree = [[CHUnbalancedTree alloc] initWithArray:objects];
-	STAssertEquals([tree count], [objects count], @"Incorrect count.");
+	for (Class aClass in treeClasses) {
+		id<CHTree> tree = [[aClass alloc] initWithArray:objects];
+		STAssertEquals([tree count], [objects count], @"Incorrect count.");
+		[tree release];
+	}
 }
 
 - (void) testObjectEnumerator {

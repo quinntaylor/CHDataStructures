@@ -105,6 +105,7 @@ CHTreeNode* doubleRotation(CHTreeNode *node, BOOL goingRight) {
 - (void) addObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
+	++mutations;
 
 	grandparent = parent = current = header;
 	sentinel->object = anObject;
@@ -137,7 +138,6 @@ CHTreeNode* doubleRotation(CHTreeNode *node, BOOL goingRight) {
 		}
 	}
 	
-	++mutations;
 	[anObject retain];
 	if (current != sentinel) {
 		// If an existing node matched, simply replace the existing value.
@@ -156,13 +156,23 @@ CHTreeNode* doubleRotation(CHTreeNode *node, BOOL goingRight) {
 	}
 }
 
+/**
+ @param anObject The object to be removed from the tree.
+ @todo Speed up red-black removal: performance currently grows exponentially.
+ The EC tutorial opts to push a red node down the tree using rotations and flips
+ to avoid a nasty case of deleting a black node. This is almost certainly what
+ causes the performance problems.
+
+ http://www.stanford.edu/~blp/avl/libavl.html/Deleting-from-an-RB-Tree.html
+ http://eternallyconfuzzled.com/tuts/datastructures/jsw_tut_rbtree.aspx
+ */
 - (void) removeObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
-	if (header->right == sentinel)
+	if (count == 0)
 		return;
-	
 	++mutations;
+	
 	grandparent = parent = current = header;
 	sentinel->object = anObject;
 	CHTreeNode *found = NULL, *sibling;
