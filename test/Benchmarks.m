@@ -33,6 +33,7 @@
 static NSMutableArray *objects;
 static NSUInteger item, arrayCount;
 struct timeval timeOfDay;
+struct timespec sleepDelay = {0,1}, sleepRemain;
 static double startTime;
 
 /* Return the current time in seconds, using a double precision number. */
@@ -506,6 +507,7 @@ int main (int argc, const char * argv[]) {
 				jitteredSize = size + (size * .1 * jitterOffset++);
 				
 				// addObject:
+				nanosleep(&sleepDelay, &sleepRemain);
 				startTime = timestamp();
 				for (id anObject in objects)
 					[tree addObject:anObject];
@@ -515,6 +517,7 @@ int main (int argc, const char * argv[]) {
 				  jitteredSize, duration/size*scale]];
 				
 				// findObject:
+				nanosleep(&sleepDelay, &sleepRemain);
 				int index = 0;
 				startTime = timestamp();
 				for (id anObject in objects) {
@@ -534,6 +537,7 @@ int main (int argc, const char * argv[]) {
 					  jitteredSize, [tree height]]];
 				
 				// removeObject:
+				nanosleep(&sleepDelay, &sleepRemain);
 				startTime = timestamp();
 				for (id anObject in objectSet)
 					[tree removeObject:anObject];
