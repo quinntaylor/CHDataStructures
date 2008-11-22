@@ -44,10 +44,9 @@
  and the insertion and removal algorithms are much easier to understand.
  
  In an AVL tree, the heights of the child subtrees of any node may differ by at
- most one. When inserting or deleting, if the absolute value of the difference
- between subtree depths is ever reaches 2, then one or more rotations around the
- unbalanced node are required to rebalance the tree. The 4 possible unbalanced
- cases and how to rebalance them are shown in Figure 1.
+ most one. If the heights differ by more than one, then one or more rotations
+ around the unbalanced node are required to rebalance the tree. The 4 possible
+ unbalanced cases and how to rebalance them are shown in Figure 1.
  
  <div align="center"><b>Figure 1 - Rebalancing cases in an AVL tree.</b></div>
  @image html avl-tree-rotations.png
@@ -56,11 +55,15 @@
  maximum of the height of its chilren) this approach requires updating all the
  heights along the search path when inserting or removing objects. This penalty
  can be mitigated by instead storing a balance factor for each node, calculated
- as the height of the right subtree minus the height of the left subtree. If the
- balance factor of a node is -2 or +2 after modifying the tree, then rebalancing
- is necessary. Balance factors are updated when rotating, and at each rotation 
- we must proceed back up the search path, but can drop out of the loop when the
- balance factor at a node doesn't change.
+ as the height of the right subtree minus the height of the left subtree. (Any
+ node with a balance factor of -1, 0, or +1 is considered to bebalanced.) If the
+ balance factor of a node is -2 or +2, then rebalancing is required.
+ 
+ Balance factors are updated when rotating, and at each rotation we must proceed
+ back up the search path. However, on deletion, we can drop out of the loop when
+ a node's balance factor becomes -1 or +1, since the heights of its subtrees has
+ not changed. (If a node's balance factor becomes 0, the parent's balance factor
+ must be updated, and may change to -2 or +2, requiring another rebalance.)
  
  Figure 2 shows a sample AVL tree, with tree heights in blue and balance factors
  in red beside each node.

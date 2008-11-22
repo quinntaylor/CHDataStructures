@@ -38,13 +38,20 @@
  <a href="http://eternallyconfuzzled.com/">Julienne Walker</a>. Method names have
  been changed to match the APIs of existing Cocoa collections provided by Apple.
 
- A Red-Black tree has four fundamental rules:
+ A Red-Black tree has a few fundamental rules:
  <ol>
  <li>Every node is red or black.</li>
- <li>The root of the tree is black.</li>
+ <li>All leaves (null children) are black, even when the parent is black.</li>
  <li>If a node is red, both of its children must be black.</li>
- <li>Every path from a node to a leaf has the same number of black nodes.</li>
+ <li>Every path from a node to its leaves has the same number of black nodes.</li>
+ <li>The root of the tree is black. (Optional, but simplifies things.)</li>
  </ol>
+ 
+ These constraints, and in particular the black path height and non-consecutive
+ red nodes, guarantee that longest path from the root to a leaf is no more than
+ twice as long as the shortest path from the root to a leaf. (This is true since
+ the shortest possible path has only black nodes, and the longest possible path
+ alternates between red and black nodes.) The result is a fairly balanced tree.
  
  <div align="center"><b>Figure 1 - A sample Red-Black tree</b></div>
  @image html red-black-tree.png
@@ -52,7 +59,10 @@
  The sentinel node (which appears whenever a child link would be null) is always
  colored black. The algorithms for balancing Red-Black trees can be made to work
  without explicitly representing the nil leaf children, but they work better and
- with much less heartache if those links are present.
+ with much less heartache if those links are present. The same sentinel value is
+ used for every leaf link, so it only adds the cost of storing one more node. In
+ addition, tracing a path down the tree doesn't have to check for null children
+ at each step, so insertion, search, and deletion are all a little bit faster.
  
  Red-Black trees were originally described in the following papers:
  
