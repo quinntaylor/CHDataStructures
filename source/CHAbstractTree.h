@@ -29,8 +29,8 @@
  A node used by binary search trees for internal storage and representation.
  
  The nested anonymous union and structs are to provide flexibility for dealing
- with various types of trees and access. The first union—with pointers to the
- struct itself—provide 2 ways to access child nodes at the same memory address,
+ with various types of trees and access. The first union (with pointers to the
+ struct itself) provides 2 distinct yet equivalent ways to access child nodes,
  based on what is most convenient and efficient. (e.g. 'left' is equivalent to
  'link[0]', and 'right' is equivalent to 'link[1]'). The second union (which has
  integer fields) allows the same node to be used in several different balanced
@@ -128,7 +128,6 @@ extern NSUInteger kPointerSize;
 - (NSString*) debugDescription;
 
 // Declared to prevent compile warnings, but undocumented on purpose.
-// 
 - (NSString*) debugDescriptionForNode:(CHTreeNode*)node;
 
 /**

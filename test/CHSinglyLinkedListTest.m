@@ -338,12 +338,11 @@ static BOOL gcDisabled;
 	
 	[list removeFirstObject];
 	STAssertEquals([list count], 1u, @"Incorrect count.");
-	STAssertEquals([list head], [list tail], @"head and tail should be the same.");
+	STAssertTrue([list head]->next == [list tail], @"head should point to tail.");
 	
 	[list removeFirstObject];
 	STAssertEquals([list count], 0u, @"Incorrect count.");
-	STAssertTrue([list head] == NULL, @"head should be NULL.");
-	STAssertTrue([list tail] == NULL, @"tail should be NULL.");
+	STAssertTrue([list head] == [list tail], @"head and tail should be the same.");
 }
 
 - (void) testRemoveLastObject {
@@ -359,12 +358,11 @@ static BOOL gcDisabled;
 
 	[list removeLastObject];
 	STAssertEquals([list count], 1u, @"Incorrect count.");
-	STAssertEquals([list head], [list tail], @"head and tail should be the same.");
+	STAssertTrue([list head]->next == [list tail], @"head should point to tail.");
 
 	[list removeLastObject];
 	STAssertEquals([list count], 0u, @"Incorrect count.");
-	STAssertTrue([list head] == NULL, @"head should be NULL.");
-	STAssertTrue([list tail] == NULL, @"tail should be NULL.");
+	STAssertTrue([list head] == [list tail], @"head and tail should be the same.");
 }
 
 - (void) testRemoveObject {

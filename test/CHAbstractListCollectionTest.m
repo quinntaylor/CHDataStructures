@@ -74,7 +74,7 @@
 	for (id object in objects)
 		[collection addObject:object];
 	STAssertEquals([collection count], 3u, @"Incorrect count.");
-	NSArray *order = [[collection objectEnumerator] allObjects];
+	NSArray *order = [collection allObjects];
 	STAssertEqualObjects(order, objects, @"Wrong ordering before archiving.");
 	
 	NSString *filePath = @"/tmp/list-collection.archive";
@@ -83,7 +83,7 @@
 	
 	collection = [[NSKeyedUnarchiver unarchiveObjectWithFile:filePath] retain];
 	STAssertEquals([collection count], 3u, @"Incorrect count.");
-	order = [[collection objectEnumerator] allObjects];
+	order = [collection allObjects];
 	STAssertEqualObjects(order, objects, @"Wrong ordering on reconstruction.");
 }
 
