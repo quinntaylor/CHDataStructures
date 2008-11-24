@@ -22,7 +22,7 @@
 // Remove left horizontal links
 #define skew(node) { \
 	if ( node->left->level == node->level && node->level != 0 ) { \
-		CHTreeNode *save = node->left; \
+		CHBinaryTreeNode *save = node->left; \
 		node->left = save->right; \
 		save->right = node; \
 		node = save; \
@@ -31,7 +31,7 @@
 // Remove consecutive horizontal links
 #define split(node) { \
 	if ( node->right->right->level == node->level && node->level != 0 ) { \
-		CHTreeNode *save = node->right; \
+		CHBinaryTreeNode *save = node->right; \
 		node->right = save->left; \
 		save->left = node; \
 		node = save; \
@@ -54,15 +54,15 @@
 		CHNilArgumentException([self class], _cmd);
 	++mutations;
 	
-	CHTreeNode *parent, *current = header;
-	CHTreeNode **stack;
+	CHBinaryTreeNode *parent, *current = header;
+	CHBinaryTreeNode **stack;
 	NSUInteger stackSize, elementsInStack;
-	CHTreeStack_INIT(stack);
+	CHBinaryTreeStack_INIT(stack);
 	
 	sentinel->object = anObject; // Assure that we find a spot to insert
 	NSComparisonResult comparison;
 	while (comparison = [current->object compare:anObject]) {
-		CHTreeStack_PUSH(current);
+		CHBinaryTreeStack_PUSH(current);
 		current = current->link[comparison == NSOrderedAscending]; // R on YES
 	}
 	
@@ -75,14 +75,14 @@
 		free(stack);
 		return;
 	} else {
-		current = malloc(kCHTreeNodeSize);
+		current = malloc(kCHBinaryTreeNodeSize);
 		current->object = anObject;
 		current->left   = sentinel;
 		current->right  = sentinel;
 		current->level  = 1;
 		++count;
 		// Link from parent as the proper child, based on last comparison
-		parent = CHTreeStack_POP;
+		parent = CHBinaryTreeStack_POP;
 		comparison = [parent->object compare:anObject];
 		parent->link[comparison == NSOrderedAscending] = current; // R if YES
 	}
@@ -96,7 +96,7 @@
 		parent->link[isRightChild] = current;
 		// Move to the next node up the path to the root
 		current = parent;
-		parent = CHTreeStack_POP;
+		parent = CHBinaryTreeStack_POP;
 	}
 	free(stack);
 }
@@ -108,15 +108,15 @@
 		return;
 	++mutations;
 	
-	CHTreeNode *parent, *current = header;
-	CHTreeNode **stack;
+	CHBinaryTreeNode *parent, *current = header;
+	CHBinaryTreeNode **stack;
 	NSUInteger stackSize, elementsInStack;
-	CHTreeStack_INIT(stack);
+	CHBinaryTreeStack_INIT(stack);
 	
 	sentinel->object = anObject; // Assure that we stop at a leaf if not found.
 	NSComparisonResult comparison;
 	while (comparison = [current->object compare:anObject]) {
-		CHTreeStack_PUSH(current);
+		CHBinaryTreeStack_PUSH(current);
 		current = current->link[comparison == NSOrderedAscending]; // R on YES
 	}
 	// Exit if the specified node was not found in the tree.
@@ -129,20 +129,20 @@
 	--count;
 	if (current->left == sentinel || current->right == sentinel) {
 		// Single/zero child case -- replace node with non-nil child (if exists)
-		parent = CHTreeStack_TOP;
+		parent = CHBinaryTreeStack_TOP;
 		parent->link[parent->right == current]
 			= current->link[current->left == sentinel];
 		free(current);
 	} else {
 		// Two child case -- replace with minimum object in right subtree
-		CHTreeStack_PUSH(current); // Need to start here when rebalancing
+		CHBinaryTreeStack_PUSH(current); // Need to start here when rebalancing
 		parent = current;
-		CHTreeNode *replacement = current->right;
+		CHBinaryTreeNode *replacement = current->right;
 		while (replacement->left != sentinel) {
-			CHTreeStack_PUSH(replacement);
+			CHBinaryTreeStack_PUSH(replacement);
 			replacement = replacement->left;
 		}
-		parent = CHTreeStack_TOP;
+		parent = CHBinaryTreeStack_TOP;
 		// Grab object from replacement node, steal its right child, deallocate
 		current->object = replacement->object;
 		parent->link[parent->right == replacement] = replacement->right;
@@ -154,8 +154,8 @@
 	BOOL isRightChild;
 	while (current != NULL && elementsInStack > 1) {
 		current = parent;
-		CHTreeStack_POP;
-		parent = CHTreeStack_TOP;
+		CHBinaryTreeStack_POP;
+		parent = CHBinaryTreeStack_TOP;
 		isRightChild = (parent->right == current);
 		
 		if (current->left->level < current->level-1 ||
@@ -175,11 +175,11 @@
 	free(stack);
 }
 
-- (NSString*) debugDescriptionForNode:(CHTreeNode*)node {
+- (NSString*) debugDescriptionForNode:(CHBinaryTreeNode*)node {
 	return [NSString stringWithFormat:@"[%2d]\t\"%@\"", node->level, node->object];
 }
 
-- (NSString*) dotStringForNode:(CHTreeNode*)node {
+- (NSString*) dotStringForNode:(CHBinaryTreeNode*)node {
 	return [NSString stringWithFormat:@"  \"%@\" [label=\"%@\\n%d\"];\n",
 			node->object, node->object, node->level];
 }

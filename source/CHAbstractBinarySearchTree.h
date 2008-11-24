@@ -1,5 +1,5 @@
 /*
- CHAbstractTree.h
+ CHAbstractBinarySearchTree.h
  CHDataStructures.framework -- Objective-C versions of common data structures.
  Copyright (C) 2008, Quinn Taylor for BYU CocoaHeads <http://cocoaheads.byu.edu>
  Copyright (C) 2002, Phillip Morelock <http://www.phillipmorelock.com>
@@ -18,11 +18,11 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "CHTree.h"
+#import "CHSearchTree.h"
 
 /**
- @file CHAbstractTree.h
- An abstract CHTree implementation with many default method implementations.
+ @file CHAbstractBinarySearchTree.h
+ An abstract CHSearchTree implementation with many default method implementations.
  */
 
 /**
@@ -36,14 +36,14 @@
  integer fields) allows the same node to be used in several different balanced
  trees, while preserving useful semantic meaning appropriate for each algorithm.
  */
-typedef struct CHTreeNode {
+typedef struct CHBinaryTreeNode {
 	id object;                        /**< The object stored in the node. */
 	union {
 		struct {
-			struct CHTreeNode *left;  /**< Link to left child node. */
-			struct CHTreeNode *right; /**< Link to right child node. */
+			struct CHBinaryTreeNode *left;  /**< Link to left child node. */
+			struct CHBinaryTreeNode *right; /**< Link to right child node. */
 		};
-		struct CHTreeNode *link[2];   /**< Links to left and right childen. */
+		struct CHBinaryTreeNode *link[2];   /**< Links to left and right childen. */
 	};
 	union {
 		NSUInteger color;             /**< A node's color (CHRedBlackTree) */
@@ -51,37 +51,37 @@ typedef struct CHTreeNode {
 		NSInteger balance;            /**< A node's balance factor (CHAVLTree) */
 		NSInteger priority;           /**< A node's priority value (CHTreap) */
 	};
-} CHTreeNode;
+} CHBinaryTreeNode;
 
-extern NSUInteger kCHTreeNodeSize;
+extern NSUInteger kCHBinaryTreeNodeSize;
 extern NSUInteger kPointerSize;
 
 #pragma mark Stack Macros
 
-#define CHTreeStack_INIT(stack) { \
+#define CHBinaryTreeStack_INIT(stack) { \
 	stackSize = 16; \
-	stack = malloc(stackSize * kCHTreeNodeSize); \
+	stack = malloc(stackSize * kCHBinaryTreeNodeSize); \
 	elementsInStack = 0; \
 }
 // Since this stack starts at 0 and goes to N-1, resizing is pretty simple.
-#define CHTreeStack_PUSH(obj) { \
+#define CHBinaryTreeStack_PUSH(obj) { \
 	stack[elementsInStack++] = obj; \
 	if (elementsInStack >= stackSize) \
 		stack = realloc(stack, (stackSize*=2)); \
 }
-#define CHTreeStack_POP ((elementsInStack) ? stack[--elementsInStack] : NULL)
-#define CHTreeStack_TOP ((elementsInStack) ? stack[elementsInStack-1] : NULL)
+#define CHBinaryTreeStack_POP ((elementsInStack) ? stack[--elementsInStack] : NULL)
+#define CHBinaryTreeStack_TOP ((elementsInStack) ? stack[elementsInStack-1] : NULL)
 
 #pragma mark Queue Macros
 
-#define CHTreeQueue_INIT(queue) { \
+#define CHBinaryTreeQueue_INIT(queue) { \
 	queueSize = 32; \
-	queue = malloc(queueSize * kCHTreeNodeSize); \
+	queue = malloc(queueSize * kCHBinaryTreeNodeSize); \
 	queueHead = queueTail = 0; \
 }
 // This queue is a circular array, so resizing it takes a little extra care.
 // (memcpy() take the destination address, source address, and number of bytes.)
-#define CHTreeQueue_ENQUEUE(obj) { \
+#define CHBinaryTreeQueue_ENQUEUE(obj) { \
 	queue[queueTail++] = obj; \
 	queueTail %= queueSize; \
 	if (queueHead == queueTail) { \
@@ -91,18 +91,18 @@ extern NSUInteger kPointerSize;
 		queueSize *= 2; \
 	} \
 }
-#define CHTreeQueue_DEQUEUE \
+#define CHBinaryTreeQueue_DEQUEUE \
 	if (queueHead != queueTail) queueHead = (queueHead + 1) % queueSize
-#define CHTreeQueue_FRONT \
+#define CHBinaryTreeQueue_FRONT \
 	((queueHead == queueTail) ? NULL : queue[queueHead])
 
 #pragma mark -
 
 /**
- An abstract CHTree implementation with many default method implementations. The
+ An abstract CHSearchTree implementation with many default method implementations. The
  methods for search, size, and enumeration are implemented in this class, as are
  implementations of NSCoding, NSCopying, and NSFastEnumeration. This works since
- each child class uses the CHTreeNode struct. Each child class must implement
+ each child class uses the CHBinaryTreeNode struct. Each child class must implement
  \link #addObject: -addObject:\endlink and \link #removeObject: -removeObject:
  \endlink so as to conform to their inner workings.
  
@@ -116,10 +116,10 @@ extern NSUInteger kPointerSize;
  <a href="http://eternallyconfuzzled.com/">Julienne Walker</a>. Method names have
  been changed to match the APIs of existing Cocoa collections provided by Apple.
  */
-@interface CHAbstractTree : NSObject <CHTree>
+@interface CHAbstractBinarySearchTree : NSObject <CHSearchTree>
 {
-	CHTreeNode *header;      /**< Dummy header that eliminates special cases. */
-	CHTreeNode *sentinel;    /**< Represents a NULL leaf node; reduces checks. */
+	CHBinaryTreeNode *header;      /**< Dummy header that eliminates special cases. */
+	CHBinaryTreeNode *sentinel;    /**< Represents a NULL leaf node; reduces checks. */
 	NSUInteger count;        /**< The number of elements currently in the tree. */
 	unsigned long mutations; /**< Used to track mutations for NSFastEnumeration. */
 }
@@ -128,7 +128,7 @@ extern NSUInteger kPointerSize;
 - (NSString*) debugDescription;
 
 // Declared to prevent compile warnings, but undocumented on purpose.
-- (NSString*) debugDescriptionForNode:(CHTreeNode*)node;
+- (NSString*) debugDescriptionForNode:(CHBinaryTreeNode*)node;
 
 /**
  Produces a graph description in the DOT language for the receiver tree. A dot
@@ -150,7 +150,7 @@ extern NSUInteger kPointerSize;
  
  @see dotGraphString
  */
-- (NSString*) dotStringForNode:(CHTreeNode*)node;
+- (NSString*) dotStringForNode:(CHBinaryTreeNode*)node;
 
 #pragma mark Adopted Protocols
 
@@ -200,7 +200,7 @@ extern NSUInteger kPointerSize;
 #pragma mark -
 
 /**
- An NSEnumerator for traversing a CHAbstractTree subclass in a specified order.
+ An NSEnumerator for traversing a CHAbstractBinarySearchTree subclass in a specified order.
  
  This enumerator uses iterative tree traversal algorithms for two main reasons:
  <ol>
@@ -216,16 +216,16 @@ extern NSUInteger kPointerSize;
  However, like an enumerator for a mutable data structure, any instances of this
  enumerator become invalid if the tree is modified.
  */
-@interface CHTreeEnumerator : NSEnumerator
+@interface CHBinarySearchTreeEnumerator : NSEnumerator
 {
 	CHTraversalOrder traversalOrder; /**< Order in which to traverse the tree. */
-	id<CHTree> collection; /**< The source of enumerated objects. */
-	CHTreeNode *current; /**< The next node to be enumerated. */
-	CHTreeNode *sentinelNode;  /**< Sentinel used in the tree being traversed. */
+	id<CHSearchTree> collection; /**< The source of enumerated objects. */
+	CHBinaryTreeNode *current; /**< The next node to be enumerated. */
+	CHBinaryTreeNode *sentinelNode;  /**< Sentinel used in the tree being traversed. */
 	unsigned long mutationCount; /**< Stores the collection's initial mutation. */
 	unsigned long *mutationPtr; /**< Pointer for checking changes in mutation. */
 
-	CHTreeNode **stack, **queue;
+	CHBinaryTreeNode **stack, **queue;
 	NSUInteger stackSize, elementsInStack;
 	NSUInteger queueSize, queueHead, queueTail;
 }
@@ -240,9 +240,9 @@ extern NSUInteger kPointerSize;
  @param order The traversal order to use for enumerating the given @a tree.
  @param mutations A pointer to the collection's mutation count for invalidation.
  */
-- (id) initWithTree:(id<CHTree>)tree
-               root:(CHTreeNode*)root
-           sentinel:(CHTreeNode*)sentinel
+- (id) initWithTree:(id<CHSearchTree>)tree
+               root:(CHBinaryTreeNode*)root
+           sentinel:(CHBinaryTreeNode*)sentinel
      traversalOrder:(CHTraversalOrder)order
     mutationPointer:(unsigned long*)mutations;
 
@@ -276,7 +276,7 @@ extern NSUInteger kPointerSize;
  the tree, instances of this class always return <code>NSOrderedAscending</code>
  when called as the receiver of the <code>-compare:</code> method.
  */
-@interface CHTreeHeaderObject : NSObject
+@interface CHSearchTreeHeaderObject : NSObject
 
 /**
  Returns the singleton instance of this class.
@@ -284,7 +284,7 @@ extern NSUInteger kPointerSize;
  @return The singleton instance of this class.
  */
 + (id) headerObject;
-// NOTE: The singleton is declared as a static variable in CHAbstractTree.m.
+// NOTE: The singleton is declared as a static variable in CHAbstractBinarySearchTree.m.
 
 /**
  Always indicate that the other object should appear to the right side. @b Note:

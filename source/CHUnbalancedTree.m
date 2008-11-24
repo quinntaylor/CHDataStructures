@@ -26,7 +26,7 @@
 		CHNilArgumentException([self class], _cmd);
 	++mutations;
 	
-	CHTreeNode *parent = header, *current = header->right;
+	CHBinaryTreeNode *parent = header, *current = header->right;
 	sentinel->object = anObject; // Assure that we find a spot to insert
 	NSComparisonResult comparison;
 	while (comparison = [current->object compare:anObject]) {
@@ -41,7 +41,7 @@
 		current->object = anObject;		
 	} else {
 		// Create a new node to hold the value being inserted
-		current = malloc(kCHTreeNodeSize);
+		current = malloc(kCHBinaryTreeNodeSize);
 		current->object = anObject;
 		current->left   = sentinel;
 		current->right  = sentinel;
@@ -63,7 +63,7 @@
 		return;
 	++mutations;
 	
-	CHTreeNode *parent, *current = header;
+	CHBinaryTreeNode *parent, *current = header;
 	
 	sentinel->object = anObject; // Assure that we find a spot to insert
 	NSComparisonResult comparison;
@@ -86,7 +86,7 @@
 		// The most complex case: removing a node with 2 non-null children
 		// (Replace object with the leftmost object in the right subtree.)
 		parent = current;
-		CHTreeNode *replacement = current->right;
+		CHBinaryTreeNode *replacement = current->right;
 		while (replacement->left != sentinel) {
 			parent = replacement;
 			replacement = replacement->left;

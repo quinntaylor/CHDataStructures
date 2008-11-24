@@ -21,8 +21,8 @@
 
 #pragma mark C Functions for Optimized Operations
 
-CHTreeNode * _rotateNodeWithLeftChild(CHTreeNode *node) {
-	CHTreeNode *leftChild = node->left;
+static inline CHBinaryTreeNode * _rotateNodeWithLeftChild(CHBinaryTreeNode *node) {
+	CHBinaryTreeNode *leftChild = node->left;
 	node->left = leftChild->right;
 	leftChild->right = node;
 	node->color = kRED;
@@ -30,8 +30,8 @@ CHTreeNode * _rotateNodeWithLeftChild(CHTreeNode *node) {
 	return leftChild;
 }
 
-CHTreeNode * _rotateNodeWithRightChild(CHTreeNode *node) {
-	CHTreeNode *rightChild = node->right;
+static inline CHBinaryTreeNode * _rotateNodeWithRightChild(CHBinaryTreeNode *node) {
+	CHBinaryTreeNode *rightChild = node->right;
 	node->right = rightChild->left;
 	rightChild->left = node;
 	node->color = kRED;
@@ -39,7 +39,7 @@ CHTreeNode * _rotateNodeWithRightChild(CHTreeNode *node) {
 	return rightChild;
 }
 
-CHTreeNode* _rotateObjectOnAncestor(id anObject, CHTreeNode *ancestor) {
+CHBinaryTreeNode* _rotateObjectOnAncestor(id anObject, CHBinaryTreeNode *ancestor) {
 	if ([ancestor->object compare:anObject] == NSOrderedDescending) {
 		return ancestor->left =
 			([ancestor->left->object compare:anObject] == NSOrderedDescending)
@@ -54,8 +54,8 @@ CHTreeNode* _rotateObjectOnAncestor(id anObject, CHTreeNode *ancestor) {
 	}
 }
 
-CHTreeNode* singleRotation(CHTreeNode *node, BOOL goingRight) {
-	CHTreeNode *save = node->link[!goingRight];
+static inline CHBinaryTreeNode* singleRotation(CHBinaryTreeNode *node, BOOL goingRight) {
+	CHBinaryTreeNode *save = node->link[!goingRight];
 	node->link[!goingRight] = save->link[goingRight];
 	save->link[goingRight] = node;
 	node->color = kRED;
@@ -63,7 +63,7 @@ CHTreeNode* singleRotation(CHTreeNode *node, BOOL goingRight) {
 	return save;
 }
 
-CHTreeNode* doubleRotation(CHTreeNode *node, BOOL goingRight) {
+static inline CHBinaryTreeNode* doubleRotation(CHBinaryTreeNode *node, BOOL goingRight) {
 	node->link[!goingRight] = singleRotation(node->link[!goingRight], !goingRight);
 	return singleRotation(node, goingRight);	
 }
@@ -145,7 +145,7 @@ CHTreeNode* doubleRotation(CHTreeNode *node, BOOL goingRight) {
 		current->object = anObject;
 	} else {
 		++count;
-		current = malloc(kCHTreeNodeSize);
+		current = malloc(kCHBinaryTreeNodeSize);
 		current->object = anObject;
 		current->left = sentinel;
 		current->right = sentinel;
@@ -175,7 +175,7 @@ CHTreeNode* doubleRotation(CHTreeNode *node, BOOL goingRight) {
 	
 	grandparent = parent = current = header;
 	sentinel->object = anObject;
-	CHTreeNode *found = NULL, *sibling;
+	CHBinaryTreeNode *found = NULL, *sibling;
 	NSComparisonResult comparison;
 	BOOL isGoingRight = YES, prevWentRight = YES;
 	while (current->link[isGoingRight] != sentinel) {
@@ -203,7 +203,7 @@ CHTreeNode* doubleRotation(CHTreeNode *node, BOOL goingRight) {
 						current->color = kRED;
 					}
 					else {
-						CHTreeNode *tempNode =
+						CHBinaryTreeNode *tempNode =
 							grandparent->link[(grandparent->right == parent)];
 						if (sibling->link[prevWentRight]->color == kRED)
 							tempNode = doubleRotation(parent, prevWentRight);
@@ -231,12 +231,12 @@ CHTreeNode* doubleRotation(CHTreeNode *node, BOOL goingRight) {
 	header->right->color = kBLACK; // Make the root black for simplified logic
 }
 
-- (NSString*) debugDescriptionForNode:(CHTreeNode*)node {
+- (NSString*) debugDescriptionForNode:(CHBinaryTreeNode*)node {
 	return [NSString stringWithFormat:@"[%s]\t\"%@\"",
 			(node->color == kBLACK) ? "BLACK" : " RED ", node->object];
 }
 
-- (NSString*) dotStringForNode:(CHTreeNode*)node {
+- (NSString*) dotStringForNode:(CHBinaryTreeNode*)node {
 	return [NSString stringWithFormat:@"  \"%@\" [color=%@];\n",
 			node->object, (node->color == kRED) ? @"red" : @"black"];
 }

@@ -1,5 +1,5 @@
 /*
- CHTree.h
+ CHSearchTree.h
  CHDataStructures.framework -- Objective-C versions of common data structures.
  Copyright (C) 2008, Quinn Taylor for BYU CocoaHeads <http://cocoaheads.byu.edu>
  Copyright (C) 2002, Phillip Morelock <http://www.phillipmorelock.com>
@@ -21,10 +21,9 @@
 #import "Util.h"
 
 /**
- @file CHTree.h
+ @file CHSearchTree.h
  
- A <a href="http://en.wikipedia.org/wiki/Tree_(data_structure)">tree</a> protocol
- which specifes an interface for N-ary tree structures.
+ A protocol which specifes an interface for N-ary search trees.
  */
 
 /**
@@ -42,17 +41,17 @@ typedef enum {
 #define isValidTraversalOrder(o) (o>=CHTraverseAscending && o<=CHTraverseLevelOrder)
 
 /**
- A <a href="http://en.wikipedia.org/wiki/Tree_(data_structure)">tree</a> protocol
- which specifes an interface for N-ary search tree structures. Defines methods to
- support insertion, removal, search, and element enumeration. This protocol works
- for trees where nodes have any number of children, not just binary trees. Though
+ A protocol which specifes an interface for search trees, whether the customary
+ <a href="http://en.wikipedia.org/wiki/Binary_search_tree">binary tree</a>, an
+ N-ary tree structure, or any similary tree-like structure. The protocol defines
+ methods that support insertion, removal, search, and object enumeration. Though
  any conforming class must implement all these methods, they may document that
  certain of them are unsupported, and/or raise exceptions when they are called.
  
- Objects in a CHTree are stored according to their sorted order, so they must
- respond to the <code>compare:</code> selector, which accepts another object and
- returns one of <code>{NSOrderedAscending | NSOrderedSame | NSOrderedDescending}
- </code> as the receiver is less than, equal to, or greater than the argument.
+ Objects are stored according to their sorted order, so they must respond to the
+ <code>compare:</code> selector, which accepts another object and returns one of
+ <code>{NSOrderedAscending | NSOrderedSame | NSOrderedDescending}</code> as the
+ receiver is less than, equal to, or greater than the argument.
  (See <code>NSComparisonResult</code> in NSObjCRuntime.h for details.)
  
  There are several methods for visiting each node in a tree data structure, known
@@ -67,7 +66,7 @@ typedef enum {
  <table align="center" width="100%" border="0" cellpadding="0">
  <tr>
  <td style="vertical-align: bottom">
-	@image html tree-traversal.png "Figure 1 — A sample binary tree."
+	@image html tree-traversal.png "Figure 1 — A sample binary search tree."
  </td>
  <td style="vertical-align: bottom" align="center">
  
@@ -94,11 +93,11 @@ typedef enum {
  - <code>CHTraversePostOrder</code>
  - <code>CHTraverseLevelOrder</code>
  
- These constants are used primarily with CHTreeEnumerator (obtained via @link
+ These constants are used primarily with CHBinarySearchTreeEnumerator (see @link
  #objectEnumeratorWithTraversalOrder: -objectEnumeratorWithTraversalOrder:
  \endlink) to access objects from a tree by traversing it in a specified order.
  */
-@protocol CHTree <NSObject, NSCoding, NSCopying, NSFastEnumeration>
+@protocol CHSearchTree <NSObject, NSCoding, NSCopying, NSFastEnumeration>
 
 /**
  Initialize a tree with no objects.
@@ -140,29 +139,29 @@ typedef enum {
 - (NSUInteger) count;
 
 /**
- Returns the maximum (rightmost) object in the tree.
+ Returns the maximum object in the tree.
  
- @return The maximum (rightmost) object in the tree, or <code>nil</code> if empty.
+ @return The maximum object in the tree, or <code>nil</code> if empty.
  */
 - (id) findMax;
 
 /**
- Returns the minimum (leftmost) object in the tree.
+ Returns the minimum object in the tree.
  
- @return The minimum (leftmost) object in the tree, or <code>nil</code> if empty.
+ @return The minimum object in the tree, or <code>nil</code> if empty.
  */
 - (id) findMin;
 
 /**
- Return the object for which <code>compare:</code> returns <code>NSOrderedSame</code>.
+ Return object for which <code>compare:</code> returns <code>NSOrderedSame</code>.
  
  @param anObject The object to be matched and located in the tree.
- @return The object which matches @a anObject, or <code>nil</code> if none is found.
+ @return The object which matches @a anObject, or <code>nil</code> if not found.
  */
 - (id) findObject:(id)anObject;
 
 /**
- Remove an object for which <code>compare:</code> returns <code>NSOrderedSame</code>.
+ Remove object for which <code>compare:</code> returns <code>NSOrderedSame</code>.
  If no matching object exists, there is no effect.
 
  @param anObject The object to be removed from the tree.

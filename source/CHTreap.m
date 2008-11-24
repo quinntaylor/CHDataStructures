@@ -23,7 +23,7 @@
 
 // Two-way single rotation; 'dir' is the side to which the root should rotate.
 #define singleRotation(node,dir,parent) {       \
-	CHTreeNode *save = node->link[!dir]; \
+	CHBinaryTreeNode *save = node->link[!dir]; \
 	node->link[!dir] = save->link[dir];  \
 	save->link[dir] = node;              \
 	parent->link[(parent->right == node)] = save; \
@@ -48,18 +48,18 @@
 		                           @"Invalid priority: cannot be NSNotFound.");
 	++mutations;
 
-	CHTreeNode *parent, *current = header;
-	CHTreeNode **stack;
+	CHBinaryTreeNode *parent, *current = header;
+	CHBinaryTreeNode **stack;
 	NSUInteger stackSize, elementsInStack;
-	CHTreeStack_INIT(stack);
+	CHBinaryTreeStack_INIT(stack);
 	
 	sentinel->object = anObject; // Assure that we find a spot to insert
 	NSComparisonResult comparison;
 	while (comparison = [current->object compare:anObject]) {
-		CHTreeStack_PUSH(current);
+		CHBinaryTreeStack_PUSH(current);
 		current = current->link[comparison == NSOrderedAscending]; // R on YES
 	}
-	parent = CHTreeStack_POP;
+	parent = CHBinaryTreeStack_POP;
 
 	[anObject retain]; // Must retain whether replacing value or adding new node
 	int direction;
@@ -78,7 +78,7 @@
 			current = current->link[!direction];
 		}
 	} else {
-		current = malloc(kCHTreeNodeSize);
+		current = malloc(kCHBinaryTreeNodeSize);
 		current->object = anObject;
 		current->left   = sentinel;
 		current->right  = sentinel;
@@ -94,8 +94,8 @@
 	while (parent != header && current->priority > parent->priority) {
 		// Rotate current node up, push parent down to opposite subtree.
 		direction = (parent->left == current);
-		singleRotation(parent, direction, CHTreeStack_TOP);
-		parent = CHTreeStack_POP;
+		singleRotation(parent, direction, CHBinaryTreeStack_TOP);
+		parent = CHBinaryTreeStack_POP;
 	}
 	free(stack);
 }
@@ -107,7 +107,7 @@
 		return;
 	++mutations;
 	
-	CHTreeNode *parent, *current = header;
+	CHBinaryTreeNode *parent, *current = header;
 	NSComparisonResult comparison;
 	int direction;
 	
@@ -138,19 +138,19 @@
 	if (anObject == nil)
 		return NSNotFound;
 	sentinel->object = anObject; // Make sure the target value is always "found"
-	CHTreeNode *current = header->right;
+	CHBinaryTreeNode *current = header->right;
 	NSComparisonResult comparison;
 	while (comparison = [current->object compare:anObject]) // while not equal
 		current = current->link[comparison == NSOrderedAscending]; // R on YES
 	return (current != sentinel) ? current->priority : NSNotFound;
 }
 
-- (NSString*) debugDescriptionForNode:(CHTreeNode*)node {
+- (NSString*) debugDescriptionForNode:(CHBinaryTreeNode*)node {
 	return [NSString stringWithFormat:@"[%11d]\t\"%@\"",
 			node->priority, node->object];
 }
 
-- (NSString*) dotStringForNode:(CHTreeNode*)node {
+- (NSString*) dotStringForNode:(CHBinaryTreeNode*)node {
 	return [NSString stringWithFormat:@"  \"%@\" [label=\"%@\\n%d\"];\n",
 			node->object, node->object, node->priority];
 }

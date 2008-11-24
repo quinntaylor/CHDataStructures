@@ -1,5 +1,5 @@
 /*
- CHAbstractTree.m
+ CHAbstractBinarySearchTree.m
  CHDataStructures.framework -- Objective-C versions of common data structures.
  Copyright (C) 2008, Quinn Taylor for BYU CocoaHeads <http://cocoaheads.byu.edu>
  Copyright (C) 2002, Phillip Morelock <http://www.phillipmorelock.com>
@@ -17,13 +17,13 @@
  this library.  If not, see <http://www.gnu.org/copyleft/lesser.html>.
  */
 
-#import "CHAbstractTree.h"
+#import "CHAbstractBinarySearchTree.h"
 
-// Definitions of variables declared as 'extern' in CHAbstractTree.h
-NSUInteger kCHTreeNodeSize = sizeof(CHTreeNode);
+// Definitions of variables declared as 'extern' in CHAbstractBinarySearchTree.h
+NSUInteger kCHBinaryTreeNodeSize = sizeof(CHBinaryTreeNode);
 NSUInteger kPointerSize = sizeof(void*);
 
-@implementation CHAbstractTree
+@implementation CHAbstractBinarySearchTree
 
 - (void) dealloc {
 	[self removeAllObjects];
@@ -47,13 +47,13 @@ NSUInteger kPointerSize = sizeof(void*);
 	count = 0;
 	mutations = 0;
 	
-	sentinel = malloc(kCHTreeNodeSize);
+	sentinel = malloc(kCHBinaryTreeNodeSize);
 	sentinel->object = nil;
 	sentinel->right = sentinel;
 	sentinel->left = sentinel;
 	
-	header = malloc(kCHTreeNodeSize);
-	header->object = [CHTreeHeaderObject headerObject];
+	header = malloc(kCHBinaryTreeNodeSize);
+	header->object = [CHSearchTreeHeaderObject headerObject];
 	header->left = sentinel;
 	header->right = sentinel;
 	return self;
@@ -109,7 +109,7 @@ NSUInteger kPointerSize = sizeof(void*);
  copies returned by this method are always mutable.
  */
 - (id) copyWithZone:(NSZone *)zone {
-	id<CHTree> newTree = [[[self class] alloc] init];
+	id<CHSearchTree> newTree = [[[self class] alloc] init];
 	NSEnumerator *e = [self objectEnumeratorWithTraversalOrder:CHTraverseLevelOrder];
 	for (id anObject in e)
 		[newTree addObject:anObject];
@@ -132,8 +132,8 @@ NSUInteger kPointerSize = sizeof(void*);
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len
 {
-	CHTreeNode *current;
-	CHTreeNode **stack;
+	CHBinaryTreeNode *current;
+	CHBinaryTreeNode **stack;
 	NSUInteger stackSize, elementsInStack;
 	
 	// For the first call, start at leftmost node, otherwise the last saved node
@@ -141,14 +141,14 @@ NSUInteger kPointerSize = sizeof(void*);
 		state->itemsPtr = stackbuf;
 		state->mutationsPtr = &mutations;
 		current = header->right;
-		CHTreeStack_INIT(stack);
+		CHBinaryTreeStack_INIT(stack);
 	}
 	else if (state->state == 1) {
 		return 0;		
 	}
 	else {
-		current = (CHTreeNode*) state->state;
-		stack = (CHTreeNode**) state->extra[0];
+		current = (CHBinaryTreeNode*) state->state;
+		stack = (CHBinaryTreeNode**) state->extra[0];
 		stackSize = (NSUInteger) state->extra[1];
 		elementsInStack = (NSUInteger) state->extra[2];
 	}
@@ -157,11 +157,10 @@ NSUInteger kPointerSize = sizeof(void*);
 	NSUInteger batchCount = 0;
 	while ( (current != sentinel || elementsInStack > 0) && batchCount < len) {
 		while (current != sentinel) {
-			CHTreeStack_PUSH(current);
+			CHBinaryTreeStack_PUSH(current);
 			current = current->left;
-			// TODO: How to not push/pop leaf nodes unnecessarily?
 		}
-		current = CHTreeStack_POP; // Save top node for return value
+		current = CHBinaryTreeStack_POP; // Save top node for return value
 		stackbuf[batchCount] = current->object;
 		current = current->right;
 		batchCount++;
@@ -204,7 +203,7 @@ NSUInteger kPointerSize = sizeof(void*);
 
 - (id) findMax {
 	sentinel->object = nil;
-	CHTreeNode *current = header->right;
+	CHBinaryTreeNode *current = header->right;
 	while (current->right != sentinel)
 		current = current->right;
 	return current->object;
@@ -212,7 +211,7 @@ NSUInteger kPointerSize = sizeof(void*);
 
 - (id) findMin {
 	sentinel->object = nil;
-	CHTreeNode *current = header->right;
+	CHBinaryTreeNode *current = header->right;
 	while (current->left != sentinel)
 		current = current->left;
 	return current->object;
@@ -222,7 +221,7 @@ NSUInteger kPointerSize = sizeof(void*);
 	if (anObject == nil)
 		return nil;
 	sentinel->object = anObject; // Make sure the target value is always "found"
-	CHTreeNode *current = header->right;
+	CHBinaryTreeNode *current = header->right;
 	NSComparisonResult comparison;
 	while (comparison = [current->object compare:anObject]) // while not equal
 		current = current->link[comparison == NSOrderedAscending]; // R on YES
@@ -241,17 +240,17 @@ NSUInteger kPointerSize = sizeof(void*);
 		return;
 	++mutations;
 	
-	CHTreeNode **stack;
+	CHBinaryTreeNode **stack;
 	NSUInteger stackSize, elementsInStack;
-	CHTreeStack_INIT(stack);
-	CHTreeStack_PUSH(header->right);
+	CHBinaryTreeStack_INIT(stack);
+	CHBinaryTreeStack_PUSH(header->right);
 
-	CHTreeNode *current;
-	while (current = CHTreeStack_POP) {
+	CHBinaryTreeNode *current;
+	while (current = CHBinaryTreeStack_POP) {
 		if (current->right != sentinel)
-			CHTreeStack_PUSH(current->right);
+			CHBinaryTreeStack_PUSH(current->right);
 		if (current->left != sentinel)
-			CHTreeStack_PUSH(current->left);
+			CHBinaryTreeStack_PUSH(current->left);
 		[current->object release];
 		free(current);
 	}
@@ -266,11 +265,12 @@ NSUInteger kPointerSize = sizeof(void*);
 }
 
 - (NSEnumerator*) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order {
-	return [[[CHTreeEnumerator alloc] initWithTree:self
-	                                          root:header->right
-	                                      sentinel:sentinel
-	                                traversalOrder:order
-	                               mutationPointer:&mutations] autorelease];
+	return [[[CHBinarySearchTreeEnumerator alloc]
+			 initWithTree:self
+	                 root:header->right
+	             sentinel:sentinel
+	       traversalOrder:order
+	      mutationPointer:&mutations] autorelease];
 }
 
 - (NSEnumerator*) reverseObjectEnumerator {
@@ -280,19 +280,19 @@ NSUInteger kPointerSize = sizeof(void*);
 - (NSString*) debugDescription {
 	NSMutableString *description = [NSMutableString stringWithFormat:
 	                                @"<%@: 0x%x> = {\n", [self class], self];
-	CHTreeNode *current;
-	CHTreeNode **stack;
+	CHBinaryTreeNode *current;
+	CHBinaryTreeNode **stack;
 	NSUInteger stackSize, elementsInStack;
-	CHTreeStack_INIT(stack);
+	CHBinaryTreeStack_INIT(stack);
 	
 	sentinel->object = nil;
 	if (header->right != sentinel)
-		CHTreeStack_PUSH(header->right);	
-	while (current = CHTreeStack_POP) {
+		CHBinaryTreeStack_PUSH(header->right);	
+	while (current = CHBinaryTreeStack_POP) {
 		if (current->right != sentinel)
-			CHTreeStack_PUSH(current->right);
+			CHBinaryTreeStack_PUSH(current->right);
 		if (current->left != sentinel)
-			CHTreeStack_PUSH(current->left);
+			CHBinaryTreeStack_PUSH(current->left);
 		// Append entry for the current node, including children
 		[description appendFormat:@"\t%@ -> \"%@\" and \"%@\"\n",
 		 [self debugDescriptionForNode:current],
@@ -303,7 +303,7 @@ NSUInteger kPointerSize = sizeof(void*);
 	return description;
 }
 
-- (NSString*) debugDescriptionForNode:(CHTreeNode*)node {
+- (NSString*) debugDescriptionForNode:(CHBinaryTreeNode*)node {
 	return [NSString stringWithFormat:@"\"%@\"", node->object];
 }
 
@@ -317,16 +317,16 @@ NSUInteger kPointerSize = sizeof(void*);
 		NSUInteger sentinelCount = 0;
 		sentinel->object = nil;
 		
-		CHTreeNode *current;
-		CHTreeNode **stack;
+		CHBinaryTreeNode *current;
+		CHBinaryTreeNode **stack;
 		NSUInteger stackSize, elementsInStack;
-		CHTreeStack_INIT(stack);
-		CHTreeStack_PUSH(header->right);
-		while (current = CHTreeStack_POP) {
+		CHBinaryTreeStack_INIT(stack);
+		CHBinaryTreeStack_PUSH(header->right);
+		while (current = CHBinaryTreeStack_POP) {
 			if (current->left != sentinel)
-				CHTreeStack_PUSH(current->left);
+				CHBinaryTreeStack_PUSH(current->left);
 			if (current->right != sentinel)
-				CHTreeStack_PUSH(current->right);
+				CHBinaryTreeStack_PUSH(current->right);
 			// Append entry for node with any subclass-specific customizations.
 			[graph appendString:[self dotStringForNode:current]];
 			// Append entry for edges from current node to both its children.
@@ -349,7 +349,7 @@ NSUInteger kPointerSize = sizeof(void*);
 	return graph;
 }
 
-- (NSString*) dotStringForNode:(CHTreeNode*)node {
+- (NSString*) dotStringForNode:(CHBinaryTreeNode*)node {
 	return [NSString stringWithFormat:@"  \"%@\";\n", node->object];
 }
 
@@ -368,23 +368,23 @@ NSUInteger kPointerSize = sizeof(void*);
 
 #pragma mark -
 
-@implementation CHTreeEnumerator
+@implementation CHBinarySearchTreeEnumerator
 
-- (id) initWithTree:(id<CHTree>)tree
-               root:(CHTreeNode*)root
-           sentinel:(CHTreeNode*)sentinel
+- (id) initWithTree:(id<CHSearchTree>)tree
+               root:(CHBinaryTreeNode*)root
+           sentinel:(CHBinaryTreeNode*)sentinel
      traversalOrder:(CHTraversalOrder)order
     mutationPointer:(unsigned long*)mutations
 {
 	if ([super init] == nil || !isValidTraversalOrder(order)) return nil;
 	traversalOrder = order;
 	collection = (root != sentinel) ? [tree retain] : nil;
-	CHTreeStack_INIT(stack);
-	CHTreeQueue_INIT(queue);
+	CHBinaryTreeStack_INIT(stack);
+	CHBinaryTreeQueue_INIT(queue);
 	if (traversalOrder == CHTraverseLevelOrder) {
-		CHTreeQueue_ENQUEUE(root);
+		CHBinaryTreeQueue_ENQUEUE(root);
 	} else if (traversalOrder == CHTraversePreOrder) {
-		CHTreeStack_PUSH(root);
+		CHBinaryTreeStack_PUSH(root);
 	} else {
 		current = root;
 	}
@@ -432,11 +432,11 @@ NSUInteger kPointerSize = sizeof(void*);
 				return nil;
 			}
 			while (current != sentinelNode) {
-				CHTreeStack_PUSH(current);
+				CHBinaryTreeStack_PUSH(current);
 				current = current->left;
 				// TODO: How to not push/pop leaf nodes unnecessarily?
 			}
-			current = CHTreeStack_POP; // Save top node for return value
+			current = CHBinaryTreeStack_POP; // Save top node for return value
 			id tempObject = current->object;
 			current = current->right;
 			return tempObject;
@@ -449,27 +449,27 @@ NSUInteger kPointerSize = sizeof(void*);
 				return nil;
 			}
 			while (current != sentinelNode) {
-				CHTreeStack_PUSH(current);
+				CHBinaryTreeStack_PUSH(current);
 				current = current->right;
 				// TODO: How to not push/pop leaf nodes unnecessarily?
 			}
-			current = CHTreeStack_POP; // Save top node for return value
+			current = CHBinaryTreeStack_POP; // Save top node for return value
 			id tempObject = current->object;
 			current = current->left;
 			return tempObject;
 		}
 			
 		case CHTraversePreOrder: {
-			current = CHTreeStack_POP;
+			current = CHBinaryTreeStack_POP;
 			if (current == NULL) {
 				[collection release];
 				collection = nil;
 				return nil;
 			}
 			if (current->right != sentinelNode)
-				CHTreeStack_PUSH(current->right);
+				CHBinaryTreeStack_PUSH(current->right);
 			if (current->left != sentinelNode)
-				CHTreeStack_PUSH(current->left);
+				CHBinaryTreeStack_PUSH(current->left);
 			return current->object;
 		}
 			
@@ -482,25 +482,25 @@ NSUInteger kPointerSize = sizeof(void*);
 			}
 			while (1) {
 				while (current != sentinelNode) {
-					CHTreeStack_PUSH(current);
+					CHBinaryTreeStack_PUSH(current);
 					current = current->left;
 				}
 				// A null entry indicates that we've traversed the right subtree
-				if (CHTreeStack_TOP != NULL) {
-					current = CHTreeStack_TOP->right;
-					CHTreeStack_PUSH(NULL);
+				if (CHBinaryTreeStack_TOP != NULL) {
+					current = CHBinaryTreeStack_TOP->right;
+					CHBinaryTreeStack_PUSH(NULL);
 					// TODO: How to not push a null pad for leaf nodes?
 				}
 				else {
-					CHTreeStack_POP; // ignore the null pad
-					return CHTreeStack_POP->object;
+					CHBinaryTreeStack_POP; // ignore the null pad
+					return CHBinaryTreeStack_POP->object;
 				}				
 			}
 		}
 			
 		case CHTraverseLevelOrder: {
-			current = CHTreeQueue_FRONT;
-			CHTreeQueue_DEQUEUE;
+			current = CHBinaryTreeQueue_FRONT;
+			CHBinaryTreeQueue_DEQUEUE;
 			if (current == NULL) {
 				[collection release];
 				collection = nil;
@@ -508,9 +508,9 @@ NSUInteger kPointerSize = sizeof(void*);
 				return nil;
 			}
 			if (current->left != sentinelNode)
-				CHTreeQueue_ENQUEUE(current->left);
+				CHBinaryTreeQueue_ENQUEUE(current->left);
 			if (current->right != sentinelNode)
-				CHTreeQueue_ENQUEUE(current->right);
+				CHBinaryTreeQueue_ENQUEUE(current->right);
 			return current->object;
 		}
 	}
@@ -521,13 +521,13 @@ NSUInteger kPointerSize = sizeof(void*);
 
 #pragma mark -
 
-static CHTreeHeaderObject *headerObject = nil;
+static CHSearchTreeHeaderObject *headerObject = nil;
 
-@implementation CHTreeHeaderObject
+@implementation CHSearchTreeHeaderObject
 
 + (id) headerObject {
 	if (headerObject == nil)
-		headerObject = [[CHTreeHeaderObject alloc] init];
+		headerObject = [[CHSearchTreeHeaderObject alloc] init];
 	return headerObject;
 }
 

@@ -5,18 +5,18 @@
 #import <CHDataStructures/CHDataStructures.h>
 #import <sys/time.h>
 
-@interface CHAbstractTree (Height)
+@interface CHAbstractBinarySearchTree (Height)
 - (NSUInteger) height;
-- (NSUInteger) heightOfSubtreeAtNode:(CHTreeNode*)node;
+- (NSUInteger) heightOfSubtreeAtNode:(CHBinaryTreeNode*)node;
 @end
 
-@implementation CHAbstractTree (Height)
+@implementation CHAbstractBinarySearchTree (Height)
 
 - (NSUInteger) height {
 	return [self heightOfSubtreeAtNode:header->right];
 }
 
-- (NSUInteger) heightOfSubtreeAtNode:(CHTreeNode*)node {
+- (NSUInteger) heightOfSubtreeAtNode:(CHBinaryTreeNode*)node {
 	if (node == sentinel)
 		return 0;
 	else {
@@ -368,7 +368,7 @@ void benchmarkTree(Class testClass) {
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 	CHQuietLog(@"\n%@", testClass);
 	
-	id<CHTree> tree;
+	id<CHSearchTree> tree;
 	
 	printf("(Operation)         ");
 	for (NSArray *array in objects) {
@@ -457,7 +457,7 @@ int main (int argc, const char * argv[]) {
 	
 	// Create more disordered sets of values for testing heap and tree subclasses
 
-	CHQuietLog(@"\n<CHTree> Implemenations");
+	CHQuietLog(@"\n<CHSearchTree> Implemenations");
 	
 	NSArray *testClasses = [NSArray arrayWithObjects:
 							[CHAnderssonTree class],
@@ -473,13 +473,13 @@ int main (int argc, const char * argv[]) {
 		[dictionary setObject:[NSMutableArray array] forKey:@"addObject"];
 		[dictionary setObject:[NSMutableArray array] forKey:@"findObject"];
 		[dictionary setObject:[NSMutableArray array] forKey:@"removeObject"];
-		if ([aClass conformsToProtocol:@protocol(CHTree)])
+		if ([aClass conformsToProtocol:@protocol(CHSearchTree)])
 			[dictionary setObject:[NSMutableArray array] forKey:@"height"];
 		[treeResults setObject:dictionary forKey:[aClass className]];
 	}
 	
 	NSMutableSet *objectSet = [NSMutableSet set];
-	CHAbstractTree *tree;
+	CHAbstractBinarySearchTree *tree;
 	double startTime, duration;
 	
 	NSUInteger jitteredSize; // For making sure scatterplot dots not overlap
@@ -531,7 +531,7 @@ int main (int argc, const char * argv[]) {
 				  jitteredSize, duration/size*scale]];
 				
 				// Maximum height
-				if ([aClass conformsToProtocol:@protocol(CHTree)])
+				if ([aClass conformsToProtocol:@protocol(CHSearchTree)])
 					[[dictionary objectForKey:@"height"] addObject:
 					 [NSString stringWithFormat:@"%u,%u",
 					  jitteredSize, [tree height]]];

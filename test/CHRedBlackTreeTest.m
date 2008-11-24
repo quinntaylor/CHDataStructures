@@ -34,7 +34,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 @interface CHRedBlackTree (Test)
 
 - (BOOL) verify;
-- (NSUInteger) verifySubtreeAtNode:(CHTreeNode*)node;
+- (NSUInteger) verifySubtreeAtNode:(CHBinaryTreeNode*)node;
 
 @end
 
@@ -46,7 +46,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 }
 
 // Recursive method for verifying that red-black properties are not violated.
-- (NSUInteger) verifySubtreeAtNode:(CHTreeNode*)node {
+- (NSUInteger) verifySubtreeAtNode:(CHBinaryTreeNode*)node {
 	if (node == sentinel)
 		return 1;
 	/* Test for consecutive red links */
@@ -324,7 +324,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 }
 
 - (void) testDebugDescriptionForNode {
-	CHTreeNode *node = malloc(kCHTreeNodeSize);
+	CHBinaryTreeNode *node = malloc(kCHBinaryTreeNodeSize);
 	node->object = [NSString stringWithString:@"A B C"];
 	node->color = kRED;
 	STAssertEqualObjects([tree debugDescriptionForNode:node],
@@ -332,7 +332,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 }
 
 - (void) testDotStringForNode {
-	CHTreeNode *node = malloc(kCHTreeNodeSize);
+	CHBinaryTreeNode *node = malloc(kCHBinaryTreeNodeSize);
 	node->object = [NSString stringWithString:@"A B C"];
 	node->color = kRED;
 	STAssertEqualObjects([tree dotStringForNode:node],

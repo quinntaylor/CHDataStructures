@@ -18,7 +18,7 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "CHAbstractTree.h"
+#import "CHAbstractBinarySearchTree.h"
 
 #define kBLACK 0
 #define kRED 1
@@ -26,7 +26,7 @@
 /**
  @file CHRedBlackTree.h
  A <a href="http://en.wikipedia.org/wiki/Red-black_trees">Red-Black tree</a>
- implementation of CHTree.
+ implementation of CHSearchTree.
  */
 
 /**
@@ -82,12 +82,12 @@
  1978. (<a href="http://dx.doi.org/10.1109/SFCS.1978.3">DOI link to IEEE</a>)
  </div>
  */
-@interface CHRedBlackTree : CHAbstractTree
+@interface CHRedBlackTree : CHAbstractBinarySearchTree
 {
-	CHTreeNode *current;
-	CHTreeNode *parent;
-	CHTreeNode *grandparent;
-	CHTreeNode *greatgrandparent;
+	CHBinaryTreeNode *current;
+	CHBinaryTreeNode *parent;
+	CHBinaryTreeNode *grandparent;
+	CHBinaryTreeNode *greatgrandparent;
 }
 
 @end

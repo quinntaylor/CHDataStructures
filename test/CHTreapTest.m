@@ -32,7 +32,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 @interface CHTreap (Test)
 
 - (void) verify;
-- (void) verifySubtreeAtNode:(CHTreeNode*)node;
+- (void) verifySubtreeAtNode:(CHBinaryTreeNode*)node;
 
 @end
 
@@ -43,7 +43,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 }
 
 // Recursive method for verifying that BST and heap properties are not violated.
-- (void) verifySubtreeAtNode:(CHTreeNode*)node {
+- (void) verifySubtreeAtNode:(CHBinaryTreeNode*)node {
 	if (node == sentinel)
 		return;
 	
@@ -300,7 +300,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 }
 
 - (void) testDebugDescriptionForNode {
-	CHTreeNode *node = malloc(kCHTreeNodeSize);
+	CHBinaryTreeNode *node = malloc(kCHBinaryTreeNodeSize);
 	node->object = [NSString stringWithString:@"A B C"];
 	node->priority = 123456789;
 	STAssertEqualObjects([tree debugDescriptionForNode:node],
@@ -308,7 +308,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 }
 
 - (void) testDotStringForNode {
-	CHTreeNode *node = malloc(kCHTreeNodeSize);
+	CHBinaryTreeNode *node = malloc(kCHBinaryTreeNodeSize);
 	node->object = [NSString stringWithString:@"A B C"];
 	node->priority = 123456789;
 	STAssertEqualObjects([tree dotStringForNode:node],

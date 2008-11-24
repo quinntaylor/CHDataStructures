@@ -37,7 +37,7 @@ static NSMutableString *balanceErrors;
 @interface CHAVLTree (Test)
 
 - (void) verifyBalanceFactors;
-- (NSInteger) heightForSubtreeAtNode:(CHTreeNode*)node;
+- (NSInteger) heightForSubtreeAtNode:(CHBinaryTreeNode*)node;
 
 @end
 
@@ -54,7 +54,7 @@ static NSMutableString *balanceErrors;
 	}
 }
 
-- (NSInteger) heightForSubtreeAtNode:(CHTreeNode*)node {
+- (NSInteger) heightForSubtreeAtNode:(CHBinaryTreeNode*)node {
 	if (node == sentinel)
 		return 0;
 	NSInteger leftHeight  = [self heightForSubtreeAtNode:node->left];
@@ -382,7 +382,7 @@ static NSMutableString *balanceErrors;
 }
 
 - (void) testDebugDescriptionForNode {
-	CHTreeNode *node = malloc(kCHTreeNodeSize);
+	CHBinaryTreeNode *node = malloc(kCHBinaryTreeNodeSize);
 	node->object = [NSString stringWithString:@"A B C"];
 	node->balance = 0;
 	STAssertEqualObjects([tree debugDescriptionForNode:node],
@@ -390,7 +390,7 @@ static NSMutableString *balanceErrors;
 }
 
 - (void) testDotStringForNode {
-	CHTreeNode *node = malloc(kCHTreeNodeSize);
+	CHBinaryTreeNode *node = malloc(kCHBinaryTreeNodeSize);
 	node->object = [NSString stringWithString:@"A B C"];
 	node->balance = 0;
 	STAssertEqualObjects([tree dotStringForNode:node],

@@ -1,5 +1,5 @@
 /*
- CHAbstractTreeTest.m
+ CHAbstractBinarySearchTreeTest.m
  CHDataStructures.framework -- Objective-C versions of common data structures.
  Copyright (C) 2008, Quinn Taylor for BYU CocoaHeads <http://cocoaheads.byu.edu>
  Copyright (C) 2002, Phillip Morelock <http://www.phillipmorelock.com>
@@ -18,7 +18,7 @@
  */
 
 #import <SenTestingKit/SenTestingKit.h>
-#import "CHAbstractTree.h"
+#import "CHAbstractBinarySearchTree.h"
 
 #import "CHAnderssonTree.h"
 #import "CHAVLTree.h"
@@ -37,15 +37,15 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 
 #pragma mark -
 
-@interface CHAbstractTreeTest : SenTestCase
+@interface CHAbstractBinarySearchTreeTest : SenTestCase
 {
-	CHAbstractTree *emptyTree, *insideTree, *outsideTree, *zigzagTree;
+	CHAbstractBinarySearchTree *emptyTree, *insideTree, *outsideTree, *zigzagTree;
 	NSArray *nonEmptyTrees, *objects, *correct, *actual, *treeClasses;
 }
 
 @end
 
-@implementation CHAbstractTreeTest
+@implementation CHAbstractBinarySearchTreeTest
 
 + (void) initialize {
 	gcDisabled = ([NSGarbageCollector defaultCollector] == nil);
@@ -158,7 +158,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 					@"Should not raise an exception.");
 	STAssertFalse([emptyTree containsObject:@"Z"], @"Should return NO");
 	
-	for (id<CHTree> tree in nonEmptyTrees) {
+	for (id<CHSearchTree> tree in nonEmptyTrees) {
 		STAssertFalse([tree containsObject:nil], @"Should return NO for nil.");
 		STAssertNoThrow([tree containsObject:nil], @"Should not raise exception.");	
 		for (id anObject in correct)
@@ -207,7 +207,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 
 - (void) testEmptyTree {
 	for (Class aClass in treeClasses) {
-		id<CHTree> tree = [[aClass alloc] init];
+		id<CHSearchTree> tree = [[aClass alloc] init];
 		STAssertEquals([tree count], 0u, @"Incorrect count.");
 		[tree release];
 	}
@@ -217,7 +217,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	STAssertNoThrow([emptyTree findMin], @"Should not raise an exception.");
 	STAssertNil([emptyTree findMin], @"Should return nil for empty tree.");
 	
-	for (id<CHTree> tree in nonEmptyTrees) {
+	for (id<CHSearchTree> tree in nonEmptyTrees) {
 		STAssertNoThrow([tree findMin], @"Should not raise an exception.");
 		STAssertNotNil([tree findMin], @"Should not be nil for non-empty tree.");
 		STAssertEqualObjects([tree findMin], @"A", @"Incorrect result.");
@@ -228,7 +228,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	STAssertNoThrow([emptyTree findMax], @"Should not raise an exception.");
 	STAssertNil([emptyTree findMax], @"Should return nil for empty tree.");
 	
-	for (id<CHTree> tree in nonEmptyTrees) {
+	for (id<CHSearchTree> tree in nonEmptyTrees) {
 		STAssertNoThrow([tree findMax], @"Should not raise an exception.");
 		STAssertNotNil([tree findMax], @"Should not be nil for non-empty tree.");
 		STAssertEqualObjects([tree findMax], @"E", @"Incorrect result.");
@@ -242,7 +242,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	STAssertNoThrow([emptyTree findObject:@"A"], @"Should not raise an exception.");
 	STAssertNil([emptyTree findObject:@"A"], @"Should return nil for empty tree.");	
 
-	for (id<CHTree> tree in nonEmptyTrees) {
+	for (id<CHSearchTree> tree in nonEmptyTrees) {
 		STAssertNil([tree findObject:nil], @"Should return nil when given nil.");
 		for (id anObject in objects)
 			STAssertEqualObjects([tree findObject:anObject], anObject,
@@ -256,7 +256,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 
 - (void) testInitWithArray {
 	for (Class aClass in treeClasses) {
-		id<CHTree> tree = [[aClass alloc] initWithArray:objects];
+		id<CHSearchTree> tree = [[aClass alloc] initWithArray:objects];
 		STAssertEquals([tree count], [objects count], @"Incorrect count.");
 		[tree release];
 	}
@@ -264,7 +264,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 
 - (void) testObjectEnumerator {
 	for (Class aClass in treeClasses) {
-		id<CHTree> tree = [[aClass alloc] init];
+		id<CHSearchTree> tree = [[aClass alloc] init];
 	
 		// Enumerator shouldn't retain collection if there are no objects
 		if (gcDisabled)
@@ -337,7 +337,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 
 - (void) testReverseObjectEnumerator {
 	for (Class aClass in treeClasses) {
-		id<CHTree> tree = [[aClass alloc] initWithArray:objects];
+		id<CHSearchTree> tree = [[aClass alloc] initWithArray:objects];
 	
 		NSEnumerator *e = [tree reverseObjectEnumerator];
 		for (id anObject in [NSArray arrayWithObjects:@"E",@"D",@"C",@"B",@"A",nil]) {
@@ -351,7 +351,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	[emptyTree removeAllObjects];
 	STAssertEquals([emptyTree count], 0u, @"Incorrect count.");	
 	
-	for (id<CHTree> tree in nonEmptyTrees) {
+	for (id<CHSearchTree> tree in nonEmptyTrees) {
 		STAssertEquals([tree count], [objects count], @"Incorrect count.");
 		[tree removeAllObjects];
 		STAssertEquals([tree count], 0u, @"Incorrect count.");
@@ -361,7 +361,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 #pragma mark -
 
 - (void) testNSCoding {
-	id<CHTree> tree;
+	id<CHSearchTree> tree;
 	objects = [NSArray arrayWithObjects:@"B",@"M",@"C",@"K",@"D",@"I",@"E",@"G",
 			   @"J",@"L",@"N",@"F",@"A",@"H",nil];
 	NSArray *before, *after;
@@ -385,7 +385,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 }
 
 - (void) testNSCopying {
-	id<CHTree> tree, copy;
+	id<CHSearchTree> tree, copy;
 	for (Class aClass in treeClasses) {
 		tree = [[aClass alloc] init];
 		copy = [tree copyWithZone:nil];
@@ -408,7 +408,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 }
 
 - (void) testNSFastEnumeration {
-	id<CHTree> tree;
+	id<CHSearchTree> tree;
 	NSUInteger limit = 32; // NSFastEnumeration asks for 16 objects at a time
 	for (Class aClass in treeClasses) {
 		tree = [[aClass alloc] init];
@@ -429,13 +429,13 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 #pragma mark -
 
 - (void) testAddObject {
-	id<CHTree> tree = [[CHAbstractTree alloc] init];
+	id<CHSearchTree> tree = [[CHAbstractBinarySearchTree alloc] init];
 	STAssertThrows([tree addObject:nil],
 				   @"Should raise exception, abstract.");
 }
 
 - (void) testRemoveObject {
-	id<CHTree> tree = [[CHAbstractTree alloc] init];
+	id<CHSearchTree> tree = [[CHAbstractBinarySearchTree alloc] init];
 	STAssertThrows([tree removeObject:nil],
 				   @"Should raise exception, abstract.");
 }

@@ -18,11 +18,11 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "CHAbstractTree.h"
+#import "CHAbstractBinarySearchTree.h"
 
 /**
  @file CHUnbalancedTree.h
- A generic, unbalanced implementation of CHTree.
+ A generic, unbalanced implementation of CHSearchTree.
  */
 
 /**
@@ -37,7 +37,7 @@
  <b>at worst</b> linear if the tree essentially degenerates into a linked list.
  This class is fast, and without stack risk because it works without recursion.
  */
-@interface CHUnbalancedTree : CHAbstractTree
+@interface CHUnbalancedTree : CHAbstractBinarySearchTree
 
 @end
 

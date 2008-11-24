@@ -24,8 +24,8 @@
 #import "CHHeap.h"
 #import "CHLinkedList.h"
 #import "CHQueue.h"
+#import "CHSearchTree.h"
 #import "CHStack.h"
-#import "CHTree.h"
 
 // Classes
 #import "CHAnderssonTree.h"
@@ -75,8 +75,8 @@
  - CHHeap
  - CHLinkedList
  - CHQueue
+ - CHSearchTree
  - CHStack
- - CHTree
  
  The code is written for <a href="http://www.apple.com/macosx/">Mac OS X</a>
  and does use some features of Objective-C 2.0 (part of 10.5 "Leopard"), but

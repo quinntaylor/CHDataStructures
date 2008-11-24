@@ -18,12 +18,12 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "CHAbstractTree.h"
+#import "CHAbstractBinarySearchTree.h"
 
 /**
  @file CHAVLTree.h
  An <a href="http://en.wikipedia.org/wiki/Avl_tree">AVL tree</a> implementation
- of CHTree.
+ of CHSearchTree.
  */
 
 /**
@@ -80,6 +80,6 @@
 	 (English translation in <em>Soviet Mathematics</em>, 3:1259-1263, 1962.)
  </div>
  */
-@interface CHAVLTree : CHAbstractTree
+@interface CHAVLTree : CHAbstractBinarySearchTree
 
 @end

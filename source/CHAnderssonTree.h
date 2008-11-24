@@ -18,12 +18,12 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "CHAbstractTree.h"
+#import "CHAbstractBinarySearchTree.h"
 
 /**
  @file CHAnderssonTree.h
  An <a href="http://en.wikipedia.org/wiki/AA_tree">AA-tree</a> implementation of
- CHTree.
+ CHSearchTree.
  */
 
 /**
@@ -104,6 +104,6 @@
  (See <a href="http://user.it.uu.se/~arnea/ps/simp.pdf">PDF original</a> or
  <a href="http://user.it.uu.se/~arnea/ps/simp.ps">PostScript original</a>)
  */
-@interface CHAnderssonTree : CHAbstractTree
+@interface CHAnderssonTree : CHAbstractBinarySearchTree
 
 @end

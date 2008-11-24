@@ -18,12 +18,12 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "CHAbstractTree.h"
+#import "CHAbstractBinarySearchTree.h"
 
 /**
  @file CHTreap.h
  A <a href="http://en.wikipedia.org/wiki/Treap">Treap</a> implementation of
- CHTree.
+ CHSearchTree.
  */
 
 /**
@@ -75,7 +75,7 @@
  the priorities should also be swapped, and the successor be bubbled up until
  the heap property is again satisfied, an approach quite similar to insertion.)
  
- This treap implementation adds two methods to those in the CHTree protocol:
+ This treap implementation adds two methods to those in the CHSearchTree protocol:
  - \link #addObject:withPriority: -addObject:withPriority: \endlink
  - \link #priorityForObject: -priorityForObject: \endlink
  
@@ -89,7 +89,7 @@
  (See <a href="http://sims.berkeley.edu/~aragon/pubs/rst89.pdf">PDF original</a>
  or <a href="http://www-tcs.cs.uni-sb.de/Papers/rst.ps">PostScript revision</a>)
  */
-@interface CHTreap : CHAbstractTree
+@interface CHTreap : CHAbstractBinarySearchTree
 {
 	// For some reason, if these empty braces aren't here, Doxygen goes wacky...
 	// This only happens when methods are declared below, and the effect is that
