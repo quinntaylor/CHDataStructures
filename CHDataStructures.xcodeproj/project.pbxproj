@@ -665,7 +665,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ ${CONFIGURATION} = 'Release' ]\nthen\n\techo\n\techo \"Stripping documentation comments from public header files\"\n\tdirectory=\"build/Release/CHDataStructures.framework/Headers\"\n\tfor file in `ls $directory` ; do\n\t\ttools/strip_comments.py --input $directory/$file -JL > /tmp/$file\n\t\tmv /tmp/$file $directory/\n\tdone\nfi";
+			shellScript = "if [ ${CONFIGURATION} = 'Release' ]\nthen\n\techo\n\techo \"Stripping documentation comments from public header files\"\n\tdirectory=\"build/Release/CHDataStructures.framework/Headers\"\n\tfor file in `ls $directory` ; do\n\t\techo '    '$file\n\t\ttools/strip_comments.py --input $directory/$file -JL > /tmp/$file\n\t\ttools/trim_trailing_whitespace.py /tmp/$file\n\t\tmv /tmp/$file $directory/\n\tdone\nfi";
 			showEnvVarsInLog = 0;
 		};
 		E4FE76D70E89556A00971EE6 /* ShellScript */ = {
