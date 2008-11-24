@@ -152,8 +152,6 @@ extern NSUInteger kPointerSize;
  */
 - (NSString*) dotStringForNode:(CHBinaryTreeNode*)node;
 
-#pragma mark Adopted Protocols
-
 /**
  Returns a new instance that's a copy of the receiver. Invoked automatically by
  the default <code>-copy</code> method inherited from NSObject.
@@ -164,6 +162,8 @@ extern NSUInteger kPointerSize;
  
  The returned object is implicitly retained by the sender, who is responsible
  for releasing it. Copies returned by this method are always mutable.
+ 
+ Implementation of NSCopying protocol.
  */
 - (id) copyWithZone:(NSZone *)zone;
 
@@ -171,6 +171,8 @@ extern NSUInteger kPointerSize;
  Returns an object initialized from data in a given keyed unarchiver.
  
  @param decoder An unarchiver object.
+ 
+ Implementation of NSCoding protocol.
  */
 - (id) initWithCoder:(NSCoder *)decoder;
 
@@ -178,18 +180,24 @@ extern NSUInteger kPointerSize;
  Encodes the receiver using a given keyed archiver.
  
  @param encoder An archiver object.
+ 
+ Implementation of NSCoding protocol.
  */
 - (void) encodeWithCoder:(NSCoder *)encoder;
 
 /**
- A method for NSFastEnumeration, called by <code><b>for</b> (type variable
- <b>in</b> collection)</code> constructs.
+ A method called within <code>for…in</code> constructs via NSFastEnumeration.
+ This method is intended to be called implicitly by code automatically generated
+ by the compiler, and stores its enumeration information in the @a state struct.
  
  @param state Context information that is used in the enumeration to ensure that
         the collection has not been mutated, in addition to other possibilities.
  @param stackbuf A C array of objects over which the sender is to iterate.
  @param len The maximum number of objects to return in stackbuf.
- @return The number of objects returned in stackbuf, or 0 when iteration is done.
+ @return The number of objects returned in stackbuf (up to a maximum of @a len)
+         or 0 when iteration is done.
+ 
+ Implementation of NSFastEnumeration protocol.
  */
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf

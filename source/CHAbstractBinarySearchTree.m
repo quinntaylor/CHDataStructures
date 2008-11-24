@@ -70,25 +70,15 @@ NSUInteger kPointerSize = sizeof(void*);
 
 #pragma mark <NSCoding> methods
 
-/**
- Returns an object initialized from data in a given keyed unarchiver.
- 
- @param decoder An keyed unarchiver object.
- */
 - (id) initWithCoder:(NSCoder *)decoder {
-	// Allow concrete child class to have a chance to initialize its own state
-	// Calls the concrete subclass' -init, which calls [super init] declared here
+	// Let concrete child class to have a chance to initialize their own state
+	// (The subclass' -init calls to -[CHAbstractBinarySearchTree init] first.)
 	if ([self init] == nil) return nil;
 	for (id anObject in [decoder decodeObjectForKey:@"objects"])
 		[self addObject:anObject];
 	return self;
 }
 
-/**
- Encodes the receiver using a given keyed archiver.
- 
- @param encoder An keyed archiver object.
- */
 - (void) encodeWithCoder:(NSCoder *)encoder {
 	NSEnumerator *e = [self objectEnumeratorWithTraversalOrder:CHTraverseLevelOrder];
 	[encoder encodeObject:[e allObjects] forKey:@"objects"];
@@ -96,18 +86,6 @@ NSUInteger kPointerSize = sizeof(void*);
 
 #pragma mark <NSCopying> methods
 
-/**
- Returns a new instance that's a copy of the receiver. Invoked automatically by
- the default <code>-copy</code> method inherited from NSObject.
- 
- @param zone Identifies an area of memory from which to allocate the new
-        instance. If zone is <code>NULL</code>, the new instance is allocated
-        from the default zone. (<code>-copy</code> invokes with a NULL param.)
- 
- The returned object is implicitly retained by the sender, who is responsible
- for releasing it. Since the nature of storing data in trees is always the same,
- copies returned by this method are always mutable.
- */
 - (id) copyWithZone:(NSZone *)zone {
 	id<CHSearchTree> newTree = [[[self class] alloc] init];
 	NSEnumerator *e = [self objectEnumeratorWithTraversalOrder:CHTraverseLevelOrder];
@@ -118,16 +96,6 @@ NSUInteger kPointerSize = sizeof(void*);
 
 #pragma mark <NSFastEnumeration> Methods
 
-/**
- A method for NSFastEnumeration, called by <code><b>for</b> (type variable
- <b>in</b> collection)</code> constructs.
- 
- @param state Context information that is used in the enumeration to ensure that
-        the collection has not been mutated, in addition to other possibilities.
- @param stackbuf A C array of objects over which the sender is to iterate.
- @param len The maximum number of objects to return in stackbuf.
- @return The number of objects returned in stackbuf, or 0 when iteration is done.
- */
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len
