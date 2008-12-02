@@ -60,8 +60,8 @@ NSUInteger kPointerSize = sizeof(void*);
 }
 
 - (id) initWithArray:(NSArray*)anArray {
-	// Allow concrete child class to have a chance to initialize its own state
-	// Calls the concrete subclass' -init, which calls [super init] declared here
+	// Allow concrete child class to have a chance to initialize its own state.
+	// (The subclass' -init calls -[CHAbstractBinarySearchTree init] first.)
 	if ([self init] == nil) return nil;
 	for (id anObject in anArray)
 		[self addObject:anObject];
@@ -71,8 +71,8 @@ NSUInteger kPointerSize = sizeof(void*);
 #pragma mark <NSCoding> methods
 
 - (id) initWithCoder:(NSCoder *)decoder {
-	// Let concrete child class to have a chance to initialize their own state
-	// (The subclass' -init calls to -[CHAbstractBinarySearchTree init] first.)
+	// Allow concrete child class to have a chance to initialize its own state.
+	// (The subclass' -init calls -[CHAbstractBinarySearchTree init] first.)
 	if ([self init] == nil) return nil;
 	for (id anObject in [decoder decodeObjectForKey:@"objects"])
 		[self addObject:anObject];
@@ -80,16 +80,15 @@ NSUInteger kPointerSize = sizeof(void*);
 }
 
 - (void) encodeWithCoder:(NSCoder *)encoder {
-	NSEnumerator *e = [self objectEnumeratorWithTraversalOrder:CHTraverseLevelOrder];
-	[encoder encodeObject:[e allObjects] forKey:@"objects"];
+	[encoder encodeObject:[self allObjectsWithTraversalOrder:CHTraverseLevelOrder]
+				   forKey:@"objects"];
 }
 
 #pragma mark <NSCopying> methods
 
 - (id) copyWithZone:(NSZone *)zone {
 	id<CHSearchTree> newTree = [[[self class] alloc] init];
-	NSEnumerator *e = [self objectEnumeratorWithTraversalOrder:CHTraverseLevelOrder];
-	for (id anObject in e)
+	for (id anObject in [self allObjectsWithTraversalOrder:CHTraverseLevelOrder])
 		[newTree addObject:anObject];
 	return newTree;
 }
@@ -279,7 +278,7 @@ NSUInteger kPointerSize = sizeof(void*);
 	NSMutableString *graph = [NSMutableString stringWithFormat:
 							  @"digraph %@\n{\n", [self className]];
 	if (header->right == sentinel) {
-		[graph appendFormat:@"  nil [color=red];\n"];
+		[graph appendFormat:@"  nil;\n"];
 	} else {
 		NSString *leftChild, *rightChild;
 		NSUInteger sentinelCount = 0;
@@ -310,7 +309,7 @@ NSUInteger kPointerSize = sizeof(void*);
 		
 		// Create entry for each null leaf node (each nil is modeled separately)
 		for (int i = 1; i <= sentinelCount; i++)
-			[graph appendFormat:@"  nil%d [shape=point,color=red];\n", i];
+			[graph appendFormat:@"  nil%d [shape=point,fillcolor=black];\n", i];
 	}
 	// Terminate the graph string, then return it
 	[graph appendString:@"}\n"];
