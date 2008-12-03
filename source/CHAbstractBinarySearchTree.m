@@ -71,12 +71,8 @@ NSUInteger kPointerSize = sizeof(void*);
 #pragma mark <NSCoding> methods
 
 - (id) initWithCoder:(NSCoder *)decoder {
-	// Allow concrete child class to have a chance to initialize its own state.
-	// (The subclass' -init calls -[CHAbstractBinarySearchTree init] first.)
-	if ([self init] == nil) return nil;
-	for (id anObject in [decoder decodeObjectForKey:@"objects"])
-		[self addObject:anObject];
-	return self;
+	// Decode the array of objects and use it to initialize the tree's contents.
+	return [self initWithArray:[decoder decodeObjectForKey:@"objects"]];
 }
 
 - (void) encodeWithCoder:(NSCoder *)encoder {
