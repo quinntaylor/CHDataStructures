@@ -54,8 +54,8 @@ NSUInteger kPointerSize = sizeof(void*);
 	
 	header = malloc(kCHBinaryTreeNodeSize);
 	header->object = [CHSearchTreeHeaderObject headerObject];
-	header->left = sentinel;
 	header->right = sentinel;
+	header->left = sentinel;
 	return self;
 }
 
@@ -70,19 +70,19 @@ NSUInteger kPointerSize = sizeof(void*);
 
 #pragma mark <NSCoding> methods
 
-- (id) initWithCoder:(NSCoder *)decoder {
+- (id) initWithCoder:(NSCoder*)decoder {
 	// Decode the array of objects and use it to initialize the tree's contents.
 	return [self initWithArray:[decoder decodeObjectForKey:@"objects"]];
 }
 
-- (void) encodeWithCoder:(NSCoder *)encoder {
+- (void) encodeWithCoder:(NSCoder*)encoder {
 	[encoder encodeObject:[self allObjectsWithTraversalOrder:CHTraverseLevelOrder]
-				   forKey:@"objects"];
+	               forKey:@"objects"];
 }
 
 #pragma mark <NSCopying> methods
 
-- (id) copyWithZone:(NSZone *)zone {
+- (id) copyWithZone:(NSZone*)zone {
 	id<CHSearchTree> newTree = [[[self class] alloc] init];
 	for (id anObject in [self allObjectsWithTraversalOrder:CHTraverseLevelOrder])
 		[newTree addObject:anObject];
@@ -134,7 +134,7 @@ NSUInteger kPointerSize = sizeof(void*);
 		state->state = 1; // used as a termination flag
 	}
 	else {
-		state->state = (unsigned long) current;
+		state->state    = (unsigned long) current;
 		state->extra[0] = (unsigned long) stack;
 		state->extra[1] = (unsigned long) stackSize;
 		state->extra[2] = (unsigned long) elementsInStack;

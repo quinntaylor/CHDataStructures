@@ -75,9 +75,8 @@ extern NSUInteger kPointerSize;
 #pragma mark Queue Macros
 
 #define CHBinaryTreeQueue_INIT(queue) { \
-	queueSize = 32; \
+	queueSize = 32; queueHead = queueTail = 0; \
 	queue = malloc(queueSize * kCHBinaryTreeNodeSize); \
-	queueHead = queueTail = 0; \
 }
 // This queue is a circular array, so resizing it takes a little extra care.
 // (memcpy() take the destination address, source address, and number of bytes.)
@@ -99,12 +98,12 @@ extern NSUInteger kPointerSize;
 #pragma mark -
 
 /**
- An abstract CHSearchTree implementation with many default method implementations. The
- methods for search, size, and enumeration are implemented in this class, as are
- implementations of NSCoding, NSCopying, and NSFastEnumeration. This works since
- each child class uses the CHBinaryTreeNode struct. Each child class must implement
- \link #addObject: -addObject:\endlink and \link #removeObject: -removeObject:
- \endlink so as to conform to their inner workings.
+ An abstract CHSearchTree with many default method implementations. Methods for
+ search, size, and enumeration are implemented in this class, as are methods for
+ NSCoding, NSCopying, and NSFastEnumeration. (This works since all child classes
+ use the CHBinaryTreeNode struct.) Any subclass must implement \link #addObject:
+ -addObject:\endlink and \link #removeObject: -removeObject: \endlink such that
+ they conform to the inner workings of that specific subclass.
  
  Rather than enforcing that this class be abstract, the contract is implied. If
  this class were actually instantiated, it would be of little use since there is
@@ -118,16 +117,18 @@ extern NSUInteger kPointerSize;
  */
 @interface CHAbstractBinarySearchTree : NSObject <CHSearchTree>
 {
-	CHBinaryTreeNode *header;      /**< Dummy header that eliminates special cases. */
-	CHBinaryTreeNode *sentinel;    /**< Represents a NULL leaf node; reduces checks. */
-	NSUInteger count;        /**< The number of elements currently in the tree. */
-	unsigned long mutations; /**< Used to track mutations for NSFastEnumeration. */
+	NSUInteger count; /**< The number of objects currently in the tree. */
+	CHBinaryTreeNode *header; /**< Dummy header node; eliminates root checks. */
+	CHBinaryTreeNode *sentinel; /**< Dummy leaf node; reduces checks for NULL. */
+	unsigned long mutations; /**< Tracks mutations for NSFastEnumeration. */
 }
 
 // Declared to prevent compile warnings, but undocumented on purpose.
+// Called to obtain detailed information about the structure of a tree object.
 - (NSString*) debugDescription;
 
 // Declared to prevent compile warnings, but undocumented on purpose.
+// Each subclass may override this to specify how node entries should appear.
 - (NSString*) debugDescriptionForNode:(CHBinaryTreeNode*)node;
 
 /**
@@ -165,7 +166,7 @@ extern NSUInteger kPointerSize;
  
  Implementation of NSCopying protocol.
  */
-- (id) copyWithZone:(NSZone *)zone;
+- (id) copyWithZone:(NSZone*)zone;
 
 /**
  Returns an object initialized from data in a given keyed unarchiver.
@@ -174,7 +175,7 @@ extern NSUInteger kPointerSize;
  
  Implementation of NSCoding protocol.
  */
-- (id) initWithCoder:(NSCoder *)decoder;
+- (id) initWithCoder:(NSCoder*)decoder;
 
 /**
  Encodes the receiver using a given keyed archiver.
@@ -183,10 +184,10 @@ extern NSUInteger kPointerSize;
  
  Implementation of NSCoding protocol.
  */
-- (void) encodeWithCoder:(NSCoder *)encoder;
+- (void) encodeWithCoder:(NSCoder*)encoder;
 
 /**
- A method called within <code>for…in</code> constructs via NSFastEnumeration.
+ A method called within <code>for...in</code> constructs via NSFastEnumeration.
  This method is intended to be called implicitly by code automatically generated
  by the compiler, and stores its enumeration information in the @a state struct.
  
@@ -227,15 +228,15 @@ extern NSUInteger kPointerSize;
 @interface CHBinarySearchTreeEnumerator : NSEnumerator
 {
 	CHTraversalOrder traversalOrder; /**< Order in which to traverse the tree. */
-	id<CHSearchTree> collection; /**< The source of enumerated objects. */
+	id<CHSearchTree> collection; /**< The collection that is being enumerated. */
 	CHBinaryTreeNode *current; /**< The next node to be enumerated. */
-	CHBinaryTreeNode *sentinelNode;  /**< Sentinel used in the tree being traversed. */
+	CHBinaryTreeNode *sentinelNode;  /**< Sentinel in the tree being traversed. */
 	unsigned long mutationCount; /**< Stores the collection's initial mutation. */
 	unsigned long *mutationPtr; /**< Pointer for checking changes in mutation. */
-
+	
+	@private // Pointers and counters used for various tree traveral orderings.
 	CHBinaryTreeNode **stack, **queue;
-	NSUInteger stackSize, elementsInStack;
-	NSUInteger queueSize, queueHead, queueTail;
+	NSUInteger stackSize, elementsInStack, queueSize, queueHead, queueTail;
 }
 
 /**
