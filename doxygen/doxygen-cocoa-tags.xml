@@ -64,7 +64,19 @@
   </compound>
   <compound kind="class">
     <name>NSMutableSet</name>
-    <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSMutableSet_Class/Reference/Reference.html</filename>
+    <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSMutableSet_Class/Reference/NSMutableSet.html</filename>
+    <member kind="function">
+      <name>addObject:</name>
+      <anchor>//apple_ref/occ/instm/NSMutableSet/addObject:</anchor>
+    </member>
+    <member kind="function">
+      <name>setSet:</name>
+      <anchor>//apple_ref/occ/instm/NSMutableSet/setSet:</anchor>
+    </member>
+    <member kind="function">
+      <name>unionSet:</name>
+      <anchor>//apple_ref/occ/instm/NSMutableSet/unionSet:</anchor>
+    </member>
   </compound>
   <compound kind="class">
     <name>NSNotification</name>

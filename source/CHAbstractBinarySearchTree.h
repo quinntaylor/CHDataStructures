@@ -187,7 +187,7 @@ extern NSUInteger kPointerSize;
 - (void) encodeWithCoder:(NSCoder*)encoder;
 
 /**
- A method called within <code>for...in</code> constructs via NSFastEnumeration.
+ A method called within <code>for…in</code> constructs via NSFastEnumeration.
  This method is intended to be called implicitly by code automatically generated
  by the compiler, and stores its enumeration information in the @a state struct.
  

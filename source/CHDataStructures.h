@@ -34,6 +34,7 @@
 #import "CHListDeque.h"
 #import "CHListQueue.h"
 #import "CHListStack.h"
+#import "CHMultiMap.h"
 #import "CHMutableArrayDeque.h"
 #import "CHMutableArrayHeap.h"
 #import "CHMutableArrayQueue.h"
