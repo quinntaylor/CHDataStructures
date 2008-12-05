@@ -73,7 +73,13 @@ void populateMultimap(CHMultiMap* multimap) {
 #pragma mark -
 
 - (void) testAddEntriesFromMultiMap {
-	STFail(@"Unimplemented unit test.");
+	CHMultiMap *multimap2 = [[CHMultiMap alloc] init];
+	populateMultimap(multimap2);
+	
+	STAssertEquals([multimap count], 0u, @"Incorrect key count.");
+	[multimap addEntriesFromMultiMap:multimap2];
+	STAssertEquals([multimap count], 3u, @"Incorrect key count.");
+	STAssertEquals([multimap countForAllKeys], 9u, @"Incorrect object count.");
 }
 
 - (void) testAddObjectForKey {
@@ -169,9 +175,18 @@ void populateMultimap(CHMultiMap* multimap) {
 - (void) testInitWithObjectsAndKeys {
 	[multimap release];
 	multimap = [[CHMultiMap alloc] initWithObjectsAndKeys:
-				@"A", @"foo",
-				[NSSet setWithObjects:@"A",@"B",@"C",nil], @"bar",
-				nil];
+				[NSSet setWithObjects:@"A",@"B",@"C",nil], @"foo",
+				@"Z", @"bar", nil];
+	STAssertEquals([multimap count], 2u, @"Incorrect key count.");
+	STAssertEquals([multimap countForKey:@"foo"], 3u, @"Incorrect object count.");
+	STAssertEquals([multimap countForKey:@"bar"], 1u, @"Incorrect object count.");
+	
+	STAssertThrows(([[CHMultiMap alloc] initWithObjectsAndKeys:
+					@"A", @"foo", @"Z", nil]),
+				   @"Should raise exception for nil key parameter.");
+
+	STAssertThrows([[CHMultiMap alloc] initWithObjectsAndKeys:nil],
+				   @"Should raise exception for nil first parameter.");
 }
 
 - (void) testInitWithObjectsForKeys {
@@ -179,20 +194,22 @@ void populateMultimap(CHMultiMap* multimap) {
 	NSMutableArray *objects = [NSMutableArray array];
 	
 	[keys addObject:@"foo"];
-	[objects addObject:@"A"];
+	[objects addObject:[NSSet setWithObjects:@"A",@"B",@"C",nil]];
 
 	[keys addObject:@"bar"];
-	[objects addObject:[NSSet setWithObjects:@"A",@"B",@"C",nil]];
+	[objects addObject:[NSNull null]];
 	
 	[multimap release];
 	multimap = [[CHMultiMap alloc] initWithObjects:objects forKeys:keys];
 	
 	STAssertEquals([multimap count], 2u, @"Incorrect key count.");
-	STAssertEquals([multimap countForKey:@"foo"], 1u, @"Incorrect object count.");
-	STAssertEquals([multimap countForKey:@"bar"], 3u, @"Incorrect object count.");
+	STAssertEquals([multimap countForKey:@"foo"], 3u, @"Incorrect object count.");
+	STAssertEquals([multimap countForKey:@"bar"], 1u, @"Incorrect object count.");
 	STAssertEquals([multimap countForAllKeys], 4u, @"Incorrect object count.");
 	
-	// TODO: Test invalid insertions, nil/NSNull objects, etc.
+	[keys removeLastObject];
+	STAssertThrows([[CHMultiMap alloc] initWithObjects:objects forKeys:keys],
+				   @"Init with arrays of unequal length should raise exception.");
 }
 
 - (void) testKeyEnumerator {

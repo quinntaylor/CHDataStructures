@@ -36,6 +36,14 @@
 	return self;
 }
 
+static inline NSMutableSet* wrapInMutableSet(id object) {
+	if (object == nil)
+		return nil;
+	return ([object isKindOfClass:[NSSet class]])
+		? [NSMutableSet setWithSet:object]
+		: [NSMutableSet setWithObject:object];
+}
+
 - (id) initWithObjects:(NSArray*)objectsArray forKeys:(NSArray*)keyArray {
 	if ([keyArray count] != [objectsArray count])
 		CHInvalidArgumentException([self class], _cmd, @"Unequal array counts.");
@@ -43,9 +51,7 @@
 	NSEnumerator *objects = [objectsArray objectEnumerator];
 	NSSet *objectSet;
 	for (id key in keyArray) {
-		objectSet = [objects nextObject];
-		if (![objectSet isKindOfClass:[NSSet class]])
-			objectSet = [NSMutableSet setWithObject:objectSet];
+		objectSet = wrapInMutableSet([objects nextObject]);
 		[dictionary setObject:objectSet forKey:key];
 		count += [objectSet count];
 	}
@@ -54,7 +60,25 @@
 
 - (id) initWithObjectsAndKeys:(id)firstObject, ... {
 	if ([self init] == nil) return nil;
-	// TODO: Implement variable-parameter initialization.
+	
+	if (firstObject == nil)
+		CHInvalidArgumentException([self class], _cmd, @"First parameter is nil.");
+	
+	// Start scanning for arguments after firstObject
+	va_list argumentList;
+	va_start(argumentList, firstObject);
+	
+	// The first argument isn't part of the varargs list; handle it separately
+	NSSet *objectSet = wrapInMutableSet(firstObject);
+	id aKey;
+	// Add an entry for each valid pair of object-key parameters.
+	do {
+		if ((aKey = va_arg(argumentList, id)) == nil)
+			CHInvalidArgumentException([self class], _cmd, @"Invalid nil key.");
+		[dictionary setObject:objectSet forKey:aKey];
+		count += [objectSet count];
+	} while (objectSet = wrapInMutableSet(va_arg(argumentList, id)));
+	va_end(argumentList);
 	return self;
 }
 
