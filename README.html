@@ -24,7 +24,7 @@
 <body>
 <div align="center">
 <h1>CHDataStructures.framework</h1>
-<h2>Version 1.0.4 &mdash; 24 November 2008</h2>
+<h2>Version 1.0.5 &mdash; 5 December 2008</h2>
 <h4><a href="http://cocoaheads.byu.edu/code/CHDataStructures">http://cocoaheads.byu.edu/code/CHDataStructures</a></h4>
 <h4>&copy; 2008 <a href="http://homepage.mac.com/quinntaylor/">Quinn Taylor</a> &mdash; BYU CocoaHeads<br />
 &copy; 2002 <a href="http://www.phillipmorelock.com/">Phillip Morelock</a> &mdash; Los Angeles, CA</h4>
@@ -66,11 +66,11 @@
 </ol>
 <p>While certain implementations utilize straight C for their internals, this
   framework is fairly high-level, and uses composition rather than inheritance
-  in most cases. The framework was originally written as an exercise in writing
+  in most cases. The framework began its existence as an exercise in writing
   Objective-C code and consisted mainly of ported Java code. In later revisions,
   performance has gained greater emphasis, but the primary motivation is to
   provide friendly, intuitive Objective-C interfaces for data structures, not to
-  maximize speed at any cost, which sometimes happens with C++ and the STL. The
+  maximize speed at any cost (a common outcome when using C++ and the STL). The
   algorithms should all be sound (i.e., you won't get O(n) performance when it
   should be O(log n) or O(1), etc.) and perform quite well in general. If your
   choice of data structure type and implementation are dependent on performance
@@ -78,13 +78,53 @@
   based on the time and memory complexity for specific implementations.</p>
   
 <h2>Getting the Code</h2>
-<p>Binaries and source code for the framework is available
-  <a href="http://cocoaheads.byu.edu/code/CHDataStructures/">here</a>. It is
-  organized in an Xcode project with all relevant dependencies, but could also
-  be built by hand if you're masochistic or just like a challenge.</p>
+<p>All source code and resources for the framework are freely available at
+  <a href="http://cocoaheads.byu.edu/code/CHDataStructures/">this link</a>. They
+  are organized in an Xcode 3 project with all relevant dependencies.</p>
+<p>If you only need a few of the classes in the framework, you can cut down on
+  code size by either excluding the parts you don't need from the framework, or
+  just including the parts you do need in your own code. Please don't forget to
+  include relevant copyright and license information if you choose to do so!</p>
 <p>The original page for the framework when it was maintained by Phillip Morelock
   (back when its name was "Cocoa Data Structures Framework") is
   <a href="http://www.phillipmorelock.com/examples/cocoadata/"> here.</a></p>
+
+<h2>Known Issues</h2>
+<p>Let's just say it: no software is perfect. It would be foolish (and a lie) to
+  claim that this framework is flawless. There are several things that need to
+  be improved, and admitting you have a problem is the first step....</p>
+<ul>
+  <li>There are a number of latent memory errors similar to the following:
+	<ul>
+	  <li><code>malloc: *** error for object 0x807200: non-page-aligned,
+	    non-allocated pointer being freed *** set a breakpoint in
+		malloc_error_break to debug</code></li>
+	  <li><code>malloc: *** error for object 0x80e200: double free *** set
+	    a breakpoint in malloc_error_break to debug</code></li>
+	</ul>
+  </li>
+  <li>The unit tests sometimes work fine, and other times they crash in a very
+    non-deterministic way. Some of it seems related to randomness of input, and
+	particularly in the CHMutableArrayHeap and CHTreap classes.</li>
+  <li>The unit tests intermittently (and sometimes only when GC is off) spit out
+    inexplicable errors deep in Cocoa, like:
+	<ul>
+	  <li><code>-[NSKeyedArchiver initForWritingWithMutableData:]: unrecognized
+	    selector sent to instance 0xd1f4320</code></li>
+	  <li><code>-encodeInt32:forKey: only defined for abstract class.  Define
+	    -[NSKeyedArchiver encodeInt32:forKey:]!</code></li>
+	</ul>
+  </li>
+  <li>The -[CHRedBlackTree removeObject:] method is slow. Reeeeaaaaaly slow. You
+    may notice that the time complexity increases exponentially, not linearly.
+	It turns out that implementing a non-recursive remove for Red-Black trees is
+	non-trivial, and the current solution works correctly but needs work. (For
+	now, I suggest using CHAVLTree or CHAnderssonTree instead.)</li>
+</ul>
+<p>Hopefully this list will help draw upon the talents of others who can provide
+  solutions which currently evade me. If you have a fix for one of these items,
+  <a href="mailto:quinntaylor@mac.com?subject=CHDataStructures.framework">email
+  me</a> and we'll talk. Thanks!</p>
 
 <h2>License Information</h2>
 <p>This framework (library) is free software and is licensed to you under the

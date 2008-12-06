@@ -178,8 +178,8 @@
  Returns an array of objects associated with a given key.
  
  @param aKey The key for which to return the corresponding objects.
- @return An NSSet of objects associated with a given key. The set is empty if
-         the key is not in the receiver.
+ @return An NSSet of objects associated with a given key, or nil if the key is
+         not in the receiver.
  */
 - (NSSet*) objectsForKey:(id)aKey;
 

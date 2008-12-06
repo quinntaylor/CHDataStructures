@@ -19,6 +19,7 @@
 
 #import <SenTestingKit/SenTestingKit.h>
 #import "CHMultiMap.h"
+#import "Util.h"
 
 void populateMultimap(CHMultiMap* multimap) {
 	[multimap addObjects:[NSSet setWithObjects:@"A",@"B",@"C",nil] forKey:@"foo"];
@@ -169,7 +170,22 @@ void populateMultimap(CHMultiMap* multimap) {
 }
 
 - (void) testDescription {
-	STFail(@"Unimplemented unit test.");
+	NSString *description;
+	
+	// Test description for an empty multimap
+	description = [multimap description];
+	STAssertEqualObjects(description, @"{\n}", @"Incorrect empty description.");
+	
+	// Test description for a populated multimap
+	populateMultimap(multimap);
+	description = [multimap description];
+	NSMutableString *expected = [NSMutableString string];
+	[expected appendString:@"{\n"];
+	[expected appendString:@"    bar =     {(\n        Y,\n        X,\n        Z\n    )};\n"];
+	[expected appendString:@"    baz =     {(\n        1,\n        2,\n        3\n    )};\n"];
+	[expected appendString:@"    foo =     {(\n        B,\n        C,\n        A\n    )};\n"];
+	[expected appendString:@"}"];
+	STAssertEqualObjects(description, expected, @"Incorrect description.");
 }
 
 - (void) testInitWithObjectsAndKeys {
@@ -213,15 +229,47 @@ void populateMultimap(CHMultiMap* multimap) {
 }
 
 - (void) testKeyEnumerator {
-	STFail(@"Unimplemented unit test.");
+	populateMultimap(multimap);
+	NSEnumerator *keyEnumerator;
+	
+	keyEnumerator = [multimap keyEnumerator];
+	for (int count = 1; count <= 3; count++)
+		STAssertNotNil([keyEnumerator nextObject], @"Should not be nil.");
+	STAssertNil([keyEnumerator nextObject], @"Should be nil.");
+	
+	keyEnumerator = [multimap keyEnumerator];
+	STAssertEquals([[keyEnumerator allObjects] count], 3u,
+				   @"Wrong key count.");
 }
 
 - (void) testObjectEnumerator {
-	STFail(@"Unimplemented unit test.");
+	populateMultimap(multimap);
+	NSEnumerator *objectEnumerator;
+	
+	objectEnumerator = [multimap objectEnumerator];
+	for (int count = 1; count <= 9; count++)
+		STAssertNotNil([objectEnumerator nextObject], @"Should not be nil.");
+	STAssertNil([objectEnumerator nextObject], @"Should be nil.");
+
+	objectEnumerator = [multimap objectEnumerator];
+	STAssertEquals([[objectEnumerator allObjects] count], 9u,
+				   @"Wrong object count.");
 }
 
 - (void) testObjectsForKey {
-	STFail(@"Unimplemented unit test.");
+	populateMultimap(multimap);
+
+	STAssertTrue(([[multimap objectsForKey:@"foo"] isEqualToSet:
+				   [NSSet setWithObjects:@"A",@"B",@"C",nil]]),
+				 @"Incorrect objects for key");
+	STAssertTrue(([[multimap objectsForKey:@"bar"] isEqualToSet:
+				   [NSSet setWithObjects:@"X",@"Y",@"Z",nil]]),
+				 @"Incorrect objects for key");
+	STAssertTrue(([[multimap objectsForKey:@"baz"] isEqualToSet:
+				   [NSSet setWithObjects:@"1",@"2",@"3",nil]]),
+				 @"Incorrect objects for key");
+	
+	STAssertNil([multimap objectsForKey:@"bogus"], @"Should be nil for bad key.");
 }
 
 - (void) testRemoveAllObjects {
@@ -237,7 +285,25 @@ void populateMultimap(CHMultiMap* multimap) {
 - (void) testRemoveObjectForKey {
 	populateMultimap(multimap);
 	
-	STFail(@"Unimplemented unit test.");
+	STAssertEquals([multimap count], 3u, @"Incorrect key count.");
+	STAssertEquals([multimap countForKey:@"foo"], 3u, @"Incorrect object count.");
+	STAssertEquals([multimap countForAllKeys], 9u, @"Incorrect object count.");
+
+	[multimap removeObject:@"A" forKey:@"foo"];
+	STAssertEquals([multimap count], 3u, @"Incorrect key count.");
+	STAssertEquals([multimap countForKey:@"foo"], 2u, @"Incorrect object count.");
+	STAssertEquals([multimap countForAllKeys], 8u, @"Incorrect object count.");
+	
+	[multimap removeObject:@"B" forKey:@"foo"];
+	STAssertEquals([multimap count], 3u, @"Incorrect key count.");
+	STAssertEquals([multimap countForKey:@"foo"], 1u, @"Incorrect object count.");
+	STAssertEquals([multimap countForAllKeys], 7u, @"Incorrect object count.");
+	
+	[multimap removeObject:@"C" forKey:@"foo"];
+	// Removing the last object in the set for a key should also remove the key.
+	STAssertEquals([multimap count], 2u, @"Incorrect key count.");
+	STAssertEquals([multimap countForKey:@"foo"], 0u, @"Incorrect object count.");
+	STAssertEquals([multimap countForAllKeys], 6u, @"Incorrect object count.");
 }
 
 - (void) testRemoveObjectsForKey {

@@ -154,7 +154,8 @@ static inline NSMutableSet* wrapInMutableSet(id object) {
 }
 
 - (NSSet*) objectsForKey:(id)aKey {
-	return [NSSet setWithSet:[dictionary objectForKey:aKey]];
+	id objectSet = [dictionary objectForKey:aKey];
+	return (objectSet == nil) ? nil : [NSSet setWithSet:objectSet];
 }
 
 - (NSString*) description {
