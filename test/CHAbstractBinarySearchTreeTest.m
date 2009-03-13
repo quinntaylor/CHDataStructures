@@ -196,7 +196,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	[expected appendFormat:@"  \"E\";\n  \"E\" -> {\"B\";nil2};\n"];
 	[expected appendFormat:@"  \"B\";\n  \"B\" -> {nil3;\"D\"};\n"];
 	[expected appendFormat:@"  \"D\";\n  \"D\" -> {\"C\";nil4};\n"];
-	[expected appendFormat:@"  \"C\";\n  \"C\" -> {nil6;nil5};\n"];
+	[expected appendFormat:@"  \"C\";\n  \"C\" -> {nil5;nil6};\n"];
 	for (int i = 1; i <= 6; i++)
 		[expected appendFormat:@"  nil%d [shape=point,fillcolor=black];\n", i];
 	[expected appendFormat:@"}\n"];

@@ -296,13 +296,14 @@ NSUInteger kPointerSize = sizeof(void*);
 			// Append entry for node with any subclass-specific customizations.
 			[graph appendString:[self dotStringForNode:current]];
 			// Append entry for edges from current node to both its children.
-			[graph appendFormat:@"  \"%@\" -> {%@;%@};\n", current->object,
-			 (leftChild = current->left->object)
-			    ? [NSString stringWithFormat:@"\"%@\"", leftChild]
-			    : [NSString stringWithFormat:@"nil%d", ++sentinelCount],
-			 (rightChild = current->right->object)
-			    ? [NSString stringWithFormat:@"\"%@\"", rightChild]
-			    : [NSString stringWithFormat:@"nil%d", ++sentinelCount]];
+			leftChild = (current->left->object == nil) \
+				? [NSString stringWithFormat:@"nil%d", ++sentinelCount] \
+				: [NSString stringWithFormat:@"\"%@\"", current->left->object];
+			rightChild = (current->right->object == nil) \
+				? [NSString stringWithFormat:@"nil%d", ++sentinelCount] \
+				: [NSString stringWithFormat:@"\"%@\"", current->right->object];
+			[graph appendFormat:@"  \"%@\" -> {%@;%@};\n",
+			                    current->object, leftChild, rightChild];
 		}
 		CHBinaryTreeStack_FREE(stack);
 		
