@@ -55,6 +55,14 @@
     <!-- Submitted feedback on the non-standard lowercase "p" in the URL -->
   </compound>
   <compound kind="class">
+    <name>NSGarbageCollector</name>
+    <filename>http://developer.apple.com/documentation/Cocoa/Reference/NSGarbageCollector_class/Introduction/Introduction.html</filename>
+    <member kind="function">
+      <name>collectIfNeeded</name>
+      <anchor>//apple_ref/occ/instm/NSGarbageCollector/collectIfNeeded</anchor>
+    </member>
+  </compound>
+  <compound kind="class">
     <name>NSMutableArray</name>
     <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSMutableArray_Class/Reference/Reference.html</filename>
   </compound>
