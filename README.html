@@ -24,9 +24,9 @@
 <body>
 <div align="center">
 <h1>CHDataStructures.framework</h1>
-<h2>Version 1.0.5 &mdash; 5 December 2008</h2>
+<h2>Version 1.1 &mdash; 13 March 2009</h2>
 <h4><a href="http://cocoaheads.byu.edu/code/CHDataStructures">http://cocoaheads.byu.edu/code/CHDataStructures</a></h4>
-<h4>&copy; 2008 <a href="http://homepage.mac.com/quinntaylor/">Quinn Taylor</a> &mdash; BYU CocoaHeads<br />
+<h4>&copy; 2008&ndash;2009 <a href="http://homepage.mac.com/quinntaylor/">Quinn Taylor</a> &mdash; BYU CocoaHeads<br />
 &copy; 2002 <a href="http://www.phillipmorelock.com/">Phillip Morelock</a> &mdash; Los Angeles, CA</h4>
 </div>
 
@@ -91,21 +91,10 @@
 
 <h2>Known Issues</h2>
 <p>Let's just say it: no software is perfect. It would be foolish (and a lie) to
-  claim that this framework is flawless. There are several things that need to
-  be improved, and admitting you have a problem is the first step....</p>
+  claim that this framework is flawless. There are several things that could be
+  improved, and admitting you have a problem is the first step....</p>
 <ul>
-  <li>There are a number of latent memory errors similar to the following:
-	<ul>
-	  <li><code>malloc: *** error for object 0x807200: non-page-aligned,
-	    non-allocated pointer being freed *** set a breakpoint in
-		malloc_error_break to debug</code></li>
-	  <li><code>malloc: *** error for object 0x80e200: double free *** set
-	    a breakpoint in malloc_error_break to debug</code></li>
-	</ul>
-  </li>
-  <li>The unit tests sometimes work fine, and other times they crash in a very
-    non-deterministic way. Some of it seems related to randomness of input, and
-	particularly in the CHMutableArrayHeap and CHTreap classes.</li>
+  <!--
   <li>The unit tests intermittently (and sometimes only when GC is off) spit out
     inexplicable errors deep in Cocoa, like:
 	<ul>
@@ -115,16 +104,24 @@
 	    -[NSKeyedArchiver encodeInt32:forKey:]!</code></li>
 	</ul>
   </li>
+  -->
   <li>The -[CHRedBlackTree removeObject:] method is slow. Reeeeaaaaaly slow. You
     may notice that the time complexity increases exponentially, not linearly.
 	It turns out that implementing a non-recursive remove for Red-Black trees is
 	non-trivial, and the current solution works correctly but needs work. (For
 	now, I suggest using CHAVLTree or CHAnderssonTree instead.)</li>
 </ul>
+
 <p>Hopefully this list will help draw upon the talents of others who can provide
   solutions which currently evade me. If you have a fix for one of these items,
   <a href="mailto:quinntaylor@mac.com?subject=CHDataStructures.framework">email
   me</a> and we'll talk. Thanks!</p>
+
+<p>UPDATE: As a consequence of some additional reading on GC in Objective-C 2.0,
+  and specifically how it applies to heap memory usually acquired via malloc(),
+  I've added some fixes that seem to have completely banished the crashing bugs.
+  As of 13 March 2009, these changes are in the repository and everything should
+  work quite nicely, including the unit tests.</p>
 
 <h2>License Information</h2>
 <p>This framework (library) is free software and is licensed to you under the
