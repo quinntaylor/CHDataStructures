@@ -28,6 +28,10 @@
   <compound kind="protocol">
     <name>NSCopying</name>
     <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Protocols/NSCopying_Protocol/Reference/Reference.html</filename>
+    <member kind="function">
+      <name>copyWithZone:</name>
+      <anchor>//apple_ref/occ/intfm/NSCopying/copyWithZone:</anchor>
+    </member>
   </compound>
   <compound kind="class">
     <name>NSData</name>
@@ -69,6 +73,10 @@
   <compound kind="protocol">
     <name>NSMutableCopying</name>
     <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Protocols/NSMutableCopying_Protocol/Reference/Reference.html</filename>
+  </compound>
+  <compound kind="class">
+    <name>NSMutableDictionary</name>
+    <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSMutableDictionary_Class/Reference/Reference.html</filename>
   </compound>
   <compound kind="class">
     <name>NSMutableSet</name>
