@@ -128,7 +128,7 @@
 			parent = parent->link[isRightChild];
 		}
 		parent->link[parent->right == current] = sentinel;
-		if (!objc_collectingEnabled()) {
+		if (kCHGarbageCollectionDisabled) {
 			[current->object release];
 			free(current);
 		}

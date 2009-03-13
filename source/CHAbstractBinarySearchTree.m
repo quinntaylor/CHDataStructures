@@ -22,8 +22,13 @@
 // Definitions of variables declared as 'extern' in CHAbstractBinarySearchTree.h
 NSUInteger kCHBinaryTreeNodeSize = sizeof(CHBinaryTreeNode);
 NSUInteger kPointerSize = sizeof(void*);
+BOOL kCHGarbageCollectionDisabled;
 
 @implementation CHAbstractBinarySearchTree
+
++ (void) initialize {
+	kCHGarbageCollectionDisabled = !objc_collectingEnabled();
+}
 
 - (void) dealloc {
 	[self removeAllObjects];
@@ -209,7 +214,7 @@ NSUInteger kPointerSize = sizeof(void*);
 	CHBinaryTreeStack_PUSH(header->right);
 	header->right = sentinel;
 
-	if (!objc_collectingEnabled()) {
+	if (kCHGarbageCollectionDisabled) {
 		// Only bother with free() calls if garbage collection is NOT enabled.
 		CHBinaryTreeNode *current;
 		while (current = CHBinaryTreeStack_POP) {

@@ -55,6 +55,7 @@ typedef struct CHBinaryTreeNode {
 
 extern NSUInteger kCHBinaryTreeNodeSize;
 extern NSUInteger kPointerSize;
+extern BOOL kCHGarbageCollectionDisabled;
 
 #pragma mark Stack Macros
 
@@ -63,7 +64,7 @@ extern NSUInteger kPointerSize;
 	elementsInStack = 0; \
 }
 #define CHBinaryTreeStack_FREE(stack) { \
-	if (stack != NULL && !objc_collectingEnabled()) \
+	if (stack != NULL && kCHGarbageCollectionDisabled) \
 		free(stack); \
 	stack = NULL; \
 }
@@ -83,7 +84,7 @@ extern NSUInteger kPointerSize;
 	queueHead = queueTail = 0; \
 }
 #define CHBinaryTreeQueue_FREE(queue) { \
-	if (queue != NULL && !objc_collectingEnabled()) \
+	if (queue != NULL && kCHGarbageCollectionDisabled) \
 		free(queue); \
 	queue = NULL; \
 }

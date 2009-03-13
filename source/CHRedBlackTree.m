@@ -225,7 +225,8 @@ static inline CHBinaryTreeNode* doubleRotation(CHBinaryTreeNode *node, BOOL goin
 		found->object = current->object;
 		parent->link[(parent->right == current)]
 			= current->link[(current->left == sentinel)];
-		free(current);
+		if (kCHGarbageCollectionDisabled)
+			free(current);
 		--count;
     }
 	header->right->color = kBLACK; // Make the root black for simplified logic

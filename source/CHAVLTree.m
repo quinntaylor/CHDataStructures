@@ -170,7 +170,8 @@ done:
 		parent = CHBinaryTreeStack_POP;
 		isRightChild = (parent->right == current);
 		parent->link[isRightChild] = replacement;
-		free(current);
+		if (kCHGarbageCollectionDisabled)
+			free(current);
 		current = replacement;
 	} else {
 		// Two child case -- replace with minimum object in right subtree
@@ -186,7 +187,8 @@ done:
 		isRightChild = (parent->right == replacement);
 		parent->link[isRightChild] = replacement->right;
 		current = replacement->right;
-		free(replacement);
+		if (kCHGarbageCollectionDisabled)
+			free(replacement);
 	}
 	
 	// Trace back up the search path, rebalancing as we go until we're done
