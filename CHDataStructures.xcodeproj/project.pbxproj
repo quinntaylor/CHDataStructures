@@ -11,6 +11,7 @@
 			isa = PBXAggregateTarget;
 			buildConfigurationList = E43C87740EA3D36600B3B31E /* Build configuration list for PBXAggregateTarget "Deployment" */;
 			buildPhases = (
+				E41E579A0F6AF8E500FDA687 /* ShellScript */,
 				E43C87670EA3D35500B3B31E /* ShellScript */,
 			);
 			dependencies = (
@@ -524,7 +525,6 @@
 			buildConfigurationList = 1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "Framework" */;
 			buildPhases = (
 				8DC2EF500486A6940098B216 /* Headers */,
-				E49D7EA60EC261AF007C7837 /* ShellScript */,
 				8DC2EF520486A6940098B216 /* Resources */,
 				8DC2EF540486A6940098B216 /* Sources */,
 				8DC2EF560486A6940098B216 /* Frameworks */,
@@ -622,6 +622,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		E41E579A0F6AF8E500FDA687 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ ${CONFIGURATION} = 'Release' ]\nthen\n\techo\n\techo \"Stripping documentation comments from public header files\"\n\tdirectory=\"build/Release/CHDataStructures.framework/Headers\"\n\tfor file in `ls $directory` ; do\n\t\techo '    '$file\n\t\ttools/strip_comments.py --input $directory/$file -JL > /tmp/$file\n\t\ttools/trim_trailing_whitespace.py /tmp/$file\n\t\tmv /tmp/$file $directory/\n\tdone\nfi";
+		};
 		E43C87670EA3D35500B3B31E /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -662,20 +675,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"";
-			showEnvVarsInLog = 0;
-		};
-		E49D7EA60EC261AF007C7837 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [ ${CONFIGURATION} = 'Release' ]\nthen\n\techo\n\techo \"Stripping documentation comments from public header files\"\n\tdirectory=\"build/Release/CHDataStructures.framework/Headers\"\n\tfor file in `ls $directory` ; do\n\t\techo '    '$file\n\t\ttools/strip_comments.py --input $directory/$file -JL > /tmp/$file\n\t\ttools/trim_trailing_whitespace.py /tmp/$file\n\t\tmv /tmp/$file $directory/\n\tdone\nfi";
 			showEnvVarsInLog = 0;
 		};
 		E4FE76D70E89556A00971EE6 /* ShellScript */ = {
