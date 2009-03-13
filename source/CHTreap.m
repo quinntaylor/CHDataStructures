@@ -78,7 +78,7 @@
 			current = current->link[!direction];
 		}
 	} else {
-		current = malloc(kCHBinaryTreeNodeSize);
+		current = NSAllocateCollectable(kCHBinaryTreeNodeSize, NSScannedOption);
 		current->object = anObject;
 		current->left   = sentinel;
 		current->right  = sentinel;
@@ -97,7 +97,7 @@
 		singleRotation(parent, direction, CHBinaryTreeStack_TOP);
 		parent = CHBinaryTreeStack_POP;
 	}
-	free(stack);
+	CHBinaryTreeStack_FREE(stack);
 }
 
 - (void) removeObject:(id)anObject {
@@ -128,8 +128,10 @@
 			parent = parent->link[isRightChild];
 		}
 		parent->link[parent->right == current] = sentinel;
-		[current->object release];
-		free(current);
+		if (!objc_collectingEnabled()) {
+			[current->object release];
+			free(current);
+		}
 		--count;
 	}
 }

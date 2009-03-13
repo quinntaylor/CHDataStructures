@@ -145,7 +145,7 @@ static inline CHBinaryTreeNode* doubleRotation(CHBinaryTreeNode *node, BOOL goin
 		current->object = anObject;
 	} else {
 		++count;
-		current = malloc(kCHBinaryTreeNodeSize);
+		current = NSAllocateCollectable(kCHBinaryTreeNodeSize, NSScannedOption);
 		current->object = anObject;
 		current->left = sentinel;
 		current->right = sentinel;

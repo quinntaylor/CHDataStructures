@@ -41,7 +41,7 @@
 		current->object = anObject;		
 	} else {
 		// Create a new node to hold the value being inserted
-		current = malloc(kCHBinaryTreeNodeSize);
+		current = NSAllocateCollectable(kCHBinaryTreeNodeSize, NSScannedOption);
 		current->object = anObject;
 		current->left   = sentinel;
 		current->right  = sentinel;

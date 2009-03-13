@@ -84,10 +84,9 @@ static inline void adjustBalance(CHBinaryTreeNode *root, int dir, int bal) {
 		[current->object release];
 		current->object = anObject;
 		// No need to rebalance up the path since we didn't modify the structure
-		free(stack);		
-		return;
+		goto done;
 	} else {
-		current = malloc(kCHBinaryTreeNodeSize);
+		current = NSAllocateCollectable(kCHBinaryTreeNodeSize, NSScannedOption);
 		current->object = anObject;
 		current->left   = sentinel;
 		current->right  = sentinel;
@@ -133,7 +132,8 @@ static inline void adjustBalance(CHBinaryTreeNode *root, int dir, int bal) {
 		comparison = [parent->object compare:current->object];
 		parent->link[comparison == NSOrderedAscending] = current; // R if YES
 	}
-	free(stack);
+done:
+	CHBinaryTreeStack_FREE(stack);
 }
 
 - (void) removeObject:(id)anObject {
@@ -157,8 +157,7 @@ static inline void adjustBalance(CHBinaryTreeNode *root, int dir, int bal) {
 	}
 	// Exit if the specified node was not found in the tree.
 	if (current == sentinel) {
-		free(stack);
-		return;
+		goto done;
 	}
 	
 	[current->object release]; // Object must be released in any case
@@ -226,7 +225,8 @@ static inline void adjustBalance(CHBinaryTreeNode *root, int dir, int bal) {
 		parent = CHBinaryTreeStack_POP;
 		isRightChild = (parent->right == current);
 	}
-	free(stack);
+done:
+	CHBinaryTreeStack_FREE(stack);
 }
 
 - (NSString*) debugDescriptionForNode:(CHBinaryTreeNode*)node {

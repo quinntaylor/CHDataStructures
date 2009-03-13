@@ -119,7 +119,8 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 	CHSinglyLinkedListNode *old = node->next;
 	node->next = old->next;
 	[old->object release];
-	free(old);
+	if (!objc_collectingEnabled())
+		free(old);
 }
 
 @implementation CHSinglyLinkedList
@@ -131,8 +132,9 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 
 - (id) init {
 	if ([super init] == nil) return nil;
-	head = tail = malloc(kCHSinglyLinkedListNodeSize);
+	head = NSAllocateCollectable(kCHSinglyLinkedListNodeSize, NSScannedOption);
 	head->next = NULL;
+	tail = head;
 	count = 0;
 	mutations = 0;
 	return self;
@@ -241,7 +243,7 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
 	CHSinglyLinkedListNode *new;
-	new = malloc(kCHSinglyLinkedListNodeSize);
+	new = NSAllocateCollectable(kCHSinglyLinkedListNodeSize, NSScannedOption);
 	new->object = [anObject retain];
 	new->next = head->next;
 	head->next = new;
@@ -254,7 +256,7 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 - (void) prependObjectsFromArray:(NSArray*)anArray {
 	CHSinglyLinkedListNode *new;
 	for (id anObject in [anArray reverseObjectEnumerator]) {
-		new = malloc(kCHSinglyLinkedListNodeSize);
+		new = NSAllocateCollectable(kCHSinglyLinkedListNodeSize, NSScannedOption);
 		new->object = [anObject retain];
 		new->next = head->next;
 		head->next = new;
@@ -269,7 +271,7 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
 	CHSinglyLinkedListNode *new;
-	new = malloc(kCHSinglyLinkedListNodeSize);
+	new = NSAllocateCollectable(kCHSinglyLinkedListNodeSize, NSScannedOption);
 	new->object = [anObject retain];
 	new->next = NULL;
 	tail = tail->next = new;
@@ -280,7 +282,7 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 - (void) appendObjectsFromArray:(NSArray*)anArray {
 	CHSinglyLinkedListNode *new;
 	for (id anObject in anArray) {
-		new = malloc(kCHSinglyLinkedListNodeSize);
+		new = NSAllocateCollectable(kCHSinglyLinkedListNodeSize, NSScannedOption);
 		new->object = [anObject retain];
 		new->next = NULL;
 		tail = tail->next = new;
@@ -432,7 +434,7 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 	CHSinglyLinkedListNode *node = head; // So the index lands at prior node
 	for (NSUInteger nodeIndex = 0; nodeIndex < index; nodeIndex++)
 		node = node->next;
-	removeNodeAfterNode(node); // ++mutations, assigns the node's address to 'temp'
+	removeNodeAfterNode(node);
 	--count;
 	++mutations;
 	if (node->next == NULL)
@@ -440,20 +442,21 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 }
 
 - (void) removeAllObjects {
-	if (count > 0) {
-		CHSinglyLinkedListNode *temp;
+	if (count > 0 && !objc_collectingEnabled()) {
+		CHSinglyLinkedListNode *node;
 		// Use tail pointer to iterate through all nodes, then reset it to head
 		tail = head->next;
 		while (tail != NULL) {
-			temp = tail;
+			node = tail;
 			tail = tail->next;
-			[temp->object release];
-			free(temp);
+			[node->object release];
+			free(node);
 		}
-		head->next = NULL;
-		tail = head;
-		count = 0;
 	}
+	head->next = NULL;
+	tail = head;
+	[[NSGarbageCollector defaultCollector] collectIfNeeded];
+	count = 0;
 	++mutations;
 }
 

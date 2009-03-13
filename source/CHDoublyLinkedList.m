@@ -150,7 +150,10 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 #define removeNode(node) \
 	{ \
 		node->prev->next = node->next; node->next->prev = node->prev; \
-		[node->object release]; free(node); --count; ++mutations; \
+		if (!objc_collectingEnabled()) { \
+			[node->object release]; free(node); \
+		} \
+		--count; ++mutations; \
 	}
 
 @implementation CHDoublyLinkedList
@@ -162,8 +165,8 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 
 - (id) init {
 	if ([super init] == nil) return nil;
-	head = malloc(kCHDoublyLinkedListNodeSize);
-	tail = malloc(kCHDoublyLinkedListNodeSize);
+	head = NSAllocateCollectable(kCHDoublyLinkedListNodeSize, NSScannedOption);
+	tail = NSAllocateCollectable(kCHDoublyLinkedListNodeSize, NSScannedOption);
 	head->object = tail->object = nil;
 	head->next = tail;
 	head->prev = NULL;
@@ -305,7 +308,7 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 	findNodeAtIndex(index);
 	
 	CHDoublyLinkedListNode *newNode;
-	newNode = malloc(kCHDoublyLinkedListNodeSize);
+	newNode = NSAllocateCollectable(kCHDoublyLinkedListNodeSize, NSScannedOption);
 	newNode->object = [anObject retain];
 	newNode->next = node;          // point forward to displaced node
 	newNode->prev = node->prev;    // point backward to preceding node
@@ -454,15 +457,19 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 }
 
 - (void) removeAllObjects {
-	CHDoublyLinkedListNode *node = head->next, *temp;
-	while (node != tail) {
-		temp = node->next;
-		[node->object release];
-		free(node);
-		node = temp;
+	if (count > 0 && !objc_collectingEnabled()) {
+		// Only bother with free() calls if garbage collection is NOT enabled.
+		CHDoublyLinkedListNode *node = head->next, *temp;
+		while (node != tail) {
+			temp = node->next;
+			[node->object release];
+			free(node);
+			node = temp;
+		}
 	}
 	head->next = tail;
 	tail->prev = head;
+	[[NSGarbageCollector defaultCollector] collectIfNeeded];
 	count = 0;
 	++mutations;
 }

@@ -32,13 +32,6 @@ NSUInteger kPointerSize = sizeof(void*);
 	[super dealloc];
 }
 
-- (void) finalize {
-	[self removeAllObjects];
-	free(header);
-	free(sentinel);
-	[super finalize];
-}
-
 /**
  Only to be called from concrete child classes to initialize shared variables.
  */
@@ -47,12 +40,14 @@ NSUInteger kPointerSize = sizeof(void*);
 	count = 0;
 	mutations = 0;
 	
-	sentinel = malloc(kCHBinaryTreeNodeSize);
+	// Allocate with no options, since it should never root its object reference
+	sentinel = NSAllocateCollectable(kCHBinaryTreeNodeSize, 0);
 	sentinel->object = nil;
 	sentinel->right = sentinel;
 	sentinel->left = sentinel;
 	
-	header = malloc(kCHBinaryTreeNodeSize);
+	// Allocate with NSScannedOption so garbage collector scans object reference
+	header = NSAllocateCollectable(kCHBinaryTreeNodeSize, NSScannedOption);
 	header->object = [CHSearchTreeHeaderObject headerObject];
 	header->right = sentinel;
 	header->left = sentinel;
@@ -61,7 +56,7 @@ NSUInteger kPointerSize = sizeof(void*);
 
 - (id) initWithArray:(NSArray*)anArray {
 	// Allow concrete child class to have a chance to initialize its own state.
-	// (The subclass' -init calls -[CHAbstractBinarySearchTree init] first.)
+	// (The -init method in any subclass must always call -[super init] first.)
 	if ([self init] == nil) return nil;
 	for (id anObject in anArray)
 		[self addObject:anObject];
@@ -130,7 +125,7 @@ NSUInteger kPointerSize = sizeof(void*);
 	}
 	
 	if (current == sentinel && elementsInStack == 0) {
-		free(stack);
+		CHBinaryTreeStack_FREE(stack);
 		state->state = 1; // used as a termination flag
 	}
 	else {
@@ -192,11 +187,16 @@ NSUInteger kPointerSize = sizeof(void*);
 }
 
 /**
- Frees all nodes in the tree and releases the objects they point to. The pointer
- to the root node is reset to the sentinel, and element count is reset to zero.
- This method deletes nodes using a pre-order traversal by pushing child nodes on
- a stack. This approach generally requires less space than level-order traversal
- since it is depth-first rather than breadth-first, and should be faster, too.
+ Removes all nodes in the tree and releases the objects they point to. The root
+ node's object pointer is reset to the sentinel, and the element count is reset
+ to zero. If garbage collection is NOT enabled, the tree nodes are freed using a
+ pre-order traversal by pushing child nodes on a stack. (This approach generally
+ requires less space than level-order traversal, since it is depth-first instead
+ of breadth-first, and should be faster, too.) Under garbage collection, a call
+ is made to @link NSGarbageCollector#collectIfNeeded -[NSGarbageCollector
+ collectIfNeeded] @endlink to indicate that now might be a good time to perform
+ garbage collection. (Unlinking the root node from the header causes the entire
+ graph of tree nodes to become eligible for garbage collection.)
  */
 - (void) removeAllObjects {
 	if (count == 0)
@@ -207,19 +207,22 @@ NSUInteger kPointerSize = sizeof(void*);
 	NSUInteger stackSize, elementsInStack;
 	CHBinaryTreeStack_INIT(stack);
 	CHBinaryTreeStack_PUSH(header->right);
-
-	CHBinaryTreeNode *current;
-	while (current = CHBinaryTreeStack_POP) {
-		if (current->right != sentinel)
-			CHBinaryTreeStack_PUSH(current->right);
-		if (current->left != sentinel)
-			CHBinaryTreeStack_PUSH(current->left);
-		[current->object release];
-		free(current);
-	}
-	free(stack);
-
 	header->right = sentinel;
+
+	if (!objc_collectingEnabled()) {
+		// Only bother with free() calls if garbage collection is NOT enabled.
+		CHBinaryTreeNode *current;
+		while (current = CHBinaryTreeStack_POP) {
+			if (current->right != sentinel)
+				CHBinaryTreeStack_PUSH(current->right);
+			if (current->left != sentinel)
+				CHBinaryTreeStack_PUSH(current->left);
+			[current->object release];
+			free(current);
+		}
+	}
+	CHBinaryTreeStack_FREE(stack);
+	[[NSGarbageCollector defaultCollector] collectIfNeeded];
 	count = 0;
 }
 
@@ -261,7 +264,7 @@ NSUInteger kPointerSize = sizeof(void*);
 		 [self debugDescriptionForNode:current],
 		 current->left->object, current->right->object];
 	}
-	free(stack);
+	CHBinaryTreeStack_FREE(stack);
 	[description appendString:@"}"];
 	return description;
 }
@@ -301,7 +304,7 @@ NSUInteger kPointerSize = sizeof(void*);
 			    ? [NSString stringWithFormat:@"\"%@\"", rightChild]
 			    : [NSString stringWithFormat:@"nil%d", ++sentinelCount]];
 		}
-		free(stack);
+		CHBinaryTreeStack_FREE(stack);
 		
 		// Create entry for each null leaf node (each nil is modeled separately)
 		for (int i = 1; i <= sentinelCount; i++)
@@ -360,15 +363,9 @@ NSUInteger kPointerSize = sizeof(void*);
 
 - (void) dealloc {
 	[collection release];
-	free(stack);
-	free(queue);
+	CHBinaryTreeStack_FREE(stack);
+	CHBinaryTreeQueue_FREE(queue);
 	[super dealloc];
-}
-
-- (void) finalize {
-	free(stack);	
-	free(queue);
-	[super finalize];
 }
 
 - (NSArray*) allObjects {
@@ -390,9 +387,7 @@ NSUInteger kPointerSize = sizeof(void*);
 	switch (traversalOrder) {
 		case CHTraverseAscending: {
 			if (elementsInStack == 0 && current == sentinelNode) {
-				[collection release];
-				collection = nil;
-				return nil;
+				goto collectionExhausted;
 			}
 			while (current != sentinelNode) {
 				CHBinaryTreeStack_PUSH(current);
@@ -407,9 +402,7 @@ NSUInteger kPointerSize = sizeof(void*);
 			
 		case CHTraverseDescending: {
 			if (elementsInStack == 0 && current == sentinelNode) {
-				[collection release];
-				collection = nil;
-				return nil;
+				goto collectionExhausted;
 			}
 			while (current != sentinelNode) {
 				CHBinaryTreeStack_PUSH(current);
@@ -425,9 +418,7 @@ NSUInteger kPointerSize = sizeof(void*);
 		case CHTraversePreOrder: {
 			current = CHBinaryTreeStack_POP;
 			if (current == NULL) {
-				[collection release];
-				collection = nil;
-				return nil;
+				goto collectionExhausted;
 			}
 			if (current->right != sentinelNode)
 				CHBinaryTreeStack_PUSH(current->right);
@@ -439,9 +430,7 @@ NSUInteger kPointerSize = sizeof(void*);
 		case CHTraversePostOrder: {
 			// This algorithm from: http://www.johny.ca/blog/archives/05/03/04/
 			if (elementsInStack == 0 && current == sentinelNode) {
-				[collection release];
-				collection = nil;
-				return nil;
+				goto collectionExhausted;
 			}
 			while (1) {
 				while (current != sentinelNode) {
@@ -465,10 +454,7 @@ NSUInteger kPointerSize = sizeof(void*);
 			current = CHBinaryTreeQueue_FRONT;
 			CHBinaryTreeQueue_DEQUEUE;
 			if (current == NULL) {
-				[collection release];
-				collection = nil;
-				free(queue);
-				return nil;
+				goto collectionExhausted;
 			}
 			if (current->left != sentinelNode)
 				CHBinaryTreeQueue_ENQUEUE(current->left);
@@ -476,6 +462,12 @@ NSUInteger kPointerSize = sizeof(void*);
 				CHBinaryTreeQueue_ENQUEUE(current->right);
 			return current->object;
 		}
+			
+		collectionExhausted:
+			[collection release];
+			collection = nil;			
+			CHBinaryTreeStack_FREE(stack);
+			CHBinaryTreeQueue_FREE(queue);
 	}
 	return nil;
 }

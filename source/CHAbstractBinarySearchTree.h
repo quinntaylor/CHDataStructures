@@ -59,9 +59,13 @@ extern NSUInteger kPointerSize;
 #pragma mark Stack Macros
 
 #define CHBinaryTreeStack_INIT(stack) { \
-	stackSize = 16; \
-	stack = malloc(stackSize * kCHBinaryTreeNodeSize); \
+	stack = NSAllocateCollectable(kCHBinaryTreeNodeSize * (stackSize=16), 0); \
 	elementsInStack = 0; \
+}
+#define CHBinaryTreeStack_FREE(stack) { \
+	if (stack != NULL && !objc_collectingEnabled()) \
+		free(stack); \
+	stack = NULL; \
 }
 // Since this stack starts at 0 and goes to N-1, resizing is pretty simple.
 #define CHBinaryTreeStack_PUSH(obj) { \
@@ -75,8 +79,13 @@ extern NSUInteger kPointerSize;
 #pragma mark Queue Macros
 
 #define CHBinaryTreeQueue_INIT(queue) { \
-	queueSize = 32; queueHead = queueTail = 0; \
-	queue = malloc(queueSize * kCHBinaryTreeNodeSize); \
+	queue = NSAllocateCollectable(kCHBinaryTreeNodeSize * (queueSize=32), 0); \
+	queueHead = queueTail = 0; \
+}
+#define CHBinaryTreeQueue_FREE(queue) { \
+	if (queue != NULL && !objc_collectingEnabled()) \
+		free(queue); \
+	queue = NULL; \
 }
 // This queue is a circular array, so resizing it takes a little extra care.
 // (memcpy() take the destination address, source address, and number of bytes.)
@@ -187,7 +196,7 @@ extern NSUInteger kPointerSize;
 - (void) encodeWithCoder:(NSCoder*)encoder;
 
 /**
- A method called within <code>for…in</code> constructs via NSFastEnumeration.
+ A method called within <code>for-in</code> constructs via NSFastEnumeration.
  This method is intended to be called implicitly by code automatically generated
  by the compiler, and stores its enumeration information in the @a state struct.
  

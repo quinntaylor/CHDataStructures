@@ -19,6 +19,21 @@
 
 #import "CHMultiMap.h"
 
+/**
+ Utility function for creating a new NSMutableSet containing object; if object
+ is a set or array, the set containts all objects in the collection.
+ */
+static inline NSMutableSet* wrapObjectInMutableSet(id object) {
+	if (object == nil)
+		return nil;
+	if ([object isKindOfClass:[NSSet class]])
+		return [NSMutableSet setWithSet:object];
+	if ([object isKindOfClass:[NSArray class]])
+		return [NSMutableSet setWithArray:object];
+	else
+		return [NSMutableSet setWithObject:object];
+}
+
 @implementation CHMultiMap
 
 - (void) dealloc {
@@ -36,14 +51,6 @@
 	return self;
 }
 
-static inline NSMutableSet* wrapInMutableSet(id object) {
-	if (object == nil)
-		return nil;
-	return ([object isKindOfClass:[NSSet class]])
-		? [NSMutableSet setWithSet:object]
-		: [NSMutableSet setWithObject:object];
-}
-
 - (id) initWithObjects:(NSArray*)objectsArray forKeys:(NSArray*)keyArray {
 	if ([keyArray count] != [objectsArray count])
 		CHInvalidArgumentException([self class], _cmd, @"Unequal array counts.");
@@ -51,7 +58,7 @@ static inline NSMutableSet* wrapInMutableSet(id object) {
 	NSEnumerator *objects = [objectsArray objectEnumerator];
 	NSSet *objectSet;
 	for (id key in keyArray) {
-		objectSet = wrapInMutableSet([objects nextObject]);
+		objectSet = wrapObjectInMutableSet([objects nextObject]);
 		[dictionary setObject:objectSet forKey:key];
 		count += [objectSet count];
 	}
@@ -69,7 +76,7 @@ static inline NSMutableSet* wrapInMutableSet(id object) {
 	va_start(argumentList, firstObject);
 	
 	// The first argument isn't part of the varargs list; handle it separately
-	NSSet *objectSet = wrapInMutableSet(firstObject);
+	NSSet *objectSet = wrapObjectInMutableSet(firstObject);
 	id aKey;
 	// Add an entry for each valid pair of object-key parameters.
 	do {
@@ -77,7 +84,7 @@ static inline NSMutableSet* wrapInMutableSet(id object) {
 			CHInvalidArgumentException([self class], _cmd, @"Invalid nil key.");
 		[dictionary setObject:objectSet forKey:aKey];
 		count += [objectSet count];
-	} while (objectSet = wrapInMutableSet(va_arg(argumentList, id)));
+	} while (objectSet = wrapObjectInMutableSet(va_arg(argumentList, id)));
 	va_end(argumentList);
 	return self;
 }
@@ -99,11 +106,11 @@ static inline NSMutableSet* wrapInMutableSet(id object) {
 #pragma mark <NSCopying>
 
 - (id) copyWithZone:(NSZone*)zone {
-	CHMultiMap *newDictionary = [[CHMultiMap alloc] init];
+	CHMultiMap *newMultiMap = [[CHMultiMap alloc] init];
 	for (id key in [self allKeys])
-		[newDictionary setObjects:[[dictionary objectForKey:key] mutableCopy]
-						   forKey:key];
-	return newDictionary;
+		[newMultiMap setObjects:[[dictionary objectForKey:key] mutableCopy]
+						 forKey:key];
+	return newMultiMap;
 }
 
 #pragma mark Queries
@@ -126,8 +133,9 @@ static inline NSMutableSet* wrapInMutableSet(id object) {
 
 - (BOOL) containsObject:(id)anObject {
 	for (id key in [self keyEnumerator]) {
-		if ([[dictionary objectForKey:key] containsObject:anObject])
+		if ([[dictionary objectForKey:key] containsObject:anObject]) {
 			return YES;
+		}
 	}
 	return NO;
 }
@@ -138,9 +146,10 @@ static inline NSMutableSet* wrapInMutableSet(id object) {
 
 - (NSArray*) allObjects {
 	NSMutableArray *objects = [NSMutableArray array];
-	for (id key in [self allKeys])
-		for (id object in [dictionary objectForKey:key])
-			[objects addObject:object];
+	for (id key in [self allKeys]) {
+		[objects addObjectsFromArray:[[dictionary objectForKey:key] allObjects]];
+		// objectForKey: returns an NSSet -- get array from that with -allObjects
+	}
 	return objects;
 }
 
@@ -172,11 +181,10 @@ static inline NSMutableSet* wrapInMutableSet(id object) {
 
 - (void) addObject:(id)anObject forKey:(id)aKey {
 	NSMutableSet *objects = [dictionary objectForKey:aKey];
-	count -= [objects count];
-	if (objects == nil) {
-		objects = [NSMutableSet set];
-		[dictionary setObject:objects forKey:aKey];
-	}
+	if (objects == nil)
+		[dictionary setObject:(objects = [NSMutableSet set]) forKey:aKey];
+	else
+		count -= [objects count];
 	[objects addObject:anObject];
 	count += [objects count];
 	++mutations;
@@ -184,11 +192,10 @@ static inline NSMutableSet* wrapInMutableSet(id object) {
 
 - (void) addObjects:(NSSet*)objectSet forKey:(id)aKey {
 	NSMutableSet *objects = [dictionary objectForKey:aKey];
-	count -= [objects count];
-	if (objects == nil) {
-		objects = [NSMutableSet set];
-		[dictionary setObject:objects forKey:aKey];
-	}
+	if (objects == nil)
+		[dictionary setObject:(objects = [NSMutableSet set]) forKey:aKey];
+	else
+		count -= [objects count];
 	[objects unionSet:objectSet];
 	count += [objects count];
 	++mutations;
