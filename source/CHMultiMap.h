@@ -33,20 +33,20 @@
  The values for a key may or may not be ordered. This implementation does not
  maintain an ordering for objects associated with a key, nor does it allow for
  multiple occurrences of an object associated with the same key. Internally,
- this class uses and NSMutableDictionary, and the associated values for each key
- are stored in distinct NSMutableSet instances.
- 
- Just as with NSDictionary, each key added to a multi-dictionary is copied using
- <code>copyWithZone:</code>, so keys must conform to the NSCopying protocol.
- Currently, this multimap implementation does not support key-value coding,
- observing, or binding like NSDictionary does. Consequently, the distinction
- between "object" and "value" is blurrier, although hopefully consistent with
- the Cocoa APIs in general....
+ this class uses an NSMutableDictionary, and the associated values for each key
+ are stored in distinct NSMutableSet instances. (Just as with NSDictionary, each
+ key added to a CHMultiMap is copied using @link NSCopying#copyWithZone:
+ -copyWithZone: @endlink and all keys must conform to the NSCopying protocol.)
  
  Since NSDictionary and NSSet conform to the NSCoding protocol, any internal
  data can be serialized. However, NSSet cannot automatically be written to or
  read from a property list, since it has no specified order. Thus, instances of
  CHMultiMap must be encoded as an NSData object before saving to disk.
+ 
+ Currently, this multimap implementation does not support key-value coding,
+ observing, or binding like NSDictionary does. Consequently, the distinction
+ between "object" and "value" is blurrier, although hopefully consistent with
+ the Cocoa APIs in general....
  
  Unlike NSDictionary and other Cocoa collections, CHMultiMap has not been
  designed with mutable and immutable variants. A multimap is not any more useful

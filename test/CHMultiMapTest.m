@@ -192,10 +192,12 @@ void populateMultimap(CHMultiMap* multimap) {
 	[multimap release];
 	multimap = [[CHMultiMap alloc] initWithObjectsAndKeys:
 				[NSSet setWithObjects:@"A",@"B",@"C",nil], @"foo",
-				@"Z", @"bar", nil];
-	STAssertEquals([multimap count], 2u, @"Incorrect key count.");
+				[NSArray arrayWithObjects:@"X",@"Y",nil], @"bar",
+				@"z", @"baz", nil];
+	STAssertEquals([multimap count], 3u, @"Incorrect key count.");
 	STAssertEquals([multimap countForKey:@"foo"], 3u, @"Incorrect object count.");
-	STAssertEquals([multimap countForKey:@"bar"], 1u, @"Incorrect object count.");
+	STAssertEquals([multimap countForKey:@"bar"], 2u, @"Incorrect object count.");
+	STAssertEquals([multimap countForKey:@"baz"], 1u, @"Incorrect object count.");
 	
 	STAssertThrows(([[CHMultiMap alloc] initWithObjectsAndKeys:
 					@"A", @"foo", @"Z", nil]),
