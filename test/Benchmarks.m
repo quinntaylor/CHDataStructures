@@ -498,7 +498,7 @@ int main (int argc, const char * argv[]) {
 			while ([objectSet count] < size)
 				[objectSet addObject:[NSNumber numberWithInt:arc4random()]];
 			[innerPool drain];
-			objects = [objectSet allObjects];
+			NSArray *objects = [objectSet allObjects];
 			jitterOffset = -([testClasses count]/2);
 			for (Class aClass in testClasses) {
 				printf(" %s", [[aClass className] UTF8String]);

@@ -387,6 +387,7 @@ static NSMutableString *balanceErrors;
 	node->balance = 0;
 	STAssertEqualObjects([tree debugDescriptionForNode:node],
 						 @"[ 0]\t\"A B C\"", nil);
+	free(node);
 }
 
 - (void) testDotStringForNode {
@@ -395,6 +396,7 @@ static NSMutableString *balanceErrors;
 	node->balance = 0;
 	STAssertEqualObjects([tree dotStringForNode:node],
 						 @"  \"A B C\" [label=\"A B C\\n0\"];\n", nil);
+	free(node);
 }
 
 @end

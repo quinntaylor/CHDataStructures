@@ -329,6 +329,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	node->color = kRED;
 	STAssertEqualObjects([tree debugDescriptionForNode:node],
 						 @"[ RED ]	\"A B C\"", nil);
+	free(node);
 }
 
 - (void) testDotStringForNode {
@@ -337,6 +338,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	node->color = kRED;
 	STAssertEqualObjects([tree dotStringForNode:node],
 						 @"  \"A B C\" [color=red];\n", nil);
+	free(node);
 }
 
 @end

@@ -326,7 +326,26 @@ void populateMultimap(CHMultiMap* multimap) {
 }
 
 - (void) testSetObjectsForKey {
-	STFail(@"Unimplemented unit test.");
+	[multimap addObject:@"XYZ" forKey:@"foo"];
+	STAssertEquals([multimap count], 1u, @"Incorrect key count.");
+	STAssertEquals([multimap countForAllKeys], 1u, @"Incorrect object count.");
+	STAssertTrue(([[multimap objectsForKey:@"foo"] isEqualToSet:
+				   [NSSet setWithObjects:@"XYZ",nil]]),
+				 @"Incorrect objects for key");
+	
+	[multimap setObjects:[NSSet setWithObjects:@"A",@"B",@"C",nil] forKey:@"foo"];
+	STAssertEquals([multimap count], 1u, @"Incorrect key count.");
+	STAssertEquals([multimap countForAllKeys], 3u, @"Incorrect object count.");
+	STAssertTrue(([[multimap objectsForKey:@"foo"] isEqualToSet:
+				   [NSSet setWithObjects:@"A",@"B",@"C",nil]]),
+				 @"Incorrect objects for key");
+	
+	[multimap setObjects:[NSSet setWithObjects:@"X",@"Y",@"Z",nil] forKey:@"bar"];
+	STAssertEquals([multimap count], 2u, @"Incorrect key count.");
+	STAssertEquals([multimap countForAllKeys], 6u, @"Incorrect object count.");
+	STAssertTrue(([[multimap objectsForKey:@"bar"] isEqualToSet:
+				   [NSSet setWithObjects:@"X",@"Y",@"Z",nil]]),
+				 @"Incorrect objects for key");
 }
 
 @end

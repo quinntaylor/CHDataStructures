@@ -305,6 +305,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	node->priority = 123456789;
 	STAssertEqualObjects([tree debugDescriptionForNode:node],
 						 @"[  123456789]\t\"A B C\"", nil);
+	free(node);
 }
 
 - (void) testDotStringForNode {
@@ -313,6 +314,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	node->priority = 123456789;
 	STAssertEqualObjects([tree dotStringForNode:node],
 						 @"  \"A B C\" [label=\"A B C\\n123456789\"];\n", nil);
+	free(node);
 }
 
 @end

@@ -236,6 +236,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	node->level = 1;
 	STAssertEqualObjects([tree debugDescriptionForNode:node],
 						 @"[ 1]\t\"A B C\"", nil);
+	free(node);
 }
 
 - (void) testDotStringForNode {
@@ -244,6 +245,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	node->level = 1;
 	STAssertEqualObjects([tree dotStringForNode:node],
 						 @"  \"A B C\" [label=\"A B C\\n1\"];\n", nil);
+	free(node);
 }
 
 @end
