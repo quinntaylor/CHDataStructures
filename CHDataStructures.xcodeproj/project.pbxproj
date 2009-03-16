@@ -74,6 +74,7 @@
 		E41035290EC409B900C2CFB9 /* CHTreap.m in Sources */ = {isa = PBXBuildFile; fileRef = E41035270EC409B900C2CFB9 /* CHTreap.m */; };
 		E41180270E91E7E700E66053 /* CHSinglyLinkedList.h in Headers */ = {isa = PBXBuildFile; fileRef = E41180250E91E7E700E66053 /* CHSinglyLinkedList.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E41180280E91E7E700E66053 /* CHSinglyLinkedList.m in Sources */ = {isa = PBXBuildFile; fileRef = E41180260E91E7E700E66053 /* CHSinglyLinkedList.m */; };
+		E41D293E0F6CC44900AF80C4 /* CHAbstractBinarySearchTree_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = E41D293D0F6CC44900AF80C4 /* CHAbstractBinarySearchTree_Private.h */; };
 		E42DBAF20E8C3200000E1FBD /* CHDeque.h in Headers */ = {isa = PBXBuildFile; fileRef = E42DBAF10E8C3200000E1FBD /* CHDeque.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E442DFA80E8F1BDF00BD62F6 /* CHDataStructures.h in Headers */ = {isa = PBXBuildFile; fileRef = E442DFA70E8F1BDF00BD62F6 /* CHDataStructures.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E442DFB80E8F1E6D00BD62F6 /* CHAnderssonTree.h in Headers */ = {isa = PBXBuildFile; fileRef = E442DFB60E8F1E6D00BD62F6 /* CHAnderssonTree.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -242,6 +243,7 @@
 		E410360E0EC424E600C2CFB9 /* CHTreapTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHTreapTest.m; path = test/CHTreapTest.m; sourceTree = "<group>"; };
 		E41180250E91E7E700E66053 /* CHSinglyLinkedList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHSinglyLinkedList.h; path = source/CHSinglyLinkedList.h; sourceTree = "<group>"; };
 		E41180260E91E7E700E66053 /* CHSinglyLinkedList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHSinglyLinkedList.m; path = source/CHSinglyLinkedList.m; sourceTree = "<group>"; };
+		E41D293D0F6CC44900AF80C4 /* CHAbstractBinarySearchTree_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHAbstractBinarySearchTree_Private.h; path = source/CHAbstractBinarySearchTree_Private.h; sourceTree = "<group>"; };
 		E42DBAF10E8C3200000E1FBD /* CHDeque.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHDeque.h; path = source/CHDeque.h; sourceTree = "<group>"; };
 		E442DFA70E8F1BDF00BD62F6 /* CHDataStructures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHDataStructures.h; path = source/CHDataStructures.h; sourceTree = "<group>"; };
 		E442DFB60E8F1E6D00BD62F6 /* CHAnderssonTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHAnderssonTree.h; path = source/CHAnderssonTree.h; sourceTree = "<group>"; };
@@ -381,6 +383,7 @@
 		08FB77AEFE84172EC02AAC07 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				E41D293D0F6CC44900AF80C4 /* CHAbstractBinarySearchTree_Private.h */,
 				E4FE77C90E8978DD00971EE6 /* CHAbstractBinarySearchTree.h */,
 				E4ADBC990E88412C00B570BC /* CHAbstractBinarySearchTree.m */,
 				E48860B80EA66072000F132A /* CHAbstractListCollection.h */,
@@ -514,6 +517,7 @@
 				E4E7C1270EC0CACE009B19D7 /* CHDataStructures_Prefix.pch in Headers */,
 				E41035280EC409B900C2CFB9 /* CHTreap.h in Headers */,
 				E48BF92F0EE79AAE0004D5E6 /* CHMultiMap.h in Headers */,
+				E41D293E0F6CC44900AF80C4 /* CHAbstractBinarySearchTree_Private.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

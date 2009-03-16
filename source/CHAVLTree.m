@@ -18,6 +18,7 @@
  */
 
 #import "CHAVLTree.h"
+#import "CHAbstractBinarySearchTree_Private.h"
 
 // Two-way single rotation
 static inline CHBinaryTreeNode* singleRotation(CHBinaryTreeNode *node, int dir) {
@@ -63,9 +64,8 @@ static inline void adjustBalance(CHBinaryTreeNode *root, int dir, int bal) {
 	++mutations;
 	
 	CHBinaryTreeNode *parent, *save, *current = header;
-	CHBinaryTreeNode **stack;
-	NSUInteger stackSize, elementsInStack;
-	CHBinaryTreeStack_INIT(stack);
+	CHBinaryTreeStack_DECLARE();
+	CHBinaryTreeStack_INIT();
 	
 	sentinel->object = anObject; // Assure that we find a spot to insert
 	NSComparisonResult comparison;
@@ -144,9 +144,8 @@ done:
 	++mutations;
 
 	CHBinaryTreeNode *parent, *current = header;
-	CHBinaryTreeNode **stack;
-	NSUInteger stackSize, elementsInStack;
-	CHBinaryTreeStack_INIT(stack);
+	CHBinaryTreeStack_DECLARE();
+	CHBinaryTreeStack_INIT();
 
 	sentinel->object = anObject; // Assure that we stop at a leaf if not found.
 	NSComparisonResult comparison;
@@ -170,7 +169,7 @@ done:
 		parent = CHBinaryTreeStack_POP;
 		isRightChild = (parent->right == current);
 		parent->link[isRightChild] = replacement;
-		if (kCHGarbageCollectionDisabled)
+		if (CHGarbageCollectionDisabled)
 			free(current);
 		current = replacement;
 	} else {
@@ -187,13 +186,13 @@ done:
 		isRightChild = (parent->right == replacement);
 		parent->link[isRightChild] = replacement->right;
 		current = replacement->right;
-		if (kCHGarbageCollectionDisabled)
+		if (CHGarbageCollectionDisabled)
 			free(replacement);
 	}
 	
 	// Trace back up the search path, rebalancing as we go until we're done
 	BOOL done = NO;
-	while (!done && elementsInStack > 0) {
+	while (!done && stackSize > 0) {
 		// Update the balance factor
 		if (isRightChild)
 			parent->balance--;

@@ -18,6 +18,7 @@
  */
 
 #import "CHRedBlackTree.h"
+//#import "CHAbstractBinarySearchTree_Private.h"
 
 #pragma mark C Functions for Optimized Operations
 
@@ -225,7 +226,7 @@ static inline CHBinaryTreeNode* doubleRotation(CHBinaryTreeNode *node, BOOL goin
 		found->object = current->object;
 		parent->link[(parent->right == current)]
 			= current->link[(current->left == sentinel)];
-		if (kCHGarbageCollectionDisabled)
+		if (CHGarbageCollectionDisabled)
 			free(current);
 		--count;
     }

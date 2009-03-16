@@ -18,6 +18,7 @@
  */
 
 #import "CHUnbalancedTree.h"
+//#import "CHAbstractBinarySearchTree_Private.h"
 
 @implementation CHUnbalancedTree
 
@@ -81,7 +82,7 @@
 		// One or both of the child pointers are null, so removal is simpler
 		parent->link[parent->right == current]
 			= current->link[current->left == sentinel];
-		if (kCHGarbageCollectionDisabled)
+		if (CHGarbageCollectionDisabled)
 			free(current);
 	} else {
 		// The most complex case: removing a node with 2 non-null children
@@ -94,7 +95,7 @@
 		}
 		current->object = replacement->object;
 		parent->link[parent->right == replacement] = replacement->right;
-		if (kCHGarbageCollectionDisabled)
+		if (CHGarbageCollectionDisabled)
 			free(replacement);
 	}
 }

@@ -90,11 +90,6 @@
  or <a href="http://www-tcs.cs.uni-sb.de/Papers/rst.ps">PostScript revision</a>)
  */
 @interface CHTreap : CHAbstractBinarySearchTree
-{
-	// For some reason, if these empty braces aren't here, Doxygen goes wacky...
-	// This only happens when methods are declared below, and the effect is that
-	// the inherited methods and attributes are not represented for the class.
-}
 
 /**
  Add an object to the tree with a randomly-generated priority value. This

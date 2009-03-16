@@ -18,16 +18,66 @@
  */
 
 #import "CHAbstractBinarySearchTree.h"
+#import "CHAbstractBinarySearchTree_Private.h"
 
 // Definitions of variables declared as 'extern' in CHAbstractBinarySearchTree.h
 NSUInteger kCHBinaryTreeNodeSize = sizeof(CHBinaryTreeNode);
 NSUInteger kPointerSize = sizeof(void*);
-BOOL kCHGarbageCollectionDisabled;
+BOOL CHGarbageCollectionDisabled;
+
+
+/**
+ A dummy object that resides in the header node for a tree. Using a header node
+ can simplify insertion logic by eliminating the need to check whether the root
+ is null. In such cases, the tree root is generally stored as the right child of
+ the header. In order to always proceed to the right child when traversing down
+ the tree, instances of this class always return <code>NSOrderedAscending</code>
+ when called as the receiver of the <code>-compare:</code> method.
+ */
+@interface CHSearchTreeHeaderObject : NSObject
+
+/**
+ Returns the singleton instance of this class. The singleton variable is defined
+ in this file (CHAbstractBinarySearchTree.m) and is initialized only once in
+ +[CHAbstractBinarySearchTree initialize].
+ 
+ @return The singleton instance of this class.
+ */
++ (id) headerObject;
+
+/**
+ Always indicate that the other object should appear to the right side. @b Note:
+ To work correctly, this object @b must be the receiver of the -compare: message.
+ 
+ @param otherObject The object to be compared to the receiver.
+ @return <code>NSOrderedAscending</code>, indicating that traversal should go to
+ the right child of the containing tree node.
+ */
+- (NSComparisonResult) compare:(id)otherObject;
+
+@end
+
+static CHSearchTreeHeaderObject *headerObject = nil;
+
+@implementation CHSearchTreeHeaderObject
+
++ (id) headerObject {
+	return headerObject;
+}
+
+- (NSComparisonResult) compare:(id)otherObject {
+	return NSOrderedAscending;
+}
+
+@end
+
+#pragma mark -
 
 @implementation CHAbstractBinarySearchTree
 
 + (void) initialize {
-	kCHGarbageCollectionDisabled = !objc_collectingEnabled();
+	CHGarbageCollectionDisabled = !objc_collectingEnabled();
+	headerObject = [[CHSearchTreeHeaderObject alloc] init];
 }
 
 - (void) dealloc {
@@ -96,15 +146,14 @@ BOOL kCHGarbageCollectionDisabled;
                                      count:(NSUInteger)len
 {
 	CHBinaryTreeNode *current;
-	CHBinaryTreeNode **stack;
-	NSUInteger stackSize, elementsInStack;
+	CHBinaryTreeStack_DECLARE();
 	
 	// For the first call, start at leftmost node, otherwise the last saved node
 	if (state->state == 0) {
 		state->itemsPtr = stackbuf;
 		state->mutationsPtr = &mutations;
 		current = header->right;
-		CHBinaryTreeStack_INIT(stack);
+		CHBinaryTreeStack_INIT();
 	}
 	else if (state->state == 1) {
 		return 0;		
@@ -112,13 +161,13 @@ BOOL kCHGarbageCollectionDisabled;
 	else {
 		current = (CHBinaryTreeNode*) state->state;
 		stack = (CHBinaryTreeNode**) state->extra[0];
-		stackSize = (NSUInteger) state->extra[1];
-		elementsInStack = (NSUInteger) state->extra[2];
+		stackCapacity = (NSUInteger) state->extra[1];
+		stackSize = (NSUInteger) state->extra[2];
 	}
 	
 	// Accumulate objects from the tree until we reach all nodes or the maximum
 	NSUInteger batchCount = 0;
-	while ( (current != sentinel || elementsInStack > 0) && batchCount < len) {
+	while ( (current != sentinel || stackSize > 0) && batchCount < len) {
 		while (current != sentinel) {
 			CHBinaryTreeStack_PUSH(current);
 			current = current->left;
@@ -129,15 +178,15 @@ BOOL kCHGarbageCollectionDisabled;
 		batchCount++;
 	}
 	
-	if (current == sentinel && elementsInStack == 0) {
+	if (current == sentinel && stackSize == 0) {
 		CHBinaryTreeStack_FREE(stack);
 		state->state = 1; // used as a termination flag
 	}
 	else {
 		state->state    = (unsigned long) current;
 		state->extra[0] = (unsigned long) stack;
-		state->extra[1] = (unsigned long) stackSize;
-		state->extra[2] = (unsigned long) elementsInStack;
+		state->extra[1] = (unsigned long) stackCapacity;
+		state->extra[2] = (unsigned long) stackSize;
 	}
 	return batchCount;
 }
@@ -208,13 +257,12 @@ BOOL kCHGarbageCollectionDisabled;
 		return;
 	++mutations;
 	
-	CHBinaryTreeNode **stack;
-	NSUInteger stackSize, elementsInStack;
-	CHBinaryTreeStack_INIT(stack);
+	CHBinaryTreeStack_DECLARE();
+	CHBinaryTreeStack_INIT();
 	CHBinaryTreeStack_PUSH(header->right);
 	header->right = sentinel;
 
-	if (kCHGarbageCollectionDisabled) {
+	if (CHGarbageCollectionDisabled) {
 		// Only bother with free() calls if garbage collection is NOT enabled.
 		CHBinaryTreeNode *current;
 		while (current = CHBinaryTreeStack_POP) {
@@ -225,9 +273,10 @@ BOOL kCHGarbageCollectionDisabled;
 			[current->object release];
 			free(current);
 		}
+		free(stack); // declared in CHBinaryTreeStack_DECLARE() macro
 	}
-	CHBinaryTreeStack_FREE(stack);
-	[[NSGarbageCollector defaultCollector] collectIfNeeded];
+	else
+		[[NSGarbageCollector defaultCollector] collectIfNeeded];
 	count = 0;
 }
 
@@ -252,9 +301,8 @@ BOOL kCHGarbageCollectionDisabled;
 	NSMutableString *description = [NSMutableString stringWithFormat:
 	                                @"<%@: 0x%x> = {\n", [self class], self];
 	CHBinaryTreeNode *current;
-	CHBinaryTreeNode **stack;
-	NSUInteger stackSize, elementsInStack;
-	CHBinaryTreeStack_INIT(stack);
+	CHBinaryTreeStack_DECLARE();
+	CHBinaryTreeStack_INIT();
 	
 	sentinel->object = nil;
 	if (header->right != sentinel)
@@ -289,10 +337,10 @@ BOOL kCHGarbageCollectionDisabled;
 		sentinel->object = nil;
 		
 		CHBinaryTreeNode *current;
-		CHBinaryTreeNode **stack;
-		NSUInteger stackSize, elementsInStack;
-		CHBinaryTreeStack_INIT(stack);
+		CHBinaryTreeStack_DECLARE();
+		CHBinaryTreeStack_INIT();
 		CHBinaryTreeStack_PUSH(header->right);
+		// Uses a reverse pre-order traversal to make the DOT output look right.
 		while (current = CHBinaryTreeStack_POP) {
 			if (current->left != sentinel)
 				CHBinaryTreeStack_PUSH(current->left);
@@ -301,11 +349,11 @@ BOOL kCHGarbageCollectionDisabled;
 			// Append entry for node with any subclass-specific customizations.
 			[graph appendString:[self dotStringForNode:current]];
 			// Append entry for edges from current node to both its children.
-			leftChild = (current->left->object == nil) \
-				? [NSString stringWithFormat:@"nil%d", ++sentinelCount] \
+			leftChild = (current->left->object == nil)
+				? [NSString stringWithFormat:@"nil%d", ++sentinelCount]
 				: [NSString stringWithFormat:@"\"%@\"", current->left->object];
-			rightChild = (current->right->object == nil) \
-				? [NSString stringWithFormat:@"nil%d", ++sentinelCount] \
+			rightChild = (current->right->object == nil)
+				? [NSString stringWithFormat:@"nil%d", ++sentinelCount]
 				: [NSString stringWithFormat:@"\"%@\"", current->right->object];
 			[graph appendFormat:@"  \"%@\" -> {%@;%@};\n",
 			                    current->object, leftChild, rightChild];
@@ -351,14 +399,16 @@ BOOL kCHGarbageCollectionDisabled;
 	if ([super init] == nil || !isValidTraversalOrder(order)) return nil;
 	traversalOrder = order;
 	collection = (root != sentinel) ? [tree retain] : nil;
-	CHBinaryTreeStack_INIT(stack);
-	CHBinaryTreeQueue_INIT(queue);
 	if (traversalOrder == CHTraverseLevelOrder) {
+		CHBinaryTreeQueue_INIT();
 		CHBinaryTreeQueue_ENQUEUE(root);
-	} else if (traversalOrder == CHTraversePreOrder) {
-		CHBinaryTreeStack_PUSH(root);
 	} else {
-		current = root;
+		CHBinaryTreeStack_INIT();
+		if (traversalOrder == CHTraversePreOrder) {
+			CHBinaryTreeStack_PUSH(root);
+		} else {
+			current = root;
+		}
 	}
 	sentinel->object = nil;
 	sentinelNode = sentinel;
@@ -369,8 +419,10 @@ BOOL kCHGarbageCollectionDisabled;
 
 - (void) dealloc {
 	[collection release];
-	CHBinaryTreeStack_FREE(stack);
-	CHBinaryTreeQueue_FREE(queue);
+	if (CHGarbageCollectionDisabled) {
+		free(stack);
+		free(queue);
+	}
 	[super dealloc];
 }
 
@@ -392,7 +444,7 @@ BOOL kCHGarbageCollectionDisabled;
 	
 	switch (traversalOrder) {
 		case CHTraverseAscending: {
-			if (elementsInStack == 0 && current == sentinelNode) {
+			if (stackSize == 0 && current == sentinelNode) {
 				goto collectionExhausted;
 			}
 			while (current != sentinelNode) {
@@ -407,7 +459,7 @@ BOOL kCHGarbageCollectionDisabled;
 		}
 			
 		case CHTraverseDescending: {
-			if (elementsInStack == 0 && current == sentinelNode) {
+			if (stackSize == 0 && current == sentinelNode) {
 				goto collectionExhausted;
 			}
 			while (current != sentinelNode) {
@@ -435,7 +487,7 @@ BOOL kCHGarbageCollectionDisabled;
 			
 		case CHTraversePostOrder: {
 			// This algorithm from: http://www.johny.ca/blog/archives/05/03/04/
-			if (elementsInStack == 0 && current == sentinelNode) {
+			if (stackSize == 0 && current == sentinelNode) {
 				goto collectionExhausted;
 			}
 			while (1) {
@@ -443,7 +495,7 @@ BOOL kCHGarbageCollectionDisabled;
 					CHBinaryTreeStack_PUSH(current);
 					current = current->left;
 				}
-				// A null entry indicates that we've traversed the right subtree
+				// A null entry indicates that we've traversed the left subtree
 				if (CHBinaryTreeStack_TOP != NULL) {
 					current = CHBinaryTreeStack_TOP->right;
 					CHBinaryTreeStack_PUSH(NULL);
@@ -471,29 +523,11 @@ BOOL kCHGarbageCollectionDisabled;
 			
 		collectionExhausted:
 			[collection release];
-			collection = nil;			
+			collection = nil;
 			CHBinaryTreeStack_FREE(stack);
 			CHBinaryTreeQueue_FREE(queue);
 	}
 	return nil;
-}
-
-@end
-
-#pragma mark -
-
-static CHSearchTreeHeaderObject *headerObject = nil;
-
-@implementation CHSearchTreeHeaderObject
-
-+ (id) headerObject {
-	if (headerObject == nil)
-		headerObject = [[CHSearchTreeHeaderObject alloc] init];
-	return headerObject;
-}
-
-- (NSComparisonResult) compare:(id)otherObject {
-	return NSOrderedAscending;
 }
 
 @end

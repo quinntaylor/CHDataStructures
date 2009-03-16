@@ -20,6 +20,13 @@
 #import <Foundation/Foundation.h>
 
 /**
+ @file CHMultiMap.h
+ 
+ A <a href="http://en.wikipedia.org/wiki/Multimap_(data_structure)">multimap</a>
+ in which multiple values may be associated with a given key.
+ */
+
+/**
  A <a href="http://en.wikipedia.org/wiki/Multimap_(data_structure)">multimap</a>
  implementation, in which multiple values may be associated with a given key.
  

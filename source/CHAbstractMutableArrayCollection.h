@@ -58,8 +58,7 @@
 @interface CHAbstractMutableArrayCollection : NSObject
 	<NSCoding, NSCopying, NSFastEnumeration>
 {
-	/** The array used for storing the contents of the data collection. */
-	NSMutableArray *array;
+	NSMutableArray *array; /**< Array used for storing contents of collection. */
 }
 
 - (id) initWithArray:(NSArray*)anArray;

@@ -18,6 +18,7 @@
  */
 
 #import "CHAnderssonTree.h"
+#import "CHAbstractBinarySearchTree_Private.h"
 
 // Remove left horizontal links
 #define skew(node) { \
@@ -57,9 +58,8 @@
 	++mutations;
 	
 	CHBinaryTreeNode *parent, *current = header;
-	CHBinaryTreeNode **stack;
-	NSUInteger stackSize, elementsInStack;
-	CHBinaryTreeStack_INIT(stack);
+	CHBinaryTreeStack_DECLARE();
+	CHBinaryTreeStack_INIT();
 	
 	sentinel->object = anObject; // Assure that we find a spot to insert
 	NSComparisonResult comparison;
@@ -111,9 +111,8 @@ done:
 	++mutations;
 	
 	CHBinaryTreeNode *parent, *current = header;
-	CHBinaryTreeNode **stack;
-	NSUInteger stackSize, elementsInStack;
-	CHBinaryTreeStack_INIT(stack);
+	CHBinaryTreeStack_DECLARE();
+	CHBinaryTreeStack_INIT();
 	
 	sentinel->object = anObject; // Assure that we stop at a leaf if not found.
 	NSComparisonResult comparison;
@@ -133,7 +132,7 @@ done:
 		parent = CHBinaryTreeStack_TOP;
 		parent->link[parent->right == current]
 			= current->link[current->left == sentinel];
-		if (kCHGarbageCollectionDisabled)
+		if (CHGarbageCollectionDisabled)
 			free(current);
 	} else {
 		// Two child case -- replace with minimum object in right subtree
@@ -148,14 +147,14 @@ done:
 		// Grab object from replacement node, steal its right child, deallocate
 		current->object = replacement->object;
 		parent->link[parent->right == replacement] = replacement->right;
-		if (kCHGarbageCollectionDisabled)
+		if (CHGarbageCollectionDisabled)
 			free(replacement);
 	}
 	
 	// Walk back up the path and rebalance as we go
 	// Note that 'parent' always has the correct value coming into the loop
 	BOOL isRightChild;
-	while (current != NULL && elementsInStack > 1) {
+	while (current != NULL && stackSize > 1) {
 		current = parent;
 		CHBinaryTreeStack_POP;
 		parent = CHBinaryTreeStack_TOP;

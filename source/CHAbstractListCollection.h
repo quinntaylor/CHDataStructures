@@ -58,8 +58,7 @@
 @interface CHAbstractListCollection : NSObject
 	<NSCoding, NSCopying, NSFastEnumeration>
 {
-	/** The linked list used for storing the contents of the data collection. */
-	id<CHLinkedList> list;
+	id<CHLinkedList> list; /**< List used for storing contents of collection. */
 }
 
 - (id) initWithArray:(NSArray*)anArray;

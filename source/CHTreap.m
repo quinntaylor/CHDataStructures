@@ -18,6 +18,7 @@
  */
 
 #import "CHTreap.h"
+#import "CHAbstractBinarySearchTree_Private.h"
 
 @implementation CHTreap
 
@@ -49,9 +50,8 @@
 	++mutations;
 
 	CHBinaryTreeNode *parent, *current = header;
-	CHBinaryTreeNode **stack;
-	NSUInteger stackSize, elementsInStack;
-	CHBinaryTreeStack_INIT(stack);
+	CHBinaryTreeStack_DECLARE();
+	CHBinaryTreeStack_INIT();
 	
 	sentinel->object = anObject; // Assure that we find a spot to insert
 	NSComparisonResult comparison;
@@ -128,7 +128,7 @@
 			parent = parent->link[isRightChild];
 		}
 		parent->link[parent->right == current] = sentinel;
-		if (kCHGarbageCollectionDisabled) {
+		if (CHGarbageCollectionDisabled) {
 			[current->object release];
 			free(current);
 		}

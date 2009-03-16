@@ -55,55 +55,7 @@ typedef struct CHBinaryTreeNode {
 
 extern NSUInteger kCHBinaryTreeNodeSize;
 extern NSUInteger kPointerSize;
-extern BOOL kCHGarbageCollectionDisabled;
-
-#pragma mark Stack Macros
-
-#define CHBinaryTreeStack_INIT(stack) { \
-	stack = NSAllocateCollectable(kCHBinaryTreeNodeSize * (stackSize=16), 0); \
-	elementsInStack = 0; \
-}
-#define CHBinaryTreeStack_FREE(stack) { \
-	if (stack != NULL && kCHGarbageCollectionDisabled) \
-		free(stack); \
-	stack = NULL; \
-}
-// Since this stack starts at 0 and goes to N-1, resizing is pretty simple.
-#define CHBinaryTreeStack_PUSH(obj) { \
-	stack[elementsInStack++] = obj; \
-	if (elementsInStack >= stackSize) \
-		stack = realloc(stack, (stackSize*=2)); \
-}
-#define CHBinaryTreeStack_POP ((elementsInStack) ? stack[--elementsInStack] : NULL)
-#define CHBinaryTreeStack_TOP ((elementsInStack) ? stack[elementsInStack-1] : NULL)
-
-#pragma mark Queue Macros
-
-#define CHBinaryTreeQueue_INIT(queue) { \
-	queue = NSAllocateCollectable(kCHBinaryTreeNodeSize * (queueSize=32), 0); \
-	queueHead = queueTail = 0; \
-}
-#define CHBinaryTreeQueue_FREE(queue) { \
-	if (queue != NULL && kCHGarbageCollectionDisabled) \
-		free(queue); \
-	queue = NULL; \
-}
-// This queue is a circular array, so resizing it takes a little extra care.
-// (memcpy() take the destination address, source address, and number of bytes.)
-#define CHBinaryTreeQueue_ENQUEUE(obj) { \
-	queue[queueTail++] = obj; \
-	queueTail %= queueSize; \
-	if (queueHead == queueTail) { \
-		queue = realloc(queue, queueSize*2); \
-		memcpy(queue+queueSize, queue, queueTail * kPointerSize); \
-		queueTail += queueSize; \
-		queueSize *= 2; \
-	} \
-}
-#define CHBinaryTreeQueue_DEQUEUE \
-	if (queueHead != queueTail) queueHead = (queueHead + 1) % queueSize
-#define CHBinaryTreeQueue_FRONT \
-	((queueHead == queueTail) ? NULL : queue[queueHead])
+extern BOOL CHGarbageCollectionDisabled;
 
 #pragma mark -
 
@@ -246,7 +198,7 @@ extern BOOL kCHGarbageCollectionDisabled;
 	
 	@private // Pointers and counters used for various tree traveral orderings.
 	CHBinaryTreeNode **stack, **queue;
-	NSUInteger stackSize, elementsInStack, queueSize, queueHead, queueTail;
+	NSUInteger stackCapacity, stackSize, queueCapacity, queueHead, queueTail;
 }
 
 /**
@@ -282,37 +234,5 @@ extern BOOL kCHGarbageCollectionDisabled;
          <code>nil</code> when all objects have been enumerated.
  */
 - (id) nextObject;
-
-@end
-
-#pragma mark -
-
-/**
- A dummy object that resides in the header node for a tree. Using a header node
- can simplify insertion logic by eliminating the need to check whether the root
- is null. In such cases, the tree root is generally stored as the right child of
- the header. In order to always proceed to the right child when traversing down
- the tree, instances of this class always return <code>NSOrderedAscending</code>
- when called as the receiver of the <code>-compare:</code> method.
- */
-@interface CHSearchTreeHeaderObject : NSObject
-
-/**
- Returns the singleton instance of this class.
- 
- @return The singleton instance of this class.
- */
-+ (id) headerObject;
-// NOTE: The singleton is declared as a static variable in CHAbstractBinarySearchTree.m.
-
-/**
- Always indicate that the other object should appear to the right side. @b Note:
- To work correctly, this object @b must be the receiver of the -compare: message.
- 
- @param otherObject The object to be compared to the receiver.
- @return <code>NSOrderedAscending</code>, indicating that traversal should go to
-         the right child of the containing tree node.
- */
-- (NSComparisonResult) compare:(id)otherObject;
 
 @end
