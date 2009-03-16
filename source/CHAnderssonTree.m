@@ -18,7 +18,7 @@
  */
 
 #import "CHAnderssonTree.h"
-#import "CHAbstractBinarySearchTree_Private.h"
+#import "CHAbstractBinarySearchTree_Internal.h"
 
 // Remove left horizontal links
 #define skew(node) { \

@@ -18,7 +18,7 @@
  */
 
 #import "CHRedBlackTree.h"
-//#import "CHAbstractBinarySearchTree_Private.h"
+//#import "CHAbstractBinarySearchTree_Internal.h"
 
 #pragma mark C Functions for Optimized Operations
 

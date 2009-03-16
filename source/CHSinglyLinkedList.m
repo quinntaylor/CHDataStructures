@@ -455,7 +455,6 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 	}
 	head->next = NULL;
 	tail = head;
-	[[NSGarbageCollector defaultCollector] collectIfNeeded];
 	count = 0;
 	++mutations;
 }

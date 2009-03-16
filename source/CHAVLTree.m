@@ -18,7 +18,7 @@
  */
 
 #import "CHAVLTree.h"
-#import "CHAbstractBinarySearchTree_Private.h"
+#import "CHAbstractBinarySearchTree_Internal.h"
 
 // Two-way single rotation
 static inline CHBinaryTreeNode* singleRotation(CHBinaryTreeNode *node, int dir) {

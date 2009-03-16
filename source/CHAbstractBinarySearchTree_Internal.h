@@ -1,5 +1,5 @@
 /*
- CHAbstractBinarySearchTree_Private.h
+ CHAbstractBinarySearchTree_Internal.h
  CHDataStructures.framework -- Objective-C versions of common data structures.
  Copyright (C) 2008, Quinn Taylor for BYU CocoaHeads <http://cocoaheads.byu.edu>
  Copyright (C) 2002, Phillip Morelock <http://www.phillipmorelock.com>
@@ -20,7 +20,7 @@
 #import "CHAbstractBinarySearchTree.h"
 
 /**
- @file CHAbstractBinarySearchTree_Private.h
+ @file CHAbstractBinarySearchTree_Internal.h
  Contains \#defines for performing various traversals of binary search trees.
  
  This file is a private header that is only used by internal implementations,

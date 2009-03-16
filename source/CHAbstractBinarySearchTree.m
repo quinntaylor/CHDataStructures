@@ -18,7 +18,7 @@
  */
 
 #import "CHAbstractBinarySearchTree.h"
-#import "CHAbstractBinarySearchTree_Private.h"
+#import "CHAbstractBinarySearchTree_Internal.h"
 
 // Definitions of variables declared as 'extern' in CHAbstractBinarySearchTree.h
 NSUInteger kCHBinaryTreeNodeSize = sizeof(CHBinaryTreeNode);
@@ -246,11 +246,9 @@ static CHSearchTreeHeaderObject *headerObject = nil;
  to zero. If garbage collection is NOT enabled, the tree nodes are freed using a
  pre-order traversal by pushing child nodes on a stack. (This approach generally
  requires less space than level-order traversal, since it is depth-first instead
- of breadth-first, and should be faster, too.) Under garbage collection, a call
- is made to @link NSGarbageCollector#collectIfNeeded -[NSGarbageCollector
- collectIfNeeded] @endlink to indicate that now might be a good time to perform
- garbage collection. (Unlinking the root node from the header causes the entire
- graph of tree nodes to become eligible for garbage collection.)
+ of breadth-first, and should be faster, too.) Under garbage collection, setting
+ the root node link to the sentinel will cause the entire graph of tree nodes to
+ become eligible for garbage collection.
  */
 - (void) removeAllObjects {
 	if (count == 0)
@@ -275,8 +273,6 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 		}
 		free(stack); // declared in CHBinaryTreeStack_DECLARE() macro
 	}
-	else
-		[[NSGarbageCollector defaultCollector] collectIfNeeded];
 	count = 0;
 }
 

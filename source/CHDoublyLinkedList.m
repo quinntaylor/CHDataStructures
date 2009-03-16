@@ -469,7 +469,6 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 	}
 	head->next = tail;
 	tail->prev = head;
-	[[NSGarbageCollector defaultCollector] collectIfNeeded];
 	count = 0;
 	++mutations;
 }

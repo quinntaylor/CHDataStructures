@@ -18,7 +18,7 @@
  */
 
 #import "CHTreap.h"
-#import "CHAbstractBinarySearchTree_Private.h"
+#import "CHAbstractBinarySearchTree_Internal.h"
 
 @implementation CHTreap
 
