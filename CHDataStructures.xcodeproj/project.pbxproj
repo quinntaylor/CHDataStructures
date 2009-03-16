@@ -41,10 +41,10 @@
 			dependencies = (
 				E4FAE15F0E968F20007BB1F9 /* PBXTargetDependency */,
 				E4FAE1630E968F20007BB1F9 /* PBXTargetDependency */,
-				E4FAE1610E968F20007BB1F9 /* PBXTargetDependency */,
-				E43C87A50EA3E19500B3B31E /* PBXTargetDependency */,
 				E4FAE1650E968F20007BB1F9 /* PBXTargetDependency */,
+				E4FAE1610E968F20007BB1F9 /* PBXTargetDependency */,
 				E46300CB0ECBF11D00E1AF73 /* PBXTargetDependency */,
+				E43C87A50EA3E19500B3B31E /* PBXTargetDependency */,
 			);
 			name = All;
 			productName = All;
@@ -599,9 +599,9 @@
 				8DC2EF4F0486A6940098B216 /* Framework */,
 				E4FE76D80E89556A00971EE6 /* Documentation */,
 				E473CB540E9346CB005CA997 /* Unit Testing */,
-				E43C87680EA3D35500B3B31E /* Deployment */,
-				E44B59B30E95850F00F9DD1A /* Benchmarks */,
 				E46300C30ECBF0F500E1AF73 /* Coverage */,
+				E44B59B30E95850F00F9DD1A /* Benchmarks */,
+				E43C87680EA3D35500B3B31E /* Deployment */,
 				E4FAE15B0E968F1B007BB1F9 /* All */,
 			);
 		};
