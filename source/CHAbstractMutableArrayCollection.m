@@ -131,6 +131,10 @@
 	[array removeObject:anObject];
 }
 
+- (void) removeObjectIdenticalTo:(id)anObject {
+	[array removeObjectIdenticalTo:anObject];
+}
+
 - (void) removeAllObjects {
 	[array removeAllObjects];
 }

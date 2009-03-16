@@ -124,6 +124,10 @@
 	[list removeObject:anObject];
 }
 
+- (void) removeObjectIdenticalTo:(id)anObject {
+	[list removeObjectIdenticalTo:anObject];
+}
+
 - (void) removeAllObjects {
 	[list removeAllObjects];
 }

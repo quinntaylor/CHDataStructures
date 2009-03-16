@@ -249,7 +249,7 @@
 - (void) removeObjectAtIndex:(NSUInteger)index;
 
 /**
- Remove all objects from the list. If the list is already empty, there is no effect.
+ Remove all objects from the list; no effect if the list is already empty.
  */
 - (void) removeAllObjects;
 

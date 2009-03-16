@@ -113,6 +113,16 @@
 - (void) removeObject:(id)anObject;
 
 /**
+ Remove all occurrences of a given object, matched using the == operator.
+ 
+ @param anObject The object to be removed from the heap.
+ 
+ If the heap does not contain <i>anObject</i>, there is no effect, although it
+ does incur the overhead of searching the contents.
+ */
+- (void) removeObjectIdenticalTo:(id)anObject;
+
+/**
  Remove all objects from the heap; if it is already empty, there is no effect.
  */
 - (void) removeAllObjects;

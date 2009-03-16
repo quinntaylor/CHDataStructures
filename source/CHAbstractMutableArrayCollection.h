@@ -68,6 +68,7 @@
 - (NSArray*) allObjects;
 - (void) removeAllObjects;
 - (void) removeObject:(id)anObject;
+- (void) removeObjectIdenticalTo:(id)anObject;
 
 - (BOOL) containsObject:(id)anObject;
 - (BOOL) containsObjectIdenticalTo:(id)anObject;

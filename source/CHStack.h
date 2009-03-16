@@ -92,6 +92,16 @@
 - (void) removeObject:(id)anObject;
 
 /**
+ Remove all occurrences of a given object, matched using the == operator.
+ 
+ @param anObject The object to be removed from the stack.
+ 
+ If the stack does not contain <i>anObject</i>, there is no effect, although it
+ does incur the overhead of searching the contents.
+ */
+- (void) removeObjectIdenticalTo:(id)anObject;
+
+/**
  Remove all objects from the stack; no effect if the stack is already empty.
  */
 - (void) removeAllObjects;
