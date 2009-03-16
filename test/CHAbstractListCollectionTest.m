@@ -212,6 +212,34 @@
 	STAssertEquals([collection count], 2u, @"Incorrect count.");
 }
 
+- (void) testRemoveObjectIdenticalTo {
+	NSString *a = [NSString stringWithFormat:@"A"];
+	NSString *b = [NSString stringWithFormat:@"B"];
+	[collection addObject:a];
+	STAssertEquals([collection count], 1u, @"Incorrect count.");
+	[collection removeObjectIdenticalTo:@"A"];
+	STAssertEquals([collection count], 1u, @"Incorrect count.");
+	[collection removeObjectIdenticalTo:a];
+	STAssertEquals([collection count], 0u, @"Incorrect count.");
+	[collection removeObjectIdenticalTo:a];
+	STAssertEquals([collection count], 0u, @"Incorrect count.");
+	
+	// Test removing all instances of an object
+	[collection addObject:a];
+	[collection addObject:b];
+	[collection addObject:@"C"];
+	[collection addObject:a];
+	[collection addObject:b];
+	
+	STAssertEquals([collection count], 5u, @"Incorrect count.");
+	[collection removeObjectIdenticalTo:@"A"];
+	STAssertEquals([collection count], 5u, @"Incorrect count.");
+	[collection removeObjectIdenticalTo:a];
+	STAssertEquals([collection count], 3u, @"Incorrect count.");
+	[collection removeObjectIdenticalTo:b];
+	STAssertEquals([collection count], 1u, @"Incorrect count.");
+}
+
 - (void) testRemoveAllObjects {
 	STAssertEquals([collection count], 0u, @"Incorrect count.");
 	for (id object in objects)
