@@ -422,8 +422,9 @@ proper pixel height of your image.
 	margin: 0px;
 }
 
-.directory-alt img {
+.directory-alt div p img {
 	vertical-align: -30%;
+    margin: 0;
 }
 
 /* @end */
