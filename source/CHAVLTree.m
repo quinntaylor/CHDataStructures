@@ -93,7 +93,7 @@ static inline void adjustBalance(CHBinaryTreeNode *root, int dir, int bal) {
 		current->balance  = 0;
 		++count;
 		// Link from parent as the proper child, based on last comparison
-		parent = CHBinaryTreeStack_POP;
+		parent = CHBinaryTreeStack_POP();
 		comparison = [parent->object compare:anObject];
 		parent->link[comparison == NSOrderedAscending] = current; // R if YES
 	}
@@ -127,7 +127,7 @@ static inline void adjustBalance(CHBinaryTreeNode *root, int dir, int bal) {
 		}
 		// Move to the next node up the path to the root
 		current = parent;
-		parent = CHBinaryTreeStack_POP;
+		parent = CHBinaryTreeStack_POP();
 		// Link from parent as the proper child, based on last comparison
 		comparison = [parent->object compare:current->object];
 		parent->link[comparison == NSOrderedAscending] = current; // R if YES
@@ -166,7 +166,7 @@ done:
 	if (current->left == sentinel || current->right == sentinel) {
 		// Single/zero child case -- replace node with non-nil child (if exists)
 		replacement = current->link[current->left == sentinel];
-		parent = CHBinaryTreeStack_POP;
+		parent = CHBinaryTreeStack_POP();
 		isRightChild = (parent->right == current);
 		parent->link[isRightChild] = replacement;
 		if (CHGarbageCollectionDisabled)
@@ -182,7 +182,7 @@ done:
 		}
 		// Grab object from replacement node, steal its right child, deallocate
 		current->object = replacement->object;
-		parent = CHBinaryTreeStack_POP;
+		parent = CHBinaryTreeStack_POP();
 		isRightChild = (parent->right == replacement);
 		parent->link[isRightChild] = replacement->right;
 		current = replacement->right;
@@ -223,7 +223,7 @@ done:
 			break;
 
 		current = parent;
-		parent = CHBinaryTreeStack_POP;
+		parent = CHBinaryTreeStack_POP();
 		isRightChild = (parent->right == current);
 	}
 done:

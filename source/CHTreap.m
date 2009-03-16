@@ -59,7 +59,7 @@
 		CHBinaryTreeStack_PUSH(current);
 		current = current->link[comparison == NSOrderedAscending]; // R on YES
 	}
-	parent = CHBinaryTreeStack_POP;
+	parent = CHBinaryTreeStack_POP();
 
 	[anObject retain]; // Must retain whether replacing value or adding new node
 	int direction;
@@ -95,7 +95,7 @@
 		// Rotate current node up, push parent down to opposite subtree.
 		direction = (parent->left == current);
 		singleRotation(parent, direction, CHBinaryTreeStack_TOP);
-		parent = CHBinaryTreeStack_POP;
+		parent = CHBinaryTreeStack_POP();
 	}
 	CHBinaryTreeStack_FREE(stack);
 }

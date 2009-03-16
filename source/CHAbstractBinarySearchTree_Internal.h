@@ -50,24 +50,23 @@
 	stack = NULL; \
 }
 // Since this stack starts at 0 and goes to N-1, resizing is pretty simple.
-#define CHBinaryTreeStack_PUSH(obj) { \
-	stack[stackSize++] = obj; \
+#define CHBinaryTreeStack_PUSH(node) { \
+	stack[stackSize++] = node; \
 	if (stackSize >= stackCapacity) { \
 		stackCapacity *= 2; \
 		stack = NSReallocateCollectable(stack, kPointerSize*stackCapacity, NSScannedOption); \
 	} \
 }
-#define CHBinaryTreeStack_POP \
-	((stackSize) ? stack[--stackSize] : NULL)
 #define CHBinaryTreeStack_TOP \
 	((stackSize) ? stack[stackSize-1] : NULL)
+#define CHBinaryTreeStack_POP() \
+	((stackSize) ? stack[--stackSize] : NULL)
 
 
 #pragma mark Queue macros
 
 #define CHBinaryTreeQueue_INIT() { \
 	queueCapacity = 16; \
-	CHQuietLog(@"%d", kPointerSize*queueCapacity); \
 	queue = NSAllocateCollectable(kPointerSize*queueCapacity, NSScannedOption); \
 	queueHead = queueTail = 0; \
 }
@@ -77,15 +76,15 @@
 	queue = NULL; \
 }
 // This queue is a circular array, so resizing it takes a little extra care.
-// (memcpy() take the destination address, source address, and number of bytes.)
-#define CHBinaryTreeQueue_ENQUEUE(obj) { \
-	queue[queueTail++] = obj; \
+#define CHBinaryTreeQueue_ENQUEUE(node) { \
+	queue[queueTail++] = node; \
 	queueTail %= queueCapacity; \
 	if (queueHead == queueTail) { \
-		CHQuietLog(@"%d", kPointerSize*queueCapacity * 2); \
 		queue = NSReallocateCollectable(queue, kPointerSize*queueCapacity*2, NSScannedOption); \
-		memcpy(queue+queueCapacity, queue, queueTail * kPointerSize); \
-		memset(queue, 0, queueTail); /* Zero the memory for easier debugging */ \
+		/* Copy wrapped-around portion to end of queue and move tail index */ \
+		memcpy(queue+queueCapacity, queue, kPointerSize*queueTail); \
+		/* Zeroing out shifted memory can simplify debugging queue problems */ \
+		memset(queue, 0, kPointerSize*queueTail); \
 		queueTail += queueCapacity; \
 		queueCapacity *= 2; \
 	} \
@@ -93,5 +92,5 @@
 // Due to limitations of using macros, you must always call FRONT, then DEQUEUE.
 #define CHBinaryTreeQueue_FRONT \
 	((queueHead != queueTail) ? queue[queueHead] : NULL)
-#define CHBinaryTreeQueue_DEQUEUE \
+#define CHBinaryTreeQueue_DEQUEUE() \
 	if (queueHead != queueTail) queueHead = (queueHead + 1) % queueCapacity

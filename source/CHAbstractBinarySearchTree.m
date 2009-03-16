@@ -172,7 +172,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 			CHBinaryTreeStack_PUSH(current);
 			current = current->left;
 		}
-		current = CHBinaryTreeStack_POP; // Save top node for return value
+		current = CHBinaryTreeStack_POP(); // Save top node for return value
 		stackbuf[batchCount] = current->object;
 		current = current->right;
 		batchCount++;
@@ -263,7 +263,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 	if (CHGarbageCollectionDisabled) {
 		// Only bother with free() calls if garbage collection is NOT enabled.
 		CHBinaryTreeNode *current;
-		while (current = CHBinaryTreeStack_POP) {
+		while (current = CHBinaryTreeStack_POP()) {
 			if (current->right != sentinel)
 				CHBinaryTreeStack_PUSH(current->right);
 			if (current->left != sentinel)
@@ -303,7 +303,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 	sentinel->object = nil;
 	if (header->right != sentinel)
 		CHBinaryTreeStack_PUSH(header->right);	
-	while (current = CHBinaryTreeStack_POP) {
+	while (current = CHBinaryTreeStack_POP()) {
 		if (current->right != sentinel)
 			CHBinaryTreeStack_PUSH(current->right);
 		if (current->left != sentinel)
@@ -337,7 +337,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 		CHBinaryTreeStack_INIT();
 		CHBinaryTreeStack_PUSH(header->right);
 		// Uses a reverse pre-order traversal to make the DOT output look right.
-		while (current = CHBinaryTreeStack_POP) {
+		while (current = CHBinaryTreeStack_POP()) {
 			if (current->left != sentinel)
 				CHBinaryTreeStack_PUSH(current->left);
 			if (current->right != sentinel)
@@ -448,7 +448,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 				current = current->left;
 				// TODO: How to not push/pop leaf nodes unnecessarily?
 			}
-			current = CHBinaryTreeStack_POP; // Save top node for return value
+			current = CHBinaryTreeStack_POP(); // Save top node for return value
 			id tempObject = current->object;
 			current = current->right;
 			return tempObject;
@@ -463,14 +463,14 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 				current = current->right;
 				// TODO: How to not push/pop leaf nodes unnecessarily?
 			}
-			current = CHBinaryTreeStack_POP; // Save top node for return value
+			current = CHBinaryTreeStack_POP(); // Save top node for return value
 			id tempObject = current->object;
 			current = current->left;
 			return tempObject;
 		}
 			
 		case CHTraversePreOrder: {
-			current = CHBinaryTreeStack_POP;
+			current = CHBinaryTreeStack_POP();
 			if (current == NULL) {
 				goto collectionExhausted;
 			}
@@ -498,15 +498,15 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 					// TODO: How to not push a null pad for leaf nodes?
 				}
 				else {
-					CHBinaryTreeStack_POP; // ignore the null pad
-					return CHBinaryTreeStack_POP->object;
+					CHBinaryTreeStack_POP(); // ignore the null pad
+					return CHBinaryTreeStack_POP()->object;
 				}				
 			}
 		}
 			
 		case CHTraverseLevelOrder: {
 			current = CHBinaryTreeQueue_FRONT;
-			CHBinaryTreeQueue_DEQUEUE;
+			CHBinaryTreeQueue_DEQUEUE();
 			if (current == NULL) {
 				goto collectionExhausted;
 			}

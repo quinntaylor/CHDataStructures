@@ -83,7 +83,7 @@
 		current->level  = 1;
 		++count;
 		// Link from parent as the proper child, based on last comparison
-		parent = CHBinaryTreeStack_POP;
+		parent = CHBinaryTreeStack_POP();
 		comparison = [parent->object compare:anObject];
 		parent->link[comparison == NSOrderedAscending] = current; // R if YES
 	}
@@ -97,7 +97,7 @@
 		parent->link[isRightChild] = current;
 		// Move to the next node up the path to the root
 		current = parent;
-		parent = CHBinaryTreeStack_POP;
+		parent = CHBinaryTreeStack_POP();
 	}
 done:
 	CHBinaryTreeStack_FREE(stack);
@@ -156,7 +156,7 @@ done:
 	BOOL isRightChild;
 	while (current != NULL && stackSize > 1) {
 		current = parent;
-		CHBinaryTreeStack_POP;
+		CHBinaryTreeStack_POP();
 		parent = CHBinaryTreeStack_TOP;
 		isRightChild = (parent->right == current);
 		
