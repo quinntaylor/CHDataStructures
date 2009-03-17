@@ -43,7 +43,7 @@ double timestamp() {
 }
 
 void benchmarkDeque(Class testClass) {
-	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	CHQuietLog(@"\n* %@", testClass);
 	
 	id<CHDeque> deque;
@@ -51,7 +51,7 @@ void benchmarkDeque(Class testClass) {
 	printf("(Operation)         ");
 	for (NSArray *array in objects)
 		printf("\t%-8d", [array count]);
-
+	
 	printf("\nprependObject:    ");
 	for (NSArray *array in objects) {
 		deque = [[testClass alloc] init];
@@ -97,7 +97,7 @@ void benchmarkDeque(Class testClass) {
 		printf("\t%f", timestamp() - startTime);
 		[deque release];
 	}
-
+	
 	printf("\nremoveAllObjects:  ");
 	for (NSArray *array in objects) {
 		deque = [[testClass alloc] init];
@@ -109,7 +109,7 @@ void benchmarkDeque(Class testClass) {
 		printf("\t%f", timestamp() - startTime);
 		[deque release];
 	}
-
+	
 	printf("\nNSEnumerator       ");
 	for (NSArray *array in objects) {
 		deque = [[testClass alloc] init];
@@ -143,7 +143,7 @@ void benchmarkDeque(Class testClass) {
 }
 
 void benchmarkQueue(Class testClass) {
-	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	CHQuietLog(@"\n* %@", testClass);
 	
 	id<CHQueue> queue;
@@ -218,7 +218,7 @@ void benchmarkQueue(Class testClass) {
 }
 
 void benchmarkStack(Class testClass) {
-	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	CHQuietLog(@"\n%@", testClass);
 	
 	id<CHStack> stack;
@@ -292,11 +292,11 @@ void benchmarkStack(Class testClass) {
 }
 
 void benchmarkHeap(Class testClass) {
-	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	CHQuietLog(@"\n%@", testClass);
-
+	
 	id<CHHeap> heap;
-
+	
 	printf("(Operation)         ");
 	for (NSArray *array in objects)
 		printf("\t%-8d", [array count]);
@@ -347,7 +347,7 @@ void benchmarkHeap(Class testClass) {
 		printf("\t%f", timestamp() - startTime);
 		[heap release];
 	}
-
+	
 	printf("\nNSFastEnumeration  ");
 	for (NSArray *array in objects) {
 		heap = [[testClass alloc] init];
@@ -365,7 +365,7 @@ void benchmarkHeap(Class testClass) {
 }
 
 void benchmarkTree(Class testClass) {
-	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	CHQuietLog(@"\n%@", testClass);
 	
 	id<CHSearchTree> tree;
@@ -394,7 +394,7 @@ void benchmarkTree(Class testClass) {
 		printf("\t%f", timestamp() - startTime);
 		[tree release];
 	}
-
+	
 	printf("\nremoveObject:       ");
 	for (NSArray *array in objects) {
 		tree = [[testClass alloc] init];
@@ -427,8 +427,8 @@ void benchmarkTree(Class testClass) {
 }
 
 int main (int argc, const char * argv[]) {
-	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-	NSUInteger size, item, limit = 1000000;
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	NSUInteger size, item, limit = 100000;
 	objects = [[NSMutableArray alloc] init];
 	
 	for (size = 10; size <= limit; size *= 10) {
@@ -443,7 +443,7 @@ int main (int argc, const char * argv[]) {
 	CHQuietLog(@"\n<CHDeque> Implemenations");
 	benchmarkDeque([CHMutableArrayDeque class]);
 	benchmarkDeque([CHListDeque class]);
-
+	
 	CHQuietLog(@"\n<CHQueue> Implemenations");
 	benchmarkQueue([CHMutableArrayQueue class]);
 	benchmarkQueue([CHListQueue class]);
@@ -453,10 +453,10 @@ int main (int argc, const char * argv[]) {
 	benchmarkStack([CHListStack class]);
 	
 	[objects release];
-
+	
 	
 	// Create more disordered sets of values for testing heap and tree subclasses
-
+	
 	CHQuietLog(@"\n<CHSearchTree> Implemenations");
 	
 	NSArray *testClasses = [NSArray arrayWithObjects:
@@ -484,7 +484,7 @@ int main (int argc, const char * argv[]) {
 	
 	NSUInteger jitteredSize; // For making sure scatterplot dots not overlap
 	NSInteger jitterOffset;
-
+	
 	limit = 100000;
 	NSUInteger reps  = 20;
 	NSUInteger scale = 1000000; // 10^6, which gives microseconds
@@ -494,13 +494,14 @@ int main (int argc, const char * argv[]) {
 		for (NSUInteger size = 10; size <= limit; size *= 10) {
 			printf("\n%8u objects --", size);
 			// Create a set of N unique random numbers
-			NSAutoreleasePool *innerPool = [[NSAutoreleasePool alloc] init];
+			NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 			while ([objectSet count] < size)
 				[objectSet addObject:[NSNumber numberWithInt:arc4random()]];
-			[innerPool drain];
+			[pool drain];
 			NSArray *objects = [objectSet allObjects];
 			jitterOffset = -([testClasses count]/2);
 			for (Class aClass in testClasses) {
+				pool = [[NSAutoreleasePool alloc] init];
 				printf(" %s", [[aClass className] UTF8String]);
 				tree = [[aClass alloc] init];
 				dictionary = [treeResults objectForKey:[aClass className]];
@@ -547,6 +548,7 @@ int main (int argc, const char * argv[]) {
 				  jitteredSize, duration/size*scale]];
 				
 				[tree release];
+				[pool drain];
 			}
 		}
 		[objectSet removeAllObjects];
