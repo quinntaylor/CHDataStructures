@@ -21,7 +21,7 @@
 
 @implementation CHMutableArrayHeap
 
-- (void) _heapifyFromIndex:(NSUInteger)parentIndex {
+- (void) heapifyFromIndex:(NSUInteger)parentIndex {
 	// Bubble node at the given index down until the heap property is again satisfied
 	id parent, leftChild, rightChild;
 	NSUInteger leftIndex, rightIndex;
@@ -157,10 +157,10 @@
 		return;
 	++mutations;
 	[array addObjectsFromArray:anArray];
-	// heapify
+	// Re-heapify from the middle of the heap array to the beginning
 	NSUInteger index = [array count]/2;
 	while (0 < index--)
-		[self _heapifyFromIndex:index];
+		[self heapifyFromIndex:index];
 }
 
 - (id) firstObject {
@@ -177,7 +177,7 @@
 		[array removeLastObject];
 		++mutations;
 		// Bubble the swapped node down until the heap property is again satisfied
-		[self _heapifyFromIndex:0];
+		[self heapifyFromIndex:0];
 	}
 	@catch (NSException *exception) {}
 }
@@ -189,7 +189,7 @@
 		[array removeLastObject];
 		++mutations;
 		// Bubble the swapped node down until the heap property is again satisfied
-		[self _heapifyFromIndex:index];
+		[self heapifyFromIndex:index];
 	}
 }
 

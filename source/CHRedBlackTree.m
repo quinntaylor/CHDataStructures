@@ -22,7 +22,7 @@
 
 #pragma mark C Functions for Optimized Operations
 
-static inline CHBinaryTreeNode * _rotateNodeWithLeftChild(CHBinaryTreeNode *node) {
+static inline CHBinaryTreeNode * rotateNodeWithLeftChild(CHBinaryTreeNode *node) {
 	CHBinaryTreeNode *leftChild = node->left;
 	node->left = leftChild->right;
 	leftChild->right = node;
@@ -31,7 +31,7 @@ static inline CHBinaryTreeNode * _rotateNodeWithLeftChild(CHBinaryTreeNode *node
 	return leftChild;
 }
 
-static inline CHBinaryTreeNode * _rotateNodeWithRightChild(CHBinaryTreeNode *node) {
+static inline CHBinaryTreeNode * rotateNodeWithRightChild(CHBinaryTreeNode *node) {
 	CHBinaryTreeNode *rightChild = node->right;
 	node->right = rightChild->left;
 	rightChild->left = node;
@@ -40,18 +40,18 @@ static inline CHBinaryTreeNode * _rotateNodeWithRightChild(CHBinaryTreeNode *nod
 	return rightChild;
 }
 
-CHBinaryTreeNode* _rotateObjectOnAncestor(id anObject, CHBinaryTreeNode *ancestor) {
+CHBinaryTreeNode* rotateObjectOnAncestor(id anObject, CHBinaryTreeNode *ancestor) {
 	if ([ancestor->object compare:anObject] == NSOrderedDescending) {
 		return ancestor->left =
 			([ancestor->left->object compare:anObject] == NSOrderedDescending)
-				? _rotateNodeWithLeftChild(ancestor->left)
-				: _rotateNodeWithRightChild(ancestor->left);
+				? rotateNodeWithLeftChild(ancestor->left)
+				: rotateNodeWithRightChild(ancestor->left);
 	}
 	else {
 		return ancestor->right =
 			([ancestor->right->object compare:anObject] == NSOrderedDescending)
-				? _rotateNodeWithLeftChild(ancestor->right)
-				: _rotateNodeWithRightChild(ancestor->right);
+				? rotateNodeWithLeftChild(ancestor->right)
+				: rotateNodeWithRightChild(ancestor->right);
 	}
 }
 
@@ -82,8 +82,8 @@ static inline CHBinaryTreeNode* doubleRotation(CHBinaryTreeNode *node, BOOL goin
 	if (parent->color == kRED) 	{
 		grandparent->color = kRED;
 		if ([grandparent->object compare:anObject] != [parent->object compare:anObject])
-			parent = _rotateObjectOnAncestor(anObject, grandparent);
-		current = _rotateObjectOnAncestor(anObject, greatgrandparent);
+			parent = rotateObjectOnAncestor(anObject, grandparent);
+		current = rotateObjectOnAncestor(anObject, greatgrandparent);
 		current->color = kBLACK;
 	}
 	header->right->color = kBLACK;  // Always reset root to black
@@ -132,8 +132,8 @@ static inline CHBinaryTreeNode* doubleRotation(CHBinaryTreeNode *node, BOOL goin
 //						: doubleRotation(grandparent, !lastWentRight);
 				grandparent->color = kRED;
 				if ([grandparent->object compare:anObject] != [parent->object compare:anObject])
-					parent = _rotateObjectOnAncestor(anObject, grandparent);
-				current = _rotateObjectOnAncestor(anObject, greatgrandparent);
+					parent = rotateObjectOnAncestor(anObject, grandparent);
+				current = rotateObjectOnAncestor(anObject, greatgrandparent);
 				current->color = kBLACK;
 			}
 		}
