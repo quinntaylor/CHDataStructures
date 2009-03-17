@@ -62,6 +62,8 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 @implementation CHSearchTreeHeaderObject
 
 + (id) headerObject {
+	if (headerObject == nil)
+		headerObject = [[CHSearchTreeHeaderObject alloc] init];
 	return headerObject;
 }
 
@@ -77,7 +79,6 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 
 + (void) initialize {
 	CHGarbageCollectionDisabled = !objc_collectingEnabled();
-	headerObject = [[CHSearchTreeHeaderObject alloc] init];
 }
 
 - (void) dealloc {

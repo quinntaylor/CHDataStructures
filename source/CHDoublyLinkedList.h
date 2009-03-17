@@ -80,7 +80,7 @@ typedef struct CHDoublyLinkedListNode {
 @interface CHDoublyLinkedList : NSObject <CHLinkedList> {
 	NSUInteger count; /**< The number of objects currently in the list. */
 	CHDoublyLinkedListNode *head; /**< A dummy node at the front of the list. */
-	CHDoublyLinkedListNode *tail;   /**< A dummy node at the back of the list. */
+	CHDoublyLinkedListNode *tail; /**< A dummy node at the back of the list. */
 	unsigned long mutations; /**< Tracks mutations for NSFastEnumeration. */
 }
 

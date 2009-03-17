@@ -127,6 +127,7 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 
 - (void) dealloc {
 	[self removeAllObjects];
+	free(head);
 	[super dealloc];
 }
 

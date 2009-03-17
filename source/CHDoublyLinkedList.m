@@ -135,23 +135,31 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 
 #pragma mark -
 
-// Sets "node" to point to the node found at the given index
-// Must declare "CHDoublyLinkedListNode *node" and "NSUInteger nodeIndex" before
+// Creates variable "node" and points it at the node found at the given index.
 #define findNodeAtIndex(i) \
 	if (i > count || i < 0) \
 		CHIndexOutOfRangeException([self class], _cmd, index, count); \
-	if (i<count/2) {\
-		node=head->next; nodeIndex=0; while(i>nodeIndex++) node=node->next;\
-	} else {\
-		node=tail; nodeIndex=count; while(i<nodeIndex--) node=node->prev;\
+	CHDoublyLinkedListNode *node; \
+	NSUInteger nodeIndex; \
+	if (i < count/2) { \
+		node = head->next; \
+		nodeIndex = 0; \
+		while (i > nodeIndex++) \
+			node = node->next; \
+	} else { \
+		node = tail; \
+		nodeIndex = count; \
+		while (i < nodeIndex--) \
+			node = node->prev; \
 	}
 
-// Remove the node with a matching object, patch prev/next links around it
+// Remove the specified node, patching prev/next links of neighbors around it.
 #define removeNode(node) \
 	{ \
 		node->prev->next = node->next; node->next->prev = node->prev; \
-		if (!objc_collectingEnabled()) { \
-			[node->object release]; free(node); \
+		if (!objc_collectingEnabled() && node != NULL) { \
+			[node->object release]; \
+			free(node); \
 		} \
 		--count; ++mutations; \
 	}
@@ -160,6 +168,8 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 
 - (void) dealloc {
 	[self removeAllObjects];
+	free(head);
+	free(tail);
 	[super dealloc];
 }
 
@@ -302,11 +312,7 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 - (void) insertObject:(id)anObject atIndex:(NSUInteger)index {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
-	
-	CHDoublyLinkedListNode *node;
-	NSUInteger nodeIndex;
-	findNodeAtIndex(index);
-	
+	findNodeAtIndex(index); // If found, the node is stored in "node"
 	CHDoublyLinkedListNode *newNode;
 	newNode = NSAllocateCollectable(kCHDoublyLinkedListNodeSize, NSScannedOption);
 	newNode->object = [anObject retain];
@@ -391,10 +397,7 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 - (id) objectAtIndex:(NSUInteger)index {
 	if (index >= count)
 		CHIndexOutOfRangeException([self class], _cmd, index, count);
-	
-	CHDoublyLinkedListNode *node;
-	NSUInteger nodeIndex;
-	findNodeAtIndex(index);
+	findNodeAtIndex(index); // If found, the node is stored in "node"
 	return node->object;
 }
 
@@ -449,10 +452,7 @@ static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 - (void) removeObjectAtIndex:(NSUInteger)index {
 	if (index >= count)
 		CHIndexOutOfRangeException([self class], _cmd, index, count);
-	
-	CHDoublyLinkedListNode *node;
-	NSUInteger nodeIndex;
-	findNodeAtIndex(index);
+	findNodeAtIndex(index); // If found, the node is stored in "node"
 	removeNode(node);
 }
 
