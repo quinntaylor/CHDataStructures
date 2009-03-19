@@ -324,7 +324,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 }
 
 - (void) testDebugDescriptionForNode {
-	CHBinaryTreeNode *node = malloc(kCHBinaryTreeNodeSize);
+	CHBinaryTreeNode *node = malloc(sizeof(CHBinaryTreeNode));
 	node->object = [NSString stringWithString:@"A B C"];
 	node->color = kRED;
 	STAssertEqualObjects([tree debugDescriptionForNode:node],
@@ -333,7 +333,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 }
 
 - (void) testDotStringForNode {
-	CHBinaryTreeNode *node = malloc(kCHBinaryTreeNodeSize);
+	CHBinaryTreeNode *node = malloc(sizeof(CHBinaryTreeNode));
 	node->object = [NSString stringWithString:@"A B C"];
 	node->color = kRED;
 	STAssertEqualObjects([tree dotStringForNode:node],

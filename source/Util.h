@@ -25,6 +25,12 @@
  A group of utility C functions for simplifying common exceptions and logging.
  */
 
+// Macro for reducing visibility of symbol names not indended to be exported.
+#define HIDDEN __attribute__((visibility("hidden")))
+
+// Macro for marking symbols a (potentially) unused to supress compile warnings.
+#define UNUSED __attribute__((unused))
+
 /**
  Convenience function for raising an exception for an invalid range (index).
  

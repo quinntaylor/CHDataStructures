@@ -18,7 +18,7 @@
  */
 
 #import "CHRedBlackTree.h"
-//#import "CHAbstractBinarySearchTree_Internal.h"
+#import "CHAbstractBinarySearchTree_Internal.h"
 
 #pragma mark C Functions for Optimized Operations
 
@@ -40,7 +40,7 @@ static inline CHBinaryTreeNode * rotateNodeWithRightChild(CHBinaryTreeNode *node
 	return rightChild;
 }
 
-CHBinaryTreeNode* rotateObjectOnAncestor(id anObject, CHBinaryTreeNode *ancestor) {
+HIDDEN CHBinaryTreeNode* rotateObjectOnAncestor(id anObject, CHBinaryTreeNode *ancestor) {
 	if ([ancestor->object compare:anObject] == NSOrderedDescending) {
 		return ancestor->left =
 			([ancestor->left->object compare:anObject] == NSOrderedDescending)
@@ -226,7 +226,7 @@ static inline CHBinaryTreeNode* doubleRotation(CHBinaryTreeNode *node, BOOL goin
 		found->object = current->object;
 		parent->link[(parent->right == current)]
 			= current->link[(current->left == sentinel)];
-		if (CHGarbageCollectionDisabled)
+		if (kCHGarbageCollectionDisabled)
 			free(current);
 		--count;
     }

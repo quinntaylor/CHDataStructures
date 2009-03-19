@@ -46,16 +46,17 @@ typedef struct CHBinaryTreeNode {
 		struct CHBinaryTreeNode *link[2];   /**< Links to left and right childen. */
 	};
 	union {
-		NSUInteger color;             /**< A node's color (CHRedBlackTree) */
-		NSUInteger level;             /**< A node's level (CHAnderssonTree) */
-		NSInteger balance;            /**< A node's balance factor (CHAVLTree) */
-		NSInteger priority;           /**< A node's priority value (CHTreap) */
+		  int32_t balance;            /**< A node's balance factor (CHAVLTree) */
+		u_int32_t color;              /**< A node's color (CHRedBlackTree) */
+		u_int32_t level;              /**< A node's level (CHAnderssonTree) */
+		u_int32_t priority;           /**< A node's priority value (CHTreap) */
 	};
 } CHBinaryTreeNode;
 
-extern NSUInteger kCHBinaryTreeNodeSize;
-extern NSUInteger kPointerSize;
-extern BOOL CHGarbageCollectionDisabled;
+// These are used by subclasses; marked as HIDDEN to reduce external visibility.
+HIDDEN extern size_t kCHBinaryTreeNodeSize;
+HIDDEN extern size_t kCHPointerSize;
+HIDDEN extern BOOL kCHGarbageCollectionDisabled;
 
 #pragma mark -
 

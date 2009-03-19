@@ -132,7 +132,7 @@ done:
 		parent = CHBinaryTreeStack_TOP;
 		parent->link[parent->right == current]
 			= current->link[current->left == sentinel];
-		if (CHGarbageCollectionDisabled)
+		if (kCHGarbageCollectionDisabled)
 			free(current);
 	} else {
 		// Two child case -- replace with minimum object in right subtree
@@ -147,7 +147,7 @@ done:
 		// Grab object from replacement node, steal its right child, deallocate
 		current->object = replacement->object;
 		parent->link[parent->right == replacement] = replacement->right;
-		if (CHGarbageCollectionDisabled)
+		if (kCHGarbageCollectionDisabled)
 			free(replacement);
 	}
 	

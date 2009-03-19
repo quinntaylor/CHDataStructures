@@ -32,21 +32,18 @@
 
 - (id) init {
 	if ([super init] == nil) return nil;
-	header->priority = NSIntegerMax;
-	sentinel->priority = NSIntegerMin;
+	header->priority = CHNotFound;
+	sentinel->priority = 0;
 	return self;
 }
 
 - (void) addObject:(id)anObject {
-	[self addObject:anObject withPriority:(arc4random() % NSNotFound)];
+	[self addObject:anObject withPriority:arc4random()];
 }
 
-- (void) addObject:(id)anObject withPriority:(NSInteger)priority {
+- (void) addObject:(id)anObject withPriority:(NSUInteger)priority {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
-	if (priority == NSNotFound)
-		CHInvalidArgumentException([self class], _cmd,
-		                           @"Invalid priority: cannot be NSNotFound.");
 	++mutations;
 
 	CHBinaryTreeNode *parent, *current = header;
@@ -68,7 +65,7 @@
 		[current->object release];
 		current->object = anObject;
 		// Assign new priority; bubble down if needed, or just wait to bubble up
-		current->priority = priority;
+		current->priority = (u_int32_t) (priority % CHNotFound);
 		while (current->left != current->right) { // sentinel check
 			direction = (current->right->priority > current->left->priority);
 			if (current->priority >= current->link[direction]->priority)
@@ -128,7 +125,7 @@
 			parent = parent->link[isRightChild];
 		}
 		parent->link[parent->right == current] = sentinel;
-		if (CHGarbageCollectionDisabled) {
+		if (kCHGarbageCollectionDisabled) {
 			[current->object release];
 			free(current);
 		}
@@ -136,15 +133,15 @@
 	}
 }
 
-- (NSInteger) priorityForObject:(id)anObject {
+- (NSUInteger) priorityForObject:(id)anObject {
 	if (anObject == nil)
-		return NSNotFound;
+		return CHNotFound;
 	sentinel->object = anObject; // Make sure the target value is always "found"
 	CHBinaryTreeNode *current = header->right;
 	NSComparisonResult comparison;
 	while (comparison = [current->object compare:anObject]) // while not equal
 		current = current->link[comparison == NSOrderedAscending]; // R on YES
-	return (current != sentinel) ? current->priority : NSNotFound;
+	return (current != sentinel) ? current->priority : CHNotFound;
 }
 
 - (NSString*) debugDescriptionForNode:(CHBinaryTreeNode*)node {

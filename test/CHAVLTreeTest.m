@@ -382,7 +382,7 @@ static NSMutableString *balanceErrors;
 }
 
 - (void) testDebugDescriptionForNode {
-	CHBinaryTreeNode *node = malloc(kCHBinaryTreeNodeSize);
+	CHBinaryTreeNode *node = malloc(sizeof(CHBinaryTreeNode));
 	node->object = [NSString stringWithString:@"A B C"];
 	node->balance = 0;
 	STAssertEqualObjects([tree debugDescriptionForNode:node],
@@ -391,7 +391,7 @@ static NSMutableString *balanceErrors;
 }
 
 - (void) testDotStringForNode {
-	CHBinaryTreeNode *node = malloc(kCHBinaryTreeNodeSize);
+	CHBinaryTreeNode *node = malloc(sizeof(CHBinaryTreeNode));
 	node->object = [NSString stringWithString:@"A B C"];
 	node->balance = 0;
 	STAssertEqualObjects([tree dotStringForNode:node],

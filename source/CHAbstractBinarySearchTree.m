@@ -21,10 +21,9 @@
 #import "CHAbstractBinarySearchTree_Internal.h"
 
 // Definitions of variables declared as 'extern' in CHAbstractBinarySearchTree.h
-NSUInteger kCHBinaryTreeNodeSize = sizeof(CHBinaryTreeNode);
-NSUInteger kPointerSize = sizeof(void*);
-BOOL CHGarbageCollectionDisabled;
-
+size_t kCHBinaryTreeNodeSize = sizeof(CHBinaryTreeNode);
+size_t kCHPointerSize = sizeof(void*);
+BOOL kCHGarbageCollectionDisabled;
 
 /**
  A dummy object that resides in the header node for a tree. Using a header node
@@ -78,7 +77,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 @implementation CHAbstractBinarySearchTree
 
 + (void) initialize {
-	CHGarbageCollectionDisabled = !objc_collectingEnabled();
+	kCHGarbageCollectionDisabled = !objc_collectingEnabled();
 }
 
 - (void) dealloc {
@@ -261,7 +260,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 	CHBinaryTreeStack_PUSH(header->right);
 	header->right = sentinel;
 
-	if (CHGarbageCollectionDisabled) {
+	if (kCHGarbageCollectionDisabled) {
 		// Only bother with free() calls if garbage collection is NOT enabled.
 		CHBinaryTreeNode *current;
 		while (current = CHBinaryTreeStack_POP()) {
@@ -416,7 +415,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 
 - (void) dealloc {
 	[collection release];
-	if (CHGarbageCollectionDisabled) {
+	if (kCHGarbageCollectionDisabled) {
 		free(stack);
 		free(queue);
 	}

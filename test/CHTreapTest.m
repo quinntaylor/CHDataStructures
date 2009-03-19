@@ -116,8 +116,11 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 }
 
 - (void) testAddObjectWithPriority {
-	STAssertThrows([tree addObject:@"foo" withPriority:NSIntegerMax],
-				   @"Should raise an exception.");
+	STAssertNoThrow([tree addObject:@"foo" withPriority:0],
+					@"Should not raise an exception.");
+	STAssertNoThrow([tree addObject:@"foo" withPriority:CHNotFound],
+					@"Should not raise an exception.");
+	[tree removeAllObjects];
 	
 	NSUInteger priority = 0;
 	NSEnumerator *e = [objects objectEnumerator];
@@ -233,22 +236,22 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 }
 
 - (void) testPriorityForObject {
-	STAssertEquals([tree priorityForObject:nil], NSNotFound,
+	STAssertEquals([tree priorityForObject:nil], CHNotFound,
 	               @"Priority should indicate that the object is absent.");
-	STAssertEquals([tree priorityForObject:@"Z"], NSNotFound,
+	STAssertEquals([tree priorityForObject:@"Z"], CHNotFound,
 	               @"Priority should indicate that the object is absent.");
 
-	NSInteger priority = 0;
+	NSUInteger priority = 0;
 	for (id object in objects)
 		[tree addObject:object withPriority:(++priority)];
 	
-	STAssertEquals([tree priorityForObject:nil], NSNotFound,
+	STAssertEquals([tree priorityForObject:nil], CHNotFound,
 	               @"Priority should indicate that the object is absent.");
-	STAssertEquals([tree priorityForObject:@"Z"], NSNotFound,
+	STAssertEquals([tree priorityForObject:@"Z"], CHNotFound,
 	               @"Priority should indicate that the object is absent.");
 	
 	// Inserting from 'objects' with these priorities creates a known ordering.
-	int priorities[] = {8,11,13,12,1,4,5,9,6,3,10,7,2};
+	NSUInteger priorities[] = {8,11,13,12,1,4,5,9,6,3,10,7,2};
 	
 	int index = 0;
 	[tree removeAllObjects];
@@ -300,7 +303,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 }
 
 - (void) testDebugDescriptionForNode {
-	CHBinaryTreeNode *node = malloc(kCHBinaryTreeNodeSize);
+	CHBinaryTreeNode *node = malloc(sizeof(CHBinaryTreeNode));
 	node->object = [NSString stringWithString:@"A B C"];
 	node->priority = 123456789;
 	STAssertEqualObjects([tree debugDescriptionForNode:node],
@@ -309,7 +312,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 }
 
 - (void) testDotStringForNode {
-	CHBinaryTreeNode *node = malloc(kCHBinaryTreeNodeSize);
+	CHBinaryTreeNode *node = malloc(sizeof(CHBinaryTreeNode));
 	node->object = [NSString stringWithString:@"A B C"];
 	node->priority = 123456789;
 	STAssertEqualObjects([tree dotStringForNode:node],

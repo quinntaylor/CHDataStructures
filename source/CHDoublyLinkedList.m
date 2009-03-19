@@ -19,7 +19,7 @@
 
 #import "CHDoublyLinkedList.h"
 
-static NSUInteger kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
+static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 
 /**
  An NSEnumerator for traversing a CHDoublyLinkedList in forward or reverse order.

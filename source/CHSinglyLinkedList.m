@@ -19,7 +19,7 @@
 
 #import "CHSinglyLinkedList.h"
 
-static NSUInteger kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
+static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 
 /**
  An NSEnumerator for traversing a CHSinglyLinkedList from front to back.
@@ -298,7 +298,7 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 	if (index >= count || index < 0)
 		CHIndexOutOfRangeException([self class], _cmd, index, count);
 	
-	CHSinglyLinkedListNode *new = malloc(kCHSinglyLinkedListNodeSize);
+	CHSinglyLinkedListNode *new = NSAllocateCollectable(kCHSinglyLinkedListNodeSize, NSScannedOption);
 	new->object = [anObject retain];
 	++count;
 	++mutations;

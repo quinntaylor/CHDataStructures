@@ -114,7 +114,7 @@ static inline void adjustBalance(CHBinaryTreeNode *root, int dir, int bal) {
 			// Rebalance if the balance factor is out of whack, then terminate
 			if (abs(parent->balance) > 1) {
 				CHBinaryTreeNode *node = parent->link[isRightChild];
-				int bal = (isRightChild) ? +1 : -1;
+				int32_t bal = (isRightChild) ? +1 : -1;
 				if (node->balance == bal) {
 					parent->balance = node->balance = 0;
 					parent = singleRotation(parent, !isRightChild);
@@ -169,7 +169,7 @@ done:
 		parent = CHBinaryTreeStack_POP();
 		isRightChild = (parent->right == current);
 		parent->link[isRightChild] = replacement;
-		if (CHGarbageCollectionDisabled)
+		if (kCHGarbageCollectionDisabled)
 			free(current);
 		current = replacement;
 	} else {
@@ -186,7 +186,7 @@ done:
 		isRightChild = (parent->right == replacement);
 		parent->link[isRightChild] = replacement->right;
 		current = replacement->right;
-		if (CHGarbageCollectionDisabled)
+		if (kCHGarbageCollectionDisabled)
 			free(replacement);
 	}
 	

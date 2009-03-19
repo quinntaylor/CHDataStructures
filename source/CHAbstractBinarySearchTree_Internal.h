@@ -45,7 +45,7 @@
 	stackSize = 0; \
 }
 #define CHBinaryTreeStack_FREE(stack) { \
-	if (stack != NULL && CHGarbageCollectionDisabled) \
+	if (stack != NULL && kCHGarbageCollectionDisabled) \
 		free(stack); \
 	stack = NULL; \
 }
@@ -54,7 +54,7 @@
 	stack[stackSize++] = node; \
 	if (stackSize >= stackCapacity) { \
 		stackCapacity *= 2; \
-		stack = NSReallocateCollectable(stack, kPointerSize*stackCapacity, NSScannedOption); \
+		stack = NSReallocateCollectable(stack, kCHPointerSize*stackCapacity, NSScannedOption); \
 	} \
 }
 #define CHBinaryTreeStack_TOP \
@@ -67,11 +67,11 @@
 
 #define CHBinaryTreeQueue_INIT() { \
 	queueCapacity = 16; \
-	queue = NSAllocateCollectable(kPointerSize*queueCapacity, NSScannedOption); \
+	queue = NSAllocateCollectable(kCHPointerSize*queueCapacity, NSScannedOption); \
 	queueHead = queueTail = 0; \
 }
 #define CHBinaryTreeQueue_FREE(queue) { \
-	if (queue != NULL && CHGarbageCollectionDisabled) \
+	if (queue != NULL && kCHGarbageCollectionDisabled) \
 		free(queue); \
 	queue = NULL; \
 }
@@ -80,11 +80,11 @@
 	queue[queueTail++] = node; \
 	queueTail %= queueCapacity; \
 	if (queueHead == queueTail) { \
-		queue = NSReallocateCollectable(queue, kPointerSize*queueCapacity*2, NSScannedOption); \
+		queue = NSReallocateCollectable(queue, kCHPointerSize*queueCapacity*2, NSScannedOption); \
 		/* Copy wrapped-around portion to end of queue and move tail index */ \
-		memcpy(queue+queueCapacity, queue, kPointerSize*queueTail); \
+		memcpy(queue+queueCapacity, queue, kCHPointerSize*queueTail); \
 		/* Zeroing out shifted memory can simplify debugging queue problems */ \
-		memset(queue, 0, kPointerSize*queueTail); \
+		/*memset(queue, 0, kCHPointerSize*queueTail);*/ \
 		queueTail += queueCapacity; \
 		queueCapacity *= 2; \
 	} \
