@@ -182,7 +182,7 @@ void populateMultimap(CHMultiMap* multimap) {
 	NSMutableString *expected = [NSMutableString string];
 	[expected appendString:@"{\n"];
 	// Account for how -[NSSet description] produces different results on 64-bit
-#ifdef __x86_64__
+#if defined(__x86_64__) || defined(__ppc64__)
 	[expected appendString:@"    bar =     {(\n        Y,\n        Z,\n        X\n    )};\n"];
 	[expected appendString:@"    baz =     {(\n        1,\n        3,\n        2\n    )};\n"];
 	[expected appendString:@"    foo =     {(\n        C,\n        B,\n        A\n    )};\n"];
