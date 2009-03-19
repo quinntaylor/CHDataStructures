@@ -118,9 +118,10 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 	CHSinglyLinkedListNode *old = node->next;
 	node->next = old->next;
-	[old->object release];
-	if (!objc_collectingEnabled())
+	if (!objc_collectingEnabled()) {
+		[old->object release];
 		free(old);
+	}
 }
 
 @implementation CHSinglyLinkedList

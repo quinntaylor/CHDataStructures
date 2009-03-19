@@ -415,10 +415,8 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 
 - (void) dealloc {
 	[collection release];
-	if (kCHGarbageCollectionDisabled) {
-		free(stack);
-		free(queue);
-	}
+	free(stack);
+	free(queue);
 	[super dealloc];
 }
 
