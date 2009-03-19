@@ -50,7 +50,7 @@
 		queue = [[aClass alloc] init];
 		STAssertThrows([queue addObject:nil],
 					   @"Should raise nilArgumentException.");
-		STAssertEquals([queue count], 0u, @"Incorrect count.");
+		STAssertEquals([queue count], (NSUInteger)0, @"Incorrect count.");
 		for (id anObject in objects)
 			[queue addObject:anObject];
 		STAssertEquals([queue count], [objects count], @"Incorrect count.");
@@ -66,7 +66,7 @@
 		queue = [[aClass alloc] init];
 		STAssertNoThrow([queue addObjectsFromArray:nil],
 						@"Should never raise an exception.");
-		STAssertEquals([queue count], 0u, @"Incorrect count.");
+		STAssertEquals([queue count], (NSUInteger)0, @"Incorrect count.");
 		[queue addObjectsFromArray:objects];
 		STAssertEquals([queue count], [objects count], @"Incorrect count.");
 		STAssertEqualObjects([queue allObjects], objects,

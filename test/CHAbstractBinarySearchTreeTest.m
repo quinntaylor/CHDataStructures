@@ -208,7 +208,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 - (void) testEmptyTree {
 	for (Class aClass in treeClasses) {
 		id<CHSearchTree> tree = [[aClass alloc] init];
-		STAssertEquals([tree count], 0u, @"Incorrect count.");
+		STAssertEquals([tree count], (NSUInteger)0, @"Incorrect count.");
 		[tree release];
 	}
 }
@@ -268,41 +268,41 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	
 		// Enumerator shouldn't retain collection if there are no objects
 		if (gcDisabled)
-			STAssertEquals([tree retainCount], 1u, @"Wrong retain count");
+			STAssertEquals([tree retainCount], (NSUInteger)1, @"Wrong retain count");
 		NSEnumerator *e = [tree objectEnumerator];
 		STAssertNotNil(e, @"Enumerator should not be nil.");
 		if (gcDisabled)
-			STAssertEquals([tree retainCount], 1u, @"Should not retain collection");
+			STAssertEquals([tree retainCount], (NSUInteger)1, @"Should not retain collection");
 		
 		// Enumerator should retain collection when it has 1+ objects, release when 0
 		for (id object in objects)
 			[tree addObject:object];
 		if (gcDisabled)
-			STAssertEquals([tree retainCount], 1u, @"Wrong retain count");
+			STAssertEquals([tree retainCount], (NSUInteger)1, @"Wrong retain count");
 		e = [tree objectEnumerator];
 		STAssertNotNil(e, @"Enumerator should not be nil.");
 		if (gcDisabled)
-			STAssertEquals([tree retainCount], 2u, @"Enumerator should retain collection");
+			STAssertEquals([tree retainCount], (NSUInteger)2, @"Enumerator should retain collection");
 		// Grab one object from the enumerator
 		[e nextObject];
 		if (gcDisabled)
-			STAssertEquals([tree retainCount], 2u, @"Collection should still be retained.");
+			STAssertEquals([tree retainCount], (NSUInteger)2, @"Collection should still be retained.");
 		// Empty the enumerator of all objects
 		[e allObjects];
 		if (gcDisabled)
-			STAssertEquals([tree retainCount], 1u, @"Enumerator should release collection");
+			STAssertEquals([tree retainCount], (NSUInteger)1, @"Enumerator should release collection");
 		
 		// Test that enumerator releases on -dealloc
 		NSAutoreleasePool *pool  = [[NSAutoreleasePool alloc] init];
 		if (gcDisabled)
-			STAssertEquals([tree retainCount], 1u, @"Wrong retain count");
+			STAssertEquals([tree retainCount], (NSUInteger)1, @"Wrong retain count");
 		e = [tree objectEnumerator];
 		STAssertNotNil(e, @"Enumerator should not be nil.");
 		if (gcDisabled)
-			STAssertEquals([tree retainCount], 2u, @"Enumerator should retain collection");
+			STAssertEquals([tree retainCount], (NSUInteger)2, @"Enumerator should retain collection");
 		[pool drain]; // Force deallocation of enumerator
 		if (gcDisabled)
-			STAssertEquals([tree retainCount], 1u, @"Enumerator should release collection");
+			STAssertEquals([tree retainCount], (NSUInteger)1, @"Enumerator should release collection");
 		
 		// Test mutation in the middle of enumeration
 		e = [tree objectEnumerator];
@@ -347,14 +347,14 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 }
 
 - (void) testRemoveAllObjects {
-	STAssertEquals([emptyTree count], 0u, @"Incorrect count.");
+	STAssertEquals([emptyTree count], (NSUInteger)0, @"Incorrect count.");
 	[emptyTree removeAllObjects];
-	STAssertEquals([emptyTree count], 0u, @"Incorrect count.");	
+	STAssertEquals([emptyTree count], (NSUInteger)0, @"Incorrect count.");	
 	
 	for (id<CHSearchTree> tree in nonEmptyTrees) {
 		STAssertEquals([tree count], [objects count], @"Incorrect count.");
 		[tree removeAllObjects];
-		STAssertEquals([tree count], 0u, @"Incorrect count.");
+		STAssertEquals([tree count], (NSUInteger)0, @"Incorrect count.");
 	}
 }
 
@@ -390,7 +390,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 		tree = [[aClass alloc] init];
 		copy = [tree copyWithZone:nil];
 		STAssertNotNil(copy, @"-copy should not return nil for valid tree.");
-		STAssertEquals([copy count], 0u, @"Incorrect count.");
+		STAssertEquals([copy count], (NSUInteger)0, @"Incorrect count.");
 		[copy release];
 
 		for (id anObject in objects)

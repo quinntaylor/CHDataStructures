@@ -52,7 +52,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 - (void) testAddObject {
 	STAssertThrows([tree addObject:nil], @"Should raise an exception.");
 	
-	STAssertEquals([tree count], 0u, @"Incorrect count.");
+	STAssertEquals([tree count], (NSUInteger)0, @"Incorrect count.");
 	for (id object in objects)
 		[tree addObject:object];
 	STAssertEquals([tree count], [objects count], @"Incorrect count.");

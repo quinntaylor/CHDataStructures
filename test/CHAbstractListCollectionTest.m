@@ -73,7 +73,7 @@
 - (void) testNSCoding {
 	for (id object in objects)
 		[collection addObject:object];
-	STAssertEquals([collection count], 3u, @"Incorrect count.");
+	STAssertEquals([collection count], (NSUInteger)3, @"Incorrect count.");
 	NSArray *order = [collection allObjects];
 	STAssertEqualObjects(order, objects, @"Wrong ordering before archiving.");
 	
@@ -82,7 +82,7 @@
 	[collection release];
 	
 	collection = [[NSKeyedUnarchiver unarchiveObjectWithFile:filePath] retain];
-	STAssertEquals([collection count], 3u, @"Incorrect count.");
+	STAssertEquals([collection count], (NSUInteger)3, @"Incorrect count.");
 	order = [collection allObjects];
 	STAssertEqualObjects(order, objects, @"Wrong ordering on reconstruction.");
 }
@@ -92,7 +92,7 @@
 		[collection addObject:object];
 	CHAbstractListCollection *collection2 = [collection copy];
 	STAssertNotNil(collection2, @"-copy should not return nil for valid collection.");
-	STAssertEquals([collection2 count], 3u, @"Incorrect count.");
+	STAssertEquals([collection2 count], (NSUInteger)3, @"Incorrect count.");
 	STAssertEqualObjects([collection allObjects], [collection2 allObjects],
 						 @"Unequal collections.");
 	[collection2 release];
@@ -117,7 +117,7 @@
 - (void) testInitWithArray {
 	[collection release];
 	collection = [[CHAbstractListCollection alloc] initWithArray:objects];
-	STAssertEquals([collection count], 3u, @"Incorrect count.");
+	STAssertEquals([collection count], (NSUInteger)3, @"Incorrect count.");
 	STAssertEqualObjects([collection allObjects], objects,
 						 @"Bad array ordering on -initWithArray:");
 	
@@ -129,9 +129,9 @@
 }
 
 - (void) testCount {
-	STAssertEquals([collection count], 0u, @"Incorrect count.");
+	STAssertEquals([collection count], (NSUInteger)0, @"Incorrect count.");
 	[collection addObject:@"Hello, World!"];
-	STAssertEquals([collection count], 1u, @"Incorrect count.");
+	STAssertEquals([collection count], (NSUInteger)1, @"Incorrect count.");
 }
 
 - (void) testContainsObject {
@@ -155,12 +155,12 @@
 - (void) testIndexOfObject {
 	for (id object in objects)
 		[collection addObject:object];
-	STAssertEquals([collection indexOfObject:@"A"], 0u, @"Wrong index for object");
-	STAssertEquals([collection indexOfObject:@"B"], 1u, @"Wrong index for object");
-	STAssertEquals([collection indexOfObject:@"C"], 2u, @"Wrong index for object");
-	STAssertEquals([collection indexOfObject:@"a"], (unsigned)NSNotFound,
+	STAssertEquals([collection indexOfObject:@"A"], (NSUInteger)0, @"Wrong index for object");
+	STAssertEquals([collection indexOfObject:@"B"], (NSUInteger)1, @"Wrong index for object");
+	STAssertEquals([collection indexOfObject:@"C"], (NSUInteger)2, @"Wrong index for object");
+	STAssertEquals([collection indexOfObject:@"a"], (NSUInteger)NSNotFound,
 				   @"Wrong index for object");
-	STAssertEquals([collection indexOfObject:@"Z"], (unsigned)NSNotFound,
+	STAssertEquals([collection indexOfObject:@"Z"], (NSUInteger)NSNotFound,
 				   @"Wrong index for object");
 }
 
@@ -168,11 +168,11 @@
 	NSString *a = [NSString stringWithFormat:@"A"];
 	[collection addObject:a];
 	STAssertEquals([collection indexOfObjectIdenticalTo:a],
-				   0u, @"Wrong index for object");
+				   (NSUInteger)0, @"Wrong index for object");
 	STAssertEquals([collection indexOfObjectIdenticalTo:@"A"],
-				   (unsigned)NSNotFound, @"Wrong index for object");
+				   (NSUInteger)NSNotFound, @"Wrong index for object");
 	STAssertEquals([collection indexOfObjectIdenticalTo:@"Z"],
-				   (unsigned)NSNotFound, @"Wrong index for object");
+				   (NSUInteger)NSNotFound, @"Wrong index for object");
 }
 
 - (void) testObjectAtIndex {
@@ -190,39 +190,39 @@
 	
 	allObjects = [collection allObjects];
 	STAssertNotNil(allObjects, @"Array should not be nil");
-	STAssertEquals([allObjects count], 0u, @"Incorrect array length.");
+	STAssertEquals([allObjects count], (NSUInteger)0, @"Incorrect array length.");
 
 	for (id object in objects)
 		[collection addObject:object];
 	allObjects = [collection allObjects];
 	STAssertNotNil(allObjects, @"Array should not be nil");
-	STAssertEquals([allObjects count], 3u, @"Incorrect array length.");
+	STAssertEquals([allObjects count], (NSUInteger)3, @"Incorrect array length.");
 }
 
 - (void) testRemoveObject {
 	for (id object in objects)
 		[collection addObject:object];
 
-	STAssertEquals([collection count], 3u, @"Incorrect count.");
+	STAssertEquals([collection count], (NSUInteger)3, @"Incorrect count.");
 	[collection removeObject:@"A"];
-	STAssertEquals([collection count], 2u, @"Incorrect count.");
+	STAssertEquals([collection count], (NSUInteger)2, @"Incorrect count.");
 	[collection removeObject:@"A"];
-	STAssertEquals([collection count], 2u, @"Incorrect count.");
+	STAssertEquals([collection count], (NSUInteger)2, @"Incorrect count.");
 	[collection removeObject:@"Z"];
-	STAssertEquals([collection count], 2u, @"Incorrect count.");
+	STAssertEquals([collection count], (NSUInteger)2, @"Incorrect count.");
 }
 
 - (void) testRemoveObjectIdenticalTo {
 	NSString *a = [NSString stringWithFormat:@"A"];
 	NSString *b = [NSString stringWithFormat:@"B"];
 	[collection addObject:a];
-	STAssertEquals([collection count], 1u, @"Incorrect count.");
+	STAssertEquals([collection count], (NSUInteger)1, @"Incorrect count.");
 	[collection removeObjectIdenticalTo:@"A"];
-	STAssertEquals([collection count], 1u, @"Incorrect count.");
+	STAssertEquals([collection count], (NSUInteger)1, @"Incorrect count.");
 	[collection removeObjectIdenticalTo:a];
-	STAssertEquals([collection count], 0u, @"Incorrect count.");
+	STAssertEquals([collection count], (NSUInteger)0, @"Incorrect count.");
 	[collection removeObjectIdenticalTo:a];
-	STAssertEquals([collection count], 0u, @"Incorrect count.");
+	STAssertEquals([collection count], (NSUInteger)0, @"Incorrect count.");
 	
 	// Test removing all instances of an object
 	[collection addObject:a];
@@ -231,22 +231,22 @@
 	[collection addObject:a];
 	[collection addObject:b];
 	
-	STAssertEquals([collection count], 5u, @"Incorrect count.");
+	STAssertEquals([collection count], (NSUInteger)5, @"Incorrect count.");
 	[collection removeObjectIdenticalTo:@"A"];
-	STAssertEquals([collection count], 5u, @"Incorrect count.");
+	STAssertEquals([collection count], (NSUInteger)5, @"Incorrect count.");
 	[collection removeObjectIdenticalTo:a];
-	STAssertEquals([collection count], 3u, @"Incorrect count.");
+	STAssertEquals([collection count], (NSUInteger)3, @"Incorrect count.");
 	[collection removeObjectIdenticalTo:b];
-	STAssertEquals([collection count], 1u, @"Incorrect count.");
+	STAssertEquals([collection count], (NSUInteger)1, @"Incorrect count.");
 }
 
 - (void) testRemoveAllObjects {
-	STAssertEquals([collection count], 0u, @"Incorrect count.");
+	STAssertEquals([collection count], (NSUInteger)0, @"Incorrect count.");
 	for (id object in objects)
 		[collection addObject:object];
-	STAssertEquals([collection count], 3u, @"Incorrect count.");
+	STAssertEquals([collection count], (NSUInteger)3, @"Incorrect count.");
 	[collection removeAllObjects];
-	STAssertEquals([collection count], 0u, @"Incorrect count.");
+	STAssertEquals([collection count], (NSUInteger)0, @"Incorrect count.");
 }
 
 - (void) testObjectEnumerator {

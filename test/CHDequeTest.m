@@ -44,10 +44,10 @@
 		STAssertThrows([deque prependObject:nil],
 					   @"Should raise nilArgumentException.");
 		
-		STAssertEquals([deque count], 0u, @"Incorrect count.");
+		STAssertEquals([deque count], (NSUInteger)0, @"Incorrect count.");
 		for (id anObject in objects)
 			[deque prependObject:anObject];
-		STAssertEquals([deque count], 3u, @"Incorrect count.");
+		STAssertEquals([deque count], (NSUInteger)3, @"Incorrect count.");
 		NSEnumerator *e = [deque objectEnumerator];
 		STAssertEqualObjects([e nextObject], @"C", @"Wrong -nextObject.");
 		STAssertEqualObjects([e nextObject], @"B", @"Wrong -nextObject.");
@@ -61,7 +61,7 @@
 		deque = [[aClass alloc] init];
 		STAssertNoThrow([deque prependObjectsFromArray:nil],
 						@"Should never raise an exception.");
-		STAssertEquals([deque count], 0u, @"Incorrect count.");
+		STAssertEquals([deque count], (NSUInteger)0, @"Incorrect count.");
 		[deque prependObjectsFromArray:objects];
 		STAssertEquals([deque count], [objects count], @"Incorrect count.");
 		STAssertEqualObjects([deque allObjects], objects,
@@ -77,10 +77,10 @@
 		STAssertThrows([deque appendObject:nil],
 					   @"Should raise nilArgumentException.");
 		
-		STAssertEquals([deque count], 0u, @"Incorrect count.");
+		STAssertEquals([deque count], (NSUInteger)0, @"Incorrect count.");
 		for (id anObject in objects)
 			[deque appendObject:anObject];
-		STAssertEquals([deque count], 3u, @"Incorrect count.");
+		STAssertEquals([deque count], (NSUInteger)3, @"Incorrect count.");
 		NSEnumerator *e = [deque objectEnumerator];
 		STAssertEqualObjects([e nextObject], @"A", @"Wrong -nextObject.");
 		STAssertEqualObjects([e nextObject], @"B", @"Wrong -nextObject.");
@@ -94,7 +94,7 @@
 		deque = [[aClass alloc] init];
 		STAssertNoThrow([deque appendObjectsFromArray:nil],
 						@"Should never raise an exception.");
-		STAssertEquals([deque count], 0u, @"Incorrect count.");
+		STAssertEquals([deque count], (NSUInteger)0, @"Incorrect count.");
 		[deque appendObjectsFromArray:objects];
 		STAssertEquals([deque count], [objects count], @"Incorrect count.");
 		STAssertEqualObjects([deque allObjects], objects,
@@ -146,7 +146,7 @@
 		STAssertEqualObjects([deque firstObject], nil,  @"Wrong -firstObject.");
 		STAssertNoThrow([deque removeFirstObject],
 						@"Should never raise an exception, even when empty.");
-		STAssertEquals([deque count], 0u, @"Incorrect count.");
+		STAssertEquals([deque count], (NSUInteger)0, @"Incorrect count.");
 		[deque release];
 	}
 }
@@ -165,7 +165,7 @@
 		STAssertEqualObjects([deque lastObject], nil, @"Wrong -lastObject.");
 		STAssertNoThrow([deque removeLastObject],
 						@"Should never raise an exception, even when empty.");
-		STAssertEquals([deque count], 0u, @"Incorrect count.");
+		STAssertEquals([deque count], (NSUInteger)0, @"Incorrect count.");
 		[deque release];
 	}
 }

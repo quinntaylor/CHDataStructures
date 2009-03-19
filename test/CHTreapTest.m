@@ -236,18 +236,18 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 }
 
 - (void) testPriorityForObject {
-	STAssertEquals([tree priorityForObject:nil], CHNotFound,
+	STAssertEquals([tree priorityForObject:nil], (NSUInteger)CHNotFound,
 	               @"Priority should indicate that the object is absent.");
-	STAssertEquals([tree priorityForObject:@"Z"], CHNotFound,
+	STAssertEquals([tree priorityForObject:@"Z"], (NSUInteger)CHNotFound,
 	               @"Priority should indicate that the object is absent.");
 
 	NSUInteger priority = 0;
 	for (id object in objects)
 		[tree addObject:object withPriority:(++priority)];
 	
-	STAssertEquals([tree priorityForObject:nil], CHNotFound,
+	STAssertEquals([tree priorityForObject:nil], (NSUInteger)CHNotFound,
 	               @"Priority should indicate that the object is absent.");
-	STAssertEquals([tree priorityForObject:@"Z"], CHNotFound,
+	STAssertEquals([tree priorityForObject:@"Z"], (NSUInteger)CHNotFound,
 	               @"Priority should indicate that the object is absent.");
 	
 	// Inserting from 'objects' with these priorities creates a known ordering.
@@ -297,9 +297,9 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	}
 	
 	// Test removing a node which has been removed from the tree
-	STAssertEquals([tree count], 0u, @"Incorrect count.");
+	STAssertEquals([tree count], (NSUInteger)0, @"Incorrect count.");
 	[tree removeObject:@"A"];
-	STAssertEquals([tree count], 0u, @"Incorrect count.");
+	STAssertEquals([tree count], (NSUInteger)0, @"Incorrect count.");
 }
 
 - (void) testDebugDescriptionForNode {

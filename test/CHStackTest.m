@@ -66,7 +66,7 @@
 		STAssertThrows([stack pushObject:nil],
 					   @"Should raise nilArgumentException.");
 		
-		STAssertEquals([stack count], 0u, @"Incorrect count.");
+		STAssertEquals([stack count], (NSUInteger)0, @"Incorrect count.");
 		for (id anObject in objects)
 			[stack pushObject:anObject];
 		STAssertEquals([stack count], [objects count], @"Incorrect count.");
@@ -76,7 +76,7 @@
 - (void) testPushObjectsFromArray {
 	for (Class aClass in stackClasses) {
 		stack = [[[aClass alloc] init] autorelease];
-		STAssertEquals([stack count], 0u, @"Incorrect count.");
+		STAssertEquals([stack count], (NSUInteger)0, @"Incorrect count.");
 		[stack pushObjectsFromArray:objects];
 		STAssertEqualObjects([stack allObjects], stackOrder,
 							 @"Bad ordering on -[%@ pushObjectsFromArray:]",
@@ -194,7 +194,7 @@
 		               @"Objects should be enumerated in descending order.");
 		++count;
 	}
-	STAssertEquals(count, 32u, @"Count of enumerated items is incorrect.");
+	STAssertEquals(count, (NSUInteger)32, @"Count of enumerated items is incorrect.");
 }
 
 @end
