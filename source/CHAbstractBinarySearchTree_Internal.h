@@ -58,9 +58,9 @@
 	} \
 }
 #define CHBinaryTreeStack_TOP \
-	((stackSize) ? stack[stackSize-1] : NULL)
+	((stackSize > 0) ? stack[stackSize-1] : NULL)
 #define CHBinaryTreeStack_POP() \
-	((stackSize) ? stack[--stackSize] : NULL)
+	((stackSize > 0) ? stack[--stackSize] : NULL)
 
 
 #pragma mark Queue macros

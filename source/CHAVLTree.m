@@ -63,7 +63,7 @@ static inline void adjustBalance(CHBinaryTreeNode *root, int dir, int bal) {
 		CHNilArgumentException([self class], _cmd);
 	++mutations;
 	
-	CHBinaryTreeNode *parent, *save, *current = header;
+	CHBinaryTreeNode *parent = nil, *save = nil, *current = header;
 	CHBinaryTreeStack_DECLARE();
 	CHBinaryTreeStack_INIT();
 	
@@ -77,6 +77,7 @@ static inline void adjustBalance(CHBinaryTreeNode *root, int dir, int bal) {
 			save = current;
 		current = current->link[comparison == NSOrderedAscending]; // R on YES
 	}
+	NSAssert(save != nil, @"Illegal state, save should never be nil!");
 	
 	[anObject retain]; // Must retain whether replacing value or adding new node
 	if (current != sentinel) {
@@ -94,6 +95,7 @@ static inline void adjustBalance(CHBinaryTreeNode *root, int dir, int bal) {
 		++count;
 		// Link from parent as the proper child, based on last comparison
 		parent = CHBinaryTreeStack_POP();
+		NSAssert(parent != nil, @"Illegal state, parent should never be nil!");
 		comparison = [parent->object compare:anObject];
 		parent->link[comparison == NSOrderedAscending] = current; // R if YES
 	}
@@ -128,6 +130,7 @@ static inline void adjustBalance(CHBinaryTreeNode *root, int dir, int bal) {
 		// Move to the next node up the path to the root
 		current = parent;
 		parent = CHBinaryTreeStack_POP();
+		NSAssert(parent != nil, @"Illegal state, parent should never be nil!");
 		// Link from parent as the proper child, based on last comparison
 		comparison = [parent->object compare:current->object];
 		parent->link[comparison == NSOrderedAscending] = current; // R if YES
@@ -167,11 +170,11 @@ done:
 		// Single/zero child case -- replace node with non-nil child (if exists)
 		replacement = current->link[current->left == sentinel];
 		parent = CHBinaryTreeStack_POP();
+		NSAssert(parent != nil, @"Illegal state, parent should never be nil!");
 		isRightChild = (parent->right == current);
 		parent->link[isRightChild] = replacement;
 		if (kCHGarbageCollectionDisabled)
 			free(current);
-		current = replacement;
 	} else {
 		// Two child case -- replace with minimum object in right subtree
 		CHBinaryTreeStack_PUSH(current); // Need to start here when rebalancing
@@ -185,7 +188,6 @@ done:
 		parent = CHBinaryTreeStack_POP();
 		isRightChild = (parent->right == replacement);
 		parent->link[isRightChild] = replacement->right;
-		current = replacement->right;
 		if (kCHGarbageCollectionDisabled)
 			free(replacement);
 	}

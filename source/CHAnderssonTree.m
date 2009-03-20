@@ -84,6 +84,7 @@
 		++count;
 		// Link from parent as the proper child, based on last comparison
 		parent = CHBinaryTreeStack_POP();
+		NSAssert(parent != nil, @"Illegal state, parent should never be nil!");
 		comparison = [parent->object compare:anObject];
 		parent->link[comparison == NSOrderedAscending] = current; // R if YES
 	}
@@ -130,6 +131,7 @@ done:
 	if (current->left == sentinel || current->right == sentinel) {
 		// Single/zero child case -- replace node with non-nil child (if exists)
 		parent = CHBinaryTreeStack_TOP;
+		NSAssert(parent != nil, @"Illegal state, parent should never be nil!");
 		parent->link[parent->right == current]
 			= current->link[current->left == sentinel];
 		if (kCHGarbageCollectionDisabled)
@@ -137,7 +139,6 @@ done:
 	} else {
 		// Two child case -- replace with minimum object in right subtree
 		CHBinaryTreeStack_PUSH(current); // Need to start here when rebalancing
-		parent = current;
 		CHBinaryTreeNode *replacement = current->right;
 		while (replacement->left != sentinel) {
 			CHBinaryTreeStack_PUSH(replacement);

@@ -164,6 +164,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 		stackCapacity = (NSUInteger) state->extra[1];
 		stackSize = (NSUInteger) state->extra[2];
 	}
+	NSAssert(current != nil, @"Illegal state, current should never be nil!");
 	
 	// Accumulate objects from the tree until we reach all nodes or the maximum
 	NSUInteger batchCount = 0;
@@ -173,6 +174,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 			current = current->left;
 		}
 		current = CHBinaryTreeStack_POP(); // Save top node for return value
+		NSAssert(current != nil, @"Illegal state, current should never be nil!");
 		stackbuf[batchCount] = current->object;
 		current = current->right;
 		batchCount++;
@@ -447,6 +449,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 				// TODO: How to not push/pop leaf nodes unnecessarily?
 			}
 			current = CHBinaryTreeStack_POP(); // Save top node for return value
+			NSAssert(current != nil, @"Illegal state, current should never be nil!");
 			id tempObject = current->object;
 			current = current->right;
 			return tempObject;
@@ -462,6 +465,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 				// TODO: How to not push/pop leaf nodes unnecessarily?
 			}
 			current = CHBinaryTreeStack_POP(); // Save top node for return value
+			NSAssert(current != nil, @"Illegal state, current should never be nil!");
 			id tempObject = current->object;
 			current = current->left;
 			return tempObject;
@@ -489,6 +493,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 					CHBinaryTreeStack_PUSH(current);
 					current = current->left;
 				}
+				NSAssert(stackSize > 0, @"Stack should never be empty!");
 				// A null entry indicates that we've traversed the left subtree
 				if (CHBinaryTreeStack_TOP != NULL) {
 					current = CHBinaryTreeStack_TOP->right;

@@ -57,7 +57,8 @@
 		current = current->link[comparison == NSOrderedAscending]; // R on YES
 	}
 	parent = CHBinaryTreeStack_POP();
-
+	NSAssert(parent != nil, @"Illegal state, parent should never be nil!");
+	
 	[anObject retain]; // Must retain whether replacing value or adding new node
 	int direction;
 	if (current != sentinel) {
@@ -70,6 +71,7 @@
 			direction = (current->right->priority > current->left->priority);
 			if (current->priority >= current->link[direction]->priority)
 				break;
+			NSAssert(parent != nil, @"Illegal state, parent should never be nil!");
 			singleRotation(current, !direction, parent);
 			parent = current;
 			current = current->link[!direction];
@@ -91,6 +93,8 @@
 	while (parent != header && current->priority > parent->priority) {
 		// Rotate current node up, push parent down to opposite subtree.
 		direction = (parent->left == current);
+		NSAssert(parent != nil, @"Illegal state, parent should never be nil!");
+		NSAssert(stackSize > 0, @"Illegal state, stack should never be empty!");
 		singleRotation(parent, direction, CHBinaryTreeStack_TOP);
 		parent = CHBinaryTreeStack_POP();
 	}
@@ -104,7 +108,7 @@
 		return;
 	++mutations;
 	
-	CHBinaryTreeNode *parent, *current = header;
+	CHBinaryTreeNode *parent = nil, *current = header;
 	NSComparisonResult comparison;
 	int direction;
 	
@@ -114,6 +118,7 @@
 		parent = current;
 		current = current->link[comparison == NSOrderedAscending]; // R on YES
 	}
+	NSAssert(parent != nil, @"Illegal state, parent should never be nil!");
 	
 	if (current != sentinel) {
 		// Percolate node down the tree, always rotating towards lower priority
@@ -124,6 +129,7 @@
 			singleRotation(current, !direction, parent);
 			parent = parent->link[isRightChild];
 		}
+//		NSAssert(parent != nil, @"Illegal state, parent should never be nil!");
 		parent->link[parent->right == current] = sentinel;
 		if (kCHGarbageCollectionDisabled) {
 			[current->object release];

@@ -64,7 +64,7 @@
 		return;
 	++mutations;
 	
-	CHBinaryTreeNode *parent, *current = header;
+	CHBinaryTreeNode *parent = nil, *current = header;
 	
 	sentinel->object = anObject; // Assure that we find a spot to insert
 	NSComparisonResult comparison;
@@ -72,6 +72,7 @@
 		parent = current;
 		current = current->link[comparison == NSOrderedAscending]; // R on YES
 	}
+	NSAssert(parent != nil, @"Illegal state, parent should never be nil!");
 	// Exit if the specified node was not found in the tree.
 	if (current == sentinel)
 		return;

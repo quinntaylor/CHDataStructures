@@ -118,8 +118,7 @@ void benchmarkDeque(Class testClass) {
 			[deque appendObject:anObject];
 		startTime = timestamp();
 		NSEnumerator *e = [deque objectEnumerator];
-		id object;
-		while ((object = [e nextObject]) != nil)
+		while ([e nextObject] != nil)
 			;
 		printf("\t%f", timestamp() - startTime);
 		[deque release];
@@ -193,8 +192,7 @@ void benchmarkQueue(Class testClass) {
 			[queue addObject:anObject];
 		startTime = timestamp();
 		NSEnumerator *e = [queue objectEnumerator];
-		id object;
-		while ((object = [e nextObject]) != nil)
+		while ([e nextObject] != nil)
 			;
 		printf("\t%f", timestamp() - startTime);
 		[queue release];
@@ -268,8 +266,7 @@ void benchmarkStack(Class testClass) {
 			[stack pushObject:anObject];
 		startTime = timestamp();
 		NSEnumerator *e = [stack objectEnumerator];
-		id object;
-		while ((object = [e nextObject]) != nil)
+		while ([e nextObject] != nil)
 			;
 		printf("\t%f", timestamp() - startTime);
 		[stack release];
@@ -341,8 +338,7 @@ void benchmarkHeap(Class testClass) {
 			[heap addObject:anObject];
 		startTime = timestamp();
 		NSEnumerator *e = [heap objectEnumerator];
-		id object;
-		while ((object = [e nextObject]) != nil)
+		while ([e nextObject] != nil)
 			;
 		printf("\t%f", timestamp() - startTime);
 		[heap release];
@@ -415,8 +411,7 @@ void benchmarkTree(Class testClass) {
 			[tree addObject:anObject];
 		startTime = timestamp();
 		NSEnumerator *e = [tree objectEnumerator];
-		id object;
-		while ((object = [e nextObject]) != nil)
+		while ([e nextObject] != nil)
 			;
 		printf("\t%f", timestamp() - startTime);
 		[tree release];

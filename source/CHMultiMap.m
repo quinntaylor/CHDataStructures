@@ -108,7 +108,7 @@ static inline NSMutableSet* wrapObjectInMutableSet(id object) {
 - (id) copyWithZone:(NSZone*)zone {
 	CHMultiMap *newMultiMap = [[CHMultiMap alloc] init];
 	for (id key in [self allKeys])
-		[newMultiMap setObjects:[[dictionary objectForKey:key] mutableCopy]
+		[newMultiMap setObjects:[[[dictionary objectForKey:key] mutableCopy] autorelease]
 						 forKey:key];
 	return newMultiMap;
 }
