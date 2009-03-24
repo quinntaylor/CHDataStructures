@@ -53,7 +53,7 @@
 #pragma mark -
 
 @interface CHHeapTest : SenTestCase {
-	id<CHHeap> heap;
+	id heap; // Removed protocol type <CHHeap> to prevent warnings for -isValid.
 	NSArray *objects, *heapClasses;
 }
 @end
