@@ -20,25 +20,32 @@
 
 static size_t kCHPointerSize = sizeof(void*);
 
+/**
+ An NSEnumerator for traversing a CHAbstractCircularBufferCollection subclass.
+ 
+ Enumerators encapsulate their own state, and more than one may be active at once.
+ However, like an enumerator for a mutable data structure, any instances of this
+ enumerator become invalid if the underlying collection is modified.
+ */
 @interface CHCircularBufferEnumerator : NSEnumerator
 {
-	id *buffer;
-	NSUInteger enumerationIndex;
-	NSUInteger enumerationCount;
-	NSUInteger bufferCount;
-	NSUInteger bufferCapacity;
-	BOOL reverseEnumeration;
+	id *buffer;                  /**< Underlying circular buffer to be enumerated. */
+	NSUInteger bufferCapacity;   /**< Allocated capacity of @a buffer. */
+	NSUInteger bufferCount;      /**< Number of elements in @a buffer. */
+	NSUInteger enumerationCount; /**< How many objects have been enumerated. */
+	NSUInteger enumerationIndex; /**< Index of the next element to enumerate. */
+	BOOL reverseEnumeration;     /**< Whether to enumerate back-to-front. */
 	unsigned long mutationCount; /**< Stores the collection's initial mutation. */
-	unsigned long *mutationPtr; /**< Pointer for checking changes in mutation. */	
+	unsigned long *mutationPtr;  /**< Pointer for checking changes in mutation. */	
 }
 
 /**
  Create an enumerator which traverses a circular buffer in the specified order.
  
  @param array The circular array that is being enumerated.
- @param capacity The total size of the circular buffer being enumerated.
- @param head The index of the first element in the circular buffer.
- @param tail The index just beyond the last element in the circular buffer.
+ @param capacity The total capacity of the circular buffer being enumerated.
+ @param count The number of items currently in the circular buffer
+ @param startIndex The index at which to begin enumerating (forward or reverse).
  @param isReversed YES if enumerating back-to-front, NO if natural ordering.
  @param mutations A pointer to the collection's mutation count for invalidation.
  */

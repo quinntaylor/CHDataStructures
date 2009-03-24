@@ -74,6 +74,220 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 
 #pragma mark -
 
+/**
+ An NSEnumerator for traversing a CHAbstractBinarySearchTree subclass in a specified order.
+ 
+ This enumerator uses iterative tree traversal algorithms for two main reasons:
+ <ol>
+ <li>Recursive algorithms cannot easily be stopped in the middle of a traversal.
+ <li>Iterative algorithms are faster since they reduce overhead of function calls.
+ </ol>
+ 
+ The stacks and queues used for storing traversal state use malloced C structs
+ and <code>\#define</code> pseudo-functions to increase performance and reduce
+ the required memory footprint by dynamically allocating as needed.
+ 
+ Enumerators encapsulate their own state, and more than one may be active at once.
+ However, like an enumerator for a mutable data structure, any instances of this
+ enumerator become invalid if the tree is modified.
+ */
+@interface CHBinarySearchTreeEnumerator : NSEnumerator
+{
+	CHTraversalOrder traversalOrder; /**< Order in which to traverse the tree. */
+	id<CHSearchTree> collection; /**< The collection that is being enumerated. */
+	CHBinaryTreeNode *current; /**< The next node to be enumerated. */
+	CHBinaryTreeNode *sentinelNode;  /**< Sentinel in the tree being traversed. */
+	unsigned long mutationCount; /**< Stores the collection's initial mutation. */
+	unsigned long *mutationPtr; /**< Pointer for checking changes in mutation. */
+	
+@private // Pointers and counters used for various tree traveral orderings.
+	CHBinaryTreeNode **stack, **queue;
+	NSUInteger stackCapacity, stackSize, queueCapacity, queueHead, queueTail;
+}
+
+/**
+ Create an enumerator which traverses a given (sub)tree in the specified order.
+ 
+ @param tree The tree collection that is being enumerated. This collection is to
+ be retained while the enumerator has not exhausted all its objects.
+ @param root The root node of the @a tree whose elements are to be enumerated.
+ @param sentinel The sentinel value used at the leaves of the specified @a tree.
+ @param order The traversal order to use for enumerating the given @a tree.
+ @param mutations A pointer to the collection's mutation count for invalidation.
+ */
+- (id) initWithTree:(id<CHSearchTree>)tree
+               root:(CHBinaryTreeNode*)root
+           sentinel:(CHBinaryTreeNode*)sentinel
+     traversalOrder:(CHTraversalOrder)order
+    mutationPointer:(unsigned long*)mutations;
+
+/**
+ Returns an array of objects the receiver has yet to enumerate.
+ 
+ @return An array of objects the receiver has yet to enumerate.
+ 
+ Invoking this method exhausts the remainder of the objects, such that subsequent
+ invocations of #nextObject return <code>nil</code>.
+ */
+- (NSArray*) allObjects;
+
+/**
+ Returns the next object from the collection being enumerated.
+ 
+ @return The next object from the collection being enumerated, or
+ <code>nil</code> when all objects have been enumerated.
+ */
+- (id) nextObject;
+
+@end
+
+@implementation CHBinarySearchTreeEnumerator
+
+- (id) initWithTree:(id<CHSearchTree>)tree
+               root:(CHBinaryTreeNode*)root
+           sentinel:(CHBinaryTreeNode*)sentinel
+     traversalOrder:(CHTraversalOrder)order
+    mutationPointer:(unsigned long*)mutations
+{
+	if ([super init] == nil || !isValidTraversalOrder(order)) return nil;
+	traversalOrder = order;
+	collection = (root != sentinel) ? [tree retain] : nil;
+	if (traversalOrder == CHTraverseLevelOrder) {
+		CHBinaryTreeQueue_INIT();
+		CHBinaryTreeQueue_ENQUEUE(root);
+	} else {
+		CHBinaryTreeStack_INIT();
+		if (traversalOrder == CHTraversePreOrder) {
+			CHBinaryTreeStack_PUSH(root);
+		} else {
+			current = root;
+		}
+	}
+	sentinel->object = nil;
+	sentinelNode = sentinel;
+	mutationCount = *mutations;
+	mutationPtr = mutations;
+	return self;
+}
+
+- (void) dealloc {
+	[collection release];
+	free(stack);
+	free(queue);
+	[super dealloc];
+}
+
+- (NSArray*) allObjects {
+	if (mutationCount != *mutationPtr)
+		CHMutatedCollectionException([self class], _cmd);
+	NSMutableArray *array = [[NSMutableArray alloc] init];
+	id object;
+	while ((object = [self nextObject]))
+		[array addObject:object];
+	[collection release];
+	collection = nil;
+	return [array autorelease];
+}
+
+- (id) nextObject {
+	if (mutationCount != *mutationPtr)
+		CHMutatedCollectionException([self class], _cmd);
+	
+	switch (traversalOrder) {
+		case CHTraverseAscending: {
+			if (stackSize == 0 && current == sentinelNode) {
+				goto collectionExhausted;
+			}
+			while (current != sentinelNode) {
+				CHBinaryTreeStack_PUSH(current);
+				current = current->left;
+				// TODO: How to not push/pop leaf nodes unnecessarily?
+			}
+			current = CHBinaryTreeStack_POP(); // Save top node for return value
+			NSAssert(current != nil, @"Illegal state, current should never be nil!");
+			id tempObject = current->object;
+			current = current->right;
+			return tempObject;
+		}
+			
+		case CHTraverseDescending: {
+			if (stackSize == 0 && current == sentinelNode) {
+				goto collectionExhausted;
+			}
+			while (current != sentinelNode) {
+				CHBinaryTreeStack_PUSH(current);
+				current = current->right;
+				// TODO: How to not push/pop leaf nodes unnecessarily?
+			}
+			current = CHBinaryTreeStack_POP(); // Save top node for return value
+			NSAssert(current != nil, @"Illegal state, current should never be nil!");
+			id tempObject = current->object;
+			current = current->left;
+			return tempObject;
+		}
+			
+		case CHTraversePreOrder: {
+			current = CHBinaryTreeStack_POP();
+			if (current == NULL) {
+				goto collectionExhausted;
+			}
+			if (current->right != sentinelNode)
+				CHBinaryTreeStack_PUSH(current->right);
+			if (current->left != sentinelNode)
+				CHBinaryTreeStack_PUSH(current->left);
+			return current->object;
+		}
+			
+		case CHTraversePostOrder: {
+			// This algorithm from: http://www.johny.ca/blog/archives/05/03/04/
+			if (stackSize == 0 && current == sentinelNode) {
+				goto collectionExhausted;
+			}
+			while (1) {
+				while (current != sentinelNode) {
+					CHBinaryTreeStack_PUSH(current);
+					current = current->left;
+				}
+				NSAssert(stackSize > 0, @"Stack should never be empty!");
+				// A null entry indicates that we've traversed the left subtree
+				if (CHBinaryTreeStack_TOP != NULL) {
+					current = CHBinaryTreeStack_TOP->right;
+					CHBinaryTreeStack_PUSH(NULL);
+					// TODO: How to not push a null pad for leaf nodes?
+				}
+				else {
+					CHBinaryTreeStack_POP(); // ignore the null pad
+					return CHBinaryTreeStack_POP()->object;
+				}				
+			}
+		}
+			
+		case CHTraverseLevelOrder: {
+			current = CHBinaryTreeQueue_FRONT;
+			CHBinaryTreeQueue_DEQUEUE();
+			if (current == NULL) {
+				goto collectionExhausted;
+			}
+			if (current->left != sentinelNode)
+				CHBinaryTreeQueue_ENQUEUE(current->left);
+			if (current->right != sentinelNode)
+				CHBinaryTreeQueue_ENQUEUE(current->right);
+			return current->object;
+		}
+			
+		collectionExhausted:
+			[collection release];
+			collection = nil;
+			CHBinaryTreeStack_FREE(stack);
+			CHBinaryTreeQueue_FREE(queue);
+	}
+	return nil;
+}
+
+@end
+
+#pragma mark -
+
 @implementation CHAbstractBinarySearchTree
 
 + (void) initialize {
@@ -384,149 +598,3 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 @end
 
 
-#pragma mark -
-
-@implementation CHBinarySearchTreeEnumerator
-
-- (id) initWithTree:(id<CHSearchTree>)tree
-               root:(CHBinaryTreeNode*)root
-           sentinel:(CHBinaryTreeNode*)sentinel
-     traversalOrder:(CHTraversalOrder)order
-    mutationPointer:(unsigned long*)mutations
-{
-	if ([super init] == nil || !isValidTraversalOrder(order)) return nil;
-	traversalOrder = order;
-	collection = (root != sentinel) ? [tree retain] : nil;
-	if (traversalOrder == CHTraverseLevelOrder) {
-		CHBinaryTreeQueue_INIT();
-		CHBinaryTreeQueue_ENQUEUE(root);
-	} else {
-		CHBinaryTreeStack_INIT();
-		if (traversalOrder == CHTraversePreOrder) {
-			CHBinaryTreeStack_PUSH(root);
-		} else {
-			current = root;
-		}
-	}
-	sentinel->object = nil;
-	sentinelNode = sentinel;
-	mutationCount = *mutations;
-	mutationPtr = mutations;
-	return self;
-}
-
-- (void) dealloc {
-	[collection release];
-	free(stack);
-	free(queue);
-	[super dealloc];
-}
-
-- (NSArray*) allObjects {
-	if (mutationCount != *mutationPtr)
-		CHMutatedCollectionException([self class], _cmd);
-	NSMutableArray *array = [[NSMutableArray alloc] init];
-	id object;
-	while ((object = [self nextObject]))
-		[array addObject:object];
-	[collection release];
-	collection = nil;
-	return [array autorelease];
-}
-
-- (id) nextObject {
-	if (mutationCount != *mutationPtr)
-		CHMutatedCollectionException([self class], _cmd);
-	
-	switch (traversalOrder) {
-		case CHTraverseAscending: {
-			if (stackSize == 0 && current == sentinelNode) {
-				goto collectionExhausted;
-			}
-			while (current != sentinelNode) {
-				CHBinaryTreeStack_PUSH(current);
-				current = current->left;
-				// TODO: How to not push/pop leaf nodes unnecessarily?
-			}
-			current = CHBinaryTreeStack_POP(); // Save top node for return value
-			NSAssert(current != nil, @"Illegal state, current should never be nil!");
-			id tempObject = current->object;
-			current = current->right;
-			return tempObject;
-		}
-			
-		case CHTraverseDescending: {
-			if (stackSize == 0 && current == sentinelNode) {
-				goto collectionExhausted;
-			}
-			while (current != sentinelNode) {
-				CHBinaryTreeStack_PUSH(current);
-				current = current->right;
-				// TODO: How to not push/pop leaf nodes unnecessarily?
-			}
-			current = CHBinaryTreeStack_POP(); // Save top node for return value
-			NSAssert(current != nil, @"Illegal state, current should never be nil!");
-			id tempObject = current->object;
-			current = current->left;
-			return tempObject;
-		}
-			
-		case CHTraversePreOrder: {
-			current = CHBinaryTreeStack_POP();
-			if (current == NULL) {
-				goto collectionExhausted;
-			}
-			if (current->right != sentinelNode)
-				CHBinaryTreeStack_PUSH(current->right);
-			if (current->left != sentinelNode)
-				CHBinaryTreeStack_PUSH(current->left);
-			return current->object;
-		}
-			
-		case CHTraversePostOrder: {
-			// This algorithm from: http://www.johny.ca/blog/archives/05/03/04/
-			if (stackSize == 0 && current == sentinelNode) {
-				goto collectionExhausted;
-			}
-			while (1) {
-				while (current != sentinelNode) {
-					CHBinaryTreeStack_PUSH(current);
-					current = current->left;
-				}
-				NSAssert(stackSize > 0, @"Stack should never be empty!");
-				// A null entry indicates that we've traversed the left subtree
-				if (CHBinaryTreeStack_TOP != NULL) {
-					current = CHBinaryTreeStack_TOP->right;
-					CHBinaryTreeStack_PUSH(NULL);
-					// TODO: How to not push a null pad for leaf nodes?
-				}
-				else {
-					CHBinaryTreeStack_POP(); // ignore the null pad
-					return CHBinaryTreeStack_POP()->object;
-				}				
-			}
-		}
-			
-		case CHTraverseLevelOrder: {
-			current = CHBinaryTreeQueue_FRONT;
-			CHBinaryTreeQueue_DEQUEUE();
-			if (current == NULL) {
-				goto collectionExhausted;
-			}
-			if (current->left != sentinelNode)
-				CHBinaryTreeQueue_ENQUEUE(current->left);
-			if (current->right != sentinelNode)
-				CHBinaryTreeQueue_ENQUEUE(current->right);
-			return current->object;
-		}
-			
-		collectionExhausted:
-			[collection release];
-			collection = nil;
-			CHBinaryTreeStack_FREE(stack);
-			CHBinaryTreeQueue_FREE(queue);
-	}
-	return nil;
-}
-
-@end

@@ -93,7 +93,7 @@ typedef enum {
  - <code>CHTraversePostOrder</code>
  - <code>CHTraverseLevelOrder</code>
  
- These constants are used primarily with CHBinarySearchTreeEnumerator (see @link
+ These constants are used primarily for enumerating over search trees (see @link
  #objectEnumeratorWithTraversalOrder: -objectEnumeratorWithTraversalOrder:
  \endlink) to access objects from a tree by traversing it in a specified order.
  */

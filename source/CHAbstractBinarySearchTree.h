@@ -58,7 +58,6 @@ HIDDEN extern size_t kCHBinaryTreeNodeSize;
 HIDDEN extern size_t kCHPointerSize;
 HIDDEN extern BOOL kCHGarbageCollectionDisabled;
 
-#pragma mark -
 
 /**
  An abstract CHSearchTree with many default method implementations. Methods for
@@ -169,71 +168,3 @@ HIDDEN extern BOOL kCHGarbageCollectionDisabled;
 
 @end
 
-#pragma mark -
-
-/**
- An NSEnumerator for traversing a CHAbstractBinarySearchTree subclass in a specified order.
- 
- This enumerator uses iterative tree traversal algorithms for two main reasons:
- <ol>
- <li>Recursive algorithms cannot easily be stopped in the middle of a traversal.
- <li>Iterative algorithms are faster since they reduce overhead of function calls.
- </ol>
- 
- The stacks and queues used for storing traversal state use malloced C structs
- and <code>\#define</code> pseudo-functions to increase performance and reduce
- the required memory footprint by dynamically allocating as needed.
- 
- Enumerators encapsulate their own state, and more than one may be active at once.
- However, like an enumerator for a mutable data structure, any instances of this
- enumerator become invalid if the tree is modified.
- */
-@interface CHBinarySearchTreeEnumerator : NSEnumerator
-{
-	CHTraversalOrder traversalOrder; /**< Order in which to traverse the tree. */
-	id<CHSearchTree> collection; /**< The collection that is being enumerated. */
-	CHBinaryTreeNode *current; /**< The next node to be enumerated. */
-	CHBinaryTreeNode *sentinelNode;  /**< Sentinel in the tree being traversed. */
-	unsigned long mutationCount; /**< Stores the collection's initial mutation. */
-	unsigned long *mutationPtr; /**< Pointer for checking changes in mutation. */
-	
-	@private // Pointers and counters used for various tree traveral orderings.
-	CHBinaryTreeNode **stack, **queue;
-	NSUInteger stackCapacity, stackSize, queueCapacity, queueHead, queueTail;
-}
-
-/**
- Create an enumerator which traverses a given (sub)tree in the specified order.
- 
- @param tree The tree collection that is being enumerated. This collection is to
-        be retained while the enumerator has not exhausted all its objects.
- @param root The root node of the @a tree whose elements are to be enumerated.
- @param sentinel The sentinel value used at the leaves of the specified @a tree.
- @param order The traversal order to use for enumerating the given @a tree.
- @param mutations A pointer to the collection's mutation count for invalidation.
- */
-- (id) initWithTree:(id<CHSearchTree>)tree
-               root:(CHBinaryTreeNode*)root
-           sentinel:(CHBinaryTreeNode*)sentinel
-     traversalOrder:(CHTraversalOrder)order
-    mutationPointer:(unsigned long*)mutations;
-
-/**
- Returns an array of objects the receiver has yet to enumerate.
- 
- @return An array of objects the receiver has yet to enumerate.
- 
- Invoking this method exhausts the remainder of the objects, such that subsequent
- invocations of #nextObject return <code>nil</code>.
- */
-- (NSArray*) allObjects;
-
-/**
- Returns the next object from the collection being enumerated.
- 
- @return The next object from the collection being enumerated, or
-         <code>nil</code> when all objects have been enumerated.
- */
-- (id) nextObject;
-
-@end
