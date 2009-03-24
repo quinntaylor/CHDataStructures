@@ -63,21 +63,6 @@
 	}
 }
 
-- (void) testAddObjectsFromArray {
-	for (Class aClass in queueClasses) {
-		queue = [[aClass alloc] init];
-		STAssertNoThrow([queue addObjectsFromArray:nil],
-						@"Should never raise an exception.");
-		STAssertEquals([queue count], (NSUInteger)0, @"Incorrect count.");
-		[queue addObjectsFromArray:objects];
-		STAssertEquals([queue count], [objects count], @"Incorrect count.");
-		STAssertEqualObjects([queue allObjects], objects,
-							 @"Bad ordering after -[%@ addObjectsFromArray:]",
-							 aClass);
-		[queue release];
-	}
-}
-
 - (void) testRemoveFirstObject {
 	for (Class aClass in queueClasses) {
 		queue = [[aClass alloc] init];

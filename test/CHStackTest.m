@@ -73,18 +73,6 @@
 	}
 }
 
-- (void) testPushObjectsFromArray {
-	for (Class aClass in stackClasses) {
-		stack = [[[aClass alloc] init] autorelease];
-		STAssertEquals([stack count], (NSUInteger)0, @"Incorrect count.");
-		[stack pushObjectsFromArray:objects];
-		STAssertEqualObjects([stack allObjects], stackOrder,
-							 @"Bad ordering on -[%@ pushObjectsFromArray:]",
-							 aClass);
-		STAssertEquals([stack count], [objects count], @"Incorrect count.");
-	}
-}
-
 - (void) testTopObjectAndPopObject {
 	for (Class aClass in stackClasses) {
 		stack = [[[aClass alloc] init] autorelease];

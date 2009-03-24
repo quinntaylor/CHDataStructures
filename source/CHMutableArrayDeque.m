@@ -28,23 +28,11 @@
 		[array insertObject:anObject atIndex:0];
 }
 
-- (void) prependObjectsFromArray:(NSArray*)anArray {
-	if (anArray == nil)
-		return;
-	NSRange range = {0, [anArray count]};
-	[array insertObjects:anArray atIndexes:
-	   [NSIndexSet indexSetWithIndexesInRange:range]];
-}
-
 - (void) appendObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
 	else
 		[array addObject:anObject];
-}
-
-- (void) appendObjectsFromArray:(NSArray*)anArray {
-	[array addObjectsFromArray:anArray];
 }
 
 - (id) firstObject {

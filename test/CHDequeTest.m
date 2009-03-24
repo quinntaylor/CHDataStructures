@@ -58,21 +58,6 @@
 	}
 }
 
-- (void) testPrependObjectsFromArray {
-	for (Class aClass in dequeClasses) {
-		deque = [[aClass alloc] init];
-		STAssertNoThrow([deque prependObjectsFromArray:nil],
-						@"Should never raise an exception.");
-		STAssertEquals([deque count], (NSUInteger)0, @"Incorrect count.");
-		[deque prependObjectsFromArray:objects];
-		STAssertEquals([deque count], [objects count], @"Incorrect count.");
-		STAssertEqualObjects([deque allObjects], objects,
-							 @"Bad ordering after -[%@ prependObjectsFromArray:]",
-							 aClass);
-		[deque release];
-	}
-}
-
 - (void) testAppendObject {
 	for (Class aClass in dequeClasses) {
 		deque = [[aClass alloc] init];
@@ -87,21 +72,6 @@
 		STAssertEqualObjects([e nextObject], @"A", @"Wrong -nextObject.");
 		STAssertEqualObjects([e nextObject], @"B", @"Wrong -nextObject.");
 		STAssertEqualObjects([e nextObject], @"C", @"Wrong -nextObject.");
-		[deque release];
-	}
-}
-
-- (void) testAppendObjectsFromArray {
-	for (Class aClass in dequeClasses) {
-		deque = [[aClass alloc] init];
-		STAssertNoThrow([deque appendObjectsFromArray:nil],
-						@"Should never raise an exception.");
-		STAssertEquals([deque count], (NSUInteger)0, @"Incorrect count.");
-		[deque appendObjectsFromArray:objects];
-		STAssertEquals([deque count], [objects count], @"Incorrect count.");
-		STAssertEqualObjects([deque allObjects], objects,
-							 @"Bad ordering after -[%@ appendObjectsFromArray:]",
-							 aClass);
 		[deque release];
 	}
 }

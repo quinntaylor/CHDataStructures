@@ -30,10 +30,6 @@
 		[array addObject:anObject];
 }
 
-- (void) addObjectsFromArray:(NSArray*)anArray {
-	[array addObjectsFromArray:anArray];
-}
-
 - (id) firstObject {
 	@try {
 		return [array objectAtIndex:0];

@@ -252,20 +252,6 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 	++mutations;
 }
 
-- (void) prependObjectsFromArray:(NSArray*)anArray {
-	CHSinglyLinkedListNode *new;
-	for (id anObject in [anArray reverseObjectEnumerator]) {
-		new = NSAllocateCollectable(kCHSinglyLinkedListNodeSize, NSScannedOption);
-		new->object = [anObject retain];
-		new->next = head->next;
-		head->next = new;
-		if (tail == head)
-			tail = new;
-	}
-	count += [anArray count];
-	++mutations;
-}
-
 - (void) appendObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
@@ -275,18 +261,6 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 	new->next = NULL;
 	tail = tail->next = new;
 	++count;
-	++mutations;
-}
-
-- (void) appendObjectsFromArray:(NSArray*)anArray {
-	CHSinglyLinkedListNode *new;
-	for (id anObject in anArray) {
-		new = NSAllocateCollectable(kCHSinglyLinkedListNodeSize, NSScannedOption);
-		new->object = [anObject retain];
-		new->next = NULL;
-		tail = tail->next = new;
-	}
-	count += [anArray count];
 	++mutations;
 }
 

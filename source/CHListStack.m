@@ -46,11 +46,6 @@
 	[list prependObject:anObject];
 }
 
-- (void) pushObjectsFromArray:(NSArray*)anArray {
-	for (id anObject in anArray)
-		[list prependObject:anObject];
-}
-
 - (id) topObject {
 	return [list firstObject];
 }
