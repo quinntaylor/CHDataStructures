@@ -23,10 +23,10 @@ static size_t kCHPointerSize = sizeof(void*);
 @interface CHCircularBufferEnumerator : NSEnumerator
 {
 	id *buffer;
-	NSUInteger bufferSize;
-	NSUInteger headIndex;
-	NSUInteger tailIndex;
 	NSUInteger enumerationIndex;
+	NSUInteger enumerationCount;
+	NSUInteger bufferCount;
+	NSUInteger bufferCapacity;
 	BOOL reverseEnumeration;
 	unsigned long mutationCount; /**< Stores the collection's initial mutation. */
 	unsigned long *mutationPtr; /**< Pointer for checking changes in mutation. */	
@@ -44,8 +44,8 @@ static size_t kCHPointerSize = sizeof(void*);
  */
 - (id) initWithArray:(id*)array
             capacity:(NSUInteger)capacity
-           headIndex:(NSUInteger)head
-           tailIndex:(NSUInteger)tail
+               count:(NSUInteger)count
+          startIndex:(NSUInteger)startIndex
              reverse:(BOOL)isReversed
      mutationPointer:(unsigned long*)mutations;
 
@@ -73,17 +73,17 @@ static size_t kCHPointerSize = sizeof(void*);
 
 - (id) initWithArray:(id*)array
             capacity:(NSUInteger)capacity
-           headIndex:(NSUInteger)head
-           tailIndex:(NSUInteger)tail
+               count:(NSUInteger)count
+          startIndex:(NSUInteger)startIndex
              reverse:(BOOL)isReversed
      mutationPointer:(unsigned long*)mutations
 {
 	if ([super init] == nil) return nil;
 	buffer = array;
-	bufferSize = capacity;
-	enumerationIndex = head;
-	headIndex = head;
-	tailIndex = tail;
+	enumerationIndex = startIndex;
+	enumerationCount = 0;
+	bufferCount = count;
+	bufferCapacity = capacity;
 	reverseEnumeration = isReversed;
 	mutationCount = *mutations;
 	mutationPtr = mutations;
@@ -104,19 +104,15 @@ static size_t kCHPointerSize = sizeof(void*);
 	if (mutationCount != *mutationPtr)
 		CHMutatedCollectionException([self class], _cmd);
 	id object = nil;
-	if (reverseEnumeration) {
-		if (enumerationIndex != headIndex) {
+	if (enumerationCount < bufferCount) {
+		if (reverseEnumeration) {
+			enumerationIndex = (enumerationIndex + bufferCapacity - 1) % bufferCapacity;
 			object = buffer[enumerationIndex];
-			if (enumerationIndex == 0)
-				enumerationIndex += bufferSize;
-			enumerationIndex--;
 		}
-	}
-	else {
-		if (enumerationIndex != tailIndex) {
+		else {
 			object = buffer[enumerationIndex];
-			enumerationIndex = (enumerationIndex + 1) % bufferSize;
-		}		
+			enumerationIndex = (enumerationIndex + 1) % bufferCapacity;
+		}
 	}
 	return object;
 }
@@ -259,7 +255,7 @@ static size_t kCHPointerSize = sizeof(void*);
 }
 
 - (id) lastObject {
-	return (count > 0) ? array[tailIndex] : nil;
+	return (count > 0) ? array[(tailIndex + arrayCapacity - 1) % arrayCapacity] : nil;
 }
 
 - (NSArray*) allObjects {
@@ -277,8 +273,8 @@ static size_t kCHPointerSize = sizeof(void*);
 	return [[[CHCircularBufferEnumerator alloc]
 	         initWithArray:array
                   capacity:arrayCapacity
-	             headIndex:headIndex
-	             tailIndex:tailIndex
+	                 count:count
+	            startIndex:headIndex
 	               reverse:NO
 	       mutationPointer:&mutations] autorelease];
 }
@@ -287,8 +283,8 @@ static size_t kCHPointerSize = sizeof(void*);
 	return [[[CHCircularBufferEnumerator alloc]
 	         initWithArray:array
                   capacity:arrayCapacity
-	             headIndex:headIndex
-	             tailIndex:tailIndex
+	                 count:count
+	            startIndex:tailIndex
                    reverse:YES
            mutationPointer:&mutations] autorelease];
 }
