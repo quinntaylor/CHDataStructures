@@ -18,6 +18,7 @@
  */
 
 #import <SenTestingKit/SenTestingKit.h>
+#import "CHCircularBufferDeque.h"
 #import "CHListDeque.h"
 #import "CHMutableArrayDeque.h"
 
@@ -35,6 +36,7 @@
 	dequeClasses = [NSArray arrayWithObjects:
 					[CHListDeque class],
 					[CHMutableArrayDeque class],
+					[CHCircularBufferDeque class],
 					nil];
 }
 

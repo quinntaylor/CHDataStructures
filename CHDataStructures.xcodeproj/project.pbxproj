@@ -64,6 +64,10 @@
 
 /* Begin PBXBuildFile section */
 		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
+		E400CAAC0F7919B7003189D3 /* CHCircularBufferQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = E400CAAA0F7919B7003189D3 /* CHCircularBufferQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E400CAAD0F7919B7003189D3 /* CHCircularBufferQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = E400CAAB0F7919B7003189D3 /* CHCircularBufferQueue.m */; };
+		E400CAC30F791A08003189D3 /* CHCircularBufferDeque.h in Headers */ = {isa = PBXBuildFile; fileRef = E400CAC10F791A08003189D3 /* CHCircularBufferDeque.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E400CAC40F791A08003189D3 /* CHCircularBufferDeque.m in Sources */ = {isa = PBXBuildFile; fileRef = E400CAC20F791A08003189D3 /* CHCircularBufferDeque.m */; };
 		E400FCF40EBE15F300AC172B /* CHAVLTreeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E400FCF30EBE15F300AC172B /* CHAVLTreeTest.m */; };
 		E40D18060E94519F007F39D8 /* CHAnderssonTreeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D18050E94519F007F39D8 /* CHAnderssonTreeTest.m */; };
 		E40D18270E9452BB007F39D8 /* CHRedBlackTreeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D181C0E9452BB007F39D8 /* CHRedBlackTreeTest.m */; };
@@ -125,6 +129,9 @@
 		E4ADBB400E88174200B570BC /* CHUnbalancedTree.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB220E88174200B570BC /* CHUnbalancedTree.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4ADBB410E88174200B570BC /* CHUnbalancedTree.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB230E88174200B570BC /* CHUnbalancedTree.m */; };
 		E4ADBC9A0E88412C00B570BC /* CHAbstractBinarySearchTree.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBC990E88412C00B570BC /* CHAbstractBinarySearchTree.m */; };
+		E4C430850F74AC4F00EDBB0B /* CHAbstractCircularBufferCollection.h in Headers */ = {isa = PBXBuildFile; fileRef = E4C430830F74AC4F00EDBB0B /* CHAbstractCircularBufferCollection.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E4C430860F74AC4F00EDBB0B /* CHAbstractCircularBufferCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = E4C430840F74AC4F00EDBB0B /* CHAbstractCircularBufferCollection.m */; };
+		E4D3A4C70F789FF500E21CF8 /* CHAbstractCircularBufferCollectionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D3A4C60F789FF500E21CF8 /* CHAbstractCircularBufferCollectionTest.m */; };
 		E4DCD17A0EA7B0DF006383FC /* CHDataStructures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* CHDataStructures.framework */; };
 		E4E7C1270EC0CACE009B19D7 /* CHDataStructures_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = E4E7C1260EC0CACE009B19D7 /* CHDataStructures_Prefix.pch */; };
 		E4FD52CD0ECA8589006D9FF8 /* CHDequeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FD52CC0ECA8589006D9FF8 /* CHDequeTest.m */; };
@@ -231,6 +238,10 @@
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = resources/English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* CHDataStructures.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CHDataStructures.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E400CAAA0F7919B7003189D3 /* CHCircularBufferQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHCircularBufferQueue.h; path = source/CHCircularBufferQueue.h; sourceTree = "<group>"; };
+		E400CAAB0F7919B7003189D3 /* CHCircularBufferQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHCircularBufferQueue.m; path = source/CHCircularBufferQueue.m; sourceTree = "<group>"; };
+		E400CAC10F791A08003189D3 /* CHCircularBufferDeque.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHCircularBufferDeque.h; path = source/CHCircularBufferDeque.h; sourceTree = "<group>"; };
+		E400CAC20F791A08003189D3 /* CHCircularBufferDeque.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHCircularBufferDeque.m; path = source/CHCircularBufferDeque.m; sourceTree = "<group>"; };
 		E400FCF30EBE15F300AC172B /* CHAVLTreeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHAVLTreeTest.m; path = test/CHAVLTreeTest.m; sourceTree = "<group>"; };
 		E40D18050E94519F007F39D8 /* CHAnderssonTreeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHAnderssonTreeTest.m; path = test/CHAnderssonTreeTest.m; sourceTree = "<group>"; };
 		E40D181C0E9452BB007F39D8 /* CHRedBlackTreeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHRedBlackTreeTest.m; path = test/CHRedBlackTreeTest.m; sourceTree = "<group>"; };
@@ -294,10 +305,13 @@
 		E4ADBB7F0E8828C500B570BC /* LICENSE.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = LICENSE.html; sourceTree = "<group>"; };
 		E4ADBC990E88412C00B570BC /* CHAbstractBinarySearchTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHAbstractBinarySearchTree.m; path = source/CHAbstractBinarySearchTree.m; sourceTree = "<group>"; };
 		E4B1AD170EB580BC00B43ADA /* CHAbstractBinarySearchTreeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHAbstractBinarySearchTreeTest.m; path = test/CHAbstractBinarySearchTreeTest.m; sourceTree = "<group>"; };
+		E4C430830F74AC4F00EDBB0B /* CHAbstractCircularBufferCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHAbstractCircularBufferCollection.h; path = source/CHAbstractCircularBufferCollection.h; sourceTree = "<group>"; };
+		E4C430840F74AC4F00EDBB0B /* CHAbstractCircularBufferCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHAbstractCircularBufferCollection.m; path = source/CHAbstractCircularBufferCollection.m; sourceTree = "<group>"; };
 		E4CFCDB00E8FD18300B0253A /* docs.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = docs.html; sourceTree = "<group>"; };
 		E4CFCDB10E8FD18300B0253A /* Doxyfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Doxyfile; path = doxygen/Doxyfile; sourceTree = "<group>"; };
 		E4CFCDB20E8FD18300B0253A /* doxygen-cocoa-tags.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "doxygen-cocoa-tags.xml"; path = "doxygen/doxygen-cocoa-tags.xml"; sourceTree = "<group>"; };
 		E4CFCDB30E8FD18300B0253A /* doxygen.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = doxygen.css; path = doxygen/doxygen.css; sourceTree = "<group>"; };
+		E4D3A4C60F789FF500E21CF8 /* CHAbstractCircularBufferCollectionTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHAbstractCircularBufferCollectionTest.m; path = test/CHAbstractCircularBufferCollectionTest.m; sourceTree = "<group>"; };
 		E4D499690E93CD1300434CBA /* CHDoublyLinkedListTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHDoublyLinkedListTest.m; path = test/CHDoublyLinkedListTest.m; sourceTree = "<group>"; };
 		E4E7C1260EC0CACE009B19D7 /* CHDataStructures_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHDataStructures_Prefix.pch; path = source/CHDataStructures_Prefix.pch; sourceTree = "<group>"; };
 		E4FD52CC0ECA8589006D9FF8 /* CHDequeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHDequeTest.m; path = test/CHDequeTest.m; sourceTree = "<group>"; };
@@ -383,9 +397,11 @@
 		08FB77AEFE84172EC02AAC07 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				E41D293D0F6CC44900AF80C4 /* CHAbstractBinarySearchTree_Internal.h */,
 				E4FE77C90E8978DD00971EE6 /* CHAbstractBinarySearchTree.h */,
+				E41D293D0F6CC44900AF80C4 /* CHAbstractBinarySearchTree_Internal.h */,
 				E4ADBC990E88412C00B570BC /* CHAbstractBinarySearchTree.m */,
+				E4C430830F74AC4F00EDBB0B /* CHAbstractCircularBufferCollection.h */,
+				E4C430840F74AC4F00EDBB0B /* CHAbstractCircularBufferCollection.m */,
 				E48860B80EA66072000F132A /* CHAbstractListCollection.h */,
 				E48860B90EA66072000F132A /* CHAbstractListCollection.m */,
 				E48860C10EA660A1000F132A /* CHAbstractMutableArrayCollection.h */,
@@ -394,6 +410,10 @@
 				E442DFB70E8F1E6D00BD62F6 /* CHAnderssonTree.m */,
 				E44558090EBCB70A00D9C482 /* CHAVLTree.h */,
 				E445580A0EBCB70A00D9C482 /* CHAVLTree.m */,
+				E400CAC10F791A08003189D3 /* CHCircularBufferDeque.h */,
+				E400CAC20F791A08003189D3 /* CHCircularBufferDeque.m */,
+				E400CAAA0F7919B7003189D3 /* CHCircularBufferQueue.h */,
+				E400CAAB0F7919B7003189D3 /* CHCircularBufferQueue.m */,
 				E4ADBB1E0E88174200B570BC /* CHDoublyLinkedList.h */,
 				E4ADBB1F0E88174200B570BC /* CHDoublyLinkedList.m */,
 				E40D184A0E945580007F39D8 /* CHListDeque.h */,
@@ -445,6 +465,7 @@
 			isa = PBXGroup;
 			children = (
 				E4B1AD170EB580BC00B43ADA /* CHAbstractBinarySearchTreeTest.m */,
+				E4D3A4C60F789FF500E21CF8 /* CHAbstractCircularBufferCollectionTest.m */,
 				E4A720C50EA78DCE00E0AC21 /* CHAbstractListCollectionTest.m */,
 				E4A720CA0EA78DFB00E0AC21 /* CHAbstractMutableArrayCollectionTest.m */,
 				E40D18050E94519F007F39D8 /* CHAnderssonTreeTest.m */,
@@ -518,6 +539,9 @@
 				E41035280EC409B900C2CFB9 /* CHTreap.h in Headers */,
 				E48BF92F0EE79AAE0004D5E6 /* CHMultiMap.h in Headers */,
 				E41D293E0F6CC44900AF80C4 /* CHAbstractBinarySearchTree_Internal.h in Headers */,
+				E4C430850F74AC4F00EDBB0B /* CHAbstractCircularBufferCollection.h in Headers */,
+				E400CAAC0F7919B7003189D3 /* CHCircularBufferQueue.h in Headers */,
+				E400CAC30F791A08003189D3 /* CHCircularBufferDeque.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -651,7 +675,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ ${CONFIGURATION} = 'Release' ]\nthen\n\t# http://www.red-sweater.com/blog/23/automatic-build-sub-versioning-in-xcode\n\tSVN_REVISION=`svnversion | perl -p -e 's/(\\d+:)(\\d+M?S?)/\\$2/'`\n\n\tif [ $SVN_REVISION = 'exported' ]\n\tthen\n\t\tDATE=`date '+%Y-%m-%d'`\n\t\tDISK_IMAGE_NAME=${PRODUCT_NAME}\\ \\(${DATE}\\)\n\t\tDISK_IMAGE_FILE=${PRODUCT_NAME}-${DATE}.dmg\n\telse\n\t\tDISK_IMAGE_NAME=${PRODUCT_NAME}\\ \\(r${SVN_REVISION}\\)\n\t\tDISK_IMAGE_FILE=${PRODUCT_NAME}-r${SVN_REVISION}.dmg\n\tfi\n\t\n\tSOURCE_DIRECTORY=${TEMP_FILES_DIR}/temp\t\n\trm -rf   \"${SOURCE_DIRECTORY}\"/CHDataStructures.framework/\n\tmkdir -p \"${SOURCE_DIRECTORY}\"/CHDataStructures.framework/\n\n\tcp -R build/Release/CHDataStructures.framework/ \"${SOURCE_DIRECTORY}\"/CHDataStructures.framework/\n\trm \"${SOURCE_DIRECTORY}/CHDataStructures.framework/.DS_Store\"\n\trm \"${SOURCE_DIRECTORY}/CHDataStructures.framework/Versions/.DS_Store\"\n\n\tcp LICENSE.html \"${SOURCE_DIRECTORY}\"\n\tcp README.html \"${SOURCE_DIRECTORY}\"\n\t\n\trm -f \"${DISK_IMAGE_FILE}\"\n\thdiutil create -fs HFS+ -volname \"${DISK_IMAGE_NAME}\" -srcfolder \"${SOURCE_DIRECTORY}\" \"${DISK_IMAGE_FILE}\"\n\thdiutil internet-enable -yes \"${DISK_IMAGE_FILE}\"\nfi\n";
+			shellScript = "if [ ${CONFIGURATION} = 'Release' ]\nthen\n\t# http://www.red-sweater.com/blog/23/automatic-build-sub-versioning-in-xcode\n\tSVN_REVISION=`svnversion | perl -p -e 's/(\\d+:)(\\d+M?S?)/\\$2/'`\n\n\tif [ $SVN_REVISION = 'exported' ]\n\tthen\n\t\tDATE=`date '+%Y-%m-%d'`\n\t\tDISK_IMAGE_NAME=${PRODUCT_NAME}\\ \\(${DATE}\\)\n\t\tDISK_IMAGE_FILE=${PRODUCT_NAME}-${DATE}.dmg\n\telse\n\t\tDISK_IMAGE_NAME=${PRODUCT_NAME}\\ \\(r${SVN_REVISION}\\)\n\t\tDISK_IMAGE_FILE=${PRODUCT_NAME}-r${SVN_REVISION}.dmg\n\tfi\n\t\n\tSOURCE_DIRECTORY=${TEMP_FILES_DIR}/temp\t\n\trm -rf   \"${SOURCE_DIRECTORY}\"/CHDataStructures.framework/\n\tmkdir -p \"${SOURCE_DIRECTORY}\"/CHDataStructures.framework/\n\n\tcp -R build/Release/CHDataStructures.framework/ \"${SOURCE_DIRECTORY}\"/CHDataStructures.framework/\n\tcp LICENSE.html \"${SOURCE_DIRECTORY}\"\n\tcp README.html \"${SOURCE_DIRECTORY}\"\n\n\t# Remove all invisible .DS_Store files before creating disk image\n\tfor file in `find \"${SOURCE_DIRECTORY}\"/CHDataStructures.framework -name .DS_Store`\n\tdo\n\t\trm $file\n\tdone\n\n\trm -f \"${DISK_IMAGE_FILE}\"\n\thdiutil create -fs HFS+ -volname \"${DISK_IMAGE_NAME}\" -srcfolder \"${SOURCE_DIRECTORY}\" \"${DISK_IMAGE_FILE}\"\n\thdiutil internet-enable -yes \"${DISK_IMAGE_FILE}\"\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		E46300C20ECBF0F500E1AF73 /* ShellScript */ = {
@@ -722,6 +746,9 @@
 				E445580C0EBCB70A00D9C482 /* CHAVLTree.m in Sources */,
 				E41035290EC409B900C2CFB9 /* CHTreap.m in Sources */,
 				E48BF9730EE7A2010004D5E6 /* CHMultiMap.m in Sources */,
+				E4C430860F74AC4F00EDBB0B /* CHAbstractCircularBufferCollection.m in Sources */,
+				E400CAAD0F7919B7003189D3 /* CHCircularBufferQueue.m in Sources */,
+				E400CAC40F791A08003189D3 /* CHCircularBufferDeque.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -753,6 +780,7 @@
 				E48BFA850EE842CF0004D5E6 /* CHMultiMapTest.m in Sources */,
 				E48BFAEE0EE84C930004D5E6 /* CHSinglyLinkedListTest.m in Sources */,
 				E48BFBB00EE858F40004D5E6 /* CHHeapTest.m in Sources */,
+				E4D3A4C70F789FF500E21CF8 /* CHAbstractCircularBufferCollectionTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

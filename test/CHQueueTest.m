@@ -18,6 +18,7 @@
  */
 
 #import <SenTestingKit/SenTestingKit.h>
+#import "CHCircularBufferQueue.h"
 #import "CHListQueue.h"
 #import "CHMutableArrayQueue.h"
 
@@ -33,6 +34,7 @@
 	queueClasses = [NSArray arrayWithObjects:
 					[CHListQueue class],
 					[CHMutableArrayQueue class],
+					[CHCircularBufferQueue class],
 					nil];
 	objects = [NSArray arrayWithObjects:@"A", @"B", @"C", nil];
 }
