@@ -72,13 +72,14 @@ static BOOL gcDisabled;
 		[list appendObject:anObject];
 	STAssertEquals([list count], [objects count], @"Incorrect count.");
 	
-	NSString *filePath = @"/tmp/list.archive";
+	NSString *filePath = @"/tmp/CHDataStructures-list.plist";
 	[NSKeyedArchiver archiveRootObject:list toFile:filePath];
 	[list release];
 	list = [[NSKeyedUnarchiver unarchiveObjectWithFile:filePath] retain];
 	STAssertEquals([list count], [objects count], @"Incorrect count.");
 	STAssertEqualObjects([list allObjects], objects,
 	                     @"Wrong ordering on reconstruction.");
+	[[NSFileManager defaultManager] removeItemAtPath:filePath error:NULL];
 }
 
 - (void) testNSCopying {

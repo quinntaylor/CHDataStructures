@@ -49,7 +49,7 @@ void populateMultimap(CHMultiMap* multimap) {
 - (void) testNSCoding {
 	populateMultimap(multimap);
 	
-	NSString *filePath = @"/tmp/multimap.archive";
+	NSString *filePath = @"/tmp/CHDataStructures-multimap.plist";
 	[NSKeyedArchiver archiveRootObject:multimap toFile:filePath];
 	
 	CHMultiMap *multimap2 = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
@@ -58,6 +58,7 @@ void populateMultimap(CHMultiMap* multimap) {
 	// TODO: Complete more in-depth testing of equality
 	
 	// TODO: Test archive/unarchive of empty multimap
+	[[NSFileManager defaultManager] removeItemAtPath:filePath error:NULL];
 }
 
 - (void) testNSCopying {

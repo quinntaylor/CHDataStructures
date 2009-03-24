@@ -77,7 +77,7 @@
 		STAssertEquals([heap count], (NSUInteger)9, @"Incorrect count.");
 		STAssertTrue([heap isValid], @"Wrong ordering before archiving.");
 		
-		NSString *filePath = @"/tmp/array-heap.archive";
+		NSString *filePath = @"/tmp/CHDataStructures-array-heap.plist";
 		[NSKeyedArchiver archiveRootObject:heap toFile:filePath];
 		[heap release];
 		
@@ -85,6 +85,7 @@
 		STAssertEquals([heap count], (NSUInteger)9, @"Incorrect count.");
 		STAssertTrue([heap isValid], @"Wrong ordering on reconstruction.");
 		[heap release];
+		[[NSFileManager defaultManager] removeItemAtPath:filePath error:NULL];
 	}
 }
 

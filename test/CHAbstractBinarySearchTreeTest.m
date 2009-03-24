@@ -370,7 +370,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 		STAssertEquals([tree count], [objects count], @"Incorrect count.");
 		before = [tree allObjectsWithTraversalOrder:CHTraverseLevelOrder];
 		
-		NSString *filePath = @"/tmp/tree.archive";
+		NSString *filePath = @"/tmp/CHDataStructures-tree.plist";
 		[NSKeyedArchiver archiveRootObject:tree toFile:filePath];
 		[tree release];
 		
@@ -381,6 +381,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 		STAssertEqualObjects(before, after,
 							 badOrder(@"Bad order after decode", before, after));
 		[tree release];
+		[[NSFileManager defaultManager] removeItemAtPath:filePath error:NULL];
 	}	
 }
 

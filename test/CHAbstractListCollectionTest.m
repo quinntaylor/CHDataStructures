@@ -73,18 +73,19 @@
 - (void) testNSCoding {
 	for (id object in objects)
 		[collection addObject:object];
-	STAssertEquals([collection count], (NSUInteger)3, @"Incorrect count.");
+	STAssertEquals([collection count], [objects count], @"Incorrect count.");
 	NSArray *order = [collection allObjects];
 	STAssertEqualObjects(order, objects, @"Wrong ordering before archiving.");
 	
-	NSString *filePath = @"/tmp/list-collection.archive";
+	NSString *filePath = @"/tmp/CHDataStructures-list-collection.plist";
 	[NSKeyedArchiver archiveRootObject:collection toFile:filePath];
 	[collection release];
 	
 	collection = [[NSKeyedUnarchiver unarchiveObjectWithFile:filePath] retain];
-	STAssertEquals([collection count], (NSUInteger)3, @"Incorrect count.");
+	STAssertEquals([collection count], [objects count], @"Incorrect count.");
 	order = [collection allObjects];
 	STAssertEqualObjects(order, objects, @"Wrong ordering on reconstruction.");
+	[[NSFileManager defaultManager] removeItemAtPath:filePath error:NULL];
 }
 
 - (void) testNSCopying {

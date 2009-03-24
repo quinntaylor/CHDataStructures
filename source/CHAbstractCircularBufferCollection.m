@@ -146,7 +146,7 @@ static size_t kCHPointerSize = sizeof(void*);
 		capacity *= 2;
 	if ([self initWithCapacity:capacity] == nil) return nil;
 	for (id anObject in anArray)
-		array[headIndex++] = [anObject retain];
+		array[tailIndex++] = [anObject retain];
 	count = [anArray count];
 	return self;
 }

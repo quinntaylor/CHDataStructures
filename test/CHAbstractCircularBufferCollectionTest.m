@@ -18,6 +18,7 @@
 
 #import <SenTestingKit/SenTestingKit.h>
 #import "CHAbstractCircularBufferCollection.h"
+#import "Util.h"
 
 @interface CHAbstractCircularBufferCollection (Test)
 
@@ -48,6 +49,7 @@
 @interface CHAbstractCircularBufferCollectionTest : SenTestCase
 {
 	CHAbstractCircularBufferCollection *buffer;
+	NSArray *abc;
 }
 @end
 
@@ -55,6 +57,7 @@
 
 - (void) setUp {
 	buffer = [[CHAbstractCircularBufferCollection alloc] init];
+	abc = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
 }
 
 - (void) tearDown {
@@ -76,12 +79,16 @@
 	buffer = [[CHAbstractCircularBufferCollection alloc] initWithArray:array];
 	STAssertEquals([buffer count], (NSUInteger)15, @"Wrong count");
 	STAssertEquals([buffer capacity], (NSUInteger)16, @"Wrong capacity");
+	STAssertEquals([buffer headIndex], (NSUInteger)0, @"Wrong head index.");
+	STAssertEquals([buffer tailIndex], (NSUInteger)15, @"Wrong tail index.");
 	
 	[array addObject:[NSNumber numberWithInt:16]];
 	[buffer release];
 	buffer = [[CHAbstractCircularBufferCollection alloc] initWithArray:array];
 	STAssertEquals([buffer count], (NSUInteger)16, @"Wrong count");
 	STAssertEquals([buffer capacity], (NSUInteger)32, @"Wrong capacity");
+	STAssertEquals([buffer headIndex], (NSUInteger)0, @"Wrong head index.");
+	STAssertEquals([buffer tailIndex], (NSUInteger)16, @"Wrong tail index.");
 	
 	for (int i = 17; i <= 33; i++)
 		[array addObject:[NSNumber numberWithInt:i]];
@@ -89,6 +96,8 @@
 	buffer = [[CHAbstractCircularBufferCollection alloc] initWithArray:array];
 	STAssertEquals([buffer count], (NSUInteger)33, @"Wrong count");
 	STAssertEquals([buffer capacity], (NSUInteger)64, @"Wrong capacity");
+	STAssertEquals([buffer headIndex], (NSUInteger)0, @"Wrong head index.");
+	STAssertEquals([buffer tailIndex], (NSUInteger)33, @"Wrong tail index.");
 }
 
 - (void) testInitWithCapacity {
@@ -127,33 +136,93 @@
 #pragma mark Access
 
 - (void) testCount {
-	STFail(@"Unwritten test case");
+	STAssertEquals([buffer count], (NSUInteger)0, @"Wrong count");
+	for (id anObject in abc)
+		[buffer appendObject:anObject];
+	STAssertEquals([buffer count], [abc count], @"Wrong count");
 }
 
 - (void) testAllObjects {
-	STFail(@"Unwritten test case");
+	STAssertNotNil([buffer allObjects], @"-allObjects should never return nil");
+	STAssertEquals([[buffer allObjects] count], (NSUInteger)0, @"Wrong count");
+	for (id anObject in abc)
+		[buffer appendObject:anObject];
+	STAssertEqualObjects([buffer allObjects], abc, @"Bad result for -allObjects");
 }
 
 #pragma mark Search
 
 - (void) testContainsObject {
-	STFail(@"Unwritten test case");
+	for (id anObject in abc)
+		STAssertFalse([buffer containsObject:anObject], @"Buffer is empty");
+	STAssertFalse([buffer containsObject:@"Z"], @"Buffer is empty");
+	for (id anObject in abc)
+		[buffer appendObject:anObject];
+	for (id anObject in abc)
+		STAssertTrue([buffer containsObject:anObject], @"Incorrect result");
+	STAssertFalse([buffer containsObject:@"Z"], @"Incorrect result");
 }
 
 - (void) testContainsObjectIdenticalTo {
-	STFail(@"Unwritten test case");
+	NSString *a = [NSString stringWithFormat:@"A"];
+	for (id anObject in abc)
+		STAssertFalse([buffer containsObjectIdenticalTo:anObject], @"Buffer is empty");
+	STAssertFalse([buffer containsObjectIdenticalTo:@"Z"], @"Buffer is empty");
+	STAssertFalse([buffer containsObjectIdenticalTo:a], @"Incorrect result");
+	for (id anObject in abc)
+		[buffer appendObject:anObject];
+	for (id anObject in abc)
+		STAssertTrue([buffer containsObjectIdenticalTo:anObject], @"Incorrect result");
+	STAssertFalse([buffer containsObjectIdenticalTo:@"Z"], @"Incorrect result");
+	STAssertFalse([buffer containsObjectIdenticalTo:a], @"Incorrect result");
 }
 
 - (void) testIndexOfObject {
-	STFail(@"Unwritten test case");
+	STAssertEquals([buffer indexOfObject:@"Z"], (NSUInteger)CHNotFound,
+				   @"Empty buffer, object should not be found");
+	for (id anObject in abc)
+		[buffer appendObject:anObject];
+	for (id anObject in abc)
+		[buffer appendObject:anObject];
+	NSUInteger expectedIndex = 0;
+	for (id anObject in abc)
+		STAssertEquals([buffer indexOfObject:anObject], expectedIndex++,
+					   @"Wrong index for object");
+	STAssertEquals([buffer indexOfObject:@"Z"], (NSUInteger)CHNotFound,
+				   @"Object should not be found in buffer");
 }
 
 - (void) testIndexOfObjectIdenticalTo {
-	STFail(@"Unwritten test case");
+	NSString *a = [NSString stringWithFormat:@"A"];
+	STAssertEquals([buffer indexOfObjectIdenticalTo:@"Z"], (NSUInteger)CHNotFound,
+				   @"Empty buffer, object should not be found");
+	STAssertEquals([buffer indexOfObjectIdenticalTo:a], (NSUInteger)CHNotFound,
+				   @"Empty buffer, object should not be found");
+	for (id anObject in abc)
+		[buffer appendObject:anObject];
+	for (id anObject in abc)
+		[buffer appendObject:anObject];
+	NSUInteger expectedIndex = 0;
+	for (id anObject in abc)
+		STAssertEquals([buffer indexOfObjectIdenticalTo:anObject], expectedIndex++,
+					   @"Wrong index for object");
+	STAssertEquals([buffer indexOfObjectIdenticalTo:@"Z"], (NSUInteger)CHNotFound,
+				   @"Object should not be found in buffer");
+	STAssertEquals([buffer indexOfObjectIdenticalTo:a], (NSUInteger)CHNotFound,
+				   @"Object should not be found in buffer");
 }
 
 - (void) testObjectAtIndex {
-	STFail(@"Unwritten test case");
+	STAssertThrows([buffer objectAtIndex:0], @"Range exception.");
+	STAssertThrows([buffer objectAtIndex:[abc count]+1], @"Range exception.");
+	
+	for (id anObject in abc)
+		[buffer appendObject:anObject];
+	for (NSUInteger searchIndex = 0; searchIndex < [abc count]; searchIndex++) {
+		STAssertEqualObjects([buffer objectAtIndex:searchIndex],
+							 [abc objectAtIndex:searchIndex], @"Search mismatch");
+	}
+	STAssertThrows([buffer objectAtIndex:[abc count]+1], @"Range exception.");
 }
 
 #pragma mark Removal
@@ -185,7 +254,23 @@
 #pragma mark <Protocols>
 
 - (void) testNSCoding {
-	STFail(@"Unwritten test case");
+	NSArray *objects = [NSArray arrayWithObjects:@"A",@"B",@"C",@"D",@"E",@"F",
+						@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O",@"P",nil];
+	for (id object in objects)
+		[buffer appendObject:object];
+	STAssertEquals([buffer count], [objects count], @"Incorrect count.");
+	STAssertEquals([buffer capacity], (NSUInteger)32, @"Incorrect count.");
+	STAssertEqualObjects([buffer allObjects], objects, @"Wrong ordering before archiving.");
+	
+	NSString *filePath = @"/tmp/CHDataStructures-buffer-collection.plist";
+	[NSKeyedArchiver archiveRootObject:buffer toFile:filePath];
+	[buffer release];
+	
+	buffer = [[NSKeyedUnarchiver unarchiveObjectWithFile:filePath] retain];
+	STAssertEquals([buffer count], [objects count], @"Incorrect count.");
+	STAssertEquals([buffer capacity], (NSUInteger)32, @"Incorrect count.");
+	STAssertEqualObjects([buffer allObjects], objects, @"Wrong ordering on reconstruction.");
+	[[NSFileManager defaultManager] removeItemAtPath:filePath error:NULL];
 }
 
 - (void) testNSCopying {
