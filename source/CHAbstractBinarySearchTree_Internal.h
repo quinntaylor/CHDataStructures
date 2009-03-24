@@ -44,11 +44,13 @@
 	stack = NSAllocateCollectable(kCHBinaryTreeNodeSize*stackCapacity, NSScannedOption); \
 	stackSize = 0; \
 }
+
 #define CHBinaryTreeStack_FREE(stack) { \
 	if (stack != NULL && kCHGarbageCollectionDisabled) \
 		free(stack); \
 	stack = NULL; \
 }
+
 // Since this stack starts at 0 and goes to N-1, resizing is pretty simple.
 #define CHBinaryTreeStack_PUSH(node) { \
 	stack[stackSize++] = node; \
@@ -57,8 +59,10 @@
 		stack = NSReallocateCollectable(stack, kCHPointerSize*stackCapacity, NSScannedOption); \
 	} \
 }
+
 #define CHBinaryTreeStack_TOP \
 	((stackSize > 0) ? stack[stackSize-1] : NULL)
+
 #define CHBinaryTreeStack_POP() \
 	((stackSize > 0) ? stack[--stackSize] : NULL)
 
@@ -70,11 +74,13 @@
 	queue = NSAllocateCollectable(kCHPointerSize*queueCapacity, NSScannedOption); \
 	queueHead = queueTail = 0; \
 }
+
 #define CHBinaryTreeQueue_FREE(queue) { \
 	if (queue != NULL && kCHGarbageCollectionDisabled) \
 		free(queue); \
 	queue = NULL; \
 }
+
 // This queue is a circular array, so resizing it takes a little extra care.
 #define CHBinaryTreeQueue_ENQUEUE(node) { \
 	queue[queueTail++] = node; \
@@ -89,8 +95,10 @@
 		queueCapacity *= 2; \
 	} \
 }
+
 // Due to limitations of using macros, you must always call FRONT, then DEQUEUE.
 #define CHBinaryTreeQueue_FRONT \
 	((queueHead != queueTail) ? queue[queueHead] : NULL)
+
 #define CHBinaryTreeQueue_DEQUEUE() \
 	if (queueHead != queueTail) queueHead = (queueHead + 1) % queueCapacity

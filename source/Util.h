@@ -31,6 +31,9 @@
 // Macro for marking symbols a (potentially) unused to supress compile warnings.
 #define UNUSED __attribute__((unused))
 
+// Used for indicating that an object is not found when returning an NSUInteger.
+#define CHNotFound NSUIntegerMax
+
 /**
  Convenience function for raising an exception for an invalid range (index).
  

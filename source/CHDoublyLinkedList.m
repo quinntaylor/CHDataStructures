@@ -365,11 +365,11 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 #pragma mark Search
 
 - (BOOL) containsObject:(id)anObject {
-	return ([self indexOfObject:anObject] != NSNotFound);
+	return ([self indexOfObject:anObject] != CHNotFound);
 }
 
 - (BOOL) containsObjectIdenticalTo:(id)anObject {
-	return ([self indexOfObjectIdenticalTo:anObject] != NSNotFound);
+	return ([self indexOfObjectIdenticalTo:anObject] != CHNotFound);
 }
 
 - (NSUInteger) indexOfObject:(id)anObject {
@@ -380,7 +380,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 		current = current->next;
 		++index;
 	}
-	return (current == tail) ? NSNotFound : index;
+	return (current == tail) ? CHNotFound : index;
 }
 
 - (NSUInteger) indexOfObjectIdenticalTo:(id)anObject {
@@ -391,7 +391,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 		current = current->next;
 		++index;
 	}
-	return (current == tail) ? NSNotFound : index;
+	return (current == tail) ? CHNotFound : index;
 }
 
 - (id) objectAtIndex:(NSUInteger)index {

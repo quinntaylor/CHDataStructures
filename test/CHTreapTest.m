@@ -118,7 +118,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 - (void) testAddObjectWithPriority {
 	STAssertNoThrow([tree addObject:@"foo" withPriority:0],
 					@"Should not raise an exception.");
-	STAssertNoThrow([tree addObject:@"foo" withPriority:CHNotFound],
+	STAssertNoThrow([tree addObject:@"foo" withPriority:CHTreapNotFound],
 					@"Should not raise an exception.");
 	[tree removeAllObjects];
 	
@@ -236,18 +236,18 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 }
 
 - (void) testPriorityForObject {
-	STAssertEquals([tree priorityForObject:nil], (NSUInteger)CHNotFound,
+	STAssertEquals([tree priorityForObject:nil], (NSUInteger)CHTreapNotFound,
 	               @"Priority should indicate that the object is absent.");
-	STAssertEquals([tree priorityForObject:@"Z"], (NSUInteger)CHNotFound,
+	STAssertEquals([tree priorityForObject:@"Z"], (NSUInteger)CHTreapNotFound,
 	               @"Priority should indicate that the object is absent.");
 
 	NSUInteger priority = 0;
 	for (id object in objects)
 		[tree addObject:object withPriority:(++priority)];
 	
-	STAssertEquals([tree priorityForObject:nil], (NSUInteger)CHNotFound,
+	STAssertEquals([tree priorityForObject:nil], (NSUInteger)CHTreapNotFound,
 	               @"Priority should indicate that the object is absent.");
-	STAssertEquals([tree priorityForObject:@"Z"], (NSUInteger)CHNotFound,
+	STAssertEquals([tree priorityForObject:@"Z"], (NSUInteger)CHTreapNotFound,
 	               @"Priority should indicate that the object is absent.");
 	
 	// Inserting from 'objects' with these priorities creates a known ordering.

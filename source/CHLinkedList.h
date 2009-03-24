@@ -178,7 +178,7 @@
  
  @param anObject The object to be matched and located in the tree.
  @return The index of the first object which is equal to @a anObject. If none of the
-         objects in the list is equal to @a anObject, returns <code>NSNotFound</code>.
+         objects in the list is equal to @a anObject, returns <code>CHNotFound</code>.
  */
 - (NSUInteger) indexOfObject:(id)anObject;
 
@@ -187,7 +187,7 @@
  
  @param anObject The object to be matched and located in the tree.
  @return The index of the first object which is equal to @a anObject. If none of the
-         objects in the list is equal to @a anObject, returns <code>NSNotFound</code>.
+         objects in the list is equal to @a anObject, returns <code>CHNotFound</code>.
  */
 - (NSUInteger) indexOfObjectIdenticalTo:(id)anObject;
 

@@ -158,9 +158,9 @@
 	STAssertEquals([collection indexOfObject:@"A"], (NSUInteger)0, @"Wrong index for object");
 	STAssertEquals([collection indexOfObject:@"B"], (NSUInteger)1, @"Wrong index for object");
 	STAssertEquals([collection indexOfObject:@"C"], (NSUInteger)2, @"Wrong index for object");
-	STAssertEquals([collection indexOfObject:@"a"], (NSUInteger)NSNotFound,
+	STAssertEquals([collection indexOfObject:@"a"], CHNotFound,
 				   @"Wrong index for object");
-	STAssertEquals([collection indexOfObject:@"Z"], (NSUInteger)NSNotFound,
+	STAssertEquals([collection indexOfObject:@"Z"], CHNotFound,
 				   @"Wrong index for object");
 }
 
@@ -169,10 +169,10 @@
 	[collection addObject:a];
 	STAssertEquals([collection indexOfObjectIdenticalTo:a],
 				   (NSUInteger)0, @"Wrong index for object");
-	STAssertEquals([collection indexOfObjectIdenticalTo:@"A"],
-				   (NSUInteger)NSNotFound, @"Wrong index for object");
-	STAssertEquals([collection indexOfObjectIdenticalTo:@"Z"],
-				   (NSUInteger)NSNotFound, @"Wrong index for object");
+	STAssertEquals([collection indexOfObjectIdenticalTo:@"A"], CHNotFound,
+				   @"Wrong index for object");
+	STAssertEquals([collection indexOfObjectIdenticalTo:@"Z"], CHNotFound,
+				   @"Wrong index for object");
 }
 
 - (void) testObjectAtIndex {

@@ -301,16 +301,16 @@ static BOOL gcDisabled;
 - (void) testIndexOfObject {
 	[list appendObject:@"A"];
 	STAssertEquals([list indexOfObject:@"A"], (NSUInteger)0, @"Should return 0.");
-	STAssertEquals([list indexOfObject:@"Z"], (NSUInteger) NSNotFound,
-				   @"Should return NSNotFound.");
+	STAssertEquals([list indexOfObject:@"Z"], CHNotFound,
+				   @"Should return CHNotFound.");
 }
 
 - (void) testIndexOfObjectIdenticalTo {
 	NSString *a = [NSString stringWithFormat:@"A"];
 	[list appendObject:a];
 	STAssertEquals([list indexOfObjectIdenticalTo:a], (NSUInteger)0, @"Should return 0.");
-	STAssertEquals([list indexOfObjectIdenticalTo:@"A"], (NSUInteger)NSNotFound,
-				   @"Should return NSNotFound.");
+	STAssertEquals([list indexOfObjectIdenticalTo:@"A"], CHNotFound,
+				   @"Should return CHNotFound.");
 }
 
 - (void) testObjectAtIndex {

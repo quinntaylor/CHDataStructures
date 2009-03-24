@@ -344,11 +344,11 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 #pragma mark Search
 
 - (BOOL) containsObject:(id)anObject {
-	return ([self indexOfObject:anObject] != NSNotFound);
+	return ([self indexOfObject:anObject] != CHNotFound);
 }
 
 - (BOOL) containsObjectIdenticalTo:(id)anObject {
-	return ([self indexOfObjectIdenticalTo:anObject] != NSNotFound);
+	return ([self indexOfObjectIdenticalTo:anObject] != CHNotFound);
 }
 
 - (NSUInteger) indexOfObject:(id)anObject {
@@ -358,7 +358,7 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 		current = current->next;
 		++index;
 	}
-	return (current == NULL) ? NSNotFound : index;
+	return (current == NULL) ? CHNotFound : index;
 }
 
 - (NSUInteger) indexOfObjectIdenticalTo:(id)anObject {
@@ -368,7 +368,7 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 		current = current->next;
 		++index;
 	}
-	return (current == NULL) ? NSNotFound : index;
+	return (current == NULL) ? CHNotFound : index;
 }
 
 - (id) objectAtIndex:(NSUInteger)index {

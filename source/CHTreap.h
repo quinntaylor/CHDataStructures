@@ -92,7 +92,7 @@
 @interface CHTreap : CHAbstractBinarySearchTree
 
 // Returned as priority for object not in a treap (maximum value for u_int32_t).
-#define CHNotFound UINT32_MAX
+#define CHTreapNotFound UINT32_MAX
 
 /**
  Add an object to the tree with a randomly-generated priority value. This
@@ -119,7 +119,7 @@
         Higher values percolate to the top. NOTE: Although the parameter type is
         NSUInteger (for consistency with Foundation APIs), the priority field in
         CHBinaryTreeNode is typed as <code>u_int32_t</code>, so the value stored
-        is actually <code>priority % CHNotFound</code>.
+        is actually <code>priority % CHTreapNotFound</code>.
  
  If @a anObject already exists in the treap, @a priority replaces the existing
  priority, and the existing node is percolated up or down to maintain the heap
@@ -134,10 +134,10 @@
 - (void) addObject:(id)anObject withPriority:(NSUInteger)priority;
 
 /**
- Returns the priority for @a anObject if it's in the treap, CHNotFound otherwise.
+ Returns the priority for @a anObject if it's in the treap, CHTreapNotFound otherwise.
  
  @param anObject The object for which to find the treap priority, if it exists.
- @return The priority for @a anObject if it's in the treap, CHNotFound otherwise.
+ @return The priority for @a anObject if it's in the treap, CHTreapNotFound otherwise.
  */
 - (NSUInteger) priorityForObject:(id)anObject;
 

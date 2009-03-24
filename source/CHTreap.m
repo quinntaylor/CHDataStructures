@@ -32,7 +32,7 @@
 
 - (id) init {
 	if ([super init] == nil) return nil;
-	header->priority = CHNotFound;
+	header->priority = CHTreapNotFound;
 	sentinel->priority = 0;
 	return self;
 }
@@ -66,7 +66,7 @@
 		[current->object release];
 		current->object = anObject;
 		// Assign new priority; bubble down if needed, or just wait to bubble up
-		current->priority = (u_int32_t) (priority % CHNotFound);
+		current->priority = (u_int32_t) (priority % CHTreapNotFound);
 		while (current->left != current->right) { // sentinel check
 			direction = (current->right->priority > current->left->priority);
 			if (current->priority >= current->link[direction]->priority)
@@ -141,13 +141,13 @@
 
 - (NSUInteger) priorityForObject:(id)anObject {
 	if (anObject == nil)
-		return CHNotFound;
+		return CHTreapNotFound;
 	sentinel->object = anObject; // Make sure the target value is always "found"
 	CHBinaryTreeNode *current = header->right;
 	NSComparisonResult comparison;
 	while (comparison = [current->object compare:anObject]) // while not equal
 		current = current->link[comparison == NSOrderedAscending]; // R on YES
-	return (current != sentinel) ? current->priority : CHNotFound;
+	return (current != sentinel) ? current->priority : CHTreapNotFound;
 }
 
 - (NSString*) debugDescriptionForNode:(CHBinaryTreeNode*)node {
