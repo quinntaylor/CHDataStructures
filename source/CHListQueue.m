@@ -36,8 +36,7 @@
 - (void) addObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
-	else
-		[list appendObject:anObject];
+	[list appendObject:anObject];
 }
 
 - (void) addObjectsFromArray:(NSArray*)anArray {

@@ -44,7 +44,7 @@
 	return self;
 }
 
-#pragma mark <NSCoding> methods
+#pragma mark <NSCoding>
 
 /**
  Initialize a collection with data from a given unarchiver.
@@ -66,7 +66,7 @@
 	[encoder encodeObject:array forKey:@"array"];
 }
 
-#pragma mark <NSCopying> Methods
+#pragma mark <NSCopying>
 
 /**
  Returns a new instance that is a copy of the receiver.
@@ -82,7 +82,7 @@
 	return [[[self class] alloc] initWithArray:array];
 }
 
-#pragma mark <NSFastEnumeration> Methods
+#pragma mark <NSFastEnumeration>
 
 /**
  Returns by reference a C array of objects over which the sender should iterate,

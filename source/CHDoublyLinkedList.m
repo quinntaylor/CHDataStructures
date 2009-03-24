@@ -198,7 +198,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 	return [[self allObjects] description];
 }
 
-#pragma mark <NSCoding> methods
+#pragma mark <NSCoding>
 
 /**
  Returns an object initialized from data in a given unarchiver.
@@ -206,10 +206,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
  @param decoder An unarchiver object.
  */
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([self init] == nil) return nil;
-	for (id anObject in [decoder decodeObjectForKey:@"objects"])
-		[self appendObject:anObject];
-	return self;
+	return [self initWithArray:[decoder decodeObjectForKey:@"objects"]];
 }
 
 /**
@@ -222,7 +219,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 	[encoder encodeObject:array forKey:@"objects"];
 }
 
-#pragma mark <NSCopying> Methods
+#pragma mark <NSCopying>
 
 /**
  Returns a new instance that is a copy of the receiver.
@@ -241,7 +238,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 	return newList;
 }
 
-#pragma mark <NSFastEnumeration> Methods
+#pragma mark <NSFastEnumeration>
 
 /**
  Returns by reference a C array of objects over which the sender should iterate,

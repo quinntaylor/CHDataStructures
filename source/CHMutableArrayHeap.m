@@ -89,7 +89,7 @@
 	return self;
 }
 
-#pragma mark <NSCoding> methods
+#pragma mark <NSCoding>
 
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super initWithCoder:decoder] == nil) return nil;
@@ -105,7 +105,7 @@
 	[encoder encodeInteger:sortOrder forKey:@"sortOrder"];
 }
 
-#pragma mark <NSCopying> Methods
+#pragma mark <NSCopying>
 
 - (id) copyWithZone:(NSZone *)zone {
 	return [[[self class] alloc] initWithOrdering:sortOrder array:array];

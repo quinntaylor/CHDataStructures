@@ -118,7 +118,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 	return self;
 }
 
-#pragma mark <NSCoding> methods
+#pragma mark <NSCoding>
 
 - (id) initWithCoder:(NSCoder*)decoder {
 	// Decode the array of objects and use it to initialize the tree's contents.
@@ -139,7 +139,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 	return newTree;
 }
 
-#pragma mark <NSFastEnumeration> Methods
+#pragma mark <NSFastEnumeration>
 
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf

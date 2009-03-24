@@ -33,7 +33,7 @@
 	return self;
 }
 
-#pragma mark <NSCoding> methods
+#pragma mark <NSCoding>
 
 /**
  Returns an object initialized from data in a given unarchiver.
@@ -42,7 +42,6 @@
  */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super init] == nil) return nil;
-	[list release]; // Call to subclass init is in case of other initializations
 	list = [[decoder decodeObjectForKey:@"list"] retain];
 	return self;
 }
@@ -56,7 +55,7 @@
 	[encoder encodeObject:list forKey:@"list"];
 }
 
-#pragma mark <NSCopying> Methods
+#pragma mark <NSCopying>
 
 /**
  Returns a new instance that is a copy of the receiver.
@@ -75,7 +74,7 @@
 	return copy;
 }
 
-#pragma mark <NSFastEnumeration> Methods
+#pragma mark <NSFastEnumeration>
 
 /**
  Returns by reference a C array of objects over which the sender should iterate,
