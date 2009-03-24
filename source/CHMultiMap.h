@@ -2,7 +2,6 @@
  CHMultiMap.h
  CHDataStructures.framework -- Objective-C versions of common data structures.
  Copyright (C) 2008, Quinn Taylor for BYU CocoaHeads <http://cocoaheads.byu.edu>
- Copyright (C) 2002, Phillip Morelock <http://www.phillipmorelock.com>
  
  This library is free software: you can redistribute it and/or modify it under
  the terms of the GNU Lesser General Public License as published by the Free
