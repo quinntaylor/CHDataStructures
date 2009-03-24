@@ -105,13 +105,16 @@
 - (void) testNSFastEnumeration {
 	for (Class aClass in heapClasses) {
 		heap = [[aClass alloc] init];
-		NSUInteger number, expected;
+		NSUInteger number, expected, count = 0;
 		for (number = 1; number <= 32; number++)
 			[heap addObject:[NSNumber numberWithUnsignedInteger:number]];
 		expected = 1;
-		for (NSNumber *object in heap)
+		for (NSNumber *object in heap) {
 			STAssertEquals([object unsignedIntegerValue], expected++,
 						   @"Objects should be enumerated in ascending order.");
+			count++;
+		}
+		STAssertEquals(count, (NSUInteger)32, @"Count of enumerated items is incorrect.");
 		// Check that a mutation exception is raised if the heap is modified
 		BOOL raisedException = NO;
 		@try {

@@ -90,7 +90,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 @implementation CHRedBlackTreeTest
 
 + (void) initialize {
-	gcDisabled = ([NSGarbageCollector defaultCollector] == nil);
+	gcDisabled = !objc_collectingEnabled();
 }
 
 - (void) setUp {

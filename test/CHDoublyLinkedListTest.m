@@ -53,7 +53,7 @@ static BOOL gcDisabled;
 @implementation CHDoublyLinkedListTest
 
 + (void) initialize {
-	gcDisabled = ([NSGarbageCollector defaultCollector] == nil);
+	gcDisabled = !objc_collectingEnabled();
 }
 
 - (void) setUp {
@@ -301,7 +301,7 @@ static BOOL gcDisabled;
 - (void) testIndexOfObject {
 	[list appendObject:@"A"];
 	STAssertEquals([list indexOfObject:@"A"], (NSUInteger)0, @"Should return 0.");
-	STAssertEquals([list indexOfObject:@"Z"], CHNotFound,
+	STAssertEquals([list indexOfObject:@"Z"], (NSUInteger)CHNotFound,
 				   @"Should return CHNotFound.");
 }
 
@@ -309,7 +309,7 @@ static BOOL gcDisabled;
 	NSString *a = [NSString stringWithFormat:@"A"];
 	[list appendObject:a];
 	STAssertEquals([list indexOfObjectIdenticalTo:a], (NSUInteger)0, @"Should return 0.");
-	STAssertEquals([list indexOfObjectIdenticalTo:@"A"], CHNotFound,
+	STAssertEquals([list indexOfObjectIdenticalTo:@"A"], (NSUInteger)CHNotFound,
 				   @"Should return CHNotFound.");
 }
 

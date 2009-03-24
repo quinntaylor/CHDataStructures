@@ -48,7 +48,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 @implementation CHAbstractBinarySearchTreeTest
 
 + (void) initialize {
-	gcDisabled = ([NSGarbageCollector defaultCollector] == nil);
+	gcDisabled = !objc_collectingEnabled();
 }
 
 - (void) setUp {

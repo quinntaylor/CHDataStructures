@@ -81,7 +81,7 @@ static NSMutableString *balanceErrors;
 @implementation CHAVLTreeTest
 
 + (void) initialize {
-	gcDisabled = ([NSGarbageCollector defaultCollector] == nil);
+	gcDisabled = !objc_collectingEnabled();
 }
 
 - (void) setUp {

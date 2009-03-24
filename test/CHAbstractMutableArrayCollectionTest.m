@@ -90,13 +90,16 @@
 }
 
 - (void) testNSFastEnumeration {
-	NSUInteger number, expected;
+	NSUInteger number, expected, count = 0;
 	for (number = 1; number <= 32; number++)
 		[collection addObject:[NSNumber numberWithUnsignedInteger:number]];
 	expected = 1;
-	for (NSNumber *object in collection)
+	for (NSNumber *object in collection) {
 		STAssertEquals([object unsignedIntegerValue], expected++,
 					   @"Objects should be enumerated in ascending order.");
+		++count;
+	}
+	STAssertEquals(count, (NSUInteger)32, @"Count of enumerated items is incorrect.");
 }
 
 #pragma mark -

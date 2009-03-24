@@ -99,13 +99,16 @@
 }
 
 - (void) testNSFastEnumeration {
-	NSUInteger number, expected;
+	NSUInteger number, expected, count = 0;
 	for (number = 1; number <= 32; number++)
 		[collection addObject:[NSNumber numberWithUnsignedInteger:number]];
 	expected = 1;
-	for (NSNumber *object in collection)
+	for (NSNumber *object in collection) {
 		STAssertEquals([object unsignedIntegerValue], expected++,
 					   @"Objects should be enumerated in ascending order.");
+		++count;
+	}
+	STAssertEquals(count, (NSUInteger)32, @"Count of enumerated items is incorrect.");
 }
 
 #pragma mark -
@@ -158,9 +161,9 @@
 	STAssertEquals([collection indexOfObject:@"A"], (NSUInteger)0, @"Wrong index for object");
 	STAssertEquals([collection indexOfObject:@"B"], (NSUInteger)1, @"Wrong index for object");
 	STAssertEquals([collection indexOfObject:@"C"], (NSUInteger)2, @"Wrong index for object");
-	STAssertEquals([collection indexOfObject:@"a"], CHNotFound,
+	STAssertEquals([collection indexOfObject:@"a"], (NSUInteger)CHNotFound,
 				   @"Wrong index for object");
-	STAssertEquals([collection indexOfObject:@"Z"], CHNotFound,
+	STAssertEquals([collection indexOfObject:@"Z"], (NSUInteger)CHNotFound,
 				   @"Wrong index for object");
 }
 
@@ -169,9 +172,9 @@
 	[collection addObject:a];
 	STAssertEquals([collection indexOfObjectIdenticalTo:a],
 				   (NSUInteger)0, @"Wrong index for object");
-	STAssertEquals([collection indexOfObjectIdenticalTo:@"A"], CHNotFound,
+	STAssertEquals([collection indexOfObjectIdenticalTo:@"A"], (NSUInteger)CHNotFound,
 				   @"Wrong index for object");
-	STAssertEquals([collection indexOfObjectIdenticalTo:@"Z"], CHNotFound,
+	STAssertEquals([collection indexOfObjectIdenticalTo:@"Z"], (NSUInteger)CHNotFound,
 				   @"Wrong index for object");
 }
 
