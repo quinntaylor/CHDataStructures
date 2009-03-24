@@ -17,7 +17,6 @@
  this library.  If not, see <http://www.gnu.org/copyleft/lesser.html>.
  */
 
-#import <Foundation/Foundation.h>
 #import "CHStack.h"
 #import "CHAbstractMutableArrayCollection.h"
 
