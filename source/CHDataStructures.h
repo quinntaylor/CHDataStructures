@@ -31,6 +31,8 @@
 #import "CHAnderssonTree.h"
 #import "CHAVLTree.h"
 #import "CHDoublyLinkedList.h"
+#import "CHCircularBufferDeque.h"
+#import "CHCircularBufferQueue.h"
 #import "CHListDeque.h"
 #import "CHListQueue.h"
 #import "CHListStack.h"
