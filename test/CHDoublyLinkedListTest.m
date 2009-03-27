@@ -103,6 +103,16 @@ static BOOL gcDisabled;
 		count++;
 	}
 	STAssertEquals(count, (NSUInteger)32, @"Count of enumerated items is incorrect.");
+	
+	BOOL raisedException = NO;
+	@try {
+		for (id object in list)
+			[list appendObject:@"123"];
+	}
+	@catch (NSException *exception) {
+		raisedException = YES;
+	}
+	STAssertTrue(raisedException, @"Should raise mutation exception.");
 }
 
 #pragma mark -

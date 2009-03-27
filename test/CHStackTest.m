@@ -183,6 +183,16 @@
 		++count;
 	}
 	STAssertEquals(count, (NSUInteger)32, @"Count of enumerated items is incorrect.");
+	
+	BOOL raisedException = NO;
+	@try {
+		for (id object in stack)
+			[stack pushObject:@"123"];
+	}
+	@catch (NSException *exception) {
+		raisedException = YES;
+	}
+	STAssertTrue(raisedException, @"Should raise mutation exception.");	
 }
 
 @end

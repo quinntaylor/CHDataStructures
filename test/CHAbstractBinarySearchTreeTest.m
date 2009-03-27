@@ -423,6 +423,17 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 			count++;
 		}
 		STAssertEquals(count, limit, @"Count of enumerated items is incorrect.");
+		
+		BOOL raisedException = NO;
+		@try {
+			for (id object in tree)
+				[tree addObject:@"123"];
+		}
+		@catch (NSException *exception) {
+			raisedException = YES;
+		}
+		STAssertTrue(raisedException, @"Should raise mutation exception.");
+		
 		[tree release];
 	}
 }

@@ -228,11 +228,49 @@
 #pragma mark Removal
 
 - (void) testRemoveFirstObject {
-	STFail(@"Unwritten test case");
+	for (id anObject in abc)
+		[buffer appendObject:anObject];
+	
+	NSUInteger expected = [abc count];
+	STAssertEqualObjects([buffer firstObject], @"A", @"Wrong -firstObject.");
+	STAssertEquals([buffer count], expected, @"Incorrect count.");
+	[buffer removeFirstObject];
+	--expected;
+	STAssertEqualObjects([buffer firstObject], @"B", @"Wrong -firstObject.");
+	STAssertEquals([buffer count], expected, @"Incorrect count.");
+	[buffer removeFirstObject];
+	--expected;
+	STAssertEqualObjects([buffer firstObject], @"C", @"Wrong -firstObject.");
+	STAssertEquals([buffer count], expected, @"Incorrect count.");
+	[buffer removeFirstObject];
+	--expected;
+	STAssertNil([buffer firstObject], @"-firstObject should return nil.");
+	STAssertEquals([buffer count], expected, @"Incorrect count.");
+	[buffer removeFirstObject];
+	STAssertNil([buffer firstObject], @"-firstObject should return nil.");
+	STAssertEquals([buffer count], expected, @"Incorrect count.");
+
+	STAssertNoThrow([buffer removeLastObject],
+					@"Should never raise an exception, even when empty.");
 }
 
 - (void) testRemoveLastObject {
-	STFail(@"Unwritten test case");
+	for (id anObject in abc)
+		[buffer appendObject:anObject];
+	NSUInteger expected = [abc count];
+	STAssertEqualObjects([buffer lastObject], @"C", @"Wrong -lastObject.");
+	STAssertEquals([buffer count], expected--, @"Incorrect count.");
+	[buffer removeLastObject];
+	STAssertEqualObjects([buffer lastObject], @"B", @"Wrong -lastObject.");
+	STAssertEquals([buffer count], expected--, @"Incorrect count.");
+	[buffer removeLastObject];
+	STAssertEqualObjects([buffer lastObject], @"A", @"Wrong -lastObject.");
+	STAssertEquals([buffer count], expected--, @"Incorrect count.");
+	[buffer removeLastObject];
+	STAssertEqualObjects([buffer lastObject], nil, @"Wrong -lastObject.");
+	STAssertNoThrow([buffer removeLastObject],
+					@"Should never raise an exception, even when empty.");
+	STAssertEquals([buffer count], expected, @"Incorrect count.");
 }
 
 - (void) testRemoveObject {
@@ -274,7 +312,17 @@
 }
 
 - (void) testNSCopying {
-	STFail(@"Unwritten test case");
+	NSArray *objects = [NSArray arrayWithObjects:@"A",@"B",@"C",@"D",@"E",@"F",
+						@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O",@"P",nil];
+	for (id object in objects)
+		[buffer appendObject:object];
+	id buffer2 = [buffer copy];
+	[buffer removeAllObjects];
+	STAssertNotNil(buffer2, @"-copy should not return nil for valid collection.");
+	STAssertEquals([buffer2 count], [objects count], @"Incorrect count.");
+	STAssertEqualObjects([buffer2 allObjects], objects,
+						 @"Unequal collections.");
+	[buffer2 release];
 }
 
 - (void) testNSFastEnumeration {
@@ -288,6 +336,16 @@
 		++count;
 	}
 	STAssertEquals(count, (NSUInteger)32, @"Count of enumerated items is incorrect.");
+
+	BOOL raisedException = NO;
+	@try {
+		for (id object in buffer)
+			[buffer appendObject:@"123"];
+	}
+	@catch (NSException *exception) {
+		raisedException = YES;
+	}
+	STAssertTrue(raisedException, @"Should raise mutation exception.");
 }
 
 @end

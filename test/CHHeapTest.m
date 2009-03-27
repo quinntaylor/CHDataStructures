@@ -116,6 +116,7 @@
 			count++;
 		}
 		STAssertEquals(count, (NSUInteger)32, @"Count of enumerated items is incorrect.");
+		
 		// Check that a mutation exception is raised if the heap is modified
 		BOOL raisedException = NO;
 		@try {
