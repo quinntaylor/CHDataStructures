@@ -63,7 +63,7 @@
 
 #pragma mark <NSFastEnumeration>
 
-// Overriddes parent behavior to return array contents in reverse order
+// Overrides parent's behavior to return the array contents in reverse order.
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len
@@ -71,6 +71,17 @@
 	if (state->state == 0)
 		state->extra[4] = (unsigned long) [array reverseObjectEnumerator];
 	NSEnumerator *enumerator = (NSEnumerator*) state->extra[4];
+	
+	// This hackish crap captures the mutation pointer for the underlying array.
+	// (rdar://6730928 -- Problem with mutation and -reverseObjectEnumerator)
+	if (state->state == 0) {
+		[array countByEnumeratingWithState:state objects:stackbuf count:1];
+		unsigned long *mutationsPtr = state->mutationsPtr;
+		state->state = 0;
+		NSUInteger count = [enumerator countByEnumeratingWithState:state objects:stackbuf count:len];
+		state->mutationsPtr = mutationsPtr;
+		return count;
+	}
 	return [enumerator countByEnumeratingWithState:state objects:stackbuf count:len];
 }
 
