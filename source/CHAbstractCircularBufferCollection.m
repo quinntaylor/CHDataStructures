@@ -212,8 +212,37 @@ static size_t kCHPointerSize = sizeof(void*);
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len
 {
-	return 0;
-	// TODO: Implement NSFastEnumeration
+	NSUInteger enumeratedCount;
+	if (state->state == 0) {
+		state->itemsPtr = stackbuf;
+		state->mutationsPtr = &mutations;
+		enumeratedCount = 0;
+	}
+	else if (state->state < count) {
+		enumeratedCount = (NSUInteger) state->state;
+	}
+	else {
+		return 0;
+	}
+	
+	// Accumulate objects from the array until we reach 'count' or the maximum
+	NSUInteger batchCount = 0;
+	do {
+		// Find the first array index that is to be copied
+		int startIndex = (headIndex + enumeratedCount) % arrayCapacity;
+		// Determine the number of elements to copy -- minimum of three values:
+		// 1 - Number of elements until the circular buffer wraps
+		// 2 - Number of elements that haven't yet been enumerated
+		// 3 - Number of open spots still available in the buffer
+		int copyLength = MIN(arrayCapacity - startIndex,
+							 MIN(count - enumeratedCount, len - batchCount));
+		// Copy N items from the circular array to the enumeration buffer
+		memcpy(stackbuf+batchCount, array+startIndex, kCHPointerSize*copyLength);
+		enumeratedCount += copyLength;
+		batchCount      += copyLength;
+	} while (enumeratedCount < count && batchCount < len);
+	state->state = (unsigned long) enumeratedCount;
+	return batchCount;
 }
 
 #pragma mark Insertion
