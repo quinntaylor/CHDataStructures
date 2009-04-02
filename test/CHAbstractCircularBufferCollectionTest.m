@@ -120,6 +120,16 @@
 				   @"Wrong position for head index");
 	STAssertEquals([buffer tailIndex], (NSUInteger)3,
 				   @"Wrong position for tail index");
+	
+	// Force expansion of original capacity
+	[buffer release];
+	buffer = [[CHAbstractCircularBufferCollection alloc] init];
+	for (int i = 1; i <= 16; i++)
+		[buffer appendObject:[NSNumber numberWithInt:i]];
+	STAssertEquals([buffer capacity], (NSUInteger)32, @"Wrong capacity");
+	for (int i = 17; i <= 33; i++)
+		[buffer appendObject:[NSNumber numberWithInt:i]];
+	STAssertEquals([buffer capacity], (NSUInteger)64, @"Wrong capacity");
 }
 
 - (void) testPrependObject {
@@ -131,6 +141,16 @@
 				   @"Wrong position for head index");
 	STAssertEquals([buffer tailIndex], (NSUInteger)0,
 				   @"Wrong position for tail index");
+	
+	// Force expansion of original capacity
+	[buffer release];
+	buffer = [[CHAbstractCircularBufferCollection alloc] init];
+	for (int i = 1; i <= 16; i++)
+		[buffer prependObject:[NSNumber numberWithInt:i]];
+	STAssertEquals([buffer capacity], (NSUInteger)32, @"Wrong capacity");
+	for (int i = 17; i <= 33; i++)
+		[buffer prependObject:[NSNumber numberWithInt:i]];
+	STAssertEquals([buffer capacity], (NSUInteger)64, @"Wrong capacity");
 }
 		
 #pragma mark Access
@@ -148,6 +168,67 @@
 	for (id anObject in abc)
 		[buffer appendObject:anObject];
 	STAssertEqualObjects([buffer allObjects], abc, @"Bad result for -allObjects");
+}
+
+- (void) testEnumerator {
+	NSEnumerator *e;
+	
+	
+	STAssertNil([[buffer objectEnumerator] nextObject],
+				@"Enumerator should be empty");
+	STAssertNotNil([[buffer objectEnumerator] allObjects],
+				   @"Should never return nil");
+	STAssertEquals([[[buffer objectEnumerator] allObjects] count], (NSUInteger)0,
+				   @"Wrong count");
+
+	STAssertNil([[buffer reverseObjectEnumerator] nextObject],
+				@"Enumerator should be empty");
+	STAssertNotNil([[buffer reverseObjectEnumerator] allObjects],
+				   @"Should never return nil");
+	STAssertEquals([[[buffer reverseObjectEnumerator] allObjects] count], (NSUInteger)0,
+				   @"Wrong count");
+	
+	for (id anObject in abc)
+		[buffer appendObject:anObject];
+	
+	// Test forward enumeration
+	
+	e = [buffer objectEnumerator];
+	STAssertEquals([[e allObjects] count], [abc count], @"Wrong count");
+	
+	e = [buffer objectEnumerator];
+	[e nextObject];
+	STAssertEquals([[e allObjects] count], [abc count]-1, @"Wrong count");
+	
+	e = [buffer objectEnumerator];
+	STAssertEqualObjects([e nextObject], @"A", @"Wrong object");
+	STAssertEqualObjects([e nextObject], @"B", @"Wrong object");
+	STAssertEqualObjects([e nextObject], @"C", @"Wrong object");
+	STAssertNil([e nextObject], @"Bad response, -nextObject should be nil");
+
+	// Test reverse enumeration
+	
+	e = [buffer reverseObjectEnumerator];
+	STAssertEquals([[e allObjects] count], [abc count], @"Wrong count");
+	
+	e = [buffer reverseObjectEnumerator];
+	[e nextObject];
+	STAssertEquals([[e allObjects] count], [abc count]-1, @"Wrong count");
+	
+	e = [buffer reverseObjectEnumerator];
+	STAssertEqualObjects([e nextObject], @"C", @"Wrong object");
+	STAssertEqualObjects([e nextObject], @"B", @"Wrong object");
+	STAssertEqualObjects([e nextObject], @"A", @"Wrong object");
+	STAssertNil([e nextObject], @"Bad response, -nextObject should be nil");
+}
+
+- (void) testDescription {
+	STAssertEqualObjects([buffer description], [[buffer allObjects] description],
+						 @"Descriptions should be equal");
+	for (id anObject in abc)
+		[buffer appendObject:anObject];
+	STAssertEqualObjects([buffer description], [[buffer allObjects] description],
+						 @"Descriptions should be equal");
 }
 
 #pragma mark Search

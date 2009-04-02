@@ -101,9 +101,16 @@ static size_t kCHPointerSize = sizeof(void*);
 	if (mutationCount != *mutationPtr)
 		CHMutatedCollectionException([self class], _cmd);
 	NSMutableArray *array = [[NSMutableArray alloc] init];
-	id anObject;
-	while ((anObject = [self nextObject]))
-		[array addObject:anObject];
+	while (enumerationCount++ < bufferCount) {
+		if (reverseEnumeration) {
+			enumerationIndex = (enumerationIndex + bufferCapacity - 1) % bufferCapacity;
+			[array addObject:buffer[enumerationIndex]];
+		}
+		else {
+			[array addObject:buffer[enumerationIndex]];
+			enumerationIndex = (enumerationIndex + 1) % bufferCapacity;
+		}
+	}
 	return [array autorelease];
 }
 
@@ -111,7 +118,7 @@ static size_t kCHPointerSize = sizeof(void*);
 	if (mutationCount != *mutationPtr)
 		CHMutatedCollectionException([self class], _cmd);
 	id object = nil;
-	if (enumerationCount < bufferCount) {
+	if (enumerationCount++ < bufferCount) {
 		if (reverseEnumeration) {
 			enumerationIndex = (enumerationIndex + bufferCapacity - 1) % bufferCapacity;
 			object = buffer[enumerationIndex];
@@ -327,7 +334,17 @@ static size_t kCHPointerSize = sizeof(void*);
 
 - (NSString*) description {
 	return [[self allObjects] description];
-	// TODO: Consider removing NSArray middleman
+	// TODO: Consider removing NSArray middleman -- need additional testing
+//	NSMutableString *description = [NSMutableString string];
+//	if (count > 0) {
+//		NSUInteger descriptionIndex = headIndex;
+//		[description appendFormat:@"\n    %@", array[descriptionIndex++]];
+//		while (descriptionIndex != tailIndex) {
+//			[description appendFormat:@",\n    %@", array[descriptionIndex++]];
+//			descriptionIndex %= arrayCapacity;
+//		}
+//	}
+//	return [NSString stringWithFormat:@"(%@\n)", description];
 }
 
 #pragma mark Search
