@@ -27,12 +27,12 @@
 #import "CHSearchTree.h"
 #import "CHStack.h"
 
-// Classes
+// Concrete Implementations
 #import "CHAnderssonTree.h"
 #import "CHAVLTree.h"
-#import "CHDoublyLinkedList.h"
 #import "CHCircularBufferDeque.h"
 #import "CHCircularBufferQueue.h"
+#import "CHDoublyLinkedList.h"
 #import "CHListDeque.h"
 #import "CHListQueue.h"
 #import "CHListStack.h"
@@ -49,11 +49,15 @@
 // Utilities
 #import "Util.h"
 
-
 /**
  @file CHDataStructures.h
  
- An umbrella header which imports the public header files for the framework
+ An umbrella header which imports all the public header files for the framework.
+ Headers for individual classes have minimal dependencies, and they import any
+ other header files they may require. For example, this header does not import
+ any of the CHAbstract... header files (since only subclasses use them), but all
+ such headers are still included with the framework. (The protocols for abstract
+ data types are imported so clients can use protocol-typed variables if needed.)
  */
 
 /**
@@ -129,5 +133,5 @@
  please <a href="mailto:quinntaylor@mac.com?subject=CHDataStructures.framework">
  email me</a>. I am very receptive to help, criticism, flames, whatever.
  
-   &mdash; <a href="http://homepage.mac.com/quinntaylor/">Quinn Taylor</a>, 2008
+   &mdash; <a href="http://homepage.mac.com/quinntaylor/">Quinn Taylor</a>
  */
