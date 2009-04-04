@@ -96,6 +96,10 @@ typedef enum {
  These constants are used primarily for enumerating over search trees (see @link
  #objectEnumeratorWithTraversalOrder: -objectEnumeratorWithTraversalOrder:
  \endlink) to access objects from a tree by traversing it in a specified order.
+ 
+ @todo Add -containsObjectIdenticalTo: and -removeObjectIdenticalTo:
+ @todo Modify protocol and subclasses to decide whether to allow duplicates.
+       (This will allow trees to act either as sorted lists or sorted sets.)
  */
 @protocol CHSearchTree <NSObject, NSCoding, NSCopying, NSFastEnumeration>
 
