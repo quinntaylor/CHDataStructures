@@ -47,6 +47,7 @@
 #import "CHUnbalancedTree.h"
 
 // Utilities
+#import "CHThreadSafeWrapper.h"
 #import "Util.h"
 
 /**
