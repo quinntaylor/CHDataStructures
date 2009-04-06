@@ -22,26 +22,26 @@
 @implementation CHMutableArrayHeap
 
 - (void) heapifyFromIndex:(NSUInteger)parentIndex {
-	// Bubble node at the given index down until the heap property is again satisfied
-	id parent, leftChild, rightChild;
 	NSUInteger leftIndex, rightIndex;
+	id parent, leftChild, rightChild;
 	
-	NSUInteger arraySize = [array count];
-	while (parentIndex < arraySize / 2) {
+	// Bubble the specified node down until the heap property is satisfied.
+	NSUInteger count = [array count];
+	while (parentIndex < count / 2) {
 		leftIndex = parentIndex * 2 + 1;
-		rightIndex = parentIndex * 2 + 2;
+		rightIndex = leftIndex + 1;
 		
-		// Since a binary heap is always a complete tree, the left will never be nil.
 		parent = [array objectAtIndex:parentIndex];
 		leftChild = [array objectAtIndex:leftIndex];
-		rightChild = (rightIndex < arraySize) ? [array objectAtIndex:rightIndex] : nil;
+		rightChild = (rightIndex < count) ? [array objectAtIndex:rightIndex] : nil;
+		// A binary heap is always a complete tree, so left will never be nil.
 		if (rightChild == nil || [leftChild compare:rightChild] == sortOrder) {
 			if ([parent compare:leftChild] != sortOrder) {
 				[array exchangeObjectAtIndex:parentIndex withObjectAtIndex:leftIndex];
 				parentIndex = leftIndex;
 			}
 			else
-				return;	
+				break;
 		}
 		else {
 			if ([parent compare:rightChild] != sortOrder) {
@@ -49,7 +49,7 @@
 				parentIndex = rightIndex;
 			}
 			else
-				return;
+				break;
 		}
 	}
 }
@@ -65,9 +65,6 @@
 	return [self initWithOrdering:NSOrderedAscending array:nil];
 }
 
-/**
- Initialize a heap with ascending ordering and objects from an array.
- */
 - (id) initWithArray:(NSArray*)anArray {
 	return [self initWithOrdering:NSOrderedAscending array:anArray];
 }
@@ -119,13 +116,15 @@
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len
 {
-	// Currently (in Leopard) the NSEnumerators from NSArray only return 1 each time
+	// Currently (in Leopard) NSEnumerators from NSArray only return 1 each time
 	if (state->state == 0) {
-		// Create a sorted array to use for enumeration, and store it in the state.
+		// Create a sorted array to use for enumeration, store it in the state.
 		state->extra[4] = (unsigned long) [self allObjects];
 	}
 	NSArray *sorted = (NSArray*) state->extra[4];
-	NSUInteger count = [sorted countByEnumeratingWithState:state objects:stackbuf count:len];
+	NSUInteger count = [sorted countByEnumeratingWithState:state
+	                                               objects:stackbuf
+	                                                 count:len];
 	state->mutationsPtr = &mutations; // point state to mutations for heap array
 	return count;
 }
@@ -137,15 +136,14 @@
 		CHNilArgumentException([self class], _cmd);
 	++mutations;
 	[array addObject:anObject];
-	// Bubble the new object (added at the end of the array) up the heap as necessary
-	NSUInteger parent;
-	NSUInteger i = [array count] - 1;
-	while (i > 0) {
-		parent = (i-1) / 2;
-		if ([[array objectAtIndex:parent] compare:[array objectAtIndex:i]] != sortOrder)
-		{
-			[array exchangeObjectAtIndex:parent withObjectAtIndex:i];
-			i = parent;
+	// Bubble the new object (at the end of the array) up the heap as necessary.
+	NSUInteger parentIndex;
+	NSUInteger index = [array count] - 1;
+	while (index > 0) {
+		parentIndex = (index - 1) / 2;
+		if ([[array objectAtIndex:parentIndex] compare:anObject] != sortOrder) {
+			[array exchangeObjectAtIndex:parentIndex withObjectAtIndex:index];
+			index = parentIndex;
 		}
 		else
 			break;
@@ -157,7 +155,9 @@
 		return;
 	++mutations;
 	[array addObjectsFromArray:anArray];
-	// Re-heapify from the middle of the heap array to the beginning
+	// Re-heapify from the middle of the heap array bacwards to the beginning.
+	// (This must be done since we don't know the ordering of the new objects.)
+	// We could choose to bubble each new element up, but this is likely faster.
 	NSUInteger index = [array count]/2;
 	while (0 < index--)
 		[self heapifyFromIndex:index];
