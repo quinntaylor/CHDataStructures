@@ -220,37 +220,32 @@ static size_t kCHPointerSize = sizeof(void*);
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len
 {
+	/*
+	 Since this class uses a C array for storage, we can return a pointer to any
+	 spot in the array and a count greater than "len". This approach avoids copy
+	 overhead, and is also more efficient since this method will be called only
+	 2 or 3 times, depending on whether the buffer wraps around the end of the
+	 array. (The last call always returns 0 and requires no extra processing.)
+	 */
 	NSUInteger enumeratedCount;
 	if (state->state == 0) {
-		state->itemsPtr = stackbuf;
 		state->mutationsPtr = &mutations;
-		enumeratedCount = 0;
+		state->itemsPtr = array + headIndex; // pointer arithmetic for offset
+		// If the buffer wraps, only provide elements to the end of the array.
+		enumeratedCount = MIN(arrayCapacity - headIndex, count);
+		state->state = (unsigned long) enumeratedCount;
+		return enumeratedCount;
 	}
 	else if (state->state < count) {
+		// This means the buffer wrapped around; now return the wrapped segment.
+		state->itemsPtr = array;
 		enumeratedCount = (NSUInteger) state->state;
+		state->state = (unsigned long) count;
+		return (count - enumeratedCount);
 	}
 	else {
 		return 0;
 	}
-	
-	// Accumulate objects from the array until we reach 'count' or the maximum
-	NSUInteger batchCount = 0;
-	do {
-		// Find the first array index that is to be copied
-		int startIndex = (headIndex + enumeratedCount) % arrayCapacity;
-		// Determine the number of elements to copy -- minimum of three values:
-		// 1 - Number of elements until the circular buffer wraps
-		// 2 - Number of elements that haven't yet been enumerated
-		// 3 - Number of open spots still available in the buffer
-		int copyLength = MIN(arrayCapacity - startIndex,
-							 MIN(count - enumeratedCount, len - batchCount));
-		// Copy N items from the circular array to the enumeration buffer
-		memcpy(stackbuf+batchCount, array+startIndex, kCHPointerSize*copyLength);
-		enumeratedCount += copyLength;
-		batchCount      += copyLength;
-	} while (enumeratedCount < count && batchCount < len);
-	state->state = (unsigned long) enumeratedCount;
-	return batchCount;
 }
 
 #pragma mark Insertion
@@ -307,8 +302,9 @@ static size_t kCHPointerSize = sizeof(void*);
 	if (count > 0) {
 		NSUInteger iterationIndex = headIndex;
 		do {
-			[allObjects addObject:array[iterationIndex]];
-		} while (++iterationIndex != tailIndex);
+			[allObjects addObject:array[iterationIndex++]];
+			iterationIndex %= arrayCapacity;
+		} while (iterationIndex != tailIndex);
 	}
 	return allObjects;
 }

@@ -160,6 +160,21 @@
 	for (id anObject in abc)
 		[buffer appendObject:anObject];
 	STAssertEqualObjects([buffer allObjects], abc, @"Bad result for -allObjects");
+	
+	// Test -allObjects when the buffer wraps around to the beginning
+	for (id anObject in abc)
+		[buffer removeFirstObject];
+	STAssertEquals([buffer headIndex], (NSUInteger)3, @"Wrong head index.");
+	STAssertEquals([buffer tailIndex], (NSUInteger)3, @"Wrong tail index.");
+	NSMutableArray *objects = [NSMutableArray array];
+	for (int i = 1; i < 16; i++) {
+		[objects addObject:[NSNumber numberWithInt:i]];
+	}
+	for (id anObject in objects) {
+		[buffer appendObject:anObject];
+	}
+	STAssertEquals([buffer count], [objects count], @"Wrong count of objects.");
+	STAssertEqualObjects([buffer allObjects], objects, @"Bad result for -allObjects");
 }
 
 - (void) testEnumerator {
@@ -346,6 +361,20 @@
 	STAssertEquals([buffer count], expected, @"Incorrect count.");
 }
 
+- (void) testRemoveAllObjects {
+	STAssertEquals([buffer count], (NSUInteger)0, @"Incorrect count.");
+	for (id anObject in abc)
+		[buffer appendObject:anObject];
+	STAssertEquals([buffer count], (NSUInteger)3, @"Incorrect count.");
+	STAssertEquals([buffer headIndex], (NSUInteger)0, @"Wrong head index.");
+	STAssertEquals([buffer tailIndex], (NSUInteger)3, @"Wrong tail index.");
+
+	[buffer removeAllObjects];
+	STAssertEquals([buffer count], (NSUInteger)0, @"Incorrect count.");
+	STAssertEquals([buffer headIndex], (NSUInteger)0, @"Wrong head index.");
+	STAssertEquals([buffer tailIndex], (NSUInteger)0, @"Wrong tail index.");
+}
+
 - (void) testRemoveObject {
 	STAssertThrows([buffer removeObject:self],
 				   @"Should raise exception, unsupported.");
@@ -399,16 +428,17 @@
 }
 
 - (void) testNSFastEnumeration {
-	NSUInteger number, expected, count = 0;
+	NSUInteger number, expected, count;
 	for (number = 1; number <= 32; number++)
 		[buffer appendObject:[NSNumber numberWithUnsignedInteger:number]];
+	count = 0;
 	expected = 1;
 	for (NSNumber *object in buffer) {
 		STAssertEquals([object unsignedIntegerValue], expected++,
 					   @"Objects should be enumerated in ascending order.");
 		++count;
 	}
-	STAssertEquals(count, (NSUInteger)32, @"Count of enumerated items is incorrect.");
+	STAssertEquals(count, (NSUInteger)32, @"Count of enumerated items is wrong.");
 
 	BOOL raisedException = NO;
 	@try {
@@ -419,6 +449,27 @@
 		raisedException = YES;
 	}
 	STAssertTrue(raisedException, @"Should raise mutation exception.");
+	
+	// Test enumeration when buffer wraps around
+	
+	[buffer removeAllObjects];
+	// Insert and remove 3 elements to make the buffer wrap with 15 elements
+	for (id anObject in abc) {
+		[buffer appendObject:anObject];
+		[buffer removeFirstObject];
+	}
+	STAssertEquals([buffer headIndex], (NSUInteger)3, @"Wrong head index.");
+	STAssertEquals([buffer tailIndex], (NSUInteger)3, @"Wrong tail index.");
+	for (number = 1; number < 16; number++)
+		[buffer appendObject:[NSNumber numberWithUnsignedInteger:number]];
+	count = 0;
+	expected = 1;
+	for (NSNumber *object in buffer) {
+		STAssertEquals([object unsignedIntegerValue], expected++,
+					   @"Objects should be enumerated in ascending order.");
+		++count;
+	}
+	STAssertEquals(count, (NSUInteger)15, @"Count of enumerated items is wrong.");
 }
 
 @end

@@ -50,11 +50,11 @@
 @interface CHAbstractCircularBufferCollection : CHLockable
 	<NSCoding, NSCopying, NSFastEnumeration>
 {
-	id *array;
-	NSUInteger arrayCapacity;
-	NSUInteger count;
-	NSUInteger headIndex;
-	NSUInteger tailIndex;
+	id *array; /**< Primitive C array used for storing contents of collection. */
+	NSUInteger arrayCapacity; /**< How many pointers @a array can accommodate. */
+	NSUInteger count; /**< The number of objects currently in the buffer. */
+	NSUInteger headIndex; /**< The array index of the first object. */
+	NSUInteger tailIndex; /**< The array index after the last object. */
 	unsigned long mutations; /**< Tracks mutations for NSFastEnumeration. */
 }
 
