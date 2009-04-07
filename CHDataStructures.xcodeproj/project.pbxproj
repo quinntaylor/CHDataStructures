@@ -373,25 +373,24 @@
 				E4CFCDAD0E8FD16400B0253A /* Documentation */,
 				E4FAE0F60E967A8B007BB1F9 /* Benchmarks */,
 				089C1665FE841158C02AAC07 /* Resources */,
-				0867D69AFE84028FC02AAC07 /* Frameworks */,
+				0867D69AFE84028FC02AAC07 /* Linked Frameworks */,
 				034768DFFF38A50411DB9C8B /* Products */,
 			);
 			name = CHDataStructures;
 			sourceTree = "<group>";
 		};
-		0867D69AFE84028FC02AAC07 /* Frameworks */ = {
+		0867D69AFE84028FC02AAC07 /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				E473C99E0E93333C005CA997 /* SenTestingKit.framework */,
 				0867D69BFE84028FC02AAC07 /* Foundation.framework */,
+				E473C99E0E93333C005CA997 /* SenTestingKit.framework */,
 			);
-			name = Frameworks;
+			name = "Linked Frameworks";
 			sourceTree = "<group>";
 		};
 		089C1665FE841158C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				E4ADBB7E0E8828C500B570BC /* README.html */,
 				089C1666FE841158C02AAC07 /* InfoPlist.strings */,
 				E473C9890E9331FA005CA997 /* Unit Testing-Info.plist */,
 			);
@@ -499,6 +498,7 @@
 				E4CFCDB10E8FD18300B0253A /* Doxyfile */,
 				E4CFCDB20E8FD18300B0253A /* doxygen-cocoa-tags.xml */,
 				E4CFCDB30E8FD18300B0253A /* doxygen.css */,
+				E4ADBB7E0E8828C500B570BC /* README.html */,
 			);
 			name = Documentation;
 			sourceTree = "<group>";
