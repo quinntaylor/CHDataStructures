@@ -35,6 +35,7 @@
  are stored in distinct NSMutableSet instances. (Just as with NSDictionary, each
  key added to a CHMultiMap is copied using @link NSCopying#copyWithZone:
  -copyWithZone: @endlink and all keys must conform to the NSCopying protocol.)
+ Objects are retained on insertion and released on removal or deallocation.
  
  Since NSDictionary and NSSet conform to the NSCoding protocol, any internal
  data can be serialized. However, NSSet cannot automatically be written to or
@@ -72,9 +73,8 @@
  @param objectsArray An array containing the values for the new dictionary.
  @throw NSInvalidArgumentException if the array counts are not equal.
  
- Each element in @a objects can be either an object or NSSet of objects to be
- associated with the corresponding key in @a keys. Each object receives a retain
- message before being added to the new dictionary.
+ Each element in @a objects can be either an object or an NSArray or NSSet of
+ objects to be associated with the corresponding key in @a keys.
  */
 - (id) initWithObjects:(NSArray*)objectsArray forKeys:(NSArray*)keyArray;
 
@@ -87,9 +87,8 @@
         alternating values and keys.
  @throw NSInvalidArgumentException if any non-terminating parameter is nil.
  
- Each value parameter may be an object or an NSSet of objects to be associated
- with the corresponding key parameter. Each object receives a retain message
- before being added to the new dictionary.
+ Each value parameter may be an object or an NSArray or NSSet of objects to be
+ associated with the corresponding key parameter.
  
  This method is similar to #initWithObjects:forKeys: and differs only in the way
  in which the key-value pairs are specified.

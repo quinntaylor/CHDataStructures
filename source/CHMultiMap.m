@@ -14,7 +14,7 @@
  Utility function for creating a new NSMutableSet containing object; if object
  is a set or array, the set containts all objects in the collection.
  */
-static inline NSMutableSet* wrapObjectInMutableSet(id object) {
+static inline NSMutableSet* createMutableSetFromObject(id object) {
 	if (object == nil)
 		return nil;
 	if ([object isKindOfClass:[NSSet class]])
@@ -49,7 +49,7 @@ static inline NSMutableSet* wrapObjectInMutableSet(id object) {
 	NSEnumerator *objects = [objectsArray objectEnumerator];
 	NSSet *objectSet;
 	for (id key in keyArray) {
-		objectSet = wrapObjectInMutableSet([objects nextObject]);
+		objectSet = createMutableSetFromObject([objects nextObject]);
 		[dictionary setObject:objectSet forKey:key];
 		count += [objectSet count];
 	}
@@ -67,7 +67,7 @@ static inline NSMutableSet* wrapObjectInMutableSet(id object) {
 	va_start(argumentList, firstObject);
 	
 	// The first argument isn't part of the varargs list; handle it separately
-	NSSet *objectSet = wrapObjectInMutableSet(firstObject);
+	NSSet *objectSet = createMutableSetFromObject(firstObject);
 	id aKey;
 	// Add an entry for each valid pair of object-key parameters.
 	do {
@@ -75,7 +75,7 @@ static inline NSMutableSet* wrapObjectInMutableSet(id object) {
 			CHInvalidArgumentException([self class], _cmd, @"Invalid nil key.");
 		[dictionary setObject:objectSet forKey:aKey];
 		count += [objectSet count];
-	} while (objectSet = wrapObjectInMutableSet(va_arg(argumentList, id)));
+	} while (objectSet = createMutableSetFromObject(va_arg(argumentList, id)));
 	va_end(argumentList);
 	return self;
 }
