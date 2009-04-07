@@ -19,8 +19,6 @@
 /**
  A simple CHQueue implemented using a CHAbstractCircularBufferCollection.
  */
-@interface CHCircularBufferQueue : CHAbstractCircularBufferCollection <CHQueue> {
-	
-}
+@interface CHCircularBufferQueue : CHAbstractCircularBufferCollection <CHQueue>
 
 @end

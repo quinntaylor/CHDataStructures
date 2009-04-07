@@ -47,8 +47,7 @@
  Rather than enforcing that this class be abstract, the contract is implied.
  */
 
-@interface CHAbstractCircularBufferCollection : CHLockable
-	<NSCoding, NSCopying, NSFastEnumeration>
+@interface CHAbstractCircularBufferCollection : CHLockable <NSCoding, NSCopying, NSFastEnumeration>
 {
 	id *array; /**< Primitive C array used for storing contents of collection. */
 	NSUInteger arrayCapacity; /**< How many pointers @a array can accommodate. */

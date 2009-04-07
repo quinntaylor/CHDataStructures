@@ -71,7 +71,8 @@ typedef struct CHSinglyLinkedListNode {
  that they are not well-suited for all possible applications. As usual, all data
  access attributes should be considered before choosing a data strcuture.
  */
-@interface CHSinglyLinkedList : CHLockable <CHLinkedList> {
+@interface CHSinglyLinkedList : CHLockable <CHLinkedList>
+{
 	NSUInteger count; /**< The number of object currently stored in a list. */
 	CHSinglyLinkedListNode *head;  /**< Pointer to the front node of a list. */
 	CHSinglyLinkedListNode *tail;  /**< Pointer to the back node of a list. */

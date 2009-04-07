@@ -300,11 +300,8 @@ static size_t kCHPointerSize = sizeof(void*);
 - (NSArray*) allObjects {
 	NSMutableArray *allObjects = [[[NSMutableArray alloc] init] autorelease];
 	if (count > 0) {
-		NSUInteger iterationIndex = headIndex;
-		do {
-			[allObjects addObject:array[iterationIndex++]];
-			iterationIndex %= arrayCapacity;
-		} while (iterationIndex != tailIndex);
+		for (id anObject in self)
+			[allObjects addObject:anObject];
 	}
 	return allObjects;
 }

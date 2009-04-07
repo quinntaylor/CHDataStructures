@@ -69,7 +69,8 @@ typedef struct CHDoublyLinkedListNode {
  removed from the ends, but the dynamic structure of a linked list is much more
  flexible when inserting and deleting in the middle of a list.
  */
-@interface CHDoublyLinkedList : CHLockable <CHLinkedList> {
+@interface CHDoublyLinkedList : CHLockable <CHLinkedList>
+{
 	NSUInteger count; /**< The number of objects currently in the list. */
 	CHDoublyLinkedListNode *head; /**< A dummy node at the front of the list. */
 	CHDoublyLinkedListNode *tail; /**< A dummy node at the back of the list. */

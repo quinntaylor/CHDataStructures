@@ -47,8 +47,7 @@
  Rather than enforcing that this class be abstract, the contract is implied. In
  any case, an instance would be useless since there is no way to add objects.
  */
-@interface CHAbstractListCollection : CHLockable
-	<NSCoding, NSCopying, NSFastEnumeration>
+@interface CHAbstractListCollection : CHLockable <NSCoding, NSCopying, NSFastEnumeration>
 {
 	id<CHLinkedList> list; /**< List used for storing contents of collection. */
 }

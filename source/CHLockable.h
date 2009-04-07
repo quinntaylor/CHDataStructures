@@ -23,7 +23,8 @@
  to manipulate the lock in simple ways. Since not all clients will use the lock,
  it is created lazily the first time a client attempts to acquire the lock.
  */
-@interface CHLockable : NSObject <NSLocking> {
+@interface CHLockable : NSObject <NSLocking>
+{
 	NSLock* lock; /**< A lock for synchronizing interaction between threads. */
 }
 

@@ -89,9 +89,11 @@ typedef enum {
  #objectEnumeratorWithTraversalOrder: -objectEnumeratorWithTraversalOrder:
  \endlink) to access objects from a tree by traversing it in a specified order.
  
- @todo Add -containsObjectIdenticalTo: and -removeObjectIdenticalTo:
  @todo Modify protocol and subclasses to decide whether to allow duplicates.
-       (This will allow trees to act either as sorted lists or sorted sets.)
+ (This will allow trees to act either as sorted lists or sorted sets.)
+
+ @todo Add -containsObjectIdenticalTo: and -removeObjectIdenticalTo: methods.
+ (Obviously, this makes more sense once duplicates are optionally allowed.)
  */
 @protocol CHSearchTree <NSObject, NSCoding, NSCopying, NSFastEnumeration>
 

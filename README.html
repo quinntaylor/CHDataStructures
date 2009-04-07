@@ -61,6 +61,7 @@
 <p>Let's just say it: no software is perfect. It would be foolish (and a lie) to claim that this framework is flawless. There are several things that could be improved, and admitting you have a problem is the first step....</p>
 <ul>
 <li>The <code>-[CHRedBlackTree removeObject:]</code> method is reeeeaaaaaly slow. You may notice that the time complexity increases exponentially, not linearly. It turns out that implementing a non-recursive remove for Red-Black trees is non-trivial, and the current solution works correctly but needs work. (For now, I suggest using CHAVLTree or CHAnderssonTree instead.)</li>
+<li>I'd really like to make all the binary search trees configurable to store duplicates if desired (sorted lists, not just sorted sets).</li>
 </ul>
 
 <p>Please know that it is not my intent to leave the hard things "as an exercise to the reader." (Believe me, writing a generic, iterative, state-saving tree traversal enumerator was no walk in the park!) However, I would love to draw on the talents of others who can provide solutions which currently evade me, or which I haven't had time to implement yet. If you have ideas (or even better, a fix) for one of these items, <a href="mailto:quinntaylor@mac.com?subject=CHDataStructures.framework">email me</a> and we'll talk. Thanks!</p>
