@@ -41,9 +41,9 @@
  thread to acquire a lock before executing the code. Once the critical section
  is past, the thread relinquishes the lock by invoking @link #unlock @endlink.
 
- <div class="callout">
- @b Note: Just as when using NSLock directly, calling @link #lock -lock @endlink
- twice on the same thread will lock up your thread permanently.
+ <div class="warning">
+ @b Warning: Calling @link #lock -lock @endlink twice from the same thread will
+ lock the thread permanently. Use NSRecursiveLock to implement recursive locks.
  </div>
  */
 - (void) lock;
@@ -59,7 +59,7 @@
 
 /**
  Relinquishes a previously acquired lock.
- <div class="callout">
+ <div class="warning">
  @b Warning: NSLock uses POSIX threads to implement its locking behavior. When
  sending an @link #unlock -unlock @endlink message to an NSLock object, you must
  be sure that message is sent from the same thread that sent the initial @link
