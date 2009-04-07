@@ -1,13 +1,11 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<title>README &mdash; CHDataStructures.framework</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<style>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<style type="text/css" media="all">
 		body {
-			font-family: Lucida Grande, Verdana, Geneva, Arial, sans-serif;
+			font-family: "Lucida Grande", Verdana, Geneva, Arial, sans-serif;
 			font-size: 12px;
 		}
 		p {
@@ -19,140 +17,65 @@
 		li li {
 			margin-top: 0;
 		}
+		code {
+			color: #007;
+		}
 	</style>
 </head>
 <body>
 <div align="center">
 <h1>CHDataStructures.framework</h1>
-<h2>Version 1.1 &mdash; 13 March 2009</h2>
+<h2>Version 1.2 &mdash; 7 April 2009</h2>
 <h4><a href="http://cocoaheads.byu.edu/code/CHDataStructures">http://cocoaheads.byu.edu/code/CHDataStructures</a></h4>
 <h4>&copy; 2008&ndash;2009 <a href="http://homepage.mac.com/quinntaylor/">Quinn Taylor</a> &mdash; BYU CocoaHeads<br />
 &copy; 2002 <a href="http://www.phillipmorelock.com/">Phillip Morelock</a> &mdash; Los Angeles, CA</h4>
 </div>
 
 <h2>Overview</h2>
-<p><strong>CHDataStructures.framework</strong> is an attempt to create a library
-  of standard data structures which can be used in any Objective-C program, for
-  educational purposes or as a foundation for other data structures to build on.
-  Data structures in this framework adopt Objective-C protocols that define the
-  functionality of and API for interacting with any implementation thereof,
-  regardless of its internals.</p>
-<p>This framework provides Objective-C implementations of common data structures
-  which are currently beyond the purview of Apple's extensive and flexible
-  <a href="http://developer.apple.com/cocoa/">Cocoa frameworks</a>. Collections
-  that are a part of Cocoa are highly optimized and amenable to many situations.
-  However, sometimes an honest-to-goodness stack, queue, linked list, tree, etc.
-  can greatly improve the clarity and comprehensibility of code. The currently
-  supported abstract data types include:
+<p><strong>CHDataStructures.framework</strong> is an attempt to create a library of standard data structures which can be used in any Objective-C program, for educational purposes or as a foundation for other data structures to build on. Data structures in this framework adopt Objective-C protocols that define the functionality of and API for interacting with any implementation thereof, regardless of its internals.</p>
+<p>This framework provides Objective-C implementations of common data structures which are currently beyond the purview of Apple's extensive and flexible <a href="http://developer.apple.com/cocoa/">Cocoa frameworks</a>. Collections that are a part of Cocoa are highly optimized and amenable to many situations. However, sometimes an honest-to-goodness stack, queue, linked list, tree, etc. can greatly improve the clarity and comprehensibility of code. The currently supported abstract data types include:
 	<a href="http://en.wikipedia.org/wiki/Deque">deque</a>,
 	<a href="http://en.wikipedia.org/wiki/Heap_(data_structure)">heap</a>,
 	<a href="http://en.wikipedia.org/wiki/Linked_list">linked list</a>,
 	<a href="http://en.wikipedia.org/wiki/Queue_(data_structure)">queue</a>,
 	<a href="http://en.wikipedia.org/wiki/Stack_(data_structure)">stack</a>, and
 	<a href="http://en.wikipedia.org/wiki/Tree_(data_structure)">tree</a>.</p>
-<p>The code is written for <a href="http://www.apple.com/macosx/">Mac OS X</a>
-  and does use some features of Objective-C 2.0 (part of 10.5 "Leopard"), but
-  most of the code could be easily ported to other Objective-C environments,
-  such as <a href="http://www.gnustep.org">GNUStep</a>. However, such efforts
-  would be better accomplished by forking this project rather than integrating
-  with it, for several main reasons:</p>
+<p>The code is written for <a href="http://www.apple.com/macosx/">Mac OS X</a> and does use some features of Objective-C 2.0 (part of 10.5 "Leopard"), but most of the code could be easily ported to other Objective-C environments, such as <a href="http://www.gnustep.org">GNUStep</a>. However, such efforts would be better accomplished by forking this project rather than integrating with it, for several main reasons:</p>
 <ol>
-  <li>Supporting multiple environments increases code complexity, and
-    consequently the effort required to test, maintain, and improve it.</li>
-  <li>Libraries that have bigger and slower binaries to accommodate all possible
-    platforms don't help the mainstream developer.</li>
-  <li>Mac OS X is by far the most prevalent Objective-C environment in use, a
-    trend which isn't likely to change soon.</li>
+	<li>Supporting multiple environments increases code complexity, and consequently the effort required to test, maintain, and improve it.</li>
+	<li>Libraries that have bigger and slower binaries to accommodate all possible platforms don't help the mainstream developer.</li>
+	<li>Mac OS X is by far the most prevalent Objective-C environment in use, a trend which isn't likely to change soon.</li>
 </ol>
-<p>While certain implementations utilize straight C for their internals, this
-  framework is fairly high-level, and uses composition rather than inheritance
-  in most cases. The framework began its existence as an exercise in writing
-  Objective-C code and consisted mainly of ported Java code. In later revisions,
-  performance has gained greater emphasis, but the primary motivation is to
-  provide friendly, intuitive Objective-C interfaces for data structures, not to
-  maximize speed at any cost (a common outcome when using C++ and the STL). The
-  algorithms should all be sound (i.e., you won't get O(n) performance when it
-  should be O(log n) or O(1), etc.) and perform quite well in general. If your
-  choice of data structure type and implementation are dependent on performance
-  or memory usage, it would be wise to run the benchmarks from Xcode and choose
-  based on the time and memory complexity for specific implementations.</p>
+<p>While certain implementations utilize straight C for their internals, this framework is fairly high-level, and uses composition rather than inheritance in most cases. The framework began its existence as an exercise in writing Objective-C code and consisted mainly of ported Java code. In later revisions, performance has gained greater emphasis, but the primary motivation is to provide friendly, intuitive Objective-C interfaces for data structures, not to maximize speed at any cost (a common outcome when using C++ and the STL). The algorithms should all be sound (i.e., you won't get O(n) performance when it should be O(log n) or O(1), etc.) and perform quite well in general. If your choice of data structure type and implementation are dependent on performance or memory usage, it would be wise to run the benchmarks from Xcode and choose based on the time and memory complexity for specific implementations.</p>
   
 <h2>Getting the Code</h2>
-<p>All source code and resources for the framework are freely available at
-  <a href="http://cocoaheads.byu.edu/code/CHDataStructures/">this link</a>. They
-  are organized in an Xcode 3 project with all relevant dependencies.</p>
-<p>If you only need a few of the classes in the framework, you can cut down on
-  code size by either excluding the parts you don't need from the framework, or
-  just including the parts you do need in your own code. Please don't forget to
-  include relevant copyright and license information if you choose to do so!</p>
-<p>The original page for the framework when it was maintained by Phillip Morelock
-  (back when its name was "Cocoa Data Structures Framework") is
-  <a href="http://www.phillipmorelock.com/examples/cocoadata/"> here.</a></p>
+<p>All source code and resources for the framework are freely available at <a href="http://cocoaheads.byu.edu/code/CHDataStructures/">this link</a>. They are organized in an Xcode 3 project with all relevant dependencies.</p>
+<p>If you only need a few of the classes in the framework, you can cut down on code size by either excluding the parts you don't need from the framework, or just including the parts you do need in your own code. Please don't forget to include relevant copyright and license information if you choose to do so!</p>
+<p>The original page for the framework when it was maintained by Phillip Morelock (back when its name was "Cocoa Data Structures Framework") is <a href="http://www.phillipmorelock.com/examples/cocoadata/"> here.</a></p>
+
+<h2>Using the Framework</h2>
+<p>The framework is a directory called <code>CHDataStructures.framework</code>. When building from source, compile the All target in the Release configuration, which produces a disk image containing the framework. You can either copy the framework directory to <code>/Library/Frameworks/</code> for all applications, or bundle it inside your own application. (For details, consult the <a href="http://developer.apple.com/documentation/MacOSX/Conceptual/BPFrameworks/Tasks/IncludingFrameworks.html">Framework Programming Guide</a>.)</p>
+<p>To use code from the framework, simply <code>#import &lt;CHDataStructures/CHDataStructures.h&gt;</code> where necessary. This will import all the public headers in the framework, just as happens with <code>#import &lt;Cocoa/Cocoa.h&gt;</code>. If you want to use only a specific subset of functionality, replace the name of the .h file with the one you want to use. (Use one <code>#import</code> for each header file.)</p>
 
 <h2>Known Issues</h2>
-<p>Let's just say it: no software is perfect. It would be foolish (and a lie) to
-  claim that this framework is flawless. There are several things that could be
-  improved, and admitting you have a problem is the first step....</p>
+<p>Let's just say it: no software is perfect. It would be foolish (and a lie) to claim that this framework is flawless. There are several things that could be improved, and admitting you have a problem is the first step....</p>
 <ul>
-  <!--
-  <li>The unit tests intermittently (and sometimes only when GC is off) spit out
-    inexplicable errors deep in Cocoa, like:
-	<ul>
-	  <li><code>-[NSKeyedArchiver initForWritingWithMutableData:]: unrecognized
-	    selector sent to instance 0xd1f4320</code></li>
-	  <li><code>-encodeInt32:forKey: only defined for abstract class.  Define
-	    -[NSKeyedArchiver encodeInt32:forKey:]!</code></li>
-	</ul>
-  </li>
-  -->
-  <li>The -[CHRedBlackTree removeObject:] method is slow. Reeeeaaaaaly slow. You
-    may notice that the time complexity increases exponentially, not linearly.
-	It turns out that implementing a non-recursive remove for Red-Black trees is
-	non-trivial, and the current solution works correctly but needs work. (For
-	now, I suggest using CHAVLTree or CHAnderssonTree instead.)</li>
+<li>The <code>-[CHRedBlackTree removeObject:]</code> method is reeeeaaaaaly slow. You may notice that the time complexity increases exponentially, not linearly. It turns out that implementing a non-recursive remove for Red-Black trees is non-trivial, and the current solution works correctly but needs work. (For now, I suggest using CHAVLTree or CHAnderssonTree instead.)</li>
 </ul>
 
-<p>Hopefully this list will help draw upon the talents of others who can provide
-  solutions which currently evade me. If you have a fix for one of these items,
-  <a href="mailto:quinntaylor@mac.com?subject=CHDataStructures.framework">email
-  me</a> and we'll talk. Thanks!</p>
-
-<p>UPDATE: As a consequence of some additional reading on GC in Objective-C 2.0,
-  and specifically how it applies to heap memory usually acquired via malloc(),
-  I've added some fixes that seem to have completely banished the crashing bugs.
-  As of 13 March 2009, these changes are in the repository and everything should
-  work quite nicely, including the unit tests.</p>
+<p>Please know that it is not my intent to leave the hard things "as an exercise to the reader." (Believe me, writing a generic, iterative, state-saving tree traversal enumerator was no walk in the park!) However, I would love to draw on the talents of others who can provide solutions which currently evade me, or which I haven't had time to implement yet. If you have ideas (or even better, a fix) for one of these items, <a href="mailto:quinntaylor@mac.com?subject=CHDataStructures.framework">email me</a> and we'll talk. Thanks!</p>
 
 <h2>License Information</h2>
-<p>This framework (library) is free software and is licensed to you under the
-  <b>GNU Lesser General Public License (LGPL)</b>, which may be found at
-  <a href="http://www.gnu.org/copyleft/lesser.html">gnu.org</a> or verbatim in
-  the included <a href="LICENSE.html">LICENSE.html</a>. You may redistribute
-  and/or modify this framework under the terms of version 3 of the License, or
-  (at your option) any later version thereof. This basically means that anyone
-  can use this framework for any purpose, but there are important restrictions,
-  so please read and understand the license before using or modifying the code.
-  (The LGPL is commonly interpreted incorrectly, so please be careful.)</p>
-<p>This README file is also considered a source file under the LGPL, and you
-  must include it if you redistribute the library in source form. If you change
-  the library, you should add your own README and include it with the source,
-  describing your changes. If you contribute source code to the library, you may
-  keep your copyright or assign it to me, but you must agree to license the code
-  under the LGPL.</p>
+<p>This framework is is licensed under a variant of the <a href="http://www.isc.org/software/license">ISC license</a>, an extremely simple and permissive free software license approved by the <a href="http://www.fsf.org/licensing/licenses#ISC">Free Software Foundation (FSF)</a> and <a href="http://opensource.org/licenses/isc-license.txt">Open Source Initiative (OSI)</a>. The license for this framework is included in every source file, and is repoduced in its entirety here:</p>
+<blockquote><em>Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.<br/>
+<br/>
+The software is provided "as is", without warranty of any kind, including all implied warranties of merchantability and fitness. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.</em></blockquote>
+<p>This license is functionally equivalent to the MIT and two-clause BSD licenses, and replaces the previous use of the <a href="http://www.gnu.org/copyleft/lesser.html">GNU Lesser General Public License (LGPL)</a>, which is much more complex and frequently misunderstood. In addition, using GPL-style licenses (which are generally unfriendly towards commercial software) makes little sense for Mac developers, whether open-source or proprietary.</p>
+<p>This README file is also considered a source file, and you must include it if you redistribute the framework in source form. If you change the framework, you should add your own README and include it with the source, describing your changes. If you contribute source code to the framework, you may keep your copyright or assign it to me, but you must agree to license the code under this license.</p>
 
 <h2>Contributing to the Framework</h2>
-<p>All contributions (including bug reports and fixes, optimizations, new data
-  structures, etc.) are welcomed and encouraged. In keeping with this project's
-  goals, new features are subject to consideration prior to approval&mdash;there
-  are no guarantees of adoption. Modifications that are deemed beneficial to the
-  community as a whole will fit with the vision of this project and improve it.
-  However, not all potential contributions make sense to add to the framework.
-  For example, additions or enhancements that only apply for a specific project
-  would be more appropriate to add as categories or subclasses in that code.</p>
-<p><a href="mailto:quinntaylor@mac.com?subject=CHDataStructures.framework">
-  Email me</a> if you're interested in contributing to the project, discussing
-  improvements or additions you'd like to see, or even just letting me know that
-  you're getting some use from it.</p>
+<p>All contributions (including bug reports and fixes, optimizations, new data structures, etc.) are welcomed and encouraged. In keeping with this project's goals, new features are subject to consideration prior to approval&mdash;there are no guarantees of adoption. Modifications that are deemed beneficial to the community as a whole will fit with the vision of this project and improve it. However, not all potential contributions make sense to add to the framework. For example, additions or enhancements that only apply for a specific project would be more appropriate to add as categories or subclasses in that code.</p>
+<p><a href="mailto:quinntaylor@mac.com?subject=CHDataStructures.framework"> Email me</a> if you're interested in contributing to the project, discussing improvements or additions you'd like to see, or even just letting me know that you're getting some use from it.</p>
 
 <p>Major contributors are listed below, alphabetically by last name:</p>
 <ul>
@@ -169,31 +92,22 @@
   </li>
   <li><strong>Phillip Morelock</strong> (<a href="mailto:me@phillipmorelock.com">Email</a>, <a href="http://www.phillipmorelock.com/">Website</a>)
     <ul>
-      <li>Project inception, initial implementation, conversion of internals to
-	      straight C, maintenance.</li>
+      <li>Project inception, initial implementation, conversion of internals to straight C, maintenance.</li>
       <li>Protocols and implementations for stacks, queues, linked lists, and trees.</li>
     </ul>
   </li>
   <li><strong>Quinn Taylor</strong> (<a href="mailto:quinntaylor@mac.com">Email</a>, <a href="http://homepage.mac.com/quinntaylor/">Website</a>)
     <ul>
       <li>Conversion to <code>.xcodeproj</code> format, organization of project resources, use of Objective-C 2.0 features.</li>
-	  <li>Refactoring of protocols for performance, clarity, and compatibility
-	      with the Cocoa frameworks.</li>
-	  <li>Improvements to code comments; configured auto-generated documentation
-	      using <a href="http://doxygen.org">Doxygen</a>.</li>
-	  <li>Addition of <a href="http://www.sente.ch/software/ocunit/">OCUnit</a>
-	      unit tests, code coverage, and a simple benchmarking driver.</li>
+	  <li>Refactoring of protocols for performance, clarity, and compatibility with the Cocoa frameworks.</li>
+	  <li>Improvements to code comments; configured auto-generated documentation using <a href="http://doxygen.org">Doxygen</a>.</li>
+	  <li>Addition of <a href="http://www.sente.ch/software/ocunit/">OCUnit</a> unit tests, code coverage, and a simple benchmarking driver.</li>
 	  <li>Bugfixes and new features, including abstract classes and more Cocoa-like exception handling.</li>
     </ul>
   </li>
   <li><strong>Julienne Walker</strong> (<a href="mailto:happyfrosty@hotmail.com">Email</a>, <a href="http://eternallyconfuzzled.com/">Website</a>)
     <ul>
       <li>Indirect contributions to binary search tree code, via code and tutorials in the public domain on her website. Many thanks!</li>
-    </ul>
-  </li>
-  <li><strong>Gordon Worley</strong> (<a href="mailto:redbird@mac.com">Email</a>, <a href="http://web.mac.com/redbird/">Website</a>)
-    <ul>
-      <li>Heap protocol and initial implementation using <a href="http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSMutableArray_Class/">NSMutableArray</a>.</li>
     </ul>
   </li>
 </ul>

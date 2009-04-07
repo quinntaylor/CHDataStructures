@@ -1,20 +1,12 @@
 /*
- CHListQueue.h
- CHDataStructures.framework -- Objective-C versions of common data structures.
- Copyright (C) 2008, Quinn Taylor for BYU CocoaHeads <http://cocoaheads.byu.edu>
- Copyright (C) 2002, Phillip Morelock <http://www.phillipmorelock.com>
+ CHDataStructures.framework -- CHListQueue.h
  
- This library is free software: you can redistribute it and/or modify it under
- the terms of the GNU Lesser General Public License as published by the Free
- Software Foundation, either under version 3 of the License, or (at your option)
- any later version.
+ Copyright (c) 2008-2009, Quinn Taylor <http://homepage.mac.com/quinntaylor>
+ Copyright (c) 2002, Phillip Morelock <http://www.phillipmorelock.com>
  
- This library is distributed in the hope that it will be useful, but WITHOUT ANY
- WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
- PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
- 
- You should have received a copy of the GNU General Public License along with
- this library.  If not, see <http://www.gnu.org/copyleft/lesser.html>.
+ Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
+
+ The software is  provided "as is", without warranty of any kind, including all implied warranties of merchantability and fitness. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
  */
 
 #import "CHQueue.h"

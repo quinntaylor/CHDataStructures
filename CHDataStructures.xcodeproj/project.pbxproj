@@ -305,7 +305,6 @@
 		E4ADBB220E88174200B570BC /* CHUnbalancedTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHUnbalancedTree.h; path = source/CHUnbalancedTree.h; sourceTree = "<group>"; };
 		E4ADBB230E88174200B570BC /* CHUnbalancedTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHUnbalancedTree.m; path = source/CHUnbalancedTree.m; sourceTree = "<group>"; };
 		E4ADBB7E0E8828C500B570BC /* README.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = README.html; sourceTree = "<group>"; };
-		E4ADBB7F0E8828C500B570BC /* LICENSE.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = LICENSE.html; sourceTree = "<group>"; };
 		E4ADBC990E88412C00B570BC /* CHAbstractBinarySearchTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHAbstractBinarySearchTree.m; path = source/CHAbstractBinarySearchTree.m; sourceTree = "<group>"; };
 		E4B1AD170EB580BC00B43ADA /* CHAbstractBinarySearchTreeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHAbstractBinarySearchTreeTest.m; path = test/CHAbstractBinarySearchTreeTest.m; sourceTree = "<group>"; };
 		E4C430830F74AC4F00EDBB0B /* CHAbstractCircularBufferCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHAbstractCircularBufferCollection.h; path = source/CHAbstractCircularBufferCollection.h; sourceTree = "<group>"; };
@@ -392,7 +391,6 @@
 		089C1665FE841158C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				E4ADBB7F0E8828C500B570BC /* LICENSE.html */,
 				E4ADBB7E0E8828C500B570BC /* README.html */,
 				089C1666FE841158C02AAC07 /* InfoPlist.strings */,
 				E473C9890E9331FA005CA997 /* Unit Testing-Info.plist */,
@@ -685,7 +683,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ ${CONFIGURATION} = 'Release' ]\nthen\n\t# http://www.red-sweater.com/blog/23/automatic-build-sub-versioning-in-xcode\n\tSVN_REVISION=`svnversion | perl -p -e 's/(\\d+:)(\\d+M?S?)/\\$2/'`\n\n\tif [ $SVN_REVISION = 'exported' ]\n\tthen\n\t\tDATE=`date '+%Y-%m-%d'`\n\t\tDISK_IMAGE_NAME=${PRODUCT_NAME}\\ \\(${DATE}\\)\n\t\tDISK_IMAGE_FILE=${PRODUCT_NAME}-${DATE}.dmg\n\telse\n\t\tDISK_IMAGE_NAME=${PRODUCT_NAME}\\ \\(r${SVN_REVISION}\\)\n\t\tDISK_IMAGE_FILE=${PRODUCT_NAME}-r${SVN_REVISION}.dmg\n\tfi\n\t\n\tSOURCE_DIRECTORY=${TEMP_FILES_DIR}/temp\t\n\trm -rf   \"${SOURCE_DIRECTORY}\"/CHDataStructures.framework/\n\tmkdir -p \"${SOURCE_DIRECTORY}\"/CHDataStructures.framework/\n\n\tcp -R build/Release/CHDataStructures.framework/ \"${SOURCE_DIRECTORY}\"/CHDataStructures.framework/\n\tcp LICENSE.html \"${SOURCE_DIRECTORY}\"\n\tcp README.html \"${SOURCE_DIRECTORY}\"\n\n\t# Remove all invisible .DS_Store files before creating disk image\n\tfor file in `find \"${SOURCE_DIRECTORY}\"/CHDataStructures.framework -name .DS_Store`\n\tdo\n\t\trm $file\n\tdone\n\n\trm -f \"${DISK_IMAGE_FILE}\"\n\thdiutil create -fs HFS+ -volname \"${DISK_IMAGE_NAME}\" -srcfolder \"${SOURCE_DIRECTORY}\" \"${DISK_IMAGE_FILE}\"\n\thdiutil internet-enable -yes \"${DISK_IMAGE_FILE}\"\nfi\n";
+			shellScript = "if [ ${CONFIGURATION} = 'Release' ]\nthen\n\t# http://www.red-sweater.com/blog/23/automatic-build-sub-versioning-in-xcode\n\tSVN_REVISION=`svnversion | perl -p -e 's/(\\d+:)(\\d+M?S?)/\\$2/'`\n\n\tif [ $SVN_REVISION = 'exported' ]\n\tthen\n\t\tDATE=`date '+%Y-%m-%d'`\n\t\tDISK_IMAGE_NAME=${PRODUCT_NAME}\\ \\(${DATE}\\)\n\t\tDISK_IMAGE_FILE=${PRODUCT_NAME}-${DATE}.dmg\n\telse\n\t\tDISK_IMAGE_NAME=${PRODUCT_NAME}\\ \\(r${SVN_REVISION}\\)\n\t\tDISK_IMAGE_FILE=${PRODUCT_NAME}-r${SVN_REVISION}.dmg\n\tfi\n\t\n\tSOURCE_DIRECTORY=${TEMP_FILES_DIR}/temp\t\n\trm -rf   \"${SOURCE_DIRECTORY}\"\n\tmkdir -p \"${SOURCE_DIRECTORY}\"/CHDataStructures.framework/\n\n\tcp -R build/Release/CHDataStructures.framework/ \"${SOURCE_DIRECTORY}\"/CHDataStructures.framework/\n\tcp README.html \"${SOURCE_DIRECTORY}\"\n\n\t# Remove all invisible .DS_Store files before creating disk image\n\tfor file in `find \"${SOURCE_DIRECTORY}\"/CHDataStructures.framework -name .DS_Store`\n\tdo\n\t\trm $file\n\tdone\n\n\trm -f \"${DISK_IMAGE_FILE}\"\n\thdiutil create -fs HFS+ -volname \"${DISK_IMAGE_NAME}\" -srcfolder \"${SOURCE_DIRECTORY}\" \"${DISK_IMAGE_FILE}\"\n\thdiutil internet-enable -yes \"${DISK_IMAGE_FILE}\"\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		E46300C20ECBF0F500E1AF73 /* ShellScript */ = {
