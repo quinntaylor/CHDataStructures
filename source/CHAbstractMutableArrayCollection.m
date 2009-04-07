@@ -39,10 +39,12 @@
 #pragma mark <NSCoding>
 
 /**
- Initialize a collection with data from a given unarchiver.
+ Initialize a collection with data from a given keyed unarchiver.
  
- @param decoder An unarchiver object.
- */
+ @param decoder A keyed unarchiver object.
+
+ @see NSCoding protocol
+*/
 - (id) initWithCoder:(NSCoder*)decoder {
 	if ([super init] == nil) return nil;
 	array = [[decoder decodeObjectForKey:@"array"] retain];
@@ -50,10 +52,12 @@
 }
 
 /**
- Encodes the receiver using a given archiver.
+ Encodes data from the receiver using a given keyed archiver.
  
- @param encoder An archiver object.
- */
+ @param encoder A keyed archiver object.
+
+ @see NSCoding protocol
+*/
 - (void) encodeWithCoder:(NSCoder*)encoder {
 	[encoder encodeObject:array forKey:@"array"];
 }
@@ -61,14 +65,16 @@
 #pragma mark <NSCopying>
 
 /**
- Returns a new instance that is a copy of the receiver.
+ Returns a new instance that's a copy of the receiver. The returned object is
+ implicitly retained by the sender, who is responsible for releasing it. For
+ this class and its children, all copies are mutable. Invoked automatically by
+ the default <code>-copy</code> method inherited from NSObject.
  
- @param zone The zone identifies an area of memory from which to allocate the
-        new instance. If zone is <code>NULL</code>, the instance is allocated
-        from the default zone.
-
- The returned object is implicitly retained by the sender, who is responsible
- for releasing it. For this class and its children, all copies are mutable.
+ @param zone Identifies an area of memory from which to allocate the new
+ instance. If zone is <code>NULL</code>, the new instance is allocated
+ from the default zone. (<code>-copy</code> invokes with a NULL param.)
+ 
+ @see NSCopying protocol
  */
 - (id) copyWithZone:(NSZone *)zone {
 	return [[[self class] alloc] initWithArray:array];
@@ -77,6 +83,7 @@
 #pragma mark <NSFastEnumeration>
 
 /**
+ Called within <code>@b for (type variable @b in collection)</code> constructs.
  Returns by reference a C array of objects over which the sender should iterate,
  and as the return value the number of objects in the array.
  
@@ -85,6 +92,8 @@
  @param stackbuf A C array of objects over which the sender is to iterate.
  @param len The maximum number of objects to return in stackbuf.
  @return The number of objects returned in stackbuf, or 0 when iteration is done.
+ 
+ @see NSFastEnumeration protocol
  */
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
