@@ -16,7 +16,7 @@
  this library.  If not, see <http://www.gnu.org/copyleft/lesser.html>.
  */
 
-#import <Foundation/Foundation.h>
+#import "CHLockable.h"
 
 /**
  @file CHAbstractCircularBufferCollection.h
@@ -55,7 +55,7 @@
  Rather than enforcing that this class be abstract, the contract is implied.
  */
 
-@interface CHAbstractCircularBufferCollection : NSObject
+@interface CHAbstractCircularBufferCollection : CHLockable
 	<NSCoding, NSCopying, NSFastEnumeration>
 {
 	id *array;

@@ -16,7 +16,7 @@
  this library.  If not, see <http://www.gnu.org/copyleft/lesser.html>.
  */
 
-#import <Foundation/Foundation.h>
+#import "CHLockable.h"
 
 /**
  @file CHMultiMap.h
@@ -58,7 +58,7 @@
  designed with mutable and immutable variants. A multimap is not any more useful
  if it is immutable, so any copies made of this class are mutable by definition.
  */
-@interface CHMultiMap : NSObject <NSCoding, NSCopying>
+@interface CHMultiMap : CHLockable <NSCoding, NSCopying>
 {
 	NSMutableDictionary *dictionary; /**< Dictionary for key-value entries. */
 	NSUInteger count; /**< The number of objects currently in the multimap. */

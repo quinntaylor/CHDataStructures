@@ -40,11 +40,13 @@
 }
 
 - (void) testInitWithArray {
-	[queue release];
-	queue = [[CHMutableArrayQueue alloc] initWithArray:objects];
-	STAssertEquals([queue count], [objects count], @"Incorrect count.");
-	STAssertEqualObjects([queue allObjects], objects,
-						 @"Bad ordering on -initWithArray:");
+	for (Class aClass in queueClasses) {
+		queue = [[CHMutableArrayQueue alloc] initWithArray:objects];
+		STAssertEquals([queue count], [objects count], @"Incorrect count.");
+		STAssertEqualObjects([queue allObjects], objects,
+							 @"Bad ordering on -initWithArray:");
+		[queue release];
+	}
 }
 
 - (void) testAddObject {

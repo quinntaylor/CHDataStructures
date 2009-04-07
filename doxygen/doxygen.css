@@ -99,6 +99,14 @@ dl.el {
 	font-size: 105%;
 }
 
+.callout {
+	background-color: #eee;
+	border: 1px solid gray;
+	padding: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+}
+
 code {
 	color: #3d4f5f;
 }

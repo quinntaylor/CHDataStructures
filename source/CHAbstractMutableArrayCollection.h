@@ -17,7 +17,7 @@
  this library.  If not, see <http://www.gnu.org/copyleft/lesser.html>.
  */
 
-#import <Foundation/Foundation.h>
+#import "CHLockable.h"
 
 /**
  @file CHAbstractMutableArrayCollection.h
@@ -55,7 +55,7 @@
  Rather than enforcing that this class be abstract, the contract is implied. In
  any case, an instance would be useless since there is no way to add objects.
  */
-@interface CHAbstractMutableArrayCollection : NSObject
+@interface CHAbstractMutableArrayCollection : CHLockable
 	<NSCoding, NSCopying, NSFastEnumeration>
 {
 	NSMutableArray *array; /**< Array used for storing contents of collection. */

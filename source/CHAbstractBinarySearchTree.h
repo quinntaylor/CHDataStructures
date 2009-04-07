@@ -17,7 +17,7 @@
  this library.  If not, see <http://www.gnu.org/copyleft/lesser.html>.
  */
 
-#import <Foundation/Foundation.h>
+#import "CHLockable.h"
 #import "CHSearchTree.h"
 
 /**
@@ -77,7 +77,7 @@ HIDDEN extern BOOL kCHGarbageCollectionDisabled;
  <a href="http://eternallyconfuzzled.com/">Julienne Walker</a>. Method names have
  been changed to match the APIs of existing Cocoa collections provided by Apple.
  */
-@interface CHAbstractBinarySearchTree : NSObject <CHSearchTree>
+@interface CHAbstractBinarySearchTree : CHLockable <CHSearchTree>
 {
 	NSUInteger count; /**< The number of objects currently in the tree. */
 	CHBinaryTreeNode *header; /**< Dummy header node; eliminates root checks. */
