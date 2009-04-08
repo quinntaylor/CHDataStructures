@@ -195,6 +195,12 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	
 	STAssertEqualObjects([zigzagTree dotGraphString], expected,
 						 @"Incorrect DOT graph string for tree.");
+	
+	// Test for empty tree
+	CHUnbalancedTree *tree = [[CHUnbalancedTree alloc] init];
+	STAssertEqualObjects([tree dotGraphString],
+						 @"digraph CHUnbalancedTree\n{\n  nil;\n}\n",
+						 @"Incorrect DOT graph string for empty tree.");
 }
 
 - (void) testEmptyTree {
