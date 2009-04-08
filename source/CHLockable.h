@@ -42,8 +42,8 @@
  is past, the thread relinquishes the lock by invoking @link #unlock @endlink.
 
  <div class="warning">
- @b Warning: Calling @link #lock -lock @endlink twice from the same thread will
- lock the thread permanently. Use NSRecursiveLock to implement recursive locks.
+ @b Warning: Calling #lock twice from the same thread will lock the thread
+ permanently. Use NSRecursiveLock to implement recursive locks.
  </div>
  */
 - (void) lock;
@@ -62,9 +62,8 @@
  <div class="warning">
  @b Warning: NSLock uses POSIX threads to implement its locking behavior. When
  sending an @link #unlock -unlock @endlink message to an NSLock object, you must
- be sure that message is sent from the same thread that sent the initial @link
- #lock -lock @endlink message. Unlocking a lock from a different thread can
- result in undefined behavior.
+ be sure that message is sent from the same thread that sent the initial #lock
+ message. Unlocking a lock from a different thread can cause undefined behavior.
  </div>
  */
 - (void) unlock;

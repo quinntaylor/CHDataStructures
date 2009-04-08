@@ -68,8 +68,8 @@
 /**
  Insert a given object into the heap.
 
- @param anObject The object to add to the heap; must not be <code>nil</code>, or an
-        <code>NSInvalidArgumentException</code> will be raised.
+ @param anObject The object to add to the heap.
+ @throw NSInvalidArgumentException If @a anObject is <code>nil</code>.
  */
 - (void) addObject:(id)anObject;
 
@@ -99,7 +99,7 @@
  
  @param anObject The object to be removed from the heap.
  
- If the heap does not contain <i>anObject</i>, there is no effect, although it
+ If the heap does not contain @a anObject, there is no effect, although it
  does incur the overhead of searching the contents.
  */
 - (void) removeObject:(id)anObject;
@@ -109,7 +109,7 @@
  
  @param anObject The object to be removed from the heap.
  
- If the heap does not contain <i>anObject</i>, there is no effect, although it
+ If the heap does not contain @a anObject, there is no effect, although it
  does incur the overhead of searching the contents.
  */
 - (void) removeObjectIdenticalTo:(id)anObject;
@@ -142,8 +142,8 @@
  Determines if a heap contains a given object, matched using <code>isEqual:</code>.
  
  @param anObject The object to test for membership in the heap.
- @return <code>YES</code> if <i>anObject</i> is present in the heap, <code>NO</code>
-         if it not present or <code>nil</code>.
+ @return <code>YES</code> if @a anObject is present in the heap, <code>NO</code>
+         if it is not present or <code>nil</code>.
  */
 - (BOOL) containsObject:(id)anObject;
 
@@ -151,8 +151,8 @@
  Determines if a heap contains a given object, matched using the == operator.
  
  @param anObject The object to test for membership in the heap.
- @return <code>YES</code> if <i>anObject</i> is present in the heap, <code>NO</code>
-         if it not present or <code>nil</code>.
+ @return <code>YES</code> if @a anObject is present in the heap, <code>NO</code>
+         if it is not present or <code>nil</code>.
  */
 - (BOOL) containsObjectIdenticalTo:(id)anObject;
 

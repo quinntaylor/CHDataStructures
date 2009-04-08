@@ -91,8 +91,8 @@
  encourages (but doesn't necessarily guarantee) well-balanced treaps. Random
  numbers are generated using <code>arc4random</code> and cast as an NSUInteger.
  
- @param anObject The object to add to the queue; must not be <code>nil</code>,
- or an <code>NSInvalidArgumentException</code> will be raised.
+ @param anObject The object to add to the treap.
+ @throw NSInvalidArgumentException If @a anObject is <code>nil</code>.
  
  @see #addObject:withPriority:
  */
@@ -105,13 +105,13 @@
  <code>compare:</code> returns <code>NSOrderedSame</code>, that object is
  released and replaced by @a anObject.
 
- @param anObject The object to add to the queue; must not be <code>nil</code>,
-        or an <code>NSInvalidArgumentException</code> will be raised.
+ @param anObject The object to add to the treap.
  @param priority The priority value to be paired with the object being inserted.
         Higher values percolate to the top. NOTE: Although the parameter type is
         NSUInteger (for consistency with Foundation APIs), the priority field in
         CHBinaryTreeNode is typed as <code>u_int32_t</code>, so the value stored
         is actually <code>priority % CHTreapNotFound</code>.
+ @throw NSInvalidArgumentException If @a anObject is <code>nil</code>.
  
  If @a anObject already exists in the treap, @a priority replaces the existing
  priority, and the existing node is percolated up or down to maintain the heap

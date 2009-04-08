@@ -116,8 +116,8 @@ typedef enum {
  already contains an object for which a <code>compare:</code> message returns
  <code>NSOrderedSame</code>, that object is released and replaced by @a anObject.
  
- @param anObject The object to add to the queue; must not be <code>nil</code>,
-        or an <code>NSInvalidArgumentException</code> will be raised.
+ @param anObject The object to add to the search tree.
+ @throw NSInvalidArgumentException If @a anObject is <code>nil</code>.
  */
 - (void) addObject:(id)anObject;
 
@@ -125,9 +125,9 @@ typedef enum {
  Determines if the tree contains a given object (or one identical to it).
  Matches are based on an object's response to the <code>isEqual:</code> message.
 
- @param anObject The object to test for membership in the queue.
- @return <code>YES</code> if <i>anObject</i> is present in the queue,
-         <code>NO</code> if it not present or <code>nil</code>.
+ @param anObject The object to test for membership in the search tree.
+ @return <code>YES</code> if @a anObject is present in the search tree,
+         <code>NO</code> if it is not present or <code>nil</code>.
  */
 - (BOOL) containsObject:(id)anObject;
 

@@ -85,7 +85,7 @@
  @param firstObject The first object or set of objects to add to the dictionary.
  @param ... First the key for @a firstObject, then a null-terminated list of
         alternating values and keys.
- @throw NSInvalidArgumentException if any non-terminating parameter is nil.
+ @throw NSInvalidArgumentException if any non-terminating parameter is <code>nil</code>.
  
  Each value parameter may be an object or an NSArray or NSSet of objects to be
  associated with the corresponding key parameter.
@@ -220,7 +220,7 @@
         entry for @a aKey already exists in the receiver, @a anObject is added
         using @link NSMutableSet#addObject: -[NSMutableSet addObject:]@endlink,
         otherwise a new entry is created.
- @throw NSInvalidArgumentException If @a aKey or @a anObject is nil.
+ @throw NSInvalidArgumentException If @a aKey or @a anObject is <code>nil</code>.
  */
 - (void) addObject:(id)anObject forKey:(id)aKey;
 
@@ -232,7 +232,7 @@
         If an entry for @a aKey already exists in the receiver, @a anObject is
         added using @link NSMutableSet#unionSet: -[NSMutableSet unionSet:]@endlink,
         otherwise a new entry is created.
- @throw NSInvalidArgumentException If @a aKey or @a objectSet is nil.
+ @throw NSInvalidArgumentException If @a aKey or @a objectSet is <code>nil</code>.
  */
 - (void) addObjects:(NSSet*)objectSet forKey:(id)aKey;
 
@@ -245,7 +245,7 @@
         key already exists in the receiver, @a objectSet is added using
         @link NSMutableSet#setSet: -[NSMutableSet setSet:]@endlink, otherwise a
         new entry is created.
- @throw NSInvalidArgumentException if @a aKey or @a objectSet is nil.
+ @throw NSInvalidArgumentException if @a aKey or @a objectSet is <code>nil</code>.
  */
 - (void) setObjects:(NSSet*)objectSet forKey:(id)aKey;
 
@@ -255,7 +255,7 @@
  @param aKey The key for which to remove an entry.
  @param anObject An object (possibly) associated with @a aKey in the receiver.
         Objects are considered to be equal if -compare: returns NSOrderedSame.
- @throw NSInvalidArgumentException if @a aKey or @a anObject is nil.
+ @throw NSInvalidArgumentException if @a aKey or @a anObject is <code>nil</code>.
  
  If @a aKey does not exist in the receiver, or if @a anObject is not associated
  with @a aKey, the contents of the receiver are not modified.

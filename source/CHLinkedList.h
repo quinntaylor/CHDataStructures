@@ -63,7 +63,7 @@
  
  @param anObject The object to add to the list.
  
- @throw NSInvalidArgumentException If @a anObject is nil.
+ @throw NSInvalidArgumentException If @a anObject is <code>nil</code>.
  */
 - (void) prependObject:(id)anObject;
 
@@ -72,19 +72,19 @@
  
  @param anObject The object to add to the list.
  
- @throw NSInvalidArgumentException If @a anObject is nil.
+ @throw NSInvalidArgumentException If @a anObject is <code>nil</code>.
  */
 - (void) appendObject:(id)anObject;
 
 /**
- Inserts a given object at a given index. If <i>index</i> is already occupied, then
- objects at <i>index</i> and beyond are shifted one spot toward the end of the list.
+ Inserts a given object at a given index. If @a index is already occupied, then
+ objects at @a index and beyond are shifted one spot toward the end of the list.
  
  @param anObject The object to add to the list; must not be <code>nil</code>.
  @param index The index at which to insert @a anObject.
  
- @throw NSInvalidArgumentException If @a anObject is nil.
- @throw NSRangeException If @a index is greater than the size of the list.
+ @throw NSInvalidArgumentException If @a anObject is <code>nil</code>.
+ @throw NSRangeException If @a index is greater than the list size.
  
  <div class="warning">
  @b Warning: Inserting in the middle of a linked list is a somewhat inefficient
@@ -141,8 +141,8 @@
  Determines if a list contains a given object, matched using <code>isEqual:</code>.
  
  @param anObject The object to test for membership in the list.
- @return <code>YES</code> if <i>anObject</i> is present in the list, <code>NO</code>
-         if it not present or <code>nil</code>.
+ @return <code>YES</code> if @a anObject is present in the list, <code>NO</code>
+         if it is not present or <code>nil</code>.
  */
 - (BOOL) containsObject:(id)anObject;
 
@@ -150,8 +150,8 @@
  Determines if a list contains a given object, matched using the == operator.
  
  @param anObject The object to test for membership in the list.
- @return <code>YES</code> if <i>anObject</i> is present in the list, <code>NO</code>
-         if it not present or <code>nil</code>.
+ @return <code>YES</code> if @a anObject is present in the list, <code>NO</code>
+         if it is not present or <code>nil</code>.
  */
 - (BOOL) containsObjectIdenticalTo:(id)anObject;
 
@@ -174,11 +174,11 @@
 - (NSUInteger) indexOfObjectIdenticalTo:(id)anObject;
 
 /**
- Returns the object located at <i>index</i>.
+ Returns the object located at @a index.
  
- @param index An index from which to retrieve an object. If <i>index</i> is greater
-        than or equal to the number of elements, an NSRangeException is raised.
+ @param index An index from which to retrieve an object.
  @return The object located at index.
+ @throw NSRangeException If @a index is greater than or equal to the list size.
  */
 - (id) objectAtIndex:(NSUInteger)index;
 
@@ -199,10 +199,10 @@
  
  @param anObject The object to remove from the list.
 
- If the list does not contain <i>anObject</i>, there is no effect, although it
+ If the list does not contain @a anObject, there is no effect, although it
  does incur the overhead of searching the contents.
  
- If you want to remove only the first object which matches <i>anObject</i>, use
+ If you want to remove only the first object which matches @a anObject, use
  #indexOfObject: and #removeObjectAtIndex: instead.
  */
 - (void) removeObject:(id)anObject;
@@ -212,21 +212,20 @@
  
  @param anObject The object to remove from the list.
  
- If the list does not contain <i>anObject</i>, there is no effect, although it
+ If the list does not contain @a anObject, there is no effect, although it
  does incur the overhead of searching the contents.
  
- If you want to remove only the first object which matches <i>anObject</i>, use
+ If you want to remove only the first object which matches @a anObject, use
  #indexOfObjectIdenticalTo: and #removeObjectAtIndex: instead.
  */
 - (void) removeObjectIdenticalTo:(id)anObject;
 
 /**
- Removes the object at <i>index</i>. To fill the gap, elements beyond <i>index</i>
+ Removes the object at @a index. To fill the gap, elements beyond @a index
  have 1 subtracted from their index.
  
- @param index The index from which to remove the object. If <i>index</i> is greater
-        than or equal to the number of elements, an NSRangeException is raised.
- 
+ @param index The index from which to remove the object.
+ @throw NSRangeException If @a index is greater than or equal to the list size. 
  */
 - (void) removeObjectAtIndex:(NSUInteger)index;
 

@@ -48,8 +48,8 @@
 /**
  Add an object to the top of the stack.
  
- @param anObject The object to add to the stack; must not be <code>nil</code>,
-        or an <code>NSInvalidArgumentException</code> will be raised.
+ @param anObject The object to add to the top of the stack.
+ @throw NSInvalidArgumentException If @a anObject is <code>nil</code>.
  */
 - (void) pushObject:(id)anObject;
 
@@ -70,7 +70,7 @@
  
  @param anObject The object to be removed from the stack.
 
- If the stack does not contain <i>anObject</i>, there is no effect, although it
+ If the stack does not contain @a anObject, there is no effect, although it
  does incur the overhead of searching the contents.
  */
 - (void) removeObject:(id)anObject;
@@ -80,7 +80,7 @@
  
  @param anObject The object to be removed from the stack.
  
- If the stack does not contain <i>anObject</i>, there is no effect, although it
+ If the stack does not contain @a anObject, there is no effect, although it
  does incur the overhead of searching the contents.
  */
 - (void) removeObjectIdenticalTo:(id)anObject;
