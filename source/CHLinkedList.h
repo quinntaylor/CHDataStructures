@@ -80,7 +80,7 @@
  Inserts a given object at a given index. If @a index is already occupied, then
  objects at @a index and beyond are shifted one spot toward the end of the list.
  
- @param anObject The object to add to the list; must not be <code>nil</code>.
+ @param anObject The object to add to the list.
  @param index The index at which to insert @a anObject.
  
  @throw NSInvalidArgumentException If @a anObject is <code>nil</code>.
@@ -106,14 +106,14 @@
 /**
  Access the object at the head of the list.
 
- @return The object with the lowest index, or <code>nil</code> if the list is empty.
+ @return The object at the head of the list, or <code>nil</code> if the list is empty.
  */
 - (id) firstObject;
 
 /**
  Access the object at the tail of the list.
  
- @return The object with the highest index, or <code>nil</code> if the list is empty.
+ @return The object at the tail of the list, or <code>nil</code> if the list is empty.
  */
 - (id) lastObject;
 
@@ -160,7 +160,7 @@
  
  @param anObject The object to be matched and located in the tree.
  @return The index of the first object which is equal to @a anObject. If none of the
-         objects in the list is equal to @a anObject, returns <code>CHNotFound</code>.
+         objects in the list are equal to @a anObject, returns <code>CHNotFound</code>.
  */
 - (NSUInteger) indexOfObject:(id)anObject;
 
@@ -169,7 +169,7 @@
  
  @param anObject The object to be matched and located in the tree.
  @return The index of the first object which is equal to @a anObject. If none of the
-         objects in the list is equal to @a anObject, returns <code>CHNotFound</code>.
+         objects in the list are equal to @a anObject, returns <code>CHNotFound</code>.
  */
 - (NSUInteger) indexOfObjectIdenticalTo:(id)anObject;
 
@@ -177,8 +177,8 @@
  Returns the object located at @a index.
  
  @param index An index from which to retrieve an object.
- @return The object located at index.
  @throw NSRangeException If @a index is greater than or equal to the list size.
+ @return The object located at index.
  */
 - (id) objectAtIndex:(NSUInteger)index;
 
