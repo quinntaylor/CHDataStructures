@@ -259,13 +259,11 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 - (void) insertObject:(id)anObject atIndex:(NSUInteger)index {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
-	if (index >= count || index < 0)
+	if (index < 0 || index > count)
 		CHIndexOutOfRangeException([self class], _cmd, index, count);
 	
 	CHSinglyLinkedListNode *new = NSAllocateCollectable(kCHSinglyLinkedListNodeSize, NSScannedOption);
 	new->object = [anObject retain];
-	++count;
-	++mutations;
 	if (index == count) {
 		new->next = NULL;
 		tail = tail->next = new;
@@ -277,6 +275,8 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 		new->next = node->next;
 		node->next = new;
 	}
+	++count;
+	++mutations;
 }
 
 #pragma mark Access

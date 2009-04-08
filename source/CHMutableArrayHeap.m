@@ -198,11 +198,4 @@
 	return [[self allObjects] objectEnumerator];
 }
 
-// CHAbstractMutableArrayCollection provides this method for indexed access.
-// However, this is meaningless in a heap, so we'll specifically disallow it.
-- (id) objectAtIndex:(NSUInteger)index {
-	CHUnsupportedOperationException([self class], _cmd);
-	return nil;
-}
-
 @end

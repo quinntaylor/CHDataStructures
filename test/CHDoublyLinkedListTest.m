@@ -159,24 +159,37 @@ static BOOL gcDisabled;
 	STAssertThrows([list insertObject:nil atIndex:-1],
 	               @"Should raise an exception on nil.");
 	
-	STAssertThrows([list insertObject:@"D" atIndex:-1], @"Should raise NSRangeException.");
-	STAssertThrows([list insertObject:@"D" atIndex:1], @"Should raise NSRangeException.");
+	STAssertThrows([list insertObject:@"Z" atIndex:-1], @"Should raise NSRangeException.");
+	STAssertThrows([list insertObject:@"Z" atIndex:1], @"Should raise NSRangeException.");
+	STAssertNoThrow([list insertObject:@"Z" atIndex:0], @"Should not raise exception.");
+	[list removeLastObject];
 	
 	for (id anObject in objects)
 		[list appendObject:anObject];
 	STAssertEquals([list count], [objects count], @"Incorrect count.");
-	STAssertThrows([list insertObject:@"D" atIndex:4], @"Should raise NSRangeException.");
+	STAssertThrows([list insertObject:@"Z" atIndex:[objects count]+1], @"Should raise NSRangeException.");
+	STAssertNoThrow([list insertObject:@"Z" atIndex:[objects count]], @"Should not raise exception.");
+	[list removeLastObject];
+
 	// Try inserting in the middle
 	[list insertObject:@"D" atIndex:1];
 	STAssertEquals([list count], [objects count]+1, @"Incorrect count.");
+	STAssertEqualObjects([list objectAtIndex:0], @"A", @"-objectAtIndex: is wrong.");
 	STAssertEqualObjects([list objectAtIndex:1], @"D", @"-objectAtIndex: is wrong.");
 	STAssertEqualObjects([list objectAtIndex:2], @"B", @"-objectAtIndex: is wrong.");
+	STAssertEqualObjects([list objectAtIndex:3], @"C", @"-objectAtIndex: is wrong.");
 	// Try inserting at the beginning
 	[list insertObject:@"E" atIndex:0];
 	STAssertEquals([list count], [objects count]+2, @"Incorrect count.");
 	STAssertEqualObjects([list objectAtIndex:0], @"E", @"-objectAtIndex: is wrong.");
 	STAssertEqualObjects([list objectAtIndex:1], @"A", @"-objectAtIndex: is wrong.");
 	STAssertEqualObjects([list objectAtIndex:2], @"D", @"-objectAtIndex: is wrong.");
+	STAssertEqualObjects([list objectAtIndex:3], @"B", @"-objectAtIndex: is wrong.");
+	STAssertEqualObjects([list objectAtIndex:4], @"C", @"-objectAtIndex: is wrong.");
+	// Try inserting at the end
+	[list insertObject:@"F" atIndex:5];
+	STAssertEquals([list count], [objects count]+3, @"Incorrect count.");
+	STAssertEqualObjects([list objectAtIndex:5], @"F", @"-objectAtIndex: is wrong.");
 }
 
 - (void) testObjectEnumerator {

@@ -291,6 +291,9 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 - (void) insertObject:(id)anObject atIndex:(NSUInteger)index {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
+	if (index < 0 || index > count)
+		CHIndexOutOfRangeException([self class], _cmd, index, count);
+
 	findNodeAtIndex(index); // If found, the node is stored in "node"
 	CHDoublyLinkedListNode *newNode;
 	newNode = NSAllocateCollectable(kCHDoublyLinkedListNodeSize, NSScannedOption);

@@ -212,6 +212,12 @@
 	STAssertEqualObjects([e nextObject], @"B", @"Wrong object");
 	STAssertEqualObjects([e nextObject], @"C", @"Wrong object");
 	STAssertNil([e nextObject], @"Bad response, -nextObject should be nil");
+	
+	// Cause mutation exception
+	[buffer appendObject:@"Z"];
+	STAssertThrows([e nextObject], @"Should throw exception after mutation.");
+	STAssertThrows([e allObjects], @"Should throw exception after mutation.");
+	[buffer removeLastObject];
 
 	// Test reverse enumeration
 	
@@ -227,6 +233,12 @@
 	STAssertEqualObjects([e nextObject], @"B", @"Wrong object");
 	STAssertEqualObjects([e nextObject], @"A", @"Wrong object");
 	STAssertNil([e nextObject], @"Bad response, -nextObject should be nil");
+
+	// Cause mutation exception
+	[buffer appendObject:@"Z"];
+	STAssertThrows([e nextObject], @"Should throw exception after mutation.");
+	STAssertThrows([e allObjects], @"Should throw exception after mutation.");
+	[buffer removeLastObject];
 }
 
 - (void) testDescription {
@@ -386,6 +398,13 @@
 }
 
 - (void) testRemoveObjectAtIndex {
+	STAssertThrows([buffer removeObjectAtIndex:0],
+				   @"Should raise NSRangeException.");
+	for (id anObject in abc)
+		[buffer appendObject:anObject];
+	STAssertThrows([buffer removeObjectAtIndex:[abc count]],
+				   @"Should raise NSRangeException.");
+
 	STAssertThrows([buffer removeObjectAtIndex:0],
 				   @"Should raise exception, unsupported.");
 }

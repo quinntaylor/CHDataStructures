@@ -79,8 +79,12 @@
  objects at <i>index</i> and beyond are shifted one spot toward the end of the list.
  
  @param anObject The object to add to the list; must not be <code>nil</code>.
- @param index The index at which to insert anObject. If <i>index</i> is greater
-        than or equal to the number of elements, an NSRangeException is raised.
+ @param index The index at which to insert @a anObject.
+ 
+ <div class="warning">
+ @b Warning: Raises an NSInvalidArgumentException if @a anObject is nil, and an
+ NSRangeException if @a index is greater than the number of elements in the list.
+ </div>
  
  NOTE: Inserting in the middle of a linked list is a somewhat inefficient operation;
  although values aren't shifted like in arrays, the list must be traversed to find
