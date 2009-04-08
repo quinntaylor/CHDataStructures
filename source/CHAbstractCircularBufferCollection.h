@@ -28,7 +28,6 @@
  
  <pre><code>
  -(id) initWithArray:
- -(id) initWithCapacity:
  -(NSUInteger) count
  -(NSString*) description
  -(NSEnumerator*) objectEnumerator
@@ -57,8 +56,14 @@
 	unsigned long mutations; /**< Tracks mutations for NSFastEnumeration. */
 }
 
-- (id) initWithArray:(NSArray*)anArray;
+/**
+ Initialize a collection with a given initial capacity for the circular buffer.
+ 
+ @param capacity The number of elements that can be stored in the collection
+ before the allocated memory must be expanded. (The default value is 16.)
+ */
 - (id) initWithCapacity:(NSUInteger)capacity;
+- (id) initWithArray:(NSArray*)anArray;
 
 - (NSUInteger) count;
 - (NSEnumerator*) objectEnumerator;

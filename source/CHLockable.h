@@ -32,6 +32,8 @@
  Attempts to acquire a lock and immediately returns a Boolean that indicates
  whether the attempt was successful.
  @return YES if the lock was acquired, otherwise NO.
+ 
+ @see CHLockable
  */
 - (BOOL) tryLock;
 
@@ -42,9 +44,12 @@
  is past, the thread relinquishes the lock by invoking @link #unlock @endlink.
 
  <div class="warning">
- @b Warning: Calling #lock twice from the same thread will lock the thread
- permanently. Use NSRecursiveLock to implement recursive locks.
+ @b Warning: Calling \link NSLocking#lock -lock\endlink on NSLock twice from the
+ same thread will lock the thread permanently. Use NSRecursiveLock for recursive
+ locks. (This would require using a separate lock external to this class.)
  </div>
+ 
+ @see CHLockable
  */
 - (void) lock;
 
@@ -54,6 +59,8 @@
  acquires the lock or @a limit is reached.
  @param limit The time limit for attempting to acquire a lock.
  @return YES if the lock was acquired before @a limit, otherwise NO.
+ 
+ @see CHLockable
  */
 - (BOOL) lockBeforeDate:(NSDate*)limit;
 
@@ -65,6 +72,8 @@
  be sure that message is sent from the same thread that sent the initial #lock
  message. Unlocking a lock from a different thread can cause undefined behavior.
  </div>
+ 
+ @see CHLockable
  */
 - (void) unlock;
 
