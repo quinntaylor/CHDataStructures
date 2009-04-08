@@ -25,6 +25,11 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 		return [NSMutableSet setWithObject:object];
 }
 
+
+/**
+ @todo Combine -addObject:forKey: and -addObjects:forKey: into a single method
+ that accepts an NSArray, NSSet, or generic object, then wraps in a mutable set.
+ */
 @implementation CHMultiMap
 
 - (void) dealloc {
@@ -148,9 +153,11 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 	return [dictionary keyEnumerator];
 }
 
+/**
+ @todo Refine with custom enumerator for greater efficiency?
+ */
 - (NSEnumerator*) objectEnumerator {
 	return [[self allObjects] objectEnumerator];
-	// TODO: Refine with custom enumerator for greater efficiency?
 }
 
 - (NSSet*) objectsForKey:(id)aKey {

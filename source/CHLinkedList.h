@@ -61,16 +61,18 @@
 /**
  Add an object to the front of the list.
  
- @param anObject The object to add to the list; must not be <code>nil</code>, or an
-        <code>NSInvalidArgumentException</code> is raised.
+ @param anObject The object to add to the list.
+ 
+ @throw NSInvalidArgumentException If @a anObject is nil.
  */
 - (void) prependObject:(id)anObject;
 
 /**
  Add an object to the back of the list.
  
- @param anObject The object to add to the list; must not be <code>nil</code>, or an
-        <code>NSInvalidArgumentException</code> is raised.
+ @param anObject The object to add to the list.
+ 
+ @throw NSInvalidArgumentException If @a anObject is nil.
  */
 - (void) appendObject:(id)anObject;
 
@@ -81,14 +83,14 @@
  @param anObject The object to add to the list; must not be <code>nil</code>.
  @param index The index at which to insert @a anObject.
  
- <div class="warning">
- @b Warning: Raises an NSInvalidArgumentException if @a anObject is nil, and an
- NSRangeException if @a index is greater than the number of elements in the list.
- </div>
+ @throw NSInvalidArgumentException If @a anObject is nil.
+ @throw NSRangeException If @a index is greater than the size of the list.
  
- NOTE: Inserting in the middle of a linked list is a somewhat inefficient operation;
- although values aren't shifted like in arrays, the list must be traversed to find
- the specified index.
+ <div class="warning">
+ @b Warning: Inserting in the middle of a linked list is a somewhat inefficient
+ operation; although values aren't shifted by one like in arrays, the list must
+ be traversed to find the specified index.
+ </div>
  */
 - (void) insertObject:(id)anObject atIndex:(NSUInteger)index;
 
@@ -125,11 +127,11 @@
 
 /**
  Returns an enumerator object that provides access to each object in the receiver.
- The enumerator returned should never be nil; if the list is empty, the enumerator
- will always return nil for -nextObject, and an empty array for -allObjects.
+ The enumerator returned is never nil; if the list is empty, the enumerator will
+ always return nil for -nextObject, and an empty array for -allObjects.
  
- @return An enumerator object that lets you access each object in the receiver, from
-         the element at the lowest index upwards.
+ @return An enumerator object that lets you access each object in the receiver,
+ from the element at the lowest index upwards.
  */
 - (NSEnumerator*) objectEnumerator;
 

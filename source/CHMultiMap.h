@@ -220,7 +220,7 @@
         entry for @a aKey already exists in the receiver, @a anObject is added
         using @link NSMutableSet#addObject: -[NSMutableSet addObject:]@endlink,
         otherwise a new entry is created.
- @throw NSInvalidArgumentException if @a aKey or @a anObject is nil.
+ @throw NSInvalidArgumentException If @a aKey or @a anObject is nil.
  */
 - (void) addObject:(id)anObject forKey:(id)aKey;
 
@@ -232,7 +232,7 @@
         If an entry for @a aKey already exists in the receiver, @a anObject is
         added using @link NSMutableSet#unionSet: -[NSMutableSet unionSet:]@endlink,
         otherwise a new entry is created.
- @throw NSInvalidArgumentException  if @a aKey or @a objectSet is nil.
+ @throw NSInvalidArgumentException If @a aKey or @a objectSet is nil.
  */
 - (void) addObjects:(NSSet*)objectSet forKey:(id)aKey;
 
