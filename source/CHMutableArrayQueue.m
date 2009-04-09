@@ -30,6 +30,10 @@
 	return nil;
 }
 
+- (id) lastObject {
+	return [array lastObject];
+}
+
 - (void) removeFirstObject {
 	@try {
 		[array removeObjectAtIndex:0];

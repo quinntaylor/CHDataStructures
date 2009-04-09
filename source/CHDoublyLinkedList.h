@@ -27,17 +27,9 @@ typedef struct CHDoublyLinkedListNode {
 #pragma mark -
 
 /**
- A standard doubly-linked list implementation with pointers to head and tail.
- The extra 'previous' link allows for reverse enumeration and cheap removal from
- the tail of the list. The tradeoff is a little extra storage in each list node
- and a little extra work when inserting and removing. Nodes are represented with
- C structs rather than Obj-C classes, providing much faster performance.
+ A standard doubly-linked list implementation with pointers to head and tail. The extra 'previous' link allows for reverse enumeration and cheap removal from the tail of the list. The tradeoff is a little extra storage in each list node and a little extra work when inserting and removing. Nodes are represented with C structs rather than Obj-C classes, providing much faster performance.
  
- The use of head and tail nodes allows for simplification of the algorithms for
- insertion and deletion, since the special cases of checking whether a node is
- the first or last in the list (and handling the next and previous pointers) are
- done away with. The figures below demonstrate what a doubly-linked list looks
- like when it contains 0 objects, 1 object, and 2 or more objects.
+ The use of head and tail nodes allows for simplification of the algorithms for insertion and deletion, since the special cases of checking whether a node is the first or last in the list (and handling the next and previous pointers) are done away with. The figures below demonstrate what a doubly-linked list looks like when it contains 0 objects, 1 object, and 2 or more objects.
  
  @image html doubly-linked-0.png Figure 1 - Doubly-linked list with 0 objects.
 
@@ -45,29 +37,11 @@ typedef struct CHDoublyLinkedListNode {
 
  @image html doubly-linked-N.png Figure 3 - Doubly-linked list with 2+ objects.
  
- Just as with sentinel nodes used in binary search trees, the object pointer in
- the head and tail nodes can be nil or set to the value being searched for. This
- means there is no need to check whether the next node is null before moving on;
- just stop at the node whose object matches, then check after the match is found
- whether the node containing it was the head/tail or a valid internal node.
+ Just as with sentinel nodes used in binary search trees, the object pointer in the head and tail nodes can be nil or set to the value being searched for. This means there is no need to check whether the next node is null before moving on; just stop at the node whose object matches, then check after the match is found whether the node containing it was the head/tail or a valid internal node.
  
- The operations \link #insertObject:atIndex: -insertObject:atIndex:\endlink and
- \link #removeObjectAtIndex: -removeObjectAtIndex:\endlink take advantage of the
- bi-directional links, and begin searching for the given index from the closer
- end of the list. To reduce code duplication, all methods that append or prepend
- objects call \link #insertObject:atIndex: -insertObject:atIndex:\endlink, and
- the methods to remove the first or last objects use \link #removeObjectAtIndex:
- -removeObjectAtIndex:\endlink underneath. (Note that \link #removeObject:
- -removeObject:\endlink removes all occurrences of an object. To remove only the
- first occurrence, use \link #indexOfObject: -indexOfObject:\endlink and \link
- #removeObjectAtIndex: -removeObjectAtIndex:\endlink instead.)
+ The operations \link #insertObject:atIndex: -insertObject:atIndex:\endlink and \link #removeObjectAtIndex: -removeObjectAtIndex:\endlink take advantage of the bi-directional links, and begin searching for the given index from the closer end of the list. To reduce code duplication, all methods that append or prepend objects call \link #insertObject:atIndex: -insertObject:atIndex:\endlink, and the methods to remove the first or last objects use \link #removeObjectAtIndex: -removeObjectAtIndex:\endlink underneath. (Note that \link #removeObject: -removeObject:\endlink removes all occurrences of an object. To remove only the first occurrence, use \link #indexOfObject: -indexOfObject:\endlink and \link #removeObjectAtIndex: -removeObjectAtIndex:\endlink instead.)
  
- Doubly-linked lists are well-suited as an underlying collection for other data
- structures, such as a @a deque (double-ended queue) like the one declared in
- CHListDeque. The same functionality can be achieved using a circular buffer and
- an array, and many libraries choose to do so when objects are only added to or
- removed from the ends, but the dynamic structure of a linked list is much more
- flexible when inserting and deleting in the middle of a list.
+ Doubly-linked lists are well-suited as an underlying collection for other data structures, such as a deque (double-ended queue) like the one declared in CHListDeque. The same functionality can be achieved using a circular buffer and an array, and many libraries choose to do so when objects are only added to or removed from the ends, but the dynamic structure of a linked list is much more flexible when inserting and deleting in the middle of a list.
  */
 @interface CHDoublyLinkedList : CHLockable <CHLinkedList>
 {
@@ -80,7 +54,13 @@ typedef struct CHDoublyLinkedListNode {
 /**
  Returns an enumerator that accesses each object in the list from back to front.
  
- NOTE: When using an enumerator, you must not modify the list during enumeration.
+ @return An enumerator that accesses each object in the list from back to front. The enumerator returned is never @c nil; if the list is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
+ 
+ <div class="warning">
+ @b Warning: Requesting objects from an enumerator whose underlying collection has been modified is unsafe, and may cause a mutation exception to be raised.
+ </div>
+ 
+ This enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
  */
 - (NSEnumerator*) reverseObjectEnumerator;
 

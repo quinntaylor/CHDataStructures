@@ -119,7 +119,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
  @return An array of objects the receiver has yet to enumerate.
  
  Invoking this method exhausts the remainder of the objects, such that subsequent
- invocations of #nextObject return <code>nil</code>.
+ invocations of #nextObject return @c nil.
  */
 - (NSArray*) allObjects;
 
@@ -127,7 +127,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
  Returns the next object from the collection being enumerated.
  
  @return The next object from the collection being enumerated, or
- <code>nil</code> when all objects have been enumerated.
+ @c nil when all objects have been enumerated.
  */
 - (id) nextObject;
 
@@ -316,8 +316,8 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 }
 
 - (id) initWithArray:(NSArray*)anArray {
-	// Allow concrete child class to have a chance to initialize its own state.
-	// (The -init method in any subclass must always call -[super init] first.)
+	// Allow concrete child classes the chance to initialize their own state.
+	// (The -init method in any subclass will always call -[super init] first.)
 	if ([self init] == nil) return nil;
 	for (id anObject in anArray)
 		[self addObject:anObject];
@@ -326,25 +326,11 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 
 #pragma mark <NSCoding>
 
-/**
- Initialize a collection with data from a given keyed unarchiver.
- 
- @param decoder A keyed unarchiver object.
- 
- @see NSCoding protocol
- */
 - (id) initWithCoder:(NSCoder*)decoder {
 	// Decode the array of objects and use it to initialize the tree's contents.
 	return [self initWithArray:[decoder decodeObjectForKey:@"objects"]];
 }
 
-/**
- Encodes data from the receiver using a given keyed archiver.
- 
- @param encoder A keyed archiver object.
- 
- @see NSCoding protocol
- */
 - (void) encodeWithCoder:(NSCoder*)encoder {
 	[encoder encodeObject:[self allObjectsWithTraversalOrder:CHTraverseLevelOrder]
 	               forKey:@"objects"];
@@ -352,18 +338,6 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 
 #pragma mark <NSCopying> methods
 
-/**
- Returns a new instance that's a copy of the receiver. The returned object is
- implicitly retained by the sender, who is responsible for releasing it. For
- this class and its children, all copies are mutable. Invoked automatically by
- the default <code>-copy</code> method inherited from NSObject.
- 
- @param zone Identifies an area of memory from which to allocate the new
- instance. If zone is <code>NULL</code>, the new instance is allocated
- from the default zone. (<code>-copy</code> invokes with a NULL param.)
- 
- @see NSCopying protocol
- */
 - (id) copyWithZone:(NSZone*)zone {
 	id<CHSearchTree> newTree = [[[self class] alloc] init];
 	for (id anObject in [self allObjectsWithTraversalOrder:CHTraverseLevelOrder])
@@ -373,20 +347,6 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 
 #pragma mark <NSFastEnumeration>
 
-/**
- Called within <code>@b for (type variable @b in collection)</code> constructs.
- Returns by reference a C array of objects over which the sender should iterate,
- and as the return value the number of objects in the array.
- 
- @param state Context information that is used in the enumeration to ensure that
- the collection has not been mutated, in addition to other possibilities.
- @param stackbuf A C array of objects over which the sender is to iterate.
- @param len The maximum number of objects to return in stackbuf.
- @return The number of objects returned in stackbuf (up to a maximum of @a len)
- or 0 when iteration is done.
- 
- @see NSFastEnumeration protocol
- */
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len

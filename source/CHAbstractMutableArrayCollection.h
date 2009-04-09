@@ -17,35 +17,13 @@
  */
 
 /**
- An abstract class which implements common behaviors of array-based collections.
- This class has a single instance variable on which all the implemented methods
- act, and also conforms to several protocols:
+ An abstract class which implements common behaviors of array-based collections. This class has a single instance variable on which all the implemented methods act, and also conforms to several protocols:
  
  - NSCoding
  - NSCopying
  - NSFastEnumeration
  
- This class also contains concrete implementations for the following methods:
- 
- <pre><code>
- -(id) initWithArray:
- -(NSUInteger) count
- -(NSString*) description
- -(NSEnumerator*) objectEnumerator
- -(NSEnumerator*) reverseObjectEnumerator
- -(NSArray*) allObjects
- -(void) removeObject:
- -(void) removeAllObjects
- 
- -(BOOL) containsObject:
- -(BOOL) containsObjectIdenticalTo:
- -(NSUInteger) indexOfObject:
- -(NSUInteger) indexOfObjectIdenticalTo:
- -(id) objectAtIndex:
- </code></pre>
-
- Rather than enforcing that this class be abstract, the contract is implied. In
- any case, an instance would be useless since there is no way to add objects.
+ Rather than enforcing that this class be abstract, the contract is implied.
  */
 @interface CHAbstractMutableArrayCollection : CHLockable <NSCoding, NSCopying, NSFastEnumeration>
 {
@@ -66,5 +44,14 @@
 - (NSUInteger) indexOfObject:(id)anObject;
 - (NSUInteger) indexOfObjectIdenticalTo:(id)anObject;
 - (id) objectAtIndex:(NSUInteger)index;
+
+#pragma mark Adopted Protocols
+
+- (void) encodeWithCoder:(NSCoder *)encoder;
+- (id) initWithCoder:(NSCoder *)decoder;
+- (id) copyWithZone:(NSZone *)zone;
+- (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
+                                   objects:(id*)stackbuf
+                                     count:(NSUInteger)len;
 
 @end

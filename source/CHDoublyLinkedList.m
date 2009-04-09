@@ -55,7 +55,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 /**
  Returns the next object in the collection being enumerated.
  
- @return The next object in the collection being enumerated, or <code>nil</code>
+ @return The next object in the collection being enumerated, or @c nil
          when all objects have been enumerated.
  */
 - (id) nextObject;
@@ -66,7 +66,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
  @return An array of objects the receiver has yet to enumerate.
  
  Invoking this method exhausts the remainder of the objects, such that subsequent
- invocations of #nextObject return <code>nil</code>.
+ invocations of #nextObject return @c nil.
  */
 - (NSArray*) allObjects;
 
@@ -192,20 +192,10 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 
 #pragma mark <NSCoding>
 
-/**
- Returns an object initialized from data in a given unarchiver.
- 
- @param decoder An unarchiver object.
- */
 - (id) initWithCoder:(NSCoder *)decoder {
 	return [self initWithArray:[decoder decodeObjectForKey:@"objects"]];
 }
 
-/**
- Encodes the receiver using a given archiver.
- 
- @param encoder An archiver object.
- */
 - (void) encodeWithCoder:(NSCoder *)encoder {
 	NSArray *array = [[self objectEnumerator] allObjects];
 	[encoder encodeObject:array forKey:@"objects"];
@@ -213,16 +203,6 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 
 #pragma mark <NSCopying>
 
-/**
- Returns a new instance that is a copy of the receiver.
- 
- @param zone The zone identifies an area of memory from which to allocate the
-        new instance. If zone is <code>NULL</code>, the instance is allocated
-        from the default zone.
- 
- The returned object is implicitly retained by the sender, who is responsible
- for releasing it. For this class and its children, all copies are mutable.
- */
 - (id) copyWithZone:(NSZone *)zone {
 	CHDoublyLinkedList *newList = [[CHDoublyLinkedList alloc] init];
 	for (id anObject in self)
@@ -232,16 +212,6 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 
 #pragma mark <NSFastEnumeration>
 
-/**
- Returns by reference a C array of objects over which the sender should iterate,
- and as the return value the number of objects in the array.
- 
- @param state Context information that is used in the enumeration to ensure that
-        the collection has not been mutated, in addition to other possibilities.
- @param stackbuf A C array of objects over which the sender is to iterate.
- @param len The maximum number of objects to return in stackbuf.
- @return The number of objects returned in stackbuf, or 0 when iteration is done.
- */
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len

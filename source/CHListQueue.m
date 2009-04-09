@@ -35,6 +35,10 @@
 	return [list firstObject];
 }
 
+- (id) lastObject {
+	return [list lastObject];
+}
+
 - (void) removeFirstObject {
 	[list removeFirstObject];
 }

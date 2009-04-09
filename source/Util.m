@@ -1,5 +1,5 @@
 /*
- Util.m
+ CHDataStructures.framework -- Util.m
  
  Copyright (c) 2008-2009, Quinn Taylor <http://homepage.mac.com/quinntaylor>
  Copyright (c) 2002, Phillip Morelock <http://www.phillipmorelock.com>

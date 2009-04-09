@@ -44,6 +44,14 @@
   <compound kind="class">
     <name>NSEnumerator</name>
     <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSEnumerator_Class/Reference/Reference.html</filename>
+    <member kind="function">
+      <name>allObjects</name>
+      <anchor>//apple_ref/occ/instm/NSEnumerator/allObjects</anchor>
+    </member>
+    <member kind="function">
+      <name>nextObject</name>
+      <anchor>//apple_ref/occ/instm/NSEnumerator/nextObject</anchor>
+    </member>
   </compound>
   <compound kind="class">
     <name>NSError</name>
@@ -113,6 +121,10 @@
   <compound kind="class">
     <name>NSObject</name>
     <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSObject_Class/Reference/Reference.html</filename>
+    <member kind="function">
+      <name>copy</name>
+      <anchor>//apple_ref/occ/instm/NSObject/copy</anchor>
+    </member>
   </compound>
   <compound kind="protocol">
     <name>NSObject</name>

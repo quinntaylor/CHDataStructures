@@ -38,7 +38,7 @@ static size_t kCHPointerSize = sizeof(void*);
  @param capacity The total capacity of the circular buffer being enumerated.
  @param count The number of items currently in the circular buffer
  @param startIndex The index at which to begin enumerating (forward or reverse).
- @param isReversed YES if enumerating back-to-front, NO if natural ordering.
+ @param isReversed @c YES if enumerating back-to-front, @c NO if natural ordering.
  @param mutations A pointer to the collection's mutation count for invalidation.
  */
 - (id) initWithArray:(id*)array
@@ -54,7 +54,7 @@ static size_t kCHPointerSize = sizeof(void*);
  @return An array of objects the receiver has yet to enumerate.
  
  Invoking this method exhausts the remainder of the objects, such that subsequent
- invocations of #nextObject return <code>nil</code>.
+ invocations of #nextObject return @c nil.
  */
 - (NSArray*) allObjects;
 
@@ -62,7 +62,7 @@ static size_t kCHPointerSize = sizeof(void*);
  Returns the next object from the collection being enumerated.
  
  @return The next object from the collection being enumerated, or
- <code>nil</code> when all objects have been enumerated.
+ @c nil when all objects have been enumerated.
  */
 - (id) nextObject;
 
@@ -161,61 +161,22 @@ static size_t kCHPointerSize = sizeof(void*);
 
 #pragma mark <NSCoding>
 
-/**
- Initialize a collection with data from a given keyed unarchiver.
- 
- @param decoder A keyed unarchiver object.
- 
- @see NSCoding protocol
- */
 - (id) initWithCoder:(NSCoder*)decoder {
 	return [self initWithArray:[decoder decodeObjectForKey:@"array"]];
 }
 
-/**
- Encodes data from the receiver using a given keyed archiver.
- 
- @param encoder A keyed archiver object.
- 
- @see NSCoding protocol
- */
 - (void) encodeWithCoder:(NSCoder*)encoder {
 	[encoder encodeObject:[self allObjects] forKey:@"array"];
 }
 
 #pragma mark <NSCopying>
 
-/**
- Returns a new instance that's a copy of the receiver. The returned object is
- implicitly retained by the sender, who is responsible for releasing it. For
- this class and its children, all copies are mutable. Invoked automatically by
- the default <code>-copy</code> method inherited from NSObject.
- 
- @param zone Identifies an area of memory from which to allocate the new
- instance. If zone is <code>NULL</code>, the new instance is allocated
- from the default zone. (<code>-copy</code> invokes with a NULL param.)
- 
- @see NSCopying protocol
- */
 - (id) copyWithZone:(NSZone *)zone {
 	return [[[self class] alloc] initWithArray:[self allObjects]];
 }
 
 #pragma mark <NSFastEnumeration>
 
-/**
- Called within <code>@b for (type variable @b in collection)</code> constructs.
- Returns by reference a C array of objects over which the sender should iterate,
- and as the return value the number of objects in the array.
- 
- @param state Context information that is used in the enumeration to ensure that
- the collection has not been mutated, in addition to other possibilities.
- @param stackbuf A C array of objects over which the sender is to iterate.
- @param len The maximum number of objects to return in stackbuf.
- @return The number of objects returned in stackbuf, or 0 when iteration is done.
- 
- @see NSFastEnumeration protocol
- */
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len

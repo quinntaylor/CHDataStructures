@@ -5,7 +5,7 @@
  Copyright (c) 2002, Phillip Morelock <http://www.phillipmorelock.com>
  
  Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
-
+ 
  The software is  provided "as is", without warranty of any kind, including all implied warranties of merchantability and fitness. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
  */
 
@@ -18,34 +18,13 @@
  */
 
 /**
- An abstract class which implements common behaviors of list-based collections.
- This class has a single instance variable on which all the implemented methods
- act, and also conforms to several protocols:
+ An abstract class which implements common behaviors of list-based collections. This class has a single instance variable on which all the implemented methods act, and also conforms to several protocols:
  
  - NSCoding
  - NSCopying
  - NSFastEnumeration
  
- This class also contains concrete implementations for the following methods:
- 
- <pre><code>
- -(id) initWithArray:
- -(NSUInteger) count
- -(NSString*) description
- -(NSEnumerator*) objectEnumerator
- -(NSArray*) allObjects
- -(void) removeAllObjects
- -(void) removeObject:
- 
- -(BOOL) containsObject:
- -(BOOL) containsObjectIdenticalTo:
- -(NSUInteger) indexOfObject:
- -(NSUInteger) indexOfObjectIdenticalTo:
- -(id) objectAtIndex:
- </code></pre>
-
- Rather than enforcing that this class be abstract, the contract is implied. In
- any case, an instance would be useless since there is no way to add objects.
+ Rather than enforcing that this class be abstract, the contract is implied.
  */
 @interface CHAbstractListCollection : CHLockable <NSCoding, NSCopying, NSFastEnumeration>
 {
@@ -65,5 +44,14 @@
 - (NSUInteger) indexOfObject:(id)anObject;
 - (NSUInteger) indexOfObjectIdenticalTo:(id)anObject;
 - (id) objectAtIndex:(NSUInteger)index;
+
+#pragma mark Adopted Protocols
+
+- (id) initWithCoder:(NSCoder *)decoder;
+- (void) encodeWithCoder:(NSCoder *)encoder;
+- (id) copyWithZone:(NSZone *)zone;
+- (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
+                                   objects:(id*)stackbuf
+                                     count:(NSUInteger)len;
 
 @end

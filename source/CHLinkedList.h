@@ -5,7 +5,7 @@
  Copyright (c) 2002, Phillip Morelock <http://www.phillipmorelock.com>
  
  Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
-
+ 
  The software is  provided "as is", without warranty of any kind, including all implied warranties of merchantability and fitness. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
  */
 
@@ -15,31 +15,17 @@
 /**
  @file CHLinkedList.h
  
- A <a href="http://en.wikipedia.org/wiki/Linked_list">linked list</a> protocol
- with methods that work for singly- or doubly-linked lists.
+ A <a href="http://en.wikipedia.org/wiki/Linked_list">linked list</a> protocol with methods that work for singly- or doubly-linked lists.
  */
 
 /**
- A <a href="http://en.wikipedia.org/wiki/Linked_list">linked list</a> protocol
- with methods that work for singly- or doubly-linked lists.
+ A <a href="http://en.wikipedia.org/wiki/Linked_list">linked list</a> protocol with methods that work for singly- or doubly-linked lists.
  
- This type of data structure is useful for storing sparse data that will be traversed
- often. (Linked lists are very memory efficient when dealing with sparse data, unlike
- hashing and some array schemes.) Insertion and removal at either end of a list is
- extremely fast, but if fast random access (whether insertion, search, or removal) is
- desired, a linked list will generally incur a substantial performance penalty.
+ This type of data structure is useful for storing sparse data that will be traversed often. (Linked lists are very memory efficient when dealing with sparse data, unlike hashing and some array schemes.) Insertion and removal at either end of a list is extremely fast, but if fast random access (whether insertion, search, or removal) is desired, a linked list will generally incur a substantial performance penalty.
  
- Linked lists maintain references to both the start and end of the list, but there is
- no externally-visibly notion of state, such as a "current node". Implementations may
- choose to add indexing or hashing schemes to improve index-based or object-relative
- random access; several optional methods are included to allow such flexibility if
- desired. However, bear in mind that any such additions will increase memory cost and
- diminish the comparative advantages over classes such as NSMutableArray.
+ Linked lists maintain references to both the start and end of the list, but there is no externally-visibly notion of state, such as a "current node". Implementations may choose to add indexing or hashing schemes to improve index-based or object-relative random access; several optional methods are included to allow such flexibility if desired. However, bear in mind that any such additions will increase memory cost and diminish the comparative advantages over classes such as NSMutableArray.
  
- Index-based operations are included in this protocol, but users should be aware that
- unless a subclass chooses to use a special indexing scheme, all index-based methods
- in a linked list are O(n). If indexed operations are used frequently, it is likely
- that a better alternative is to use an NSMutableArray.
+ Index-based operations are included in this protocol, but users should be aware that unless a subclass chooses to use a special indexing scheme, all index-based methods in a linked list are O(n). If indexed operations are used frequently, it is likely that a better alternative is to use an NSMutableArray.
  */ 
 @protocol CHLinkedList <NSObject, NSCoding, NSCopying, NSFastEnumeration>
 
@@ -49,8 +35,7 @@
 - (id) init;
 
 /**
- Initialize a linked list with the contents of an array. Objects are appended in the
- order they occur in the array.
+ Initialize a linked list with the contents of an array. Objects are appended in the order they occur in the array.
  
  @param anArray An array containing object with which to populate a new linked list.
  */
@@ -63,7 +48,7 @@
  
  @param anObject The object to add to the list.
  
- @throw NSInvalidArgumentException If @a anObject is <code>nil</code>.
+ @throw NSInvalidArgumentException If @a anObject is @c nil.
  */
 - (void) prependObject:(id)anObject;
 
@@ -72,29 +57,34 @@
  
  @param anObject The object to add to the list.
  
- @throw NSInvalidArgumentException If @a anObject is <code>nil</code>.
+ @throw NSInvalidArgumentException If @a anObject is @c nil.
  */
 - (void) appendObject:(id)anObject;
 
 /**
- Inserts a given object at a given index. If @a index is already occupied, then
- objects at @a index and beyond are shifted one spot toward the end of the list.
+ Inserts a given object at a given index. If @a index is already occupied, then objects at @a index and beyond are shifted one spot toward the end of the list.
  
  @param anObject The object to add to the list.
  @param index The index at which to insert @a anObject.
  
- @throw NSInvalidArgumentException If @a anObject is <code>nil</code>.
+ @throw NSInvalidArgumentException If @a anObject is @c nil.
  @throw NSRangeException If @a index is greater than the list size.
  
  <div class="warning">
- @b Warning: Inserting in the middle of a linked list is a somewhat inefficient
- operation; although values aren't shifted by one like in arrays, the list must
- be traversed to find the specified index.
+ @b Warning: Inserting in the middle of a linked list is a somewhat inefficient operation; although values aren't shifted by one like in arrays, the list must be traversed to find the specified index.
  </div>
  */
 - (void) insertObject:(id)anObject atIndex:(NSUInteger)index;
 
 #pragma mark Access
+
+/**
+ Returns an array with the objects in this linked list, ordered front to back.
+ 
+ @return An array with the objects in this linked list. If the list is empty,
+ the array is also empty.
+ */
+- (NSArray*) allObjects;
 
 /**
  Returns the number of objects currently in the list.
@@ -105,33 +95,28 @@
 
 /**
  Access the object at the head of the list.
-
- @return The object at the head of the list, or <code>nil</code> if the list is empty.
+ 
+ @return The object at the head of the list, or @c nil if the list is empty.
  */
 - (id) firstObject;
 
 /**
  Access the object at the tail of the list.
  
- @return The object at the tail of the list, or <code>nil</code> if the list is empty.
+ @return The object at the tail of the list, or @c nil if the list is empty.
  */
 - (id) lastObject;
 
 /**
- Returns an array with the objects in this linked list, ordered front to back.
+ Returns an enumerator that accesses each object in the list from front to back.
  
- @return An array with the objects in this linked list. If the list is empty,
-         the array is also empty.
- */
-- (NSArray*) allObjects;
-
-/**
- Returns an enumerator object that provides access to each object in the receiver.
- The enumerator returned is never nil; if the list is empty, the enumerator will
- always return nil for -nextObject, and an empty array for -allObjects.
+ @return An enumerator that accesses each object in the list from front to back. The enumerator returned is never @c nil; if the list is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
  
- @return An enumerator object that lets you access each object in the receiver,
- from the element at the lowest index upwards.
+ <div class="warning">
+ @b Warning: Requesting objects from an enumerator whose underlying collection has been modified is unsafe, and may cause a mutation exception to be raised.
+ </div>
+ 
+ This enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
  */
 - (NSEnumerator*) objectEnumerator;
 
@@ -141,8 +126,7 @@
  Determines if a list contains a given object, matched using <code>isEqual:</code>.
  
  @param anObject The object to test for membership in the list.
- @return <code>YES</code> if @a anObject is present in the list, <code>NO</code>
-         if it is not present or <code>nil</code>.
+ @return @c YES if @a anObject is in the list, @c NO if it is @c nil or not present.
  */
 - (BOOL) containsObject:(id)anObject;
 
@@ -150,8 +134,7 @@
  Determines if a list contains a given object, matched using the == operator.
  
  @param anObject The object to test for membership in the list.
- @return <code>YES</code> if @a anObject is present in the list, <code>NO</code>
-         if it is not present or <code>nil</code>.
+ @return @c YES if @a anObject is in the list, @c NO if it is @c nil or not present.
  */
 - (BOOL) containsObjectIdenticalTo:(id)anObject;
 
@@ -159,8 +142,7 @@
  Returns the lowest indexof a given object, matched using <code>isEqual:</code>.
  
  @param anObject The object to be matched and located in the tree.
- @return The index of the first object which is equal to @a anObject. If none of the
-         objects in the list are equal to @a anObject, returns <code>CHNotFound</code>.
+ @return The index of the first object which is equal to @a anObject. If none of the objects in the list match @a anObject, returns <code>CHNotFound</code>.
  */
 - (NSUInteger) indexOfObject:(id)anObject;
 
@@ -168,8 +150,7 @@
  Returns the lowest indexof a given object, matched using the == operator.
  
  @param anObject The object to be matched and located in the tree.
- @return The index of the first object which is equal to @a anObject. If none of the
-         objects in the list are equal to @a anObject, returns <code>CHNotFound</code>.
+ @return The index of the first object which is equal to @a anObject. If none of the objects in the list match @a anObject, returns <code>CHNotFound</code>.
  */
 - (NSUInteger) indexOfObjectIdenticalTo:(id)anObject;
 
@@ -198,12 +179,10 @@
  Remove all occurrences of a given object, matched using <code>isEqual:</code>.
  
  @param anObject The object to remove from the list.
-
- If the list does not contain @a anObject, there is no effect, although it
- does incur the overhead of searching the contents.
  
- If you want to remove only the first object which matches @a anObject, use
- #indexOfObject: and #removeObjectAtIndex: instead.
+ If no object matching @a anObject is found, there is no effect, aside from the overhead of searching the contents.
+ 
+ Use #indexOfObject: and #removeObjectAtIndex: to remove only the first match.
  */
 - (void) removeObject:(id)anObject;
 
@@ -212,17 +191,16 @@
  
  @param anObject The object to remove from the list.
  
- If the list does not contain @a anObject, there is no effect, although it
- does incur the overhead of searching the contents.
+ If no object matching @a anObject is found, there is no effect, aside from the overhead of searching the contents.
  
- If you want to remove only the first object which matches @a anObject, use
- #indexOfObjectIdenticalTo: and #removeObjectAtIndex: instead.
+ Use #indexOfObjectIdenticalTo: and #removeObjectAtIndex: to remove only the first match.
+ 
+ If you want to remove only the first object which matches @a anObject, use #indexOfObjectIdenticalTo: and #removeObjectAtIndex: instead.
  */
 - (void) removeObjectIdenticalTo:(id)anObject;
 
 /**
- Removes the object at @a index. To fill the gap, elements beyond @a index
- have 1 subtracted from their index.
+ Removes the object at @a index. To fill the gap, elements beyond @a index have 1 subtracted from their index.
  
  @param index The index from which to remove the object.
  @throw NSRangeException If @a index is greater than or equal to the list size. 
@@ -234,44 +212,52 @@
  */
 - (void) removeAllObjects;
 
-#pragma mark Adopted Protocols
+#pragma mark <NSCoding>
 
 /**
- Returns a new instance that's a copy of the receiver. Invoked automatically by
- the default <code>-copy</code> method inherited from NSObject.
+ Initialize the receiver using data from a given keyed unarchiver.
  
- @param zone Identifies an area of memory from which to allocate the new
-        instance. If zone is <code>NULL</code>, the new instance is allocated
-        from the default zone. (<code>-copy</code> invokes with a NULL param.)
+ @param decoder A keyed unarchiver object.
  
- The returned object is implicitly retained by the sender, who is responsible
- for releasing it. Copies returned by this method are always mutable.
- */
-- (id) copyWithZone:(NSZone *)zone;
-	
-/**
- Returns an object initialized from data in a given keyed unarchiver.
- 
- @param decoder An unarchiver object.
+ @see NSCoding protocol
  */
 - (id) initWithCoder:(NSCoder *)decoder;
 
 /**
- Encodes the receiver using a given keyed archiver.
+ Encodes data from the receiver using a given keyed archiver.
  
- @param encoder An archiver object.
+ @param encoder A keyed archiver object.
+ 
+ @see NSCoding protocol
  */
 - (void) encodeWithCoder:(NSCoder *)encoder;
-	
+
+#pragma mark <NSCopying>
+
 /**
- A method for NSFastEnumeration, called by <code><b>for</b> (type variable
- <b>in</b> collection)</code> constructs.
+ Returns a new instance that is a mutable copy of the receiver. The copy is implicitly retained by the sender, who is responsible for releasing it.
  
- @param state Context information that is used in the enumeration to ensure that
-        the collection has not been mutated, in addition to other possibilities.
- @param stackbuf A C array of objects over which the sender is to iterate.
- @param len The maximum number of objects to return in stackbuf.
- @return The number of objects returned in stackbuf, or 0 when iteration is done.
+ @param zone Identifies an area of memory from which to allocate the new instance. If zone is @c nil, the default zone is used. (The \link NSObject#copy -copy\endlink method in NSObject invokes this method with a @c nil argument.)
+ 
+ @see NSCopying protocol
+ */
+- (id) copyWithZone:(NSZone *)zone;
+
+#pragma mark <NSFastEnumeration>
+
+/**
+ Called within <code>@b for (type variable @b in collection)</code> constructs. Returns by reference a C array of objects over which the sender should iterate, and as the return value the number of objects in the array.
+ 
+ <div class="warning">
+ @b Warning: Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
+ </div>
+ 
+ @param state Context information used to track progress of an enumeration..
+ @param stackbuf Pointer to a C array into which the receiver may copy objects for the sender to iterate over.
+ @param len The maximum number of objects that may be stored in @a stackbuf.
+ @return The number of objects in @c state->itemsPtr that may be iterated over, or @c 0 when the iteration is finished.
+ 
+ @see NSFastEnumeration protocol
  */
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf

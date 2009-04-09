@@ -20,13 +20,7 @@
 /**
  A node used by binary search trees for internal storage and representation.
  
- The nested anonymous union and structs are to provide flexibility for dealing
- with various types of trees and access. The first union (with pointers to the
- struct itself) provides 2 distinct yet equivalent ways to access child nodes,
- based on what is most convenient and efficient. (e.g. 'left' is equivalent to
- 'link[0]', and 'right' is equivalent to 'link[1]'). The second union (which has
- integer fields) allows the same node to be used in several different balanced
- trees, while preserving useful semantic meaning appropriate for each algorithm.
+ The nested anonymous union and structs are to provide flexibility for dealing with various types of trees and access. The first union (with pointers to the struct itself) provides 2 distinct yet equivalent ways to access child nodes, based on what is most convenient and efficient. (e.g. 'left' is equivalent to 'link[0]', and 'right' is equivalent to 'link[1]'). The second union (which has integer fields) allows the same node to be used in several different balanced trees, while preserving useful semantic meaning appropriate for each algorithm.
  */
 typedef struct CHBinaryTreeNode {
 	id object;                        /**< The object stored in the node. */
@@ -52,22 +46,11 @@ HIDDEN extern BOOL kCHGarbageCollectionDisabled;
 
 
 /**
- An abstract CHSearchTree with many default method implementations. Methods for
- search, size, and enumeration are implemented in this class, as are methods for
- NSCoding, NSCopying, and NSFastEnumeration. (This works since all child classes
- use the CHBinaryTreeNode struct.) Any subclass must implement \link #addObject:
- -addObject:\endlink and \link #removeObject: -removeObject: \endlink such that
- they conform to the inner workings of that specific subclass.
+ An abstract CHSearchTree with many default method implementations. Methods for search, size, and enumeration are implemented in this class, as are methods for NSCoding, NSCopying, and NSFastEnumeration. (This works since all child classes use the CHBinaryTreeNode struct.) Any subclass must implement \link #addObject: -addObject:\endlink and \link #removeObject: -removeObject: \endlink such that they conform to the inner workings of that specific subclass.
  
- Rather than enforcing that this class be abstract, the contract is implied. If
- this class were actually instantiated, it would be of little use since there is
- attempts to insert or remove will result in runtime exceptions being raised.
+ Rather than enforcing that this class be abstract, the contract is implied. If this class were actually instantiated, it would be of little use since there is attempts to insert or remove will result in runtime exceptions being raised.
  
- Much of the code and algorithms for trees was distilled from information in the
- <a href="http://eternallyconfuzzled.com/tuts/datastructures/jsw_tut_bst1.aspx">
- Binary Search Trees tutorial</a>, which is in the public domain, courtesy of
- <a href="http://eternallyconfuzzled.com/">Julienne Walker</a>. Method names have
- been changed to match the APIs of existing Cocoa collections provided by Apple.
+ Much of the code and algorithms for trees was distilled from information in the <a href="http://eternallyconfuzzled.com/tuts/datastructures/jsw_tut_bst1.aspx">Binary Search Trees tutorial</a>, which is in the public domain, courtesy of <a href="http://eternallyconfuzzled.com/">Julienne Walker</a>. Method names have been changed to match the APIs of existing Cocoa collections provided by Apple.
  */
 @interface CHAbstractBinarySearchTree : CHLockable <CHSearchTree>
 {
@@ -86,19 +69,14 @@ HIDDEN extern BOOL kCHGarbageCollectionDisabled;
 - (NSString*) debugDescriptionForNode:(CHBinaryTreeNode*)node;
 
 /**
- Produces a graph description in the DOT language for the receiver tree. A dot
- graph can be rendered with GraphViz, OmniGraffle, dotty, or other tools. This
- method uses an adaptation of an iterative pre-order traversal to organize the
- diagram such that it renders in order like a binary search tree. Null sentinel
- nodes are represented by arrows which point to empty space.
+ Produces a graph description in the DOT language for the receiver tree. A dot graph can be rendered with GraphViz, OmniGraffle, dotty, or other tools. This method uses an adaptation of an iterative pre-order traversal to organize the diagram such that it renders in order like a binary search tree. Null sentinel nodes are represented by arrows which point to empty space.
  
  @return A graph description in the DOT language for the receiver tree.
  */
 - (NSString*) dotGraphString;
 
 /**
- Create a string DOT description for a node in the tree.
- Override in subclasses to display additional information for tree nodes.
+ Create a string DOT description for a node in the tree. Override in subclasses to display additional information for tree nodes.
  
  @param node The node for which to create a DOT language representation.
  @return A string representation of a node in the dot language.

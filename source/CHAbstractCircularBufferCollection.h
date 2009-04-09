@@ -16,33 +16,12 @@
  */
 
 /**
- An abstract class which implements common behaviors of circular array buffers.
- This class maintains a C array of object pointers in which objects can be added
- or removed from either end cheaply, and also conforms to several protocols:
+ An abstract class which implements common behaviors of circular array buffers. This class maintains a C array of object pointers in which objects can be added or removed from either end cheaply, and also conforms to several protocols:
  
  - NSCoding
  - NSCopying
  - NSFastEnumeration
 
- This class also contains concrete implementations for the following methods:
- 
- <pre><code>
- -(id) initWithArray:
- -(NSUInteger) count
- -(NSString*) description
- -(NSEnumerator*) objectEnumerator
- -(NSEnumerator*) reverseObjectEnumerator
- -(NSArray*) allObjects
- -(void) removeObject:
- -(void) removeAllObjects
- 
- -(BOOL) containsObject:
- -(BOOL) containsObjectIdenticalTo:
- -(NSUInteger) indexOfObject:
- -(NSUInteger) indexOfObjectIdenticalTo:
- -(id) objectAtIndex:
- </code></pre>
- 
  Rather than enforcing that this class be abstract, the contract is implied.
  */
 
@@ -59,8 +38,7 @@
 /**
  Initialize a collection with a given initial capacity for the circular buffer.
  
- @param capacity The number of elements that can be stored in the collection
- before the allocated memory must be expanded. (The default value is 16.)
+ @param capacity The number of elements that can be stored in the collection before the allocated memory must be expanded. (The default value is 16.)
  */
 - (id) initWithCapacity:(NSUInteger)capacity;
 - (id) initWithArray:(NSArray*)anArray;
@@ -87,5 +65,14 @@
 - (void) removeObjectIdenticalTo:(id)anObject;
 - (void) removeObjectAtIndex:(NSUInteger)index;
 - (void) removeAllObjects;
+
+#pragma mark Adopted Protocols
+
+- (void) encodeWithCoder:(NSCoder *)encoder;
+- (id) initWithCoder:(NSCoder *)decoder;
+- (id) copyWithZone:(NSZone *)zone;
+- (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
+                                   objects:(id*)stackbuf
+                                     count:(NSUInteger)len;
 
 @end

@@ -87,6 +87,13 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 
 #pragma mark <NSCoding>
 
+/**
+ Initialize the receiver using data from a given keyed unarchiver.
+ 
+ @param decoder A keyed unarchiver object.
+ 
+ @see NSCoding protocol
+ */
 - (id) initWithCoder:(NSCoder*)decoder{
 	if ([self init] == nil) return nil;
 	dictionary = [[decoder decodeObjectForKey:@"dictionary"] retain];
@@ -94,6 +101,13 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 	return self;
 }
 
+/**
+ Encodes data from the receiver using a given keyed archiver.
+ 
+ @param encoder A keyed archiver object.
+ 
+ @see NSCoding protocol
+ */
 - (void) encodeWithCoder:(NSCoder*)encoder {
 	[encoder encodeObject:dictionary forKey:@"dictionary"];
 	[encoder encodeInteger:count forKey:@"count"];
@@ -101,6 +115,17 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 
 #pragma mark <NSCopying>
 
+/**
+ Returns a new instance that is a copy of the receiver. The returned object is
+ implicitly retained by the sender, who is responsible for releasing it. Copies
+ returned by this method are mutable. 
+ 
+ @param zone Identifies an area of memory from which to allocate the new
+ instance. If zone is @c nil, the default zone is used. (The \link NSObject#copy
+ -copy\endlink method in NSObject invokes this method with a @c nil argument.)
+ 
+ @see NSCopying protocol
+ */
 - (id) copyWithZone:(NSZone*)zone {
 	CHMultiMap *newMultiMap = [[CHMultiMap alloc] init];
 	for (id key in [self allKeys])
