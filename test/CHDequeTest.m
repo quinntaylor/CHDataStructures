@@ -99,18 +99,32 @@
 - (void) testRemoveFirstObject {
 	for (Class aClass in dequeClasses) {
 		deque = [[aClass alloc] init];
-		for (id anObject in objects)
+		for (id anObject in objects) {
 			[deque appendObject:anObject];
+			STAssertEqualObjects([deque lastObject], anObject, @"Wrong -lastObject.");
+		}
+		NSUInteger expected = [objects count];
+		STAssertEquals([deque count], expected, @"Incorrect count.");
 		STAssertEqualObjects([deque firstObject], @"A", @"Wrong -firstObject.");
+		STAssertEqualObjects([deque lastObject],  @"C", @"Wrong -lastObject.");
 		[deque removeFirstObject];
+		--expected;
+		STAssertEquals([deque count], expected, @"Incorrect count.");
 		STAssertEqualObjects([deque firstObject], @"B", @"Wrong -firstObject.");
+		STAssertEqualObjects([deque lastObject],  @"C", @"Wrong -lastObject.");
 		[deque removeFirstObject];
+		--expected;
+		STAssertEquals([deque count], expected, @"Incorrect count.");
 		STAssertEqualObjects([deque firstObject], @"C", @"Wrong -firstObject.");
+		STAssertEqualObjects([deque lastObject],  @"C", @"Wrong -lastObject.");
 		[deque removeFirstObject];
-		STAssertEqualObjects([deque firstObject], nil,  @"Wrong -firstObject.");
+		--expected;
+		STAssertEquals([deque count], expected, @"Incorrect count.");
+		STAssertNil([deque firstObject], @"-firstObject should return nil.");
+		STAssertNil([deque lastObject],  @"-lastObject should return nil.");
 		STAssertNoThrow([deque removeFirstObject],
 						@"Should never raise an exception, even when empty.");
-		STAssertEquals([deque count], (NSUInteger)0, @"Incorrect count.");
+		STAssertEquals([deque count], expected, @"Incorrect count.");
 		[deque release];
 	}
 }
@@ -126,7 +140,7 @@
 		[deque removeLastObject];
 		STAssertEqualObjects([deque lastObject], @"A", @"Wrong -lastObject.");
 		[deque removeLastObject];
-		STAssertEqualObjects([deque lastObject], nil, @"Wrong -lastObject.");
+		STAssertNil([deque lastObject], @"-lastObject should return nil.");
 		STAssertNoThrow([deque removeLastObject],
 						@"Should never raise an exception, even when empty.");
 		STAssertEquals([deque count], (NSUInteger)0, @"Incorrect count.");

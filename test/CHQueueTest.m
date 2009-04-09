@@ -60,32 +60,34 @@
 - (void) testRemoveFirstObject {
 	for (Class aClass in queueClasses) {
 		queue = [[aClass alloc] init];
-		for (id anObject in objects)
+		for (id anObject in objects) {
 			[queue addObject:anObject];
-		
+			STAssertEqualObjects([queue lastObject], anObject, @"Wrong -lastObject.");
+		}
 		NSUInteger expected = [objects count];
 		STAssertEquals([queue count], expected, @"Incorrect count.");
 		STAssertEqualObjects([queue firstObject], @"A", @"Wrong -firstObject.");
-		STAssertEquals([queue count], expected, @"Incorrect count.");
+		STAssertEqualObjects([queue lastObject],  @"C", @"Wrong -lastObject.");
 		[queue removeFirstObject];
 		--expected;
 		STAssertEquals([queue count], expected, @"Incorrect count.");
 		STAssertEqualObjects([queue firstObject], @"B", @"Wrong -firstObject.");
-		STAssertEquals([queue count], expected, @"Incorrect count.");
+		STAssertEqualObjects([queue lastObject],  @"C", @"Wrong -lastObject.");
 		[queue removeFirstObject];
 		--expected;
 		STAssertEquals([queue count], expected, @"Incorrect count.");
 		STAssertEqualObjects([queue firstObject], @"C", @"Wrong -firstObject.");
-		STAssertEquals([queue count], expected, @"Incorrect count.");
+		STAssertEqualObjects([queue lastObject],  @"C", @"Wrong -lastObject.");
 		[queue removeFirstObject];
 		--expected;
 		STAssertEquals([queue count], expected, @"Incorrect count.");
 		STAssertNil([queue firstObject], @"-firstObject should return nil.");
-		STAssertEquals([queue count], expected, @"Incorrect count.");
-		[queue removeFirstObject];
+		STAssertNil([queue lastObject],  @"-lastObject should return nil.");
+		STAssertNoThrow([queue removeFirstObject],
+						@"Should never raise an exception, even when empty.");
 		STAssertEquals([queue count], expected, @"Incorrect count.");
 		STAssertNil([queue firstObject], @"-firstObject should return nil.");
-		STAssertEquals([queue count], expected, @"Incorrect count.");
+		STAssertNil([queue lastObject], @"-lastObject should return nil.");
 
 		[queue release];
 	}

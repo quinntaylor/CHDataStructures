@@ -68,9 +68,10 @@
 - (void) testTopObjectAndPopObject {
 	for (Class aClass in stackClasses) {
 		stack = [[[aClass alloc] init] autorelease];
-		for (id anObject in objects)
+		for (id anObject in objects) {
 			[stack pushObject:anObject];
-		
+			STAssertEqualObjects([stack topObject], anObject, @"-topObject is wrong.");
+		}
 		NSUInteger expected = [objects count];
 		STAssertEquals([stack count], expected, @"Incorrect count.");
 		STAssertEqualObjects([stack topObject], @"C", @"-topObject is wrong.");
