@@ -78,12 +78,16 @@
     <name>NSLock</name>
     <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSLock_Class/Reference/Reference.html</filename>
   </compound>
-  <compound kind="class">
+  <compound kind="protocol">
     <name>NSLocking</name>
     <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Protocols/NSLocking_Protocol/Reference/Reference.html</filename>
     <member kind="function">
       <name>lock</name>
       <anchor>//apple_ref/occ/intfm/NSLocking/lock</anchor>
+    </member>
+    <member kind="function">
+      <name>unlock</name>
+      <anchor>//apple_ref/occ/intfm/NSLocking/unlock</anchor>
     </member>
   </compound>
   <compound kind="class">

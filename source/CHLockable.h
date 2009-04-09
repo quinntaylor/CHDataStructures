@@ -37,13 +37,14 @@
 - (BOOL) tryLock;
 
 /**
- Attempts to acquire a lock, blocking a thread's execution until the lock can be acquired. An application protects a critical section of code by requiring a thread to acquire a lock before executing the code. Once the critical section is past, the thread relinquishes the lock by invoking @link #unlock @endlink.
+ Attempts to acquire a lock, blocking a thread's execution until the lock can be acquired. An application protects a critical section of code by requiring a thread to acquire a lock before executing the code. Once the critical section is past, the thread relinquishes the lock by invoking #unlock.
 
  <div class="warning">
  @b Warning: Calling \link NSLocking#lock -lock\endlink on NSLock twice from the same thread will lock the thread permanently. Use NSRecursiveLock for recursive locks. (This would require using a separate lock external to this class.)
  </div>
  
  @see CHLockable
+ @see NSLocking protocol
  */
 - (void) lock;
 
@@ -61,10 +62,11 @@
  Relinquishes a previously acquired lock.
  
  <div class="warning">
- @b Warning: NSLock uses POSIX threads to implement its locking behavior. When sending an @link #unlock -unlock @endlink message to an NSLock object, you must be sure that message is sent from the same thread that sent the initial #lock message. Unlocking a lock from a different thread can cause undefined behavior.
+ @b Warning: NSLock uses POSIX threads to implement its locking behavior. When sending an \link NSLocking#unlock -unlock\endlink message to an NSLock object, you must be sure that message is sent from the same thread that sent the initial \link NSLocking#lock -lock\endlink message. Unlocking a lock from a different thread can cause undefined behavior.
  </div>
  
  @see CHLockable
+ @see NSLocking protocol
  */
 - (void) unlock;
 
