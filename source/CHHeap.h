@@ -52,7 +52,9 @@
  */
 - (id) initWithOrdering:(NSComparisonResult)order array:(NSArray*)anArray;
 
-#pragma mark Insertion
+#pragma mark Adding Objects
+/** @name Adding Objects */
+// @{
 
 /**
  Insert a given object into the heap.
@@ -69,7 +71,10 @@
  */
 - (void) addObjectsFromArray:(NSArray*)anArray;
 
-#pragma mark Access
+// @}
+#pragma mark Querying Contents
+/** @name Querying Contents */
+// @{
 
 /**
  Returns an array containing the objects in this heap in their current order. This order is almost certainly not sorted (since only the heap property need be satisfied) but this is the quickest way to retrieve all the elements in a heap.
@@ -88,6 +93,22 @@
  @return An array containing the objects in this heap in sorted order. If the heap is empty, the array is also empty.
  */
 - (NSArray*) allObjectsInSortedOrder;
+
+/**
+ Determines if a heap contains a given object, matched using <code>isEqual:</code>.
+ 
+ @param anObject The object to test for membership in the heap.
+ @return @c YES if @a anObject is in the heap, @c NO if it is @c nil or not present.
+ */
+- (BOOL) containsObject:(id)anObject;
+
+/**
+ Determines if a heap contains a given object, matched using the == operator.
+ 
+ @param anObject The object to test for membership in the heap.
+ @return @c YES if @a anObject is in the heap, @c NO if it is @c nil or not present.
+ */
+- (BOOL) containsObjectIdenticalTo:(id)anObject;
 
 /**
  Returns the number of objects currently in the heap.
@@ -120,25 +141,10 @@
  */
 - (NSEnumerator*) objectEnumerator;
 
-#pragma mark Search
-
-/**
- Determines if a heap contains a given object, matched using <code>isEqual:</code>.
- 
- @param anObject The object to test for membership in the heap.
- @return @c YES if @a anObject is in the heap, @c NO if it is @c nil or not present.
- */
-- (BOOL) containsObject:(id)anObject;
-
-/**
- Determines if a heap contains a given object, matched using the == operator.
- 
- @param anObject The object to test for membership in the heap.
- @return @c YES if @a anObject is in the heap, @c NO if it is @c nil or not present.
- */
-- (BOOL) containsObjectIdenticalTo:(id)anObject;
-
-#pragma mark Removal
+// @}
+#pragma mark Removing Objects
+/** @name Removing Objects */
+// @{
 
 /**
  Remove the front object in the heap; if it is already empty, there is no effect.
@@ -168,7 +174,10 @@
  */
 - (void) removeAllObjects;
 
+// @}
 #pragma mark <NSCoding>
+/** @name <NSCoding> */
+// @{
 
 /**
  Initialize the receiver using data from a given keyed unarchiver.
@@ -188,7 +197,10 @@
  */
 - (void) encodeWithCoder:(NSCoder *)encoder;
 
+// @}
 #pragma mark <NSCopying>
+/** @name <NSCopying> */
+// @{
 
 /**
  Returns a new instance that is a mutable copy of the receiver. The copy is implicitly retained by the sender, who is responsible for releasing it.
@@ -199,7 +211,10 @@
  */
 - (id) copyWithZone:(NSZone *)zone;
 
+// @}
 #pragma mark <NSFastEnumeration>
+/** @name <NSFastEnumeration> */
+// @{
 
 /**
  Called within <code>@b for (type variable @b in collection)</code> constructs. Returns by reference a C array of objects over which the sender should iterate, and as the return value the number of objects in the array.
@@ -219,4 +234,5 @@
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len;
 
+// @}
 @end

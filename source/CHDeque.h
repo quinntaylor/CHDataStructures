@@ -36,7 +36,9 @@
  */
 - (id) initWithArray:(NSArray*)anArray;
 
-#pragma mark Insertion
+#pragma mark Adding Objects
+/** @name Adding Objects */
+// @{
 
 /**
  Add an object to the front of the deque.
@@ -54,7 +56,10 @@
  */
 - (void) appendObject:(id)anObject;
 
-#pragma mark Access
+// @}
+#pragma mark Querying Contents
+/** @name Querying Contents */
+// @{
 
 /**
  Returns an array with the objects in this deque, ordered from front to back.
@@ -106,8 +111,6 @@
  */
 - (NSEnumerator*) reverseObjectEnumerator;
 
-#pragma mark Search
-
 /**
  Determines if a deque contains a given object, matched using <code>isEqual:</code>.
  
@@ -124,7 +127,10 @@
  */
 - (BOOL) containsObjectIdenticalTo:(id)anObject;
 
-#pragma mark Removal
+// @}
+#pragma mark Removing Objects
+/** @name Removing Objects */
+// @{
 
 /**
  Remove the first object in the deque; no effect if it is empty.
@@ -159,7 +165,10 @@
  */
 - (void) removeAllObjects;
 
+// @}
 #pragma mark <NSCoding>
+/** @name <NSCoding> */
+// @{
 
 /**
  Initialize the receiver using data from a given keyed unarchiver.
@@ -179,7 +188,10 @@
  */
 - (void) encodeWithCoder:(NSCoder *)encoder;
 
+// @}
 #pragma mark <NSCopying>
+/** @name <NSCopying> */
+// @{
 
 /**
  Returns a new instance that is a mutable copy of the receiver. The copy is implicitly retained by the sender, who is responsible for releasing it.
@@ -190,7 +202,10 @@
  */
 - (id) copyWithZone:(NSZone *)zone;
 
+// @}
 #pragma mark <NSFastEnumeration>
+/** @name <NSFastEnumeration> */
+// @{
 
 /**
  Called within <code>@b for (type variable @b in collection)</code> constructs. Returns by reference a C array of objects over which the sender should iterate, and as the return value the number of objects in the array.
@@ -210,4 +225,5 @@
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len;
 
+// @}
 @end

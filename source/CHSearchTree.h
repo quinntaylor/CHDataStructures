@@ -88,7 +88,9 @@ typedef enum {
  */
 - (id) initWithArray:(NSArray*)anArray;
 
-#pragma mark Insertion
+#pragma mark Adding Objects
+/** @name Adding Objects */
+// @{
 
 /**
  Add an object to the tree. Ordering is based on an object's response to the <code>compare:</code> message. Since no duplicates are allowed, if the tree already contains an object for which a <code>compare:</code> message returns <code>NSOrderedSame</code>, that object is released and replaced by @a anObject.
@@ -98,12 +100,10 @@ typedef enum {
  */
 - (void) addObject:(id)anObject;
 
-#pragma mark Access
-
-/**
- Returns the number of objects currently in the tree.
- */
-- (NSUInteger) count;
+// @}
+#pragma mark Querying Contents
+/** @name Querying Contents */
+// @{
 
 /**
  Returns an NSArray containing the objects in this tree in ascending order.
@@ -121,6 +121,11 @@ typedef enum {
 - (NSArray*) allObjectsWithTraversalOrder:(CHTraversalOrder)order;
 
 /**
+ Returns the number of objects currently in the tree.
+ */
+- (NSUInteger) count;
+
+/**
  Returns an enumerator that accesses each object using a given traversal order.
  
  @param order The order in which an enumerator should traverse nodes in the tree. @return An enumerator that accesses each object in the tree in a given order. The enumerator returned is never @c nil; if the tree is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
@@ -135,36 +140,6 @@ typedef enum {
  @see \link #reverseObjectEnumerator -reverseObjectEnumerator\endlink
  */
 - (NSEnumerator*) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order;
-
-/**
- Returns an enumerator that accesses each object in the tree in ascending order.
- 
- @return An enumerator that accesses each object in the tree in ascending order. The enumerator returned is never @c nil; if the tree is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
- 
- <div class="warning">
- @b Warning: Requesting objects from an enumerator whose underlying collection has been modified is unsafe, and may cause a mutation exception to be raised.
- </div>
- 
- This enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
- 
- @see \link #objectEnumeratorWithTraversalOrder: -objectEnumeratorWithTraversalOrder:\endlink
- */
-- (NSEnumerator*) objectEnumerator;
-
-/**
- Returns an enumerator that accesses each object in the tree in descending order. This enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
- 
- @return An enumerator that accesses each object in the tree in descending order. The enumerator returned is never @c nil; if the tree is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
- 
- <div class="warning">
- @b Warning: Requesting objects from an enumerator whose underlying collection has been modified is unsafe, and may cause a mutation exception to be raised.
- </div>
- 
- @see \link #objectEnumeratorWithTraversalOrder: -objectEnumeratorWithTraversalOrder:\endlink
- */
-- (NSEnumerator*) reverseObjectEnumerator;
-
-#pragma mark Search
 
 /**
  Determines if the tree contains a given object (or one identical to it). Matches are based on an object's response to the <code>isEqual:</code> message.
@@ -196,7 +171,38 @@ typedef enum {
  */
 - (id) findObject:(id)anObject;
 
-#pragma mark Removal
+/**
+ Returns an enumerator that accesses each object in the tree in ascending order.
+ 
+ @return An enumerator that accesses each object in the tree in ascending order. The enumerator returned is never @c nil; if the tree is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
+ 
+ <div class="warning">
+ @b Warning: Requesting objects from an enumerator whose underlying collection has been modified is unsafe, and may cause a mutation exception to be raised.
+ </div>
+ 
+ This enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
+ 
+ @see \link #objectEnumeratorWithTraversalOrder: -objectEnumeratorWithTraversalOrder:\endlink
+ */
+- (NSEnumerator*) objectEnumerator;
+
+/**
+ Returns an enumerator that accesses each object in the tree in descending order. This enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
+ 
+ @return An enumerator that accesses each object in the tree in descending order. The enumerator returned is never @c nil; if the tree is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
+ 
+ <div class="warning">
+ @b Warning: Requesting objects from an enumerator whose underlying collection has been modified is unsafe, and may cause a mutation exception to be raised.
+ </div>
+ 
+ @see \link #objectEnumeratorWithTraversalOrder: -objectEnumeratorWithTraversalOrder:\endlink
+ */
+- (NSEnumerator*) reverseObjectEnumerator;
+
+// @}
+#pragma mark Removing Objects
+/** @name Removing Objects */
+// @{
 
 /**
  Remove object for which <code>compare:</code> returns <code>NSOrderedSame</code>. If no matching object exists, there is no effect.
@@ -210,7 +216,10 @@ typedef enum {
  */
 - (void) removeAllObjects;
 
+// @}
 #pragma mark <NSCoding>
+/** @name <NSCoding> */
+// @{
 
 /**
  Initialize the receiver using data from a given keyed unarchiver.
@@ -230,7 +239,10 @@ typedef enum {
  */
 - (void) encodeWithCoder:(NSCoder *)encoder;
 
+// @}
 #pragma mark <NSCopying>
+/** @name <NSCopying> */
+// @{
 
 /**
  Returns a new instance that is a mutable copy of the receiver. The copy is implicitly retained by the sender, who is responsible for releasing it.
@@ -241,7 +253,10 @@ typedef enum {
  */
 - (id) copyWithZone:(NSZone *)zone;
 
+// @}
 #pragma mark <NSFastEnumeration>
+/** @name <NSFastEnumeration> */
+// @{
 
 /**
  Called within <code>@b for (type variable @b in collection)</code> constructs. Returns by reference a C array of objects over which the sender should iterate, and as the return value the number of objects in the array.
@@ -261,4 +276,5 @@ typedef enum {
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len;
 
+// @}
 @end

@@ -198,7 +198,7 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 	return batchCount;
 }
 
-#pragma mark Insertion
+#pragma mark Adding Objects
 
 - (void) prependObject:(id)anObject {
 	if (anObject == nil)
@@ -249,7 +249,19 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 	++mutations;
 }
 
-#pragma mark Access
+#pragma mark Querying Contents
+
+- (NSArray*) allObjects {
+	return [[self objectEnumerator] allObjects];
+}
+
+- (BOOL) containsObject:(id)anObject {
+	return ([self indexOfObject:anObject] != CHNotFound);
+}
+
+- (BOOL) containsObjectIdenticalTo:(id)anObject {
+	return ([self indexOfObjectIdenticalTo:anObject] != CHNotFound);
+}
 
 - (NSUInteger) count {
 	return count;
@@ -263,25 +275,11 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 	return (count == 0) ? nil : tail->object;
 }
 
-- (NSArray*) allObjects {
-	return [[self objectEnumerator] allObjects];
-}
-
 - (NSEnumerator*) objectEnumerator {
 	return [[[CHSinglyLinkedListEnumerator alloc]
               initWithList:self
                  startNode:head->next
            mutationPointer:&mutations] autorelease];
-}
-
-#pragma mark Search
-
-- (BOOL) containsObject:(id)anObject {
-	return ([self indexOfObject:anObject] != CHNotFound);
-}
-
-- (BOOL) containsObjectIdenticalTo:(id)anObject {
-	return ([self indexOfObjectIdenticalTo:anObject] != CHNotFound);
 }
 
 - (NSUInteger) indexOfObject:(id)anObject {
@@ -317,7 +315,7 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 	}
 }
 
-#pragma mark Removal
+#pragma mark Removing Objects
 
 - (void) removeFirstObject {
 	if (count > 0)

@@ -24,6 +24,9 @@
 	NSLock* lock; /**< A lock for synchronizing interaction between threads. */
 }
 
+/** @name Locks and Synchronization */
+// @{
+
 /**
  Attempts to acquire a lock and immediately returns a Boolean that indicates whether the attempt was successful.
  
@@ -64,5 +67,7 @@
  @see CHLockable
  */
 - (void) unlock;
+
+// @}
 
 @end

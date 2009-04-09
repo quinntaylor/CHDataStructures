@@ -209,7 +209,7 @@ static size_t kCHPointerSize = sizeof(void*);
 	}
 }
 
-#pragma mark Insertion
+#pragma mark Adding Objects
 
 - (void) appendObject:(id)anObject {
 	if (anObject == nil)
@@ -244,7 +244,7 @@ static size_t kCHPointerSize = sizeof(void*);
 	mutations++;
 }
 
-#pragma mark Access
+#pragma mark Querying Contents
 
 - (NSUInteger) count {
 	return count;
@@ -354,7 +354,7 @@ static size_t kCHPointerSize = sizeof(void*);
 	return array[(headIndex + index) % arrayCapacity];
 }
 
-#pragma mark Removal
+#pragma mark Removing Objects
 
 - (void) removeFirstObject {
 	if (count == 0)

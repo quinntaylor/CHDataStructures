@@ -20,6 +20,24 @@
 /**
  A node used by binary search trees for internal storage and representation.
  
+ <pre>
+	typedef struct CHBinaryTreeNode {
+		id object;
+		union {
+			struct {
+				struct CHBinaryTreeNode *left;
+				struct CHBinaryTreeNode *right;
+			};
+			struct CHBinaryTreeNode *link[2];
+		};
+		union {
+			int32_t balance;
+			u_int32_t color;
+			u_int32_t level;
+			u_int32_t priority;
+		};
+	} CHBinaryTreeNode;</pre>
+ 
  The nested anonymous union and structs are to provide flexibility for dealing with various types of trees and access. The first union (with pointers to the struct itself) provides 2 distinct yet equivalent ways to access child nodes, based on what is most convenient and efficient. (e.g. 'left' is equivalent to 'link[0]', and 'right' is equivalent to 'link[1]'). The second union (which has integer fields) allows the same node to be used in several different balanced trees, while preserving useful semantic meaning appropriate for each algorithm.
  */
 typedef struct CHBinaryTreeNode {

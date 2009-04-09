@@ -244,7 +244,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
     return batchCount;
 }
 
-#pragma mark Insertion
+#pragma mark Adding Objects
 
 - (void) prependObject:(id)anObject {
 	if (anObject == nil)
@@ -276,7 +276,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 	++mutations;
 }
 
-#pragma mark Access
+#pragma mark Querying Contents
 
 - (NSUInteger) count {
 	return count;
@@ -353,7 +353,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 	return node->object;
 }
 
-#pragma mark Removal
+#pragma mark Removing Objects
 
 - (void) removeFirstObject {
 	if (count == 0)

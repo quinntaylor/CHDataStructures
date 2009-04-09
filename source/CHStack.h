@@ -37,7 +37,9 @@
  */
 - (id) initWithArray:(NSArray*)anArray;
 
-#pragma mark Insertion
+#pragma mark Adding Objects
+/** @name Adding Objects */
+// @{
 
 /**
  Add an object to the top of the stack.
@@ -47,7 +49,10 @@
  */
 - (void) pushObject:(id)anObject;
 
-#pragma mark Access
+// @}
+#pragma mark Querying Contents
+/** @name Querying Contents */
+// @{
 
 /**
  Returns an array of the objects in this stack, ordered from top to bottom.
@@ -55,6 +60,22 @@
  @return An array of the objects in this stack. If the stack is empty, the array is also empty.
  */
 - (NSArray*) allObjects;
+
+/**
+ Checks if a stack contains a given object, matched using <code>isEqual:</code>.
+ 
+ @param anObject The object to test for membership in the stack.
+ @return @c YES if @a anObject is in the stack, @c NO if it is @c nil or not present.
+ */
+- (BOOL) containsObject:(id)anObject;
+
+/**
+ Determines if a stack contains a given object, matched using the == operator.
+ 
+ @param anObject The object to test for membership in the stack.
+ @return @c YES if @a anObject is in the stack, @c NO if it is @c nil or not present.
+ */
+- (BOOL) containsObjectIdenticalTo:(id)anObject;
 
 /**
  Returns the number of objects currently on the stack.
@@ -83,25 +104,10 @@
  */
 - (id) topObject;
 
-#pragma mark Search
-
-/**
- Checks if a stack contains a given object, matched using <code>isEqual:</code>.
- 
- @param anObject The object to test for membership in the stack.
- @return @c YES if @a anObject is in the stack, @c NO if it is @c nil or not present.
- */
-- (BOOL) containsObject:(id)anObject;
-
-/**
- Determines if a stack contains a given object, matched using the == operator.
- 
- @param anObject The object to test for membership in the stack.
- @return @c YES if @a anObject is in the stack, @c NO if it is @c nil or not present.
- */
-- (BOOL) containsObjectIdenticalTo:(id)anObject;
-
-#pragma mark Removal
+// @}
+#pragma mark Removing Objects
+/** @name Removing Objects */
+// @{
 
 /**
  Remove the topmost object on the stack; no effect if the stack is already empty.
@@ -131,7 +137,10 @@
  */
 - (void) removeAllObjects;
 
+// @}
 #pragma mark <NSCoding>
+/** @name <NSCoding> */
+// @{
 
 /**
  Initialize the receiver using data from a given keyed unarchiver.
@@ -151,7 +160,10 @@
  */
 - (void) encodeWithCoder:(NSCoder *)encoder;
 
+// @}
 #pragma mark <NSCopying>
+/** @name <NSCopying> */
+// @{
 
 /**
  Returns a new instance that is a mutable copy of the receiver. The copy is implicitly retained by the sender, who is responsible for releasing it.
@@ -162,7 +174,10 @@
  */
 - (id) copyWithZone:(NSZone *)zone;
 
+// @}
 #pragma mark <NSFastEnumeration>
+/** @name <NSFastEnumeration> */
+// @{
 
 /**
  Called within <code>@b for (type variable @b in collection)</code> constructs. Returns by reference a C array of objects over which the sender should iterate, and as the return value the number of objects in the array.
@@ -182,4 +197,5 @@
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len;
 
+// @}
 @end

@@ -41,7 +41,9 @@
  */
 - (id) initWithArray:(NSArray*)anArray;
 
-#pragma mark Insertion
+#pragma mark Adding Objects
+/** @name Adding Objects */
+// @{
 
 /**
  Add an object to the front of the list.
@@ -76,7 +78,10 @@
  */
 - (void) insertObject:(id)anObject atIndex:(NSUInteger)index;
 
-#pragma mark Access
+// @}
+#pragma mark Querying Contents
+/** @name Querying Contents */
+// @{
 
 /**
  Returns an array with the objects in this linked list, ordered front to back.
@@ -85,6 +90,22 @@
  the array is also empty.
  */
 - (NSArray*) allObjects;
+
+/**
+ Determines if a list contains a given object, matched using <code>isEqual:</code>.
+ 
+ @param anObject The object to test for membership in the list.
+ @return @c YES if @a anObject is in the list, @c NO if it is @c nil or not present.
+ */
+- (BOOL) containsObject:(id)anObject;
+
+/**
+ Determines if a list contains a given object, matched using the == operator.
+ 
+ @param anObject The object to test for membership in the list.
+ @return @c YES if @a anObject is in the list, @c NO if it is @c nil or not present.
+ */
+- (BOOL) containsObjectIdenticalTo:(id)anObject;
 
 /**
  Returns the number of objects currently in the list.
@@ -106,37 +127,6 @@
  @return The object at the tail of the list, or @c nil if the list is empty.
  */
 - (id) lastObject;
-
-/**
- Returns an enumerator that accesses each object in the list from front to back.
- 
- @return An enumerator that accesses each object in the list from front to back. The enumerator returned is never @c nil; if the list is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
- 
- <div class="warning">
- @b Warning: Requesting objects from an enumerator whose underlying collection has been modified is unsafe, and may cause a mutation exception to be raised.
- </div>
- 
- This enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
- */
-- (NSEnumerator*) objectEnumerator;
-
-#pragma mark Search
-
-/**
- Determines if a list contains a given object, matched using <code>isEqual:</code>.
- 
- @param anObject The object to test for membership in the list.
- @return @c YES if @a anObject is in the list, @c NO if it is @c nil or not present.
- */
-- (BOOL) containsObject:(id)anObject;
-
-/**
- Determines if a list contains a given object, matched using the == operator.
- 
- @param anObject The object to test for membership in the list.
- @return @c YES if @a anObject is in the list, @c NO if it is @c nil or not present.
- */
-- (BOOL) containsObjectIdenticalTo:(id)anObject;
 
 /**
  Returns the lowest indexof a given object, matched using <code>isEqual:</code>.
@@ -163,7 +153,23 @@
  */
 - (id) objectAtIndex:(NSUInteger)index;
 
-#pragma mark Removal
+/**
+ Returns an enumerator that accesses each object in the list from front to back.
+ 
+ @return An enumerator that accesses each object in the list from front to back. The enumerator returned is never @c nil; if the list is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
+ 
+ <div class="warning">
+ @b Warning: Requesting objects from an enumerator whose underlying collection has been modified is unsafe, and may cause a mutation exception to be raised.
+ </div>
+ 
+ This enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
+ */
+- (NSEnumerator*) objectEnumerator;
+
+// @}
+#pragma mark Removing Objects
+/** @name Removing Objects */
+// @{
 
 /**
  Remove the item at the head of the list.
@@ -212,7 +218,10 @@
  */
 - (void) removeAllObjects;
 
+// @}
 #pragma mark <NSCoding>
+/** @name <NSCoding> */
+// @{
 
 /**
  Initialize the receiver using data from a given keyed unarchiver.
@@ -232,7 +241,10 @@
  */
 - (void) encodeWithCoder:(NSCoder *)encoder;
 
+// @}
 #pragma mark <NSCopying>
+/** @name <NSCopying> */
+// @{
 
 /**
  Returns a new instance that is a mutable copy of the receiver. The copy is implicitly retained by the sender, who is responsible for releasing it.
@@ -243,7 +255,10 @@
  */
 - (id) copyWithZone:(NSZone *)zone;
 
+// @}
 #pragma mark <NSFastEnumeration>
+/** @name <NSFastEnumeration> */
+// @{
 
 /**
  Called within <code>@b for (type variable @b in collection)</code> constructs. Returns by reference a C array of objects over which the sender should iterate, and as the return value the number of objects in the array.
@@ -263,4 +278,5 @@
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len;
 
+// @}
 @end
