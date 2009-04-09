@@ -38,6 +38,14 @@
     <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSData_Class/Reference/Reference.html</filename>
   </compound>
   <compound kind="class">
+    <name>NSDate</name>
+    <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSDate_Class/Reference/Reference.html</filename>
+  </compound>
+  <compound kind="class">
+    <name>NSDecimalNumber</name>
+    <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSDecimalNumber_Class/Reference/Reference.html</filename>
+  </compound>
+  <compound kind="class">
     <name>NSDictionary</name>
     <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSDictionary_Class/Reference/Reference.html</filename>
   </compound>
@@ -123,6 +131,10 @@
     <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSNotification_Class/Reference/Reference.html</filename>
   </compound>
   <compound kind="class">
+    <name>NSNumber</name>
+    <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSNumber_Class/Reference/Reference.html</filename>
+  </compound>
+  <compound kind="class">
     <name>NSObject</name>
     <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSObject_Class/Reference/Reference.html</filename>
     <member kind="function">
@@ -149,6 +161,12 @@
   <compound kind="class">
     <name>NSView</name>
     <filename>http://developer.apple.com/documentation/Cocoa/Reference/ApplicationKit/Classes/NSView_Class/Reference/NSView.html</filename>
+  </compound>
+  
+  <!-- AppKit classes & protocols -->
+  <compound kind="class">
+    <name>NSCell</name>
+    <filename>http://developer.apple.com/documentation/Cocoa/Reference/ApplicationKit/Classes/nscell_Class/Reference/NSCell.html</filename>
   </compound>
   
 </tagfile>
