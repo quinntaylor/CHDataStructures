@@ -21,7 +21,7 @@
 /**
  A <a href="http://en.wikipedia.org/wiki/Stack_(data_structure)">stack</a> protocol with methods for <a href="http://en.wikipedia.org/wiki/LIFO">LIFO</a> ("Last In, First Out") operations. 
  
- A stack is commonly compared to a stack of plates. Objects may be added in any order (@link #pushObject: -pushObject:\endlink) and the most recently added object may be removed (@link #popObject -popObject\endlink) or returned without removing it (@link #topObject -topObject\endlink).
+ A stack is commonly compared to a stack of plates. Objects may be added in any order (\link #pushObject: -pushObject:\endlink) and the most recently added object may be removed (\link #popObject -popObject\endlink) or returned without removing it (\link #topObject -topObject\endlink).
  */
 @protocol CHStack <NSObject, NSCoding, NSCopying, NSFastEnumeration>
 
@@ -62,7 +62,7 @@
 - (NSArray*) allObjects;
 
 /**
- Checks if a stack contains a given object, matched using <code>isEqual:</code>.
+ Checks if a stack contains a given object, matched using @c isEqual:.
  
  @param anObject The object to test for membership in the stack.
  @return @c YES if @a anObject is in the stack, @c NO if it is @c nil or not present.
@@ -115,7 +115,7 @@
 - (void) popObject;
 
 /**
- Remove all occurrences of a given object, matched using <code>isEqual:</code>.
+ Remove all occurrences of a given object, matched using @c isEqual:.
  
  @param anObject The object to be removed from the stack.
  

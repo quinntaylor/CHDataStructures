@@ -18,31 +18,24 @@ size_t kCHPointerSize = sizeof(void*);
 BOOL kCHGarbageCollectionDisabled;
 
 /**
- A dummy object that resides in the header node for a tree. Using a header node
- can simplify insertion logic by eliminating the need to check whether the root
- is null. In such cases, the tree root is generally stored as the right child of
- the header. In order to always proceed to the right child when traversing down
- the tree, instances of this class always return <code>NSOrderedAscending</code>
- when called as the receiver of the <code>-compare:</code> method.
+ A dummy object that resides in the header node for a tree. Using a header node can simplify insertion logic by eliminating the need to check whether the root is null. The actual root of the tree is generally stored as the right child of the header node. In order to always proceed to the actual root node when traversing down the tree, instances of this class always return @c NSOrderedAscending when called as the receiver of the @c -compare: method.
+ 
+ Since all header objects behave the same way, all search tree instances can share the same dummy header object. The singleton instance can be obtained via the \link #headerObject +headerObject\endlink method. The singleton is created the first time a subclass of CHAbstractBinarySearchTree is used, and persists for the duration of the program.
  */
 @interface CHSearchTreeHeaderObject : NSObject
 
 /**
- Returns the singleton instance of this class. The singleton variable is defined
- in this file (CHAbstractBinarySearchTree.m) and is initialized only once in
- +[CHAbstractBinarySearchTree initialize].
+ Returns the singleton instance of this class. The singleton variable is defined in this file and is initialized only once in the @c +initialize method of CHAbstractBinarySearchTree.
  
  @return The singleton instance of this class.
  */
 + (id) headerObject;
 
 /**
- Always indicate that the other object should appear to the right side. @b Note:
- To work correctly, this object @b must be the receiver of the -compare: message.
+ Always indicate that the other object should appear to the right side. @b Note: To work correctly, this object @b must be the receiver of the -compare: message.
  
  @param otherObject The object to be compared to the receiver.
- @return <code>NSOrderedAscending</code>, indicating that traversal should go to
- the right child of the containing tree node.
+ @return @c NSOrderedAscending, indicating that traversal should go to the right child of the containing tree node.
  */
 - (NSComparisonResult) compare:(id)otherObject;
 
@@ -53,8 +46,6 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 @implementation CHSearchTreeHeaderObject
 
 + (id) headerObject {
-	if (headerObject == nil)
-		headerObject = [[CHSearchTreeHeaderObject alloc] init];
 	return headerObject;
 }
 
@@ -75,13 +66,9 @@ static CHSearchTreeHeaderObject *headerObject = nil;
  <li>Iterative algorithms are faster since they reduce overhead of function calls.
  </ol>
  
- The stacks and queues used for storing traversal state use malloced C structs
- and <code>\#define</code> pseudo-functions to increase performance and reduce
- the required memory footprint by dynamically allocating as needed.
+ The stacks and queues used for storing traversal state use malloced C structsand @c \#define pseudo-functions to increase performance and reduce the required memory footprint by dynamically allocating as needed.
  
- Enumerators encapsulate their own state, and more than one may be active at once.
- However, like an enumerator for a mutable data structure, any instances of this
- enumerator become invalid if the tree is modified.
+ Enumerators encapsulate their own state, and more than one may be active at once. However, like an enumerator for a mutable data structure, any instances of this enumerator become invalid if the tree is modified.
  */
 @interface CHBinarySearchTreeEnumerator : NSEnumerator
 {
@@ -100,8 +87,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 /**
  Create an enumerator which traverses a given (sub)tree in the specified order.
  
- @param tree The tree collection that is being enumerated. This collection is to
- be retained while the enumerator has not exhausted all its objects.
+ @param tree The tree collection that is being enumerated. This collection is to be retained while the enumerator has not exhausted all its objects.
  @param root The root node of the @a tree whose elements are to be enumerated.
  @param sentinel The sentinel value used at the leaves of the specified @a tree.
  @param order The traversal order to use for enumerating the given @a tree.
@@ -118,16 +104,14 @@ static CHSearchTreeHeaderObject *headerObject = nil;
  
  @return An array of objects the receiver has yet to enumerate.
  
- Invoking this method exhausts the remainder of the objects, such that subsequent
- invocations of #nextObject return @c nil.
+ Invoking this method exhausts the remainder of the objects, such that subsequent invocations of #nextObject return @c nil.
  */
 - (NSArray*) allObjects;
 
 /**
  Returns the next object from the collection being enumerated.
  
- @return The next object from the collection being enumerated, or
- @c nil when all objects have been enumerated.
+ @return The next object from the collection being enumerated, or @c nil when all objects have been enumerated.
  */
 - (id) nextObject;
 
@@ -284,6 +268,9 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 
 + (void) initialize {
 	kCHGarbageCollectionDisabled = !objc_collectingEnabled();
+	if (headerObject == nil) {
+		headerObject = [[CHSearchTreeHeaderObject alloc] init];
+	}
 }
 
 - (void) dealloc {
@@ -449,14 +436,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 }
 
 /**
- Removes all nodes in the tree and releases the objects they point to. The root
- node's object pointer is reset to the sentinel, and the element count is reset
- to zero. If garbage collection is NOT enabled, the tree nodes are freed using a
- pre-order traversal by pushing child nodes on a stack. (This approach generally
- requires less space than level-order traversal, since it is depth-first instead
- of breadth-first, and should be faster, too.) Under garbage collection, setting
- the root node link to the sentinel will cause the entire graph of tree nodes to
- become eligible for garbage collection.
+ Removes all nodes in the tree and releases the objects they point to. The root node's object pointer is reset to the sentinel, and the element count is reset to zero. If garbage collection is NOT enabled, the tree nodes are freed using a pre-order traversal by pushing child nodes on a stack. (This approach generally requires less space than level-order traversal, since it is depth-first instead of breadth-first, and should be faster, too.) Under garbage collection, setting the root node link to the sentinel will cause the entire graph of tree nodes to become eligible for garbage collection.
  */
 - (void) removeAllObjects {
 	if (count == 0)

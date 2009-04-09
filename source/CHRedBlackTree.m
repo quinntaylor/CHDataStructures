@@ -89,11 +89,7 @@ static inline CHBinaryTreeNode* doubleRotation(CHBinaryTreeNode *node, BOOL goin
 }
 
 /*
- Basically, as you walk down the tree to insert, if the present node has two
- red children, you color it red and change the two children to black. If its
- parent is red, the tree must be rotated. (Just change the root's color back
- to black if you changed it). Returns without incrementing the count if the
- object already exists in the tree.
+ Basically, as you walk down the tree to insert, if the present node has two red children, color it red and change the two children to black. If its parent is red, the tree must be rotated. (Just change the root's color back to black if you changed it). Returns without incrementing the count if the object already exists in the tree.
  */
 - (void) addObject:(id)anObject {
 	if (anObject == nil)
@@ -151,10 +147,9 @@ static inline CHBinaryTreeNode* doubleRotation(CHBinaryTreeNode *node, BOOL goin
 
 /**
  @param anObject The object to be removed from the tree.
- @todo Speed up red-black removal: performance currently grows exponentially.
- The EC tutorial opts to push a red node down the tree using rotations and flips
- to avoid a nasty case of deleting a black node. This is almost certainly what
- causes the performance problems.
+ 
+ @bug Perfomance decays exponentially (not linearly) when removing objects.
+ @todo Speed up red-black removal. The EternallyConfuzzled.com tutorial opts to push a red node down the tree using rotations and flips to avoid a nasty case of deleting a black node. This is almost certainly what causes the performance problems.
 
  http://www.stanford.edu/~blp/avl/libavl.html/Deleting-from-an-RB-Tree.html
  http://eternallyconfuzzled.com/tuts/datastructures/jsw_tut_rbtree.aspx

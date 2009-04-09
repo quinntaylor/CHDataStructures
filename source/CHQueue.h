@@ -21,7 +21,7 @@
 /**
  A <a href="http://en.wikipedia.org/wiki/Queue_(data_structure)">queue</a> protocol with methods for <a href="http://en.wikipedia.org/wiki/FIFO">FIFO</a> ("First In, First Out") operations.
  
- A queue is commonly compared to waiting in line. When objects are added, they go to the back of the line, and objects are always removed from the front of the line. These actions are accomplished using @link #addObject: -addObject:\endlink and @link #removeFirstObject -removeFirstObject\endlink, respectively. The frontmost object may be examined (not removed) using @link #firstObject -firstObject\endlink.
+ A queue is commonly compared to waiting in line. When objects are added, they go to the back of the line, and objects are always removed from the front of the line. These actions are accomplished using \link #addObject: -addObject:\endlink and \link #removeFirstObject -removeFirstObject\endlink, respectively. The frontmost object may be examined (not removed) using \link #firstObject -firstObject\endlink.
  */
 @protocol CHQueue <NSObject, NSCoding, NSCopying, NSFastEnumeration>
 
@@ -62,7 +62,7 @@
 - (NSArray*) allObjects;
 
 /**
- Checks if a queue contains a given object, matched using <code>isEqual:</code>.
+ Checks if a queue contains a given object, matched using @c isEqual:.
  
  @param anObject The object to test for membership in the queue.
  @return @c YES if @a anObject is in the queue, @c NO if it is @c nil or not present.
@@ -122,7 +122,7 @@
 - (void) removeFirstObject;
 
 /**
- Remove all occurrences of a given object, matched using <code>isEqual:</code>.
+ Remove all occurrences of a given object, matched using @c isEqual:.
  
  @param anObject The object to be removed from the queue.
  

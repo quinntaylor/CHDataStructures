@@ -64,7 +64,7 @@ HIDDEN extern BOOL kCHGarbageCollectionDisabled;
 
 
 /**
- An abstract CHSearchTree with many default method implementations. Methods for search, size, and enumeration are implemented in this class, as are methods for NSCoding, NSCopying, and NSFastEnumeration. (This works since all child classes use the CHBinaryTreeNode struct.) Any subclass must implement \link #addObject: -addObject:\endlink and \link #removeObject: -removeObject: \endlink such that they conform to the inner workings of that specific subclass.
+ An abstract CHSearchTree with many default method implementations. Methods for search, size, and enumeration are implemented in this class, as are methods for NSCoding, NSCopying, and NSFastEnumeration. (This works since all child classes use the CHBinaryTreeNode struct.) Any subclass must implement \link #addObject: -addObject:\endlink and \link #removeObject: -removeObject:\endlink such that they conform to the inner workings of that specific subclass.
  
  Rather than enforcing that this class be abstract, the contract is implied. If this class were actually instantiated, it would be of little use since there is attempts to insert or remove will result in runtime exceptions being raised.
  

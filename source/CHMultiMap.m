@@ -11,8 +11,7 @@
 #import "CHMultiMap.h"
 
 /**
- Utility function for creating a new NSMutableSet containing object; if object
- is a set or array, the set containts all objects in the collection.
+ Utility function for creating a new NSMutableSet containing object; if object is a set or array, the set containts all objects in the collection.
  */
 static inline NSMutableSet* createMutableSetFromObject(id object) {
 	if (object == nil)
@@ -27,8 +26,7 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 
 
 /**
- @todo Combine -addObject:forKey: and -addObjects:forKey: into a single method
- that accepts an NSArray, NSSet, or generic object, then wraps in a mutable set.
+ @todo Combine -addObject:forKey: and -addObjects:forKey: into a single method that accepts an NSArray, NSSet, or generic object, then wraps in a mutable set.
  */
 @implementation CHMultiMap
 
@@ -116,13 +114,9 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 #pragma mark <NSCopying>
 
 /**
- Returns a new instance that is a copy of the receiver. The returned object is
- implicitly retained by the sender, who is responsible for releasing it. Copies
- returned by this method are mutable. 
+ Returns a new instance that is a copy of the receiver. The returned object is implicitly retained by the sender, who is responsible for releasing it. Copies returned by this method are mutable. 
  
- @param zone Identifies an area of memory from which to allocate the new
- instance. If zone is @c nil, the default zone is used. (The \link NSObject#copy
- -copy\endlink method in NSObject invokes this method with a @c nil argument.)
+ @param zone Identifies an area of memory from which to allocate the new instance. If zone is @c nil, the default zone is used. (The \link NSObject#copy -copy\endlink method in NSObject invokes this method with a @c nil argument.)
  
  @see NSCopying protocol
  */

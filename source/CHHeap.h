@@ -21,7 +21,7 @@
 /**
  A <a href="http://en.wikipedia.org/wiki/Heap_(data_structure)">heap</a> protocol, suitable for use with many variations of the heap structure.
  
- Since objects in a Heap are inserted according to their sorted order, all objects must respond to the <code>compare:</code> selector, which accepts another object and returns NSOrderedAscending, NSOrderedSame, or NSOrderedDescending as the receiver is less than, equal to, or greater than the argument, respectively. (See NSComparisonResult in NSObjCRuntime.h for details.) 
+ Objects are "heapified" according to their sorted order, so they must respond to the @c -compare: selector, which accepts another object and returns @c NSOrderedAscending, @c NSOrderedSame, or @c NSOrderedDescending (constants in <a href="http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Miscellaneous/Foundation_DataTypes/Reference/reference.html#//apple_ref/c/tdef/NSComparisonResult">NSComparisonResult</a>) as the receiver is less than, equal to, or greater than the argument, respectively. (Several Cocoa classes already implement the @c -compare: method, including NSString, NSDate, NSNumber, NSDecimalNumber, and NSCell.) 
  */
 @protocol CHHeap <NSObject, NSCoding, NSCopying, NSFastEnumeration>
 
@@ -31,7 +31,7 @@
 - (id) init;
 
 /**
- Initialize a heap with the contents of an array. Objects are added to the heap as they occur in the array, then sorted using <code>NSOrderedAscending</code>.
+ Initialize a heap with the contents of an array. Objects are added to the heap as they occur in the array, then sorted using @c NSOrderedAscending.
  
  @param anArray An array containing object with which to populate a new heap.
  */
@@ -40,14 +40,14 @@
 /**
  Initialize a heap with a given sort ordering and no objects.
  
- @param order The sort order to use, either <code>NSOrderedAscending</code> or <code>NSOrderedDescending</code>. The root element of the heap will be the smallest or largest (according to <code>-compare:</code>), respectively. For any other value, an <code>NSInvalidArgumentException</code> is raised.
+ @param order The sort order to use, either @c NSOrderedAscending or @c NSOrderedDescending. The root element of the heap will be the smallest or largest (according to the @c -compare: method), respectively. For any other value, an @c NSInvalidArgumentException is raised.
  */
 - (id) initWithOrdering:(NSComparisonResult)order;
 
 /**
  Initialize a heap with a given sort ordering and objects from the given array.
  
- @param order The sort order to use, either <code>NSOrderedAscending</code> or <code>NSOrderedDescending</code>. The root element of the heap will be the smallest or largest (according to <code>-compare:</code>), respectively. For any other value, an <code>NSInvalidArgumentException</code> is raised.
+ @param order The sort order to use, either @c NSOrderedAscending or @c NSOrderedDescending. The root element of the heap will be the smallest or largest (according to the @c -compare: method), respectively. For any other value, an @c NSInvalidArgumentException is raised.
  @param anArray An array containing objects to be added to this heap.
  */
 - (id) initWithOrdering:(NSComparisonResult)order array:(NSArray*)anArray;
@@ -95,7 +95,7 @@
 - (NSArray*) allObjectsInSortedOrder;
 
 /**
- Determines if a heap contains a given object, matched using <code>isEqual:</code>.
+ Determines if a heap contains a given object, matched using @c isEqual:.
  
  @param anObject The object to test for membership in the heap.
  @return @c YES if @a anObject is in the heap, @c NO if it is @c nil or not present.
@@ -152,7 +152,7 @@
 - (void) removeFirstObject;
 
 /**
- Remove all occurrences of a given object, matched using <code>isEqual:</code>.
+ Remove all occurrences of a given object, matched using @c isEqual:.
  
  @param anObject The object to be removed from the heap.
  

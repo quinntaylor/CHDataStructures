@@ -92,7 +92,7 @@
 - (NSArray*) allObjects;
 
 /**
- Determines if a list contains a given object, matched using <code>isEqual:</code>.
+ Determines if a list contains a given object, matched using @c isEqual:.
  
  @param anObject The object to test for membership in the list.
  @return @c YES if @a anObject is in the list, @c NO if it is @c nil or not present.
@@ -129,10 +129,10 @@
 - (id) lastObject;
 
 /**
- Returns the lowest indexof a given object, matched using <code>isEqual:</code>.
+ Returns the lowest indexof a given object, matched using @c isEqual:.
  
  @param anObject The object to be matched and located in the tree.
- @return The index of the first object which is equal to @a anObject. If none of the objects in the list match @a anObject, returns <code>CHNotFound</code>.
+ @return The index of the first object which is equal to @a anObject. If none of the objects in the list match @a anObject, returns @c CHNotFound.
  */
 - (NSUInteger) indexOfObject:(id)anObject;
 
@@ -140,7 +140,7 @@
  Returns the lowest indexof a given object, matched using the == operator.
  
  @param anObject The object to be matched and located in the tree.
- @return The index of the first object which is equal to @a anObject. If none of the objects in the list match @a anObject, returns <code>CHNotFound</code>.
+ @return The index of the first object which is equal to @a anObject. If none of the objects in the list match @a anObject, returns @c CHNotFound.
  */
 - (NSUInteger) indexOfObjectIdenticalTo:(id)anObject;
 
@@ -182,7 +182,7 @@
 - (void) removeLastObject;
 
 /**
- Remove all occurrences of a given object, matched using <code>isEqual:</code>.
+ Remove all occurrences of a given object, matched using @c isEqual:.
  
  @param anObject The object to remove from the list.
  

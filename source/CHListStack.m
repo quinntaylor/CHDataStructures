@@ -12,10 +12,7 @@
 #import "CHListStack.h"
 
 /**
- This implementation uses a CHSinglyLinkedList, since it's slightly faster than
- using a CHDoublyLinkedList, and requires a little less memory. Also, since it's
- a stack, it's unlikely that there is any need to enumerate over the object from
- bottom to top.
+ This implementation uses a CHSinglyLinkedList, since it's slightly faster than using a CHDoublyLinkedList, and requires a little less memory. Also, since it's a stack, it's unlikely that there is any need to enumerate over the object from bottom to top.
  */
 @implementation CHListStack
 

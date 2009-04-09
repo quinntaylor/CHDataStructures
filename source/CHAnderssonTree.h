@@ -46,7 +46,7 @@
  @image html aa-tree-shapes.png
  </center>
  
- Consequently, only two primitive balancing operations are necessary. The <code>skew</code> operation eliminates red nodes as left children, while the <code>split</code> operation eliminates consecutive right-child red nodes. (Both of these operations are depicted in the figures below.)
+ Consequently, only two primitive balancing operations are necessary. The @c skew operation eliminates red nodes as left children, while the @c split operation eliminates consecutive right-child red nodes. (Both of these operations are depicted in the figures below.)
  
  <center>
  <b>Figure 3 - The skew operation.</b><br>

@@ -21,7 +21,7 @@
  
  A map is the same as a "dictionary", "associative array", etc. and consists of a unique set of keys and a collection of values. In a standard map, each key is associated with one value; in a multimap, more than one value may be associated with a given key. A multimap is appropriate for any situation in which one item may correspond to (map to) multiple values, such as a term in an book index and occurrences of that term, courses for which a student is registered, etc.
  
- The values for a key may or may not be ordered. This implementation does not maintain an ordering for objects associated with a key, nor does it allow for multiple occurrences of an object associated with the same key. Internally, this class uses an NSMutableDictionary, and the associated values for each key are stored in distinct NSMutableSet instances. (Just as with NSDictionary, each key added to a CHMultiMap is copied using @link NSCopying#copyWithZone: -copyWithZone: @endlink and all keys must conform to the NSCopying protocol.) Objects are retained on insertion and released on removal or deallocation.
+ The values for a key may or may not be ordered. This implementation does not maintain an ordering for objects associated with a key, nor does it allow for multiple occurrences of an object associated with the same key. Internally, this class uses an NSMutableDictionary, and the associated values for each key are stored in distinct NSMutableSet instances. (Just as with NSDictionary, each key added to a CHMultiMap is copied using \link NSCopying#copyWithZone: -copyWithZone:\endlink and all keys must conform to the NSCopying protocol.) Objects are retained on insertion and released on removal or deallocation.
  
  Since NSDictionary and NSSet conform to the NSCoding protocol, any internal data can be serialized. However, NSSet cannot automatically be written to or read from a property list, since it has no specified order. Thus, instances of CHMultiMap must be encoded as an NSData object before saving to disk.
  
@@ -178,7 +178,7 @@
  Adds a given object to an entry for a given key in the receiver.
  
  @param aKey The key with which to associate @a anObject.
- @param anObject An object to add to an entry for @a aKey in the receiver. If an entry for @a aKey already exists in the receiver, @a anObject is added using @link NSMutableSet#addObject: -[NSMutableSet addObject:]@endlink, otherwise a new entry is created.
+ @param anObject An object to add to an entry for @a aKey in the receiver. If an entry for @a aKey already exists in the receiver, @a anObject is added using \link NSMutableSet#addObject: -[NSMutableSet addObject:]\endlink, otherwise a new entry is created.
  @throw NSInvalidArgumentException If @a aKey or @a anObject is @c nil.
  */
 - (void) addObject:(id)anObject forKey:(id)aKey;
@@ -187,7 +187,7 @@
  Adds the given object(s) to a key entry in the receiver.
  
  @param aKey The key with which to associate @a anObject.
- @param objectSet A set of objects to add to an entry for @a aKey in the receiver. If an entry for @a aKey already exists in the receiver, @a anObject is added using @link NSMutableSet#unionSet: -[NSMutableSet unionSet:]@endlink, otherwise a new entry is created.
+ @param objectSet A set of objects to add to an entry for @a aKey in the receiver. If an entry for @a aKey already exists in the receiver, @a anObject is added using \link NSMutableSet#unionSet: -[NSMutableSet unionSet:]\endlink, otherwise a new entry is created.
  @throw NSInvalidArgumentException If @a aKey or @a objectSet is @c nil.
  */
 - (void) addObjects:(NSSet*)objectSet forKey:(id)aKey;
@@ -196,7 +196,7 @@
  Sets the object(s) associated with a key entry in the receiver.
  
  @param aKey The key with which to associate the objects in @a objectSet.
- @param objectSet A set of objects to associate with @a key. If @a objectSet is empty, the contents of the receiver are not modified. If an entry for @a key already exists in the receiver, @a objectSet is added using @link NSMutableSet#setSet: -[NSMutableSet setSet:]@endlink, otherwise a new entry is created.
+ @param objectSet A set of objects to associate with @a key. If @a objectSet is empty, the contents of the receiver are not modified. If an entry for @a key already exists in the receiver, @a objectSet is added using \link NSMutableSet#setSet: -[NSMutableSet setSet:]\endlink, otherwise a new entry is created.
  @throw NSInvalidArgumentException If @a aKey or @a objectSet is @c nil.
  */
 - (void) setObjects:(NSSet*)objectSet forKey:(id)aKey;

@@ -26,8 +26,7 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 /**
  Create an enumerator which traverses a singly-linked list from front to back.
  
- @param list The linked list collection being enumerated. This collection is to
-             be retained while the enumerator has not exhausted all its objects.
+ @param list The linked list collection being enumerated. This collection is to be retained while the enumerator has not exhausted all its objects.
  @param startNode The node at which to begin the enumeration.
  @param mutations A pointer to the collection's mutation count, for invalidation.
  */
@@ -38,18 +37,14 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 /**
  Returns the next object in the collection being enumerated.
  
- @return The next object in the collection being enumerated, or @c nil
-         when all objects have been enumerated.
+ @return The next object in the collection being enumerated, or @c nil when all objects have been enumerated.
  */
 - (id) nextObject;
 
 /**
- Returns an array of objects the receiver has yet to enumerate.
+ Returns an array of objects the receiver has yet to enumerate. Invoking this method exhausts the remainder of the objects, such that subsequent invocations of #nextObject return @c nil.
  
  @return An array of objects the receiver has yet to enumerate.
- 
- Invoking this method exhausts the remainder of the objects, such that subsequent
- invocations of #nextObject return @c nil.
  */
 - (NSArray*) allObjects;
 

@@ -5,7 +5,7 @@
  Copyright (c) 2002, Phillip Morelock <http://www.phillipmorelock.com>
  
  Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
-
+ 
  The software is  provided "as is", without warranty of any kind, including all implied warranties of merchantability and fitness. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
  */
 
@@ -28,23 +28,15 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 /**
  Create an enumerator which traverses a list in either forward or revers order.
  
- @param list The linked list collection being enumerated. This collection is to
-        be retained while the enumerator has not exhausted all its objects.
+ @param list The linked list collection being enumerated. This collection is to be retained while the enumerator has not exhausted all its objects.
  @param startNode The node at which to begin the enumeration.
  @param endNode The node which signifies that enumerations should terminate.
- @param direction The direction in which to enumerate. If greater than zero, uses
-        <code>NSOrderedDescending</code>, else <code>NSOrderedAscending</code>.
+ @param direction The direction in which to enumerate. If greater than zero, uses @c NSOrderedDescending, else @c NSOrderedAscending.
  @param mutations A pointer to the collection's mutation count, for invalidation.
  
- The enumeration direction is inferred from the state of the provided start node.
- If <code>startNode->next</code> is <code>NULL</code>, enumeration proceeds from
- back to front; otherwise, enumeration proceeds from front to back. This works
- since the head and tail nodes always have NULL for their <code>prev</code> and
- <code>next</code> links, respectively. When there is only one node, order won't
- matter anyway.
+ The enumeration direction is inferred from the state of the provided start node. If @c startNode->next is @c NULL, enumeration proceeds from back to front; otherwise, enumeration proceeds from front to back. This works since the head and tail nodes always have @c NULL for their @c prev and @c next links, respectively. When there is only one node, order won't matter anyway.
  
- This enumerator doesn't support enumerating over a sub-list of nodes. (When a
- node from the middle is provided, enumeration will proceed towards the tail.)
+ This enumerator doesn't support enumerating over a sub-list of nodes. (When a node from the middle is provided, enumeration will proceed towards the tail.)
  */
 - (id) initWithList:(CHDoublyLinkedList*)list
           startNode:(CHDoublyLinkedListNode*)startNode
@@ -55,8 +47,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 /**
  Returns the next object in the collection being enumerated.
  
- @return The next object in the collection being enumerated, or @c nil
-         when all objects have been enumerated.
+ @return The next object in the collection being enumerated, or @c nil when all objects have been enumerated.
  */
 - (id) nextObject;
 
@@ -65,8 +56,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
  
  @return An array of objects the receiver has yet to enumerate.
  
- Invoking this method exhausts the remainder of the objects, such that subsequent
- invocations of #nextObject return @c nil.
+ Invoking this method exhausts the remainder of the objects, such that subsequent invocations of #nextObject return @c nil.
  */
 - (NSArray*) allObjects;
 
@@ -263,7 +253,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 		CHNilArgumentException([self class], _cmd);
 	if (index < 0 || index > count)
 		CHIndexOutOfRangeException([self class], _cmd, index, count);
-
+	
 	findNodeAtIndex(index); // If found, the node is stored in "node"
 	CHDoublyLinkedListNode *newNode;
 	newNode = NSAllocateCollectable(kCHDoublyLinkedListNodeSize, NSScannedOption);

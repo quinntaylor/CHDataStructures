@@ -35,8 +35,8 @@
  Insertion is a cross between standard BST insertion and heap insertion: a new leaf node is created in the appropriate sorted location, and a random value is assigned. The path back to the root is then retraced, rotating the node upward as necessary until the new node's priority is greater than both its children's. Deletion is generally implemented by rotating the node to be removed down the tree until it becomes a leaf and can be clipped. At each rotation, the child whose priority is higher is rotated to become the root, and the node to delete descends the opposite subtree. (It is also possible to swap with the successor node as is common in BST deletion, but in order to preserve the tree's balance, the priorities should also be swapped, and the successor be bubbled up until the heap property is again satisfied, an approach quite similar to insertion.)
  
  This treap implementation adds two methods to those in the CHSearchTree protocol:
- - \link #addObject:withPriority: -addObject:withPriority: \endlink
- - \link #priorityForObject: -priorityForObject: \endlink
+ - \link #addObject:withPriority: -addObject:withPriority:\endlink
+ - \link #priorityForObject: -priorityForObject:\endlink
  
  Treaps were originally described in the following paper:
  
@@ -64,7 +64,7 @@
 - (void) addObject:(id)anObject;
 
 /**
- Add an object to the treap using a given priority value. Ordering is based on an object's response to the <code>compare:</code> message. Since no duplicates are allowed, if the tree already contains an object for which @c compare: returns @c NSOrderedSame, that object is released and replaced by @a anObject.
+ Add an object to the treap using a given priority value. Ordering is based on an object's response to the @c -compare: message. Since no duplicates are allowed, if the tree already contains an object for which @c compare: returns @c NSOrderedSame, that object is released and replaced by @a anObject.
  
  @param anObject The object to add to the treap.
  @param priority The priority to assign to @a nObject. Higher values percolate to the top. @b Note: Although typed as NSUInteger (consistent with Foundation APIs), \link CHBinaryTreeNode#priority CHBinaryTreeNode->priority\endlink is a @c u_int32_t, so the value stored is <code>priority % CHTreapNotFound</code>.
