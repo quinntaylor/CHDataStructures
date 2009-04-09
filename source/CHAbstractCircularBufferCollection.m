@@ -4,7 +4,7 @@
  Copyright (c) 2009, Quinn Taylor <http://homepage.mac.com/quinntaylor>
  
  Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
-
+ 
  The software is  provided "as is", without warranty of any kind, including all implied warranties of merchantability and fitness. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
  */
 
@@ -93,12 +93,14 @@ static size_t kCHPointerSize = sizeof(void*);
 	if (mutationCount != *mutationPtr)
 		CHMutatedCollectionException([self class], _cmd);
 	NSMutableArray *array = [[NSMutableArray alloc] init];
-	while (enumerationCount++ < bufferCount) {
-		if (reverseEnumeration) {
+	if (reverseEnumeration) {
+		while (enumerationCount++ < bufferCount) {
 			enumerationIndex = (enumerationIndex + bufferCapacity - 1) % bufferCapacity;
 			[array addObject:buffer[enumerationIndex]];
 		}
-		else {
+	}
+	else {
+		while (enumerationCount++ < bufferCount) {
 			[array addObject:buffer[enumerationIndex]];
 			enumerationIndex = (enumerationIndex + 1) % bufferCapacity;
 		}
@@ -270,36 +272,36 @@ static size_t kCHPointerSize = sizeof(void*);
 - (NSEnumerator*) objectEnumerator {
 	return [[[CHCircularBufferEnumerator alloc]
 	         initWithArray:array
-                  capacity:arrayCapacity
-	                 count:count
-	            startIndex:headIndex
-	               reverse:NO
-	       mutationPointer:&mutations] autorelease];
+			 capacity:arrayCapacity
+			 count:count
+			 startIndex:headIndex
+			 reverse:NO
+			 mutationPointer:&mutations] autorelease];
 }
 
 - (NSEnumerator*) reverseObjectEnumerator {
 	return [[[CHCircularBufferEnumerator alloc]
 	         initWithArray:array
-                  capacity:arrayCapacity
-	                 count:count
-	            startIndex:tailIndex
-                   reverse:YES
-           mutationPointer:&mutations] autorelease];
+			 capacity:arrayCapacity
+			 count:count
+			 startIndex:tailIndex
+			 reverse:YES
+			 mutationPointer:&mutations] autorelease];
 }
 
 - (NSString*) description {
 	return [[self allObjects] description];
 	// TODO: Consider removing NSArray middleman -- need additional testing
-//	NSMutableString *description = [NSMutableString string];
-//	if (count > 0) {
-//		NSUInteger descriptionIndex = headIndex;
-//		[description appendFormat:@"\n    %@", array[descriptionIndex++]];
-//		while (descriptionIndex != tailIndex) {
-//			[description appendFormat:@",\n    %@", array[descriptionIndex++]];
-//			descriptionIndex %= arrayCapacity;
-//		}
-//	}
-//	return [NSString stringWithFormat:@"(%@\n)", description];
+	//	NSMutableString *description = [NSMutableString string];
+	//	if (count > 0) {
+	//		NSUInteger descriptionIndex = headIndex;
+	//		[description appendFormat:@"\n    %@", array[descriptionIndex++]];
+	//		while (descriptionIndex != tailIndex) {
+	//			[description appendFormat:@",\n    %@", array[descriptionIndex++]];
+	//			descriptionIndex %= arrayCapacity;
+	//		}
+	//	}
+	//	return [NSString stringWithFormat:@"(%@\n)", description];
 }
 
 #pragma mark Search
