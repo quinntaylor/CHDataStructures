@@ -129,6 +129,9 @@ static size_t kCHPointerSize = sizeof(void*);
 
 #pragma mark -
 
+/**
+ @todo Add support for removing objects from the middle of a circular buffer.
+ */
 @implementation CHAbstractCircularBufferCollection
 
 - (void) dealloc {
@@ -179,17 +182,13 @@ static size_t kCHPointerSize = sizeof(void*);
 
 #pragma mark <NSFastEnumeration>
 
+/*
+ Since this class uses a C array for storage, we can return a pointer to any spot in the array and a count greater than "len". This approach avoids copy overhead, and is also more efficient since this method will be called only 2 or 3 times, depending on whether the buffer wraps around the end of the array. (The last call always returns 0 and requires no extra processing.)
+ */
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len
 {
-	/*
-	 Since this class uses a C array for storage, we can return a pointer to any
-	 spot in the array and a count greater than "len". This approach avoids copy
-	 overhead, and is also more efficient since this method will be called only
-	 2 or 3 times, depending on whether the buffer wraps around the end of the
-	 array. (The last call always returns 0 and requires no extra processing.)
-	 */
 	NSUInteger enumeratedCount;
 	if (state->state == 0) {
 		state->mutationsPtr = &mutations;
@@ -331,7 +330,7 @@ static size_t kCHPointerSize = sizeof(void*);
 	NSUInteger relativeIndex = 0;
 	while (iterationIndex != tailIndex) {
 		if ([array[iterationIndex] isEqual:anObject])
-			return iterationIndex;
+			return relativeIndex;
 		iterationIndex = (iterationIndex + 1) % arrayCapacity;
 		relativeIndex++;
 	}
@@ -395,15 +394,17 @@ static size_t kCHPointerSize = sizeof(void*);
 }
 
 - (void) removeAllObjects {
-	if (count > 0 && !objc_collectingEnabled()) {
-		while (headIndex != tailIndex) {
-			[array[headIndex++] release];
-			headIndex %= arrayCapacity;
+	if (count > 0) {
+		if (!objc_collectingEnabled()) {
+			while (headIndex != tailIndex) {
+				[array[headIndex++] release];
+				headIndex %= arrayCapacity;
+			}
 		}
 		if (arrayCapacity > 16) {
-			free(array);
 			arrayCapacity = 16;
-			array = NSAllocateCollectable(kCHPointerSize*arrayCapacity, NSScannedOption);
+			// Shrink the size of allocated memory; calls realloc() under non-GC
+			array = NSReallocateCollectable(array, kCHPointerSize * arrayCapacity, NSScannedOption);
 		}
 	}
 	headIndex = tailIndex = 0;

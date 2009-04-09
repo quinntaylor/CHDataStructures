@@ -42,6 +42,7 @@
 {
 	CHAbstractCircularBufferCollection *buffer;
 	NSArray *abc;
+	NSMutableArray *fifteen;
 }
 @end
 
@@ -50,6 +51,9 @@
 - (void) setUp {
 	buffer = [[CHAbstractCircularBufferCollection alloc] init];
 	abc = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
+	fifteen = [[NSMutableArray alloc] init];
+	for (int i = 1; i <= 15; i++)
+		[fifteen addObject:[NSNumber numberWithInt:i]];
 }
 
 - (void) tearDown {
@@ -280,12 +284,16 @@
 - (void) testIndexOfObject {
 	STAssertEquals([buffer indexOfObject:@"Z"], (NSUInteger)CHNotFound,
 				   @"Empty buffer, object should not be found");
-	for (id anObject in abc)
+	// Move the head index to 3 so adding 15 objects will wrap.
+	for (id anObject in abc) {
 		[buffer appendObject:anObject];
-	for (id anObject in abc)
+		[buffer removeFirstObject];
+	}
+	for (id anObject in fifteen)
 		[buffer appendObject:anObject];
+	
 	NSUInteger expectedIndex = 0;
-	for (id anObject in abc)
+	for (id anObject in fifteen)
 		STAssertEquals([buffer indexOfObject:anObject], expectedIndex++,
 					   @"Wrong index for object");
 	STAssertEquals([buffer indexOfObject:@"Z"], (NSUInteger)CHNotFound,
@@ -298,12 +306,16 @@
 				   @"Empty buffer, object should not be found");
 	STAssertEquals([buffer indexOfObjectIdenticalTo:a], (NSUInteger)CHNotFound,
 				   @"Empty buffer, object should not be found");
-	for (id anObject in abc)
+	// Move the head index to 3 so adding 15 objects will wrap.
+	for (id anObject in abc) {
 		[buffer appendObject:anObject];
-	for (id anObject in abc)
+		[buffer removeFirstObject];
+	}
+	for (id anObject in fifteen)
 		[buffer appendObject:anObject];
+
 	NSUInteger expectedIndex = 0;
-	for (id anObject in abc)
+	for (id anObject in fifteen)
 		STAssertEquals([buffer indexOfObjectIdenticalTo:anObject], expectedIndex++,
 					   @"Wrong index for object");
 	STAssertEquals([buffer indexOfObjectIdenticalTo:@"Z"], (NSUInteger)CHNotFound,
@@ -385,6 +397,20 @@
 	STAssertEquals([buffer count], (NSUInteger)0, @"Incorrect count.");
 	STAssertEquals([buffer headIndex], (NSUInteger)0, @"Wrong head index.");
 	STAssertEquals([buffer tailIndex], (NSUInteger)0, @"Wrong tail index.");
+	
+	// Test whether circular buffer contracts when all objects are removed.
+	STAssertEquals([buffer capacity], (NSUInteger)16, @"Wrong capacity.");
+	// Insert each object 3 times to force array capacity to 64 elements
+	for (id anObject in fifteen) {
+		[buffer appendObject:anObject];
+		[buffer appendObject:anObject];
+		[buffer appendObject:anObject];
+	}
+	STAssertEquals([buffer count], [fifteen count]*3, @"Incorrect count.");
+	STAssertEquals([buffer capacity], (NSUInteger)64, @"Wrong capacity.");
+	[buffer removeAllObjects];
+	STAssertEquals([buffer count], (NSUInteger)0, @"Incorrect count.");
+	STAssertEquals([buffer capacity], (NSUInteger)16, @"Wrong capacity.");
 }
 
 - (void) testRemoveObject {
