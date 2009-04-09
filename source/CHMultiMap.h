@@ -38,8 +38,6 @@
 	unsigned long mutations; /**< Used to track mutations for enumeration. */
 }
 
-#pragma mark Initialization
-
 /**
  Initializes a newly allocated multi-dictionary with no key-value entries.
  */
@@ -69,99 +67,46 @@
  */
 - (id) initWithObjectsAndKeys:(id)firstObject, ...;
 
-
-#pragma mark Queries
-
-/**
- Returns the number of keys in the receiver.
- 
- @return The number of keys in the receiver, regardless of how many objects are
- associated with any given key in the dictionary.
- */
-- (NSUInteger) count;
+#pragma mark <NSCoding>
+/** @name <NSCoding> */
+// @{
 
 /**
- Returns the number of objects associated with a given key.
+ Initialize the receiver using data from a given keyed unarchiver.
  
- @param aKey The key for which to return the object count.
- @return The number of objects associated with a given key in the dictionary.
+ @param decoder A keyed unarchiver object.
+ 
+ @see NSCoding protocol
  */
-- (NSUInteger) countForKey:(id)aKey;
+- (id) initWithCoder:(NSCoder *)decoder;
 
 /**
- Returns the number of objects in the receiver, associated with any key.
+ Encodes data from the receiver using a given keyed archiver.
  
- @return The number of objects in the receiver. This is the sum total of objects associated with each key in the dictonary.
+ @param encoder A keyed archiver object.
+ 
+ @see NSCoding protocol
  */
-- (NSUInteger) countForAllKeys;
+- (void) encodeWithCoder:(NSCoder *)encoder;
+
+// @}
+#pragma mark <NSCopying>
+/** @name <NSCopying> */
+// @{
 
 /**
- Returns a Boolean that tells whether a given key is present in the receiver.
+ Returns a new instance that is a copy of the receiver. The returned object is implicitly retained by the sender, who is responsible for releasing it. Copies returned by this method are mutable. 
  
- @param aKey The key to check for membership in the receiver.
- @return @c YES if an entry for @a aKey exists in the receiver.
+ @param zone Identifies an area of memory from which to allocate the new instance. If zone is @c nil, the default zone is used. (The \link NSObject#copy -copy\endlink method in NSObject invokes this method with a @c nil argument.)
+ 
+ @see NSCopying protocol
  */
-- (BOOL) containsKey:(id)aKey;
+- (id) copyWithZone:(NSZone*)zone;
 
-/**
- Returns a Boolean that tells whether a given object is present in the receiver.
- 
- @param anObject An object to check for membership in the receiver.
- @return @c YES if @a anObject is associated with 1 or more keys in the receiver.
- */
-- (BOOL) containsObject:(id)anObject;
-
-/**
- Returns an array containing the receiver's keys.
- 
- @return An array containing the receiver's keys. The array is empty if the receiver has no entries. The order of the keys is undefined.
- */
-- (NSArray*) allKeys;
-
-/**
- Returns an array containing the receiver's values. This is effectively a concatenation of the sets of objects associated with the keys in the receiver. (Unlike a set union, objects associated with multiple keys appear once for each key which which they are associated.)
- 
- @return An array containing the receiver's values. The array is empty if the receiver has no entries. The order of the values is undefined.
- */
-- (NSArray*) allObjects;
-
-/**
- Returns an enumerator that lets you access each key in the receiver.
- 
- @return An enumerator that lets you access each key in the receiver.
- 
- Your code should not modify the entries during enumeration. If you intend to modify the entries, use the #allKeys method to create a "snapshot" of the dictionary's keys. Work from this snapshot to modify the entries.
- */
-- (NSEnumerator*) keyEnumerator;
-
-/**
- Returns an enumerator that lets you access each value in the receiver.
- 
- @return An enumerator that lets you access each value in the receiver.
- 
- Your code should not modify the entries during enumeration. If you intend to modify the entries, use the #allObjects method to create a "snapshot" of the dictionary's values. Work from this snapshot to modify the values.
- */
-- (NSEnumerator*) objectEnumerator;
-
-/**
- Returns an array of objects associated with a given key.
- 
- @param aKey The key for which to return the corresponding objects.
- @return An NSSet of objects associated with a given key, or nil if the key is not in the receiver.
- */
-- (NSSet*) objectsForKey:(id)aKey;
-
-/**
- Returns a property list representation of the receiver's contents.
- 
- @return A property list representation of the receiver's contents.
- 
- If each key in the receiver is an NSString, the entries are listed in ascending order by key, otherwise the order in which the entries are listed is undefined. This method is intended to produce readable output for debugging purposes, not for serializing data. To store a multi-dictionary for later retrieval, see the <a href="http://developer.apple.com/DOCUMENTATION/Cocoa/Conceptual/Archiving/"> Archives and Serializations Programming Guide for Cocoa</a>.
- */
-- (NSString*) description;
-
-
-#pragma mark Mutation
+// @}
+#pragma mark Adding Objects
+/** @name Adding Objects */
+// @{
 
 /**
  Adds to the receiver the entries from another multimap.
@@ -201,6 +146,109 @@
  */
 - (void) setObjects:(NSSet*)objectSet forKey:(id)aKey;
 
+// @}
+#pragma mark Querying Contents
+/** @name Querying Contents */
+// @{
+
+/**
+ Returns an array containing the receiver's keys.
+ 
+ @return An array containing the receiver's keys. The array is empty if the receiver has no entries. The order of the keys is undefined.
+ */
+- (NSArray*) allKeys;
+
+/**
+ Returns an array containing the receiver's values. This is effectively a concatenation of the sets of objects associated with the keys in the receiver. (Unlike a set union, objects associated with multiple keys appear once for each key which which they are associated.)
+ 
+ @return An array containing the receiver's values. The array is empty if the receiver has no entries. The order of the values is undefined.
+ */
+- (NSArray*) allObjects;
+
+/**
+ Returns the number of keys in the receiver.
+ 
+ @return The number of keys in the receiver, regardless of how many objects are
+ associated with any given key in the dictionary.
+ */
+- (NSUInteger) count;
+
+/**
+ Returns the number of objects in the receiver, associated with any key.
+ 
+ @return The number of objects in the receiver. This is the sum total of objects associated with each key in the dictonary.
+ */
+- (NSUInteger) countForAllKeys;
+
+/**
+ Returns the number of objects associated with a given key.
+ 
+ @param aKey The key for which to return the object count.
+ @return The number of objects associated with a given key in the dictionary.
+ */
+- (NSUInteger) countForKey:(id)aKey;
+
+/**
+ Returns a Boolean that tells whether a given key is present in the receiver.
+ 
+ @param aKey The key to check for membership in the receiver.
+ @return @c YES if an entry for @a aKey exists in the receiver.
+ */
+- (BOOL) containsKey:(id)aKey;
+
+/**
+ Returns a Boolean that tells whether a given object is present in the receiver.
+ 
+ @param anObject An object to check for membership in the receiver.
+ @return @c YES if @a anObject is associated with 1 or more keys in the receiver.
+ */
+- (BOOL) containsObject:(id)anObject;
+
+/**
+ Returns an enumerator that lets you access each key in the receiver.
+ 
+ @return An enumerator that lets you access each key in the receiver.
+ 
+ Your code should not modify the entries during enumeration. If you intend to modify the entries, use the #allKeys method to create a "snapshot" of the dictionary's keys. Work from this snapshot to modify the entries.
+ */
+- (NSEnumerator*) keyEnumerator;
+
+/**
+ Returns an enumerator that lets you access each value in the receiver.
+ 
+ @return An enumerator that lets you access each value in the receiver.
+ 
+ Your code should not modify the entries during enumeration. If you intend to modify the entries, use the #allObjects method to create a "snapshot" of the dictionary's values. Work from this snapshot to modify the values.
+ */
+- (NSEnumerator*) objectEnumerator;
+
+/**
+ Returns an array of objects associated with a given key.
+ 
+ @param aKey The key for which to return the corresponding objects.
+ @return An NSSet of objects associated with a given key, or nil if the key is not in the receiver.
+ */
+- (NSSet*) objectsForKey:(id)aKey;
+
+/**
+ Returns a property list representation of the receiver's contents.
+ 
+ @return A property list representation of the receiver's contents.
+ 
+ If each key in the receiver is an NSString, the entries are listed in ascending order by key, otherwise the order in which the entries are listed is undefined. This method is intended to produce readable output for debugging purposes, not for serializing data. To store a multi-dictionary for later retrieval, see the <a href="http://developer.apple.com/DOCUMENTATION/Cocoa/Conceptual/Archiving/"> Archives and Serializations Programming Guide for Cocoa</a>.
+ */
+- (NSString*) description;
+
+// @}
+#pragma mark Removing Objects
+/** @name Removing Objects */
+// @{
+
+/**
+ Empties the receiver of its entries. Each key and all corresponding objects are sent a release message.
+ */
+- (void) removeAllObjects;
+
 /**
  Removes all occurrences of a given value associated with a given key.
  
@@ -221,9 +269,5 @@
  */
 - (void) removeObjectsForKey:(id)aKey;
 
-/**
- Empties the receiver of its entries. Each key and all corresponding objects are sent a release message.
- */
-- (void) removeAllObjects;
-
+// @}
 @end

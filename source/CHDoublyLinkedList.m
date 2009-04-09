@@ -268,6 +268,18 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 
 #pragma mark Querying Contents
 
+- (NSArray*) allObjects {
+	return [[self objectEnumerator] allObjects];
+}
+
+- (BOOL) containsObject:(id)anObject {
+	return ([self indexOfObject:anObject] != CHNotFound);
+}
+
+- (BOOL) containsObjectIdenticalTo:(id)anObject {
+	return ([self indexOfObjectIdenticalTo:anObject] != CHNotFound);
+}
+
 - (NSUInteger) count {
 	return count;
 }
@@ -280,38 +292,6 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 - (id) lastObject {
 	head->object = nil;
 	return tail->prev->object; // nil if there are no objects between head/tail
-}
-
-- (NSArray*) allObjects {
-	return [[self objectEnumerator] allObjects];
-}
-
-- (NSEnumerator*) objectEnumerator {
-	return [[[CHDoublyLinkedListEnumerator alloc]
-	          initWithList:self
-	             startNode:head->next
-	               endNode:tail
-	             direction:NSOrderedAscending
-	       mutationPointer:&mutations] autorelease];
-}
-
-- (NSEnumerator*) reverseObjectEnumerator {
-	return [[[CHDoublyLinkedListEnumerator alloc]
-	          initWithList:self
-	             startNode:tail->prev
-	               endNode:head
-	             direction:NSOrderedDescending
-	       mutationPointer:&mutations] autorelease];
-}
-
-#pragma mark Search
-
-- (BOOL) containsObject:(id)anObject {
-	return ([self indexOfObject:anObject] != CHNotFound);
-}
-
-- (BOOL) containsObjectIdenticalTo:(id)anObject {
-	return ([self indexOfObjectIdenticalTo:anObject] != CHNotFound);
 }
 
 - (NSUInteger) indexOfObject:(id)anObject {
@@ -341,6 +321,24 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 		CHIndexOutOfRangeException([self class], _cmd, index, count);
 	findNodeAtIndex(index); // If found, the node is stored in "node"
 	return node->object;
+}
+
+- (NSEnumerator*) objectEnumerator {
+	return [[[CHDoublyLinkedListEnumerator alloc]
+	          initWithList:self
+	             startNode:head->next
+	               endNode:tail
+	             direction:NSOrderedAscending
+	       mutationPointer:&mutations] autorelease];
+}
+
+- (NSEnumerator*) reverseObjectEnumerator {
+	return [[[CHDoublyLinkedListEnumerator alloc]
+	          initWithList:self
+	             startNode:tail->prev
+	               endNode:head
+	             direction:NSOrderedDescending
+	       mutationPointer:&mutations] autorelease];
 }
 
 #pragma mark Removing Objects

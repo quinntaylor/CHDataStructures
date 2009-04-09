@@ -247,6 +247,35 @@ static size_t kCHPointerSize = sizeof(void*);
 
 #pragma mark Querying Contents
 
+- (NSArray*) allObjects {
+	NSMutableArray *allObjects = [[[NSMutableArray alloc] init] autorelease];
+	if (count > 0) {
+		for (id anObject in self)
+			[allObjects addObject:anObject];
+	}
+	return allObjects;
+}
+
+- (BOOL) containsObject:(id)anObject {
+	NSUInteger iterationIndex = headIndex;
+	while (iterationIndex != tailIndex) {
+		if ([array[iterationIndex] isEqual:anObject])
+			return YES;
+		iterationIndex = (iterationIndex + 1) % arrayCapacity;
+	}
+	return NO;
+}
+
+- (BOOL) containsObjectIdenticalTo:(id)anObject {
+	NSUInteger iterationIndex = headIndex;
+	while (iterationIndex != tailIndex) {
+		if (array[iterationIndex] == anObject)
+			return YES;
+		iterationIndex = (iterationIndex + 1) % arrayCapacity;
+	}
+	return NO;
+}
+
 - (NSUInteger) count {
 	return count;
 }
@@ -259,13 +288,34 @@ static size_t kCHPointerSize = sizeof(void*);
 	return (count > 0) ? array[(tailIndex + arrayCapacity - 1) % arrayCapacity] : nil;
 }
 
-- (NSArray*) allObjects {
-	NSMutableArray *allObjects = [[[NSMutableArray alloc] init] autorelease];
-	if (count > 0) {
-		for (id anObject in self)
-			[allObjects addObject:anObject];
+- (NSUInteger) indexOfObject:(id)anObject {
+	NSUInteger iterationIndex = headIndex;
+	NSUInteger relativeIndex = 0;
+	while (iterationIndex != tailIndex) {
+		if ([array[iterationIndex] isEqual:anObject])
+			return relativeIndex;
+		iterationIndex = (iterationIndex + 1) % arrayCapacity;
+		relativeIndex++;
 	}
-	return allObjects;
+	return CHNotFound;
+}
+
+- (NSUInteger) indexOfObjectIdenticalTo:(id)anObject {
+	NSUInteger iterationIndex = headIndex;
+	NSUInteger relativeIndex = 0;
+	while (iterationIndex != tailIndex) {
+		if (array[iterationIndex] == anObject)
+			return relativeIndex;
+		iterationIndex = (iterationIndex + 1) % arrayCapacity;
+		relativeIndex++;
+	}
+	return CHNotFound;
+}
+
+- (id) objectAtIndex:(NSUInteger)index {
+	if (index >= count)
+		CHIndexOutOfRangeException([self class], _cmd, index, count);
+	return array[(headIndex + index) % arrayCapacity];
 }
 
 - (NSEnumerator*) objectEnumerator {
@@ -301,58 +351,6 @@ static size_t kCHPointerSize = sizeof(void*);
 	//		}
 	//	}
 	//	return [NSString stringWithFormat:@"(%@\n)", description];
-}
-
-#pragma mark Search
-
-- (BOOL) containsObject:(id)anObject {
-	NSUInteger iterationIndex = headIndex;
-	while (iterationIndex != tailIndex) {
-		if ([array[iterationIndex] isEqual:anObject])
-			return YES;
-		iterationIndex = (iterationIndex + 1) % arrayCapacity;
-	}
-	return NO;
-}
-
-- (BOOL) containsObjectIdenticalTo:(id)anObject {
-	NSUInteger iterationIndex = headIndex;
-	while (iterationIndex != tailIndex) {
-		if (array[iterationIndex] == anObject)
-			return YES;
-		iterationIndex = (iterationIndex + 1) % arrayCapacity;
-	}
-	return NO;
-}
-
-- (NSUInteger) indexOfObject:(id)anObject {
-	NSUInteger iterationIndex = headIndex;
-	NSUInteger relativeIndex = 0;
-	while (iterationIndex != tailIndex) {
-		if ([array[iterationIndex] isEqual:anObject])
-			return relativeIndex;
-		iterationIndex = (iterationIndex + 1) % arrayCapacity;
-		relativeIndex++;
-	}
-	return CHNotFound;
-}
-
-- (NSUInteger) indexOfObjectIdenticalTo:(id)anObject {
-	NSUInteger iterationIndex = headIndex;
-	NSUInteger relativeIndex = 0;
-	while (iterationIndex != tailIndex) {
-		if (array[iterationIndex] == anObject)
-			return relativeIndex;
-		iterationIndex = (iterationIndex + 1) % arrayCapacity;
-		relativeIndex++;
-	}
-	return CHNotFound;
-}
-
-- (id) objectAtIndex:(NSUInteger)index {
-	if (index >= count)
-		CHIndexOutOfRangeException([self class], _cmd, index, count);
-	return array[(headIndex + index) % arrayCapacity];
 }
 
 #pragma mark Removing Objects

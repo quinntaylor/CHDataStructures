@@ -13,8 +13,6 @@
 
 @implementation CHMutableArrayQueue
 
-#pragma mark Queue Implementation
-
 - (void) addObject: (id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);

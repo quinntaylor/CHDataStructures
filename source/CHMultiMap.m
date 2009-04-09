@@ -35,8 +35,6 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 	[super dealloc];
 }
 
-#pragma mark Initialization
-
 - (id) init {
 	if ([super init] == nil) return nil;
 	dictionary = [[NSMutableDictionary alloc] init];
@@ -85,13 +83,6 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 
 #pragma mark <NSCoding>
 
-/**
- Initialize the receiver using data from a given keyed unarchiver.
- 
- @param decoder A keyed unarchiver object.
- 
- @see NSCoding protocol
- */
 - (id) initWithCoder:(NSCoder*)decoder{
 	if ([self init] == nil) return nil;
 	dictionary = [[decoder decodeObjectForKey:@"dictionary"] retain];
@@ -99,13 +90,6 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 	return self;
 }
 
-/**
- Encodes data from the receiver using a given keyed archiver.
- 
- @param encoder A keyed archiver object.
- 
- @see NSCoding protocol
- */
 - (void) encodeWithCoder:(NSCoder*)encoder {
 	[encoder encodeObject:dictionary forKey:@"dictionary"];
 	[encoder encodeInteger:count forKey:@"count"];
@@ -113,13 +97,6 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 
 #pragma mark <NSCopying>
 
-/**
- Returns a new instance that is a copy of the receiver. The returned object is implicitly retained by the sender, who is responsible for releasing it. Copies returned by this method are mutable. 
- 
- @param zone Identifies an area of memory from which to allocate the new instance. If zone is @c nil, the default zone is used. (The \link NSObject#copy -copy\endlink method in NSObject invokes this method with a @c nil argument.)
- 
- @see NSCopying protocol
- */
 - (id) copyWithZone:(NSZone*)zone {
 	CHMultiMap *newMultiMap = [[CHMultiMap alloc] init];
 	for (id key in [self allKeys])
@@ -128,67 +105,7 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 	return newMultiMap;
 }
 
-#pragma mark Queries
-
-- (NSUInteger) count {
-	return [dictionary count];
-}
-
-- (NSUInteger) countForKey:(id)aKey {
-	return [[dictionary objectForKey:aKey] count];
-}
-
-- (NSUInteger) countForAllKeys {
-	return count;
-}
-
-- (BOOL) containsKey:(id)aKey {
-	return ([dictionary objectForKey:aKey] != nil);
-}
-
-- (BOOL) containsObject:(id)anObject {
-	for (id key in [self keyEnumerator]) {
-		if ([[dictionary objectForKey:key] containsObject:anObject]) {
-			return YES;
-		}
-	}
-	return NO;
-}
-
-- (NSArray*) allKeys {
-	return [dictionary allKeys];
-}
-
-- (NSArray*) allObjects {
-	NSMutableArray *objects = [NSMutableArray array];
-	for (id key in [self allKeys]) {
-		[objects addObjectsFromArray:[[dictionary objectForKey:key] allObjects]];
-		// objectForKey: returns an NSSet -- get array from that with -allObjects
-	}
-	return objects;
-}
-
-- (NSEnumerator*) keyEnumerator {
-	return [dictionary keyEnumerator];
-}
-
-/**
- @todo Refine with custom enumerator for greater efficiency?
- */
-- (NSEnumerator*) objectEnumerator {
-	return [[self allObjects] objectEnumerator];
-}
-
-- (NSSet*) objectsForKey:(id)aKey {
-	id objectSet = [dictionary objectForKey:aKey];
-	return (objectSet == nil) ? nil : [NSSet setWithSet:objectSet];
-}
-
-- (NSString*) description {
-	return [dictionary description];
-}
-
-#pragma mark Mutation
+#pragma mark Adding Objects
 
 - (void) addEntriesFromMultiMap:(CHMultiMap*)otherMultiMap; {
 	for (id key in [otherMultiMap allKeys])
@@ -224,6 +141,74 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 	++mutations;
 }
 
+#pragma mark Querying Contents
+
+- (NSArray*) allKeys {
+	return [dictionary allKeys];
+}
+
+- (NSArray*) allObjects {
+	NSMutableArray *objects = [NSMutableArray array];
+	for (id key in [self allKeys]) {
+		[objects addObjectsFromArray:[[dictionary objectForKey:key] allObjects]];
+		// objectForKey: returns an NSSet -- get array from that with -allObjects
+	}
+	return objects;
+}
+
+- (NSUInteger) count {
+	return [dictionary count];
+}
+
+- (NSUInteger) countForAllKeys {
+	return count;
+}
+
+- (NSUInteger) countForKey:(id)aKey {
+	return [[dictionary objectForKey:aKey] count];
+}
+
+- (BOOL) containsKey:(id)aKey {
+	return ([dictionary objectForKey:aKey] != nil);
+}
+
+- (BOOL) containsObject:(id)anObject {
+	for (id key in [self keyEnumerator]) {
+		if ([[dictionary objectForKey:key] containsObject:anObject]) {
+			return YES;
+		}
+	}
+	return NO;
+}
+
+- (NSEnumerator*) keyEnumerator {
+	return [dictionary keyEnumerator];
+}
+
+/**
+ @todo Refine with custom enumerator for greater efficiency?
+ */
+- (NSEnumerator*) objectEnumerator {
+	return [[self allObjects] objectEnumerator];
+}
+
+- (NSSet*) objectsForKey:(id)aKey {
+	id objectSet = [dictionary objectForKey:aKey];
+	return (objectSet == nil) ? nil : [NSSet setWithSet:objectSet];
+}
+
+- (NSString*) description {
+	return [dictionary description];
+}
+
+#pragma mark Removing Objects
+
+- (void) removeAllObjects {
+	count = 0;
+	[dictionary removeAllObjects];
+	++mutations;
+}
+
 - (void) removeObject:(id)anObject forKey:(id)aKey {
 	NSMutableSet *objects = [dictionary objectForKey:aKey];
 	if ([objects containsObject:anObject]) {
@@ -238,12 +223,6 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 - (void) removeObjectsForKey:(id)aKey {
 	count -= [[dictionary objectForKey:aKey] count];
 	[dictionary removeObjectForKey:aKey];
-	++mutations;
-}
-
-- (void) removeAllObjects {
-	count = 0;
-	[dictionary removeAllObjects];
 	++mutations;
 }
 
