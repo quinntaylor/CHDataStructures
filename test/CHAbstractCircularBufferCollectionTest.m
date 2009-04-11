@@ -182,9 +182,6 @@
 }
 
 - (void) testEnumerator {
-	NSEnumerator *e;
-	
-	
 	STAssertNil([[buffer objectEnumerator] nextObject],
 				@"Enumerator should be empty");
 	STAssertNotNil([[buffer objectEnumerator] allObjects],
@@ -202,14 +199,20 @@
 	for (id anObject in abc)
 		[buffer appendObject:anObject];
 	
+	NSEnumerator *e;
+	NSArray *allObjects;
+	
 	// Test forward enumeration
 	
 	e = [buffer objectEnumerator];
-	STAssertEquals([[e allObjects] count], [abc count], @"Wrong count");
+	allObjects = [e allObjects];
+	STAssertEquals([allObjects count], [abc count], @"Wrong count");
+	STAssertEqualObjects(allObjects, abc, @"Arrays should be equal.");
 	
 	e = [buffer objectEnumerator];
 	[e nextObject];
-	STAssertEquals([[e allObjects] count], [abc count]-1, @"Wrong count");
+	allObjects = [e allObjects];
+	STAssertEquals([allObjects count], [abc count]-1, @"Wrong count");
 	
 	e = [buffer objectEnumerator];
 	STAssertEqualObjects([e nextObject], @"A", @"Wrong object");
@@ -226,11 +229,15 @@
 	// Test reverse enumeration
 	
 	e = [buffer reverseObjectEnumerator];
-	STAssertEquals([[e allObjects] count], [abc count], @"Wrong count");
+	allObjects = [e allObjects];
+	STAssertEquals([allObjects count], [abc count], @"Wrong count");
+	STAssertEqualObjects(allObjects, [[abc reverseObjectEnumerator] allObjects],
+						 @"Arrays should be equal.");
 	
 	e = [buffer reverseObjectEnumerator];
 	[e nextObject];
-	STAssertEquals([[e allObjects] count], [abc count]-1, @"Wrong count");
+	allObjects = [e allObjects];
+	STAssertEquals([allObjects count], [abc count]-1, @"Wrong count");
 	
 	e = [buffer reverseObjectEnumerator];
 	STAssertEqualObjects([e nextObject], @"C", @"Wrong object");
@@ -414,11 +421,23 @@
 }
 
 - (void) testRemoveObject {
+	STAssertNoThrow([buffer removeObject:self], @"No effect when empty.");
+	for (id anObject in abc)
+		[buffer appendObject:anObject];
+	STAssertNoThrow([buffer removeObject:nil], @"No effect with nil object.");
+	STAssertEquals([buffer count], [abc count], @"Wrong count.");
+	
 	STAssertThrows([buffer removeObject:self],
 				   @"Should raise exception, unsupported.");
 }
 
 - (void) testRemoveObjectIdenticalTo {
+	STAssertNoThrow([buffer removeObject:self], @"No effect when empty.");
+	for (id anObject in abc)
+		[buffer appendObject:anObject];
+	STAssertNoThrow([buffer removeObject:nil], @"No effect with nil object.");
+	STAssertEquals([buffer count], [abc count], @"Wrong count.");
+	
 	STAssertThrows([buffer removeObjectIdenticalTo:self],
 				   @"Should raise exception, unsupported.");
 }
@@ -430,9 +449,22 @@
 		[buffer appendObject:anObject];
 	STAssertThrows([buffer removeObjectAtIndex:[abc count]],
 				   @"Should raise NSRangeException.");
+	
+	STAssertNoThrow([buffer removeObjectAtIndex:1], @"Should be no exception.");
+	STAssertEquals([buffer count], (NSUInteger)2, @"Wrong count.");
 
-	STAssertThrows([buffer removeObjectAtIndex:0],
-				   @"Should raise exception, unsupported.");
+	STAssertNoThrow([buffer removeObjectAtIndex:1], @"Should be no exception.");
+	STAssertEquals([buffer count], (NSUInteger)1, @"Wrong count.");
+
+	STAssertNoThrow([buffer removeObjectAtIndex:0], @"Should be no exception.");
+	STAssertEquals([buffer count], (NSUInteger)0, @"Wrong count.");
+	
+	for (id anObject in fifteen)
+		[buffer appendObject:anObject];
+	
+	[buffer removeObjectAtIndex:[buffer count] - 1];
+	
+	[buffer removeObjectAtIndex:0];
 }
 
 #pragma mark -

@@ -11,6 +11,9 @@
 #import "CHAbstractCircularBufferCollection.h"
 
 static size_t kCHPointerSize = sizeof(void*);
+#define transformIndex(index) ((headIndex + index) % arrayCapacity)
+#define incrementIndex(index) (index = (index + 1) % arrayCapacity)
+#define decrementIndex(index) (index = ((index) ? index : arrayCapacity) - 1)
 
 /**
  An NSEnumerator for traversing a CHAbstractCircularBufferCollection subclass.
@@ -21,9 +24,9 @@ static size_t kCHPointerSize = sizeof(void*);
  */
 @interface CHCircularBufferEnumerator : NSEnumerator
 {
-	id *buffer;                  /**< Underlying circular buffer to be enumerated. */
-	NSUInteger bufferCapacity;   /**< Allocated capacity of @a buffer. */
-	NSUInteger bufferCount;      /**< Number of elements in @a buffer. */
+	id *array;                   /**< Underlying circular buffer to be enumerated. */
+	NSUInteger arrayCapacity;    /**< Allocated capacity of @a buffer. */
+	NSUInteger arrayCount;       /**< Number of elements in @a buffer. */
 	NSUInteger enumerationCount; /**< How many objects have been enumerated. */
 	NSUInteger enumerationIndex; /**< Index of the next element to enumerate. */
 	BOOL reverseEnumeration;     /**< Whether to enumerate back-to-front. */
@@ -34,14 +37,14 @@ static size_t kCHPointerSize = sizeof(void*);
 /**
  Create an enumerator which traverses a circular buffer in the specified order.
  
- @param array The circular array that is being enumerated.
+ @param anArray The circular array that is being enumerated.
  @param capacity The total capacity of the circular buffer being enumerated.
  @param count The number of items currently in the circular buffer
  @param startIndex The index at which to begin enumerating (forward or reverse).
  @param isReversed @c YES if enumerating back-to-front, @c NO if natural ordering.
  @param mutations A pointer to the collection's mutation count for invalidation.
  */
-- (id) initWithArray:(id*)array
+- (id) initWithArray:(id*)anArray
             capacity:(NSUInteger)capacity
                count:(NSUInteger)count
           startIndex:(NSUInteger)startIndex
@@ -70,7 +73,7 @@ static size_t kCHPointerSize = sizeof(void*);
 
 @implementation CHCircularBufferEnumerator
 
-- (id) initWithArray:(id*)array
+- (id) initWithArray:(id*)anArray
             capacity:(NSUInteger)capacity
                count:(NSUInteger)count
           startIndex:(NSUInteger)startIndex
@@ -78,11 +81,13 @@ static size_t kCHPointerSize = sizeof(void*);
      mutationPointer:(unsigned long*)mutations
 {
 	if ([super init] == nil) return nil;
-	buffer = array;
-	enumerationIndex = startIndex;
+	array = anArray;
+	arrayCapacity = capacity;
+	arrayCount = count;
 	enumerationCount = 0;
-	bufferCount = count;
-	bufferCapacity = capacity;
+	enumerationIndex = startIndex;
+	if (isReversed)
+		decrementIndex(enumerationIndex);
 	reverseEnumeration = isReversed;
 	mutationCount = *mutations;
 	mutationPtr = mutations;
@@ -90,38 +95,37 @@ static size_t kCHPointerSize = sizeof(void*);
 }
 
 - (NSArray*) allObjects {
-	if (mutationCount != *mutationPtr)
-		CHMutatedCollectionException([self class], _cmd);
-	NSMutableArray *array = [[NSMutableArray alloc] init];
+	NSMutableArray *allObjects = [[NSMutableArray alloc] init];
 	if (reverseEnumeration) {
-		while (enumerationCount++ < bufferCount) {
-			enumerationIndex = (enumerationIndex + bufferCapacity - 1) % bufferCapacity;
-			[array addObject:buffer[enumerationIndex]];
+		while (enumerationCount++ < arrayCount) {
+			[allObjects addObject:array[enumerationIndex]];
+			decrementIndex(enumerationIndex);
 		}
 	}
 	else {
-		while (enumerationCount++ < bufferCount) {
-			[array addObject:buffer[enumerationIndex]];
-			enumerationIndex = (enumerationIndex + 1) % bufferCapacity;
+		while (enumerationCount++ < arrayCount) {
+			[allObjects addObject:array[enumerationIndex]];
+			incrementIndex(enumerationIndex);
 		}
 	}
-	return [array autorelease];
+	if (mutationCount != *mutationPtr)
+		CHMutatedCollectionException([self class], _cmd);
+	return [allObjects autorelease];
 }
 
 - (id) nextObject {
-	if (mutationCount != *mutationPtr)
-		CHMutatedCollectionException([self class], _cmd);
 	id object = nil;
-	if (enumerationCount++ < bufferCount) {
+	if (enumerationCount++ < arrayCount) {
+		object = array[enumerationIndex];
 		if (reverseEnumeration) {
-			enumerationIndex = (enumerationIndex + bufferCapacity - 1) % bufferCapacity;
-			object = buffer[enumerationIndex];
+			decrementIndex(enumerationIndex);
 		}
 		else {
-			object = buffer[enumerationIndex];
-			enumerationIndex = (enumerationIndex + 1) % bufferCapacity;
+			incrementIndex(enumerationIndex);
 		}
 	}
+	if (mutationCount != *mutationPtr)
+		CHMutatedCollectionException([self class], _cmd);
 	return object;
 }
 
@@ -215,8 +219,8 @@ static size_t kCHPointerSize = sizeof(void*);
 - (void) appendObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
-	array[tailIndex++] = [anObject retain];
-	tailIndex %= arrayCapacity;
+	array[tailIndex] = [anObject retain];
+	incrementIndex(tailIndex);
 	if (headIndex == tailIndex) {
 		array = NSReallocateCollectable(array, kCHPointerSize * arrayCapacity * 2, NSScannedOption);
 		// Copy wrapped-around portion to end of queue and move tail index
@@ -224,16 +228,15 @@ static size_t kCHPointerSize = sizeof(void*);
 		tailIndex += arrayCapacity;
 		arrayCapacity *= 2;
 	}
-	count++;
-	mutations++;
+	++count;
+	++mutations;
 }
 
 - (void) prependObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
-	if (headIndex == 0)
-		headIndex += arrayCapacity;
-	array[--headIndex] = [anObject retain];
+	decrementIndex(headIndex);
+	array[headIndex] = [anObject retain];
 	if (headIndex == tailIndex) {
 		array = NSReallocateCollectable(array, kCHPointerSize * arrayCapacity * 2, NSScannedOption);
 		// Copy wrapped-around portion to end of queue and move tail index
@@ -241,8 +244,8 @@ static size_t kCHPointerSize = sizeof(void*);
 		tailIndex += arrayCapacity;
 		arrayCapacity *= 2;
 	}
-	count++;
-	mutations++;
+	++count;
+	++mutations;
 }
 
 #pragma mark Querying Contents
@@ -261,7 +264,7 @@ static size_t kCHPointerSize = sizeof(void*);
 	while (iterationIndex != tailIndex) {
 		if ([array[iterationIndex] isEqual:anObject])
 			return YES;
-		iterationIndex = (iterationIndex + 1) % arrayCapacity;
+		incrementIndex(iterationIndex);
 	}
 	return NO;
 }
@@ -271,7 +274,7 @@ static size_t kCHPointerSize = sizeof(void*);
 	while (iterationIndex != tailIndex) {
 		if (array[iterationIndex] == anObject)
 			return YES;
-		iterationIndex = (iterationIndex + 1) % arrayCapacity;
+		incrementIndex(iterationIndex);
 	}
 	return NO;
 }
@@ -285,7 +288,7 @@ static size_t kCHPointerSize = sizeof(void*);
 }
 
 - (id) lastObject {
-	return (count > 0) ? array[(tailIndex + arrayCapacity - 1) % arrayCapacity] : nil;
+	return (count > 0) ? array[((tailIndex) ? tailIndex : arrayCapacity) - 1] : nil;
 }
 
 - (NSUInteger) indexOfObject:(id)anObject {
@@ -294,7 +297,7 @@ static size_t kCHPointerSize = sizeof(void*);
 	while (iterationIndex != tailIndex) {
 		if ([array[iterationIndex] isEqual:anObject])
 			return relativeIndex;
-		iterationIndex = (iterationIndex + 1) % arrayCapacity;
+		incrementIndex(iterationIndex);
 		relativeIndex++;
 	}
 	return CHNotFound;
@@ -306,7 +309,7 @@ static size_t kCHPointerSize = sizeof(void*);
 	while (iterationIndex != tailIndex) {
 		if (array[iterationIndex] == anObject)
 			return relativeIndex;
-		iterationIndex = (iterationIndex + 1) % arrayCapacity;
+		incrementIndex(iterationIndex);
 		relativeIndex++;
 	}
 	return CHNotFound;
@@ -315,27 +318,27 @@ static size_t kCHPointerSize = sizeof(void*);
 - (id) objectAtIndex:(NSUInteger)index {
 	if (index >= count)
 		CHIndexOutOfRangeException([self class], _cmd, index, count);
-	return array[(headIndex + index) % arrayCapacity];
+	return array[transformIndex(index)];
 }
 
 - (NSEnumerator*) objectEnumerator {
 	return [[[CHCircularBufferEnumerator alloc]
 	         initWithArray:array
-			 capacity:arrayCapacity
-			 count:count
-			 startIndex:headIndex
-			 reverse:NO
-			 mutationPointer:&mutations] autorelease];
+	              capacity:arrayCapacity
+	                 count:count
+	            startIndex:headIndex
+	               reverse:NO
+	       mutationPointer:&mutations] autorelease];
 }
 
 - (NSEnumerator*) reverseObjectEnumerator {
 	return [[[CHCircularBufferEnumerator alloc]
 	         initWithArray:array
-			 capacity:arrayCapacity
-			 count:count
-			 startIndex:tailIndex
-			 reverse:YES
-			 mutationPointer:&mutations] autorelease];
+	              capacity:arrayCapacity
+	                 count:count
+	            startIndex:tailIndex
+	               reverse:YES
+	       mutationPointer:&mutations] autorelease];
 }
 
 - (NSString*) description {
@@ -358,45 +361,83 @@ static size_t kCHPointerSize = sizeof(void*);
 - (void) removeFirstObject {
 	if (count == 0)
 		return;
-	[array[headIndex++] release];
-	headIndex %= arrayCapacity;
-	count--;
-	mutations++;
+	[array[headIndex] release];
+	array[headIndex] = nil; // Let GC do its thing
+	incrementIndex(headIndex);
+	--count;
+	++mutations;
 }
 
 - (void) removeLastObject {
 	if (count == 0)
 		return;
-	[array[tailIndex--] release];
-	if (tailIndex < 0)
-		tailIndex += arrayCapacity;
-	count--;
-	mutations++;
+	[array[tailIndex] release];
+	array[tailIndex] = nil; // Let GC do its thing
+	decrementIndex(tailIndex);
+	--count;
+	++mutations;
 }
 
 - (void) removeObject:(id)anObject {
+	if (count == 0 || anObject == nil)
+		return;
 	CHUnsupportedOperationException([self class], _cmd);
 	// TODO: Add support for removing internal to a circular buffer
+	
+	// Keep a removed count so the move offset is easy to calculate each time
 }
 
 - (void) removeObjectIdenticalTo:(id)anObject {
+	if (count == 0 || anObject == nil)
+		return;
 	CHUnsupportedOperationException([self class], _cmd);
 	// TODO: Add support for removing internal to a circular buffer
+	
+	// Keep a removed count so the move offset is easy to calculate each time
 }
 
 - (void) removeObjectAtIndex:(NSUInteger)index {
 	if (index >= count)
 		CHIndexOutOfRangeException([self class], _cmd, index, count);
-	CHUnsupportedOperationException([self class], _cmd);
-	// TODO: Add support for removing internal to a circular buffer
+	NSUInteger actualIndex = transformIndex(index);
+	[array[actualIndex] release];
+	if (actualIndex == headIndex) {
+		array[actualIndex] = nil; // Let GC do its thing
+		incrementIndex(headIndex);
+	} else if (actualIndex == tailIndex - 1) {
+		array[actualIndex] = nil; // Let GC do its thing
+		decrementIndex(tailIndex);
+	} else {
+		// If the buffer wraps and index is between head and end, shift right.
+		if (actualIndex > tailIndex) {
+			memmove(&array[headIndex+1], &array[headIndex],
+					kCHPointerSize * index);
+			//array[headIndex] = nil; // for debugging purposes only
+			incrementIndex(headIndex);
+		}
+		// Otherwise, shift everything from given index to the tail to the left.
+		else {
+			memmove(&array[actualIndex], &array[actualIndex+1],
+					kCHPointerSize * (tailIndex - actualIndex - 1));
+			decrementIndex(tailIndex);
+			//array[tailIndex] = nil; // for debugging purposes only
+		}
+		// This algorithm is from: http://www.javafaq.nu/java-article808.html
+		// This could be optimized so the smaller half is always moved, but that
+		// requires 1-2 memmove() calls and usually copying of a single object.
+		// Since this operation is already inefficient, I just left it this way.
+		// (In both cases, the pointer to the removed object is overwritten.)
+	}
+	--count;
+	++mutations;
 }
 
 - (void) removeAllObjects {
 	if (count > 0) {
 		if (!objc_collectingEnabled()) {
 			while (headIndex != tailIndex) {
-				[array[headIndex++] release];
-				headIndex %= arrayCapacity;
+				[array[headIndex] release];
+				incrementIndex(headIndex);
 			}
 		}
 		if (arrayCapacity > 16) {
@@ -407,7 +448,7 @@ static size_t kCHPointerSize = sizeof(void*);
 	}
 	headIndex = tailIndex = 0;
 	count = 0;
-	mutations++;
+	++mutations;
 }
 
 @end
