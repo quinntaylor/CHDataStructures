@@ -194,7 +194,9 @@
 - (void) testRemoveObject {
 	for (id object in objects)
 		[collection addObject:object];
-	
+
+	STAssertNoThrow([collection removeObject:nil], @"Should not raise an exception.");
+
 	STAssertEquals([collection count], (NSUInteger)3, @"Incorrect count.");
 	[collection removeObject:@"A"];
 	STAssertEquals([collection count], (NSUInteger)2, @"Incorrect count.");
@@ -222,6 +224,8 @@
 	[collection addObject:@"C"];
 	[collection addObject:a];
 	[collection addObject:b];
+	
+	STAssertNoThrow([collection removeObjectIdenticalTo:nil], @"Should not raise an exception.");
 	
 	STAssertEquals([collection count], (NSUInteger)5, @"Incorrect count.");
 	[collection removeObjectIdenticalTo:@"A"];

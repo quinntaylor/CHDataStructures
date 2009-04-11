@@ -419,9 +419,11 @@ static BOOL gcDisabled;
 	for (Class aClass in linkedListClasses) {
 		list = [[aClass alloc] init];
 		[list removeObject:@"Z"]; // Should have no effect
+		STAssertNoThrow([list removeObject:nil], @"Should not raise an exception.");
 		
 		for (id anObject in objects)
 			[list appendObject:anObject];
+		STAssertNoThrow([list removeObject:nil], @"Should not raise an exception.");
 		
 		[list removeObject:@"B"];
 		STAssertEquals([list count], (NSUInteger)2, @"Incorrect count.");
@@ -459,6 +461,8 @@ static BOOL gcDisabled;
 - (void) testRemoveObjectIdenticalTo {
 	for (Class aClass in linkedListClasses) {
 		list = [[aClass alloc] init];
+		STAssertNoThrow([list removeObjectIdenticalTo:nil], @"Should not raise an exception.");
+		
 		NSString *a = [NSString stringWithFormat:@"A"];
 		[list appendObject:a];
 		STAssertEquals([list count], (NSUInteger)1, @"Incorrect count.");
@@ -474,7 +478,9 @@ static BOOL gcDisabled;
 		[list appendObject:@"Z"];
 		[list appendObject:@"C"];
 		[list appendObject:[NSString stringWithFormat:@"Z"]];
-		
+
+		STAssertNoThrow([list removeObjectIdenticalTo:nil], @"Should not raise an exception.");
+
 		STAssertEquals([list count], (NSUInteger)6, @"Incorrect count.");
 		[list removeObjectIdenticalTo:@"Z"];
 		STAssertEquals([list count], (NSUInteger)4, @"Incorrect count.");

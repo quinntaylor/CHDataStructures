@@ -155,9 +155,7 @@ static inline CHBinaryTreeNode* doubleRotation(CHBinaryTreeNode *node, BOOL goin
  http://eternallyconfuzzled.com/tuts/datastructures/jsw_tut_rbtree.aspx
  */
 - (void) removeObject:(id)anObject {
-	if (anObject == nil)
-		CHNilArgumentException([self class], _cmd);
-	if (count == 0)
+	if (count == 0 || anObject == nil)
 		return;
 	++mutations;
 	

@@ -358,7 +358,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 }
 
 - (void) removeObject:(id)anObject {
-	if (count == 0)
+	if (count == 0 || anObject == nil)
 		return;
 	tail->object = anObject;
 	CHDoublyLinkedListNode *node = head->next, *temp;
@@ -374,7 +374,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 }
 
 - (void) removeObjectIdenticalTo:(id)anObject {
-	if (count == 0)
+	if (count == 0 || anObject == nil)
 		return;
 	tail->object = anObject;
 	CHDoublyLinkedListNode *node = head->next, *temp;

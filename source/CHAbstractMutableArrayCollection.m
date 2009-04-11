@@ -84,11 +84,19 @@
 }
 
 - (void) removeObject:(id)anObject {
+	if (anObject == nil || [array count] == 0)
+		return;
 	[array removeObject:anObject];
 }
 
 - (void) removeObjectIdenticalTo:(id)anObject {
+	if (anObject == nil || [array count] == 0)
+		return;
 	[array removeObjectIdenticalTo:anObject];
+}
+
+- (void) removeObjectAtIndex:(NSUInteger)index {
+	[array removeObjectAtIndex:index];
 }
 
 - (void) removeAllObjects {

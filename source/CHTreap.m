@@ -94,9 +94,7 @@
 }
 
 - (void) removeObject:(id)anObject {
-	if (anObject == nil)
-		CHNilArgumentException([self class], _cmd);
-	if (count == 0)
+	if (count == 0 || anObject == nil)
 		return;
 	++mutations;
 	

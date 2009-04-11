@@ -119,7 +119,7 @@
  
  @param anObject The object to be removed from the stack.
  
- If no object matching @a anObject is found, there is no effect, aside from the overhead of searching the contents.
+ If the stack is empty, @a anObject is @c nil, or no object matching @a anObject is found, there is no effect, aside from the possible overhead of searching the contents.
  */
 - (void) removeObject:(id)anObject;
 
@@ -128,7 +128,7 @@
  
  @param anObject The object to be removed from the stack.
  
- If no object matching @a anObject is found, there is no effect, aside from the overhead of searching the contents.
+ If the stack is empty, @a anObject is @c nil, or no object matching @a anObject is found, there is no effect, aside from the possible overhead of searching the contents.
  */
 - (void) removeObjectIdenticalTo:(id)anObject;
 

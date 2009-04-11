@@ -38,6 +38,7 @@
 - (void) removeAllObjects;
 - (void) removeObject:(id)anObject;
 - (void) removeObjectIdenticalTo:(id)anObject;
+- (void) removeObjectAtIndex:(NSUInteger)index;
 
 - (BOOL) containsObject:(id)anObject;
 - (BOOL) containsObjectIdenticalTo:(id)anObject;

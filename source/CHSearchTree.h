@@ -210,6 +210,8 @@ typedef enum {
  Remove object for which @c -compare: returns @c NSOrderedSame. If no matching object exists, there is no effect.
  
  @param anObject The object to be removed from the tree.
+ 
+ If the tree is empty, @a anObject is @c nil, or no object matching @a anObject is found, there is no effect, aside from the possible overhead of searching the contents.
  */
 - (void) removeObject:(id)anObject;
 

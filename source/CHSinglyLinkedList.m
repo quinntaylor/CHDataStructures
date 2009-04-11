@@ -324,7 +324,7 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 }
 
 - (void) removeObject:(id)anObject {
-	if (count == 0)
+	if (count == 0 || anObject == nil)
 		return;
 	CHSinglyLinkedListNode *node = head;
 	do {
@@ -340,7 +340,7 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 }
 
 - (void) removeObjectIdenticalTo:(id)anObject {
-	if (count == 0)
+	if (count == 0 || anObject == nil)
 		return;
 	CHSinglyLinkedListNode *node = head;
 	do {

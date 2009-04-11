@@ -271,7 +271,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 		[tree addObject:anObject];
 	
 	// Test removing nil
-	STAssertThrows([tree removeObject:nil], @"Should raise an exception.");
+	STAssertNoThrow([tree removeObject:nil], @"Should not raise an exception.");
 	
 	// Test removing a node which doesn't occur in the tree
 	STAssertEquals([tree count], [objects count], @"Incorrect count.");

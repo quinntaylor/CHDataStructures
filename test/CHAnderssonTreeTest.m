@@ -95,7 +95,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 }
 
 - (void) testRemoveObject {
-	STAssertThrows([tree removeObject:nil], @"Should raise an exception.");
+	STAssertNoThrow([tree removeObject:nil], @"Should not raise an exception.");
 
 	for (id object in objects)
 		[tree addObject:object];

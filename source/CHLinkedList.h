@@ -186,7 +186,7 @@
  
  @param anObject The object to remove from the list.
  
- If no object matching @a anObject is found, there is no effect, aside from the overhead of searching the contents.
+ If the list is empty, @a anObject is @c nil, or no object matching @a anObject is found, there is no effect, aside from the possible overhead of searching the contents.
  
  Use #indexOfObject: and #removeObjectAtIndex: to remove only the first match.
  */
@@ -197,11 +197,9 @@
  
  @param anObject The object to remove from the list.
  
- If no object matching @a anObject is found, there is no effect, aside from the overhead of searching the contents.
+ If the list is empty, @a anObject is @c nil, or no object matching @a anObject is found, there is no effect, aside from the possible overhead of searching the contents.
  
  Use #indexOfObjectIdenticalTo: and #removeObjectAtIndex: to remove only the first match.
- 
- If you want to remove only the first object which matches @a anObject, use #indexOfObjectIdenticalTo: and #removeObjectAtIndex: instead.
  */
 - (void) removeObjectIdenticalTo:(id)anObject;
 
