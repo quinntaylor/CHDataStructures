@@ -71,6 +71,9 @@ static size_t kCHPointerSize = sizeof(void*);
 
 @end
 
+/**
+ Consider more efficient alternatives for -removeObject(IdenticalTo): methods.
+ */
 @implementation CHCircularBufferEnumerator
 
 - (id) initWithArray:(id*)anArray
@@ -251,12 +254,12 @@ static size_t kCHPointerSize = sizeof(void*);
 #pragma mark Querying Contents
 
 - (NSArray*) allObjects {
-	NSMutableArray *allObjects = [[[NSMutableArray alloc] init] autorelease];
+	NSMutableArray *allObjects = [[NSMutableArray alloc] init];
 	if (count > 0) {
 		for (id anObject in self)
 			[allObjects addObject:anObject];
 	}
-	return allObjects;
+	return [allObjects autorelease];
 }
 
 - (BOOL) containsObject:(id)anObject {
@@ -381,21 +384,57 @@ static size_t kCHPointerSize = sizeof(void*);
 - (void) removeObject:(id)anObject {
 	if (count == 0 || anObject == nil)
 		return;
-	CHUnsupportedOperationException([self class], _cmd);
-	// TODO: Add support for removing internal to a circular buffer
-	
-	// Keep a removed count so the move offset is easy to calculate each time
+	// Strip off leading or trailing matches if any exist in the buffer.
+	while (count > 0 && [array[headIndex] isEqual:anObject]) {
+		array[headIndex] = nil; // Let GC do its thing
+		incrementIndex(headIndex);
+		--count;
+	}
+	NSUInteger lastIndex = tailIndex;
+	decrementIndex(lastIndex);
+	while (count > 0 && [array[lastIndex] isEqual:anObject]) {
+		array[lastIndex] = nil; // Let GC do its thing
+		decrementIndex(lastIndex);
+		--count;
+	}
+	// Use a mutable array to remove matching objects semi-efficiently.
+	NSMutableArray *objects = [[self allObjects] mutableCopy];
+	[self removeAllObjects];
+	[objects removeObject:anObject];
+	for (id object in objects)
+		[self appendObject:object];
+	[objects release];
+	++mutations;
 }
 
 - (void) removeObjectIdenticalTo:(id)anObject {
 	if (count == 0 || anObject == nil)
 		return;
-	CHUnsupportedOperationException([self class], _cmd);
-	// TODO: Add support for removing internal to a circular buffer
-	
-	// Keep a removed count so the move offset is easy to calculate each time
+	// Strip off leading or trailing matches if any exist in the buffer.
+	while (count > 0 && array[headIndex] == anObject) {
+		array[headIndex] = nil; // Let GC do its thing
+		incrementIndex(headIndex);
+		--count;
+	}
+	NSUInteger lastIndex = tailIndex;
+	decrementIndex(lastIndex);
+	while (count > 0 && array[lastIndex] == anObject) {
+		array[lastIndex] = nil; // Let GC do its thing
+		decrementIndex(lastIndex);
+		--count;
+	}
+	NSMutableArray *objects = [[self allObjects] mutableCopy];
+	[self removeAllObjects];
+	[objects removeObjectIdenticalTo:anObject];
+	for (id object in objects)
+		[self appendObject:object];
+	[objects release];
 }
 
+// This algorithm is from: http://www.javafaq.nu/java-article808.html
+// It could be optimized so the smaller half is always moved, but that requires
+// 1-2 memmove()s and usually copying of a single object. Since this operation
+// is inherently less efficient no matter the code, I just left it this way.
 - (void) removeObjectAtIndex:(NSUInteger)index {
 	if (index >= count)
 		CHIndexOutOfRangeException([self class], _cmd, index, count);
@@ -422,10 +461,6 @@ static size_t kCHPointerSize = sizeof(void*);
 			decrementIndex(tailIndex);
 			//array[tailIndex] = nil; // for debugging purposes only
 		}
-		// This algorithm is from: http://www.javafaq.nu/java-article808.html
-		// This could be optimized so the smaller half is always moved, but that
-		// requires 1-2 memmove() calls and usually copying of a single object.
-		// Since this operation is already inefficient, I just left it this way.
 		// (In both cases, the pointer to the removed object is overwritten.)
 	}
 	--count;

@@ -204,6 +204,25 @@
 	STAssertEquals([collection count], (NSUInteger)2, @"Incorrect count.");
 	[collection removeObject:@"Z"];
 	STAssertEquals([collection count], (NSUInteger)2, @"Incorrect count.");
+	
+	[collection removeAllObjects];
+	// Test removing all instances of an object
+	for (id object in objects)
+		[collection addObject:object];
+	for (id object in objects)
+		[collection addObject:object];
+	
+	STAssertNoThrow([collection removeObjectIdenticalTo:nil], @"Should not raise an exception.");
+	
+	STAssertEquals([collection count], (NSUInteger)6, @"Incorrect count.");
+	[collection removeObject:@"Z"];
+	STAssertEquals([collection count], (NSUInteger)6, @"Incorrect count.");
+	[collection removeObject:@"A"];
+	STAssertEquals([collection count], (NSUInteger)4, @"Incorrect count.");
+	[collection removeObject:@"B"];
+	STAssertEquals([collection count], (NSUInteger)2, @"Incorrect count.");
+	[collection removeObject:@"C"];
+	STAssertEquals([collection count], (NSUInteger)0, @"Incorrect count.");	
 }
 
 - (void) testRemoveObjectIdenticalTo {
@@ -234,6 +253,35 @@
 	STAssertEquals([collection count], (NSUInteger)3, @"Incorrect count.");
 	[collection removeObjectIdenticalTo:b];
 	STAssertEquals([collection count], (NSUInteger)1, @"Incorrect count.");
+}
+
+- (void) testRemoveObjectAtIndex {
+	for (id anObject in objects)
+		[collection addObject:anObject];
+	
+	STAssertThrows([collection removeObjectAtIndex:3], @"Should raise NSRangeException.");
+	STAssertThrows([collection removeObjectAtIndex:-1], @"Should raise NSRangeException.");
+	
+	[collection removeObjectAtIndex:2];
+	STAssertEquals([collection count], (NSUInteger)2, @"Incorrect count.");
+	STAssertEqualObjects([collection objectAtIndex:0], @"A", @"Wrong first object.");
+	STAssertEqualObjects([collection objectAtIndex:1], @"B", @"Wrong last object.");
+	
+	[collection removeObjectAtIndex:0];
+	STAssertEquals([collection count], (NSUInteger)1, @"Incorrect count.");
+	STAssertEqualObjects([collection objectAtIndex:0], @"B", @"Wrong first object.");
+	
+	[collection removeObjectAtIndex:0];
+	STAssertEquals([collection count], (NSUInteger)0, @"Incorrect count.");
+	
+	// Test removing from an index in the middle
+	for (id anObject in objects)
+		[collection addObject:anObject];
+	
+	[collection removeObjectAtIndex:1];
+	STAssertEquals([collection count], (NSUInteger)2, @"Incorrect count.");
+	STAssertEqualObjects([collection objectAtIndex:0], @"A", @"Wrong first object.");
+	STAssertEqualObjects([collection objectAtIndex:1], @"C", @"Wrong last object.");
 }
 
 - (void) testRemoveAllObjects {

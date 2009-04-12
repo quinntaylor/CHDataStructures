@@ -427,19 +427,65 @@
 	STAssertNoThrow([buffer removeObject:nil], @"No effect with nil object.");
 	STAssertEquals([buffer count], [abc count], @"Wrong count.");
 	
-	STAssertThrows([buffer removeObject:self],
-				   @"Should raise exception, unsupported.");
+	STAssertEquals([buffer count], (NSUInteger)3, @"Incorrect count.");
+	[buffer removeObject:@"A"];
+	STAssertEquals([buffer count], (NSUInteger)2, @"Incorrect count.");
+	[buffer removeObject:@"A"];
+	STAssertEquals([buffer count], (NSUInteger)2, @"Incorrect count.");
+	[buffer removeObject:@"Z"];
+	STAssertEquals([buffer count], (NSUInteger)2, @"Incorrect count.");
+	
+	[buffer removeAllObjects];
+	// Test removing all instances of an object
+	for (id object in abc)
+		[buffer appendObject:object];
+	for (id object in abc)
+		[buffer appendObject:object];
+	
+	STAssertNoThrow([buffer removeObjectIdenticalTo:nil], @"Should not raise an exception.");
+	
+	STAssertEquals([buffer count], (NSUInteger)6, @"Incorrect count.");
+	[buffer removeObject:@"Z"];
+	STAssertEquals([buffer count], (NSUInteger)6, @"Incorrect count.");
+	[buffer removeObject:@"A"];
+	STAssertEquals([buffer count], (NSUInteger)4, @"Incorrect count.");
+	[buffer removeObject:@"C"];
+	STAssertEquals([buffer count], (NSUInteger)2, @"Incorrect count.");
+	[buffer removeObject:@"B"];
+	STAssertEquals([buffer count], (NSUInteger)0, @"Incorrect count.");	
 }
 
 - (void) testRemoveObjectIdenticalTo {
 	STAssertNoThrow([buffer removeObject:self], @"No effect when empty.");
-	for (id anObject in abc)
-		[buffer appendObject:anObject];
-	STAssertNoThrow([buffer removeObject:nil], @"No effect with nil object.");
-	STAssertEquals([buffer count], [abc count], @"Wrong count.");
 	
-	STAssertThrows([buffer removeObjectIdenticalTo:self],
-				   @"Should raise exception, unsupported.");
+	NSString *a = [NSString stringWithFormat:@"A"];
+	NSString *b = [NSString stringWithFormat:@"B"];
+
+	[buffer appendObject:a];
+	STAssertEquals([buffer count], (NSUInteger)1, @"Incorrect count.");
+	[buffer removeObjectIdenticalTo:@"A"];
+	STAssertEquals([buffer count], (NSUInteger)1, @"Incorrect count.");
+	[buffer removeObjectIdenticalTo:a];
+	STAssertEquals([buffer count], (NSUInteger)0, @"Incorrect count.");
+	[buffer removeObjectIdenticalTo:a];
+	STAssertEquals([buffer count], (NSUInteger)0, @"Incorrect count.");
+	
+	// Test removing all instances of an object
+	[buffer appendObject:a];
+	[buffer appendObject:b];
+	[buffer appendObject:@"C"];
+	[buffer appendObject:a];
+	[buffer appendObject:b];
+	
+	STAssertNoThrow([buffer removeObjectIdenticalTo:nil], @"Should not raise an exception.");
+	
+	STAssertEquals([buffer count], (NSUInteger)5, @"Incorrect count.");
+	[buffer removeObjectIdenticalTo:@"A"];
+	STAssertEquals([buffer count], (NSUInteger)5, @"Incorrect count.");
+	[buffer removeObjectIdenticalTo:a];
+	STAssertEquals([buffer count], (NSUInteger)3, @"Incorrect count.");
+	[buffer removeObjectIdenticalTo:b];
+	STAssertEquals([buffer count], (NSUInteger)1, @"Incorrect count.");
 }
 
 - (void) testRemoveObjectAtIndex {
