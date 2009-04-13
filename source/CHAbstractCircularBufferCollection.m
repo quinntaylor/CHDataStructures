@@ -196,19 +196,18 @@ static size_t kCHPointerSize = sizeof(void*);
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len
 {
-	NSUInteger enumeratedCount;
 	if (state->state == 0) {
 		state->mutationsPtr = &mutations;
 		state->itemsPtr = array + headIndex; // pointer arithmetic for offset
 		// If the buffer wraps, only provide elements to the end of the array.
-		enumeratedCount = MIN(arrayCapacity - headIndex, count);
+		NSUInteger enumeratedCount = MIN(arrayCapacity - headIndex, count);
 		state->state = (unsigned long) enumeratedCount;
 		return enumeratedCount;
 	}
 	else if (state->state < count) {
 		// This means the buffer wrapped around; now return the wrapped segment.
 		state->itemsPtr = array;
-		enumeratedCount = (NSUInteger) state->state;
+		NSUInteger enumeratedCount = (NSUInteger) state->state;
 		state->state = (unsigned long) count;
 		return (count - enumeratedCount);
 	}
@@ -384,26 +383,44 @@ static size_t kCHPointerSize = sizeof(void*);
 - (void) removeObject:(id)anObject {
 	if (count == 0 || anObject == nil)
 		return;
-	// Strip off leading or trailing matches if any exist in the buffer.
+	// Strip off leading matches if any exist in the buffer.
 	while (count > 0 && [array[headIndex] isEqual:anObject]) {
+		[array[headIndex] release];
 		array[headIndex] = nil; // Let GC do its thing
 		incrementIndex(headIndex);
-		--count;
+		--count; // Necessary in case the only matches are at the beginning.
 	}
-	NSUInteger lastIndex = tailIndex;
-	decrementIndex(lastIndex);
-	while (count > 0 && [array[lastIndex] isEqual:anObject]) {
-		array[lastIndex] = nil; // Let GC do its thing
-		decrementIndex(lastIndex);
-		--count;
+	// Scan to find the first match, if one exists
+	NSUInteger scanIndex = headIndex;
+	while (scanIndex != tailIndex && ![array[scanIndex] isEqual:anObject])
+		incrementIndex(scanIndex);
+	// Bail out here if no objects need to be removed internally.
+	if (scanIndex == tailIndex)
+		return;
+	// Copy individual elements, excluding objects to be removed
+	NSUInteger copyIndex = scanIndex;
+	incrementIndex(scanIndex);
+	while (scanIndex != tailIndex) {
+		if (![array[scanIndex] isEqual:anObject]) {
+			[array[copyIndex] release];
+			array[copyIndex] = array[scanIndex];
+			incrementIndex(copyIndex);
+		}
+		incrementIndex(scanIndex);
 	}
-	// Use a mutable array to remove matching objects semi-efficiently.
-	NSMutableArray *objects = [[self allObjects] mutableCopy];
-	[self removeAllObjects];
-	[objects removeObject:anObject];
-	for (id object in objects)
-		[self appendObject:object];
-	[objects release];
+	// Under GC, zero the rest of the array to avoid holding unneeded references
+	if (objc_collectingEnabled()) {
+		if (tailIndex > copyIndex) {
+			memset(&array[copyIndex], 0, kCHPointerSize * (tailIndex - copyIndex));
+		}
+		else {
+			memset(array + copyIndex, 0, kCHPointerSize * (arrayCapacity - copyIndex));
+			memset(array,             0, kCHPointerSize * tailIndex);
+		}
+	}
+	// Set the tail pointer to the new end point and recalculate element count.
+	tailIndex = copyIndex;
+	count = (tailIndex + arrayCapacity - headIndex) % arrayCapacity;
 	++mutations;
 }
 
@@ -412,23 +429,43 @@ static size_t kCHPointerSize = sizeof(void*);
 		return;
 	// Strip off leading or trailing matches if any exist in the buffer.
 	while (count > 0 && array[headIndex] == anObject) {
+		[array[headIndex] release];
 		array[headIndex] = nil; // Let GC do its thing
 		incrementIndex(headIndex);
 		--count;
 	}
-	NSUInteger lastIndex = tailIndex;
-	decrementIndex(lastIndex);
-	while (count > 0 && array[lastIndex] == anObject) {
-		array[lastIndex] = nil; // Let GC do its thing
-		decrementIndex(lastIndex);
-		--count;
+	// Scan to find the first match, if one exists
+	NSUInteger scanIndex = headIndex;
+	while (scanIndex != tailIndex && array[scanIndex] != anObject)
+		incrementIndex(scanIndex);
+	// Bail out here if no objects need to be removed internally.
+	if (scanIndex == tailIndex)
+		return;
+	// Copy individual elements, excluding objects to be removed
+	NSUInteger copyIndex = scanIndex;
+	incrementIndex(scanIndex);
+	while (scanIndex != tailIndex) {
+		if (array[scanIndex] != anObject) {
+			[array[copyIndex] release];
+			array[copyIndex] = array[scanIndex];
+			incrementIndex(copyIndex);
+		}
+		incrementIndex(scanIndex);
 	}
-	NSMutableArray *objects = [[self allObjects] mutableCopy];
-	[self removeAllObjects];
-	[objects removeObjectIdenticalTo:anObject];
-	for (id object in objects)
-		[self appendObject:object];
-	[objects release];
+	// Under GC, zero the rest of the array to avoid holding unneeded references
+	if (objc_collectingEnabled()) {
+		if (tailIndex > copyIndex) {
+			memset(&array[copyIndex], 0, kCHPointerSize * (tailIndex - copyIndex));
+		}
+		else {
+			memset(array + copyIndex, 0, kCHPointerSize * (arrayCapacity - copyIndex));
+			memset(array,             0, kCHPointerSize * tailIndex);
+		}
+	}
+	// Set the tail pointer to the new end point and recalculate element count.
+	tailIndex = copyIndex;
+	count = (tailIndex + arrayCapacity - headIndex) % arrayCapacity;
+	++mutations;
 }
 
 // This algorithm is from: http://www.javafaq.nu/java-article808.html
