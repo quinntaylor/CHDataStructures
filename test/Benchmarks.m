@@ -445,10 +445,12 @@ int main (int argc, const char * argv[]) {
 	CHQuietLog(@"\n<CHDeque> Implemenations");
 	benchmarkDeque([CHMutableArrayDeque class]);
 	benchmarkDeque([CHListDeque class]);
+	benchmarkDeque([CHCircularBufferDeque class]);
 	
 	CHQuietLog(@"\n<CHQueue> Implemenations");
 	benchmarkQueue([CHMutableArrayQueue class]);
 	benchmarkQueue([CHListQueue class]);
+	benchmarkQueue([CHCircularBufferQueue class]);
 	
 	CHQuietLog(@"\n<CHStack> Implemenations");
 	benchmarkStack([CHMutableArrayStack class]);
