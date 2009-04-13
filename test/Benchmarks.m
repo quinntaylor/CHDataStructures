@@ -455,6 +455,7 @@ int main (int argc, const char * argv[]) {
 	CHQuietLog(@"\n<CHStack> Implemenations");
 	benchmarkStack([CHMutableArrayStack class]);
 	benchmarkStack([CHListStack class]);
+	benchmarkStack([CHCircularBufferStack class]);
 	
 	[objects release];
 	

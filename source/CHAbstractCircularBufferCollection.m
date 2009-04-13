@@ -71,9 +71,6 @@ static size_t kCHPointerSize = sizeof(void*);
 
 @end
 
-/**
- Consider more efficient alternatives for -removeObject(IdenticalTo): methods.
- */
 @implementation CHCircularBufferEnumerator
 
 - (id) initWithArray:(id*)anArray
@@ -136,9 +133,6 @@ static size_t kCHPointerSize = sizeof(void*);
 
 #pragma mark -
 
-/**
- @todo Add support for removing objects from the middle of a circular buffer.
- */
 @implementation CHAbstractCircularBufferCollection
 
 - (void) dealloc {

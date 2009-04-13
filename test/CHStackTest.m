@@ -13,6 +13,7 @@
 #import "CHStack.h"
 #import "CHListStack.h"
 #import "CHMutableArrayStack.h"
+#import "CHCircularBufferStack.h"
 
 @interface CHStackTest : SenTestCase {
 	id<CHStack> stack;
@@ -26,6 +27,7 @@
 	stackClasses = [NSArray arrayWithObjects:
 					[CHListStack class],
 					[CHMutableArrayStack class],
+					[CHCircularBufferStack class],
 					nil];
 	objects = [NSArray arrayWithObjects:@"A", @"B", @"C", nil];
 	stackOrder = [NSArray arrayWithObjects:@"C", @"B", @"A", nil];
@@ -44,11 +46,18 @@
  */
 
 - (void) testInitWithArray {
+	NSMutableArray *moreObjects = [NSMutableArray array];
+	for (NSUInteger i = 0; i < 32; i++)
+		[moreObjects addObject:[NSNumber numberWithUnsignedInt:i]];
+	
 	for (Class aClass in stackClasses) {
 		stack = [[[aClass alloc] initWithArray:objects] autorelease];
 		STAssertEquals([stack count], [objects count], @"Incorrect count.");
 		STAssertEqualObjects([stack allObjects], stackOrder,
 							 @"Bad ordering on -[%@ initWithArray:]", aClass);
+
+		stack = [[[aClass alloc] initWithArray:moreObjects] autorelease];
+		STAssertEquals([stack count], [moreObjects count], @"Incorrect count.");
 	}
 }
 

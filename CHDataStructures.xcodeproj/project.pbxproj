@@ -131,6 +131,8 @@
 		E4C430850F74AC4F00EDBB0B /* CHAbstractCircularBufferCollection.h in Headers */ = {isa = PBXBuildFile; fileRef = E4C430830F74AC4F00EDBB0B /* CHAbstractCircularBufferCollection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4C430860F74AC4F00EDBB0B /* CHAbstractCircularBufferCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = E4C430840F74AC4F00EDBB0B /* CHAbstractCircularBufferCollection.m */; };
 		E4D3A4C70F789FF500E21CF8 /* CHAbstractCircularBufferCollectionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D3A4C60F789FF500E21CF8 /* CHAbstractCircularBufferCollectionTest.m */; };
+		E4D941400F93C147001BAE05 /* CHCircularBufferStack.h in Headers */ = {isa = PBXBuildFile; fileRef = E4D9413E0F93C147001BAE05 /* CHCircularBufferStack.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E4D941410F93C147001BAE05 /* CHCircularBufferStack.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D9413F0F93C147001BAE05 /* CHCircularBufferStack.m */; };
 		E4DCD17A0EA7B0DF006383FC /* CHDataStructures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* CHDataStructures.framework */; };
 		E4E7C1270EC0CACE009B19D7 /* CHDataStructures_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = E4E7C1260EC0CACE009B19D7 /* CHDataStructures_Prefix.pch */; };
 		E4EF44D80F86C52200C59C52 /* CHLockable.h in Headers */ = {isa = PBXBuildFile; fileRef = E4EF44D60F86C52200C59C52 /* CHLockable.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -313,6 +315,8 @@
 		E4CFCDB30E8FD18300B0253A /* doxygen.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = doxygen.css; path = doxygen/doxygen.css; sourceTree = "<group>"; };
 		E4D3A4C60F789FF500E21CF8 /* CHAbstractCircularBufferCollectionTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHAbstractCircularBufferCollectionTest.m; path = test/CHAbstractCircularBufferCollectionTest.m; sourceTree = "<group>"; };
 		E4D499690E93CD1300434CBA /* CHLinkedListTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHLinkedListTest.m; path = test/CHLinkedListTest.m; sourceTree = "<group>"; };
+		E4D9413E0F93C147001BAE05 /* CHCircularBufferStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHCircularBufferStack.h; path = source/CHCircularBufferStack.h; sourceTree = "<group>"; };
+		E4D9413F0F93C147001BAE05 /* CHCircularBufferStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHCircularBufferStack.m; path = source/CHCircularBufferStack.m; sourceTree = "<group>"; };
 		E4E7C1260EC0CACE009B19D7 /* CHDataStructures_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHDataStructures_Prefix.pch; path = source/CHDataStructures_Prefix.pch; sourceTree = "<group>"; };
 		E4EF44D60F86C52200C59C52 /* CHLockable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHLockable.h; path = source/CHLockable.h; sourceTree = "<group>"; };
 		E4EF44D70F86C52200C59C52 /* CHLockable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHLockable.m; path = source/CHLockable.m; sourceTree = "<group>"; };
@@ -415,6 +419,8 @@
 				E400CAC20F791A08003189D3 /* CHCircularBufferDeque.m */,
 				E400CAAA0F7919B7003189D3 /* CHCircularBufferQueue.h */,
 				E400CAAB0F7919B7003189D3 /* CHCircularBufferQueue.m */,
+				E4D9413E0F93C147001BAE05 /* CHCircularBufferStack.h */,
+				E4D9413F0F93C147001BAE05 /* CHCircularBufferStack.m */,
 				E4ADBB1E0E88174200B570BC /* CHDoublyLinkedList.h */,
 				E4ADBB1F0E88174200B570BC /* CHDoublyLinkedList.m */,
 				E40D184A0E945580007F39D8 /* CHListDeque.h */,
@@ -547,6 +553,7 @@
 				E400CAAC0F7919B7003189D3 /* CHCircularBufferQueue.h in Headers */,
 				E400CAC30F791A08003189D3 /* CHCircularBufferDeque.h in Headers */,
 				E4EF44D80F86C52200C59C52 /* CHLockable.h in Headers */,
+				E4D941400F93C147001BAE05 /* CHCircularBufferStack.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -755,6 +762,7 @@
 				E400CAAD0F7919B7003189D3 /* CHCircularBufferQueue.m in Sources */,
 				E400CAC40F791A08003189D3 /* CHCircularBufferDeque.m in Sources */,
 				E4EF44D90F86C52200C59C52 /* CHLockable.m in Sources */,
+				E4D941410F93C147001BAE05 /* CHCircularBufferStack.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
