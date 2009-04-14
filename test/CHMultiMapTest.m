@@ -47,9 +47,14 @@ void populateMultimap(CHMultiMap* multimap) {
 	CHMultiMap *multimap2 = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
 	STAssertEquals([multimap2 count], [multimap count], @"Incorrect key count.");
 	
-	// TODO: Complete more in-depth testing of equality
-	
-	// TODO: Test archive/unarchive of empty multimap
+	NSEnumerator *keys1 = [multimap keyEnumerator];
+	NSEnumerator *keys2 = [multimap2 keyEnumerator];
+	id key1, key2;
+	while ((key1 = [keys1 nextObject]) && (key2 = [keys2 nextObject])) {
+		STAssertEqualObjects(key1, key2, @"Keys are not equal.");
+		STAssertEqualObjects([multimap objectsForKey:key1],
+							 [multimap2 objectsForKey:key2], @"Values are not equal.");
+	}
 	[[NSFileManager defaultManager] removeItemAtPath:filePath error:NULL];
 }
 
@@ -59,9 +64,24 @@ void populateMultimap(CHMultiMap* multimap) {
 	CHMultiMap *multimap2 = [multimap copy];
 	STAssertEquals([multimap2 count], [multimap count], @"Incorrect key count.");
 
-	// TODO: Complete more in-depth testing of equality
+	NSEnumerator *keys1 = [multimap keyEnumerator];
+	NSEnumerator *keys2 = [multimap2 keyEnumerator];
+	id key1, key2;
+	while ((key1 = [keys1 nextObject]) && (key2 = [keys2 nextObject])) {
+		STAssertEqualObjects(key1, key2, @"Keys are not equal.");
+		STAssertEqualObjects([multimap objectsForKey:key1],
+							 [multimap2 objectsForKey:key2], @"Values are not equal.");
+	}
+}
+
+- (void) testNSFastEnumeration {
+	populateMultimap(multimap);
 	
-	// TODO: Test copy of empty multimap
+	NSEnumerator *keys = [multimap keyEnumerator];
+	for (id aKey in multimap) {
+		STAssertEqualObjects(aKey, [keys nextObject], @"Key enumeration mismatch.");
+	}
+	STAssertNil([keys nextObject], @"Key enumerator should be exhausted");
 }
 
 #pragma mark -

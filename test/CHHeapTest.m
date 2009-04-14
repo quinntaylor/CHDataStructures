@@ -31,10 +31,12 @@
 		parent = [array objectAtIndex:parentIndex];
 		leftChild = (leftIndex < arraySize) ? [array objectAtIndex:leftIndex] : nil;
 		rightChild = (rightIndex < arraySize) ? [array objectAtIndex:rightIndex] : nil;
-		if (leftChild && [parent compare:leftChild] != NSOrderedAscending)
+		if (leftChild && [parent compare:leftChild] == -sortOrder) {
 			return NO;
-		if (rightChild && [parent compare:rightChild] != NSOrderedAscending)
+		}
+		if (rightChild && [parent compare:rightChild] == -sortOrder) {
 			return NO;
+		}
 		++parentIndex;
 	}
 	return YES;
@@ -199,12 +201,41 @@
 - (void) testRemoveObject {
 	for (Class aClass in heapClasses) {
 		heap = [[aClass alloc] init];
+		// Add objects twice in order
+		[heap addObjectsFromArray:objects];
 		[heap addObjectsFromArray:objects];
 		
-		STAssertEquals([heap count], (NSUInteger)9, @"Incorrect count.");
-		[heap removeObject:@"F"];
-		STAssertEquals([heap count], (NSUInteger)8, @"Incorrect count.");
-		STAssertTrue([heap isValid], @"Violation of heap property.");
+		NSUInteger expected = [objects count] * 2;
+		for (id anObject in objects) {
+			STAssertEquals([heap count], expected, @"Incorrect count.");
+			[heap removeObject:anObject];
+			expected -= 2;
+			STAssertEquals([heap count], expected, @"Incorrect count.");
+			STAssertTrue([heap isValid], @"Violation of heap property.");
+		}
+		[heap release];
+	}
+}
+
+- (void) testRemoveObjectIdenticalTo {
+	NSString *a = [NSString stringWithFormat:@"A"];
+	for (Class aClass in heapClasses) {
+		heap = [[aClass alloc] init];
+		// Add objects twice in order
+		[heap addObjectsFromArray:objects];
+		[heap addObjectsFromArray:objects];
+		
+		NSUInteger expected = [objects count] * 2;
+		STAssertEquals([heap count], expected, @"Incorrect count.");
+		[heap removeObjectIdenticalTo:a];
+		STAssertEquals([heap count], expected, @"Incorrect count.");
+		for (id anObject in objects) {
+			STAssertEquals([heap count], expected, @"Incorrect count.");
+			[heap removeObjectIdenticalTo:anObject];
+			expected -= 2;
+			STAssertEquals([heap count], expected, @"Incorrect count.");
+			STAssertTrue([heap isValid], @"Violation of heap property.");
+		}
 		[heap release];
 	}
 }

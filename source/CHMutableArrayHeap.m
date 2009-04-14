@@ -173,17 +173,33 @@
 	@catch (NSException *exception) {}
 }
 
-/**
- @todo Make -removeObject: remove all instances of an object, like other collections.
- */
 - (void) removeObject:(id)anObject {
-	NSUInteger index = [array indexOfObject:anObject];
-	if (index != NSNotFound) {
+	NSUInteger index = 0;
+	NSRange range;
+	range.location = 0;
+	range.length = [array count];
+	while ((index = [array indexOfObject:anObject inRange:range]) != NSNotFound) {
 		[array exchangeObjectAtIndex:index withObjectAtIndex:([array count]-1)];
 		[array removeLastObject];
 		++mutations;
 		// Bubble the swapped node down until the heap property is again satisfied
-		[self heapifyFromIndex:index];
+		[self heapifyFromIndex:index/2];
+		range.location = index;
+		range.length = [array count] - index;
+	}
+}
+
+- (void) removeObjectIdenticalTo:(id)anObject {
+	NSUInteger index = 0;
+	NSRange range = NSMakeRange(0, [array count]);
+	while ((index = [array indexOfObjectIdenticalTo:anObject inRange:range]) != NSNotFound) {
+		[array exchangeObjectAtIndex:index withObjectAtIndex:([array count]-1)];
+		[array removeLastObject];
+		++mutations;
+		// Bubble the swapped node down until the heap property is again satisfied
+		[self heapifyFromIndex:index/2];
+		range.location = index;
+		range.length = [array count] - index;
 	}
 }
 
