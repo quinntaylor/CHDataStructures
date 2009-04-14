@@ -26,7 +26,7 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 
 
 /**
- @todo Combine -addObject:forKey: and -addObjects:forKey: into a single method that accepts an NSArray, NSSet, or generic object, then wraps in a mutable set.
+ @todo Combine \link CHMultiMap#addObject:forKey: -addObject:forKey:\endlink and \link CHMultiMap#addObjects:forKey: -addObjects:forKey:\endlink into a single method that accepts an NSArray, NSSet, or generic object, then wraps in a mutable set?
  */
 @implementation CHMultiMap
 
@@ -103,6 +103,15 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 		[newMultiMap setObjects:[[[dictionary objectForKey:key] mutableCopy] autorelease]
 						 forKey:key];
 	return newMultiMap;
+}
+
+#pragma mark <NSFastEnumeration>
+
+- (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
+                                   objects:(id*)stackbuf
+                                     count:(NSUInteger)len
+{
+	return [dictionary countByEnumeratingWithState:state objects:stackbuf count:len];
 }
 
 #pragma mark Adding Objects

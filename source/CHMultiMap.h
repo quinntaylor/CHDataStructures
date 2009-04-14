@@ -28,8 +28,6 @@
  Currently, this multimap implementation does not support key-value coding, observing, or binding like NSDictionary does. Consequently, the distinction between "object" and "value" is blurrier, although hopefully consistent with the Cocoa APIs in general....
  
  Unlike NSDictionary and other Cocoa collections, CHMultiMap has not been designed with mutable and immutable variants. A multimap is not any more useful if it is immutable, so any copies made of this class are mutable by definition.
- 
- @todo Add support for NSFastEnumeration protocol
  */
 @interface CHMultiMap : CHLockable <NSCoding, NSCopying>
 {
@@ -102,6 +100,31 @@
  @see NSCopying protocol
  */
 - (id) copyWithZone:(NSZone*)zone;
+
+// @}
+#pragma mark <NSFastEnumeration>
+/** @name <NSFastEnumeration> */
+// @{
+
+ /**
+ Called within <code>@b for (type variable @b in collection)</code> constructs. Returns by reference a C array of objects over which the sender should iterate, and as the return value the number of objects in the array.
+ 
+ For this class, as is the case with NSDictionary, this method enumerates only the keys. The value(s) for each key may be found using the \link #objectsForKey: -objectsForKey:\endlink method, which returns an NSSet with 1 or more objects associated with a given key, provided the key is in the multimap.
+ 
+ <div class="warning">
+ @b Warning: Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
+ </div>
+ 
+ @param state Context information used to track progress of an enumeration.
+ @param stackbuf Pointer to a C array into which the receiver may copy objects for the sender to iterate over.
+ @param len The maximum number of objects that may be stored in @a stackbuf.
+ @return The number of objects in @c state->itemsPtr that may be iterated over, or @c 0 when the iteration is finished.
+ 
+ @see NSFastEnumeration protocol
+ */
+- (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
+                                   objects:(id*)stackbuf
+                                     count:(NSUInteger)len;
 
 // @}
 #pragma mark Adding Objects
