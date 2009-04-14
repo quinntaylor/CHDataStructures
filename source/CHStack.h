@@ -186,7 +186,7 @@
  @b Warning: Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
  </div>
  
- @param state Context information used to track progress of an enumeration..
+ @param state Context information used to track progress of an enumeration.
  @param stackbuf Pointer to a C array into which the receiver may copy objects for the sender to iterate over.
  @param len The maximum number of objects that may be stored in @a stackbuf.
  @return The number of objects in @c state->itemsPtr that may be iterated over, or @c 0 when the iteration is finished.

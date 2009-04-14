@@ -2,7 +2,6 @@
  CHDataStructures.framework -- CHDataStructures.h
  
  Copyright (c) 2008-2009, Quinn Taylor <http://homepage.mac.com/quinntaylor>
- Copyright (c) 2002, Phillip Morelock <http://www.phillipmorelock.com>
  
  Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
  
@@ -29,6 +28,7 @@
 #import "CHListDeque.h"
 #import "CHListQueue.h"
 #import "CHListStack.h"
+#import "CHLockable.h"
 #import "CHMultiMap.h"
 #import "CHMutableArrayDeque.h"
 #import "CHMutableArrayHeap.h"
@@ -40,18 +40,12 @@
 #import "CHUnbalancedTree.h"
 
 // Utilities
-#import "CHLockable.h"
 #import "Util.h"
 
 /**
  @file CHDataStructures.h
  
- An umbrella header which imports all the public header files for the framework.
- Headers for individual classes have minimal dependencies, and they import any
- other header files they may require. For example, this header does not import
- any of the CHAbstract... header files (since only subclasses use them), but all
- such headers are still included with the framework. (The protocols for abstract
- data types are imported so clients can use protocol-typed variables if needed.)
+ An umbrella header which imports all the public header files for the framework. Headers for individual classes have minimal dependencies, and they import any other header files they may require. For example, this header does not import any of the CHAbstract... header files (since only subclasses use them), but all such headers are still included with the framework. (The protocols for abstract data types are imported so clients can use protocol-typed variables if needed.)
  */
 
 /**

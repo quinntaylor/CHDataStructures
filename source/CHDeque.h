@@ -2,7 +2,6 @@
  CHDataStructures.framework -- CHDeque.h
  
  Copyright (c) 2008-2009, Quinn Taylor <http://homepage.mac.com/quinntaylor>
- Copyright (c) 2002, Phillip Morelock <http://www.phillipmorelock.com>
  
  Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
  
@@ -214,7 +213,7 @@
  @b Warning: Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
  </div>
  
- @param state Context information used to track progress of an enumeration..
+ @param state Context information used to track progress of an enumeration.
  @param stackbuf Pointer to a C array into which the receiver may copy objects for the sender to iterate over.
  @param len The maximum number of objects that may be stored in @a stackbuf.
  @return The number of objects in @c state->itemsPtr that may be iterated over, or @c 0 when the iteration is finished.
