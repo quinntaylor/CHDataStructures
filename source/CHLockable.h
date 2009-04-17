@@ -18,6 +18,8 @@
 
 /**
  A simple abstract parent class for adding simple built-in locking capabilities. An NSLock is used internally to coordinate the operation of multiple threads of execution within the same application, and methods are exposed to allow clients to manipulate the lock in simple ways. Since not all clients will use the lock, it is created lazily the first time a client attempts to acquire the lock.
+ 
+ This class explicitly adopts the NSLocking protocol (which includes the \link NSLocking#lock -lock\endlink and \link NSLocking#unlock -unlock\endlink methods) as a convenience for users that may wish to statically type instances of this class or its children as @c id<NSLocking> as a hint for compile-time type checking.
  */
 @interface CHLockable : NSObject <NSLocking>
 {
