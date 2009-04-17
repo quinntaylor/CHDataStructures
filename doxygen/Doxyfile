@@ -110,7 +110,7 @@ FILTER_SOURCE_FILES    = NO
 #---------------------------------------------------------------------------
 # configuration options related to source browsing
 #---------------------------------------------------------------------------
-SOURCE_BROWSER         = NO
+SOURCE_BROWSER         = YES
 INLINE_SOURCES         = NO
 STRIP_CODE_COMMENTS    = NO
 REFERENCED_BY_RELATION = NO
@@ -121,9 +121,9 @@ VERBATIM_HEADERS       = NO
 #---------------------------------------------------------------------------
 # configuration options related to the alphabetical class index
 #---------------------------------------------------------------------------
-ALPHABETICAL_INDEX     = NO
-COLS_IN_ALPHA_INDEX    = 5
-IGNORE_PREFIX          = 
+ALPHABETICAL_INDEX     = YES
+COLS_IN_ALPHA_INDEX    = 4
+IGNORE_PREFIX          = CH
 #---------------------------------------------------------------------------
 # configuration options related to the HTML output
 #---------------------------------------------------------------------------
@@ -136,8 +136,8 @@ HTML_STYLESHEET        = doxygen/doxygen.css
 HTML_ALIGN_MEMBERS     = YES
 GENERATE_HTMLHELP      = NO
 GENERATE_DOCSET        = NO
-DOCSET_FEEDNAME        = "Cocoa Data Structures Framework"
-DOCSET_BUNDLE_ID       = org.doxygen.Project
+DOCSET_FEEDNAME        = "CHDataStructures.framework"
+DOCSET_BUNDLE_ID       = edu.byu.cocoaheads.CHDataStructures
 HTML_DYNAMIC_SECTIONS  = NO
 CHM_FILE               = 
 HHC_LOCATION           = 
