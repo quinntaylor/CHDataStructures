@@ -65,7 +65,7 @@
 - (void) addObject:(id)anObject;
 
 /**
- Adds the objects in a given array to this heap, then re-establish the heap property. After all the objects have been inserted, objects are percolated down the heap as necessary, starting from @c count/2 and decrementing to @c 0.
+ Adds the objects in a given array to this heap, then re-establish the heap property. After all the objects have been inserted, objects are "heapified" as necessary, proceeding backwards from index @c count/2 down to @c 0.
  
  @param anArray An array of objects to add to the heap.
  */
@@ -77,7 +77,7 @@
 // @{
 
 /**
- Returns an array containing the objects in this heap in their current order. This order is almost certainly not sorted (since only the heap property need be satisfied) but this is the quickest way to retrieve all the elements in a heap.
+ Returns an array containing the objects in this heap in their current order. The contents are almost certainly not sorted (since only the heap property need be satisfied) but this is the quickest way to retrieve all the elements in a heap.
  
  @return An array containing the objects in this heap in their current order. If the heap is empty, the array is also empty.
  */
@@ -86,7 +86,7 @@
 /**
  Returns an array containing the objects in this heap in sorted order.
  
- @warning Since a heap structure is only "sorted" as elements are removed, this incurs extra costs for sorting and storing the duplicate array. However, it does not affect the order of elements in the heap itself.
+ @attention Since a heap structure is only "sorted" as elements are removed, this method incurs extra costs for (1) sorting the contents and (2) storing the duplicate array. However, it does not affect the order of elements in the heap itself.
  
  @return An array containing the objects in this heap in sorted order. If the heap is empty, the array is also empty.
  */
