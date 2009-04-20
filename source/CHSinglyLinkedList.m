@@ -318,7 +318,7 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 }
 
 - (void) removeLastObject {
-	// Note that this is expensive: O(n) instead of O(1) for doubly-linked lists
+	// Note: This is expensive -- O(n) instead of O(1) for doubly-linked lists
 	if (count > 0)
 		[self removeObjectAtIndex:(count-1)];
 }

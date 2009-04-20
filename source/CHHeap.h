@@ -86,7 +86,7 @@
 /**
  Returns an array containing the objects in this heap in sorted order.
  
- @attention Since a heap structure is only "sorted" as elements are removed, this method incurs extra costs for (1) sorting the contents and (2) storing the duplicate array. However, it does not affect the order of elements in the heap itself.
+ @attention Since a heap structure is only "sorted" as elements are removed, this method incurs extra costs of (A) time for sorting the contents and (B) memory for storing the extra array. However, it does not affect the order of elements in the heap itself.
  
  @return An array containing the objects in this heap in sorted order. If the heap is empty, the array is also empty.
  */
@@ -147,7 +147,7 @@
 - (void) removeFirstObject;
 
 /**
- Remove all occurrences of a given object, matched using @c isEqual:.
+ Remove @b all occurrences of @a anObject, matched using @c isEqual:.
  
  @param anObject The object to be removed from the heap.
  
@@ -156,7 +156,7 @@
 - (void) removeObject:(id)anObject;
 
 /**
- Remove all occurrences of a given object, matched using the == operator.
+ Remove @b all occurrences of @a anObject, matched using the == operator.
  
  @param anObject The object to be removed from the heap.
  

@@ -66,7 +66,8 @@
  Add an object to the treap using a given priority value. Ordering is based on an object's response to the @c -compare: message. Since no duplicates are allowed, if the tree already contains an object for which @c compare: returns @c NSOrderedSame, that object is released and replaced by @a anObject.
  
  @param anObject The object to add to the treap.
- @param priority The priority to assign to @a nObject. Higher values percolate to the top. @b Note: Although typed as NSUInteger (consistent with Foundation APIs), \link CHBinaryTreeNode#priority CHBinaryTreeNode->priority\endlink is a @c u_int32_t, so the value stored is <code>priority % CHTreapNotFound</code>.
+ @param priority The priority to assign to @a nObject. Higher values percolate to the top.
+ @note Although @a priority is typed as NSUInteger (consistent with Foundation APIs), \link CHBinaryTreeNode#priority CHBinaryTreeNode->priority\endlink is a @c u_int32_t, so the value stored is actually <code>priority % CHTreapNotFound</code>.
  @throw NSInvalidArgumentException If @a anObject is @c nil.
  
  CHBinaryTreeNode#priority

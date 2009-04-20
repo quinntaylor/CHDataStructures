@@ -31,10 +31,12 @@ BOOL kCHGarbageCollectionDisabled;
 + (id) headerObject;
 
 /**
- Always indicate that the other object should appear to the right side. @b Note: To work correctly, this object @b must be the receiver of the -compare: message.
+ Always indicate that the other object should appear to the right side.
  
  @param otherObject The object to be compared to the receiver.
  @return @c NSOrderedAscending, indicating that traversal should go to the right child of the containing tree node.
+ 
+ @warning The header object @b must be the receiver of the message (e.g. <code>[headerObject compare:anObject]</code>) in order to work correctly. Calling <code>[anObject compare:headerObject]</code> instead will almost certainly result in a crash.
  */
 - (NSComparisonResult) compare:(id)otherObject;
 

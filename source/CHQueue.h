@@ -119,7 +119,7 @@
 - (void) removeFirstObject;
 
 /**
- Remove all occurrences of a given object, matched using @c isEqual:.
+ Remove @b all occurrences of @a anObject, matched using @c isEqual:.
  
  @param anObject The object to be removed from the queue.
  
@@ -128,7 +128,7 @@
 - (void) removeObject:(id)anObject;
 
 /**
- Remove all occurrences of a given object, matched using the == operator.
+ Remove @b all occurrences of @a anObject, matched using the == operator.
  
  @param anObject The object to be removed from the queue.
  

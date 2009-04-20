@@ -176,24 +176,24 @@
 - (void) removeLastObject;
 
 /**
- Remove all occurrences of a given object, matched using @c isEqual:.
+ Remove @b all occurrences of @a anObject, matched using @c isEqual:.
  
  @param anObject The object to remove from the list.
  
  If the list is empty, @a anObject is @c nil, or no object matching @a anObject is found, there is no effect, aside from the possible overhead of searching the contents.
  
- Use #indexOfObject: and #removeObjectAtIndex: to remove only the first match.
+ @attention Removes all matching objects. Use #indexOfObject: and #removeObjectAtIndex: to search for and remove only a specific match.
  */
 - (void) removeObject:(id)anObject;
 
 /**
- Remove all occurrences of a given object, matched using the == operator.
+ Remove @b all occurrences of @a anObject, matched using the == operator.
  
  @param anObject The object to remove from the list.
  
  If the list is empty, @a anObject is @c nil, or no object matching @a anObject is found, there is no effect, aside from the possible overhead of searching the contents.
  
- Use #indexOfObjectIdenticalTo: and #removeObjectAtIndex: to remove only the first match.
+ @attention Removes all matching objects. Use #indexOfObjectIdenticalTo: and #removeObjectAtIndex: to search for and remove only a specific match.
  */
 - (void) removeObjectIdenticalTo:(id)anObject;
 

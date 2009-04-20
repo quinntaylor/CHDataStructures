@@ -36,7 +36,7 @@ typedef struct CHSinglyLinkedListNode {
  
  @image html singly-linked-N.png Figure 3 - Singly-linked list with 2+ objects.
  
- To reduce code duplication, all methods that append or prepend objects to the list call \link #insertObject:atIndex: -insertObject:atIndex:\endlink, and the methods to remove the first or last objects use \link #removeObjectAtIndex: -removeObjectAtIndex:\endlink underneath. (Note that \link #removeObject: -removeObject:\endlink removes all occurrences of an object. To remove only the first occurrence, use \link #indexOfObject: -indexOfObject:\endlink and \link #removeObjectAtIndex: -removeObjectAtIndex:\endlink instead.)
+ To reduce code duplication, all methods that append or prepend objects to the list call \link #insertObject:atIndex: -insertObject:atIndex:\endlink, and the methods to remove the first or last objects use \link #removeObjectAtIndex: -removeObjectAtIndex:\endlink underneath.
  
  Singly-linked lists are well-suited as an underlying collection for other data structures, such as stacks and queues (see CHListStack and CHListQueue). The same functionality can be achieved using a circular buffer and an array, and many libraries choose to do so when objects are only added to or removed from the ends, but the dynamic structure of a linked list is much more flexible when inserting and deleting in the middle of a list.
  

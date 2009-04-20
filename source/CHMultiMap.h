@@ -274,7 +274,7 @@
 - (void) removeAllObjects;
 
 /**
- Removes all occurrences of a given value associated with a given key.
+ Remove @b all occurrences of @a anObject associated with a given key.
  
  @param aKey The key for which to remove an entry.
  @param anObject An object (possibly) associated with @a aKey in the receiver. Objects are considered to be equal if -compare: returns NSOrderedSame.
