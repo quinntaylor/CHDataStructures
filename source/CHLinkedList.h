@@ -71,9 +71,7 @@
  @throw NSInvalidArgumentException If @a anObject is @c nil.
  @throw NSRangeException If @a index is greater than the list size.
  
- <div class="warning">
- @b Warning: Inserting in the middle of a linked list is a somewhat inefficient operation; although values aren't shifted by one like in arrays, the list must be traversed to find the specified index.
- </div>
+ @warning Inserting in the middle of a linked list is a somewhat inefficient operation; although values aren't shifted by one like in arrays, the list must be traversed to find the specified index.
  */
 - (void) insertObject:(id)anObject atIndex:(NSUInteger)index;
 
@@ -157,11 +155,8 @@
  
  @return An enumerator that accesses each object in the list from front to back. The enumerator returned is never @c nil; if the list is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
  
- <div class="warning">
- @b Warning: Requesting objects from an enumerator whose underlying collection has been modified is unsafe, and may cause a mutation exception to be raised.
- </div>
- 
- This enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
+ @attention The enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
+ @warning Requesting objects from an enumerator whose underlying collection has been modified is unsafe, and may cause a mutation exception to be raised.
  */
 - (NSEnumerator*) objectEnumerator;
 
@@ -260,15 +255,12 @@
 /**
  Called within <code>@b for (type variable @b in collection)</code> constructs. Returns by reference a C array of objects over which the sender should iterate, and as the return value the number of objects in the array.
  
- <div class="warning">
- @b Warning: Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
- </div>
- 
  @param state Context information used to track progress of an enumeration.
  @param stackbuf Pointer to a C array into which the receiver may copy objects for the sender to iterate over.
  @param len The maximum number of objects that may be stored in @a stackbuf.
  @return The number of objects in @c state->itemsPtr that may be iterated over, or @c 0 when the iteration is finished.
  
+ @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
  @see NSFastEnumeration protocol
  */
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state

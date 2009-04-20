@@ -56,11 +56,8 @@ typedef struct CHDoublyLinkedListNode {
  
  @return An enumerator that accesses each object in the list from back to front. The enumerator returned is never @c nil; if the list is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
  
- <div class="warning">
- @b Warning: Requesting objects from an enumerator whose underlying collection has been modified is unsafe, and may cause a mutation exception to be raised.
- </div>
- 
- This enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
+ @attention The enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
+ @warning Requesting objects from an enumerator whose underlying collection has been modified is unsafe, and may cause a mutation exception to be raised.
  */
 - (NSEnumerator*) reverseObjectEnumerator;
 

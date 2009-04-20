@@ -111,15 +111,12 @@
  
  For this class, as is the case with NSDictionary, this method enumerates only the keys. The value(s) for each key may be found using the \link #objectsForKey: -objectsForKey:\endlink method, which returns an NSSet with 1 or more objects associated with a given key, provided the key is in the multimap.
  
- <div class="warning">
- @b Warning: Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
- </div>
- 
  @param state Context information used to track progress of an enumeration.
  @param stackbuf Pointer to a C array into which the receiver may copy objects for the sender to iterate over.
  @param len The maximum number of objects that may be stored in @a stackbuf.
  @return The number of objects in @c state->itemsPtr that may be iterated over, or @c 0 when the iteration is finished.
  
+ @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
  @see NSFastEnumeration protocol
  */
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
@@ -228,20 +225,24 @@
 - (BOOL) containsObject:(id)anObject;
 
 /**
- Returns an enumerator that lets you access each key in the receiver.
+ Returns an enumerator that lets you access each key in the multimap.
  
- @return An enumerator that lets you access each key in the receiver.
+ @return An enumerator that lets you access each key in the multimap. The enumerator returned is never @c nil; if the multimap is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
  
- Your code should not modify the entries during enumeration. If you intend to modify the entries, use the #allKeys method to create a "snapshot" of the dictionary's keys. Work from this snapshot to modify the entries.
+ @attention The enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
+ @warning Requesting objects from an enumerator whose underlying collection has been modified is unsafe, and may cause a mutation exception to be raised.
+ @warning If you need to modify the entries concurrently, use #allKeys to create a "snapshot" of the dictionary's keys and work from this snapshot to modify the entries.
  */
 - (NSEnumerator*) keyEnumerator;
 
 /**
- Returns an enumerator that lets you access each value in the receiver.
+ Returns an enumerator that lets you access each value in the multimap.
  
- @return An enumerator that lets you access each value in the receiver.
+ @return An enumerator that lets you access each value in the multimap. The enumerator returned is never @c nil; if the multimap is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
  
- Your code should not modify the entries during enumeration. If you intend to modify the entries, use the #allObjects method to create a "snapshot" of the dictionary's values. Work from this snapshot to modify the values.
+ @attention The enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
+ @warning Requesting objects from an enumerator whose underlying collection has been modified is unsafe, and may cause a mutation exception to be raised.
+ @warning If you need to modify the entries concurrently, use #allObjects to create a "snapshot" of the dictionary's values and work from this snapshot to modify the values.
  */
 - (NSEnumerator*) objectEnumerator;
 

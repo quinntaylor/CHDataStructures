@@ -132,11 +132,8 @@ typedef enum {
  
  @param order The order in which an enumerator should traverse nodes in the tree. @return An enumerator that accesses each object in the tree in a given order. The enumerator returned is never @c nil; if the tree is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
  
- <div class="warning">
- @b Warning: Requesting objects from an enumerator whose underlying collection has been modified is unsafe, and may cause a mutation exception to be raised.
- </div>
- 
- This enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
+ @attention The enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
+ @warning Requesting objects from an enumerator whose underlying collection has been modified is unsafe, and may cause a mutation exception to be raised.
  
  @see \link #objectEnumerator -objectEnumerator\endlink
  @see \link #reverseObjectEnumerator -reverseObjectEnumerator\endlink
@@ -178,25 +175,21 @@ typedef enum {
  
  @return An enumerator that accesses each object in the tree in ascending order. The enumerator returned is never @c nil; if the tree is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
  
- <div class="warning">
- @b Warning: Requesting objects from an enumerator whose underlying collection has been modified is unsafe, and may cause a mutation exception to be raised.
- </div>
- 
- This enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
+ @attention The enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
+ @warning Requesting objects from an enumerator whose underlying collection has been modified is unsafe, and may cause a mutation exception to be raised.
  
  @see \link #objectEnumeratorWithTraversalOrder: -objectEnumeratorWithTraversalOrder:\endlink
  */
 - (NSEnumerator*) objectEnumerator;
 
 /**
- Returns an enumerator that accesses each object in the tree in descending order. This enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
+ Returns an enumerator that accesses each object in the tree in descending order.
  
  @return An enumerator that accesses each object in the tree in descending order. The enumerator returned is never @c nil; if the tree is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
  
- <div class="warning">
- @b Warning: Requesting objects from an enumerator whose underlying collection has been modified is unsafe, and may cause a mutation exception to be raised.
- </div>
- 
+ @attention The enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
+ @warning Requesting objects from an enumerator whose underlying collection has been modified is unsafe, and may cause a mutation exception to be raised.
+
  @see \link #objectEnumeratorWithTraversalOrder: -objectEnumeratorWithTraversalOrder:\endlink
  */
 - (NSEnumerator*) reverseObjectEnumerator;
@@ -265,15 +258,12 @@ typedef enum {
 /**
  Called within <code>@b for (type variable @b in collection)</code> constructs. Returns by reference a C array of objects over which the sender should iterate, and as the return value the number of objects in the array.
  
- <div class="warning">
- @b Warning: Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
- </div>
- 
  @param state Context information used to track progress of an enumeration.
  @param stackbuf Pointer to a C array into which the receiver may copy objects for the sender to iterate over.
  @param len The maximum number of objects that may be stored in @a stackbuf.
  @return The number of objects in @c state->itemsPtr that may be iterated over, or @c 0 when the iteration is finished.
  
+ @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
  @see NSFastEnumeration protocol
  */
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
