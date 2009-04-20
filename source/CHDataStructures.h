@@ -51,9 +51,9 @@
 /**
  @mainpage Overview
  
- <strong>CHDataStructures.framework</strong> is an attempt to create a library of standard data structures which can be used in any Objective-C program, for educational purposes or as a foundation for other data structures to build on. Data structures in this framework adopt Objective-C protocols that define the functionality of and API for interacting with any implementation thereof, regardless of its internals.
+ <strong>CHDataStructures.framework</strong> <http://cocoaheads.byu.edu/code/CHDataStructures> is an open-source library of standard data structures which can be used in any Objective-C program, for educational purposes or as a foundation for other data structures to build on. Data structures in this framework adopt Objective-C protocols that define the functionality of and API for interacting with any implementation thereof, regardless of its internals.
  
- This framework provides Objective-C implementations of common data structures which are currently beyond the purview of Apple's extensive and flexible <a href="http://developer.apple.com/cocoa/">Cocoa frameworks</a>. Collections that are a part of Cocoa are highly optimized and amenable to many situations. However, sometimes an honest-to-goodness stack, queue, linked list, tree, etc. can greatly improve the clarity and comprehensibility of code.
+ Apple's extensive and flexible <a href="http://developer.apple.com/cocoa/">Cocoa frameworks</a> include several collections classes that are highly optimized and amenable to many situations. However, sometimes an honest-to-goodness stack, queue, linked list, tree, etc. can greatly improve the clarity and comprehensibility of code. This framework provides Objective-C implementations of common data structures which are currently beyond the purview of Cocoa.
  
  The currently supported abstract data type protocols include:
  - CHDeque
@@ -63,7 +63,7 @@
  - CHSearchTree
  - CHStack
  
- The code is written for <a href="http://www.apple.com/macosx/">Mac OS X</a> and does use some features of Objective-C 2.0 (part of 10.5 "Leopard"), but most of the code could be easily ported to other Objective-C environments, such as <a href="http://www.gnustep.org">GNUStep</a>. However, such efforts would be better accomplished by forking this project rather than integrating with it, for several main reasons:
+ The code is written for <a href="http://www.apple.com/macosx/">Mac OS X</a> and does use some features of <a href="http://developer.apple.com/documentation/Cocoa/Conceptual/ObjectiveC/">Objective-C 2.0</a> which shipped with Mac OS X 10.5 "Leopard". Most of the code could be  ported to other Objective-C environments (such as <a href="http://www.gnustep.org">GNUStep</a>) without too much trouble. However, such efforts would probably be better accomplished by forking this project rather than integrating with it, for several main reasons:
  
  <ol>
  <li>Supporting multiple environments increases code complexity, and consequently the effort required to test, maintain, and improve it.</li>
@@ -72,8 +72,6 @@
  </ol>
  
  While certain implementations utilize straight C for their internals, this framework is fairly high-level, and uses composition rather than inheritance in most cases. The framework was originally written as an exercise in writing Objective-C code and consisted mainly of ported Java code. In later revisions, performance has gained greater emphasis, but the primary motivation is to provide friendly, intuitive Objective-C interfaces for data structures, not to maximize speed at any cost, which sometimes happens with C++ and the STL. The algorithms should all be sound (i.e., you won't get O(n) performance where it should be O(log n) or O(1), etc.) and perform quite well in general. If your choice of data structure type and implementation are dependent on performance or memory usage, it would be wise to run the benchmarks from Xcode and choose based on the time and memory complexity for specific implementations.
- 
- Binaries and source code for the framework is available <a href="http://cocoaheads.byu.edu/code/CHDataStructures/">here</a>. It is organized in an Xcode project with all relevant dependencies, but could also be built by hand if you're masochistic or just like a challenge.
  
  This framework is is licensed under a variant of the <a href="http://www.isc.org/software/license">ISC license</a>, an extremely simple and permissive free software license approved by the <a href="http://www.fsf.org/licensing/licenses#ISC">Free Software Foundation (FSF)</a> and <a href="http://opensource.org/licenses/isc-license.txt">Open Source Initiative (OSI)</a>. The license for this framework is included in every source file, and is repoduced in its entirety here:
  
