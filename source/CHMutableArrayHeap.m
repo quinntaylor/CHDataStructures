@@ -191,7 +191,9 @@
 
 - (void) removeObjectIdenticalTo:(id)anObject {
 	NSUInteger index = 0;
-	NSRange range = NSMakeRange(0, [array count]);
+	NSRange range;
+	range.location = 0;
+	range.length = [array count];
 	while ((index = [array indexOfObjectIdenticalTo:anObject inRange:range]) != NSNotFound) {
 		[array exchangeObjectAtIndex:index withObjectAtIndex:([array count]-1)];
 		[array removeLastObject];
