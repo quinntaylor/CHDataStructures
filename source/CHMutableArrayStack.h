@@ -18,9 +18,7 @@
  */
 
 /**
- A simple CHStack implemented using an NSMutableArray. This stack is modeled with the top being the last element in the array, since insertion and removal in an array are much faster at the back than the front. Accordingly, most operations are mirror-image of those in the parent class but just as fast, with the notable exception of NSFastEnumeration.
-  
- Most users will likely prefer the performance improvements in CHCircularBufferStack.
+ A simple CHStack implemented using an NSMutableArray. This stack is modeled with the top being the last element in the array, since insertion and removal in an array are much faster at the back than the front. Most operations are just as fast as those in the parent class, although \link #countByEnumeratingWithState:objects:count: -countByEnumeratingWithState:objects:count:\endlink is abysmally slow. Most users will likely prefer the overall performance improvements in CHCircularBufferStack.
  */
 @interface CHMutableArrayStack : CHAbstractMutableArrayCollection <CHStack>
 
