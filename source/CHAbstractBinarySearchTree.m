@@ -253,10 +253,12 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 		}
 			
 		collectionExhausted:
-			[collection release];
-			collection = nil;
-			CHBinaryTreeStack_FREE(stack);
-			CHBinaryTreeQueue_FREE(queue);
+			if (collection != nil) {
+				[collection release];
+				collection = nil;
+				CHBinaryTreeStack_FREE(stack);
+				CHBinaryTreeQueue_FREE(queue);
+			}
 	}
 	return nil;
 }
@@ -439,21 +441,21 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 	return (current != sentinel) ? current->object : nil;
 }
 
-/**
- Removes all nodes in the tree and releases the objects they point to. The root node's object pointer is reset to the sentinel, and the element count is reset to zero. If garbage collection is NOT enabled, the tree nodes are freed using a pre-order traversal by pushing child nodes on a stack. (This approach generally requires less space than level-order traversal, since it is depth-first instead of breadth-first, and should be faster, too.) Under garbage collection, setting the root node link to the sentinel will cause the entire graph of tree nodes to become eligible for garbage collection.
- */
+// Doesn't call -[NSGarbageCollector collectIfNeeded] -- lets the sender choose.
 - (void) removeAllObjects {
 	if (count == 0)
 		return;
 	++mutations;
+	count = 0;
 	
-	CHBinaryTreeStack_DECLARE();
-	CHBinaryTreeStack_INIT();
-	CHBinaryTreeStack_PUSH(header->right);
-	header->right = sentinel;
-
 	if (kCHGarbageCollectionDisabled) {
-		// Only bother with free() calls if garbage collection is NOT enabled.
+		// Only deal with memory management if garbage collection is NOT enabled.
+		// Remove each node from the tree and release the object it points to.
+		// Use pre-order (depth-first) traversal for simplicity and performance.
+		CHBinaryTreeStack_DECLARE();
+		CHBinaryTreeStack_INIT();
+		CHBinaryTreeStack_PUSH(header->right);
+
 		CHBinaryTreeNode *current;
 		while (current = CHBinaryTreeStack_POP()) {
 			if (current->right != sentinel)
@@ -465,7 +467,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 		}
 		free(stack); // declared in CHBinaryTreeStack_DECLARE() macro
 	}
-	count = 0;
+	header->right = sentinel; // With GC, this is sufficient to unroot the tree.
 }
 
 - (NSEnumerator*) objectEnumerator {
