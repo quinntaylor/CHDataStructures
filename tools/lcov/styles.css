@@ -248,7 +248,7 @@ td.testDescription
 pre.source
 {
   font-family: monospace;
-  white-space: pre;
+  white-space: pre-wrap;
 }
 
 span.lineNum
