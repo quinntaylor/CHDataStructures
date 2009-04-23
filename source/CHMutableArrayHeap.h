@@ -23,7 +23,6 @@
 {
 	NSComparisonResult sortOrder;
 	unsigned long mutations; /**< Used to track mutations for NSFastEnumeration. */
-	NSSortDescriptor *sortDescriptor;
 }
 
 @end

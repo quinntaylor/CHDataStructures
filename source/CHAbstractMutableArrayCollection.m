@@ -17,6 +17,7 @@
 	[super dealloc];
 }
 
+// This is the designated initializer for CHAbstractMutableArrayCollection.
 - (id) init {
 	if ([super init] == nil) return nil;
 	array = [[NSMutableArray alloc] init];
@@ -24,8 +25,8 @@
 }
 
 - (id) initWithArray:(NSArray*)anArray {
-	if ([super init] == nil) return nil;
-	array = [anArray mutableCopy];
+	if ([self init] == nil) return nil;
+	[array addObjectsFromArray:anArray];
 	return self;
 }
 

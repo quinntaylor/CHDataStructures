@@ -156,6 +156,7 @@ static size_t kCHPointerSize = sizeof(void*);
 	return self;
 }
 
+// This is the designated initializer for CHAbstractCircularBufferCollection.
 - (id) initWithCapacity:(NSUInteger)capacity {
 	if ([super init] == nil) return nil;
 	arrayCapacity = capacity;

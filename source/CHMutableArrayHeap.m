@@ -47,11 +47,6 @@
 
 #pragma mark -
 
-- (void) dealloc {
-	[sortDescriptor release];
-	[super dealloc];
-}
-
 - (id) init {
 	return [self initWithOrdering:NSOrderedAscending array:nil];
 }
@@ -64,15 +59,13 @@
 	return [self initWithOrdering:order array:nil];
 }
 
+// This is the designated initializer for CHMutableArrayHeap.
 - (id) initWithOrdering:(NSComparisonResult)order array:(NSArray*)anArray {
 	// Parent's initializer allocates the actual array
 	if ([super init] == nil) return nil;
 	if (order != NSOrderedAscending && order != NSOrderedDescending)
 		CHInvalidArgumentException([self class], _cmd, @"Invalid sort order.");
 	sortOrder = order;
-	sortDescriptor = [[NSSortDescriptor alloc]
-                       initWithKey:nil
-                         ascending:(sortOrder == NSOrderedAscending)];
 	[self addObjectsFromArray:anArray];
 	return self;
 }
@@ -82,9 +75,6 @@
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super initWithCoder:decoder] == nil) return nil;
 	sortOrder = [decoder decodeIntegerForKey:@"sortOrder"];
-	sortDescriptor = [[NSSortDescriptor alloc]
-                       initWithKey:nil
-                         ascending:(sortOrder == NSOrderedAscending)];
 	return self;
 }
 
@@ -215,6 +205,9 @@
 }
 
 - (NSArray*) allObjectsInSortedOrder {
+	NSSortDescriptor *sortDescriptor = [[[NSSortDescriptor alloc] autorelease]
+										initWithKey:nil
+										ascending:(sortOrder == NSOrderedAscending)];
 	return [array sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
 }
 

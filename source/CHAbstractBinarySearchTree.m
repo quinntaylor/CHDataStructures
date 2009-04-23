@@ -281,9 +281,8 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 	[super dealloc];
 }
 
-/**
- Only to be called from concrete child classes to initialize shared variables.
- */
+// This is the designated initializer for CHAbstractBinarySearchTree.
+// Only to be called from concrete child classes to initialize shared variables.
 - (id) init {
 	if ([super init] == nil) return nil;
 	count = 0;
@@ -303,12 +302,11 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 	return self;
 }
 
+// Calling [self init] allows child classes to initialize their specific state.
+// (The -init method in any subclass must always call to -[super init] first.)
 - (id) initWithArray:(NSArray*)anArray {
-	// Allow concrete child classes the chance to initialize their own state.
-	// (The -init method in any subclass will always call -[super init] first.)
 	if ([self init] == nil) return nil;
-	for (id anObject in anArray)
-		[self addObject:anObject];
+	[self addObjectsFromArray:anArray];
 	return self;
 }
 
@@ -388,6 +386,11 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 }
 
 #pragma mark Concrete Implementations
+
+- (void) addObjectsFromArray:(NSArray*)anArray {
+	for (id anObject in anArray)
+		[self addObject:anObject];
+}
 
 - (NSArray*) allObjects {
 	return [self allObjectsWithTraversalOrder:CHTraverseAscending];

@@ -79,12 +79,12 @@ typedef enum {
 @protocol CHSearchTree <NSObject, NSCoding, NSCopying, NSFastEnumeration>
 
 /**
- Initialize a tree with no objects.
+ Initialize a search tree with no objects.
  */
 - (id) init;
 
 /**
- Initialize a tree with the contents of an array. Objects are added to the tree in the order they occur in the array.
+ Initialize a search tree with the contents of an array. Objects are added to the tree in the order they occur in the array.
  
  @param anArray An array containing object with which to populate a new tree.
  */
@@ -101,6 +101,13 @@ typedef enum {
  @throw NSInvalidArgumentException If @a anObject is @c nil.
  */
 - (void) addObject:(id)anObject;
+
+/**
+ Adds the objects in a given array to the tree. Ordering is based on an object's response to the @c -compare: message. Since no duplicates are allowed, if the tree already contains an object in the array for which a @c -compare: message returns @c NSOrderedSame, that object is released and replaced by the object from the array.
+ 
+ @param anArray An array of objects to add to the tree.
+ */
+- (void) addObjectsFromArray:(NSArray*)anArray;
 
 // @}
 #pragma mark Querying Contents
