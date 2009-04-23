@@ -319,27 +319,39 @@ hr {
 	margin: 6px 0;
 }
 
-.memdoc dl.attention, .memdoc dl.warning {
-	border-style: solid;
-	border-width: 1px;
+.memdoc dl.attention, .memdoc dl.warning, .memdoc dl.todo, .memdoc dl.bug {
 	padding: 3px;
-	margin: 3px -3px;
+	margin: 3px -3px 0px;
 	-webkit-border-radius: 8px;
 	-moz-border-radius: 8px;
 }
 
 .memdoc dl.attention {
 	background-color: #ffd;
-	border-color: #bb0;
+	border: solid 1px #990;
 }
 
 .memdoc dl.warning {
-	background-color: #f2e3e3;
-	border-color: #b66160;
+	background-color: #fee;
+	border: solid 1px #b66;
+}
+
+.memdoc dl.todo {
+	background-color: #efe;
+	border: solid 1px #090;
+}
+
+.memdoc dl.bug {
+	background-color: #edf;
+	border: solid 1px #66b;
 }
 
 .memdoc dl table {
 	margin-left: -4px;
+}
+
+.memdoc dl p {
+	margin: 0;
 }
 
 .paramkey {
