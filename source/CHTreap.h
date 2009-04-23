@@ -23,7 +23,7 @@
  
  @image html treap-sample.png "Figure 1 - A sample treap with node priorities."
  
- Notice that, unlike a binary heap, a treap need not be a <i>complete tree</i>, which is a tree where every level is complete, with the possible exception of the lowest level, in which case any gaps must occur only on the level's right side. Also, the priority can be any numerical value—they can be integer or  floating point, positive or negative, signed or unsigned, as long as the range is large enough to accommodate the number of objects that may be added to the treap. Priorities are not strictly required to be unique, but it can help.
+ Notice that, unlike a binary heap, a treap need not be a <i>complete tree</i>, which is a tree where every level is complete, with the possible exception of the lowest level, in which case any gaps must occur only on the level's right side. Also, the priority can be any numerical value (integer or floating point, positive or negative, signed or unsigned) as long as the range is large enough to accommodate the number of objects that may be added to the treap. Uniqueness of priority values is not strictly required, but it can help.
  
  Nodes are reordered to satisfy the heap property using rotations involving only two nodes, which change the position of children in the tree, but leave the subtrees unchanged. The rotation operations are mirror images of each other, and are shown below:
  
@@ -40,8 +40,7 @@
  Treaps were originally described in the following paper:
  
  <div style="margin: 0 25px; font-weight: bold;">
- R. Seidel and C. R. Aragon. "Randomized Search Trees."<br>
- <em>Algorithmica</em>, 16(4/5):464-497, 1996.
+ R. Seidel and C. R. Aragon. "Randomized Search Trees." <em>Algorithmica</em>, 16(4/5):464-497, 1996.
  </div>
  
  (See <a href="http://sims.berkeley.edu/~aragon/pubs/rst89.pdf">PDF original</a>
@@ -67,10 +66,8 @@
  
  @param anObject The object to add to the treap.
  @param priority The priority to assign to @a nObject. Higher values percolate to the top.
- @note Although @a priority is typed as NSUInteger (consistent with Foundation APIs), \link CHBinaryTreeNode#priority CHBinaryTreeNode->priority\endlink is a @c u_int32_t, so the value stored is actually <code>priority % CHTreapNotFound</code>.
+ @note Although @a priority is typed as NSUInteger (consistent with Foundation APIs), \link CHBinaryTreeNode CHBinaryTreeNode->priority\endlink is typed as @c u_int32_t, so the value stored is actually <code>priority % CHTreapNotFound</code>.
  @throw NSInvalidArgumentException If @a anObject is @c nil.
- 
- CHBinaryTreeNode#priority
  
  If @a anObject already exists in the treap, @a priority replaces the existing priority, and the existing node is percolated up or down to maintain the heap property. Thus, this method can be used to manipulate the depth of an object. Using a specific priority value for an object allows the user to impose a heap ordering by giving higher priorities to objects that should bubble towards the top, and lower priorities to objects that should bubble towards the bottom. In theory, this makes it significantly faster to retrieve commonly searched-for items, at the possible cost of a less-balanced treap overall, depending on the mapping of priorities and the sorted order of the objects. Use with caution.
  */

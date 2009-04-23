@@ -20,24 +20,29 @@
  A node used by binary search trees for internal storage and representation.
  
  <pre>
-	typedef struct CHBinaryTreeNode {
-		id object;
-		union {
-			struct {
-				struct CHBinaryTreeNode *left;
-				struct CHBinaryTreeNode *right;
-			};
-			struct CHBinaryTreeNode *link[2];
-		};
-		union {
-			int32_t balance;
-			u_int32_t color;
-			u_int32_t level;
-			u_int32_t priority;
-		};
-	} CHBinaryTreeNode;</pre>
+    typedef struct CHBinaryTreeNode {
+        id object;
+        union {
+            struct {
+                struct CHBinaryTreeNode *left;
+                struct CHBinaryTreeNode *right;
+            };
+            struct CHBinaryTreeNode *link[2];
+        };
+        union {
+              int32_t balance;   // Used by CHAVLTree
+            u_int32_t color;     // Used by CHRedBlackTree
+            u_int32_t level;     // Used by CHAnderssonTree
+            u_int32_t priority;  // Used by CHTreap
+        };
+    } CHBinaryTreeNode;</pre>
  
- The nested anonymous union and structs are to provide flexibility for dealing with various types of trees and access. The first union (with pointers to the struct itself) provides 2 distinct yet equivalent ways to access child nodes, based on what is most convenient and efficient. (e.g. 'left' is equivalent to 'link[0]', and 'right' is equivalent to 'link[1]'). The second union (which has integer fields) allows the same node to be used in several different balanced trees, while preserving useful semantic meaning appropriate for each algorithm.
+ The nested anonymous union and structs are to provide flexibility for dealing with various types of trees and access. (For those not familiar, a <a href="http://en.wikipedia.org/wiki/Union_(computer_science)">union</a> is a data structure in which all members are stored at the same memory location, and can take on the value of any of its fields. A union occupies only as much space as the largest member, whereas a struct requires space equal to at least the sum of the size of its members.)
+ 
+ - The first union provides two equivalent ways to access child nodes, based on what is most convenient and efficient. Due to the order in which the fields are declared, <code>left == link[0]</code> and <code>right == link[1]</code>.
+ - The second union allows balanced trees to store extra data at each node, using the field name and type that makes sense for its algorithms. This allows for generic reuse while promoting meaningful semantics.
+ 
+ Since CHUnbalancedTree doesn't store any extra data, the second union is essentially 4 bytes of pure overhead per node. However, since unbalanced trees are generally not a good choice for sorting large data sets anyway, this is largely a moot point.
  */
 typedef struct CHBinaryTreeNode {
 	id object;                        /**< The object stored in the node. */
@@ -49,10 +54,10 @@ typedef struct CHBinaryTreeNode {
 		struct CHBinaryTreeNode *link[2];   /**< Links to left and right childen. */
 	};
 	union {
-		  int32_t balance;            /**< A node's balance factor (CHAVLTree) */
-		u_int32_t color;              /**< A node's color (CHRedBlackTree) */
-		u_int32_t level;              /**< A node's level (CHAnderssonTree) */
-		u_int32_t priority;           /**< A node's priority value (CHTreap) */
+		  int32_t balance;   // Used by CHAVLTree
+		u_int32_t color;     // Used by CHRedBlackTree
+		u_int32_t level;     // Used by CHAnderssonTree
+		u_int32_t priority;  // Used by CHTreap
 	};
 } CHBinaryTreeNode;
 
