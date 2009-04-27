@@ -272,7 +272,7 @@
 		E44B59B40E95850F00F9DD1A /* Benchmarks */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Benchmarks; sourceTree = BUILT_PRODUCTS_DIR; };
 		E44EB0F10ECB83230071F93A /* UtilTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UtilTest.m; path = test/UtilTest.m; sourceTree = "<group>"; };
 		E4723A710EB91B7A006FE465 /* Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Util.m; path = source/Util.m; sourceTree = "<group>"; };
-		E473C9890E9331FA005CA997 /* Unit Testing-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Unit Testing-Info.plist"; path = "resources/Unit Testing-Info.plist"; sourceTree = "<group>"; };
+		E473C9890E9331FA005CA997 /* Info-Unit-Testing.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Info-Unit-Testing.plist"; path = "resources/Info-Unit-Testing.plist"; sourceTree = "<group>"; };
 		E473C99E0E93333C005CA997 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		E473CB550E9346CB005CA997 /* CHDataStructures_test.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CHDataStructures_test.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E48860B80EA66072000F132A /* CHAbstractListCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHAbstractListCollection.h; path = source/CHAbstractListCollection.h; sourceTree = "<group>"; };
@@ -324,7 +324,7 @@
 		E4FD52CC0ECA8589006D9FF8 /* CHDequeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHDequeTest.m; path = test/CHDequeTest.m; sourceTree = "<group>"; };
 		E4FD52F50ECA8A9F006D9FF8 /* CHQueueTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHQueueTest.m; path = test/CHQueueTest.m; sourceTree = "<group>"; };
 		E4FD53020ECA9212006D9FF8 /* CHStackTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHStackTest.m; path = test/CHStackTest.m; sourceTree = "<group>"; };
-		E4FE17F70FA6765D00C34601 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = resources/Info.plist; sourceTree = "<group>"; };
+		E4FE17F70FA6765D00C34601 /* Info-Framework.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Info-Framework.plist"; path = "resources/Info-Framework.plist"; sourceTree = "<group>"; };
 		E4FE77C60E8978C300971EE6 /* CHSearchTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHSearchTree.h; path = source/CHSearchTree.h; sourceTree = "<group>"; };
 		E4FE77C90E8978DD00971EE6 /* CHAbstractBinarySearchTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHAbstractBinarySearchTree.h; path = source/CHAbstractBinarySearchTree.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -394,9 +394,9 @@
 		089C1665FE841158C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				E4FE17F70FA6765D00C34601 /* Info.plist */,
 				089C1666FE841158C02AAC07 /* InfoPlist.strings */,
-				E473C9890E9331FA005CA997 /* Unit Testing-Info.plist */,
+				E4FE17F70FA6765D00C34601 /* Info-Framework.plist */,
+				E473C9890E9331FA005CA997 /* Info-Unit-Testing.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -890,7 +890,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = source/CHDataStructures_Prefix.pch;
-				INFOPLIST_FILE = resources/Info.plist;
+				INFOPLIST_FILE = "resources/Info-Framework.plist";
 				INSTALL_PATH = "$(HOME)/Library/Frameworks";
 				OTHER_LDFLAGS = "-lgcov";
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
@@ -912,7 +912,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = source/CHDataStructures_Prefix.pch;
-				INFOPLIST_FILE = resources/Info.plist;
+				INFOPLIST_FILE = "resources/Info-Framework.plist";
 				INSTALL_PATH = "$(HOME)/Library/Frameworks";
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
 				PRODUCT_NAME = CHDataStructures;
@@ -1065,7 +1065,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Cocoa.framework/Headers/Cocoa.h";
-				INFOPLIST_FILE = "resources/Unit Testing-Info.plist";
+				INFOPLIST_FILE = "resources/Info-Unit-Testing.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
 				OTHER_LDFLAGS = (
 					"-framework",
@@ -1092,7 +1092,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Cocoa.framework/Headers/Cocoa.h";
-				INFOPLIST_FILE = "resources/Unit Testing-Info.plist";
+				INFOPLIST_FILE = "resources/Info-Unit-Testing.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
 				OTHER_LDFLAGS = (
 					"-framework",
