@@ -1157,7 +1157,7 @@
 				1DEB91AF08733DA50010E9CD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "CHDataStructures" */ = {
 			isa = XCConfigurationList;
@@ -1166,7 +1166,7 @@
 				1DEB91B308733DA50010E9CD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		E43C87740EA3D36600B3B31E /* Build configuration list for PBXAggregateTarget "Deployment" */ = {
 			isa = XCConfigurationList;
@@ -1175,7 +1175,7 @@
 				E43C876A0EA3D35500B3B31E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		E44B59CB0E95853300F9DD1A /* Build configuration list for PBXNativeTarget "Benchmarks" */ = {
 			isa = XCConfigurationList;
@@ -1184,7 +1184,7 @@
 				E44B59B90E95851000F9DD1A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		E46300DC0ECBF16300E1AF73 /* Build configuration list for PBXAggregateTarget "Coverage" */ = {
 			isa = XCConfigurationList;
@@ -1193,7 +1193,7 @@
 				E46300C50ECBF0F600E1AF73 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		E473CB690E9346F3005CA997 /* Build configuration list for PBXNativeTarget "Unit Testing" */ = {
 			isa = XCConfigurationList;
@@ -1202,7 +1202,7 @@
 				E473CB590E9346CB005CA997 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		E4FAE1670E968F3F007BB1F9 /* Build configuration list for PBXAggregateTarget "All" */ = {
 			isa = XCConfigurationList;
@@ -1211,7 +1211,7 @@
 				E4FAE15D0E968F1B007BB1F9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		E4FE76F70E8955BB00971EE6 /* Build configuration list for PBXAggregateTarget "Documentation" */ = {
 			isa = XCConfigurationList;
@@ -1220,7 +1220,7 @@
 				E4FE76DA0E89556A00971EE6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};
