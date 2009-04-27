@@ -31,7 +31,7 @@
 - (id) init;
 
 /**
- Initialize a heap with the contents of an array. Objects are added to the heap as they occur in the array, then sorted using @c NSOrderedAscending.
+ Initialize a heap with the contents of an array. Objects are added to the heap as they occur in the array, then "heapified" using an @c NSOrderedAscending heap ordering.
  
  @param anArray An array containing object with which to populate a new heap.
  */
@@ -86,9 +86,9 @@
 /**
  Returns an array containing the objects in this heap in sorted order.
  
- @attention Since a heap structure is only "sorted" as elements are removed, this method incurs extra costs of (A) time for sorting the contents and (B) memory for storing the extra array. However, it does not affect the order of elements in the heap itself.
- 
  @return An array containing the objects in this heap in sorted order. If the heap is empty, the array is also empty.
+ 
+ @attention Since a heap structure is only "sorted" as elements are removed, this method incurs extra costs of (A) time for sorting the contents and (B) memory for storing the extra array. However, it does not affect the order of elements in the heap itself.
  */
 - (NSArray*) allObjectsInSortedOrder;
 
