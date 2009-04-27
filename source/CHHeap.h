@@ -128,7 +128,7 @@
  @return An enumerator that accesses each object in the heap in sorted order. The enumerator returned is never @c nil; if the heap is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
  
  @attention The enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
- @warning Requesting objects from an enumerator whose underlying collection has been modified is unsafe, and may cause a mutation exception to be raised.
+ @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
  
  Uses an NSArray returned by #allObjects, so all the same caveats apply.
  

@@ -230,7 +230,7 @@
  @return An enumerator that lets you access each key in the multimap. The enumerator returned is never @c nil; if the multimap is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
  
  @attention The enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
- @warning Requesting objects from an enumerator whose underlying collection has been modified is unsafe, and may cause a mutation exception to be raised.
+ @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
  @warning If you need to modify the entries concurrently, use #allKeys to create a "snapshot" of the dictionary's keys and work from this snapshot to modify the entries.
  */
 - (NSEnumerator*) keyEnumerator;
@@ -241,7 +241,7 @@
  @return An enumerator that lets you access each value in the multimap. The enumerator returned is never @c nil; if the multimap is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
  
  @attention The enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
- @warning Requesting objects from an enumerator whose underlying collection has been modified is unsafe, and may cause a mutation exception to be raised.
+ @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
  @warning If you need to modify the entries concurrently, use #allObjects to create a "snapshot" of the dictionary's values and work from this snapshot to modify the values.
  */
 - (NSEnumerator*) objectEnumerator;

@@ -140,7 +140,7 @@ typedef enum {
  @param order The order in which an enumerator should traverse nodes in the tree. @return An enumerator that accesses each object in the tree in a given order. The enumerator returned is never @c nil; if the tree is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
  
  @attention The enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
- @warning Requesting objects from an enumerator whose underlying collection has been modified is unsafe, and may cause a mutation exception to be raised.
+ @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
  
  @see \link #objectEnumerator -objectEnumerator\endlink
  @see \link #reverseObjectEnumerator -reverseObjectEnumerator\endlink
@@ -183,7 +183,7 @@ typedef enum {
  @return An enumerator that accesses each object in the tree in ascending order. The enumerator returned is never @c nil; if the tree is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
  
  @attention The enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
- @warning Requesting objects from an enumerator whose underlying collection has been modified is unsafe, and may cause a mutation exception to be raised.
+ @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
  
  @see \link #objectEnumeratorWithTraversalOrder: -objectEnumeratorWithTraversalOrder:\endlink
  */
@@ -195,7 +195,7 @@ typedef enum {
  @return An enumerator that accesses each object in the tree in descending order. The enumerator returned is never @c nil; if the tree is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
  
  @attention The enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
- @warning Requesting objects from an enumerator whose underlying collection has been modified is unsafe, and may cause a mutation exception to be raised.
+ @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
 
  @see \link #objectEnumeratorWithTraversalOrder: -objectEnumeratorWithTraversalOrder:\endlink
  */
