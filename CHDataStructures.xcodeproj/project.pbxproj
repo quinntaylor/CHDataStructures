@@ -324,6 +324,7 @@
 		E4FD52CC0ECA8589006D9FF8 /* CHDequeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHDequeTest.m; path = test/CHDequeTest.m; sourceTree = "<group>"; };
 		E4FD52F50ECA8A9F006D9FF8 /* CHQueueTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHQueueTest.m; path = test/CHQueueTest.m; sourceTree = "<group>"; };
 		E4FD53020ECA9212006D9FF8 /* CHStackTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHStackTest.m; path = test/CHStackTest.m; sourceTree = "<group>"; };
+		E4FE17F70FA6765D00C34601 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = resources/Info.plist; sourceTree = "<group>"; };
 		E4FE77C60E8978C300971EE6 /* CHSearchTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHSearchTree.h; path = source/CHSearchTree.h; sourceTree = "<group>"; };
 		E4FE77C90E8978DD00971EE6 /* CHAbstractBinarySearchTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHAbstractBinarySearchTree.h; path = source/CHAbstractBinarySearchTree.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -393,6 +394,7 @@
 		089C1665FE841158C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				E4FE17F70FA6765D00C34601 /* Info.plist */,
 				089C1666FE841158C02AAC07 /* InfoPlist.strings */,
 				E473C9890E9331FA005CA997 /* Unit Testing-Info.plist */,
 			);
