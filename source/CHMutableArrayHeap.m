@@ -145,53 +145,54 @@
 }
 
 - (id) firstObject {
-	@try {
-		return [array objectAtIndex:0];
-	}
-	@catch (NSException *exception) {}
-	return nil;
+	return ([array count] > 0) ? [array objectAtIndex:0] : nil;
 }
 		
 - (void) removeFirstObject {
-	@try {
+	if ([array count] > 0) {
 		[array exchangeObjectAtIndex:0 withObjectAtIndex:([array count]-1)];
 		[array removeLastObject];
 		++mutations;
 		// Bubble the swapped node down until the heap property is again satisfied
 		[self heapifyFromIndex:0];
 	}
-	@catch (NSException *exception) {}
 }
 
 - (void) removeObject:(id)anObject {
+	NSUInteger count = [array count];
+	if (count == 0 || anObject == nil)
+		return;
+	++mutations;
 	NSUInteger index = 0;
 	NSRange range;
 	range.location = 0;
-	range.length = [array count];
+	range.length = count;
 	while ((index = [array indexOfObject:anObject inRange:range]) != NSNotFound) {
-		[array exchangeObjectAtIndex:index withObjectAtIndex:([array count]-1)];
+		[array exchangeObjectAtIndex:index withObjectAtIndex:(--count)];
 		[array removeLastObject];
-		++mutations;
 		// Bubble the swapped node down until the heap property is again satisfied
 		[self heapifyFromIndex:index/2];
 		range.location = index;
-		range.length = [array count] - index;
+		range.length = count - index;
 	}
 }
 
 - (void) removeObjectIdenticalTo:(id)anObject {
+	NSUInteger count = [array count];
+	if (count == 0 || anObject == nil)
+		return;
+	++mutations;
 	NSUInteger index = 0;
 	NSRange range;
 	range.location = 0;
-	range.length = [array count];
+	range.length = count;
 	while ((index = [array indexOfObjectIdenticalTo:anObject inRange:range]) != NSNotFound) {
-		[array exchangeObjectAtIndex:index withObjectAtIndex:([array count]-1)];
+		[array exchangeObjectAtIndex:index withObjectAtIndex:(--count)];
 		[array removeLastObject];
-		++mutations;
 		// Bubble the swapped node down until the heap property is again satisfied
 		[self heapifyFromIndex:index/2];
 		range.location = index;
-		range.length = [array count] - index;
+		range.length = count - index;
 	}
 }
 
