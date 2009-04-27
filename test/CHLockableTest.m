@@ -73,12 +73,14 @@
 	STAssertFalse([lockable tryLock], @"Should not be able to acquire lock.");
 	[NSThread sleepForTimeInterval:0.2];
 	STAssertTrue([lockable tryLock], @"Should be able to acquire lock.");
+	[lockable unlock];
 }
 
 - (void) testLockBeforeDate {
 	STAssertNil([lockable nsLock], @"The NSLock should be nil.");
 	[lockable lockBeforeDate:[NSDate date]];
 	STAssertNotNil([lockable nsLock], @"The NSLock should no longer be nil.");
+	[lockable unlock];
 }
 
 #pragma mark Multi-thread methods
