@@ -576,5 +576,3 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 }
 
 @end
-
-
