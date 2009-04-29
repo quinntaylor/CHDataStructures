@@ -14,7 +14,7 @@
 
 #pragma mark C Functions for Optimized Operations
 
-static inline CHBinaryTreeNode * rotateNodeWithLeftChild(CHBinaryTreeNode *node) {
+static inline CHBinaryTreeNode* rotateNodeWithLeftChild(CHBinaryTreeNode *node) {
 	CHBinaryTreeNode *leftChild = node->left;
 	node->left = leftChild->right;
 	leftChild->right = node;
@@ -23,7 +23,7 @@ static inline CHBinaryTreeNode * rotateNodeWithLeftChild(CHBinaryTreeNode *node)
 	return leftChild;
 }
 
-static inline CHBinaryTreeNode * rotateNodeWithRightChild(CHBinaryTreeNode *node) {
+static inline CHBinaryTreeNode* rotateNodeWithRightChild(CHBinaryTreeNode *node) {
 	CHBinaryTreeNode *rightChild = node->right;
 	node->right = rightChild->left;
 	rightChild->left = node;
@@ -65,22 +65,6 @@ static inline CHBinaryTreeNode* doubleRotation(CHBinaryTreeNode *node, BOOL goin
 
 @implementation CHRedBlackTree
 
-- (void) _reorient:(id)anObject {
-	// Color flip
-	current->color = kRED;
-	current->left->color = kBLACK;
-	current->right->color = kBLACK;
-	// Fix red violation
-	if (parent->color == kRED) 	{
-		grandparent->color = kRED;
-		if ([grandparent->object compare:anObject] != [parent->object compare:anObject])
-			parent = rotateObjectOnAncestor(anObject, grandparent);
-		current = rotateObjectOnAncestor(anObject, greatgrandparent);
-		current->color = kBLACK;
-	}
-	header->right->color = kBLACK;  // Always reset root to black
-}
-
 - (id) init {
 	if ([super init] == nil) return nil;
 	sentinel->color = kBLACK;
@@ -96,9 +80,10 @@ static inline CHBinaryTreeNode* doubleRotation(CHBinaryTreeNode *node, BOOL goin
 		CHNilArgumentException([self class], _cmd);
 	++mutations;
 
+	CHBinaryTreeNode *current, *parent, *grandparent, *greatgrandparent;
 	grandparent = parent = current = header;
-	sentinel->object = anObject;
 	
+	sentinel->object = anObject;
 	NSComparisonResult comparison;
 	while (comparison = [current->object compare:anObject]) {
 		greatgrandparent = grandparent, grandparent = parent, parent = current;
@@ -141,7 +126,21 @@ static inline CHBinaryTreeNode* doubleRotation(CHBinaryTreeNode *node, BOOL goin
 		
 		parent->link[([parent->object compare:anObject] == NSOrderedAscending)] = current;
 		
-		[self _reorient:anObject]; // one last reorientation check...
+		// one last reorientation check...
+		
+		// Color flip
+		current->color = kRED;
+		current->left->color = kBLACK;
+		current->right->color = kBLACK;
+		// Fix red violation
+		if (parent->color == kRED) 	{
+			grandparent->color = kRED;
+			if ([grandparent->object compare:anObject] != [parent->object compare:anObject])
+				parent = rotateObjectOnAncestor(anObject, grandparent);
+			current = rotateObjectOnAncestor(anObject, greatgrandparent);
+			current->color = kBLACK;
+		}
+		header->right->color = kBLACK;  // Always reset root to black
 	}
 }
 
@@ -159,9 +158,11 @@ static inline CHBinaryTreeNode* doubleRotation(CHBinaryTreeNode *node, BOOL goin
 		return;
 	++mutations;
 	
+	CHBinaryTreeNode *current, *parent, *grandparent;
 	grandparent = parent = current = header;
-	sentinel->object = anObject;
+	
 	CHBinaryTreeNode *found = NULL, *sibling;
+	sentinel->object = anObject;
 	NSComparisonResult comparison;
 	BOOL isGoingRight = YES, prevWentRight = YES;
 	while (current->link[isGoingRight] != sentinel) {

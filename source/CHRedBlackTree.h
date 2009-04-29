@@ -58,11 +58,5 @@
  </div>
  */
 @interface CHRedBlackTree : CHAbstractBinarySearchTree
-{
-	CHBinaryTreeNode *current;
-	CHBinaryTreeNode *parent;
-	CHBinaryTreeNode *grandparent;
-	CHBinaryTreeNode *greatgrandparent;
-}
 
 @end
