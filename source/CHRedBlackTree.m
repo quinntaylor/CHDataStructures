@@ -223,7 +223,7 @@ static inline CHBinaryTreeNode* doubleRotation(CHBinaryTreeNode *node, BOOL goin
 			(node->color == kBLACK) ? "BLACK" : " RED ", node->object];
 }
 
-- (NSString*) dotStringForNode:(CHBinaryTreeNode*)node {
+- (NSString*) dotGraphStringForNode:(CHBinaryTreeNode*)node {
 	return [NSString stringWithFormat:@"  \"%@\" [color=%@];\n",
 			node->object, (node->color == kRED) ? @"red" : @"black"];
 }

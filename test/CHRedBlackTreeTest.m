@@ -324,11 +324,11 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	free(node);
 }
 
-- (void) testDotStringForNode {
+- (void) testDotGraphStringForNode {
 	CHBinaryTreeNode *node = malloc(sizeof(CHBinaryTreeNode));
 	node->object = [NSString stringWithString:@"A B C"];
 	node->color = kRED;
-	STAssertEqualObjects([tree dotStringForNode:node],
+	STAssertEqualObjects([tree dotGraphStringForNode:node],
 						 @"  \"A B C\" [color=red];\n", nil);
 	free(node);
 }

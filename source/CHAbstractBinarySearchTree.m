@@ -516,6 +516,8 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 	return [NSString stringWithFormat:@"\"%@\"", node->object];
 }
 
+// Uses an iterative reverse pre-order traversal to generate the diagram so that
+// DOT tools will render the graph as a binary search tree is expected to look.
 - (NSString*) dotGraphString {
 	NSMutableString *graph = [NSMutableString stringWithFormat:
 							  @"digraph %@\n{\n", [self className]];
@@ -537,7 +539,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 			if (current->right != sentinel)
 				CHBinaryTreeStack_PUSH(current->right);
 			// Append entry for node with any subclass-specific customizations.
-			[graph appendString:[self dotStringForNode:current]];
+			[graph appendString:[self dotGraphStringForNode:current]];
 			// Append entry for edges from current node to both its children.
 			leftChild = (current->left->object == nil)
 				? [NSString stringWithFormat:@"nil%d", ++sentinelCount]
@@ -559,7 +561,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 	return graph;
 }
 
-- (NSString*) dotStringForNode:(CHBinaryTreeNode*)node {
+- (NSString*) dotGraphStringForNode:(CHBinaryTreeNode*)node {
 	return [NSString stringWithFormat:@"  \"%@\";\n", node->object];
 }
 

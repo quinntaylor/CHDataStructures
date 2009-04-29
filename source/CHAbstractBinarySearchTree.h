@@ -68,7 +68,7 @@ HIDDEN extern BOOL kCHGarbageCollectionDisabled;
 
 
 /**
- An abstract CHSearchTree with many default method implementations. Methods for search, size, and enumeration are implemented in this class, as are methods for NSCoding, NSCopying, and NSFastEnumeration. (This works since all child classes use the CHBinaryTreeNode struct.) Any subclass must implement \link #addObject: -addObject:\endlink and \link #removeObject: -removeObject:\endlink such that they conform to the inner workings of that specific subclass.
+ An abstract CHSearchTree with many default method implementations. Methods for search, size, and enumeration are implemented in this class, as are methods for NSCoding, NSCopying, and NSFastEnumeration. (This works since all child classes use the CHBinaryTreeNode struct.) Any subclass @b must implement \link #addObject: -addObject:\endlink and \link #removeObject: -removeObject:\endlink according to the inner workings of that specific tree, and @b should also override \link #dotGraphStringForNode: -dotGraphStringForNode:\endlink and \link #debugDescriptionForNode: -debugDescriptionForNode:\endlink to display any algorithm-specific information in generated DOT graphs and debugging output, respectively.
  
  Rather than enforcing that this class be abstract, the contract is implied. If this class were actually instantiated, it would be of little use since there is attempts to insert or remove will result in runtime exceptions being raised.
  
@@ -82,30 +82,51 @@ HIDDEN extern BOOL kCHGarbageCollectionDisabled;
 	unsigned long mutations; /**< Tracks mutations for NSFastEnumeration. */
 }
 
-// Declared to prevent compile warnings, but undocumented on purpose.
-// Called to obtain detailed information about the structure of a tree object.
+/**
+ Produces a representation of the receiver that can be useful for debugging.
+ 
+ Whereas @c -description outputs only the contents of the tree in ascending order, this method outputs the internal structure of the tree (showing the objects in each node and its children) using a pre-order traversal.
+ 
+ Calls #debugDescriptionForNode: to get the representation for each node in the tree. Sentinel leaf nodes are represented as nil children.
+ 
+ @note Using @c print-object or @c po within GDB automatically calls the @c -debugDescription method of the specified object.
+ */
 - (NSString*) debugDescription;
 
-// Declared to prevent compile warnings, but undocumented on purpose.
-// Each subclass may override this to specify how node entries should appear.
+/**
+ Produces a debugging description for a given tree node.
+ 
+ This method determines the appearance of nodes in the graph produced by #debugDescription, and may be overriden by subclasses to display any additional relevant information, such as the extra field used by self-balancing trees. The default implementation returns the @c -description for the object in the node, surrounded by quote marks.
+ 
+ @param node The tree node for which to create a debugging representation.
+ @return A representation of a tree node intended for debugging purposes.
+ 
+ @see debugDescription
+ */
 - (NSString*) debugDescriptionForNode:(CHBinaryTreeNode*)node;
 
 /**
- Produces a graph description in the DOT language for the receiver tree. A dot graph can be rendered with GraphViz, OmniGraffle, dotty, or other tools. This method uses an adaptation of an iterative pre-order traversal to organize the diagram such that it renders in order like a binary search tree. Null sentinel nodes are represented by arrows which point to empty space.
+ Produces a <a href="http://en.wikipedia.org/wiki/DOT_language">DOT language</a> graph description for the receiver tree.
  
- @return A graph description in the DOT language for the receiver tree.
+ A DOT graph can be rendered with <a href="http://www.graphviz.org/">GraphViz</a>, <a href="http://www.omnigroup.com/applications/OmniGraffle/">OmniGraffle</a>, or other similar tools.
+ 
+ Calls #dotGraphStringForNode: to get the representation for each node in the tree. Sentinel leaf nodes are represented by a small black dot.
+ 
+ @return A graph description for the receiver tree in the DOT language.
  */
 - (NSString*) dotGraphString;
 
 /**
- Create a string DOT description for a node in the tree. Override in subclasses to display additional information for tree nodes.
+ Produces a <a href="http://en.wikipedia.org/wiki/DOT_language">DOT language</a> description for a given tree node.
  
- @param node The node for which to create a DOT language representation.
- @return A string representation of a node in the dot language.
+ This method determines the appearance of nodes in the graph produced by #dotGraphString, and may be overriden by subclasses to display any additional relevant information, such as the extra field used by self-balancing trees. The default implementation creates an oval containing the value returned by @c -description for the object in the node.
+ 
+ @param node The tree node for which to create a DOT representation.
+ @return A representation of a tree node in the DOT language.
  
  @see dotGraphString
  */
-- (NSString*) dotStringForNode:(CHBinaryTreeNode*)node;
+- (NSString*) dotGraphStringForNode:(CHBinaryTreeNode*)node;
 
 @end
 

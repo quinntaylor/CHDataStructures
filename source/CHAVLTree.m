@@ -226,7 +226,7 @@ done:
 			node->balance, node->object];
 }
 
-- (NSString*) dotStringForNode:(CHBinaryTreeNode*)node {
+- (NSString*) dotGraphStringForNode:(CHBinaryTreeNode*)node {
 	return [NSString stringWithFormat:@"  \"%@\" [label=\"%@\\n%d\"];\n",
 			node->object, node->object, node->balance];
 }
