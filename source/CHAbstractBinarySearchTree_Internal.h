@@ -24,7 +24,7 @@
 	NSUInteger stackCapacity, stackSize
 
 #define CHBinaryTreeStack_INIT() { \
-	stackCapacity = 16; \
+	stackCapacity = 32; \
 	stack = NSAllocateCollectable(kCHBinaryTreeNodeSize*stackCapacity, NSScannedOption); \
 	stackSize = 0; \
 }
@@ -54,7 +54,7 @@
 #pragma mark Queue macros
 
 #define CHBinaryTreeQueue_INIT() { \
-	queueCapacity = 16; \
+	queueCapacity = 128; \
 	queue = NSAllocateCollectable(kCHPointerSize*queueCapacity, NSScannedOption); \
 	queueHead = queueTail = 0; \
 }
