@@ -59,17 +59,17 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 #pragma mark -
 
 /**
- An NSEnumerator for traversing a CHAbstractBinarySearchTree subclass in a specified order.
+ An NSEnumerator for traversing any CHAbstractBinarySearchTree subclass in a specified order.
  
- This enumerator uses iterative tree traversal algorithms for two main reasons:
+ This enumerator implements only iterative (non-recursive) tree traversal algorithms for two main reasons:
  <ol>
- <li>Recursive algorithms cannot easily be stopped in the middle of a traversal.
- <li>Iterative algorithms are faster since they reduce overhead of function calls.
+ <li>Recursive algorithms cannot easily be stopped and resumed in the middle of a traversal.</li>
+ <li>Iterative algorithms are usually faster since they reduce overhead from function calls.</li>
  </ol>
  
- The stacks and queues used for storing traversal state use malloced C structsand @c \#define pseudo-functions to increase performance and reduce the required memory footprint by dynamically allocating as needed.
+ Traversal state is stored in either a stack or queue using dynamically-allocated C structs and @c \#define pseudo-functions to increase performance and reduce the required memory footprint.
  
- Enumerators encapsulate their own state, and more than one may be active at once. However, like an enumerator for a mutable data structure, any instances of this enumerator become invalid if the tree is modified.
+ Enumerators encapsulate their own state, and more than one enumerator may be active at once. However, if a collection is modified, any existing enumerators for that collection become invalid and will raise a mutation exception if any further objects are requested from it.
  */
 @interface CHBinarySearchTreeEnumerator : NSEnumerator
 {
