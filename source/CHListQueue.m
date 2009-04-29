@@ -10,6 +10,7 @@
  */
 
 #import "CHListQueue.h"
+#import "CHSinglyLinkedList.h"
 
 /**
  This implementation uses a CHSinglyLinkedList, since it's slightly faster than

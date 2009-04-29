@@ -11,7 +11,6 @@
 
 #import "CHStack.h"
 #import "CHAbstractListCollection.h"
-#import "CHSinglyLinkedList.h"
 
 /**
  @file CHListStack.h

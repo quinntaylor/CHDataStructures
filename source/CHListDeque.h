@@ -10,7 +10,6 @@
 
 #import "CHDeque.h"
 #import "CHAbstractListCollection.h"
-#import "CHDoublyLinkedList.h"
 
 /**
  @file CHListDeque.h

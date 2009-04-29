@@ -9,6 +9,7 @@
  */
 
 #import "CHListDeque.h"
+#import "CHDoublyLinkedList.h"
 
 @implementation CHListDeque
 
