@@ -50,6 +50,10 @@
 
 /**
  @mainpage Overview
+
+ @todo Consider implementing "versionable" <a href="http://en.wikipedia.org/wiki/Persistent_data_structure">persistent data structures</a>, wherein concurrent enumeration and modification are supported via tagged versions of the structure. (An example of this for red-black trees is an exercise for the reader in "Introduction to Algorithms, 2nd Edition" (ISBN: <a href="http://isbn.nu/9780262032933">9780262032933</a>) in problem 13.1, pages 294-295.) The best candidates are probably queues, heaps, and search trees (sorted sets).
+ 
+ @todo Examine feasability and utility of implementing key-value observing/coding/binding.
  
  <strong>CHDataStructures.framework</strong> <http://cocoaheads.byu.edu/code/CHDataStructures> is an open-source library of standard data structures which can be used in any Objective-C program, for educational purposes or as a foundation for other data structures to build on. Data structures in this framework adopt Objective-C protocols that define the functionality of and API for interacting with any implementation thereof, regardless of its internals.
  

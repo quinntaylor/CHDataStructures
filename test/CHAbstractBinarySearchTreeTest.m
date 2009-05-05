@@ -141,6 +141,15 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	             badOrder(@"Level-order", actual, correct));
 }
 
+- (void) testAnyObject {
+	STAssertNil([emptyTree anyObject], @"Should return nil");
+	for (id<CHSearchTree> tree in nonEmptyTrees) {
+		STAssertNotNil([tree anyObject], @"Should return a non-nil object");
+		[tree removeAllObjects];
+		STAssertNil([tree anyObject], @"Should return nil");
+	}
+}
+
 - (void) testContainsObject {
 	STAssertNoThrow([emptyTree containsObject:nil], @"Should not raise exception.");
 	STAssertFalse([emptyTree containsObject:nil], @"Should return NO for nil.");

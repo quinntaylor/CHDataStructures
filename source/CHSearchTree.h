@@ -72,9 +72,21 @@ typedef enum {
  
  These constants are used primarily in connection with \link #objectEnumeratorWithTraversalOrder: -objectEnumeratorWithTraversalOrder:\endlink for enumerating over objects from a search tree in a specified order.
  
- @todo Modify protocol and subclasses to decide whether to allow duplicates. (This would allow trees to act either as sorted lists or sorted sets.) If implemented, add -removeObjectIdenticalTo: as well.
+ @todo Modify protocol and subclasses to decide whether to allow duplicates. (This would allow trees to act either as sorted lists or sorted sets.) If implemented, add @c -removeObjectIdenticalTo: as well.
 
- @todo Add -subsetFromObject:toObject: where either object may be nil to designate the first/last element in the set. Returns a new instance with new nodes pointing to the same object. If an object matches one of the parameters, it is included. (Must non-nil objects  be a member of the set? If the second object is not greater than the first, should it slice elements from both ends?) See http://java.sun.com/j2se/1.5/docs/api/java/util/SortedSet.html for ideas.
+ @todo Add @c -subsetFromObject:toObject: where either object may be nil to designate the first/last element in the set. Returns a new instance with new nodes pointing to the same object. If an object matches one of the parameters, it is included. (If the second object is not greater than the first, should the result include elements sliced from both ends?) See http://java.sun.com/j2se/1.5/docs/api/java/util/SortedSet.html for ideas.
+ 
+ @todo Consider refactoring most of this protocol to a new CHSortedSet protocol? While search trees are the natural choice for sorted sets, other implementations are possible (including sorted linear hash sets <http://www.concentric.net/~Ttwang/tech/sorthash.htm>) and might be fun to play around with.
+ 
+ @todo Consider adding more operations similar to those supported by NSSet and NSMutableSet, such as:
+	 - @c - (NSArray*) allObjectsFilteredUsingPredicate:
+	 - @c - (void) filterUsingPredicate:
+	 - @c - (BOOL) isEqualToSortedSet:
+	 - @c - (BOOL) isSubsetOfSortedSet:
+	 - @c - (BOOL) intersectsSet:
+	 - @c - (void) intersectSet:
+	 - @c - (void) minusSet:
+	 - @c - (void) unionSet:
  */
 @protocol CHSearchTree <NSObject, NSCoding, NSCopying, NSFastEnumeration>
 
@@ -118,6 +130,10 @@ typedef enum {
  Returns an NSArray containing the objects in this tree in ascending order.
  
  @return An array containing the objects in this tree. If the tree is empty, the array is also empty.
+ 
+ @see anyObject
+ @see allObjectsWithTraversalOrder:
+ @see objectEnumerator
  */
 - (NSArray*) allObjects;
 
@@ -126,26 +142,28 @@ typedef enum {
  
  @param order The traversal order to use for enumerating the given tree.
  @return An array containing the objects in this tree. If the tree is empty, the array is also empty.
+
+ @see allObjects
+ @see objectEnumeratorWithTraversalOrder:
+ @see reverseObjectEnumerator:
  */
 - (NSArray*) allObjectsWithTraversalOrder:(CHTraversalOrder)order;
+
+/**
+ Returns one of the objects in the tree, or @c nil if the tree contains no objects. The object returned is chosen at the receiver's convenience; the selection is not guaranteed to be random.
+ 
+ @return An arbitrarily-selected object from the tree, or @c nil if the tree is empty.
+ 
+ @see allObjects
+ @see firstObject
+ @see lastObject
+ */
+- (id) anyObject;
 
 /**
  Returns the number of objects currently in the tree.
  */
 - (NSUInteger) count;
-
-/**
- Returns an enumerator that accesses each object using a given traversal order.
- 
- @param order The order in which an enumerator should traverse nodes in the tree. @return An enumerator that accesses each object in the tree in a given order. The enumerator returned is never @c nil; if the tree is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
- 
- @attention The enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
- @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
- 
- @see \link #objectEnumerator -objectEnumerator\endlink
- @see \link #reverseObjectEnumerator -reverseObjectEnumerator\endlink
- */
-- (NSEnumerator*) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order;
 
 /**
  Determines if the tree contains a given object, matched using @c isEqual:.
@@ -175,6 +193,9 @@ typedef enum {
  Returns the minimum object in the tree.
  
  @return The minimum object in the tree, or @c nil if empty.
+
+ @see anyObject
+ @see lastObject
  */
 - (id) firstObject;
 
@@ -182,6 +203,9 @@ typedef enum {
  Returns the maximum object in the tree.
  
  @return The maximum object in the tree, or @c nil if empty.
+
+ @see anyObject
+ @see firstObject
  */
 - (id) lastObject;
 
@@ -193,9 +217,26 @@ typedef enum {
  @attention The enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
  @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
  
- @see \link #objectEnumeratorWithTraversalOrder: -objectEnumeratorWithTraversalOrder:\endlink
+ @see allObjects
+ @see countByEnumeratingWithState:objects:count:
+ @see objectEnumeratorWithTraversalOrder:
+ @see reverseObjectEnumerator
  */
 - (NSEnumerator*) objectEnumerator;
+
+/**
+ Returns an enumerator that accesses each object using a given traversal order.
+ 
+ @param order The order in which an enumerator should traverse nodes in the tree. @return An enumerator that accesses each object in the tree in a given order. The enumerator returned is never @c nil; if the tree is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
+ 
+ @attention The enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
+ @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
+ 
+ @see allObjectsWithTraversalOrder:
+ @see objectEnumerator
+ @see reverseObjectEnumerator
+ */
+- (NSEnumerator*) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order;
 
 /**
  Returns an enumerator that accesses each object in the tree in descending order.
@@ -205,7 +246,9 @@ typedef enum {
  @attention The enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
  @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
 
- @see \link #objectEnumeratorWithTraversalOrder: -objectEnumeratorWithTraversalOrder:\endlink
+ @see allObjectsWithTraversalOrder:
+ @see objectEnumerator
+ @see objectEnumeratorWithTraversalOrder:
  */
 - (NSEnumerator*) reverseObjectEnumerator;
 

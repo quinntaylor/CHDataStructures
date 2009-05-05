@@ -402,6 +402,12 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 	return [[self objectEnumeratorWithTraversalOrder:order] allObjects];
 }
 
+- (id) anyObject {
+	return (count > 0) ? header->right->object : nil;
+	// In an empty tree, sentinel's object may be nil, but let's not chance it.
+	// (Our -removeAllObjects nils the pointer, child's -removeObject: may not.)
+}
+
 - (BOOL) containsObject:(id)anObject {
 	return ([self findObject:anObject] != nil);
 }
@@ -472,6 +478,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 		free(stack); // declared in CHBinaryTreeStack_DECLARE() macro
 	}
 	header->right = sentinel; // With GC, this is sufficient to unroot the tree.
+	sentinel->object = nil; // Make sure we don't accidentally retain an object.
 }
 
 - (NSEnumerator*) objectEnumerator {
