@@ -406,28 +406,16 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 	return ([self findObject:anObject] != nil);
 }
 
+- (BOOL) containsObjectIdenticalTo:(id)anObject {
+	return (anObject == nil) ? NO : ([self findObject:anObject] == anObject);
+}
+
 - (NSUInteger) count {
 	return count;
 }
 
 - (NSString*) description {
 	return [[self allObjectsWithTraversalOrder:CHTraverseAscending] description];
-}
-
-- (id) findMax {
-	sentinel->object = nil;
-	CHBinaryTreeNode *current = header->right;
-	while (current->right != sentinel)
-		current = current->right;
-	return current->object;
-}
-
-- (id) findMin {
-	sentinel->object = nil;
-	CHBinaryTreeNode *current = header->right;
-	while (current->left != sentinel)
-		current = current->left;
-	return current->object;
 }
 
 - (id) findObject:(id)anObject {
@@ -439,6 +427,22 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 	while (comparison = [current->object compare:anObject]) // while not equal
 		current = current->link[comparison == NSOrderedAscending]; // R on YES
 	return (current != sentinel) ? current->object : nil;
+}
+
+- (id) firstObject {
+	sentinel->object = nil;
+	CHBinaryTreeNode *current = header->right;
+	while (current->left != sentinel)
+		current = current->left;
+	return current->object;
+}
+
+- (id) lastObject {
+	sentinel->object = nil;
+	CHBinaryTreeNode *current = header->right;
+	while (current->right != sentinel)
+		current = current->right;
+	return current->object;
 }
 
 // Doesn't call -[NSGarbageCollector collectIfNeeded] -- lets the sender choose.

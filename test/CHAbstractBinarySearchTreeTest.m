@@ -142,8 +142,8 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 }
 
 - (void) testContainsObject {
-	STAssertFalse([emptyTree containsObject:nil], @"Should return NO for nil.");
 	STAssertNoThrow([emptyTree containsObject:nil], @"Should not raise exception.");
+	STAssertFalse([emptyTree containsObject:nil], @"Should return NO for nil.");
 	for (id anObject in objects)
 		STAssertFalse([emptyTree containsObject:anObject], @"Should return NO.");
 	STAssertNoThrow([emptyTree containsObject:@"Z"],
@@ -151,13 +151,37 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	STAssertFalse([emptyTree containsObject:@"Z"], @"Should return NO");
 	
 	for (id<CHSearchTree> tree in nonEmptyTrees) {
-		STAssertFalse([tree containsObject:nil], @"Should return NO for nil.");
 		STAssertNoThrow([tree containsObject:nil], @"Should not raise exception.");	
+		STAssertFalse([tree containsObject:nil], @"Should return NO for nil.");
 		for (id anObject in correct)
 			STAssertTrue([tree containsObject:anObject], @"Should return YES");
 		STAssertNoThrow([tree containsObject:@"Z"],
 						@"Should not raise an exception.");
 		STAssertFalse([tree containsObject:@"Z"], @"Should return NO");
+	}
+}
+
+- (void) testContainsObjectIdenticalTo {
+	STAssertNoThrow([emptyTree containsObjectIdenticalTo:nil], @"Should not raise exception.");
+	STAssertFalse([emptyTree containsObjectIdenticalTo:nil], @"Should return NO for nil.");
+	for (id anObject in objects)
+		STAssertFalse([emptyTree containsObjectIdenticalTo:anObject], @"Should return NO.");
+	STAssertNoThrow([emptyTree containsObjectIdenticalTo:@"Z"],
+					@"Should not raise an exception.");
+	STAssertFalse([emptyTree containsObjectIdenticalTo:@"Z"], @"Should return NO");
+	
+	for (id<CHSearchTree> tree in nonEmptyTrees) {
+		STAssertNoThrow([tree containsObjectIdenticalTo:nil], @"Should not raise exception.");
+		STAssertFalse([tree containsObjectIdenticalTo:nil], @"Should return NO for nil.");
+		NSString* differentObject;
+		for (id anObject in correct) {
+			STAssertTrue([tree containsObjectIdenticalTo:anObject], @"Should return YES");
+			differentObject = [NSString stringWithFormat:@"%@", [anObject description]];
+			STAssertFalse([tree containsObjectIdenticalTo:differentObject], @"Should return NO");
+		}
+		STAssertNoThrow([tree containsObjectIdenticalTo:@"Z"],
+						@"Should not raise an exception.");
+		STAssertFalse([tree containsObjectIdenticalTo:@"Z"], @"Should return NO");
 	}
 }
 
@@ -211,28 +235,6 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	}
 }
 
-- (void) testFindMin {
-	STAssertNoThrow([emptyTree findMin], @"Should not raise an exception.");
-	STAssertNil([emptyTree findMin], @"Should return nil for empty tree.");
-	
-	for (id<CHSearchTree> tree in nonEmptyTrees) {
-		STAssertNoThrow([tree findMin], @"Should not raise an exception.");
-		STAssertNotNil([tree findMin], @"Should not be nil for non-empty tree.");
-		STAssertEqualObjects([tree findMin], @"A", @"Incorrect result.");
-	}
-}
-
-- (void) testFindMax {
-	STAssertNoThrow([emptyTree findMax], @"Should not raise an exception.");
-	STAssertNil([emptyTree findMax], @"Should return nil for empty tree.");
-	
-	for (id<CHSearchTree> tree in nonEmptyTrees) {
-		STAssertNoThrow([tree findMax], @"Should not raise an exception.");
-		STAssertNotNil([tree findMax], @"Should not be nil for non-empty tree.");
-		STAssertEqualObjects([tree findMax], @"E", @"Incorrect result.");
-	}
-}
-
 - (void) testFindObject {
 	STAssertNoThrow([emptyTree findObject:nil], @"Should not raise an exception.");
 	STAssertNil([emptyTree findObject:nil], @"Should return nil for empty tree.");	
@@ -249,6 +251,28 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 						@"Should not raise an exception.");
 		STAssertNil([tree findObject:@"Z"],
 					@"Should return nil for value not in tree");
+	}
+}
+
+- (void) testFirstObject {
+	STAssertNoThrow([emptyTree firstObject], @"Should not raise an exception.");
+	STAssertNil([emptyTree firstObject], @"Should return nil for empty tree.");
+	
+	for (id<CHSearchTree> tree in nonEmptyTrees) {
+		STAssertNoThrow([tree firstObject], @"Should not raise an exception.");
+		STAssertNotNil([tree firstObject], @"Should not be nil for non-empty tree.");
+		STAssertEqualObjects([tree firstObject], @"A", @"Incorrect result.");
+	}
+}
+
+- (void) testLastObject {
+	STAssertNoThrow([emptyTree lastObject], @"Should not raise an exception.");
+	STAssertNil([emptyTree lastObject], @"Should return nil for empty tree.");
+	
+	for (id<CHSearchTree> tree in nonEmptyTrees) {
+		STAssertNoThrow([tree lastObject], @"Should not raise an exception.");
+		STAssertNotNil([tree lastObject], @"Should not be nil for non-empty tree.");
+		STAssertEqualObjects([tree lastObject], @"E", @"Incorrect result.");
 	}
 }
 

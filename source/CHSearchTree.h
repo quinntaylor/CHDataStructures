@@ -72,9 +72,9 @@ typedef enum {
  
  These constants are used primarily in connection with \link #objectEnumeratorWithTraversalOrder: -objectEnumeratorWithTraversalOrder:\endlink for enumerating over objects from a search tree in a specified order.
  
- @todo Modify protocol and subclasses to decide whether to allow duplicates. (This will allow trees to act either as sorted lists or sorted sets.)
- 
- @todo Add -containsObjectIdenticalTo: and -removeObjectIdenticalTo: methods. (Obviously, this makes more sense once duplicates are optionally allowed.)
+ @todo Modify protocol and subclasses to decide whether to allow duplicates. (This would allow trees to act either as sorted lists or sorted sets.) If implemented, add -removeObjectIdenticalTo: as well.
+
+ @todo Add -subsetFromObject:toObject: where either object may be nil to designate the first/last element in the set. Returns a new instance with new nodes pointing to the same object. If an object matches one of the parameters, it is included. (Must non-nil objects  be a member of the set? If the second object is not greater than the first, should it slice elements from both ends?) See http://java.sun.com/j2se/1.5/docs/api/java/util/SortedSet.html for ideas.
  */
 @protocol CHSearchTree <NSObject, NSCoding, NSCopying, NSFastEnumeration>
 
@@ -148,7 +148,7 @@ typedef enum {
 - (NSEnumerator*) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order;
 
 /**
- Determines if the tree contains a given object (or one identical to it). Matches are based on an object's response to the @c isEqual: message.
+ Determines if the tree contains a given object, matched using @c isEqual:.
  
  @param anObject The object to test for membership in the search tree.
  @return @c YES if @a anObject is in the tree, @c NO if it is @c nil or not present.
@@ -156,18 +156,12 @@ typedef enum {
 - (BOOL) containsObject:(id)anObject;
 
 /**
- Returns the maximum object in the tree.
+ Determines if the tree contains a given object, matched using the == operator. The search is still done using the @c isEqual: message, but the final test uses string address equality.
  
- @return The maximum object in the tree, or @c nil if empty.
+ @param anObject The object to test for membership in the search tree.
+ @return @c YES if @a anObject is in the tree, @c NO if it is @c nil or not present.
  */
-- (id) findMax;
-
-/**
- Returns the minimum object in the tree.
- 
- @return The minimum object in the tree, or @c nil if empty.
- */
-- (id) findMin;
+- (BOOL) containsObjectIdenticalTo:(id)anObject;
 
 /**
  Return object for which @c -compare: returns @c NSOrderedSame.
@@ -176,6 +170,20 @@ typedef enum {
  @return The object which matches @a anObject, or @c nil if no match is found.
  */
 - (id) findObject:(id)anObject;
+
+/**
+ Returns the minimum object in the tree.
+ 
+ @return The minimum object in the tree, or @c nil if empty.
+ */
+- (id) firstObject;
+
+/**
+ Returns the maximum object in the tree.
+ 
+ @return The maximum object in the tree, or @c nil if empty.
+ */
+- (id) lastObject;
 
 /**
  Returns an enumerator that accesses each object in the tree in ascending order.
