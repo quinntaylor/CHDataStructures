@@ -24,7 +24,7 @@
 
 - (id) initWithCapacity:(NSUInteger)numItems {
 	if ([super init] == nil) return nil;
-	insertionOrder = [[CHDoublyLinkedList alloc] init];
+	ordering = [[CHDoublyLinkedList alloc] init];
 	objects = [NSMutableSet alloc];
 	if (numItems > 0)
 		[objects initWithCapacity:numItems];
@@ -38,22 +38,22 @@
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super init] == nil) return nil;
 	objects = [[decoder decodeObjectForKey:@"objects"] retain];
-	insertionOrder = [[decoder decodeObjectForKey:@"insertionOrder"] retain];
-	moveToBackOnReinsert = [decoder decodeBoolForKey:@"moveToBackOnReinsert"];
+	ordering = [[decoder decodeObjectForKey:@"ordering"] retain];
+	repeatObjectsShouldMoveToBack = [decoder decodeBoolForKey:@"duplicatesMoveToBack"];
 	return self;
 }
 
 - (void) encodeWithCoder:(NSCoder *)encoder {
 	[encoder encodeObject:objects forKey:@"objects"];
-	[encoder encodeObject:insertionOrder forKey:@"insertionOrder"];
-	[encoder encodeBool:moveToBackOnReinsert forKey:@"moveToBackOnReinsert"];
+	[encoder encodeObject:ordering forKey:@"ordering"];
+	[encoder encodeBool:repeatObjectsShouldMoveToBack forKey:@"duplicatesMoveToBack"];
 }
 
 #pragma mark <NSCopying>
 
 - (id) copyWithZone:(NSZone*)zone {
 	CHLinkedSet *copy = [[CHLinkedSet alloc] init];
-	for (id anObject in insertionOrder)
+	for (id anObject in ordering)
 		[copy addObject:anObject];
 	return copy;
 }
@@ -64,40 +64,59 @@
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len
 {
-	return [insertionOrder countByEnumeratingWithState:state objects:stackbuf count:len];
+	return [ordering countByEnumeratingWithState:state objects:stackbuf count:len];
 }
 
 #pragma mark Insertion Order
 
-- (BOOL) reinsertionChangesOrder {
-	return moveToBackOnReinsert;
+- (BOOL) repeatObjectsMoveToBack {
+	return repeatObjectsShouldMoveToBack;
 }
 
-- (void) setReinsertionChangesOrder:(BOOL)flag {
-	moveToBackOnReinsert = flag;
+- (void) setRepeatObjectsMoveToBack:(BOOL)flag {
+	repeatObjectsShouldMoveToBack = flag;
 }
 
 #pragma mark Adding Objects
 
-/** @bug Not yet implemented */
+// Private method, only to be used by internal methods that insert objects.
+// Adds an object, moving duplicates to the end if repeatObjectsShouldMoveToBack
+- (void) modifyInsertionListWithObject:(id)anObject {
+	if (![objects containsObject:anObject]) {
+		[ordering appendObject:anObject];
+	} else if (repeatObjectsShouldMoveToBack) {
+		[ordering removeObject:anObject];
+		[ordering appendObject:anObject];
+	}
+}
+
 - (void) addObject:(id)anObject {
-	// TODO: Implement
+	[self modifyInsertionListWithObject:anObject];
+	[objects addObject:anObject];
 }
 
-/** @bug Not yet implemented */
 - (void) addObjectsFromArray:(NSArray*)anArray {
-	// TODO: Implement
+	// Remove items NOT present in receiver from insertion ordering first.
+	for (id anObject in anArray) {
+		if (![objects containsObject:anObject])
+			[self modifyInsertionListWithObject:anObject];
+	}
+	[objects addObjectsFromArray:anArray];
 }
 
-/** @bug Not yet implemented */
 - (void) unionSet:(NSSet*)otherSet {
-	// TODO: Implement
+	// Remove items NOT present in receiver from insertion ordering first.
+	for (id anObject in otherSet) {
+		if (![objects containsObject:anObject])
+			[self modifyInsertionListWithObject:anObject];
+	}
+	[objects unionSet:otherSet];
 }
 
 #pragma mark Querying Contents
 
 - (NSArray*) allObjects {
-	return [insertionOrder allObjects];
+	return [ordering allObjects];
 }
 
 - (id) anyObject {
@@ -113,11 +132,16 @@
 }
 
 - (NSString*) description {
-	return [[insertionOrder allObjects] description];
+	return [[ordering allObjects] description];
+}
+
+- (NSString*) debugDescription {
+	return [NSString stringWithFormat:@"objects = %@,\nordering = %@",
+	        [objects description], [[ordering allObjects] description]];
 }
 
 - (id) firstObject {
-	return [insertionOrder firstObject];
+	return [ordering firstObject];
 }
 
 - (BOOL) intersectsSet:(NSSet*)otherSet {
@@ -133,7 +157,7 @@
 }
 
 - (id) lastObject {
-	return [insertionOrder lastObject];
+	return [ordering lastObject];
 }
 
 - (id) member:(id)anObject {
@@ -141,7 +165,7 @@
 }
 
 - (NSEnumerator*) objectEnumerator {
-	return [insertionOrder objectEnumerator];
+	return [ordering objectEnumerator];
 }
 
 - (NSSet*) set {
@@ -150,33 +174,53 @@
 
 #pragma mark Removing Objects
 
-/** @bug Not yet implemented */
 - (void) intersectSet:(NSSet*)otherSet {
-	// TODO: Implement
+	// If there are no objects in common with @otherSet, just remove everything.
+	if (![objects intersectsSet:otherSet]) {
+		[self removeAllObjects];
+	}
+	else {
+		// Remove items NOT present in receiver from insertion ordering first.
+		for (id anObject in otherSet) {
+			if (![objects containsObject:anObject])
+				[ordering removeObject:anObject];
+		}
+		[objects intersectSet:otherSet];
+	}
 }
 
-/** @bug Not yet implemented */
 - (void) minusSet:(NSSet*)otherSet {
-	// TODO: Implement
+	if ([otherSet count] > 0) {
+		// Remove items present in receiver from insertion ordering first.
+		for (id anObject in otherSet) {
+			if ([objects containsObject:anObject])
+				[ordering removeObject:anObject];
+		}
+		[objects minusSet:otherSet];
+	}
 }
 
 - (void) removeAllObjects {
 	[objects removeAllObjects];
-	[insertionOrder removeAllObjects];
+	[ordering removeAllObjects];
 }
 
 - (void) removeFirstObject {
-	[self removeObject:[insertionOrder firstObject]];
+	[self removeObject:[ordering firstObject]];
 }
 
 - (void) removeLastObject {
-	[self removeObject:[insertionOrder lastObject]];
+	// Avoids calling -removeObject: so we optimize removal of the last object.
+	if ([objects count] > 0) {
+		[objects removeObject:[ordering lastObject]];
+		[ordering removeLastObject]; // Much faster than searching for anObject
+	}
 }
 
 - (void) removeObject:(id)anObject {
 	if (anObject != nil) {
 		[objects removeObject:anObject];
-		[insertionOrder removeObject:anObject];
+		[ordering removeObject:anObject];
 	}
 }
 

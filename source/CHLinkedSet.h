@@ -12,20 +12,25 @@
 #import "CHDoublyLinkedList.h"
 
 /**
- A set that maintains order of insertion using a doubly-linked list. Wraps an NSMutableSet and a CHDoublyLinkedList to maintain insertion order. The default is that inserting an object that already exists in the linked set does not affect insertion order, but this is configurable via \link #setReinsertionChangesOrder: -setReinsertionChangesOrder:\endlink so it is possible to remove the least-recently added item.
+ @file CHLinkedSet.h
+ A set that also maintains order of insertion using a doubly-linked list.
+ */
+
+/**
+ A set that also maintains order of insertion using a doubly-linked list. Wraps an NSMutableSet and a CHDoublyLinkedList to maintain insertion order. (A singly-linked list could also be used. This would reduce memory usage, but also makes removing the youngest item expensive.) Similar to Java's <a href="http://java.sun.com/j2se/1.5/docs/api/java/util/LinkedHashSet.html">LinkedHashSet</a>.
  
- Similar to Java's <a href="http://java.sun.com/j2se/1.5/docs/api/java/util/LinkedHashSet.html">LinkedHashSet</a>.
+ The default behavior is that inserting an object that already exists in the linked set does not affect insertion order. However, this is configurable via the \link #setRepeatObjectsMoveToBack: -setRepeatObjectsMoveToBack:\endlink method.
  
- @todo Add ivar/property to allow setting a maximum size, and either reject additions or evict the "oldest" item when the cap is reached?
+ @todo Add ivar/property to allow setting a maximum size, and either reject additions or evict the "oldest" item when the cap is reached? (Perhaps this would be better done by the user.)
  */
 @interface CHLinkedSet : CHLockable {
 	NSMutableSet *objects;
-	CHDoublyLinkedList *insertionOrder;
-	BOOL moveToBackOnReinsert;
+	CHDoublyLinkedList *ordering;
+	BOOL repeatObjectsShouldMoveToBack;
 }
 
 /**
- Initializes a newly allocated set.
+ Initializes a newly allocated linked set.
  
  @return An initialized object.
  
@@ -35,7 +40,7 @@
 - (id) init;
 
 /**
- Initializes a newly allocated set with the objects that are contained in a given array.
+ Initializes a newly allocated linked set with the objects from in a given array.
  
  @param array An array of objects to add to the new set. If the same object appears more than once in @a array, it is represented only once in the returned set. Each object receives a retain message as it is added to the set.
  
@@ -47,7 +52,7 @@
 - (id) initWithArray:(NSArray *)array;
 
 /**
- Initializes a newly allocated set with a given initial capacity. Mutable sets allocate additional memory as needed, so @a numItems simply establishes the object's initial capacity.
+ Initializes a newly allocated linked set with a given initial capacity. Mutable sets allocate additional memory as needed, so @a numItems simply establishes the object's initial capacity.
  
  @param numItems The initial capacity of the set. A value of @c 0 indicates that the default capacity should be used.
  
@@ -126,22 +131,24 @@
 // @{
 
 /**
- Whether adding an object that already exists in the receiver causes that object to become the "youngest" object. The default for a new linked set is @c NO.
+ Whether adding an object that already exists in the receiver causes it to become the "youngest" object. The default for a new linked set is @c NO.
  
- @see setReinsertionChangesOrder:
+ @see setRepeatObjectsMoveToBack:
  */
-- (BOOL) reinsertionChangesOrder;
+- (BOOL) repeatObjectsMoveToBack;
 
 /**
- Set whether adding an object that already exists in the receiver causes that object to become the "youngest" object. The default for a new linked set is @c NO.
+ Set whether adding an object that already exists in the receiver causes it to become the "youngest" object.
  
- @param flag Whether adding an object that already exists in the receiver causes that object to become the "youngest" object.
+ @param flag Whether adding an object that already exists in the receiver will cause that object to become the "youngest" object.
  
- @attention If @a flag is set to @c YES, there will be additional overhead to search the linked list and move the object to the end whenever a duplicate object is added.
+ @attention Setting @a flag to @c YES will incur additional overhead (for searching the linked list and moving the object to the end) whenever a duplicate object is added.
  
- @see reinsertionChangesOrder
+ @note Changing whether reinsertion changes ordering does not affect the order of object that have already been added, only for subsequent additions. If desired, this value can safely be changed at any time to toggle the behavior.
+  
+ @see repeatObjectsMoveToBack
  */
-- (void) setReinsertionChangesOrder:(BOOL)flag;
+- (void) setRepeatObjectsMoveToBack:(BOOL)flag;
 
 // @}
 #pragma mark Adding Objects
@@ -173,9 +180,11 @@
 - (void) addObjectsFromArray:(NSArray*)anArray;
 
 /**
- Adds to the receiver each object in another given set that is not yet present in the receiver. If all members of @a otherSet are already present in the receiver, and if #reinsertionChangesOrder returns @c NO, there is no effect on the receiver. In no case is @a otherSet direclty modified.
+ Adds to the receiver each object in another given set that is not yet present in the receiver. If all members of @a otherSet are already present in the receiver, and if #repeatObjectsMoveToBack returns @c NO, there is no effect on the receiver. In no case is @a otherSet direclty modified.
  
  @param otherSet The set of objects to add to the receiver.
+ 
+ @attention The insertion order of objects from @a otherSet is undefined.
  
  @see addObject:
  @see addObjectsFromArray:
@@ -229,7 +238,7 @@
 - (NSUInteger) count;
 
 /**
- Returns a string that represents the contents of the receiver, formatted as a property list. The objects are represented in the order in which they were (re)inserted, depending on the value returned by #reinsertionChangesOrder.
+ Returns a string that represents the contents of the receiver, formatted as a property list. The objects are represented in the order in which they were (re)inserted, depending on the value returned by #repeatObjectsMoveToBack.
  
  @return A string that represents the contents of the receiver, formatted as a property list.
  
@@ -243,7 +252,7 @@
  
  @return The "oldest" member of the receiver.
  
- If #reinsertionChangesOrder returns @c YES, this is the least-recently (re)inserted object, otherwise
+ @attention If #repeatObjectsMoveToBack returns @c YES, this is the least recently (re)inserted object, otherwise it is the first-inserted member of the receiver
  
  @see addObject:
  @see removeFirstObject
@@ -283,6 +292,8 @@
 /**
  Returns the "youngest" member of the receiver.
 
+ @attention If #repeatObjectsMoveToBack returns @c YES, this is the most recently (re)inserted object, otherwise it is the last object inserted that did not already exist in the receiver.
+ 
  @see addObject:
  @see removeLastObject
  */
@@ -315,9 +326,9 @@
 - (NSEnumerator*) objectEnumerator;
 
 /**
- Returns an immutable copy of the underlying set, without maintaining insertion order.
+ Returns an (autoreleased) immutable copy of the underlying set, without maintaining insertion order.
 
- @return An immutable copy of the underlying set.
+ @return An (autoreleased) immutable copy of the underlying set.
  
  @see allObjects
  */
