@@ -90,6 +90,8 @@ HIDDEN extern BOOL kCHGarbageCollectionDisabled;
  Calls #debugDescriptionForNode: to get the representation for each node in the tree. Sentinel leaf nodes are represented as nil children.
  
  @note Using @c print-object or @c po within GDB automatically calls the @c -debugDescription method of the specified object.
+ 
+ @see debugDescriptionForNode:
  */
 - (NSString*) debugDescription;
 
@@ -113,6 +115,8 @@ HIDDEN extern BOOL kCHGarbageCollectionDisabled;
  Calls #dotGraphStringForNode: to get the representation for each node in the tree. Sentinel leaf nodes are represented by a small black dot.
  
  @return A graph description for the receiver tree in the DOT language.
+ 
+ @see dotGraphStringForNode:
  */
 - (NSString*) dotGraphString;
 

@@ -14,7 +14,9 @@
  @file CHAbstractBinarySearchTree_Internal.h
  Contains \#defines for performing various traversals of binary search trees.
  
- This file is a private header that is only used by internal implementations, and is not included in the the compiled framework. The memory (re)allocated for stacks and queues is obtained using NSScannedOption because the nodes which may be placed in a stack or queue are known to the garbage collector. Since a stack or queue is only used in connection with a tree that is active (usually during insertion, removal or iteration) this should not leak. The macros and variables are internal and/or private, we assume that the stack or queue will not outlive the underlying nodes, but this behavior may not be threadsafe.
+ This file is a private header that is only used by internal implementations, and is not included in the the compiled framework. The macros and variables are to be considered private and unsupported.
+ 
+ Memory for stacks and queues is (re)allocated using NSScannedOption, since (if garbage collection is enabled) the nodes which may be placed in a stack or queue are known to the garbage collector. (If garbage collection is not enabled, the macros exlicitly free the allocated memory.) We assume that a stack or queue will not outlive the nodes it contains, since they are only used in connection with an active tree (usually during insertion, removal or iteration). An enumerator may contain a stack or queue, but also retains the underlying collection, so correct retain-release calls will not leak.
  */
 
 #pragma mark Stack macros
@@ -52,6 +54,10 @@
 
 
 #pragma mark Queue macros
+
+#define CHBinaryTreeQueue_DECLARE() \
+CHBinaryTreeNode** queue; \
+NSUInteger queueCapacity, queueHead, queueTail
 
 #define CHBinaryTreeQueue_INIT() { \
 	queueCapacity = 128; \

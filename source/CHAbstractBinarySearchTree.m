@@ -80,9 +80,11 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 	unsigned long mutationCount; /**< Stores the collection's initial mutation. */
 	unsigned long *mutationPtr; /**< Pointer for checking changes in mutation. */
 	
-@private // Pointers and counters used for various tree traveral orderings.
-	CHBinaryTreeNode **stack, **queue;
-	NSUInteger stackCapacity, stackSize, queueCapacity, queueHead, queueTail;
+@private
+	// Pointers and counters that are used for various tree traveral orderings.
+	CHBinaryTreeStack_DECLARE();
+	CHBinaryTreeQueue_DECLARE();
+	// These macros are defined in CHAbstractBinarySearchTree_Internal.h
 }
 
 /**
