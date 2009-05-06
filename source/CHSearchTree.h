@@ -98,7 +98,7 @@ typedef enum {
 /**
  Initialize a search tree with the contents of an array. Objects are added to the tree in the order they occur in the array.
  
- @param anArray An array containing object with which to populate a new tree.
+ @param anArray An array containing objects with which to populate a new tree.
  */
 - (id) initWithArray:(NSArray*)anArray;
 
@@ -111,6 +111,8 @@ typedef enum {
  
  @param anObject The object to add to the search tree.
  @throw NSInvalidArgumentException If @a anObject is @c nil.
+ 
+ @see addObjectsFromArray:
  */
 - (void) addObject:(id)anObject;
 
@@ -118,6 +120,8 @@ typedef enum {
  Adds the objects in a given array to the tree. Ordering is based on an object's response to the @c -compare: message. Since no duplicates are allowed, if the tree already contains an object in the array for which a @c -compare: message returns @c NSOrderedSame, that object is released and replaced by the object from the array.
  
  @param anArray An array of objects to add to the tree.
+
+ @see addObject:
  */
 - (void) addObjectsFromArray:(NSArray*)anArray;
 
@@ -131,9 +135,10 @@ typedef enum {
  
  @return An array containing the objects in this tree. If the tree is empty, the array is also empty.
  
- @see anyObject
  @see allObjectsWithTraversalOrder:
+ @see anyObject
  @see objectEnumerator
+ @see reverseObjectEnumerator
  */
 - (NSArray*) allObjects;
 
@@ -145,7 +150,7 @@ typedef enum {
 
  @see allObjects
  @see objectEnumeratorWithTraversalOrder:
- @see reverseObjectEnumerator:
+ @see reverseObjectEnumerator
  */
 - (NSArray*) allObjectsWithTraversalOrder:(CHTraversalOrder)order;
 
@@ -170,6 +175,9 @@ typedef enum {
  
  @param anObject The object to test for membership in the search tree.
  @return @c YES if @a anObject is in the tree, @c NO if it is @c nil or not present.
+ 
+ @see containsObjectIdenticalTo:
+ @see findObject:
  */
 - (BOOL) containsObject:(id)anObject;
 
@@ -178,6 +186,9 @@ typedef enum {
  
  @param anObject The object to test for membership in the search tree.
  @return @c YES if @a anObject is in the tree, @c NO if it is @c nil or not present.
+ 
+ @see containsObject
+ @see findObject:
  */
 - (BOOL) containsObjectIdenticalTo:(id)anObject;
 
@@ -186,6 +197,9 @@ typedef enum {
  
  @param anObject The object to be matched and located in the tree.
  @return The object which matches @a anObject, or @c nil if no match is found.
+ 
+ @see containsObject:
+ @see containsObjectIdenticalTo:
  */
 - (id) findObject:(id)anObject;
 
@@ -233,6 +247,7 @@ typedef enum {
  @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
  
  @see allObjectsWithTraversalOrder:
+ @see countByEnumeratingWithState:objects:count:
  @see objectEnumerator
  @see reverseObjectEnumerator
  */
@@ -263,11 +278,15 @@ typedef enum {
  @param anObject The object to be removed from the tree.
  
  If the tree is empty, @a anObject is @c nil, or no object matching @a anObject is found, there is no effect, aside from the possible overhead of searching the contents.
+ 
+ @see removeAllObjects
  */
 - (void) removeObject:(id)anObject;
 
 /**
  Remove all objects from the tree; if it is already empty, there is no effect.
+
+ @see removeObject:
  */
 - (void) removeAllObjects;
 
@@ -282,6 +301,7 @@ typedef enum {
  @param decoder A keyed unarchiver object.
  
  @see NSCoding protocol
+ @see encodeWithCoder:
  */
 - (id) initWithCoder:(NSCoder *)decoder;
 
@@ -291,6 +311,7 @@ typedef enum {
  @param encoder A keyed archiver object.
  
  @see NSCoding protocol
+ @see initWithCoder:
  */
 - (void) encodeWithCoder:(NSCoder *)encoder;
 
@@ -321,7 +342,11 @@ typedef enum {
  @param len The maximum number of objects that may be stored in @a stackbuf.
  @return The number of objects in @c state->itemsPtr that may be iterated over, or @c 0 when the iteration is finished.
  
+ @see objectEnumerator
+ @see objectEnumeratorWithTraversalOrder:
+ 
  @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
+ 
  @see NSFastEnumeration protocol
  */
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
