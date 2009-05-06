@@ -25,7 +25,7 @@
 <body>
 <div align="center">
 <h1>CHDataStructures.framework</h1>
-<h2>Version 1.2 &mdash; 7 April 2009</h2>
+<h2>Version 1.2.1 &mdash; 6 May 2009</h2>
 <h4><a href="http://cocoaheads.byu.edu/code/CHDataStructures">http://cocoaheads.byu.edu/code/CHDataStructures</a></h4>
 <h4>&copy; 2008&ndash;2009 <a href="http://homepage.mac.com/quinntaylor/">Quinn Taylor</a> &mdash; BYU CocoaHeads<br />
 &copy; 2002 <a href="http://www.phillipmorelock.com/">Phillip Morelock</a> &mdash; Los Angeles, CA</h4>
@@ -57,12 +57,11 @@
 <p>The framework is a directory called <code>CHDataStructures.framework</code>. When building from source, compile the All target in the Release configuration, which produces a disk image containing the framework. You can either copy the framework directory to <code>/Library/Frameworks/</code> for all applications, or bundle it inside your own application. (For details, consult the <a href="http://developer.apple.com/documentation/MacOSX/Conceptual/BPFrameworks/Tasks/IncludingFrameworks.html">Framework Programming Guide</a>.)</p>
 <p>To use code from the framework, simply <code>#import &lt;CHDataStructures/CHDataStructures.h&gt;</code> where necessary. This will import all the public headers in the framework, just as happens with <code>#import &lt;Cocoa/Cocoa.h&gt;</code>. If you want to use only a specific subset of functionality, replace the name of the .h file with the one you want to use. (Use one <code>#import</code> for each header file.)</p>
 
-<h2>Known Issues</h2>
-<p>Let's just say it: no software is perfect. It would be foolish (and a lie) to claim that this framework is flawless. There are several things that could be improved, and admitting you have a problem is the first step....</p>
-<ul>
-<li>The <code>-[CHRedBlackTree removeObject:]</code> method is reeeeaaaaaly slow. You may notice that the time complexity increases exponentially, not linearly. It turns out that implementing a non-recursive remove for Red-Black trees is non-trivial, and the current solution works correctly but needs work. (For now, I suggest using CHAVLTree or CHAnderssonTree instead.)</li>
-<li>I'd really like to make all the binary search trees configurable to store duplicates if desired (sorted lists, not just sorted sets).</li>
-</ul>
+<h2>Documentation</h2>
+<p>Documentation is auto-generated after each Subversion commit, and is available online here: <a href="http://dysart.cs.byu.edu/CHDataStructures/">http://dysart.cs.byu.edu/CHDataStructures/</a>
+
+<h2>Future Improvements</h2>
+<p>Let's just say it: no software is perfect. It would be foolish (and a lie) to claim that this framework is flawless, or even complete. There are several things that could be improved, and admitting you have a problem is the first step.... Accordingly, the online documentation includes lists of <a href="http://dysart.cs.byu.edu/CHDataStructures/bug.html">known bugs</a> and <a href="http://dysart.cs.byu.edu/CHDataStructures/todo.html">wish list items</a> that are documented in the code.</p>
 
 <p>Please know that it is not my intent to leave the hard things "as an exercise to the reader." (Believe me, writing a generic, iterative, state-saving tree traversal enumerator was no walk in the park!) However, I would love to draw on the talents of others who can provide solutions which currently evade me, or which I haven't had time to implement yet. If you have ideas (or even better, a fix) for one of these items, <a href="mailto:quinntaylor@mac.com?subject=CHDataStructures.framework">email me</a> and we'll talk. Thanks!</p>
 
