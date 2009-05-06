@@ -44,6 +44,8 @@
  
  (See <a href="http://sims.berkeley.edu/~aragon/pubs/rst89.pdf">PDF original</a>
  or <a href="http://www-tcs.cs.uni-sb.de/Papers/rst.ps">PostScript revision</a>)
+ 
+ @todo Examine performance issues (treaps are often the slowest balanced tree).
  */
 @interface CHTreap : CHAbstractBinarySearchTree
 
