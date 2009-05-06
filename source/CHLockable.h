@@ -30,7 +30,7 @@
 // @{
 
 /**
- Attempts to acquire a lock and immediately returns a Boolean that indicates whether the attempt was successful.
+ Attempts to acquire a lock and immediately returns whether the attempt was successful.
  
  @return @c YES if the lock was acquired, otherwise @c NO.
  
@@ -49,7 +49,7 @@
 - (void) lock;
 
 /**
- Attempts to acquire a lock before a given time and returns a Boolean indicating whether the attempt was successful. The thread is blocked until the receiver acquires the lock or @a limit is reached.
+ Attempts to acquire a lock before a given time and returns whether the attempt was successful. The thread is blocked until the receiver acquires the lock or @a limit is reached.
  
  @param limit The time limit for attempting to acquire a lock.
  @return @c YES if the lock was acquired before @a limit, otherwise @c NO.
