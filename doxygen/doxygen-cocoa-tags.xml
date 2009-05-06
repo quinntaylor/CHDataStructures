@@ -68,6 +68,10 @@
   <compound kind="class">
     <name>NSException</name>
     <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSException_Class/Reference/Reference.html</filename>
+    <member kind="function">
+      <name>raise:format:</name>
+      <anchor>//apple_ref/occ/clm/NSException/raise:format:</anchor>
+    </member>
   </compound>
   <compound kind="protocol">
     <name>NSFastEnumeration</name>

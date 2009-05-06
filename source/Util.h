@@ -27,12 +27,15 @@
 /**
  Convenience function for raising an exception for an invalid range (index).
  
+ Currently, there is no support for calling this function from a C function.
+ 
  @param aClass The class object for the originator of the exception. Callers should pass the result of <code>[self class]</code> for this parameter.
  @param method The method selector where the problem originated. Callers should pass @c _cmd for this parameter.
  @param index The offending index passed to the receiver.
  @param elements The number of elements present in the receiver.
+ @throw NSRangeException
  
- Currently, there is no support for calling this function from a C function.
+ @see \link NSException#raise:format: +[NSException raise:format:]\endlink
  */
 extern void CHIndexOutOfRangeException(Class aClass, SEL method,
                                        NSUInteger index, NSUInteger elements);
@@ -40,41 +43,53 @@ extern void CHIndexOutOfRangeException(Class aClass, SEL method,
 /**
  Convenience function for raising an exception on an invalid argument.
  
+ Currently, there is no support for calling this function from a C function.
+ 
  @param aClass The class object for the originator of the exception. Callers should pass the result of <code>[self class]</code> for this parameter.
  @param method The method selector where the problem originated. Callers should pass @c _cmd for this parameter.
  @param str An NSString describing the offending invalid argument.
+ @throw NSInternalInconsistencyException
+ 
+ @see \link NSException#raise:format: +[NSException raise:format:]\endlink
  */
 extern void CHInvalidArgumentException(Class aClass, SEL method, NSString *str);
 
 /**
  Convenience function for raising an exception on an invalid nil object argument.
  
- @param aClass The class object for the originator of the exception. Callers should pass the result of <code>[self class]</code> for this parameter.
- @param method The method selector where the problem originated. Callers should pass @c _cmd for this parameter.
- 
  Currently, there is no support for calling this function from a C function.
  
- @see CHInvalidArgumentException
+ @param aClass The class object for the originator of the exception. Callers should pass the result of <code>[self class]</code> for this parameter.
+ @param method The method selector where the problem originated. Callers should pass @c _cmd for this parameter.
+ @throw NSInternalInconsistencyException
+ 
+ @see CHInvalidArgumentException()
  */
 extern void CHNilArgumentException(Class aClass, SEL method);
 
 /**
  Convenience function for raising an exception when a collection is mutated.
  
+ Currently, there is no support for calling this function from a C function.
+ 
  @param aClass The class object for the originator of the exception. Callers should pass the result of <code>[self class]</code> for this parameter.
  @param method The method selector where the problem originated. Callers should pass @c _cmd for this parameter.
+ @throw NSGenericException
  
- Currently, there is no support for calling this function from a C function.
+ @see \link NSException#raise:format: +[NSException raise:format:]\endlink
  */
 extern void CHMutatedCollectionException(Class aClass, SEL method);
 
 /**
  Convenience function for raising an exception for un-implemented functionality.
  
+ Currently, there is no support for calling this function from a C function.
+ 
  @param aClass The class object for the originator of the exception. Callers should pass the result of <code>[self class]</code> for this parameter.
  @param method The method selector where the problem originated. Callers should pass @c _cmd for this parameter.
+ @throw NSInternalInconsistencyException
  
- Currently, there is no support for calling this function from a C function.
+ @see \link NSException#raise:format: +[NSException raise:format:]\endlink
  */
 extern void CHUnsupportedOperationException(Class aClass, SEL method);
 
@@ -95,6 +110,8 @@ extern void CHQuietLog(NSString *format, ...);
  @param ... A comma-separated list of arguments to substitute into @a format.
  
  This is defined as a compiler macro so it can automatically fill in the file name and line number where the call was made. After printing these values in brackets, this macro calls #CHQuietLog with @a format and any other arguments supplied afterward.
+ 
+ @see CHQuietLog
  */
 #ifndef CHLocationLog
 #define CHLocationLog(format,...) \
