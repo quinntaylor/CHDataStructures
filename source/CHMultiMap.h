@@ -32,7 +32,7 @@
 @interface CHMultiMap : CHLockable <NSCoding, NSCopying>
 {
 	NSMutableDictionary *dictionary; /**< Dictionary for key-value entries. */
-	NSUInteger count; /**< The number of objects currently in the multimap. */
+	NSUInteger objectCount; /**< Number of objects currently in the multimap. */
 	unsigned long mutations; /**< Used to track mutations for enumeration. */
 }
 
@@ -111,7 +111,7 @@
 /** @name <NSFastEnumeration> */
 // @{
 
- /**
+/**
  Called within <code>@b for (type variable @b in collection)</code> constructs. Returns by reference a C array of objects over which the sender should iterate, and as the return value the number of objects in the array.
  
  For this class, as is the case with NSDictionary, this method enumerates only the keys. The value(s) for each key may be found using the \link #objectsForKey: -objectsForKey:\endlink method, which returns an NSSet with 1 or more objects associated with a given key, provided the key is in the multimap.
@@ -122,7 +122,10 @@
  @return The number of objects in @c state->itemsPtr that may be iterated over, or @c 0 when the iteration is finished.
  
  @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
+ 
  @see NSFastEnumeration protocol
+ @see allKeys
+ @see keyEnumerator
  */
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
@@ -198,6 +201,8 @@
  
  @see allObjects
  @see count
+ @see keyEnumerator
+ @see countByEnumeratingWithState:objects:count:
  */
 - (NSArray*) allKeys;
 
@@ -270,6 +275,7 @@
  @warning If you need to modify the entries concurrently, use #allKeys to create a "snapshot" of the dictionary's keys and work from this snapshot to modify the entries.
  
  @see allKeys
+ @see countByEnumeratingWithState:objects:count:
  */
 - (NSEnumerator*) keyEnumerator;
 

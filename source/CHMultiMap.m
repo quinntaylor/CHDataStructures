@@ -38,7 +38,7 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 - (id) init {
 	if ([super init] == nil) return nil;
 	dictionary = [[NSMutableDictionary alloc] init];
-	count = 0;
+	objectCount = 0;
 	mutations = 0;
 	return self;
 }
@@ -52,7 +52,7 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 	for (id key in keyArray) {
 		objectSet = createMutableSetFromObject([objects nextObject]);
 		[dictionary setObject:objectSet forKey:key];
-		count += [objectSet count];
+		objectCount += [objectSet count];
 	}
 	return self;
 }
@@ -75,7 +75,7 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 		if ((aKey = va_arg(argumentList, id)) == nil)
 			CHInvalidArgumentException([self class], _cmd, @"Invalid nil key.");
 		[dictionary setObject:objectSet forKey:aKey];
-		count += [objectSet count];
+		objectCount += [objectSet count];
 	} while (objectSet = createMutableSetFromObject(va_arg(argumentList, id)));
 	va_end(argumentList);
 	return self;
@@ -86,13 +86,13 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 - (id) initWithCoder:(NSCoder*)decoder{
 	if ([self init] == nil) return nil;
 	dictionary = [[decoder decodeObjectForKey:@"dictionary"] retain];
-	count = [decoder decodeIntegerForKey:@"count"];
+	objectCount = [decoder decodeIntegerForKey:@"objectCount"];
 	return self;
 }
 
 - (void) encodeWithCoder:(NSCoder*)encoder {
 	[encoder encodeObject:dictionary forKey:@"dictionary"];
-	[encoder encodeInteger:count forKey:@"count"];
+	[encoder encodeInteger:objectCount forKey:@"objectCount"];
 }
 
 #pragma mark <NSCopying>
@@ -127,9 +127,9 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 	if (objects == nil)
 		[dictionary setObject:(objects = [NSMutableSet set]) forKey:aKey];
 	else
-		count -= [objects count];
+		objectCount -= [objects count];
 	[objects addObject:anObject];
-	count += [objects count];
+	objectCount += [objects count];
 	++mutations;
 }
 
@@ -138,14 +138,14 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 	if (objects == nil)
 		[dictionary setObject:(objects = [NSMutableSet set]) forKey:aKey];
 	else
-		count -= [objects count];
+		objectCount -= [objects count];
 	[objects unionSet:objectSet];
-	count += [objects count];
+	objectCount += [objects count];
 	++mutations;
 }
 
 - (void) setObjects:(NSSet*)objectSet forKey:(id)aKey {	
-	count += ([objectSet count] - [[dictionary objectForKey:aKey] count]);
+	objectCount += ([objectSet count] - [[dictionary objectForKey:aKey] count]);
 	[dictionary setObject:[NSMutableSet setWithSet:objectSet] forKey:aKey];
 	++mutations;
 }
@@ -170,7 +170,7 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 }
 
 - (NSUInteger) countForAllKeys {
-	return count;
+	return objectCount;
 }
 
 - (NSUInteger) countForKey:(id)aKey {
@@ -213,7 +213,7 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 #pragma mark Removing Objects
 
 - (void) removeAllObjects {
-	count = 0;
+	objectCount = 0;
 	[dictionary removeAllObjects];
 	++mutations;
 }
@@ -222,7 +222,7 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 	NSMutableSet *objects = [dictionary objectForKey:aKey];
 	if ([objects containsObject:anObject]) {
 		[objects removeObject:anObject];
-		--count;
+		--objectCount;
 		if ([objects count] == 0)
 			[dictionary removeObjectForKey:aKey];
 	}
@@ -230,7 +230,7 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 }
 
 - (void) removeObjectsForKey:(id)aKey {
-	count -= [[dictionary objectForKey:aKey] count];
+	objectCount -= [[dictionary objectForKey:aKey] count];
 	[dictionary removeObjectForKey:aKey];
 	++mutations;
 }
