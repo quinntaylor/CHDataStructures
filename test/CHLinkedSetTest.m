@@ -18,6 +18,14 @@
 
 @implementation CHLinkedSetTest
 
+- (void) setUp {
+	
+}
+
+- (void) tearDown {
+	
+}
+
 #pragma mark Initialization
 
 - (void) testInit {
