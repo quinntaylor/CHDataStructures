@@ -51,10 +51,6 @@
 /**
  @mainpage Overview
 
- @todo Consider implementing "versionable" <a href="http://en.wikipedia.org/wiki/Persistent_data_structure">persistent data structures</a>, wherein concurrent enumeration and modification are supported via tagged versions of the structure. (An example of this for red-black trees is an exercise for the reader in "Introduction to Algorithms, 2nd Edition" (ISBN: <a href="http://isbn.nu/9780262032933">9780262032933</a>) in problem 13.1, pages 294-295.) The best candidates are probably queues, heaps, and search trees (sorted sets).
- 
- @todo Examine feasability and utility of implementing key-value observing/coding/binding.
- 
  <strong>CHDataStructures.framework</strong> <http://cocoaheads.byu.edu/code/CHDataStructures> is an open-source library of standard data structures which can be used in any Objective-C program, for educational purposes or as a foundation for other data structures to build on. Data structures in this framework adopt Objective-C protocols that define the functionality of and API for interacting with any implementation thereof, regardless of its internals.
  
  Apple's extensive and flexible <a href="http://developer.apple.com/cocoa/">Cocoa frameworks</a> include several collections classes that are highly optimized and amenable to many situations. However, sometimes an honest-to-goodness stack, queue, linked list, tree, etc. can greatly improve the clarity and comprehensibility of code. This framework provides Objective-C implementations of common data structures which are currently beyond the purview of Cocoa.
@@ -86,4 +82,10 @@
  If you would like to contribute to the library or let me know that you use it, please <a href="mailto:quinntaylor@mac.com?subject=CHDataStructures.framework">email me</a>. I am very receptive to help, criticism, flames, whatever.
  
    &mdash; <a href="http://homepage.mac.com/quinntaylor/">Quinn Taylor</a>
+ 
+ <hr>
+ 
+ @todo Consider implementing "versionable" <a href="http://en.wikipedia.org/wiki/Persistent_data_structure">persistent data structures</a>, wherein concurrent enumeration and modification are supported via tagged versions of the structure. (An example of this for red-black trees is an exercise for the reader in "Introduction to Algorithms, 2nd Edition" (ISBN: <a href="http://isbn.nu/9780262032933">9780262032933</a>) in problem 13.1, pages 294-295.) The best candidates are probably queues, heaps, and search trees (sorted sets).
+ 
+ @todo Examine feasability and utility of implementing key-value observing/coding/binding.
  */
