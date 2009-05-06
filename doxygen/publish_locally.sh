@@ -2,5 +2,5 @@
 
 cd ..
 doxygen doxygen/Doxyfile
-mkdir -p /Library/WebServer/Documents/dsf
-cp -R docs/ /Library/WebServer/Documents/dsf/
+mkdir -p /Library/WebServer/Documents/CHDataStructures
+cp -R docs/ /Library/WebServer/Documents/CHDataStructures/
