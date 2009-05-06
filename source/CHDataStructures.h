@@ -88,5 +88,7 @@
  
  @todo Consider implementing "versionable" <a href="http://en.wikipedia.org/wiki/Persistent_data_structure">persistent data structures</a>, wherein concurrent enumeration and modification are supported via tagged versions of the structure. (An example of this for red-black trees is an exercise for the reader in "Introduction to Algorithms, 2nd Edition" (ISBN: <a href="http://isbn.nu/9780262032933">9780262032933</a>) in problem 13.1, pages 294-295.) The best candidates are probably queues, heaps, and search trees (sorted sets).
  
+ @todo Consider adding a linked set (similar to Java's <a href="http://java.sun.com/j2se/1.5/docs/api/java/util/LinkedHashSet.html">LinkedHashSet</a>) which wraps an NSMutableSet and a linked list to maintain insertion order. Calling @c -allObjects returns the object in the order they were inserted. Default to re-insertion not affecting insertion order, but allow user to change this (despite the higher overhead) so it is possible to remove the least-recently added item. Maybe allow for limiting the set's size.
+ 
  @todo Examine feasability and utility of implementing key-value observing/coding/binding.
  */

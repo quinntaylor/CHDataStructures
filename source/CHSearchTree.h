@@ -73,19 +73,19 @@ typedef enum {
  
  @todo Modify protocol and subclasses to decide whether to allow duplicates. (This would allow trees to act either as sorted lists or sorted sets.) If implemented, add @c -removeObjectIdenticalTo: as well.
 
- @todo Add @c -subsetFromObject:toObject: where either object may be nil to designate the first/last element in the set. Returns a new instance with new nodes pointing to the same object. If an object matches one of the parameters, it is included. (If the second object is not greater than the first, should the result include elements sliced from both ends?) See http://java.sun.com/j2se/1.5/docs/api/java/util/SortedSet.html for ideas.
+ @todo Add <code>-subsetFromObject:toObject:</code> which returns a new subset instance with new nodes pointing to the same objects. If an object matches one of the parameters, it is included. (Neither parameter must be a member of the set. Either parameter may be nil to designate the first/last element in the set. If the first object is greater than the second, should the result include elements sliced from both ends?) See http://java.sun.com/j2se/1.5/docs/api/java/util/SortedSet.html for ideas.
  
- @todo Consider refactoring most of this protocol to a new CHSortedSet protocol? While search trees are the natural choice for sorted sets, other implementations are possible (including sorted linear hash sets <http://www.concentric.net/~Ttwang/tech/sorthash.htm>) and might be fun to play around with.
+ @todo Refactor most of this protocol to a new CHSortedSet protocol. While search trees are the natural choice for sorted sets, other implementations are possible and might be interesting to implement, including sorted linear hash sets <http://www.concentric.net/~Ttwang/tech/sorthash.htm> or even sorted lists <http://code.activestate.com/recipes/230113/>.
  
- @todo Consider adding more operations similar to those supported by NSSet and NSMutableSet, such as:
-	 - @c - (NSArray*) allObjectsFilteredUsingPredicate:
-	 - @c - (void) filterUsingPredicate:
-	 - @c - (BOOL) isEqualToSortedSet:
-	 - @c - (BOOL) isSubsetOfSortedSet:
-	 - @c - (BOOL) intersectsSet:
-	 - @c - (void) intersectSet:
-	 - @c - (void) minusSet:
-	 - @c - (void) unionSet:
+ @todo After creating CHSortedSet, add more operations similar to those supported by NSSet and NSMutableSet, such as:
+	 - <code>- (NSArray*) allObjectsFilteredUsingPredicate:</code>
+	 - <code>- (void) filterUsingPredicate:</code>
+	 - <code>- (BOOL) isEqualToSortedSet:</code>
+	 - <code>- (BOOL) isSubsetOfSortedSet:</code>
+	 - <code>- (BOOL) intersectsSet:</code>
+	 - <code>- (void) intersectSet:</code>
+	 - <code>- (void) minusSet:</code>
+	 - <code>- (void) unionSet:</code>
  */
 @protocol CHSearchTree <NSObject, NSCoding, NSCopying, NSFastEnumeration>
 
