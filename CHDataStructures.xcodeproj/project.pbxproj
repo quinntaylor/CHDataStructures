@@ -103,6 +103,9 @@
 		E48BF9730EE7A2010004D5E6 /* CHMultiMap.m in Sources */ = {isa = PBXBuildFile; fileRef = E48BF9720EE7A2010004D5E6 /* CHMultiMap.m */; };
 		E48BFA850EE842CF0004D5E6 /* CHMultiMapTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E48BFA840EE842CF0004D5E6 /* CHMultiMapTest.m */; };
 		E48BFBB00EE858F40004D5E6 /* CHHeapTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D18220E9452BB007F39D8 /* CHHeapTest.m */; };
+		E49BE2830FB21058002904AB /* CHLinkedSet.h in Headers */ = {isa = PBXBuildFile; fileRef = E49BE2810FB21058002904AB /* CHLinkedSet.h */; };
+		E49BE2840FB21058002904AB /* CHLinkedSet.m in Sources */ = {isa = PBXBuildFile; fileRef = E49BE2820FB21058002904AB /* CHLinkedSet.m */; };
+		E49BE3DC0FB230D4002904AB /* CHLinkedSetTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E49BE3DB0FB230D4002904AB /* CHLinkedSetTest.m */; };
 		E4A720C60EA78DCE00E0AC21 /* CHAbstractListCollectionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A720C50EA78DCE00E0AC21 /* CHAbstractListCollectionTest.m */; };
 		E4A720CB0EA78DFB00E0AC21 /* CHAbstractMutableArrayCollectionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A720CA0EA78DFB00E0AC21 /* CHAbstractMutableArrayCollectionTest.m */; };
 		E4A721A50EA7AED700E0AC21 /* CHDataStructures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* CHDataStructures.framework */; };
@@ -282,6 +285,9 @@
 		E48BF92E0EE79AAE0004D5E6 /* CHMultiMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHMultiMap.h; path = source/CHMultiMap.h; sourceTree = "<group>"; };
 		E48BF9720EE7A2010004D5E6 /* CHMultiMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHMultiMap.m; path = source/CHMultiMap.m; sourceTree = "<group>"; };
 		E48BFA840EE842CF0004D5E6 /* CHMultiMapTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHMultiMapTest.m; path = test/CHMultiMapTest.m; sourceTree = "<group>"; };
+		E49BE2810FB21058002904AB /* CHLinkedSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHLinkedSet.h; path = source/CHLinkedSet.h; sourceTree = "<group>"; };
+		E49BE2820FB21058002904AB /* CHLinkedSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHLinkedSet.m; path = source/CHLinkedSet.m; sourceTree = "<group>"; };
+		E49BE3DB0FB230D4002904AB /* CHLinkedSetTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHLinkedSetTest.m; path = test/CHLinkedSetTest.m; sourceTree = "<group>"; };
 		E4A720C50EA78DCE00E0AC21 /* CHAbstractListCollectionTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHAbstractListCollectionTest.m; path = test/CHAbstractListCollectionTest.m; sourceTree = "<group>"; };
 		E4A720CA0EA78DFB00E0AC21 /* CHAbstractMutableArrayCollectionTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHAbstractMutableArrayCollectionTest.m; path = test/CHAbstractMutableArrayCollectionTest.m; sourceTree = "<group>"; };
 		E4ADBB060E88174200B570BC /* CHMutableArrayHeap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHMutableArrayHeap.h; path = source/CHMutableArrayHeap.h; sourceTree = "<group>"; };
@@ -425,6 +431,8 @@
 				E4D9413F0F93C147001BAE05 /* CHCircularBufferStack.m */,
 				E4ADBB1E0E88174200B570BC /* CHDoublyLinkedList.h */,
 				E4ADBB1F0E88174200B570BC /* CHDoublyLinkedList.m */,
+				E49BE2810FB21058002904AB /* CHLinkedSet.h */,
+				E49BE2820FB21058002904AB /* CHLinkedSet.m */,
 				E40D184A0E945580007F39D8 /* CHListDeque.h */,
 				E40D184B0E945580007F39D8 /* CHListDeque.m */,
 				E4ADBB130E88174200B570BC /* CHListQueue.h */,
@@ -484,6 +492,7 @@
 				E4FD52CC0ECA8589006D9FF8 /* CHDequeTest.m */,
 				E40D18220E9452BB007F39D8 /* CHHeapTest.m */,
 				E4D499690E93CD1300434CBA /* CHLinkedListTest.m */,
+				E49BE3DB0FB230D4002904AB /* CHLinkedSetTest.m */,
 				E4FBE17F0F8B21860039E4D0 /* CHLockableTest.m */,
 				E48BFA840EE842CF0004D5E6 /* CHMultiMapTest.m */,
 				E4FD52F50ECA8A9F006D9FF8 /* CHQueueTest.m */,
@@ -556,6 +565,7 @@
 				E400CAC30F791A08003189D3 /* CHCircularBufferDeque.h in Headers */,
 				E4EF44D80F86C52200C59C52 /* CHLockable.h in Headers */,
 				E4D941400F93C147001BAE05 /* CHCircularBufferStack.h in Headers */,
+				E49BE2830FB21058002904AB /* CHLinkedSet.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -765,6 +775,7 @@
 				E400CAC40F791A08003189D3 /* CHCircularBufferDeque.m in Sources */,
 				E4EF44D90F86C52200C59C52 /* CHLockable.m in Sources */,
 				E4D941410F93C147001BAE05 /* CHCircularBufferStack.m in Sources */,
+				E49BE2840FB21058002904AB /* CHLinkedSet.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -797,6 +808,7 @@
 				E48BFBB00EE858F40004D5E6 /* CHHeapTest.m in Sources */,
 				E4D3A4C70F789FF500E21CF8 /* CHAbstractCircularBufferCollectionTest.m in Sources */,
 				E4FBE1800F8B21860039E4D0 /* CHLockableTest.m in Sources */,
+				E49BE3DC0FB230D4002904AB /* CHLinkedSetTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
