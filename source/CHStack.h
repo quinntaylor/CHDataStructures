@@ -46,6 +46,9 @@
  
  @param anObject The object to add to the top of the stack.
  @throw NSInvalidArgumentException If @a anObject is @c nil.
+ 
+ @see popObject
+ @see topObject
  */
 - (void) pushObject:(id)anObject;
 
@@ -58,6 +61,11 @@
  Returns an array of the objects in this stack, ordered from top to bottom.
  
  @return An array of the objects in this stack. If the stack is empty, the array is also empty.
+ 
+ @see count
+ @see countByEnumeratingWithState:objects:count:
+ @see objectEnumerator
+ @see removeAllObjects
  */
 - (NSArray*) allObjects;
 
@@ -81,6 +89,8 @@
  Returns the number of objects currently on the stack.
  
  @return The number of objects currently on the stack.
+ 
+ @see allObjects
  */
 - (NSUInteger) count;
 
@@ -91,6 +101,9 @@
  
  @attention The enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
  @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
+
+ @see allObjects
+ @see countByEnumeratingWithState:objects:count:
  */
 - (NSEnumerator*) objectEnumerator;
 
@@ -98,6 +111,9 @@
  Examine the object on the top of the stack without removing it.
  
  @return The topmost object from the stack.
+ 
+ @see pushObject:
+ @see popObject
  */
 - (id) topObject;
 
@@ -108,6 +124,9 @@
 
 /**
  Remove the topmost object on the stack; no effect if the stack is already empty.
+ 
+ @see pushObject:
+ @see topObject
  */
 - (void) popObject;
 
@@ -163,9 +182,11 @@
 // @{
 
 /**
- Returns a new instance that is a mutable copy of the receiver. The copy is implicitly retained by the sender, who is responsible for releasing it.
+ Returns a new instance that is a mutable copy of the receiver. If garbage collection is @b not enabled, the copy is retained before being returned, but the sender is responsible for releasing it.
  
- @param zone Identifies an area of memory from which to allocate the new instance. If zone is @c nil, the default zone is used. (The \link NSObject#copy -copy\endlink method in NSObject invokes this method with a @c nil argument.)
+ @param zone An area of memory from which to allocate the new instance. If zone is @c nil, the default zone is used. 
+ 
+ @note \link NSObject#copy -[NSObject copy]\endlink invokes this method with a @c nil argument.
  
  @see NSCopying protocol
  */
@@ -183,9 +204,12 @@
  @param stackbuf Pointer to a C array into which the receiver may copy objects for the sender to iterate over.
  @param len The maximum number of objects that may be stored in @a stackbuf.
  @return The number of objects in @c state->itemsPtr that may be iterated over, or @c 0 when the iteration is finished.
- 
+  
  @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
+ 
  @see NSFastEnumeration protocol
+ @see allObjects
+ @see objectEnumerator
  */
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf

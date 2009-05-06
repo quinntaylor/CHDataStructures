@@ -48,8 +48,11 @@
  Add an object to the front of the list.
  
  @param anObject The object to add to the list.
- 
+
  @throw NSInvalidArgumentException If @a anObject is @c nil.
+ 
+ @see appendObject:
+ @see firstObject
  */
 - (void) prependObject:(id)anObject;
 
@@ -59,6 +62,9 @@
  @param anObject The object to add to the list.
  
  @throw NSInvalidArgumentException If @a anObject is @c nil.
+ 
+ @see lastObject
+ @see prependObject:
  */
 - (void) appendObject:(id)anObject;
 
@@ -85,6 +91,11 @@
  
  @return An array with the objects in this linked list. If the list is empty,
  the array is also empty.
+ 
+ @see count
+ @see countByEnumeratingWithState:objects:count:
+ @see objectEnumerator
+ @see removeAllObjects
  */
 - (NSArray*) allObjects;
 
@@ -108,6 +119,8 @@
  Returns the number of objects currently in the list.
  
  @return The number of objects currently in the list.
+ 
+ @see allObjects
  */
 - (NSUInteger) count;
 
@@ -115,6 +128,9 @@
  Access the object at the head of the list.
  
  @return The object at the head of the list, or @c nil if the list is empty.
+ 
+ @see lastObject
+ @see removeFirstObject
  */
 - (id) firstObject;
 
@@ -122,6 +138,9 @@
  Access the object at the tail of the list.
  
  @return The object at the tail of the list, or @c nil if the list is empty.
+ 
+ @see firstObject
+ @see removeLastObject
  */
 - (id) lastObject;
 
@@ -147,6 +166,9 @@
  @param index An index from which to retrieve an object.
  @throw NSRangeException If @a index is greater than or equal to the list size.
  @return The object located at index.
+ 
+ @see indexOfObject:
+ @see indexOfObjectIdenticalTo:
  */
 - (id) objectAtIndex:(NSUInteger)index;
 
@@ -157,6 +179,9 @@
  
  @attention The enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
  @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
+ 
+ @see allObjects
+ @see countByEnumeratingWithState:objects:count:
  */
 - (NSEnumerator*) objectEnumerator;
 
@@ -167,11 +192,17 @@
 
 /**
  Remove the item at the head of the list.
+ 
+ @see firstObject
+ @see removeLastObject
  */
 - (void) removeFirstObject;
 
 /**
  Remove the item at the tail of the list.
+ 
+ @see lastObject
+ @see removeFirstObject
  */
 - (void) removeLastObject;
 
@@ -207,6 +238,9 @@
 
 /**
  Remove all objects from the list; no effect if the list is already empty.
+ 
+ @see removeFirstObject
+ @see removeLastObject
  */
 - (void) removeAllObjects;
 
@@ -239,9 +273,11 @@
 // @{
 
 /**
- Returns a new instance that is a mutable copy of the receiver. The copy is implicitly retained by the sender, who is responsible for releasing it.
+ Returns a new instance that is a mutable copy of the receiver. If garbage collection is @b not enabled, the copy is retained before being returned, but the sender is responsible for releasing it.
  
- @param zone Identifies an area of memory from which to allocate the new instance. If zone is @c nil, the default zone is used. (The \link NSObject#copy -copy\endlink method in NSObject invokes this method with a @c nil argument.)
+ @param zone An area of memory from which to allocate the new instance. If zone is @c nil, the default zone is used. 
+ 
+ @note \link NSObject#copy -[NSObject copy]\endlink invokes this method with a @c nil argument.
  
  @see NSCopying protocol
  */
@@ -261,7 +297,10 @@
  @return The number of objects in @c state->itemsPtr that may be iterated over, or @c 0 when the iteration is finished.
  
  @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
+ 
  @see NSFastEnumeration protocol
+ @see allObjects
+ @see objectEnumerator
  */
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf

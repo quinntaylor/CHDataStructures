@@ -46,6 +46,9 @@
  
  @param anObject The object to add to the back of the queue.
  @throw NSInvalidArgumentException If @a anObject is @c nil.
+ 
+ @see lastObject
+ @remove firstObject
  */
 - (void) addObject:(id)anObject;
 
@@ -58,6 +61,11 @@
  Returns an array with the objects in this queue, ordered from front to back.
  
  @return An array with the objects in this queue. If the queue is empty, the array is also empty.
+ 
+ @see count
+ @see countByEnumeratingWithState:objects:count:
+ @see objectEnumerator
+ @see removeAllObjects
  */
 - (NSArray*) allObjects;
 
@@ -81,6 +89,8 @@
  Returns the number of objects currently in the queue.
  
  @return The number of objects currently in the queue.
+ 
+ @see allObjects
  */
 - (NSUInteger) count;
 
@@ -88,6 +98,9 @@
  Examine the object at the front of the queue without removing it.
  
  @return The first object in the queue, or @c nil if the queue is empty.
+ 
+ @see lastObject
+ @see removeFirstObject
  */
 - (id) firstObject;
 
@@ -95,6 +108,9 @@
  Examine the object at the back of the queue without removing it.
  
  @return The last object in the queue, or @c nil if the queue is empty.
+ 
+ @see addObject:
+ @see firstObject
  */
 - (id) lastObject;
 
@@ -105,6 +121,9 @@
  
  @attention The enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
  @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
+
+ @see allObjects
+ @see countByEnumeratingWithState:objects:count:
  */
 - (NSEnumerator*) objectEnumerator;
 
@@ -115,6 +134,8 @@
 
 /**
  Remove the front object in the queue; no effect if the queue is already empty.
+ 
+ @see firstObject
  */
 - (void) removeFirstObject;
 
@@ -170,9 +191,11 @@
 // @{
 
 /**
- Returns a new instance that is a mutable copy of the receiver. The copy is implicitly retained by the sender, who is responsible for releasing it.
+ Returns a new instance that is a mutable copy of the receiver. If garbage collection is @b not enabled, the copy is retained before being returned, but the sender is responsible for releasing it.
  
- @param zone Identifies an area of memory from which to allocate the new instance. If zone is @c nil, the default zone is used. (The \link NSObject#copy -copy\endlink method in NSObject invokes this method with a @c nil argument.)
+ @param zone An area of memory from which to allocate the new instance. If zone is @c nil, the default zone is used. 
+ 
+ @note \link NSObject#copy -[NSObject copy]\endlink invokes this method with a @c nil argument.
  @return A new instance that is a copy of the receiver.
  
  @see NSCopying protocol
@@ -193,7 +216,10 @@
  @return The number of objects in @c state->itemsPtr that may be iterated over, or @c 0 when the iteration is finished.
  
  @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
+ 
  @see NSFastEnumeration protocol
+ @see allObjects
+ @see objectEnumerator
  */
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf

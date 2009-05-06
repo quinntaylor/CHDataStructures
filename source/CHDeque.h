@@ -28,8 +28,7 @@
 - (id) init;
 
 /**
- Initialize a deque with the contents of an array. Objects are appended in the
- order they occur in the array.
+ Initialize a deque with the contents of an array. Objects are appended in the order they occur in the array.
  
  @param anArray An array containing object with which to populate a new deque.
  */
@@ -64,6 +63,12 @@
  Returns an array with the objects in this deque, ordered from front to back.
  
  @return An array with the objects in this deque. If the deque is empty, the array is also empty.
+ 
+ @see count
+ @see countByEnumeratingWithState:objects:count:
+ @see objectEnumerator
+ @see removeAllObjects
+ @see reverseObjectEnumerator
  */
 - (NSArray*) allObjects;
 
@@ -71,6 +76,8 @@
  Returns the number of objects currently in the deque.
  
  @return The number of objects currently in the deque.
+ 
+ @see allObjects
  */
 - (NSUInteger) count;
 
@@ -78,6 +85,8 @@
  Examine the first object in the deque without removing it.
  
  @return The first object in the deque, or @c nil if it is empty.
+ 
+ @see lastObject
  */
 - (id) firstObject;
 
@@ -85,6 +94,8 @@
  Examine the last object in the deque without removing it.
  
  @return The last object in the deque, or @c nil if it is empty.
+ 
+ @see firstObject
  */
 - (id) lastObject;
 
@@ -95,6 +106,10 @@
  
  @attention The enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
  @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
+ 
+ @see allObjects
+ @see countByEnumeratingWithState:objects:count:
+ @see reverseObjectEnumerator
  */
 - (NSEnumerator*) objectEnumerator;
 
@@ -105,6 +120,10 @@
  
  @attention The enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
  @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
+ 
+ @see allObjects
+ @see countByEnumeratingWithState:objects:count:
+ @see objectEnumerator
  */
 - (NSEnumerator*) reverseObjectEnumerator;
 
@@ -131,11 +150,17 @@
 
 /**
  Remove the first object in the deque; no effect if it is empty.
+ 
+ @see firstObject
+ @see removeLastObject
  */
 - (void) removeFirstObject;
 
 /**
  Remove the last object in the deque; no effect if it is empty.
+ 
+ @see lastObject
+ @see removeFirstObject
  */
 - (void) removeLastObject;
 
@@ -159,6 +184,9 @@
 
 /**
  Remove all objects from the deque; no effect if it is empty.
+ 
+ @see removeFirstObject
+ @see removeLastObject
  */
 - (void) removeAllObjects;
 
@@ -191,9 +219,11 @@
 // @{
 
 /**
- Returns a new instance that is a mutable copy of the receiver. The copy is implicitly retained by the sender, who is responsible for releasing it.
+ Returns a new instance that is a mutable copy of the receiver. If garbage collection is @b not enabled, the copy is retained before being returned, but the sender is responsible for releasing it.
  
- @param zone Identifies an area of memory from which to allocate the new instance. If zone is @c nil, the default zone is used. (The \link NSObject#copy -copy\endlink method in NSObject invokes this method with a @c nil argument.)
+ @param zone An area of memory from which to allocate the new instance. If zone is @c nil, the default zone is used. 
+ 
+ @note \link NSObject#copy -[NSObject copy]\endlink invokes this method with a @c nil argument.
  
  @see NSCopying protocol
  */
@@ -213,7 +243,11 @@
  @return The number of objects in @c state->itemsPtr that may be iterated over, or @c 0 when the iteration is finished.
  
  @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
+ 
  @see NSFastEnumeration protocol
+ @see allObjects
+ @see objectEnumerator
+ @see reverseObjectEnumerator
  */
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf

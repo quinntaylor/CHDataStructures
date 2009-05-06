@@ -38,19 +38,11 @@
 
 /**
  Initializes a newly allocated multi-dictionary with no key-value entries.
+ 
+ @see initWithObjectsAndKeys:
+ @see initWithObjects:forKeys:
  */
 - (id) init;
-
-/**
- Initializes a newly allocated multi-dictionary with entries constructed from arrays of objects and keys.
- 
- @param keyArray An array containing the keys for the new dictionary. 
- @param objectsArray An array containing the values for the new dictionary.
- @throw NSInvalidArgumentException If the array counts are not equal.
- 
- Each element in @a objects can be either an object or an NSArray or NSSet of objects to be associated with the corresponding key in @a keys.
- */
-- (id) initWithObjects:(NSArray*)objectsArray forKeys:(NSArray*)keyArray;
 
 /**
  Initializes a newly allocated multi-dictionary with entries constructed from pairs of objects and keys.
@@ -64,6 +56,17 @@
  This method is similar to #initWithObjects:forKeys: and differs only in the way in which the key-value pairs are specified.
  */
 - (id) initWithObjectsAndKeys:(id)firstObject, ...;
+
+/**
+ Initializes a newly allocated multi-dictionary with entries constructed from arrays of objects and keys.
+ 
+ @param keyArray An array containing the keys for the new dictionary. 
+ @param objectsArray An array containing the values for the new dictionary.
+ @throw NSInvalidArgumentException If the array counts are not equal.
+ 
+ Each element in @a objects can be either an object or an NSArray or NSSet of objects to be associated with the corresponding key in @a keys.
+ */
+- (id) initWithObjects:(NSArray*)objectsArray forKeys:(NSArray*)keyArray;
 
 #pragma mark <NSCoding>
 /** @name <NSCoding> */
@@ -93,9 +96,11 @@
 // @{
 
 /**
- Returns a new instance that is a copy of the receiver. The returned object is implicitly retained by the sender, who is responsible for releasing it. Copies returned by this method are mutable. 
+ Returns a new instance that is a mutable copy of the receiver. If garbage collection is @b not enabled, the copy is retained before being returned, but the sender is responsible for releasing it.
  
- @param zone Identifies an area of memory from which to allocate the new instance. If zone is @c nil, the default zone is used. (The \link NSObject#copy -copy\endlink method in NSObject invokes this method with a @c nil argument.)
+ @param zone An area of memory from which to allocate the new instance. If zone is @c nil, the default zone is used. 
+ 
+ @note \link NSObject#copy -[NSObject copy]\endlink invokes this method with a @c nil argument.
  
  @see NSCopying protocol
  */
@@ -145,6 +150,11 @@
  @param aKey The key with which to associate @a anObject.
  @param anObject An object to add to an entry for @a aKey in the receiver. If an entry for @a aKey already exists in the receiver, @a anObject is added using \link NSMutableSet#addObject: -[NSMutableSet addObject:]\endlink, otherwise a new entry is created.
  @throw NSInvalidArgumentException If @a aKey or @a anObject is @c nil.
+ 
+ @see addObjects:forKey:
+ @see objectsForKey:
+ @see removeObjectsForKey:
+ @see setObjects:forKey:
  */
 - (void) addObject:(id)anObject forKey:(id)aKey;
 
@@ -154,6 +164,11 @@
  @param aKey The key with which to associate @a anObject.
  @param objectSet A set of objects to add to an entry for @a aKey in the receiver. If an entry for @a aKey already exists in the receiver, @a anObject is added using \link NSMutableSet#unionSet: -[NSMutableSet unionSet:]\endlink, otherwise a new entry is created.
  @throw NSInvalidArgumentException If @a aKey or @a objectSet is @c nil.
+ 
+ @see addObject:forKey:
+ @see objectsForKey:
+ @see removeObjectsForKey:
+ @see setObjects:forKey:
  */
 - (void) addObjects:(NSSet*)objectSet forKey:(id)aKey;
 
@@ -163,6 +178,11 @@
  @param aKey The key with which to associate the objects in @a objectSet.
  @param objectSet A set of objects to associate with @a key. If @a objectSet is empty, the contents of the receiver are not modified. If an entry for @a key already exists in the receiver, @a objectSet is added using \link NSMutableSet#setSet: -[NSMutableSet setSet:]\endlink, otherwise a new entry is created.
  @throw NSInvalidArgumentException If @a aKey or @a objectSet is @c nil.
+ 
+ @see addObject:forKey:
+ @see addObjects:forKey:
+ @see objectsForKey:
+ @see removeObjectsForKey:
  */
 - (void) setObjects:(NSSet*)objectSet forKey:(id)aKey;
 
@@ -175,6 +195,9 @@
  Returns an array containing the receiver's keys.
  
  @return An array containing the receiver's keys. The array is empty if the receiver has no entries. The order of the keys is undefined.
+ 
+ @see allObjects
+ @see count
  */
 - (NSArray*) allKeys;
 
@@ -182,6 +205,9 @@
  Returns an array containing the receiver's values. This is effectively a concatenation of the sets of objects associated with the keys in the receiver. (Unlike a set union, objects associated with multiple keys appear once for each key which which they are associated.)
  
  @return An array containing the receiver's values. The array is empty if the receiver has no entries. The order of the values is undefined.
+ 
+ @see allKeys
+ @see countForAllKeys
  */
 - (NSArray*) allObjects;
 
@@ -190,6 +216,8 @@
  
  @return The number of keys in the receiver, regardless of how many objects are
  associated with any given key in the dictionary.
+ 
+ @see allKeys
  */
 - (NSUInteger) count;
 
@@ -197,6 +225,8 @@
  Returns the number of objects in the receiver, associated with any key.
  
  @return The number of objects in the receiver. This is the sum total of objects associated with each key in the dictonary.
+ 
+ @see allObjects
  */
 - (NSUInteger) countForAllKeys;
 
@@ -205,6 +235,8 @@
  
  @param aKey The key for which to return the object count.
  @return The number of objects associated with a given key in the dictionary.
+ 
+ @see objectsForKey:
  */
 - (NSUInteger) countForKey:(id)aKey;
 
@@ -213,6 +245,8 @@
  
  @param aKey The key to check for membership in the receiver.
  @return @c YES if an entry for @a aKey exists in the receiver.
+ 
+ @see objectsForKey:
  */
 - (BOOL) containsKey:(id)aKey;
 
@@ -221,6 +255,8 @@
  
  @param anObject An object to check for membership in the receiver.
  @return @c YES if @a anObject is associated with 1 or more keys in the receiver.
+ 
+ @see allObjects
  */
 - (BOOL) containsObject:(id)anObject;
 
@@ -232,6 +268,8 @@
  @attention The enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
  @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
  @warning If you need to modify the entries concurrently, use #allKeys to create a "snapshot" of the dictionary's keys and work from this snapshot to modify the entries.
+ 
+ @see allKeys
  */
 - (NSEnumerator*) keyEnumerator;
 
@@ -243,6 +281,8 @@
  @attention The enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
  @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
  @warning If you need to modify the entries concurrently, use #allObjects to create a "snapshot" of the dictionary's values and work from this snapshot to modify the values.
+ 
+ @see allObjects
  */
 - (NSEnumerator*) objectEnumerator;
 
@@ -251,6 +291,8 @@
  
  @param aKey The key for which to return the corresponding objects.
  @return An NSSet of objects associated with a given key, or nil if the key is not in the receiver.
+ 
+ @see countForKey:
  */
 - (NSSet*) objectsForKey:(id)aKey;
 
@@ -270,6 +312,8 @@
 
 /**
  Empties the receiver of its entries. Each key and all corresponding objects are sent a release message.
+ 
+ @see allObjects
  */
 - (void) removeAllObjects;
 
@@ -281,6 +325,9 @@
  @throw NSInvalidArgumentException If @a aKey or @a anObject is @c nil.
  
  If @a aKey does not exist in the receiver, or if @a anObject is not associated with @a aKey, the contents of the receiver are not modified.
+ 
+ @see containsObject
+ @see objectsForKey:
  */
 - (void) removeObject:(id)anObject forKey:(id)aKey;
 
@@ -290,6 +337,8 @@
  @param aKey The key for which to remove an entry.
  
  If @a aKey does not exist in the receiver, there is no effect on the receiver.
+ 
+ @see objectsForKey:
  */
 - (void) removeObjectsForKey:(id)aKey;
 

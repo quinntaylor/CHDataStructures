@@ -137,8 +137,10 @@ typedef enum {
  
  @see allObjectsWithTraversalOrder:
  @see anyObject
+ @see count
+ @see countByEnumeratingWithState:objects:count:
  @see objectEnumerator
- @see reverseObjectEnumerator
+ @see removeAllObjects
  */
 - (NSArray*) allObjects;
 
@@ -150,6 +152,7 @@ typedef enum {
 
  @see allObjects
  @see objectEnumeratorWithTraversalOrder:
+ @see removeAllObjects
  @see reverseObjectEnumerator
  */
 - (NSArray*) allObjectsWithTraversalOrder:(CHTraversalOrder)order;
@@ -167,6 +170,8 @@ typedef enum {
 
 /**
  Returns the number of objects currently in the tree.
+ 
+ @see allObjects
  */
 - (NSUInteger) count;
 
@@ -301,7 +306,6 @@ typedef enum {
  @param decoder A keyed unarchiver object.
  
  @see NSCoding protocol
- @see encodeWithCoder:
  */
 - (id) initWithCoder:(NSCoder *)decoder;
 
@@ -311,7 +315,6 @@ typedef enum {
  @param encoder A keyed archiver object.
  
  @see NSCoding protocol
- @see initWithCoder:
  */
 - (void) encodeWithCoder:(NSCoder *)encoder;
 
@@ -321,9 +324,11 @@ typedef enum {
 // @{
 
 /**
- Returns a new instance that is a mutable copy of the receiver. The copy is implicitly retained by the sender, who is responsible for releasing it.
+ Returns a new instance that is a mutable copy of the receiver. If garbage collection is @b not enabled, the copy is retained before being returned, but the sender is responsible for releasing it.
  
- @param zone Identifies an area of memory from which to allocate the new instance. If zone is @c nil, the default zone is used. (The \link NSObject#copy -copy\endlink method in NSObject invokes this method with a @c nil argument.)
+ @param zone An area of memory from which to allocate the new instance. If zone is @c nil, the default zone is used. 
+ 
+ @note \link NSObject#copy -[NSObject copy]\endlink invokes this method with a @c nil argument.
  
  @see NSCopying protocol
  */
@@ -342,12 +347,12 @@ typedef enum {
  @param len The maximum number of objects that may be stored in @a stackbuf.
  @return The number of objects in @c state->itemsPtr that may be iterated over, or @c 0 when the iteration is finished.
  
- @see objectEnumerator
- @see objectEnumeratorWithTraversalOrder:
- 
  @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
  
  @see NSFastEnumeration protocol
+ @see allObjects
+ @see objectEnumerator
+ @see objectEnumeratorWithTraversalOrder:
  */
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf

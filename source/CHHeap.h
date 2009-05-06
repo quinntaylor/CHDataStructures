@@ -27,6 +27,8 @@
 
 /**
  Initialize a heap with ascending ordering and no objects.
+ 
+ @see initWithOrdering:array:
  */
 - (id) init;
 
@@ -34,6 +36,8 @@
  Initialize a heap with the contents of an array. Objects are added to the heap as they occur in the array, then "heapified" using an @c NSOrderedAscending heap ordering.
  
  @param anArray An array containing object with which to populate a new heap.
+ 
+ @see initWithOrdering:array:
  */
 - (id) initWithArray:(NSArray*)anArray;
 
@@ -41,6 +45,8 @@
  Initialize a heap with a given sort ordering and no objects.
  
  @param order The sort order to use, either @c NSOrderedAscending or @c NSOrderedDescending. The root element of the heap will be the smallest or largest (according to the @c -compare: method), respectively. For any other value, an @c NSInvalidArgumentException is raised.
+ 
+ @see initWithOrdering:array:
  */
 - (id) initWithOrdering:(NSComparisonResult)order;
 
@@ -61,6 +67,8 @@
  
  @param anObject The object to add to the heap.
  @throw NSInvalidArgumentException If @a anObject is @c nil.
+ 
+ @see addObjectsFromArray:
  */
 - (void) addObject:(id)anObject;
 
@@ -68,6 +76,8 @@
  Adds the objects in a given array to this heap, then re-establish the heap property. After all the objects have been inserted, objects are "heapified" as necessary, proceeding backwards from index @c count/2 down to @c 0.
  
  @param anArray An array of objects to add to the heap.
+ 
+ @see addObject:
  */
 - (void) addObjectsFromArray:(NSArray*)anArray;
 
@@ -80,6 +90,12 @@
  Returns an array containing the objects in this heap in their current order. The contents are almost certainly not sorted (since only the heap property need be satisfied) but this is the quickest way to retrieve all the elements in a heap.
  
  @return An array containing the objects in this heap in their current order. If the heap is empty, the array is also empty.
+ 
+ @see allObjectsInSortedOrder
+ @see count
+ @see countByEnumeratingWithState:objects:count:
+ @see objectEnumerator
+ @see removeAllObjects
  */
 - (NSArray*) allObjects;
 
@@ -89,6 +105,11 @@
  @return An array containing the objects in this heap in sorted order. If the heap is empty, the array is also empty.
  
  @attention Since a heap structure is only "sorted" as elements are removed, this method incurs extra costs of (A) time for sorting the contents and (B) memory for storing the extra array. However, it does not affect the order of elements in the heap itself.
+ 
+ @see allObjects
+ @see count
+ @see countByEnumeratingWithState:objects:count:
+ @see objectEnumerator
  */
 - (NSArray*) allObjectsInSortedOrder;
 
@@ -112,6 +133,8 @@
  Returns the number of objects currently in the heap.
  
  @return The number of objects currently in the heap.
+ 
+ @see allObjects
  */
 - (NSUInteger) count;
 
@@ -123,16 +146,17 @@
 - (id) firstObject;
 
 /**
- Returns an enumerator that accesses each object in the heap in sorted order.
+ Returns an enumerator that accesses each object in the heap.
  
- @return An enumerator that accesses each object in the heap in sorted order. The enumerator returned is never @c nil; if the heap is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
+ @return An enumerator that accesses each object in the heap. The enumerator returned is never @c nil; if the heap is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
  
- @attention The enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
+ @attention Due to the nature of a heap, this method is not guaranteed to provide the objects in sorted order. If you want the objects to be sorted without removing them from the heap, use #allObjectsInSortedOrder instead.
+ 
  @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
  
- Uses an NSArray returned by #allObjects, so all the same caveats apply.
- 
- @see #allObjects
+ @see allObjects
+ @see allObjectsInSortedOrder
+ @see countByEnumeratingWithState:objects:count:
  */
 - (NSEnumerator*) objectEnumerator;
 
@@ -143,6 +167,8 @@
 
 /**
  Remove the front object in the heap; if it is already empty, there is no effect.
+ 
+ @see removeAllObjects
  */
 - (void) removeFirstObject;
 
@@ -166,6 +192,8 @@
 
 /**
  Remove all objects from the heap; if it is already empty, there is no effect.
+ 
+ @see removeFirstObject
  */
 - (void) removeAllObjects;
 
@@ -198,9 +226,11 @@
 // @{
 
 /**
- Returns a new instance that is a mutable copy of the receiver. The copy is implicitly retained by the sender, who is responsible for releasing it.
+ Returns a new instance that is a mutable copy of the receiver. If garbage collection is @b not enabled, the copy is retained before being returned, but the sender is responsible for releasing it.
  
- @param zone Identifies an area of memory from which to allocate the new instance. If zone is @c nil, the default zone is used. (The \link NSObject#copy -copy\endlink method in NSObject invokes this method with a @c nil argument.)
+ @param zone An area of memory from which to allocate the new instance. If zone is @c nil, the default zone is used. 
+ 
+ @note \link NSObject#copy -[NSObject copy]\endlink invokes this method with a @c nil argument.
  
  @see NSCopying protocol
  */
@@ -219,8 +249,14 @@
  @param len The maximum number of objects that may be stored in @a stackbuf.
  @return The number of objects in @c state->itemsPtr that may be iterated over, or @c 0 when the iteration is finished.
  
+ @attention Due to the nature of a heap, this method is not guaranteed to provide the objects in sorted order. If you want the objects to be sorted without removing them from the heap, use #allObjectsInSortedOrder instead.
+ 
  @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
+ 
  @see NSFastEnumeration protocol
+ @see allObjects
+ @see allObjectsInSortedOrder
+ @see objectEnumerator
  */
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf

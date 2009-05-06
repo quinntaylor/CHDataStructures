@@ -16,7 +16,7 @@
  
  This file is a private header that is only used by internal implementations, and is not included in the the compiled framework. The macros and variables are to be considered private and unsupported.
  
- Memory for stacks and queues is (re)allocated using NSScannedOption, since (if garbage collection is enabled) the nodes which may be placed in a stack or queue are known to the garbage collector. (If garbage collection is not enabled, the macros exlicitly free the allocated memory.) We assume that a stack or queue will not outlive the nodes it contains, since they are only used in connection with an active tree (usually during insertion, removal or iteration). An enumerator may contain a stack or queue, but also retains the underlying collection, so correct retain-release calls will not leak.
+ Memory for stacks and queues is (re)allocated using NSScannedOption, since (if garbage collection is enabled) the nodes which may be placed in a stack or queue are known to the garbage collector. (If garbage collection is @b not enabled, the macros explicitly free the allocated memory.) We assume that a stack or queue will not outlive the nodes it contains, since they are only used in connection with an active tree (usually during insertion, removal or iteration). An enumerator may contain a stack or queue, but also retains the underlying collection, so correct retain-release calls will not leak.
  */
 
 #pragma mark Stack macros

@@ -59,6 +59,7 @@
  - CHDeque
  - CHHeap
  - CHLinkedList
+ - CHMultiMap
  - CHQueue
  - CHSearchTree
  - CHStack
