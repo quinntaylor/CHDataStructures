@@ -18,4 +18,101 @@
 
 @implementation CHLinkedSetTest
 
+#pragma mark Initialization
+
+- (void) testInit {
+}
+
+- (void) testInitWithArray {
+}
+
+- (void) testInitWithCapacity {
+}
+
+#pragma mark Adding Objects
+
+- (void) testAddObject {
+}
+
+- (void) testAddObjectsFromArray {
+}
+
+- (void) testUnionSet {
+}
+
+#pragma mark Querying Contents
+
+- (void) testAllObjects {
+}
+
+- (void) testAnyObject {
+}
+
+- (void) testContainsObject {
+}
+
+- (void) testCount {
+}
+
+- (void) testDescription {
+}
+
+- (void) testDebugDescription {
+}
+
+- (void) testFirstObject {
+}
+
+- (void) testIntersectsSet {
+}
+
+- (void) testIsEqualToSet {
+}
+
+- (void) testIsSubsetOfSet {
+}
+
+- (void) testLastObject {
+}
+
+- (void) testMember {
+}
+
+- (void) testObjectEnumerator {
+}
+
+- (void) testSet {
+}
+
+#pragma mark Removing Objects
+
+- (void) testIntersectSet {
+}
+
+- (void) testMinusSet {
+}
+
+- (void) testRemoveAllObjects {
+}
+
+- (void) testRemoveFirstObject {
+}
+
+- (void) testRemoveLastObject {
+}
+
+- (void) testRemoveObject {
+}
+
+#pragma mark <Protocols>
+
+- (void) testNSCoding {
+}
+
+- (void) testNSCopying {
+}
+
+- (void) testNSFastEnumeration {
+}
+
 @end
