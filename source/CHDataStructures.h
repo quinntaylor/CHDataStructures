@@ -73,7 +73,7 @@
  <ol>
  <li>Supporting multiple environments increases code complexity, and consequently the effort required to test, maintain, and improve it.</li>
  <li>Libraries that have bigger and slower binaries to accommodate all possible platforms don't help the mainstream developer.</li>
- <li>Mac OS X is by far biggest user of Objective-C today, a trend which isn't likely to change soon.</li>
+ <li>Mac OS X is by far the biggest "client" of Objective-C today, a trend which isn't likely to change soon.</li>
  </ol>
  
  While certain implementations utilize straight C for their internals, this framework is fairly high-level, and uses composition rather than inheritance in most cases. The framework was originally written as an exercise in writing Objective-C code and consisted mainly of ported Java code. In later revisions, performance has gained greater emphasis, but the primary motivation is to provide friendly, intuitive Objective-C interfaces for data structures, not to maximize speed at any cost, which sometimes happens with C++ and the STL. The algorithms should all be sound (i.e., you won't get O(n) performance where it should be O(log n) or O(1), etc.) and perform quite well in general. If your choice of data structure type and implementation are dependent on performance or memory usage, it would be wise to run the benchmarks from Xcode and choose based on the time and memory complexity for specific implementations.

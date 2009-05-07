@@ -31,7 +31,7 @@
 /**
  Initialize a deque with the contents of an array. Objects are appended in the order they occur in the array.
  
- @param anArray An array containing object with which to populate a new deque.
+ @param anArray An array containing objects with which to populate a new deque.
  */
 - (id) initWithArray:(NSArray*)anArray;
 
@@ -80,9 +80,9 @@
 - (NSArray*) allObjects;
 
 /**
- Determines if a deque contains a given object, matched using \link NSObject#isEqual: -isEqual:\endlink.
+ Determine whether the receiver contains a given object, matched using \link NSObject#isEqual: -isEqual:\endlink.
  
- @param anObject The object to check for membership in the receiver.
+ @param anObject The object to test for membership in the receiver.
  @return @c YES if the receiver contains @a anObject (as determined by \link NSObject#isEqual: -isEqual:\endlink), @c NO if @a anObject is @c nil or not present.
  
  @see containsObjectIdenticalTo:
@@ -91,9 +91,9 @@
 - (BOOL) containsObject:(id)anObject;
 
 /**
- Determines if a deque contains a given object, matched using the == operator.
+ Determine whether the receiver contains a given object, matched using the == operator.
  
- @param anObject The object to check for membership in the receiver.
+ @param anObject The object to test for membership in the receiver.
  @return @c YES if the receiver contains @a anObject (as determined by the == operator), @c NO if @a anObject is @c nil or not present.
  
  @see containsObject:
@@ -111,7 +111,7 @@
 - (NSUInteger) count;
 
 /**
- Examine the first object in the deque without removing it.
+ Returns the first object in the deque without removing it.
  
  @return The first object in the deque, or @c nil if it is empty.
  
@@ -120,7 +120,7 @@
 - (id) firstObject;
 
 /**
- Examine the last object in the deque without removing it.
+ Returns the last object in the deque without removing it.
  
  @return The last object in the deque, or @c nil if it is empty.
  
@@ -204,8 +204,9 @@
 - (void) removeObjectIdenticalTo:(id)anObject;
 
 /**
- Remove all objects from the deque; no effect if it is empty.
+ Empty the receiver of all of its members.
  
+ @see allObjects
  @see removeFirstObject
  @see removeLastObject
  @see removeObject:

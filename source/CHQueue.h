@@ -34,7 +34,7 @@
 /**
  Initialize a queue with the contents of an array. Objects are enqueued in the order they occur in the array.
  
- @param anArray An array containing object with which to populate a new queue.
+ @param anArray An array containing objects with which to populate a new queue.
  */
 - (id) initWithArray:(NSArray*)anArray;
 
@@ -71,9 +71,9 @@
 - (NSArray*) allObjects;
 
 /**
- Determines if a queue contains a given object, matched using \link NSObject#isEqual: -isEqual:\endlink.
+ Determine whether the receiver contains a given object, matched using \link NSObject#isEqual: -isEqual:\endlink.
  
- @param anObject The object to check for membership in the receiver.
+ @param anObject The object to test for membership in the receiver.
  @return @c YES if the receiver contains @a anObject (as determined by \link NSObject#isEqual: -isEqual:\endlink), @c NO if @a anObject is @c nil or not present.
  
  @see containsObjectIdenticalTo:
@@ -82,9 +82,9 @@
 - (BOOL) containsObject:(id)anObject;
 
 /**
- Determines if a queue contains a given object, matched using the == operator.
+ Determine whether the receiver contains a given object, matched using the == operator.
  
- @param anObject The object to check for membership in the receiver.
+ @param anObject The object to test for membership in the receiver.
  @return @c YES if the receiver contains @a anObject (as determined by the == operator), @c NO if @a anObject is @c nil or not present.
  
  @see containsObject:
@@ -102,7 +102,7 @@
 - (NSUInteger) count;
 
 /**
- Examine the object at the front of the queue without removing it.
+ Returns the object at the front of the queue without removing it.
  
  @return The first object in the queue, or @c nil if the queue is empty.
  
@@ -112,7 +112,7 @@
 - (id) firstObject;
 
 /**
- Examine the object at the back of the queue without removing it.
+ Returns the object at the back of the queue without removing it.
  
  @return The last object in the queue, or @c nil if the queue is empty.
  
@@ -172,8 +172,9 @@
 - (void) removeObjectIdenticalTo:(id)anObject;
 
 /**
- Remove all objects from the queue; no effect if the queue is already empty.
+ Empty the receiver of all of its members.
  
+ @see allObjects
  @see removeFirstObject
  @see removeObject:
  @see removeObjectIdenticalTo:

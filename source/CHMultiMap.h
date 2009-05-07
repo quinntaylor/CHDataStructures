@@ -37,7 +37,7 @@
 }
 
 /**
- Initializes a newly allocated multi-dictionary with no key-value entries.
+ Initialize a multi-dictionary with no key-value entries.
  
  @see initWithObjectsAndKeys:
  @see initWithObjects:forKeys:
@@ -45,7 +45,7 @@
 - (id) init;
 
 /**
- Initializes a newly allocated multi-dictionary with entries constructed from pairs of objects and keys.
+ Initialize a multi-dictionary with entries constructed from pairs of objects and keys.
  
  @param firstObject The first object or set of objects to add to the dictionary.
  @param ... First the key for @a firstObject, then a null-terminated list of alternating values and keys.
@@ -58,7 +58,7 @@
 - (id) initWithObjectsAndKeys:(id)firstObject, ...;
 
 /**
- Initializes a newly allocated multi-dictionary with entries constructed from arrays of objects and keys.
+ Initialize a multi-dictionary with entries constructed from arrays of objects and keys.
  
  @param keyArray An array containing the keys for the new dictionary. 
  @param objectsArray An array containing the values for the new dictionary.
@@ -213,6 +213,8 @@
  
  @see allKeys
  @see countForAllKeys
+ @see objectEnumerator
+ @see removeAllObjects
  */
 - (NSArray*) allObjects;
 
@@ -245,17 +247,18 @@
 - (NSUInteger) countForKey:(id)aKey;
 
 /**
- Determines whether a given key is present in the receiver.
+ Determine whether a given key is present in the receiver.
  
  @param aKey The key to check for membership in the receiver.
  @return @c YES if an entry for @a aKey exists in the receiver.
  
  @see objectsForKey:
+ @see removeObjectsForKey:
  */
 - (BOOL) containsKey:(id)aKey;
 
 /**
- Determines whether a given object is present in the receiver.
+ Determine whether a given object is present in the receiver.
  
  @param anObject The object to check for membership in the receiver.
  @return @c YES if @a anObject is associated with 1 or more keys in the receiver.
@@ -299,6 +302,7 @@
  @return An NSSet of objects associated with a given key, or nil if the key is not in the receiver.
  
  @see countForKey:
+ @see removeObjectsForKey:
  */
 - (NSSet*) objectsForKey:(id)aKey;
 
@@ -317,9 +321,11 @@
 // @{
 
 /**
- Empties the receiver of its entries. Each key and all corresponding objects are sent a release message.
+ Empties the receiver of all of its entries.
  
  @see allObjects
+ @see removeObject:forKey:
+ @see removeObjectsForKey:
  */
 - (void) removeAllObjects;
 
@@ -334,17 +340,19 @@
  
  @see containsObject
  @see objectsForKey:
+ @see removeObjectsForKey:
  */
 - (void) removeObject:(id)anObject forKey:(id)aKey;
 
 /**
- Removes a given key and its associated value(s) from the receiver.
+ Remove a given key and its associated value(s) from the receiver.
  
  @param aKey The key for which to remove an entry.
  
  If @a aKey does not exist in the receiver, there is no effect on the receiver.
  
  @see objectsForKey:
+ @see removeObject:forKey:
  */
 - (void) removeObjectsForKey:(id)aKey;
 

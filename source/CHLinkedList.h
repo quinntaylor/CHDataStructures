@@ -37,7 +37,7 @@
 /**
  Initialize a linked list with the contents of an array. Objects are appended in the order they occur in the array.
  
- @param anArray An array containing object with which to populate a new linked list.
+ @param anArray An array containing objects with which to populate a new linked list.
  */
 - (id) initWithArray:(NSArray*)anArray;
 
@@ -70,7 +70,7 @@
 - (void) appendObject:(id)anObject;
 
 /**
- Inserts a given object at a given index. If @a index is already occupied, then objects at @a index and beyond are shifted one spot toward the end of the list.
+ Insert a given object at a given index. If @a index is already occupied, then objects at @a index and beyond are shifted one spot toward the end of the list.
  
  @param anObject The object to add to the list.
  @param index The index at which to insert @a anObject.
@@ -101,9 +101,9 @@
 - (NSArray*) allObjects;
 
 /**
- Determines if a list contains a given object, matched using \link NSObject#isEqual: -isEqual:\endlink.
+ Determine whether the receiver contains a given object, matched using \link NSObject#isEqual: -isEqual:\endlink.
  
- @param anObject The object to check for membership in the receiver.
+ @param anObject The object to test for membership in the receiver.
  @return @c YES if the receiver contains @a anObject (as determined by \link NSObject#isEqual: -isEqual:\endlink), @c NO if @a anObject is @c nil or not present.
  
  @see containsObjectIdenticalTo:
@@ -112,9 +112,9 @@
 - (BOOL) containsObject:(id)anObject;
 
 /**
- Determines if a list contains a given object, matched using the == operator.
+ Determine whether the receiver contains a given object, matched using the == operator.
  
- @param anObject The object to check for membership in the receiver.
+ @param anObject The object to test for membership in the receiver.
  @return @c YES if the receiver contains @a anObject (as determined by the == operator), @c NO if @a anObject is @c nil or not present.
  
  @see containsObject:
@@ -132,7 +132,7 @@
 - (NSUInteger) count;
 
 /**
- Access the object at the head of the list.
+ Returns the object at the head of the list.
  
  @return The object at the head of the list, or @c nil if the list is empty.
  
@@ -142,7 +142,7 @@
 - (id) firstObject;
 
 /**
- Access the object at the tail of the list.
+ Returns the object at the tail of the list.
  
  @return The object at the tail of the list, or @c nil if the list is empty.
  
@@ -198,7 +198,7 @@
 // @{
 
 /**
- Remove the item at the head of the list.
+ Removes the item at the head of the list.
  
  @see firstObject
  @see removeLastObject
@@ -242,7 +242,7 @@
 - (void) removeObjectIdenticalTo:(id)anObject;
 
 /**
- Removes the object at @a index. To fill the gap, elements beyond @a index have 1 subtracted from their index.
+ Remove the object at @a index. To fill the gap, elements beyond @a index have 1 subtracted from their index.
  
  @param index The index from which to remove the object.
  @throw NSRangeException If @a index is greater than or equal to the list size. 
@@ -250,7 +250,7 @@
 - (void) removeObjectAtIndex:(NSUInteger)index;
 
 /**
- Remove all objects from the list; no effect if the list is already empty.
+ Empty the receiver of all of its members.
  
  @see removeFirstObject
  @see removeLastObject

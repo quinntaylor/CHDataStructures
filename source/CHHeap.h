@@ -34,7 +34,7 @@
 /**
  Initialize a heap with the contents of an array. Objects are added to the heap as they occur in the array, then "heapified" using an @c NSOrderedAscending heap ordering.
  
- @param anArray An array containing object with which to populate a new heap.
+ @param anArray An array containing objects with which to populate a new heap.
  
  @see initWithOrdering:array:
  */
@@ -53,7 +53,7 @@
  Initialize a heap with a given sort ordering and objects from the given array.
  
  @param order The sort order to use, either @c NSOrderedAscending or @c NSOrderedDescending. The root element of the heap will be the smallest or largest (according to the @c -compare: method), respectively. For any other value, an @c NSInvalidArgumentException is raised.
- @param anArray An array containing objects to be added to this heap.
+ @param anArray An array containing objects with which to populate a new heap.
  */
 - (id) initWithOrdering:(NSComparisonResult)order array:(NSArray*)anArray;
 
@@ -72,9 +72,9 @@
 - (void) addObject:(id)anObject;
 
 /**
- Adds the objects in a given array to this heap, then re-establish the heap property. After all the objects have been inserted, objects are "heapified" as necessary, proceeding backwards from index @c count/2 down to @c 0.
+ Adds the objects in a given array to the receiver, then re-establish the heap property. After all the objects have been inserted, objects are "heapified" as necessary, proceeding backwards from index @c count/2 down to @c 0.
  
- @param anArray An array of objects to add to the heap.
+ @param anArray An array of objects to add to the receiver.
  
  @see addObject:
  */
@@ -103,7 +103,7 @@
  
  @return An array containing the objects in this heap in sorted order. If the heap is empty, the array is also empty.
  
- @attention Since a heap structure is only "sorted" as elements are removed, this method incurs extra costs of (A) time for sorting the contents and (B) memory for storing the extra array. However, it does not affect the order of elements in the heap itself.
+ @attention Since only the first object in a heap is guaranteed to be in sorted order, this method incurs extra costs of (a) time for sorting the contents and (b) memory for storing an extra array. However, it does not affect the order of elements in the heap itself.
  
  @see allObjects
  @see count
@@ -113,22 +113,24 @@
 - (NSArray*) allObjectsInSortedOrder;
 
 /**
- Determines if a heap contains a given object, matched using \link NSObject#isEqual: -isEqual:\endlink.
+ Determine whether the receiver contains a given object, matched using \link NSObject#isEqual: -isEqual:\endlink.
  
  @param anObject The object to test for membership in the heap.
  @return @c YES if @a anObject is in the heap, @c NO if it is @c nil or not present.
  
  @see containsObjectIdenticalTo:
+ @see removeObject:
  */
 - (BOOL) containsObject:(id)anObject;
 
 /**
- Determines if a heap contains a given object, matched using the == operator.
+ Determine whether the receiver contains a given object, matched using the == operator.
  
  @param anObject The object to test for membership in the heap.
  @return @c YES if @a anObject is in the heap, @c NO if it is @c nil or not present.
  
  @see containsObject:
+ @see removeObjectIdenticalTo:
  */
 - (BOOL) containsObjectIdenticalTo:(id)anObject;
 
@@ -145,6 +147,8 @@
  Examine the first object in the heap without removing it.
  
  @return The first object in the heap, or @c nil if the heap is empty.
+ 
+ @see removeFirstObject
  */
 - (id) firstObject;
 
@@ -171,6 +175,7 @@
 /**
  Remove the front object in the heap; if it is already empty, there is no effect.
  
+ @see firstObject
  @see removeAllObjects
  */
 - (void) removeFirstObject;
@@ -181,6 +186,9 @@
  @param anObject The object to be removed from the heap.
  
  If the heap is empty, @a anObject is @c nil, or no object matching @a anObject is found, there is no effect, aside from the possible overhead of searching the contents.
+ 
+ @see containsObject;
+ @see removeObjectIdenticalTo:
  */
 - (void) removeObject:(id)anObject;
 
@@ -190,12 +198,16 @@
  @param anObject The object to be removed from the heap.
  
  If the heap is empty, @a anObject is @c nil, or no object matching @a anObject is found, there is no effect, aside from the possible overhead of searching the contents.
+ 
+ @see containsObjectIdenticalTo:
+ @see removeObject:
  */
 - (void) removeObjectIdenticalTo:(id)anObject;
 
 /**
- Remove all objects from the heap; if it is already empty, there is no effect.
+ Empty the receiver of all of its members.
  
+ @see allObjects
  @see removeFirstObject
  */
 - (void) removeAllObjects;

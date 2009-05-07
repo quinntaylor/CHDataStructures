@@ -64,7 +64,9 @@
 // @{
 
 /**
- Add an object to the receiver. Ordering is based on an object's response to the @c -compare: message. Since no duplicates are allowed, if the receiver already contains an object for which a @c -compare: message returns @c NSOrderedSame, that object is released and replaced by @a anObject.
+ Adds a given object to the receiver, if the object is not already a member.
+ 
+ Ordering is based on an object's response to the @c -compare: message. Since no duplicates are allowed, if the receiver already contains an object for which a @c -compare: message returns @c NSOrderedSame, that object is released and replaced by @a anObject.
  
  @param anObject The object to add to the receiver.
  @throw NSInvalidArgumentException If @a anObject is @c nil.
@@ -74,11 +76,14 @@
 - (void) addObject:(id)anObject;
 
 /**
- Adds the objects in a given array to the receiver. Ordering is based on an object's response to the @c -compare: message. Since no duplicates are allowed, if the receiver already contains an object in the array for which a @c -compare: message returns @c NSOrderedSame, that object is released and replaced by the object from the array.
+ Adds to the receiver each object in a given array, if the object is not already a member.
+ 
+ Ordering is based on an object's response to the @c -compare: message. Since no duplicates are allowed, if the receiver already contains an object for which a @c -compare: message returns @c NSOrderedSame, that object is released and replaced by the matching object from @a anArray.
  
  @param anArray An array of objects to add to the receiver.
  
  @see addObject:
+ @see lastObject
  */
 - (void) addObjectsFromArray:(NSArray*)anArray;
 
@@ -92,7 +97,6 @@
  
  @return An array containing the objects in the receiver. If the receiver is empty, the array is also empty.
  
- @see allObjectsWithTraversalOrder:
  @see anyObject
  @see count
  @see countByEnumeratingWithState:objects:count:
@@ -122,7 +126,7 @@
 - (NSUInteger) count;
 
 /**
- Determines whether a given object is present in the receiver.
+ Determine whether a given object is present in the receiver.
  
  @param anObject The object to test for membership in the receiver.
  @return @c YES if the receiver contains @a anObject (as determined by \link NSObject#isEqual: -isEqual:\endlink), @c NO if @a anObject is @c nil or not present.
@@ -157,7 +161,7 @@
 - (id) lastObject;
 
 /**
- Determines whether the receiver contains a given object, and returns the object if present.
+ Determine whether the receiver contains a given object, and returns the object if present.
  
  @param anObject The object to test for membership in the receiver.
  @return If the receiver contains an object equal to @a anObject (as determined by \link NSObject#isEqual: -isEqual:\endlink) then that object (typically this will be @a anObject) is returned, otherwise @c nil.
@@ -202,6 +206,10 @@
 /**
  Remove all objects from the receiver; if the receiver is already empty, there is no effect.
  
+ @see allObjects
+ @see removeFirstObject
+ @see removeLastObject
+ @see removeObject:
  */
 - (void) removeAllObjects;
 
@@ -224,7 +232,7 @@
 - (void) removeLastObject;
 
 /**
- Remove object for which @c -compare: returns @c NSOrderedSame from the receiver. If no matching object exists, there is no effect.
+ Remove the object for which @c -compare: returns @c NSOrderedSame from the receiver. If no matching object exists, there is no effect.
  
  @param anObject The object to be removed from the receiver.
  
@@ -292,7 +300,6 @@
  @see NSFastEnumeration protocol
  @see allObjects
  @see objectEnumerator
- @see objectEnumeratorWithTraversalOrder:
  */
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf

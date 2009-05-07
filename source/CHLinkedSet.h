@@ -34,7 +34,7 @@
 }
 
 /**
- Initializes a newly allocated linked set.
+ Initialize a linked set with no objects.
  
  @return An initialized object.
  
@@ -44,7 +44,7 @@
 - (id) init;
 
 /**
- Initializes a newly allocated linked set with the objects from in a given array.
+ Initialize a linked set with the objects from in a given array.
  
  @param array An array of objects to add to the new set. If the same object appears more than once in @a array, it is represented only once in the returned set. Each object receives a retain message as it is added to the set.
  
@@ -56,7 +56,7 @@
 - (id) initWithArray:(NSArray *)array;
 
 /**
- Initializes a newly allocated linked set with a given initial capacity. Mutable sets allocate additional memory as needed, so @a numItems simply establishes the object's initial capacity.
+ Initialize a linked set with a given initial capacity. Mutable sets allocate additional memory as needed, so @a numItems simply establishes the object's initial capacity.
  
  @param numItems The initial capacity of the set. A value of @c 0 indicates that the default capacity should be used.
  
@@ -160,27 +160,29 @@
 // @{
 
 /**
- Adds a given object to the receiver, if it is not already a member.
+ Adds a given object to the receiver, if the object is not already a member.
+ 
+ The insertion order for duplicates is only changed if #repeatObjectsMoveToBack returns @a YES.
  
  @param anObject The object to add to the receiver.
  
- If @a anObject is already present in the set, this method has no effect on either the receiver or @a anObject.
- 
  @see addObjectsFromArray:
  @see lastObject
+ @see repeatObjectsMoveToBack
  @see unionSet:
  */
 - (void) addObject:(id)anObject;
 
 /**
- Adds to the receiver each object in a given array, if the object is not already a member.
+ Adds to the receiver each object contained in a given array that is not already a member.
+ 
+ The insertion order for duplicates is only changed if #repeatObjectsMoveToBack returns @c YES.
  
  @param anArray An array of objects to add to the receiver.
  
- If a given element of the array is already present in the receiver, there is no effect on either the receiver or the array element.
- 
  @see addObject:
  @see lastObject
+ @see repeatObjectsMoveToBack
  @see unionSet:
  */
 - (void) addObjectsFromArray:(NSArray*)anArray;
@@ -225,7 +227,7 @@
 - (id) anyObject;
 
 /**
- Determines whether a given object is present in the receiver.
+ Determine whether a given object is present in the receiver.
  
  @param anObject The object to test for membership in the receiver.
  @return @c YES if the receiver contains @a anObject (as determined by \link NSObject#isEqual: -isEqual:\endlink), @c NO if @a anObject is @c nil or not present.
@@ -310,7 +312,7 @@
 - (id) lastObject;
 
 /**
- Determines whether the receiver contains a given object, and returns the object if present.
+ Determine whether the receiver contains a given object, and returns the object if present.
  
  @param anObject The object to test for membership in the receiver.
  @return If the receiver contains an object equal to @a anObject (as determined by \link NSObject#isEqual: -isEqual:\endlink) then that object (typically this will be @a anObject) is returned, otherwise @c nil.
@@ -351,7 +353,7 @@
 // @{
 
 /**
- Removes from the receiver each object that isn't a member of another given set. If @a otherSet is empty, all objects are removed from the receiver, since the intersection is the empty set. In no case is @a otherSet direclty modified.
+ Remove from the receiver each object that isn't a member of another given set. If @a otherSet is empty, all objects are removed from the receiver, since the intersection is the empty set. In no case is @a otherSet direclty modified.
  
  @param otherSet The set with which to perform the intersection.
  
@@ -363,14 +365,16 @@
 - (void) intersectSet:(NSSet*)otherSet;
 
 /**
- Removes from the receiver each object in another given set that is present in the receiver. If no members of @a otherSet are present in the receiving set, this method has no effect on the receiver. In no case is @a otherSet direclty modified.
+ Remove from the receiver each object in another given set that is present in the receiver. If no members of @a otherSet are present in the receiving set, this method has no effect on the receiver. In no case is @a otherSet direclty modified.
  
  @param otherSet The set of objects to remove from the receiver.
  */
 - (void) minusSet:(NSSet*)otherSet;
 
 /**
- Empties the receiver of all of its members.
+ Empty the receiver of all of its members.
+ 
+ @see allObjects
  @see removeFirstObject
  @see removeLastObject
  @see removeObject:
@@ -388,7 +392,7 @@
 - (void) removeLastObject;
 
 /**
- Removes a given object from the receiver.
+ Remove a given object from the receiver.
  
  @param anObject The object to remove from the receiver.
  

@@ -95,7 +95,6 @@ typedef enum {
 
  @see \link allObjects - allObjects\endlink
  @see objectEnumeratorWithTraversalOrder:
- @see \link removeAllObjects - removeAllObjects\endlink
  @see \link reverseObjectEnumerator - reverseObjectEnumerator\endlink
  */
 - (NSArray*) allObjectsWithTraversalOrder:(CHTraversalOrder)order;
@@ -109,7 +108,6 @@ typedef enum {
  @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
  
  @see allObjectsWithTraversalOrder:
- @see \link countByEnumeratingWithState:objects:count: - countByEnumeratingWithState:objects:count:\endlink
  @see \link objectEnumerator - objectEnumerator\endlink
  @see \link reverseObjectEnumerator - reverseObjectEnumerator\endlink
  */
