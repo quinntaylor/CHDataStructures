@@ -169,30 +169,6 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	}
 }
 
-- (void) testContainsObjectIdenticalTo {
-	STAssertNoThrow([emptyTree containsObjectIdenticalTo:nil], @"Should not raise exception.");
-	STAssertFalse([emptyTree containsObjectIdenticalTo:nil], @"Should return NO for nil.");
-	for (id anObject in objects)
-		STAssertFalse([emptyTree containsObjectIdenticalTo:anObject], @"Should return NO.");
-	STAssertNoThrow([emptyTree containsObjectIdenticalTo:@"Z"],
-					@"Should not raise an exception.");
-	STAssertFalse([emptyTree containsObjectIdenticalTo:@"Z"], @"Should return NO");
-	
-	for (id<CHSearchTree> tree in nonEmptyTrees) {
-		STAssertNoThrow([tree containsObjectIdenticalTo:nil], @"Should not raise exception.");
-		STAssertFalse([tree containsObjectIdenticalTo:nil], @"Should return NO for nil.");
-		NSString* differentObject;
-		for (id anObject in correct) {
-			STAssertTrue([tree containsObjectIdenticalTo:anObject], @"Should return YES");
-			differentObject = [NSString stringWithFormat:@"%@", [anObject description]];
-			STAssertFalse([tree containsObjectIdenticalTo:differentObject], @"Should return NO");
-		}
-		STAssertNoThrow([tree containsObjectIdenticalTo:@"Z"],
-						@"Should not raise an exception.");
-		STAssertFalse([tree containsObjectIdenticalTo:@"Z"], @"Should return NO");
-	}
-}
-
 - (void) testDescription {
 	STAssertEqualObjects([zigzagTree description],
 						 [[zigzagTree allObjects] description],
@@ -243,25 +219,6 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	}
 }
 
-- (void) testFindObject {
-	STAssertNoThrow([emptyTree findObject:nil], @"Should not raise an exception.");
-	STAssertNil([emptyTree findObject:nil], @"Should return nil for empty tree.");	
-
-	STAssertNoThrow([emptyTree findObject:@"A"], @"Should not raise an exception.");
-	STAssertNil([emptyTree findObject:@"A"], @"Should return nil for empty tree.");	
-
-	for (id<CHSearchTree> tree in nonEmptyTrees) {
-		STAssertNil([tree findObject:nil], @"Should return nil when given nil.");
-		for (id anObject in objects)
-			STAssertEqualObjects([tree findObject:anObject], anObject,
-								 @"Bad matching object");
-		STAssertNoThrow([tree findObject:@"@"],
-						@"Should not raise an exception.");
-		STAssertNil([tree findObject:@"Z"],
-					@"Should return nil for value not in tree");
-	}
-}
-
 - (void) testFirstObject {
 	STAssertNoThrow([emptyTree firstObject], @"Should not raise an exception.");
 	STAssertNil([emptyTree firstObject], @"Should return nil for empty tree.");
@@ -289,6 +246,25 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 		id<CHSearchTree> tree = [[aClass alloc] initWithArray:objects];
 		STAssertEquals([tree count], [objects count], @"Incorrect count.");
 		[tree release];
+	}
+}
+
+- (void) testMember {
+	STAssertNoThrow([emptyTree member:nil], @"Should not raise an exception.");
+	STAssertNil([emptyTree member:nil], @"Should return nil for empty tree.");	
+
+	STAssertNoThrow([emptyTree member:@"A"], @"Should not raise an exception.");
+	STAssertNil([emptyTree member:@"A"], @"Should return nil for empty tree.");	
+
+	for (id<CHSearchTree> tree in nonEmptyTrees) {
+		STAssertNil([tree member:nil], @"Should return nil when given nil.");
+		for (id anObject in objects)
+			STAssertEqualObjects([tree member:anObject], anObject,
+								 @"Bad matching object");
+		STAssertNoThrow([tree member:@"@"],
+						@"Should not raise an exception.");
+		STAssertNil([tree member:@"Z"],
+					@"Should return nil for value not in tree");
 	}
 }
 
@@ -365,17 +341,6 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	}
 }
 
-- (void) testReverseObjectEnumerator {
-	for (Class aClass in treeClasses) {
-		id<CHSearchTree> tree = [[aClass alloc] initWithArray:objects];
-	
-		NSEnumerator *e = [tree reverseObjectEnumerator];
-		for (id anObject in [NSArray arrayWithObjects:@"E",@"D",@"C",@"B",@"A",nil]) {
-			STAssertEqualObjects([e nextObject], anObject, @"Bad ordering.");
-		}
-	}
-}
-
 - (void) testRemoveAllObjects {
 	STAssertEquals([emptyTree count], (NSUInteger)0, @"Incorrect count.");
 	[emptyTree removeAllObjects];
@@ -385,6 +350,35 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 		STAssertEquals([tree count], [objects count], @"Incorrect count.");
 		[tree removeAllObjects];
 		STAssertEquals([tree count], (NSUInteger)0, @"Incorrect count.");
+	}
+}
+
+- (void) testRemoveFirstObject {
+	STAssertNoThrow([emptyTree removeFirstObject], @"Should not raise exception.");
+	for (id<CHSearchTree> tree in nonEmptyTrees) {
+		STAssertEqualObjects([tree firstObject], @"A", @"Wrong first object.");
+		STAssertNoThrow([tree removeFirstObject], @"Should not raise exception.");
+		STAssertEqualObjects([tree firstObject], @"B", @"Wrong first object.");
+	}
+}
+
+- (void) testRemoveLastObject {
+	STAssertNoThrow([emptyTree removeLastObject], @"Should not raise exception.");
+	for (id<CHSearchTree> tree in nonEmptyTrees) {
+		STAssertEqualObjects([tree lastObject], @"E", @"Wrong first object.");
+		STAssertNoThrow([tree removeLastObject], @"Should not raise exception.");
+		STAssertEqualObjects([tree lastObject], @"D", @"Wrong first object.");
+	}
+}
+
+- (void) testReverseObjectEnumerator {
+	for (Class aClass in treeClasses) {
+		id<CHSearchTree> tree = [[aClass alloc] initWithArray:objects];
+	
+		NSEnumerator *e = [tree reverseObjectEnumerator];
+		for (id anObject in [NSArray arrayWithObjects:@"E",@"D",@"C",@"B",@"A",nil]) {
+			STAssertEqualObjects([e nextObject], anObject, @"Bad ordering.");
+		}
 	}
 }
 

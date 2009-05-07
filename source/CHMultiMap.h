@@ -219,8 +219,7 @@
 /**
  Returns the number of keys in the receiver.
  
- @return The number of keys in the receiver, regardless of how many objects are
- associated with any given key in the dictionary.
+ @return The number of keys in the receiver, regardless of how many objects are associated with any given key in the dictionary.
  
  @see allKeys
  */
@@ -246,7 +245,7 @@
 - (NSUInteger) countForKey:(id)aKey;
 
 /**
- Returns a Boolean that tells whether a given key is present in the receiver.
+ Determines whether a given key is present in the receiver.
  
  @param aKey The key to check for membership in the receiver.
  @return @c YES if an entry for @a aKey exists in the receiver.
@@ -256,9 +255,9 @@
 - (BOOL) containsKey:(id)aKey;
 
 /**
- Returns a Boolean that tells whether a given object is present in the receiver.
+ Determines whether a given object is present in the receiver.
  
- @param anObject An object to check for membership in the receiver.
+ @param anObject The object to check for membership in the receiver.
  @return @c YES if @a anObject is associated with 1 or more keys in the receiver.
  
  @see allObjects

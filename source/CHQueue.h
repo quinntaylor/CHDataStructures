@@ -26,6 +26,8 @@
 
 /**
  Initialize a queue with no objects.
+ 
+ @see initWithArray:
  */
 - (id) init;
 
@@ -69,18 +71,24 @@
 - (NSArray*) allObjects;
 
 /**
- Checks if a queue contains a given object, matched using @c isEqual:.
+ Determines if a queue contains a given object, matched using \link NSObject#isEqual: -isEqual:\endlink.
  
- @param anObject The object to test for membership in the queue.
- @return @c YES if @a anObject is in the queue, @c NO if it is @c nil or not present.
+ @param anObject The object to check for membership in the receiver.
+ @return @c YES if the receiver contains @a anObject (as determined by \link NSObject#isEqual: -isEqual:\endlink), @c NO if @a anObject is @c nil or not present.
+ 
+ @see containsObjectIdenticalTo:
+ @see removeObject:
  */
 - (BOOL) containsObject:(id)anObject;
 
 /**
- Checks if a queue contains a given object, matched using the == operator.
+ Determines if a queue contains a given object, matched using the == operator.
  
- @param anObject The object to test for membership in the queue.
- @return @c YES if @a anObject is in the queue, @c NO if it is @c nil or not present.
+ @param anObject The object to check for membership in the receiver.
+ @return @c YES if the receiver contains @a anObject (as determined by the == operator), @c NO if @a anObject is @c nil or not present.
+ 
+ @see containsObject:
+ @see removeObjectIdenticalTo:
  */
 - (BOOL) containsObjectIdenticalTo:(id)anObject;
 
@@ -135,6 +143,7 @@
  Remove the front object in the queue; no effect if the queue is already empty.
  
  @see firstObject
+ @see removeObject:
  */
 - (void) removeFirstObject;
 
@@ -144,6 +153,9 @@
  @param anObject The object to be removed from the queue.
  
  If the queue is empty, @a anObject is @c nil, or no object matching @a anObject is found, there is no effect, aside from the possible overhead of searching the contents.
+ 
+ @see containsObject:
+ @see removeObjectIdenticalTo:
  */
 - (void) removeObject:(id)anObject;
 
@@ -153,11 +165,18 @@
  @param anObject The object to be removed from the queue.
  
  If the queue is empty, @a anObject is @c nil, or no object matching @a anObject is found, there is no effect, aside from the possible overhead of searching the contents.
+ 
+ @see containsObjectIdenticalTo:
+ @see removeObject:
  */
 - (void) removeObjectIdenticalTo:(id)anObject;
 
 /**
  Remove all objects from the queue; no effect if the queue is already empty.
+ 
+ @see removeFirstObject
+ @see removeObject:
+ @see removeObjectIdenticalTo:
  */
 - (void) removeAllObjects;
 

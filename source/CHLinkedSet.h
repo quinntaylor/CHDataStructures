@@ -167,6 +167,7 @@
  If @a anObject is already present in the set, this method has no effect on either the receiver or @a anObject.
  
  @see addObjectsFromArray:
+ @see lastObject
  @see unionSet:
  */
 - (void) addObject:(id)anObject;
@@ -179,6 +180,7 @@
  If a given element of the array is already present in the receiver, there is no effect on either the receiver or the array element.
  
  @see addObject:
+ @see lastObject
  @see unionSet:
  */
 - (void) addObjectsFromArray:(NSArray*)anArray;
@@ -190,7 +192,6 @@
  
  @attention The insertion order of objects from @a otherSet is undefined.
  
- @see addObject:
  @see addObjectsFromArray:
  */
 - (void) unionSet:(NSSet*)otherSet;
@@ -218,16 +219,20 @@
  @return One of the objects in the receiver, or @c nil if the receiver contains no objects. The object returned is chosen at the receiver's convenience—the selection is not guaranteed to be random.
  
  @see allObjects
- @see objectEnumerator
+ @see firstObject
+ @see lastObject
  */
 - (id) anyObject;
 
 /**
- Returns whether a given object is present in the receiver.
+ Determines whether a given object is present in the receiver.
  
- @param anObject The object for which to test membership of the receiver.
+ @param anObject The object to test for membership in the receiver.
+ @return @c YES if the receiver contains @a anObject (as determined by \link NSObject#isEqual: -isEqual:\endlink), @c NO if @a anObject is @c nil or not present.
+
+ @attention To test whether the matching object is identical to @a anObject, compare @a anObject with the value returned from #member: using the == operator.
  
- @return @c YES if anObject is present in the receiver, otherwise @c NO.
+ @see member:
  */
 - (BOOL) containsObject:(id)anObject;
 
@@ -259,6 +264,7 @@
  @attention If #repeatObjectsMoveToBack returns @c YES, this is the least recently (re)inserted object, otherwise it is the first-inserted member of the receiver
  
  @see addObject:
+ @see anyObject
  @see removeFirstObject
  */
 - (id) firstObject;
@@ -304,13 +310,14 @@
 - (id) lastObject;
 
 /**
- Determines whether the receiver contains a given object, and returns it if present.
+ Determines whether the receiver contains a given object, and returns the object if present.
  
  @param anObject The object to test for membership in the receiver.
+ @return If the receiver contains an object equal to @a anObject (as determined by \link NSObject#isEqual: -isEqual:\endlink) then that object (typically this will be @a anObject) is returned, otherwise @c nil.
  
- @return If the receiver contains an object equal to @c anObject (as determined by @c isEqual:) then that object (typically this will be @a anObject), otherwise @c nil.
+ @attention If you override \link NSObject#isEqual: -isEqual:\endlink for a custom class, you must also override \link NSObject#hash -hash\endlink for #member: to work correctly on objects of your class.
  
- @attention If you override @c -isEqual: for a custom class, you must also override @c -hash method in order for #member: to work correctly on objects of your class.
+ @see containsObject:
  */
 - (id) member:(id)anObject;
 

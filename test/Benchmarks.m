@@ -388,12 +388,12 @@ void benchmarkTree(Class testClass) {
 		[tree release];
 	}
 	
-	printf("\nfindObject:         ");
+	printf("\nmember:         ");
 	for (NSArray *array in objects) {
 		tree = [[testClass alloc] init];
 		startTime = timestamp();
 		for (id anObject in array)
-			[tree findObject:anObject];
+			[tree member:anObject];
 		printf("\t%f", timestamp() - startTime);
 		[tree release];
 	}
@@ -476,7 +476,7 @@ int main (int argc, const char * argv[]) {
 	for (Class aClass in testClasses) {
 		dictionary = [NSMutableDictionary dictionary];
 		[dictionary setObject:[NSMutableArray array] forKey:@"addObject"];
-		[dictionary setObject:[NSMutableArray array] forKey:@"findObject"];
+		[dictionary setObject:[NSMutableArray array] forKey:@"member"];
 		[dictionary setObject:[NSMutableArray array] forKey:@"removeObject"];
 		if ([aClass conformsToProtocol:@protocol(CHSearchTree)])
 			[dictionary setObject:[NSMutableArray array] forKey:@"height"];
@@ -522,7 +522,7 @@ int main (int argc, const char * argv[]) {
 				 [NSString stringWithFormat:@"%u,%f",
 				  jitteredSize, duration/size*scale]];
 				
-				// findObject:
+				// member:
 				nanosleep(&sleepDelay, &sleepRemain);
 				int index = 0;
 				startTime = timestamp();
@@ -532,7 +532,7 @@ int main (int argc, const char * argv[]) {
 					[tree containsObject:anObject];
 				}
 				duration = timestamp() - startTime;
-				[[dictionary objectForKey:@"findObject"] addObject:
+				[[dictionary objectForKey:@"member"] addObject:
 				 [NSString stringWithFormat:@"%u,%f",
 				  jitteredSize, duration/size*scale]];
 				

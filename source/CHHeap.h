@@ -113,10 +113,12 @@
 - (NSArray*) allObjectsInSortedOrder;
 
 /**
- Determines if a heap contains a given object, matched using @c isEqual:.
+ Determines if a heap contains a given object, matched using \link NSObject#isEqual: -isEqual:\endlink.
  
  @param anObject The object to test for membership in the heap.
  @return @c YES if @a anObject is in the heap, @c NO if it is @c nil or not present.
+ 
+ @see containsObjectIdenticalTo:
  */
 - (BOOL) containsObject:(id)anObject;
 
@@ -125,6 +127,8 @@
  
  @param anObject The object to test for membership in the heap.
  @return @c YES if @a anObject is in the heap, @c NO if it is @c nil or not present.
+ 
+ @see containsObject:
  */
 - (BOOL) containsObjectIdenticalTo:(id)anObject;
 

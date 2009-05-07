@@ -29,6 +29,8 @@
 
 /**
  Initialize a linked list with no objects.
+ 
+ @see initWithArray:
  */
 - (id) init;
 
@@ -99,18 +101,24 @@
 - (NSArray*) allObjects;
 
 /**
- Determines if a list contains a given object, matched using @c isEqual:.
+ Determines if a list contains a given object, matched using \link NSObject#isEqual: -isEqual:\endlink.
  
- @param anObject The object to test for membership in the list.
- @return @c YES if @a anObject is in the list, @c NO if it is @c nil or not present.
+ @param anObject The object to check for membership in the receiver.
+ @return @c YES if the receiver contains @a anObject (as determined by \link NSObject#isEqual: -isEqual:\endlink), @c NO if @a anObject is @c nil or not present.
+ 
+ @see containsObjectIdenticalTo:
+ @see removeObject:
  */
 - (BOOL) containsObject:(id)anObject;
 
 /**
  Determines if a list contains a given object, matched using the == operator.
  
- @param anObject The object to test for membership in the list.
- @return @c YES if @a anObject is in the list, @c NO if it is @c nil or not present.
+ @param anObject The object to check for membership in the receiver.
+ @return @c YES if the receiver contains @a anObject (as determined by the == operator), @c NO if @a anObject is @c nil or not present.
+ 
+ @see containsObject:
+ @see removeObjectIdenticalTo:
  */
 - (BOOL) containsObjectIdenticalTo:(id)anObject;
 
@@ -212,7 +220,10 @@
  
  If the list is empty, @a anObject is @c nil, or no object matching @a anObject is found, there is no effect, aside from the possible overhead of searching the contents.
  
- @attention Removes all matching objects. Use #indexOfObject: and #removeObjectAtIndex: to search for and remove only a specific match.
+ @note Use #indexOfObject: and #removeObjectAtIndex: to search for and remove only a specific match.
+ 
+ @see containsObject:
+ @see removeObjectIdenticalTo:
  */
 - (void) removeObject:(id)anObject;
 
@@ -223,7 +234,10 @@
  
  If the list is empty, @a anObject is @c nil, or no object matching @a anObject is found, there is no effect, aside from the possible overhead of searching the contents.
  
- @attention Removes all matching objects. Use #indexOfObjectIdenticalTo: and #removeObjectAtIndex: to search for and remove only a specific match.
+ @note Use #indexOfObjectIdenticalTo: and #removeObjectAtIndex: to search for and remove only a specific match.
+ 
+ @see containsObjectIdenticalTo:
+ @see removeObject:
  */
 - (void) removeObjectIdenticalTo:(id)anObject;
 
@@ -240,6 +254,8 @@
  
  @see removeFirstObject
  @see removeLastObject
+ @see removeObject:
+ @see removeObjectIdenticalTo:
  */
 - (void) removeAllObjects;
 

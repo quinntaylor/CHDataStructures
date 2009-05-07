@@ -26,6 +26,8 @@
 
 /**
  Initialize a stack with no objects.
+ 
+ @see initWithArray:
  */
 - (id) init;
 
@@ -69,10 +71,13 @@
 - (NSArray*) allObjects;
 
 /**
- Checks if a stack contains a given object, matched using @c isEqual:.
+ Determines if a stack contains a given object, matched using \link NSObject#isEqual: -isEqual:\endlink.
  
- @param anObject The object to test for membership in the stack.
- @return @c YES if @a anObject is in the stack, @c NO if it is @c nil or not present.
+ @param anObject The object to check for membership in the receiver.
+ @return @c YES if the receiver contains @a anObject (as determined by \link NSObject#isEqual: -isEqual:\endlink), @c NO if @a anObject is @c nil or not present.
+ 
+ @see containsObjectIdenticalTo:
+ @see removeObject:
  */
 - (BOOL) containsObject:(id)anObject;
 
@@ -80,7 +85,10 @@
  Determines if a stack contains a given object, matched using the == operator.
  
  @param anObject The object to test for membership in the stack.
- @return @c YES if @a anObject is in the stack, @c NO if it is @c nil or not present.
+ @return @c YES if the receiver contains @a anObject (as determined by the == operator), @c NO if @a anObject is @c nil or not present.
+ 
+ @see containsObject:
+ @see removeObjectIdenticalTo:
  */
 - (BOOL) containsObjectIdenticalTo:(id)anObject;
 
@@ -111,8 +119,8 @@
  
  @return The topmost object from the stack.
  
- @see pushObject:
  @see popObject
+ @see pushObject:
  */
 - (id) topObject;
 
@@ -125,6 +133,7 @@
  Remove the topmost object on the stack; no effect if the stack is already empty.
  
  @see pushObject:
+ @see removeObject:
  @see topObject
  */
 - (void) popObject;
@@ -135,6 +144,9 @@
  @param anObject The object to be removed from the stack.
  
  If the stack is empty, @a anObject is @c nil, or no object matching @a anObject is found, there is no effect, aside from the possible overhead of searching the contents.
+ 
+ @see containsObject:
+ @see removeObjectIdenticalTo:
  */
 - (void) removeObject:(id)anObject;
 
@@ -144,11 +156,19 @@
  @param anObject The object to be removed from the stack.
  
  If the stack is empty, @a anObject is @c nil, or no object matching @a anObject is found, there is no effect, aside from the possible overhead of searching the contents.
+ 
+ @see containsObjectIdenticalTo:
+ @see removeObject:
  */
 - (void) removeObjectIdenticalTo:(id)anObject;
 
 /**
  Remove all objects from the stack; no effect if the stack is already empty.
+ 
+ 
+ @see popObject
+ @see removeObject:
+ @see removeObjectIdenticalTo:
  */
 - (void) removeAllObjects;
 

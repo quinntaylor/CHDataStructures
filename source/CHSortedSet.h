@@ -47,6 +47,8 @@
 
 /**
  Initialize a sorted set with no objects.
+ 
+ @see initWithArray:
  */
 - (id) init;
 
@@ -113,62 +115,58 @@
 /**
  Returns the number of objects currently in the receiver.
  
+ @return The number of objects currently in the receiver.
+ 
  @see allObjects
  */
 - (NSUInteger) count;
 
 /**
- Determines if the receiver contains a given object, matched using @c isEqual:.
+ Determines whether a given object is present in the receiver.
  
  @param anObject The object to test for membership in the receiver.
- @return @c YES if the receiver contains @a anObject, @c NO if @a anObject is @c nil or not present.
+ @return @c YES if the receiver contains @a anObject (as determined by \link NSObject#isEqual: -isEqual:\endlink), @c NO if @a anObject is @c nil or not present.
  
- @see containsObjectIdenticalTo:
- @see findObject:
+ @attention To test whether the matching object is identical to @a anObject, compare @a anObject with the value returned from #member: using the == operator.
+ 
+ @see member:
  */
 - (BOOL) containsObject:(id)anObject;
 
 /**
- Determines if the receiver contains a given object, matched using the == operator.
- 
- @param anObject The object to test for membership in the receiver.
- @return @c YES if the receiver contains @a anObject, @c NO if @a anObject is @c nil or not present.
- 
- @see containsObject
- @see findObject:
- */
-- (BOOL) containsObjectIdenticalTo:(id)anObject;
-
-/**
- Return the object in the receiver for which @c -compare: returns @c NSOrderedSame.
- 
- @param anObject The object to search for in the receiver.
- @return The object which matches @a anObject, or @c nil if no match is found.
- 
- @see containsObject:
- @see containsObjectIdenticalTo:
- */
-- (id) findObject:(id)anObject;
-
-/**
- Returns the minimum object in the receiver, according to its sorted order.
+ Returns the minimum object in the receiver, according to natural sorted order.
  
  @return The minimum object in the receiver, or @c nil if the receiver is empty.
  
  @see anyObject
  @see lastObject
+ @see removeFirstObject
  */
 - (id) firstObject;
 
 /**
- Returns the maximum object in the receiver, according to its sorted order.
+ Returns the maximum object in the receiver, according to natural sorted order.
  
  @return The maximum object in the receiver, or @c nil if the receiver is empty.
  
+ @see addObject:
  @see anyObject
  @see firstObject
+ @see removeLastObject
  */
 - (id) lastObject;
+
+/**
+ Determines whether the receiver contains a given object, and returns the object if present.
+ 
+ @param anObject The object to test for membership in the receiver.
+ @return If the receiver contains an object equal to @a anObject (as determined by \link NSObject#isEqual: -isEqual:\endlink) then that object (typically this will be @a anObject) is returned, otherwise @c nil.
+ 
+ @attention If you override \link NSObject#isEqual: -isEqual:\endlink for a custom class, you must also override \link NSObject#hash -hash\endlink for #member: to work correctly on objects of your class.
+
+ @see containsObject:
+ */
+- (id) member:(id)anObject;
 
 /**
  Returns an enumerator that accesses each object in the receiver in ascending order.
@@ -202,22 +200,40 @@
 // @{
 
 /**
+ Remove all objects from the receiver; if the receiver is already empty, there is no effect.
+ 
+ */
+- (void) removeAllObjects;
+
+/**
+ Remove the minimum object from the receiver, according to natural sorted order.
+ 
+ @see firstObject
+ @see removeLastObject
+ @see removeObject:
+ */
+- (void) removeFirstObject;
+
+/**
+ Remove the maximum object from the receiver, according to natural sorted order.
+ 
+ @see lastObject
+ @see removeFirstObject
+ @see removeObject:
+ */
+- (void) removeLastObject;
+
+/**
  Remove object for which @c -compare: returns @c NSOrderedSame from the receiver. If no matching object exists, there is no effect.
  
  @param anObject The object to be removed from the receiver.
  
  If the receiver is empty, @a anObject is @c nil, or no object matching @a anObject is found, there is no effect, aside from the possible overhead of searching the contents.
  
+ @see containsObject:
  @see removeAllObjects
  */
 - (void) removeObject:(id)anObject;
-
-/**
- Remove all objects from the receiver; if the receiver is already empty, there is no effect.
- 
- @see removeObject:
- */
-- (void) removeAllObjects;
 
 // @}
 #pragma mark <NSCoding>

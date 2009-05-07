@@ -411,11 +411,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 }
 
 - (BOOL) containsObject:(id)anObject {
-	return ([self findObject:anObject] != nil);
-}
-
-- (BOOL) containsObjectIdenticalTo:(id)anObject {
-	return (anObject == nil) ? NO : ([self findObject:anObject] == anObject);
+	return ([self member:anObject] != nil);
 }
 
 - (NSUInteger) count {
@@ -424,17 +420,6 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 
 - (NSString*) description {
 	return [[self allObjectsWithTraversalOrder:CHTraverseAscending] description];
-}
-
-- (id) findObject:(id)anObject {
-	if (anObject == nil)
-		return nil;
-	sentinel->object = anObject; // Make sure the target value is always "found"
-	CHBinaryTreeNode *current = header->right;
-	NSComparisonResult comparison;
-	while (comparison = [current->object compare:anObject]) // while not equal
-		current = current->link[comparison == NSOrderedAscending]; // R on YES
-	return (current != sentinel) ? current->object : nil;
 }
 
 - (id) firstObject {
@@ -451,6 +436,30 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 	while (current->right != sentinel)
 		current = current->right;
 	return current->object;
+}
+
+- (id) member:(id)anObject {
+	if (anObject == nil)
+		return nil;
+	sentinel->object = anObject; // Make sure the target value is always "found"
+	CHBinaryTreeNode *current = header->right;
+	NSComparisonResult comparison;
+	while (comparison = [current->object compare:anObject]) // while not equal
+		current = current->link[comparison == NSOrderedAscending]; // R on YES
+	return (current != sentinel) ? current->object : nil;
+}
+
+- (NSEnumerator*) objectEnumerator {
+	return [self objectEnumeratorWithTraversalOrder:CHTraverseAscending];
+}
+
+- (NSEnumerator*) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order {
+	return [[[CHBinarySearchTreeEnumerator alloc]
+			 initWithTree:self
+	                 root:header->right
+	             sentinel:sentinel
+	       traversalOrder:order
+	      mutationPointer:&mutations] autorelease];
 }
 
 // Doesn't call -[NSGarbageCollector collectIfNeeded] -- lets the sender choose.
@@ -483,17 +492,14 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 	sentinel->object = nil; // Make sure we don't accidentally retain an object.
 }
 
-- (NSEnumerator*) objectEnumerator {
-	return [self objectEnumeratorWithTraversalOrder:CHTraverseAscending];
+// Incurs an extra search cost, but we don't know how the child class removes...
+- (void) removeFirstObject {
+	[self removeObject:[self firstObject]];
 }
 
-- (NSEnumerator*) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order {
-	return [[[CHBinarySearchTreeEnumerator alloc]
-			 initWithTree:self
-	                 root:header->right
-	             sentinel:sentinel
-	       traversalOrder:order
-	      mutationPointer:&mutations] autorelease];
+// Incurs an extra search cost, but we don't know how the child class removes...
+- (void) removeLastObject {
+	[self removeObject:[self lastObject]];
 }
 
 - (NSEnumerator*) reverseObjectEnumerator {

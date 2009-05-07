@@ -23,6 +23,8 @@
 
 /**
  Initialize a deque with no objects.
+ 
+ @see initWithArray:
  */
 - (id) init;
 
@@ -42,6 +44,9 @@
  
  @param anObject The object to add to the front of the deque.
  @throw NSInvalidArgumentException If @a anObject is @c nil.
+ 
+ @see firstObject
+ @see removeFirstObject
  */
 - (void) prependObject:(id)anObject;
 
@@ -50,6 +55,9 @@
  
  @param anObject The object to add to the back of the deque.
  @throw NSInvalidArgumentException If @a anObject is @c nil.
+
+ @see lastObject
+ @see removeLastObject
  */
 - (void) appendObject:(id)anObject;
 
@@ -70,6 +78,28 @@
  @see reverseObjectEnumerator
  */
 - (NSArray*) allObjects;
+
+/**
+ Determines if a deque contains a given object, matched using \link NSObject#isEqual: -isEqual:\endlink.
+ 
+ @param anObject The object to check for membership in the receiver.
+ @return @c YES if the receiver contains @a anObject (as determined by \link NSObject#isEqual: -isEqual:\endlink), @c NO if @a anObject is @c nil or not present.
+ 
+ @see containsObjectIdenticalTo:
+ @see removeObject:
+ */
+- (BOOL) containsObject:(id)anObject;
+
+/**
+ Determines if a deque contains a given object, matched using the == operator.
+ 
+ @param anObject The object to check for membership in the receiver.
+ @return @c YES if the receiver contains @a anObject (as determined by the == operator), @c NO if @a anObject is @c nil or not present.
+ 
+ @see containsObject:
+ @see removeObjectIdenticalTo:
+ */
+- (BOOL) containsObjectIdenticalTo:(id)anObject;
 
 /**
  Returns the number of objects currently in the deque.
@@ -126,22 +156,6 @@
  */
 - (NSEnumerator*) reverseObjectEnumerator;
 
-/**
- Determines if a deque contains a given object, matched using @c isEqual:.
- 
- @param anObject The object to test for membership in the deque. 
- @return @c YES if @a anObject is in the deque, @c NO if it is @c nil or not present.
- */
-- (BOOL) containsObject:(id)anObject;
-
-/**
- Determines if a deque contains a given object, matched using the == operator.
- 
- @param anObject The object to test for membership in the deque.
- @return @c YES if @a anObject is in the deque, @c NO if it is @c nil or not present.
- */
-- (BOOL) containsObjectIdenticalTo:(id)anObject;
-
 // @}
 #pragma mark Removing Objects
 /** @name Removing Objects */
@@ -152,6 +166,7 @@
  
  @see firstObject
  @see removeLastObject
+ @see removeObject:
  */
 - (void) removeFirstObject;
 
@@ -160,6 +175,7 @@
  
  @see lastObject
  @see removeFirstObject
+ @see removeObject:
  */
 - (void) removeLastObject;
 
@@ -169,6 +185,9 @@
  @param anObject The object to be removed from the deque.
 
  If the deque is empty, @a anObject is @c nil, or no object matching @a anObject is found, there is no effect, aside from the possible overhead of searching the contents.
+ 
+ @see containsObject:
+ @see removeObjectIdenticalTo:
  */
 - (void) removeObject:(id)anObject;
 
@@ -178,6 +197,9 @@
  @param anObject The object to be removed from the deque.
  
  If the deque is empty, @a anObject is @c nil, or no object matching @a anObject is found, there is no effect, aside from the possible overhead of searching the contents.
+ 
+ @see containsObjectIdenticalTo:
+ @see removeObject:
  */
 - (void) removeObjectIdenticalTo:(id)anObject;
 
@@ -186,6 +208,8 @@
  
  @see removeFirstObject
  @see removeLastObject
+ @see removeObject:
+ @see removeObjectIdenticalTo:
  */
 - (void) removeAllObjects;
 
