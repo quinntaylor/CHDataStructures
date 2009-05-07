@@ -213,7 +213,7 @@
  
  @param zone An area of memory from which to allocate the new instance. If zone is @c nil, the default zone is used. 
  
- @note \link NSObject#copy -[NSObject copy]\endlink invokes this method with a @c nil argument.
+ @note The default \link NSObject#copy -copy\endlink method invokes this method with a @c nil argument.
  @return A new instance that is a copy of the receiver.
  
  @see NSCopying protocol
