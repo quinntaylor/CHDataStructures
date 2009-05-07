@@ -25,11 +25,10 @@
 - (id) initWithCapacity:(NSUInteger)numItems {
 	if ([super init] == nil) return nil;
 	ordering = [[CHDoublyLinkedList alloc] init];
-	objects = [NSMutableSet alloc];
 	if (numItems > 0)
-		[objects initWithCapacity:numItems];
+		objects = [[NSMutableSet alloc] initWithCapacity:numItems];
 	else
-		[objects init];
+		objects = [[NSMutableSet alloc] init];
 	return self;
 }
 
