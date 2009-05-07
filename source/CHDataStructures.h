@@ -25,6 +25,7 @@
 #import "CHCircularBufferQueue.h"
 #import "CHCircularBufferStack.h"
 #import "CHDoublyLinkedList.h"
+#import "CHLinkedSet.h"
 #import "CHListDeque.h"
 #import "CHListQueue.h"
 #import "CHListStack.h"

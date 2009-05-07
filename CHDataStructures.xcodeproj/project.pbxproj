@@ -103,7 +103,7 @@
 		E48BF9730EE7A2010004D5E6 /* CHMultiMap.m in Sources */ = {isa = PBXBuildFile; fileRef = E48BF9720EE7A2010004D5E6 /* CHMultiMap.m */; };
 		E48BFA850EE842CF0004D5E6 /* CHMultiMapTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E48BFA840EE842CF0004D5E6 /* CHMultiMapTest.m */; };
 		E48BFBB00EE858F40004D5E6 /* CHHeapTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D18220E9452BB007F39D8 /* CHHeapTest.m */; };
-		E49BE2830FB21058002904AB /* CHLinkedSet.h in Headers */ = {isa = PBXBuildFile; fileRef = E49BE2810FB21058002904AB /* CHLinkedSet.h */; };
+		E49BE2830FB21058002904AB /* CHLinkedSet.h in Headers */ = {isa = PBXBuildFile; fileRef = E49BE2810FB21058002904AB /* CHLinkedSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E49BE2840FB21058002904AB /* CHLinkedSet.m in Sources */ = {isa = PBXBuildFile; fileRef = E49BE2820FB21058002904AB /* CHLinkedSet.m */; };
 		E49BE3DC0FB230D4002904AB /* CHLinkedSetTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E49BE3DB0FB230D4002904AB /* CHLinkedSetTest.m */; };
 		E4A720C60EA78DCE00E0AC21 /* CHAbstractListCollectionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A720C50EA78DCE00E0AC21 /* CHAbstractListCollectionTest.m */; };
