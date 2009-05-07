@@ -151,7 +151,7 @@
     <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Protocols/NSObject_Protocol/Reference/NSObject.html</filename>
     <member kind="function">
       <name>isEqual:</name>
-      <anchor>//apple_ref/occ/instm/NSObject/isEqual:</anchor>
+      <anchor>//apple_ref/occ/intfm/NSObject/isEqual:</anchor>
     </member>
     <member kind="function">
       <name>hash</name>
