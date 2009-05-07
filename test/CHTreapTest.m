@@ -91,9 +91,11 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 - (void) testAddObject {
 	STAssertThrows([tree addObject:nil], @"Should raise an exception.");
 	
+	NSUInteger count;
 	// Repeat a few times to get a decent random spread.
 	for (int tries = 1; tries <= 5; tries++) {
-		NSUInteger count = 0;
+		[tree removeAllObjects];
+		count = 0;
 		for (id anObject in objects) {
 			[tree addObject:anObject];
 			STAssertEquals([tree count], ++count, @"Incorrect count.");
@@ -101,7 +103,6 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 			STAssertNoThrow([tree verify], @"Not a valid treap: %@",
 							[tree debugDescription]);
 		}
-		[tree removeAllObjects];
 	}
 	
 	// Test adding an existing object to the treap
