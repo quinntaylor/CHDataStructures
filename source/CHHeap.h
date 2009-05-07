@@ -32,7 +32,7 @@
 - (id) init;
 
 /**
- Initialize a heap with the contents of an array. Objects are added to the heap as they occur in the array, then "heapified" using an @c NSOrderedAscending heap ordering.
+ Initialize a heap with ascending ordering and objects from a given array. Objects are added to the heap as they occur in the array, then "heapified" with an ordering of @c NSOrderedAscending.
  
  @param anArray An array containing objects with which to populate a new heap.
  
@@ -50,7 +50,7 @@
 - (id) initWithOrdering:(NSComparisonResult)order;
 
 /**
- Initialize a heap with a given sort ordering and objects from the given array.
+ Initialize a heap with a given sort ordering and objects from a given array. Objects are added to the heap as they occur in the array, then "heapified" with an ordering of @a order.
  
  @param order The sort order to use, either @c NSOrderedAscending or @c NSOrderedDescending. The root element of the heap will be the smallest or largest (according to the @c -compare: method), respectively. For any other value, an @c NSInvalidArgumentException is raised.
  @param anArray An array containing objects with which to populate a new heap.
