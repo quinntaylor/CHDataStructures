@@ -143,12 +143,20 @@
     <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSObject_Class/Reference/Reference.html</filename>
     <member kind="function">
       <name>copy</name>
-      <anchor>//apple_ref/occ/instm/NSObject/copy</anchor>
+      <anchor>//apple_ref/occ/intfm/NSObject/copy</anchor>
     </member>
   </compound>
   <compound kind="protocol">
     <name>NSObject</name>
     <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Protocols/NSObject_Protocol/Reference/NSObject.html</filename>
+    <member kind="function">
+      <name>isEqual:</name>
+      <anchor>//apple_ref/occ/instm/NSObject/isEqual:</anchor>
+    </member>
+    <member kind="function">
+      <name>hash</name>
+      <anchor>//apple_ref/occ/intfm/NSObject/hash</anchor>
+    </member>
   </compound>
   <compound kind="class">
     <name>NSRecursiveLock</name>
