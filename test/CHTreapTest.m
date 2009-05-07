@@ -91,13 +91,17 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 - (void) testAddObject {
 	STAssertThrows([tree addObject:nil], @"Should raise an exception.");
 	
-	NSUInteger count = 0;
-	for (id anObject in objects) {
-		[tree addObject:anObject];
-		STAssertEquals([tree count], ++count, @"Incorrect count.");
-		// Can't test a specific order because of randomly-assigned priorities
-		STAssertNoThrow([tree verify], @"Not a valid treap: %@",
-						[tree debugDescription]);
+	// Repeat a few times to get a decent random spread.
+	for (int tries = 1; tries <= 5; tries++) {
+		NSUInteger count = 0;
+		for (id anObject in objects) {
+			[tree addObject:anObject];
+			STAssertEquals([tree count], ++count, @"Incorrect count.");
+			// Can't test a specific order because of randomly-assigned priorities
+			STAssertNoThrow([tree verify], @"Not a valid treap: %@",
+							[tree debugDescription]);
+		}
+		[tree removeAllObjects];
 	}
 	
 	// Test adding an existing object to the treap
