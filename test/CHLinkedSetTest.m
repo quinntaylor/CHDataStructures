@@ -56,20 +56,37 @@
 
 #pragma mark Adding Objects
 
-- (void) testAddObject {
-	[set addObject:@"A"];
-	[set addObject:@"B"];
-	[set addObject:@"C"];
-	[set addObject:@"A"];
-
+- (void) testAddObjectsAndOrdering {
+	NSArray *array = [self randomNumbers];
+	NSArray *abca = [NSArray arrayWithObjects:@"A",@"B",@"C",@"A",nil];
+	NSArray *abc = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
+	NSArray *bca = [NSArray arrayWithObjects:@"B",@"C",@"A",nil];
+	
+	[set setRepeatObjectsMoveToBack:NO];
+	for (id anObject in abca)
+		[set addObject:anObject];
+	STAssertEqualObjects([set allObjects], abc, @"Wrong ordering.");
 	[set removeAllObjects];
-	[set addObject:@"A"];
-	[set addObject:@"B"];
-	[set addObject:@"C"];
-	[set addObject:@"A"];
-}
-
-- (void) testAddObjectsFromArray {
+	
+	[set setRepeatObjectsMoveToBack:YES];
+	for (id anObject in abca)
+		[set addObject:anObject];
+	STAssertEqualObjects([set allObjects], bca, @"Wrong ordering.");
+	[set removeAllObjects];
+	
+	// Test -addObjectsFromArray:
+	[set addObjectsFromArray:array];
+	STAssertEqualObjects([set allObjects], array, @"Wrong ordering.");
+	[set removeAllObjects];
+	
+	[set setRepeatObjectsMoveToBack:NO];
+	[set addObjectsFromArray:abca];
+	STAssertEqualObjects([set allObjects], abc, @"Wrong ordering.");
+	[set removeAllObjects];
+	
+	[set setRepeatObjectsMoveToBack:YES];
+	[set addObjectsFromArray:abca];
+	STAssertEqualObjects([set allObjects], bca, @"Wrong ordering.");
 }
 
 - (void) testUnionSet {
@@ -164,15 +181,15 @@
 }
 
 - (void) testIsSubsetOfSet {
-	NSSet *test = [NSSet setWithObjects:@"A",@"B",@"C",nil];
+	NSSet *abc = [NSSet setWithObjects:@"A",@"B",@"C",nil];
 	[set addObject:@"A"];
-	STAssertTrue([set isSubsetOfSet:test], @"Should be a subset.");
+	STAssertTrue([set isSubsetOfSet:abc], @"Should be a subset.");
 	[set addObject:@"B"];
-	STAssertTrue([set isSubsetOfSet:test], @"Should be a subset.");
+	STAssertTrue([set isSubsetOfSet:abc], @"Should be a subset.");
 	[set addObject:@"C"];
-	STAssertTrue([set isSubsetOfSet:test], @"Should be a subset.");
+	STAssertTrue([set isSubsetOfSet:abc], @"Should be a subset.");
 	[set addObject:@"D"];
-	STAssertFalse([set isSubsetOfSet:test], @"Should not be a subset.");
+	STAssertFalse([set isSubsetOfSet:abc], @"Should not be a subset.");
 }
 
 - (void) testMember {
@@ -201,6 +218,19 @@
 #pragma mark Removing Objects
 
 - (void) testIntersectSet {
+	NSSet *abc = [NSSet setWithObjects:@"A",@"B",@"C",nil];
+	NSSet *cde = [NSSet setWithObjects:@"C",@"D",@"E",nil];
+	NSSet *xyz = [NSSet setWithObjects:@"X",@"Y",@"Z",nil];
+	
+	STAssertFalse([set intersectsSet:abc], @"Should not intersect.");
+	[set addObjectsFromArray:[NSArray arrayWithObjects:@"A",@"B",@"C",nil]];
+	
+	STAssertTrue([set intersectsSet:abc], @"Should intersect.");
+	STAssertTrue([set intersectsSet:cde], @"Should intersect.");
+	STAssertFalse([set intersectsSet:xyz], @"Should not intersect.");
+
+	STAssertFalse([set intersectsSet:nil], @"Should not intersect.");
+	STAssertFalse([set intersectsSet:[NSSet set]], @"Should not intersect.");
 }
 
 - (void) testMinusSet {

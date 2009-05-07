@@ -95,12 +95,10 @@
 }
 
 - (void) addObjectsFromArray:(NSArray*)anArray {
-	// Remove items NOT present in receiver from insertion ordering first.
 	for (id anObject in anArray) {
-		if (![objects containsObject:anObject])
-			[self modifyInsertionListWithObject:anObject];
+		[self modifyInsertionListWithObject:anObject];
+		[objects addObject:anObject];
 	}
-	[objects addObjectsFromArray:anArray];
 }
 
 - (void) unionSet:(NSSet*)otherSet {
@@ -209,7 +207,7 @@
 }
 
 - (void) removeLastObject {
-	// Avoids calling -removeObject: so we optimize removal of the last object.
+	// [self removeObject:] would require a search of the entire linked list...
 	if ([objects count] > 0) {
 		[objects removeObject:[ordering lastObject]];
 		[ordering removeLastObject]; // Much faster than searching for anObject
