@@ -31,7 +31,7 @@ typedef enum {
 #define isValidTraversalOrder(o) (o>=CHTraverseAscending && o<=CHTraverseLevelOrder)
 
 /**
- A protocol which specifes an interface for search trees, whether the customary <a href="http://en.wikipedia.org/wiki/Binary_search_tree">binary tree</a>, an N-ary tree structure, or any similary tree-like structure. This protocol extends the CHSortedSet protocol with two additional methods (\link #allObjectsWithTraversalOrder: -allObjectsWithTraversalOrder:\endlink and \link #objectEnumeratorWithTraversalOrder: -objectEnumeratorWithTraversalOrder:\endlink) specific to search tree implementations of a sorted set.
+ A protocol which specifes an interface for search trees, such as standard <a href="http://en.wikipedia.org/wiki/Binary_search_tree">binary trees</a>, <a href="http://en.wikipedia.org/wiki/B-tree">B-trees</a>, N-ary trees, or any similar tree-like structure. This protocol extends the CHSortedSet protocol with two additional methods (\link #allObjectsWithTraversalOrder: -allObjectsWithTraversalOrder:\endlink and \link #objectEnumeratorWithTraversalOrder: -objectEnumeratorWithTraversalOrder:\endlink) specific to search tree implementations of a sorted set.
  
  Trees have a hierarchical structure and make heavy use of pointers to child nodes to organize information. There are several methods for visiting each node in a tree data structure, known as <a href="http://en.wikipedia.org/wiki/Tree_traversal">tree traversal</a> techniques. (Traversal applies to N-ary trees, not just binary trees.) Whereas linked lists and arrays have one or two logical means of stepping through the elements, because trees are branching structures, there are many different ways to choose how to visit all of the nodes. There are 5 most commonly-used tree traversal methods; of these, 4 are depth first and 1 is breadth-first. These methods are described below:
  
@@ -84,7 +84,7 @@ typedef enum {
 - (id) initWithArray:(NSArray*)anArray;
 
 #pragma mark Querying Contents
-/** @name Querying Contents */
+/** @name Tree Traversals */
 // @{
 
 /**
@@ -93,10 +93,10 @@ typedef enum {
  @param order The traversal order to use for enumerating the given tree.
  @return An array containing the objects in this tree. If the tree is empty, the array is also empty.
 
- @see allObjects
+ @see \link allObjects - allObjects\endlink
  @see objectEnumeratorWithTraversalOrder:
- @see removeAllObjects
- @see reverseObjectEnumerator
+ @see \link removeAllObjects - removeAllObjects\endlink
+ @see \link reverseObjectEnumerator - reverseObjectEnumerator\endlink
  */
 - (NSArray*) allObjectsWithTraversalOrder:(CHTraversalOrder)order;
 
@@ -109,9 +109,9 @@ typedef enum {
  @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
  
  @see allObjectsWithTraversalOrder:
- @see countByEnumeratingWithState:objects:count:
- @see objectEnumerator
- @see reverseObjectEnumerator
+ @see \link countByEnumeratingWithState:objects:count: - countByEnumeratingWithState:objects:count:\endlink
+ @see \link objectEnumerator - objectEnumerator\endlink
+ @see \link reverseObjectEnumerator - reverseObjectEnumerator\endlink
  */
 - (NSEnumerator*) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order;
 
