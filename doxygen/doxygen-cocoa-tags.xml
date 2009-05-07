@@ -163,6 +163,10 @@
     <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSRecursiveLock_Class/Reference/Reference.html</filename>
   </compound>
   <compound kind="class">
+    <name>NSPredicate</name>
+    <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSPredicate_Class/Reference/NSPredicate.html</filename>
+  </compound>
+  <compound kind="class">
     <name>NSSet</name>
     <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSSet_Class/Reference/Reference.html</filename>
   </compound>
