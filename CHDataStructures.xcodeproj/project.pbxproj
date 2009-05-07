@@ -713,7 +713,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Run gcov on the framework getting tested, generate HTML report\nif [ \"${CONFIGURATION}\" = 'Debug' ]; then\n\tFRAMEWORK_NAME=CHDataStructures\n\tFRAMEWORK_TARGET=Framework\n\tFRAMEWORK_OBJ_DIR=${OBJROOT}/${FRAMEWORK_NAME}.build/${CONFIGURATION}/${FRAMEWORK_TARGET}.build/Objects-normal/${NATIVE_ARCH}\n\n\tmkdir coverage\n\tcd coverage\n\t../tools/lcov/geninfo \"${FRAMEWORK_OBJ_DIR}\"\n\t../tools/lcov/genhtml \"${FRAMEWORK_OBJ_DIR}\"/*.info \\\n\t\t--title CHDataStructures --num-spaces 4 --css-file ../tools/lcov/styles.css\nfi";
+			shellScript = "# Run gcov on the framework getting tested, generate HTML report\nif [ \"${CONFIGURATION}\" = 'Debug' ]; then\n\tFRAMEWORK_NAME=CHDataStructures\n\tFRAMEWORK_TARGET=Framework\n\tFRAMEWORK_OBJ_DIR=${OBJROOT}/${FRAMEWORK_NAME}.build/${CONFIGURATION}/${FRAMEWORK_TARGET}.build/Objects-normal/${NATIVE_ARCH}\n\n\tmkdir coverage\n\tcd coverage\n\t../tools/lcov/geninfo \"${FRAMEWORK_OBJ_DIR}\"\n\t../tools/lcov/genhtml \"${FRAMEWORK_OBJ_DIR}\"/*.info \\\n\t\t--title CHDataStructures --num-spaces 4 --css-file ../tools/lcov/styles.css --prefix \"${PROJECT_DIR}\"\nfi";
 			showEnvVarsInLog = 0;
 		};
 		E473CB530E9346CB005CA997 /* ShellScript */ = {
