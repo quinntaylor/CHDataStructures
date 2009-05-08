@@ -71,6 +71,7 @@
 
  @attention Since the top of the stack is at the back of the array, rather than passing the call to <code>-countByEnumeratingWithState:objects:count:</code> straight through to the underlying array, we must obtain an NSEnumerator from @c -reverseObjectEnumerator and store it in the fast enumeration @c state struct. Unfortunately for this particular scenario, NSEnumerator objects only return one object per call from the NSFastEnumeration boilerplate, so it's actually slower than using an NSEnumerator directly. (CHCircularBufferStack is significantly more performant.)
  */
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len
@@ -91,6 +92,7 @@
 	}
 	return [enumerator countByEnumeratingWithState:state objects:stackbuf count:len];
 }
+#endif
 
 // @}
 @end

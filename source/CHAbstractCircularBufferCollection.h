@@ -25,7 +25,11 @@
  Rather than enforcing that this class be abstract, the contract is implied.
  */
 
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 @interface CHAbstractCircularBufferCollection : CHLockable <NSCoding, NSCopying, NSFastEnumeration>
+#else
+@interface CHAbstractCircularBufferCollection : CHLockable <NSCoding, NSCopying>
+#endif
 {
 	id *array; /**< Primitive C array used for storing contents of collection. */
 	NSUInteger arrayCapacity; /**< How many pointers @a array can accommodate. */
@@ -71,8 +75,10 @@
 - (void) encodeWithCoder:(NSCoder *)encoder;
 - (id) initWithCoder:(NSCoder *)decoder;
 - (id) copyWithZone:(NSZone *)zone;
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len;
+#endif
 
 @end

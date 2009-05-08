@@ -29,7 +29,11 @@
  
  Unlike NSDictionary and other Cocoa collections, CHMultiMap has not been designed with mutable and immutable variants. A multimap is not any more useful if it is immutable, so any copies made of this class are mutable by definition.
  */
+#if MAC_OS_X_VERSION_10_5_AND_LATER
+@interface CHMultiMap : CHLockable <NSCoding, NSCopying, NSFastEnumeration>
+#else
 @interface CHMultiMap : CHLockable <NSCoding, NSCopying>
+#endif
 {
 	NSMutableDictionary *dictionary; /**< Dictionary for key-value entries. */
 	NSUInteger objectCount; /**< Number of objects currently in the multimap. */
@@ -127,9 +131,11 @@
  @see allKeys
  @see keyEnumerator
  */
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len;
+#endif
 
 // @}
 #pragma mark Adding Objects

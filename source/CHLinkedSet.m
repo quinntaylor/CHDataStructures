@@ -52,19 +52,29 @@
 
 - (id) copyWithZone:(NSZone*)zone {
 	CHLinkedSet *copy = [[CHLinkedSet alloc] init];
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 	for (id anObject in ordering)
+#else
+	NSEnumerator *e = [ordering objectEnumerator];
+	id anObject;
+	while (anObject = [e nextObject])
+#endif
+	{
 		[copy addObject:anObject];
+	}
 	return copy;
 }
 
 #pragma mark <NSFastEnumeration>
 
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len
 {
 	return [ordering countByEnumeratingWithState:state objects:stackbuf count:len];
 }
+#endif
 
 #pragma mark Insertion Order
 
@@ -95,14 +105,28 @@
 }
 
 - (void) addObjectsFromArray:(NSArray*)anArray {
-	for (id anObject in anArray) {
+#if MAC_OS_X_VERSION_10_5_AND_LATER
+	for (id anObject in anArray)
+#else
+	NSEnumerator *e = [anArray objectEnumerator];
+	id anObject;
+	while (anObject = [e nextObject])
+#endif
+	{
 		[self modifyInsertionListWithObject:anObject]; // tests if in objects
 		[objects addObject:anObject];
 	}
 }
 
 - (void) unionSet:(NSSet*)otherSet {
-	for (id anObject in otherSet) {
+#if MAC_OS_X_VERSION_10_5_AND_LATER
+	for (id anObject in otherSet)
+#else
+	NSEnumerator *e = [otherSet objectEnumerator];
+	id anObject;
+	while (anObject = [e nextObject])
+#endif
+	{
 		[self modifyInsertionListWithObject:anObject]; // tests if in objects
 		[objects addObject:anObject];
 	}
@@ -178,7 +202,14 @@
 		[objects intersectSet:otherSet];
 		// Remove from insertion ordering items NOT present in intersected set.
 		CHDoublyLinkedList *newOrdering = [[CHDoublyLinkedList alloc] init];
-		for (id anObject in ordering) {
+#if MAC_OS_X_VERSION_10_5_AND_LATER
+		for (id anObject in ordering)
+#else
+		NSEnumerator *e = [ordering objectEnumerator];
+		id anObject;
+		while (anObject = [e nextObject])
+#endif
+		{
 			if ([objects containsObject:anObject])
 				[newOrdering appendObject:anObject];
 		}
@@ -193,7 +224,14 @@
 			[self removeAllObjects];
 		} else {
 			// Remove items present in receiver from insertion ordering first.
-			for (id anObject in otherSet) {
+#if MAC_OS_X_VERSION_10_5_AND_LATER
+			for (id anObject in otherSet)
+#else
+			NSEnumerator *e = [otherSet objectEnumerator];
+			id anObject;
+			while (anObject = [e nextObject])
+#endif
+			{
 				if ([objects containsObject:anObject])
 					[ordering removeObject:anObject];
 			}

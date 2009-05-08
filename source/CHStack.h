@@ -22,7 +22,11 @@
  
  A stack is commonly compared to a stack of plates. Objects may be added in any order (\link #pushObject: -pushObject:\endlink) and the most recently added object may be removed (\link #popObject -popObject\endlink) or returned without removing it (\link #topObject -topObject\endlink).
  */
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 @protocol CHStack <NSObject, NSCoding, NSCopying, NSFastEnumeration>
+#else
+@protocol CHStack <NSObject, NSCoding, NSCopying>
+#endif
 
 /**
  Initialize a stack with no objects.
@@ -230,9 +234,11 @@
  @see allObjects
  @see objectEnumerator
  */
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len;
+#endif
 
 // @}
 @end

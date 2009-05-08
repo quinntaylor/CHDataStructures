@@ -49,7 +49,14 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 	if ([self init] == nil) return nil;
 	NSEnumerator *objects = [objectsArray objectEnumerator];
 	NSSet *objectSet;
-	for (id key in keyArray) {
+#if MAC_OS_X_VERSION_10_5_AND_LATER
+	for (id key in keyArray)
+#else
+	NSEnumerator *e = [keyArray objectEnumerator];
+	id key;
+	while (key = [e nextObject])
+#endif
+	{
 		objectSet = createMutableSetFromObject([objects nextObject]);
 		[dictionary setObject:objectSet forKey:key];
 		objectCount += [objectSet count];
@@ -86,39 +93,69 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 - (id) initWithCoder:(NSCoder*)decoder{
 	if ([self init] == nil) return nil;
 	dictionary = [[decoder decodeObjectForKey:@"dictionary"] retain];
-	objectCount = [decoder decodeIntegerForKey:@"objectCount"];
+#if MAC_OS_X_VERSION_10_5_AND_LATER
+	objectCount = (NSUInteger)[decoder decodeIntegerForKey:@"objectCount"];
+#elif __LP64__ || NS_BUILD_32_LIKE_64
+	objectCount = (NSUInteger)[decoder decodeInt64ForKey:@"objectCount"];
+#else
+	objectCount = (NSUInteger)[decoder decodeInt32ForKey:@"objectCount"];
+#endif
 	return self;
 }
 
 - (void) encodeWithCoder:(NSCoder*)encoder {
 	[encoder encodeObject:dictionary forKey:@"dictionary"];
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 	[encoder encodeInteger:objectCount forKey:@"objectCount"];
+#elif __LP64__ || NS_BUILD_32_LIKE_64
+	[encoder encodeInt64:objectCount forKey:@"objectCount"];
+#else
+	[encoder encodeInt32:objectCount forKey:@"objectCount"];
+#endif
 }
 
 #pragma mark <NSCopying>
 
 - (id) copyWithZone:(NSZone*)zone {
 	CHMultiMap *newMultiMap = [[CHMultiMap alloc] init];
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 	for (id key in [self allKeys])
+#else
+	NSEnumerator *e = [self keyEnumerator];
+	id key;
+	while (key = [e nextObject])
+#endif
+	{
 		[newMultiMap setObjects:[[[dictionary objectForKey:key] mutableCopy] autorelease]
 						 forKey:key];
+	}
 	return newMultiMap;
 }
 
 #pragma mark <NSFastEnumeration>
 
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len
 {
 	return [dictionary countByEnumeratingWithState:state objects:stackbuf count:len];
 }
+#endif
 
 #pragma mark Adding Objects
 
 - (void) addEntriesFromMultiMap:(CHMultiMap*)otherMultiMap; {
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 	for (id key in [otherMultiMap allKeys])
+#else
+	NSEnumerator *e = [otherMultiMap keyEnumerator];
+	id key;
+	while (key = [e nextObject])
+#endif
+	{
 		[self addObjects:[otherMultiMap objectsForKey:key] forKey:key];
+	}
 	++mutations;
 }
 
@@ -158,7 +195,14 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 
 - (NSArray*) allObjects {
 	NSMutableArray *objects = [NSMutableArray array];
-	for (id key in [self allKeys]) {
+#if MAC_OS_X_VERSION_10_5_AND_LATER
+	for (id key in [self allKeys])
+#else
+	NSEnumerator *e = [self keyEnumerator];
+	id key;
+	while (key = [e nextObject])
+#endif
+	{
 		[objects addObjectsFromArray:[[dictionary objectForKey:key] allObjects]];
 		// objectForKey: returns an NSSet -- get array from that with -allObjects
 	}
@@ -182,7 +226,14 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 }
 
 - (BOOL) containsObject:(id)anObject {
-	for (id key in [self keyEnumerator]) {
+#if MAC_OS_X_VERSION_10_5_AND_LATER
+	for (id key in [self allKeys])
+#else
+	NSEnumerator *e = [self keyEnumerator];
+	id key;
+	while (key = [e nextObject])
+#endif
+	{
 		if ([[dictionary objectForKey:key] containsObject:anObject]) {
 			return YES;
 		}

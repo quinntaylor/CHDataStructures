@@ -62,9 +62,9 @@ typedef struct CHBinaryTreeNode {
 } CHBinaryTreeNode;
 
 // These are used by subclasses; marked as HIDDEN to reduce external visibility.
-HIDDEN extern size_t kCHBinaryTreeNodeSize;
-HIDDEN extern size_t kCHPointerSize;
-HIDDEN extern BOOL kCHGarbageCollectionDisabled;
+HIDDEN OBJC_EXPORT size_t kCHBinaryTreeNodeSize;
+HIDDEN OBJC_EXPORT size_t kCHPointerSize;
+HIDDEN OBJC_EXPORT BOOL kCHGarbageCollectionDisabled;
 
 
 /**

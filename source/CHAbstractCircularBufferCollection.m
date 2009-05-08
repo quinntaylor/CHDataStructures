@@ -150,8 +150,16 @@ static size_t kCHPointerSize = sizeof(void*);
 	while (capacity <= [anArray count])
 		capacity *= 2;
 	if ([self initWithCapacity:capacity] == nil) return nil;
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 	for (id anObject in anArray)
+#else
+	NSEnumerator *e = [anArray objectEnumerator];
+	id anObject;
+	while (anObject = [e nextObject])
+#endif
+	{
 		array[tailIndex++] = [anObject retain];
+	}
 	count = [anArray count];
 	return self;
 }
@@ -187,6 +195,7 @@ static size_t kCHPointerSize = sizeof(void*);
 /*
  Since this class uses a C array for storage, we can return a pointer to any spot in the array and a count greater than "len". This approach avoids copy overhead, and is also more efficient since this method will be called only 2 or 3 times, depending on whether the buffer wraps around the end of the array. (The last call always returns 0 and requires no extra processing.)
  */
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len
@@ -210,6 +219,7 @@ static size_t kCHPointerSize = sizeof(void*);
 		return 0;
 	}
 }
+#endif
 
 #pragma mark Adding Objects
 
@@ -250,8 +260,16 @@ static size_t kCHPointerSize = sizeof(void*);
 - (NSArray*) allObjects {
 	NSMutableArray *allObjects = [[NSMutableArray alloc] init];
 	if (count > 0) {
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 		for (id anObject in self)
+#else
+		NSEnumerator *e = [self objectEnumerator];
+		id anObject;
+		while (anObject = [e nextObject])
+#endif
+		{
 			[allObjects addObject:anObject];
+		}
 	}
 	return [allObjects autorelease];
 }

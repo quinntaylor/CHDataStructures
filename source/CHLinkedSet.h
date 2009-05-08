@@ -125,9 +125,11 @@
  @see NSFastEnumeration protocol
  @see objectEnumerator
  */
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len;
+#endif
 
 // @}
 #pragma mark Insertion Order

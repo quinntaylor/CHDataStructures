@@ -22,7 +22,11 @@
  
  Objects are "heapified" according to their sorted order, so they must respond to the @c -compare: selector, which accepts another object and returns @c NSOrderedAscending, @c NSOrderedSame, or @c NSOrderedDescending (constants in <a href="http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Miscellaneous/Foundation_DataTypes/Reference/reference.html#//apple_ref/c/tdef/NSComparisonResult">NSComparisonResult</a>) as the receiver is less than, equal to, or greater than the argument, respectively. (Several Cocoa classes already implement the @c -compare: method, including NSString, NSDate, NSNumber, NSDecimalNumber, and NSCell.) 
  */
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 @protocol CHHeap <NSObject, NSCoding, NSCopying, NSFastEnumeration>
+#else
+@protocol CHHeap <NSObject, NSCoding, NSCopying>
+#endif
 
 /**
  Initialize a heap with ascending ordering and no objects.
@@ -273,9 +277,11 @@
  @see allObjectsInSortedOrder
  @see objectEnumerator
  */
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len;
+#endif
 
 // @}
 @end

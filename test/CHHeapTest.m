@@ -63,23 +63,27 @@
 #pragma mark -
 
 - (void) testNSCoding {
-	for (Class aClass in heapClasses) {
-		heap = [[aClass alloc] init];
-		for (id anObject in objects)
-			[heap addObject:anObject];
-		STAssertEquals([heap count], (NSUInteger)9, @"Incorrect count.");
-		STAssertTrue([heap isValid], @"Wrong ordering before archiving.");
-		
-		NSString *filePath = @"/tmp/CHDataStructures-array-heap.plist";
-		[NSKeyedArchiver archiveRootObject:heap toFile:filePath];
-		[heap release];
-		
-		heap = [[NSKeyedUnarchiver unarchiveObjectWithFile:filePath] retain];
-		STAssertEquals([heap count], (NSUInteger)9, @"Incorrect count.");
-		STAssertTrue([heap isValid], @"Wrong ordering on reconstruction.");
-		[heap release];
-		[[NSFileManager defaultManager] removeItemAtPath:filePath error:NULL];
-	}
+	NSInteger sortOrder = NSOrderedDescending; // Switches to ascending first.
+	do {
+		sortOrder *= -1;
+		for (Class aClass in heapClasses) {
+			heap = [[aClass alloc] initWithOrdering:sortOrder];
+			for (id anObject in objects)
+				[heap addObject:anObject];
+			STAssertEquals([heap count], (NSUInteger)9, @"Incorrect count.");
+			STAssertTrue([heap isValid], @"Wrong ordering before archiving.");
+			
+			NSString *filePath = @"/tmp/CHDataStructures-array-heap.plist";
+			[NSKeyedArchiver archiveRootObject:heap toFile:filePath];
+			[heap release];
+			
+			heap = [[NSKeyedUnarchiver unarchiveObjectWithFile:filePath] retain];
+			STAssertEquals([heap count], (NSUInteger)9, @"Incorrect count.");
+			STAssertTrue([heap isValid], @"Wrong ordering on reconstruction.");
+			[heap release];
+			[[NSFileManager defaultManager] removeItemAtPath:filePath error:NULL];
+		}
+	} while (sortOrder != NSOrderedDescending);
 }
 
 - (void) testNSCopying {

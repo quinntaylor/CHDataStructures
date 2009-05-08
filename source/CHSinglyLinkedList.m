@@ -131,8 +131,16 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 
 - (id) initWithArray:(NSArray*)anArray {
 	if ([self init] == nil) return nil;
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 	for (id anObject in anArray)
+#else
+	NSEnumerator *e = [anArray objectEnumerator];
+	id anObject;
+	while (anObject = [e nextObject])
+#endif
+	{
 		[self appendObject:anObject];
+	}
 	return self;
 }
 
@@ -155,13 +163,22 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 
 - (id) copyWithZone:(NSZone *)zone {
 	CHSinglyLinkedList *newList = [[CHSinglyLinkedList alloc] init];
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 	for (id anObject in self)
+#else
+	NSEnumerator *e = [self objectEnumerator];
+	id anObject;
+	while (anObject = [e nextObject])
+#endif
+	{
 		[newList appendObject:anObject];
+	}
 	return newList;
 }
 
 #pragma mark <NSFastEnumeration>
 
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len
@@ -192,6 +209,7 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 		state->state = (unsigned long)currentNode;
 	return batchCount;
 }
+#endif
 
 #pragma mark Adding Objects
 

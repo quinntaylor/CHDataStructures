@@ -10,6 +10,12 @@
 
 #import "Util.h"
 
+#if MAC_OS_X_VERSION_MAX_ALLOWED < MAC_OS_X_VERSION_10_5
+BOOL objc_collectingEnabled(void) {
+	return NO;
+}
+#endif
+
 void CHIndexOutOfRangeException(Class aClass, SEL method,
                                 NSUInteger index, NSUInteger elements) {
 	[NSException raise:NSRangeException
@@ -48,9 +54,13 @@ void CHQuietLog(NSString *format, ...) {
 	va_list argList;
 	va_start(argList, format);
 	// Do format string argument substitution, reinstate %% escapes, then print
-	NSString *s = [[NSString alloc] initWithFormat:format arguments:argList];
-	printf("%s\n", [[s stringByReplacingOccurrencesOfString:@"%%"
-											 withString:@"%%%%"] UTF8String]);
-	[s release];
+	NSMutableString *string = [[NSMutableString alloc] initWithFormat:format
+	                                                        arguments:argList];
+	[string replaceOccurrencesOfString:@"%%"
+	                        withString:@"%%%%"
+	                           options:0
+	                             range:NSMakeRange(0, [string length])];
+	printf("%s\n", [string UTF8String]);
+	[string release];
 	va_end(argList);
 }

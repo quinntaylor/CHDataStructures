@@ -24,6 +24,37 @@
 // Used for indicating that an object is not found when returning an NSUInteger.
 #define CHNotFound NSUIntegerMax
 
+// Availability macros for screening out functionality that requires Leopard.
+#if MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4
+	#define MAC_OS_X_VERSION_10_5 1050
+
+	#ifndef NSINTEGER_DEFINED
+		#if __LP64__ || NS_BUILD_32_LIKE_64
+			typedef long NSInteger;
+			typedef unsigned long NSUInteger;
+		#else
+			typedef int NSInteger;
+			typedef unsigned int NSUInteger;
+		#endif
+
+		#define NSIntegerMax    LONG_MAX
+		#define NSIntegerMin    LONG_MIN
+		#define NSUIntegerMax   ULONG_MAX
+
+		#define NSINTEGER_DEFINED 1
+	#endif
+#endif
+
+#define MAC_OS_X_VERSION_10_5_AND_LATER \
+        MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5
+
+#if MAC_OS_X_VERSION_MAX_ALLOWED < MAC_OS_X_VERSION_10_5
+/**
+ Function to discover whether garbage collection is enabled. Declared here to prevent compile warnings and errors. Since we define this only when using a version of OS X prior to 10.5 (Leopard), this will always return false.
+ */
+OBJC_EXPORT BOOL objc_collectingEnabled(void);
+#endif
+
 /**
  Convenience function for raising an exception for an invalid range (index).
  
@@ -37,7 +68,7 @@
  
  @see \link NSException#raise:format: +[NSException raise:format:]\endlink
  */
-extern void CHIndexOutOfRangeException(Class aClass, SEL method,
+OBJC_EXPORT void CHIndexOutOfRangeException(Class aClass, SEL method,
                                        NSUInteger index, NSUInteger elements);
 
 /**
@@ -52,7 +83,7 @@ extern void CHIndexOutOfRangeException(Class aClass, SEL method,
  
  @see \link NSException#raise:format: +[NSException raise:format:]\endlink
  */
-extern void CHInvalidArgumentException(Class aClass, SEL method, NSString *str);
+OBJC_EXPORT void CHInvalidArgumentException(Class aClass, SEL method, NSString *str);
 
 /**
  Convenience function for raising an exception on an invalid nil object argument.
@@ -65,7 +96,7 @@ extern void CHInvalidArgumentException(Class aClass, SEL method, NSString *str);
  
  @see CHInvalidArgumentException()
  */
-extern void CHNilArgumentException(Class aClass, SEL method);
+OBJC_EXPORT void CHNilArgumentException(Class aClass, SEL method);
 
 /**
  Convenience function for raising an exception when a collection is mutated.
@@ -78,7 +109,7 @@ extern void CHNilArgumentException(Class aClass, SEL method);
  
  @see \link NSException#raise:format: +[NSException raise:format:]\endlink
  */
-extern void CHMutatedCollectionException(Class aClass, SEL method);
+OBJC_EXPORT void CHMutatedCollectionException(Class aClass, SEL method);
 
 /**
  Convenience function for raising an exception for un-implemented functionality.
@@ -91,7 +122,7 @@ extern void CHMutatedCollectionException(Class aClass, SEL method);
  
  @see \link NSException#raise:format: +[NSException raise:format:]\endlink
  */
-extern void CHUnsupportedOperationException(Class aClass, SEL method);
+OBJC_EXPORT void CHUnsupportedOperationException(Class aClass, SEL method);
 
 /**
  Provides a more terse alternative to NSLog() which accepts the same parameters. The output is made shorter by excluding the date stamp and process information which NSLog prints before the actual specified output.
@@ -101,7 +132,7 @@ extern void CHUnsupportedOperationException(Class aClass, SEL method);
  
  Read <b>Formatting String Objects</b> and <b>String Format Specifiers</b> on <a href="http://developer.apple.com/documentation/Cocoa/Conceptual/Strings/"> this webpage</a> for details about using format strings. Look for examples that use @c NSLog() since the parameters and syntax are idential.
  */
-extern void CHQuietLog(NSString *format, ...);
+OBJC_EXPORT void CHQuietLog(NSString *format, ...);
 
 /**
  A macro for including the source file and line number where a log occurred.

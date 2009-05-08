@@ -74,13 +74,16 @@
 
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super initWithCoder:decoder] == nil) return nil;
-	sortOrder = [decoder decodeIntegerForKey:@"sortOrder"];
+	if ([decoder decodeBoolForKey:@"sortAscending"])
+		sortOrder = NSOrderedAscending;
+	else
+		sortOrder = NSOrderedDescending;
 	return self;
 }
 
 - (void) encodeWithCoder:(NSCoder *)encoder {
 	[super encodeWithCoder:encoder];
-	[encoder encodeInteger:sortOrder forKey:@"sortOrder"];
+	[encoder encodeBool:(sortOrder == NSOrderedAscending) forKey:@"sortAscending"];
 }
 
 #pragma mark <NSCopying>
@@ -91,6 +94,7 @@
 
 #pragma mark <NSFastEnumeration>
 
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 // This overridden method returns the heap contents in fully-sorted order.
 // Just as -objectEnumerator above, the first call incurs a hidden sorting cost.
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
@@ -109,6 +113,7 @@
 	state->mutationsPtr = &mutations; // point state to mutations for heap array
 	return count;
 }
+#endif
 
 #pragma mark -
 

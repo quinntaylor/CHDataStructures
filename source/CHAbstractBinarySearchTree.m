@@ -330,13 +330,22 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 
 - (id) copyWithZone:(NSZone*)zone {
 	id<CHSearchTree> newTree = [[[self class] alloc] init];
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 	for (id anObject in [self allObjectsWithTraversalOrder:CHTraverseLevelOrder])
+#else
+	NSEnumerator *e = [self objectEnumeratorWithTraversalOrder:CHTraverseLevelOrder];
+	id anObject;
+	while (anObject = [e nextObject])
+#endif
+	{
 		[newTree addObject:anObject];
+	}
 	return newTree;
 }
 
 #pragma mark <NSFastEnumeration>
 
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len
@@ -388,12 +397,21 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 	}
 	return batchCount;
 }
+#endif
 
 #pragma mark Concrete Implementations
 
 - (void) addObjectsFromArray:(NSArray*)anArray {
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 	for (id anObject in anArray)
+#else
+	NSEnumerator *e = [anArray objectEnumerator];
+	id anObject;
+	while (anObject = [e nextObject])
+#endif
+	{
 		[self addObject:anObject];
+	}
 }
 
 - (NSArray*) allObjects {

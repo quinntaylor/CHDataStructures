@@ -25,7 +25,11 @@
  
  Rather than enforcing that this class be abstract, the contract is implied.
  */
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 @interface CHAbstractListCollection : CHLockable <NSCoding, NSCopying, NSFastEnumeration>
+#else
+@interface CHAbstractListCollection : CHLockable <NSCoding, NSCopying>
+#endif
 {
 	id<CHLinkedList> list; /**< List used for storing contents of collection. */
 }
@@ -49,8 +53,10 @@
 - (id) initWithCoder:(NSCoder *)decoder;
 - (void) encodeWithCoder:(NSCoder *)encoder;
 - (id) copyWithZone:(NSZone *)zone;
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len;
+#endif
 
 @end

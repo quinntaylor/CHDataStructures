@@ -25,7 +25,11 @@
  
  Index-based operations are included in this protocol, but users should be aware that unless a subclass chooses to use a special indexing scheme, all index-based methods in a linked list are O(n). If indexed operations are used frequently, it is likely that a better alternative is to use an NSMutableArray.
  */ 
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 @protocol CHLinkedList <NSObject, NSCoding, NSCopying, NSFastEnumeration>
+#else
+@protocol CHLinkedList <NSObject, NSCoding, NSCopying>
+#endif
 
 /**
  Initialize a linked list with no objects.
@@ -317,9 +321,11 @@
  @see allObjects
  @see objectEnumerator
  */
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len;
+#endif
 
 // @}
 @end

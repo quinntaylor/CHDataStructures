@@ -9,6 +9,7 @@
  */
 
 #import <Foundation/Foundation.h>
+#import "Util.h"
 
 /**
  @file CHLockable.h

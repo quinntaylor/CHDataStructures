@@ -25,8 +25,16 @@
 
 - (id) initWithArray:(NSArray*)anArray {
 	if ([self init] == nil) return nil;
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 	for (id anObject in anArray)
+#else
+	NSEnumerator *e = [anArray objectEnumerator];
+	id anObject;
+	while (anObject = [e nextObject])
+#endif
+	{
 		[list prependObject:anObject];
+	}
 	return self;
 }
 

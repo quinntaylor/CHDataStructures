@@ -24,7 +24,11 @@
  
  Rather than enforcing that this class be abstract, the contract is implied.
  */
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 @interface CHAbstractMutableArrayCollection : CHLockable <NSCoding, NSCopying, NSFastEnumeration>
+#else
+@interface CHAbstractMutableArrayCollection : CHLockable <NSCoding, NSCopying>
+#endif
 {
 	NSMutableArray *array; /**< Array used for storing contents of collection. */
 }
@@ -50,8 +54,10 @@
 - (void) encodeWithCoder:(NSCoder *)encoder;
 - (id) initWithCoder:(NSCoder *)decoder;
 - (id) copyWithZone:(NSZone *)zone;
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len;
+#endif
 
 @end

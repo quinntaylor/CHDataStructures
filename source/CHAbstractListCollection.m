@@ -19,8 +19,16 @@
 
 - (id) initWithArray:(NSArray*)anArray {
 	if ([self init] == nil) return nil;
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 	for (id anObject in anArray)
+#else
+	NSEnumerator *e = [anArray objectEnumerator];
+	id anObject;
+	while (anObject = [e nextObject])
+#endif
+	{
 		[list appendObject:anObject];
+	}
 	return self;
 }
 
@@ -40,19 +48,29 @@
 
 - (id) copyWithZone:(NSZone *)zone {
 	id copy = [[[self class] alloc] init];
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 	for (id anObject in self)
+#else
+	NSEnumerator *e = [self objectEnumerator];
+	id anObject;
+	while (anObject = [e nextObject])
+#endif
+	{
 		[copy addObject:anObject];
+	}
 	return copy;
 }
 
 #pragma mark <NSFastEnumeration>
 
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len
 {
 	return [list countByEnumeratingWithState:state objects:stackbuf count:len];
 }
+#endif
 
 #pragma mark -
 

@@ -43,7 +43,11 @@
  @todo Consider adding other possible sorted set implementations, such as <a href="http://en.wikipedia.org/wiki/Skip_list">skip lists</a>, <a href="http://www.concentric.net/~Ttwang/tech/sorthash.htm">sorted linear hash sets</a>, and <a href="http://code.activestate.com/recipes/230113/">sorted lists</a>.
 
  */
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 @protocol CHSortedSet <NSObject, NSCoding, NSCopying, NSFastEnumeration>
+#else
+@protocol CHSortedSet <NSObject, NSCoding, NSCopying>
+#endif
 
 /**
  Initialize a sorted set with no objects.
@@ -301,9 +305,11 @@
  @see allObjects
  @see objectEnumerator
  */
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len;
+#endif
 
 // @}
 @end

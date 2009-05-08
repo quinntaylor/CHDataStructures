@@ -20,8 +20,16 @@
 	if ([self initWithCapacity:capacity] == nil) return nil;
 	// Add objects in reverse order so headIndex ends up at 0.
 	headIndex = tailIndex = count = [anArray count];
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 	for (id anObject in anArray)
+#else
+	NSEnumerator *e = [anArray objectEnumerator];
+	id anObject;
+	while (anObject = [e nextObject])
+#endif
+	{
 		array[--headIndex] = [anObject retain];
+	}
 	return self;
 }
 

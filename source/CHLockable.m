@@ -22,7 +22,9 @@
 // Private method used for creating a lock on-demand and naming it uniquely.
 - (void) createLock {
 	lock = [[NSLock alloc] init];
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 	[lock setName:[NSString stringWithFormat:@"NSLock-%@-0x%x", [self class], self]];
+#endif
 }
 
 #pragma mark -

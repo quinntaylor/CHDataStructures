@@ -717,7 +717,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Run gcov on the framework getting tested, generate HTML report\nif [ \"${CONFIGURATION}\" = 'Debug' ]; then\n\tFRAMEWORK_NAME=CHDataStructures\n\tFRAMEWORK_TARGET=Framework\n\tFRAMEWORK_OBJ_DIR=${OBJROOT}/${FRAMEWORK_NAME}.build/${CONFIGURATION}/${FRAMEWORK_TARGET}.build/Objects-normal/${NATIVE_ARCH}\n\n\tmkdir coverage\n\tcd coverage\n\t../tools/lcov/geninfo \"${FRAMEWORK_OBJ_DIR}\"\n\t../tools/lcov/genhtml \"${FRAMEWORK_OBJ_DIR}\"/*.info \\\n\t\t--title CHDataStructures --num-spaces 4 --css-file ../tools/lcov/styles.css --prefix \"${PROJECT_DIR}\"\nfi";
+			shellScript = "# Run gcov on the framework getting tested, generate HTML report\nif [ \"${CONFIGURATION}\" = 'Coverage' ]; then\n\tFRAMEWORK_NAME=CHDataStructures\n\tFRAMEWORK_TARGET=Framework\n\tFRAMEWORK_OBJ_DIR=${OBJROOT}/${FRAMEWORK_NAME}.build/${CONFIGURATION}/${FRAMEWORK_TARGET}.build/Objects-normal/${NATIVE_ARCH}\n\n\tmkdir coverage\n\tcd coverage\n\t../tools/lcov/geninfo \"${FRAMEWORK_OBJ_DIR}\"\n\t../tools/lcov/genhtml \"${FRAMEWORK_OBJ_DIR}\"/*.info \\\n\t\t--title CHDataStructures --num-spaces 4 --css-file ../tools/lcov/styles.css --prefix \"${PROJECT_DIR}\"\nfi";
 			showEnvVarsInLog = 0;
 		};
 		E473CB530E9346CB005CA997 /* ShellScript */ = {
@@ -900,17 +900,18 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_ENABLE_OBJC_GC = supported;
-				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
-				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
+				GCC_GENERATE_TEST_COVERAGE_FILES = NO;
+				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = NO;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = source/CHDataStructures_Prefix.pch;
 				INFOPLIST_FILE = "resources/Info-Framework.plist";
 				INSTALL_PATH = "$(HOME)/Library/Frameworks";
-				OTHER_LDFLAGS = "-lgcov";
+				OTHER_LDFLAGS = "";
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
 				PRODUCT_NAME = CHDataStructures;
+				SDKROOT = macosx10.4;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Debug;
@@ -972,6 +973,148 @@
 				SDKROOT = macosx10.5;
 			};
 			name = Release;
+		};
+		E40C05AD0FB4D3FB004351C9 /* Coverage */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_GC = supported;
+				GCC_ENABLE_SYMBOL_SEPARATION = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_USE_GCC3_PFE_SUPPORT = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_MISSING_PARENTHESES = NO;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PREBINDING = NO;
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
+				SDKROOT = macosx10.5;
+			};
+			name = Coverage;
+		};
+		E40C05AE0FB4D3FB004351C9 /* Coverage */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_ENABLE_OBJC_GC = supported;
+				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
+				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = source/CHDataStructures_Prefix.pch;
+				INFOPLIST_FILE = "resources/Info-Framework.plist";
+				INSTALL_PATH = "$(HOME)/Library/Frameworks";
+				OTHER_LDFLAGS = "-lgcov";
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
+				PRODUCT_NAME = CHDataStructures;
+				SDKROOT = macosx10.4;
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Coverage;
+		};
+		E40C05AF0FB4D3FB004351C9 /* Coverage */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = Documentation;
+			};
+			name = Coverage;
+		};
+		E40C05B00FB4D3FB004351C9 /* Coverage */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_GENERATE_TEST_COVERAGE_FILES = NO;
+				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Cocoa.framework/Headers/Cocoa.h";
+				INFOPLIST_FILE = "resources/Info-Unit-Testing.plist";
+				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Cocoa,
+					"-framework",
+					SenTestingKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = CHDataStructures_test;
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Coverage;
+		};
+		E40C05B10FB4D3FB004351C9 /* Coverage */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = Coverage;
+			};
+			name = Coverage;
+		};
+		E40C05B20FB4D3FB004351C9 /* Coverage */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_ENABLE_OBJC_GC = supported;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INSTALL_PATH = /usr/local/bin;
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Benchmarks;
+			};
+			name = Coverage;
+		};
+		E40C05B30FB4D3FB004351C9 /* Coverage */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = CHDataStructures;
+			};
+			name = Coverage;
+		};
+		E40C05B40FB4D3FB004351C9 /* Coverage */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = All;
+			};
+			name = Coverage;
 		};
 		E43C87690EA3D35500B3B31E /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1172,6 +1315,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1DEB91AE08733DA50010E9CD /* Debug */,
+				E40C05AE0FB4D3FB004351C9 /* Coverage */,
 				1DEB91AF08733DA50010E9CD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1181,6 +1325,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1DEB91B208733DA50010E9CD /* Debug */,
+				E40C05AD0FB4D3FB004351C9 /* Coverage */,
 				1DEB91B308733DA50010E9CD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1190,6 +1335,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E43C87690EA3D35500B3B31E /* Debug */,
+				E40C05B30FB4D3FB004351C9 /* Coverage */,
 				E43C876A0EA3D35500B3B31E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1199,6 +1345,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E44B59B80E95851000F9DD1A /* Debug */,
+				E40C05B20FB4D3FB004351C9 /* Coverage */,
 				E44B59B90E95851000F9DD1A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1208,6 +1355,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E46300C40ECBF0F600E1AF73 /* Debug */,
+				E40C05B10FB4D3FB004351C9 /* Coverage */,
 				E46300C50ECBF0F600E1AF73 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1217,6 +1365,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E473CB580E9346CB005CA997 /* Debug */,
+				E40C05B00FB4D3FB004351C9 /* Coverage */,
 				E473CB590E9346CB005CA997 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1226,6 +1375,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E4FAE15C0E968F1B007BB1F9 /* Debug */,
+				E40C05B40FB4D3FB004351C9 /* Coverage */,
 				E4FAE15D0E968F1B007BB1F9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1235,6 +1385,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E4FE76D90E89556A00971EE6 /* Debug */,
+				E40C05AF0FB4D3FB004351C9 /* Coverage */,
 				E4FE76DA0E89556A00971EE6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
