@@ -67,36 +67,90 @@
 	NSArray *array = [self randomNumbers];
 	NSArray *abca = [NSArray arrayWithObjects:@"A",@"B",@"C",@"A",nil];
 	NSArray *abc = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
+	NSArray *abab = [NSArray arrayWithObjects:@"A",@"B",@"A",@"B",nil];
 	NSArray *bca = [NSArray arrayWithObjects:@"B",@"C",@"A",nil];
+	NSArray *cab = [NSArray arrayWithObjects:@"C",@"A",@"B",nil];
 	
+	// Test -addObject:
+	for (id anObject in array)
+		[set addObject:anObject];
+	STAssertEqualObjects([set allObjects], array,
+						 @"Wrong ordering.");
+	
+	[set removeAllObjects];
 	[set setRepeatObjectsMoveToBack:NO];
 	for (id anObject in abca)
 		[set addObject:anObject];
-	STAssertEqualObjects([set allObjects], abc, @"Wrong ordering.");
-	[set removeAllObjects];
+	STAssertEqualObjects([set allObjects], abc,
+						 @"Wrong ordering.");
 	
+	[set removeAllObjects];
 	[set setRepeatObjectsMoveToBack:YES];
 	for (id anObject in abca)
 		[set addObject:anObject];
-	STAssertEqualObjects([set allObjects], bca, @"Wrong ordering.");
-	[set removeAllObjects];
+	STAssertEqualObjects([set allObjects], bca,
+						 @"Wrong ordering.");
 	
+	[set setRepeatObjectsMoveToBack:NO];
+	for (id anObject in abab)
+		[set addObject:anObject];
+	STAssertEqualObjects([set allObjects], bca,
+						 @"Wrong ordering with multiple duplicates.");
+	
+	[set setRepeatObjectsMoveToBack:YES];
+	for (id anObject in abab)
+		[set addObject:anObject];
+	STAssertEqualObjects([set allObjects], cab,
+						 @"Wrong ordering with multiple duplicates.");
+
 	// Test -addObjectsFromArray:
-	[set addObjectsFromArray:array];
-	STAssertEqualObjects([set allObjects], array, @"Wrong ordering.");
 	[set removeAllObjects];
+	[set addObjectsFromArray:array];
+	STAssertEqualObjects([set allObjects], array,
+						 @"Wrong ordering.");
 	
+	[set removeAllObjects];
 	[set setRepeatObjectsMoveToBack:NO];
 	[set addObjectsFromArray:abca];
-	STAssertEqualObjects([set allObjects], abc, @"Wrong ordering.");
-	[set removeAllObjects];
+	STAssertEqualObjects([set allObjects], abc,
+						 @"Wrong ordering.");
 	
+	[set removeAllObjects];
 	[set setRepeatObjectsMoveToBack:YES];
 	[set addObjectsFromArray:abca];
-	STAssertEqualObjects([set allObjects], bca, @"Wrong ordering.");
+	STAssertEqualObjects([set allObjects], bca,
+						 @"Wrong ordering.");
+
+	[set setRepeatObjectsMoveToBack:NO];
+	[set addObjectsFromArray:abab];
+	STAssertEqualObjects([set allObjects], bca,
+						 @"Wrong ordering with multiple duplicates.");
+
+	[set setRepeatObjectsMoveToBack:YES];
+	[set addObjectsFromArray:abab];
+	STAssertEqualObjects([set allObjects], cab,
+						 @"Wrong ordering with multiple duplicates.");
 }
 
 - (void) testUnionSet {
+	NSArray *abc = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
+	NSSet *ade = [NSSet setWithObjects:@"A",@"D",@"E",nil];
+	
+	NSArray *abcde = [NSArray arrayWithObjects:@"A",@"B",@"C",@"D",@"E",nil];
+	[set addObjectsFromArray:abc];
+	[set unionSet:ade];
+	STAssertEqualObjects([set allObjects], abcde, @"Wrong ordering on union.");
+	
+	// Test when duplicates are moved to the back.
+	[set removeAllObjects];	
+	[set setRepeatObjectsMoveToBack:YES];
+	
+	NSMutableArray *array = [NSMutableArray arrayWithObjects:@"B",@"C",nil];
+	for (id anObject in ade)
+		[array addObject:anObject];
+	[set addObjectsFromArray:abc];
+	[set unionSet:ade];
+	STAssertEqualObjects([set allObjects], array, @"Wrong ordering on union.");
 }
 
 #pragma mark Querying Contents
@@ -204,6 +258,19 @@
 }
 
 - (void) testIntersectsSet {
+	NSSet *abc = [NSSet setWithObjects:@"A",@"B",@"C",nil];
+	NSSet *cde = [NSSet setWithObjects:@"C",@"D",@"E",nil];
+	NSSet *xyz = [NSSet setWithObjects:@"X",@"Y",@"Z",nil];
+	
+	STAssertFalse([set intersectsSet:abc], @"Should not intersect.");
+	[set addObjectsFromArray:[NSArray arrayWithObjects:@"A",@"B",@"C",nil]];
+	
+	STAssertTrue([set intersectsSet:abc], @"Should intersect.");
+	STAssertTrue([set intersectsSet:cde], @"Should intersect.");
+	STAssertFalse([set intersectsSet:xyz], @"Should not intersect.");
+	
+	STAssertFalse([set intersectsSet:nil], @"Should not intersect.");
+	STAssertFalse([set intersectsSet:[NSSet set]], @"Should not intersect.");
 }
 
 - (void) testIsEqualToSet {
@@ -256,19 +323,6 @@
 #pragma mark Removing Objects
 
 - (void) testIntersectSet {
-	NSSet *abc = [NSSet setWithObjects:@"A",@"B",@"C",nil];
-	NSSet *cde = [NSSet setWithObjects:@"C",@"D",@"E",nil];
-	NSSet *xyz = [NSSet setWithObjects:@"X",@"Y",@"Z",nil];
-	
-	STAssertFalse([set intersectsSet:abc], @"Should not intersect.");
-	[set addObjectsFromArray:[NSArray arrayWithObjects:@"A",@"B",@"C",nil]];
-	
-	STAssertTrue([set intersectsSet:abc], @"Should intersect.");
-	STAssertTrue([set intersectsSet:cde], @"Should intersect.");
-	STAssertFalse([set intersectsSet:xyz], @"Should not intersect.");
-
-	STAssertFalse([set intersectsSet:nil], @"Should not intersect.");
-	STAssertFalse([set intersectsSet:[NSSet set]], @"Should not intersect.");
 }
 
 - (void) testMinusSet {

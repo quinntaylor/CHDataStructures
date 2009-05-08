@@ -96,18 +96,16 @@
 
 - (void) addObjectsFromArray:(NSArray*)anArray {
 	for (id anObject in anArray) {
-		[self modifyInsertionListWithObject:anObject];
+		[self modifyInsertionListWithObject:anObject]; // tests if in objects
 		[objects addObject:anObject];
 	}
 }
 
 - (void) unionSet:(NSSet*)otherSet {
-	// Remove items NOT present in receiver from insertion ordering first.
 	for (id anObject in otherSet) {
-		if (![objects containsObject:anObject])
-			[self modifyInsertionListWithObject:anObject];
+		[self modifyInsertionListWithObject:anObject]; // tests if in objects
+		[objects addObject:anObject];
 	}
-	[objects unionSet:otherSet];
 }
 
 #pragma mark Querying Contents
