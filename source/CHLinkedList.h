@@ -307,6 +307,7 @@
 /** @name <NSFastEnumeration> */
 // @{
 
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 /**
  Called within <code>@b for (type variable @b in collection)</code> constructs. Returns by reference a C array of objects over which the sender should iterate, and as the return value the number of objects in the array.
  
@@ -321,7 +322,6 @@
  @see allObjects
  @see objectEnumerator
  */
-#if MAC_OS_X_VERSION_10_5_AND_LATER
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len;
