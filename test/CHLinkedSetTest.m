@@ -135,22 +135,28 @@
 - (void) testUnionSet {
 	NSArray *abc = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
 	NSSet *ade = [NSSet setWithObjects:@"A",@"D",@"E",nil];
+	NSMutableArray *order;
 	
-	NSArray *abcde = [NSArray arrayWithObjects:@"A",@"B",@"C",@"D",@"E",nil];
+	// Test when duplicates stay in place.
+	[set setRepeatObjectsMoveToBack:NO];
+	order = [NSMutableArray arrayWithObjects:@"A",@"B",@"C",nil];
+	for (id anObject in ade)
+		if (![anObject isEqual:@"A"])
+			[order addObject:anObject];
 	[set addObjectsFromArray:abc];
 	[set unionSet:ade];
-	STAssertEqualObjects([set allObjects], abcde, @"Wrong ordering on union.");
+	STAssertEqualObjects([set allObjects], order, @"Wrong ordering on union.");
 	
 	// Test when duplicates are moved to the back.
 	[set removeAllObjects];	
 	[set setRepeatObjectsMoveToBack:YES];
 	
-	NSMutableArray *array = [NSMutableArray arrayWithObjects:@"B",@"C",nil];
+	order = [NSMutableArray arrayWithObjects:@"B",@"C",nil];
 	for (id anObject in ade)
-		[array addObject:anObject];
+		[order addObject:anObject];
 	[set addObjectsFromArray:abc];
 	[set unionSet:ade];
-	STAssertEqualObjects([set allObjects], array, @"Wrong ordering on union.");
+	STAssertEqualObjects([set allObjects], order, @"Wrong ordering on union.");
 }
 
 #pragma mark Querying Contents
@@ -326,6 +332,50 @@
 }
 
 - (void) testMinusSet {
+	NSArray *axbycz = [NSArray arrayWithObjects:@"A",@"X",@"B",@"Y",@"C",@"Z",nil];
+	NSArray *xaybzc = [NSArray arrayWithObjects:@"X",@"A",@"Y",@"B",@"Z",@"C",nil];
+	NSArray *abc = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
+	NSArray *empty = [NSArray array];
+	NSSet *xyz = [NSSet setWithObjects:@"X",@"Y",@"Z",nil];
+	
+	STAssertNoThrow([set minusSet:nil], @"Should not raise exception");
+	STAssertEqualObjects([set allObjects], empty, @"Unexpected ordering.");
+	
+	[set minusSet:[NSSet set]];
+	STAssertEqualObjects([set allObjects], empty, @"Unexpected ordering.");
+
+	[set minusSet:xyz];
+	STAssertEqualObjects([set allObjects], empty, @"Unexpected ordering.");
+	
+	[set addObjectsFromArray:axbycz];
+	
+	STAssertNoThrow([set minusSet:nil], @"Should not raise exception");
+	STAssertEqualObjects([set allObjects], axbycz, @"Unexpected ordering.");
+
+	[set minusSet:[NSSet set]];
+	STAssertEqualObjects([set allObjects], axbycz, @"Unexpected ordering.");
+
+	// Test removing even elements
+	[set addObjectsFromArray:axbycz];
+	STAssertNoThrow([set minusSet:xyz], @"Should not raise exception");
+	STAssertEqualObjects([set allObjects], abc, @"Unexpected ordering.");
+	[set removeAllObjects];
+
+	// Test removing odd elements
+	[set addObjectsFromArray:xaybzc];	
+	STAssertNoThrow([set minusSet:xyz], @"Should not raise exception");
+	STAssertEqualObjects([set allObjects], abc, @"Unexpected ordering.");
+	[set removeAllObjects];
+	
+	// Test differencing disjoint sets
+	[set addObjectsFromArray:abc];
+	[set minusSet:xyz];
+	STAssertEqualObjects([set allObjects], abc, @"Unexpected ordering.");
+	
+	// Test differencing identical sets
+	[set addObjectsFromArray:abc];
+	[set minusSet:[NSSet setWithArray:abc]];
+	STAssertEqualObjects([set allObjects], empty, @"Unexpected ordering.");
 }
 
 - (void) testRemoveAllObjects {

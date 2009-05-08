@@ -192,9 +192,11 @@
  
  @param otherSet The set of objects to add to the receiver.
  
+ @attention The bookkeeping for tracking insertion order adds O(n) cost (worst-case) of searching the list if #repeatObjectsMoveToBack returns @c YES.
  @attention The insertion order of objects from @a otherSet is undefined.
  
  @see addObjectsFromArray:
+ @see repeatObjectsMoveToBack
  */
 - (void) unionSet:(NSSet*)otherSet;
 
@@ -357,6 +359,8 @@
  
  @param otherSet The set with which to perform the intersection.
  
+ @attention The bookkeeping for tracking insertion order adds O(n) cost (worst-case) of searching the list for any items to be removed from the receiver.
+ 
  @see removeObject:
  @see removeAllObjects
  @see minusSet:
@@ -368,6 +372,8 @@
  Remove from the receiver each object in another given set that is present in the receiver. If no members of @a otherSet are present in the receiving set, this method has no effect on the receiver. In no case is @a otherSet direclty modified.
  
  @param otherSet The set of objects to remove from the receiver.
+ 
+ @attention The bookkeeping for tracking insertion order adds O(n) cost (worst-case) of searching the list for any items to be removed from the receiver.
  */
 - (void) minusSet:(NSSet*)otherSet;
 

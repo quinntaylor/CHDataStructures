@@ -186,12 +186,16 @@
 
 - (void) minusSet:(NSSet*)otherSet {
 	if ([otherSet count] > 0) {
-		// Remove items present in receiver from insertion ordering first.
-		for (id anObject in otherSet) {
-			if ([objects containsObject:anObject])
-				[ordering removeObject:anObject];
+		if ([objects isEqual:otherSet]) {
+			[self removeAllObjects];
+		} else {
+			// Remove items present in receiver from insertion ordering first.
+			for (id anObject in otherSet) {
+				if ([objects containsObject:anObject])
+					[ordering removeObject:anObject];
+			}
+			[objects minusSet:otherSet];
 		}
-		[objects minusSet:otherSet];
 	}
 }
 
