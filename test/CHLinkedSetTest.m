@@ -11,6 +11,13 @@
 #import <SenTestingKit/SenTestingKit.h>
 #import "CHLinkedSet.h"
 
+@interface CHLinkedSet (Test)
+
+- (NSString*) debugDescription; // Declare here to prevent compiler warnings.
+
+@end
+
+
 @interface CHLinkedSetTest : SenTestCase {
 	CHLinkedSet *set;
 }
@@ -145,9 +152,34 @@
 }
 
 - (void) testDescription {
+	STAssertEqualObjects([set description], [[NSArray array] description],
+						 @"Wrong description.");
+
+	NSArray *array = [self randomNumbers];
+	[set addObjectsFromArray:array];
+	STAssertEqualObjects([set description], [array description],
+						 @"Wrong description.");
 }
 
 - (void) testDebugDescription {
+	NSString *debugDescription;
+	
+	NSArray *myArray = [NSArray array];
+	NSSet *mySet = [NSSet set];
+	
+	debugDescription = [NSString stringWithFormat:@"objects = %@,\nordering = %@", [mySet description], [myArray description]];
+	
+	STAssertEqualObjects([set debugDescription], debugDescription,
+						 @"Wrong description.");
+
+	myArray = [NSArray arrayWithObjects:@"B",@"C",@"A",nil];
+	mySet = [NSSet setWithArray:myArray];
+	[set addObjectsFromArray:myArray];
+	
+	debugDescription = [NSString stringWithFormat:@"objects = %@,\nordering = %@", [mySet description], [myArray description]];
+	
+	STAssertEqualObjects([set debugDescription], debugDescription,
+						 @"Wrong description.");
 }
 
 - (void) testFirstObjectAndLastObject {
@@ -193,6 +225,12 @@
 }
 
 - (void) testMember {
+	STAssertNil([set member:@"A"], @"Should not be a member.");
+	[set addObject:@"A"];
+	STAssertEqualObjects([set member:@"A"], @"A", @"Should be a member.");
+	STAssertNil([set member:@"Z"], @"Should not be a member.");
+	[set removeAllObjects];
+	STAssertNil([set member:@"A"], @"Should not be a member.");
 }
 
 - (void) testObjectEnumerator {
@@ -244,9 +282,31 @@
 }
 
 - (void) testRemoveFirstObject {
+	[set addObject:@"A"];
+	[set addObject:@"B"];
+	[set addObject:@"C"];
+	
+	STAssertEqualObjects([set firstObject], @"A", @"Wrong first object.");
+	[set removeFirstObject];
+	STAssertEqualObjects([set firstObject], @"B", @"Wrong first object.");
+	[set removeFirstObject];
+	STAssertEqualObjects([set firstObject], @"C", @"Wrong first object.");
+	[set removeFirstObject];
+	STAssertNil([set firstObject], @"Wrong first object.");
 }
 
 - (void) testRemoveLastObject {
+	[set addObject:@"A"];
+	[set addObject:@"B"];
+	[set addObject:@"C"];
+	
+	STAssertEqualObjects([set lastObject], @"C", @"Wrong first object.");
+	[set removeLastObject];
+	STAssertEqualObjects([set lastObject], @"B", @"Wrong first object.");
+	[set removeLastObject];
+	STAssertEqualObjects([set lastObject], @"A", @"Wrong first object.");
+	[set removeLastObject];
+	STAssertNil([set lastObject], @"Wrong first object.");
 }
 
 - (void) testRemoveObject {
