@@ -175,12 +175,15 @@
 		[self removeAllObjects];
 	}
 	else {
-		// Remove items NOT present in receiver from insertion ordering first.
-		for (id anObject in otherSet) {
-			if (![objects containsObject:anObject])
-				[ordering removeObject:anObject];
-		}
 		[objects intersectSet:otherSet];
+		// Remove from insertion ordering items NOT present in intersected set.
+		CHDoublyLinkedList *newOrdering = [[CHDoublyLinkedList alloc] init];
+		for (id anObject in ordering) {
+			if ([objects containsObject:anObject])
+				[newOrdering appendObject:anObject];
+		}
+		[ordering release];
+		ordering = newOrdering;
 	}
 }
 

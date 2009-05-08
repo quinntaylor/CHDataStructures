@@ -329,6 +329,34 @@
 #pragma mark Removing Objects
 
 - (void) testIntersectSet {
+	NSArray *abc = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
+	NSArray *cde = [NSArray arrayWithObjects:@"C",@"D",@"E",nil];
+	NSArray *def = [NSArray arrayWithObjects:@"D",@"E",@"F",nil];
+	NSArray *c = [NSArray arrayWithObjects:@"C",nil];
+	NSArray *empty = [NSArray array];
+	
+	STAssertNoThrow([set intersectSet:nil], @"Should not raise exception");
+
+	// Test intersecting identical sets
+	[set addObjectsFromArray:abc];
+	[set intersectSet:[NSSet setWithArray:abc]];
+	STAssertEqualObjects([set allObjects], abc, @"Unexpected ordering.");
+	
+	// Test intersecting overlapping sets
+	[set addObjectsFromArray:abc];
+	[set intersectSet:[NSSet setWithArray:cde]];
+	STAssertEqualObjects([set allObjects], c, @"Unexpected ordering.");
+	[set removeAllObjects];
+	
+	[set addObjectsFromArray:cde];
+	[set intersectSet:[NSSet setWithArray:abc]];
+	STAssertEqualObjects([set allObjects], c, @"Unexpected ordering.");
+	[set removeAllObjects];
+	
+	// Test intersecting disjoint sets
+	[set addObjectsFromArray:abc];
+	[set intersectSet:[NSSet setWithArray:def]];
+	STAssertEqualObjects([set allObjects], empty, @"Unexpected ordering.");
 }
 
 - (void) testMinusSet {

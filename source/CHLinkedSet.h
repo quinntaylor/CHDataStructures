@@ -137,7 +137,10 @@
 /**
  Whether adding an object that already exists in the receiver causes it to become the "youngest" object. The default for a new linked set is @c NO.
  
+ @see addObject:
+ @see addObjectsFromArray:
  @see setRepeatObjectsMoveToBack:
+ @see unionSet:
  */
 - (BOOL) repeatObjectsMoveToBack;
 
@@ -196,6 +199,8 @@
  @attention The insertion order of objects from @a otherSet is undefined.
  
  @see addObjectsFromArray:
+ @see intersectSet:
+ @see minusSet:
  @see repeatObjectsMoveToBack
  */
 - (void) unionSet:(NSSet*)otherSet;
@@ -361,9 +366,10 @@
  
  @attention The bookkeeping for tracking insertion order adds O(n) cost (worst-case) of searching the list for any items to be removed from the receiver.
  
+ @see intersectsSet:
+ @see minusSet:
  @see removeObject:
  @see removeAllObjects
- @see minusSet:
  @see unionSet:
  */
 - (void) intersectSet:(NSSet*)otherSet;
@@ -374,6 +380,11 @@
  @param otherSet The set of objects to remove from the receiver.
  
  @attention The bookkeeping for tracking insertion order adds O(n) cost (worst-case) of searching the list for any items to be removed from the receiver.
+ 
+ @see intersectSet:
+ @see removeObject:
+ @see removeAllObjects
+ @see unionSet:
  */
 - (void) minusSet:(NSSet*)otherSet;
 
@@ -381,6 +392,8 @@
  Empty the receiver of all of its members.
  
  @see allObjects
+ @see intersectSet:
+ @see minusSet:
  @see removeFirstObject
  @see removeLastObject
  @see removeObject:
@@ -388,12 +401,16 @@
 - (void) removeAllObjects;
 
 /**
- Remove the "oldest" member of the receiver. 
+ Remove the "oldest" member of the receiver.
+ 
+ @see firstObject
  */
 - (void) removeFirstObject;
 
 /**
  Remove the "youngest" member of the receiver. 
+
+ @see lastObject
  */
 - (void) removeLastObject;
 
@@ -402,6 +419,7 @@
  
  @param anObject The object to remove from the receiver.
  
+ @see minusSet:
  @see removeAllObjects
  @see removeFirstObject
  @see removeLastObject
