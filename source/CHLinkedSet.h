@@ -191,12 +191,13 @@
 - (void) addObjectsFromArray:(NSArray*)anArray;
 
 /**
- Adds to the receiver each object in another given set that is not yet present in the receiver. If all members of @a otherSet are already present in the receiver, and if #repeatObjectsMoveToBack returns @c NO, there is no effect on the receiver. In no case is @a otherSet direclty modified.
+ Adds to the receiver each object in another given set that is not yet present in the receiver. If all members of @a otherSet are already present in the receiver, and if #repeatObjectsMoveToBack returns @c NO, there is no effect on the receiver. In no case is @a otherSet directly modified.
  
  @param otherSet The set of objects to add to the receiver.
  
+ @note The insertion order of objects from @a otherSet is undefined.
+ 
  @attention The bookkeeping for tracking insertion order adds O(n) cost (worst-case) of searching the list if #repeatObjectsMoveToBack returns @c YES.
- @attention The insertion order of objects from @a otherSet is undefined.
  
  @see addObjectsFromArray:
  @see intersectSet:
