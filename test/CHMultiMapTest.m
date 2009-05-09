@@ -21,6 +21,8 @@ void populateMultimap(CHMultiMap* multimap) {
 @interface CHMultiMapTest : SenTestCase
 {
 	CHMultiMap *multimap;
+	NSEnumerator *e;
+	id anObject;
 }
 
 @end
@@ -73,15 +75,17 @@ void populateMultimap(CHMultiMap* multimap) {
 	}
 }
 
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 - (void) testNSFastEnumeration {
 	populateMultimap(multimap);
 	
 	NSEnumerator *keys = [multimap keyEnumerator];
-	for (id aKey in multimap) {
-		STAssertEqualObjects(aKey, [keys nextObject], @"Key enumeration mismatch.");
+	for (id key in multimap) {
+		STAssertEqualObjects(key, [keys nextObject], @"Key enumeration mismatch.");
 	}
 	STAssertNil([keys nextObject], @"Key enumerator should be exhausted");
 }
+#endif
 
 #pragma mark -
 
@@ -153,12 +157,13 @@ void populateMultimap(CHMultiMap* multimap) {
 	populateMultimap(multimap);
 
 	NSArray *allObjects = [multimap allObjects];
-	NSSet *objectsForKey;
 	
 	STAssertEquals([allObjects count], (NSUInteger)9, @"Incorrect object count.");
-	for (id key in [multimap allKeys]) {
-		objectsForKey = [multimap objectsForKey:key];
-		for (id anObject in objectsForKey) {
+	NSEnumerator *keys = [multimap keyEnumerator];
+	id key;
+	while (key = [keys nextObject]) {
+		e = [[multimap objectsForKey:key] objectEnumerator];
+		while (anObject = [e nextObject]) {
 			STAssertTrue([allObjects containsObject:anObject],
 						 @"Should contain object.");
 		}

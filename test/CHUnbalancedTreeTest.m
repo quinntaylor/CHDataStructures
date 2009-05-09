@@ -21,6 +21,8 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 @interface CHUnbalancedTreeTest : SenTestCase {
 	CHUnbalancedTree *tree;
 	NSArray *objects, *order, *correct;
+	NSEnumerator *e;
+	id anObject;
 }
 @end
 
@@ -44,8 +46,9 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	STAssertThrows([tree addObject:nil], @"Should raise an exception.");
 	
 	STAssertEquals([tree count], (NSUInteger)0, @"Incorrect count.");
-	for (id object in objects)
-		[tree addObject:object];
+	e = [objects objectEnumerator];
+	while (anObject = [e nextObject])
+		[tree addObject:anObject];
 	STAssertEquals([tree count], [objects count], @"Incorrect count.");
 	
 	// Test adding identical object--should be replaced, and count stay the same
@@ -58,8 +61,9 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 }
 
 - (void) testAllObjectsWithTraversalOrder {
-	for (id object in objects)
-		[tree addObject:object];
+	e = [objects objectEnumerator];
+	while (anObject = [e nextObject])
+		[tree addObject:anObject];
 	
 	order = [tree allObjectsWithTraversalOrder:CHTraverseAscending];
 	correct = [NSArray arrayWithObjects:@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",
@@ -96,8 +100,9 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	// Test remove and subsequent pre-order of nodes for 4 broad possible cases
 	objects = [NSArray arrayWithObjects:
 			   @"F",@"B",@"A",@"C",@"E",@"D",@"J",@"I",@"G",@"H",@"K",nil];
-	for (id object in objects)
-		[tree addObject:object];
+	e = [objects objectEnumerator];
+	while (anObject = [e nextObject])
+		[tree addObject:anObject];
 	
 	// Test removing nil
 	STAssertNoThrow([tree removeObject:nil], @"Should not raise an exception.");

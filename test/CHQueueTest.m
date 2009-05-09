@@ -16,6 +16,8 @@
 @interface CHQueueTest : SenTestCase {
 	CHMutableArrayQueue *queue;
 	NSArray *objects, *queueClasses;
+	NSEnumerator *e;
+	id anObject;
 }
 @end
 
@@ -31,7 +33,9 @@
 }
 
 - (void) testInitWithArray {
-	for (Class aClass in queueClasses) {
+	NSEnumerator *classes = [queueClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		queue = [[CHMutableArrayQueue alloc] initWithArray:objects];
 		STAssertEquals([queue count], [objects count], @"Incorrect count.");
 		STAssertEqualObjects([queue allObjects], objects,
@@ -41,12 +45,15 @@
 }
 
 - (void) testAddObject {
-	for (Class aClass in queueClasses) {
+	NSEnumerator *classes = [queueClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		queue = [[aClass alloc] init];
 		STAssertThrows([queue addObject:nil],
 					   @"Should raise nilArgumentException.");
 		STAssertEquals([queue count], (NSUInteger)0, @"Incorrect count.");
-		for (id anObject in objects)
+		e = [objects objectEnumerator];
+		while (anObject = [e nextObject])
 			[queue addObject:anObject];
 		STAssertEquals([queue count], [objects count], @"Incorrect count.");
 		
@@ -57,9 +64,12 @@
 }
 
 - (void) testRemoveFirstObject {
-	for (Class aClass in queueClasses) {
+	NSEnumerator *classes = [queueClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		queue = [[aClass alloc] init];
-		for (id anObject in objects) {
+		e = [objects objectEnumerator];
+		while (anObject = [e nextObject]) {
 			[queue addObject:anObject];
 			STAssertEqualObjects([queue lastObject], anObject, @"Wrong -lastObject.");
 		}

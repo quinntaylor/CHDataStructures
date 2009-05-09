@@ -72,6 +72,8 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 @interface CHTreapTest : SenTestCase {
 	CHTreap *tree;
 	NSArray *objects, *order, *correct;
+	NSEnumerator *e;
+	id anObject;
 }
 
 @end
@@ -96,7 +98,8 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	for (int tries = 1; tries <= 5; tries++) {
 		[tree removeAllObjects];
 		count = 0;
-		for (id anObject in objects) {
+		e = [objects objectEnumerator];
+		while (anObject = [e nextObject]) {
 			[tree addObject:anObject];
 			STAssertEquals([tree count], ++count, @"Incorrect count.");
 			// Can't test a specific order because of randomly-assigned priorities
@@ -119,7 +122,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	[tree removeAllObjects];
 	
 	NSUInteger priority = 0;
-	NSEnumerator *e = [objects objectEnumerator];
+	e = [objects objectEnumerator];
 	
 	// Simulate by inserting unordered elements with increasing priority
 	// This artificially balances the tree, but we can test the result.
@@ -210,8 +213,9 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 }
 
 - (void) testAllObjectsWithTraversalOrder {
-	for (id object in objects)
-		[tree addObject:object];
+	e = [objects objectEnumerator];
+	while (anObject = [e nextObject])
+		[tree addObject:anObject];
 	
 	order = [tree allObjectsWithTraversalOrder:CHTraverseAscending];
 	correct = [NSArray arrayWithObjects:@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",
@@ -238,8 +242,9 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	               @"Priority should indicate that the object is absent.");
 
 	NSUInteger priority = 0;
-	for (id object in objects)
-		[tree addObject:object withPriority:(++priority)];
+	e = [objects objectEnumerator];
+	while (anObject = [e nextObject])
+		[tree addObject:anObject withPriority:(++priority)];
 	
 	STAssertEquals([tree priorityForObject:nil], (NSUInteger)CHTreapNotFound,
 	               @"Priority should indicate that the object is absent.");
@@ -251,14 +256,16 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	
 	int index = 0;
 	[tree removeAllObjects];
-	for (id anObject in objects) {
+	e = [objects objectEnumerator];
+	while (anObject = [e nextObject]) {
 		[tree addObject:anObject withPriority:(priorities[index++])];
 		[tree verify];
 	}
 	
 	// Verify that the assigned priorities are what we expect
 	index = 0;
-	for (id anObject in objects)
+	e = [objects objectEnumerator];
+	while (anObject = [e nextObject])
 		STAssertEquals([tree priorityForObject:anObject], priorities[index++],
 		               @"Wrong priority for object '%@'.", anObject);
 	
@@ -271,7 +278,8 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 }
 
 - (void) testRemoveObject {
-	for (id anObject in objects)
+	e = [objects objectEnumerator];
+	while (anObject = [e nextObject])
 		[tree addObject:anObject];
 	
 	// Test removing nil
@@ -284,7 +292,8 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	
 	// Remove all nodes one by one, and test treap validity at each step
 	NSUInteger count = [objects count];
-	for (id anObject in objects) {
+	e = [objects objectEnumerator];
+	while (anObject = [e nextObject]) {
 		[tree removeObject:anObject];
 		STAssertEquals([tree count], --count,
 					   @"Incorrect count after removing %@.", anObject);

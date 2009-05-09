@@ -18,9 +18,10 @@ static BOOL gcDisabled;
 
 @interface CHLinkedListTest : SenTestCase {
 	id<CHLinkedList> list;
-	NSEnumerator *e;
 	NSArray* linkedListClasses;
 	NSArray* objects;
+	NSEnumerator *e;
+	id anObject;
 }
 @end
 
@@ -41,9 +42,12 @@ static BOOL gcDisabled;
 #pragma mark -
 
 - (void) testNSCoding {
-	for (Class aClass in linkedListClasses) {
+	NSEnumerator *classes = [linkedListClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		list = [[aClass alloc] init];
-		for (id anObject in objects)
+		e = [objects objectEnumerator];
+		while (anObject = [e nextObject])
 			[list appendObject:anObject];
 		STAssertEquals([list count], [objects count], @"Incorrect count.");
 		
@@ -61,9 +65,12 @@ static BOOL gcDisabled;
 }
 
 - (void) testNSCopying {
-	for (Class aClass in linkedListClasses) {
+	NSEnumerator *classes = [linkedListClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		list = [[aClass alloc] init];
-		for (id anObject in objects)
+		e = [objects objectEnumerator];
+		while (anObject = [e nextObject])
 			[list appendObject:anObject];
 		id<CHLinkedList> list2 = [list copyWithZone:nil];
 		STAssertNotNil(list2, @"-copy should not return nil for valid list.");
@@ -74,8 +81,11 @@ static BOOL gcDisabled;
 	}
 }
 
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 - (void) testNSFastEnumeration {
-	for (Class aClass in linkedListClasses) {
+	NSEnumerator *classes = [linkedListClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		list = [[aClass alloc] init];
 		NSUInteger number, expected = 1, count = 0;
 		for (number = 1; number <= 32; number++)
@@ -99,11 +109,14 @@ static BOOL gcDisabled;
 		[list release];
 	}
 }
+#endif
 
 #pragma mark -
 
 - (void) testEmptyList {
-	for (Class aClass in linkedListClasses) {
+	NSEnumerator *classes = [linkedListClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		list = [[aClass alloc] init];
 		STAssertNotNil(list, @"list should not be nil");
 		STAssertEquals([list count], (NSUInteger)0, @"Incorrect count.");
@@ -114,7 +127,9 @@ static BOOL gcDisabled;
 }
 
 - (void) testInitWithArray {
-	for (Class aClass in linkedListClasses) {
+	NSEnumerator *classes = [linkedListClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		list = [[aClass alloc] initWithArray:objects];
 		STAssertEquals([list count], [objects count], @"Incorrect count.");
 		STAssertEqualObjects([list allObjects], objects,
@@ -124,9 +139,12 @@ static BOOL gcDisabled;
 }
 
 - (void) testDescription {
-	for (Class aClass in linkedListClasses) {
+	NSEnumerator *classes = [linkedListClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		list = [[aClass alloc] init];
-		for (id anObject in objects)
+		e = [objects objectEnumerator];
+		while (anObject = [e nextObject])
 			[list appendObject:anObject];
 		STAssertEqualObjects([list description], [objects description],
 							 @"-description uses bad ordering.");
@@ -137,11 +155,14 @@ static BOOL gcDisabled;
 #pragma mark Insertion and Access
 
 - (void) testPrependObject {
-	for (Class aClass in linkedListClasses) {
+	NSEnumerator *classes = [linkedListClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		list = [[aClass alloc] init];
 		STAssertThrows([list prependObject:nil], @"Should raise an exception on nil.");
 		
-		for (id anObject in objects)
+		e = [objects objectEnumerator];
+		while (anObject = [e nextObject])
 			[list prependObject:anObject];
 		
 		STAssertEquals([list count], [objects count], @"Incorrect count.");
@@ -152,11 +173,14 @@ static BOOL gcDisabled;
 }
 
 - (void) testAppendObject {
-	for (Class aClass in linkedListClasses) {
+	NSEnumerator *classes = [linkedListClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		list = [[aClass alloc] init];
 		STAssertThrows([list appendObject:nil], @"Should raise an exception on nil.");
 		
-		for (id anObject in objects)
+		e = [objects objectEnumerator];
+		while (anObject = [e nextObject])
 			[list appendObject:anObject];
 		
 		STAssertEquals([list count], [objects count], @"Incorrect count.");
@@ -167,7 +191,9 @@ static BOOL gcDisabled;
 }
 
 - (void) testInsertObjectAtIndex {
-	for (Class aClass in linkedListClasses) {
+	NSEnumerator *classes = [linkedListClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		list = [[aClass alloc] init];
 		STAssertThrows([list insertObject:nil atIndex:-1],
 					   @"Should raise an exception on nil.");
@@ -177,7 +203,8 @@ static BOOL gcDisabled;
 		STAssertNoThrow([list insertObject:@"Z" atIndex:0], @"Should not raise exception.");
 		[list removeLastObject];
 		
-		for (id anObject in objects)
+		e = [objects objectEnumerator];
+		while (anObject = [e nextObject])
 			[list appendObject:anObject];
 		STAssertEquals([list count], [objects count], @"Incorrect count.");
 		STAssertThrows([list insertObject:@"Z" atIndex:[objects count]+1], @"Should raise NSRangeException.");
@@ -208,7 +235,9 @@ static BOOL gcDisabled;
 }
 
 - (void) testObjectEnumerator {
-	for (Class aClass in linkedListClasses) {
+	NSEnumerator *classes = [linkedListClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		list = [[aClass alloc] init];
 		// Enumerator shouldn't retain collection if there are no objects
 		if (gcDisabled)
@@ -220,7 +249,8 @@ static BOOL gcDisabled;
 		STAssertNil([e nextObject], @"-nextObject should return nil.");
 		
 		// Enumerator should retain collection when it has 1+ objects, release when 0
-		for (id anObject in objects)
+		e = [objects objectEnumerator];
+		while (anObject = [e nextObject])
 			[list appendObject:anObject];
 		if (gcDisabled)
 			STAssertEquals([list retainCount], (NSUInteger)1, @"Wrong retain count");
@@ -267,16 +297,7 @@ static BOOL gcDisabled;
 		[list appendObject:@"Z"];
 		STAssertThrows([e nextObject], @"Should raise mutation exception.");
 		STAssertThrows([e allObjects], @"Should raise mutation exception.");
-		BOOL raisedException = NO;
-		@try {
-			for (id object in list)
-				[list appendObject:@"123"];
-		}
-		@catch (NSException *exception) {
-			raisedException = YES;
-		}
-		STAssertTrue(raisedException, @"Should raise mutation exception.");
-		
+
 		// Test deallocation in the middle of enumeration
 		pool = [[NSAutoreleasePool alloc] init];
 		e = [list objectEnumerator];
@@ -297,7 +318,9 @@ static BOOL gcDisabled;
 #pragma mark Search
 
 - (void) testContainsObject {
-	for (Class aClass in linkedListClasses) {
+	NSEnumerator *classes = [linkedListClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		list = [[aClass alloc] init];
 		STAssertFalse([list containsObject:@"A"], @"Should return YES.");
 		[list appendObject:@"A"];
@@ -308,7 +331,9 @@ static BOOL gcDisabled;
 }
 
 - (void) testContainsObjectIdenticalTo {
-	for (Class aClass in linkedListClasses) {
+	NSEnumerator *classes = [linkedListClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		list = [[aClass alloc] init];
 		NSString *a = [NSString stringWithFormat:@"A"];
 		STAssertFalse([list containsObjectIdenticalTo:a], @"Should return NO.");
@@ -320,7 +345,9 @@ static BOOL gcDisabled;
 }
 
 - (void) testIndexOfObject {
-	for (Class aClass in linkedListClasses) {
+	NSEnumerator *classes = [linkedListClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		list = [[aClass alloc] init];
 		[list appendObject:@"A"];
 		STAssertEquals([list indexOfObject:@"A"], (NSUInteger)0, @"Should return 0.");
@@ -331,7 +358,9 @@ static BOOL gcDisabled;
 }
 
 - (void) testIndexOfObjectIdenticalTo {
-	for (Class aClass in linkedListClasses) {
+	NSEnumerator *classes = [linkedListClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		list = [[aClass alloc] init];
 		NSString *a = [NSString stringWithFormat:@"A"];
 		[list appendObject:a];
@@ -343,9 +372,12 @@ static BOOL gcDisabled;
 }
 
 - (void) testObjectAtIndex {
-	for (Class aClass in linkedListClasses) {
+	NSEnumerator *classes = [linkedListClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		list = [[aClass alloc] init];
-		for (id anObject in objects)
+		e = [objects objectEnumerator];
+		while (anObject = [e nextObject])
 			[list appendObject:anObject];
 		STAssertThrows([list objectAtIndex:-1], @"Should raise NSRangeException.");
 		STAssertEqualObjects([list objectAtIndex:0], @"A", @"-objectAtIndex: is wrong.");
@@ -359,11 +391,14 @@ static BOOL gcDisabled;
 #pragma mark Removal
 
 - (void) testRemoveFirstObject {
-	for (Class aClass in linkedListClasses) {
+	NSEnumerator *classes = [linkedListClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		list = [[aClass alloc] init];
 		
 		[list removeFirstObject]; // Should have no effect
-		for (id anObject in objects)
+		e = [objects objectEnumerator];
+		while (anObject = [e nextObject])
 			[list appendObject:anObject];
 		
 		[list removeFirstObject];
@@ -389,11 +424,14 @@ static BOOL gcDisabled;
 }
 
 - (void) testRemoveLastObject {
-	for (Class aClass in linkedListClasses) {
+	NSEnumerator *classes = [linkedListClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		list = [[aClass alloc] init];
 		
 		[list removeLastObject]; // Should have no effect
-		for (id anObject in objects)
+		e = [objects objectEnumerator];
+		while (anObject = [e nextObject])
 			[list appendObject:anObject];
 		
 		[list removeLastObject];
@@ -415,12 +453,15 @@ static BOOL gcDisabled;
 }
 
 - (void) testRemoveObject {
-	for (Class aClass in linkedListClasses) {
+	NSEnumerator *classes = [linkedListClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		list = [[aClass alloc] init];
 		[list removeObject:@"Z"]; // Should have no effect
 		STAssertNoThrow([list removeObject:nil], @"Should not raise an exception.");
 		
-		for (id anObject in objects)
+		e = [objects objectEnumerator];
+		while (anObject = [e nextObject])
 			[list appendObject:anObject];
 		STAssertNoThrow([list removeObject:nil], @"Should not raise an exception.");
 		
@@ -458,7 +499,9 @@ static BOOL gcDisabled;
 }
 
 - (void) testRemoveObjectIdenticalTo {
-	for (Class aClass in linkedListClasses) {
+	NSEnumerator *classes = [linkedListClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		list = [[aClass alloc] init];
 		STAssertNoThrow([list removeObjectIdenticalTo:nil], @"Should not raise an exception.");
 		
@@ -492,9 +535,12 @@ static BOOL gcDisabled;
 }
 
 - (void) testRemoveObjectAtIndex {
-	for (Class aClass in linkedListClasses) {
+	NSEnumerator *classes = [linkedListClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		list = [[aClass alloc] init];
-		for (id anObject in objects)
+		e = [objects objectEnumerator];
+		while (anObject = [e nextObject])
 			[list appendObject:anObject];
 		
 		STAssertThrows([list removeObjectAtIndex:3], @"Should raise NSRangeException.");
@@ -514,7 +560,8 @@ static BOOL gcDisabled;
 		STAssertEquals([list count], (NSUInteger)0, @"Incorrect count.");
 		
 		// Test removing from an index in the middle
-		for (id anObject in objects)
+		e = [objects objectEnumerator];
+		while (anObject = [e nextObject])
 			[list appendObject:anObject];
 		
 		[list removeObjectAtIndex:1];
@@ -526,9 +573,12 @@ static BOOL gcDisabled;
 }
 
 - (void) testRemoveAllObjects {
-	for (Class aClass in linkedListClasses) {
+	NSEnumerator *classes = [linkedListClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		list = [[aClass alloc] init];
-		for (id anObject in objects)
+		e = [objects objectEnumerator];
+		while (anObject = [e nextObject])
 			[list appendObject:anObject];
 		STAssertEquals([list count], [objects count], @"Incorrect count.");
 		[list removeAllObjects];

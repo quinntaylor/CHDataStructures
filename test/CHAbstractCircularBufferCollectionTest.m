@@ -43,6 +43,8 @@
 	CHAbstractCircularBufferCollection *buffer;
 	NSArray *abc;
 	NSMutableArray *fifteen;
+	NSEnumerator *e;
+	id anObject;
 }
 @end
 
@@ -153,7 +155,8 @@
 
 - (void) testCount {
 	STAssertEquals([buffer count], (NSUInteger)0, @"Wrong count");
-	for (id anObject in abc)
+	e = [abc objectEnumerator];
+	while (anObject = [e nextObject])
 		[buffer appendObject:anObject];
 	STAssertEquals([buffer count], [abc count], @"Wrong count");
 }
@@ -161,12 +164,15 @@
 - (void) testAllObjects {
 	STAssertNotNil([buffer allObjects], @"-allObjects should never return nil");
 	STAssertEquals([[buffer allObjects] count], (NSUInteger)0, @"Wrong count");
-	for (id anObject in abc)
+	
+	e = [abc objectEnumerator];
+	while (anObject = [e nextObject])
 		[buffer appendObject:anObject];
 	STAssertEqualObjects([buffer allObjects], abc, @"Bad result for -allObjects");
 	
 	// Test -allObjects when the buffer wraps around to the beginning
-	for (id anObject in abc)
+	e = [abc objectEnumerator];
+	while (anObject = [e nextObject])
 		[buffer removeFirstObject];
 	STAssertEquals([buffer headIndex], (NSUInteger)3, @"Wrong head index.");
 	STAssertEquals([buffer tailIndex], (NSUInteger)3, @"Wrong tail index.");
@@ -174,9 +180,9 @@
 	for (int i = 1; i < 16; i++) {
 		[objects addObject:[NSNumber numberWithInt:i]];
 	}
-	for (id anObject in objects) {
+	e = [objects objectEnumerator];
+	while (anObject = [e nextObject])
 		[buffer appendObject:anObject];
-	}
 	STAssertEquals([buffer count], [objects count], @"Wrong count of objects.");
 	STAssertEqualObjects([buffer allObjects], objects, @"Bad result for -allObjects");
 }
@@ -196,10 +202,10 @@
 	STAssertEquals([[[buffer reverseObjectEnumerator] allObjects] count], (NSUInteger)0,
 				   @"Wrong count");
 	
-	for (id anObject in abc)
+	e = [abc objectEnumerator];
+	while (anObject = [e nextObject])
 		[buffer appendObject:anObject];
 	
-	NSEnumerator *e;
 	NSArray *allObjects;
 	
 	// Test forward enumeration
@@ -255,7 +261,8 @@
 - (void) testDescription {
 	STAssertEqualObjects([buffer description], [[buffer allObjects] description],
 						 @"Descriptions should be equal");
-	for (id anObject in abc)
+	e = [abc objectEnumerator];
+	while (anObject = [e nextObject])
 		[buffer appendObject:anObject];
 	STAssertEqualObjects([buffer description], [[buffer allObjects] description],
 						 @"Descriptions should be equal");
@@ -264,25 +271,31 @@
 #pragma mark Search
 
 - (void) testContainsObject {
-	for (id anObject in abc)
+	e = [abc objectEnumerator];
+	while (anObject = [e nextObject])
 		STAssertFalse([buffer containsObject:anObject], @"Buffer is empty");
 	STAssertFalse([buffer containsObject:@"Z"], @"Buffer is empty");
-	for (id anObject in abc)
+	e = [abc objectEnumerator];
+	while (anObject = [e nextObject])
 		[buffer appendObject:anObject];
-	for (id anObject in abc)
+	e = [abc objectEnumerator];
+	while (anObject = [e nextObject])
 		STAssertTrue([buffer containsObject:anObject], @"Incorrect result");
 	STAssertFalse([buffer containsObject:@"Z"], @"Incorrect result");
 }
 
 - (void) testContainsObjectIdenticalTo {
 	NSString *a = [NSString stringWithFormat:@"A"];
-	for (id anObject in abc)
+	e = [abc objectEnumerator];
+	while (anObject = [e nextObject])
 		STAssertFalse([buffer containsObjectIdenticalTo:anObject], @"Buffer is empty");
 	STAssertFalse([buffer containsObjectIdenticalTo:@"Z"], @"Buffer is empty");
 	STAssertFalse([buffer containsObjectIdenticalTo:a], @"Incorrect result");
-	for (id anObject in abc)
+	e = [abc objectEnumerator];
+	while (anObject = [e nextObject])
 		[buffer appendObject:anObject];
-	for (id anObject in abc)
+	e = [abc objectEnumerator];
+	while (anObject = [e nextObject])
 		STAssertTrue([buffer containsObjectIdenticalTo:anObject], @"Incorrect result");
 	STAssertFalse([buffer containsObjectIdenticalTo:@"Z"], @"Incorrect result");
 	STAssertFalse([buffer containsObjectIdenticalTo:a], @"Incorrect result");
@@ -292,17 +305,21 @@
 	STAssertEquals([buffer indexOfObject:@"Z"], (NSUInteger)CHNotFound,
 				   @"Empty buffer, object should not be found");
 	// Move the head index to 3 so adding 15 objects will wrap.
-	for (id anObject in abc) {
+	e = [abc objectEnumerator];
+	while (anObject = [e nextObject]) {
 		[buffer appendObject:anObject];
 		[buffer removeFirstObject];
 	}
-	for (id anObject in fifteen)
+	e = [fifteen objectEnumerator];
+	while (anObject = [e nextObject])
 		[buffer appendObject:anObject];
 	
 	NSUInteger expectedIndex = 0;
-	for (id anObject in fifteen)
+	e = [fifteen objectEnumerator];
+	while (anObject = [e nextObject]) {
 		STAssertEquals([buffer indexOfObject:anObject], expectedIndex++,
 					   @"Wrong index for object");
+	}
 	STAssertEquals([buffer indexOfObject:@"Z"], (NSUInteger)CHNotFound,
 				   @"Object should not be found in buffer");
 }
@@ -314,15 +331,18 @@
 	STAssertEquals([buffer indexOfObjectIdenticalTo:a], (NSUInteger)CHNotFound,
 				   @"Empty buffer, object should not be found");
 	// Move the head index to 3 so adding 15 objects will wrap.
-	for (id anObject in abc) {
+	e = [abc objectEnumerator];
+	while (anObject = [e nextObject]) {
 		[buffer appendObject:anObject];
 		[buffer removeFirstObject];
 	}
-	for (id anObject in fifteen)
+	e = [fifteen objectEnumerator];
+	while (anObject = [e nextObject])
 		[buffer appendObject:anObject];
 
 	NSUInteger expectedIndex = 0;
-	for (id anObject in fifteen)
+	e = [fifteen objectEnumerator];
+	while (anObject = [e nextObject])
 		STAssertEquals([buffer indexOfObjectIdenticalTo:anObject], expectedIndex++,
 					   @"Wrong index for object");
 	STAssertEquals([buffer indexOfObjectIdenticalTo:@"Z"], (NSUInteger)CHNotFound,
@@ -335,7 +355,8 @@
 	STAssertThrows([buffer objectAtIndex:0], @"Range exception.");
 	STAssertThrows([buffer objectAtIndex:[abc count]+1], @"Range exception.");
 	
-	for (id anObject in abc)
+	e = [abc objectEnumerator];
+	while (anObject = [e nextObject])
 		[buffer appendObject:anObject];
 	for (NSUInteger searchIndex = 0; searchIndex < [abc count]; searchIndex++) {
 		STAssertEqualObjects([buffer objectAtIndex:searchIndex],
@@ -347,7 +368,8 @@
 #pragma mark Removal
 
 - (void) testRemoveFirstObject {
-	for (id anObject in abc)
+	e = [abc objectEnumerator];
+	while (anObject = [e nextObject])
 		[buffer appendObject:anObject];
 	
 	NSUInteger expected = [abc count];
@@ -374,7 +396,8 @@
 }
 
 - (void) testRemoveLastObject {
-	for (id anObject in abc)
+	e = [abc objectEnumerator];
+	while (anObject = [e nextObject])
 		[buffer appendObject:anObject];
 	NSUInteger expected = [abc count];
 	STAssertEqualObjects([buffer lastObject], @"C", @"Wrong -lastObject.");
@@ -394,7 +417,8 @@
 
 - (void) testRemoveAllObjects {
 	STAssertEquals([buffer count], (NSUInteger)0, @"Incorrect count.");
-	for (id anObject in abc)
+	e = [abc objectEnumerator];
+	while (anObject = [e nextObject])
 		[buffer appendObject:anObject];
 	STAssertEquals([buffer count], (NSUInteger)3, @"Incorrect count.");
 	STAssertEquals([buffer headIndex], (NSUInteger)0, @"Wrong head index.");
@@ -408,7 +432,8 @@
 	// Test whether circular buffer contracts when all objects are removed.
 	STAssertEquals([buffer capacity], (NSUInteger)16, @"Wrong capacity.");
 	// Insert each object 3 times to force array capacity to 64 elements
-	for (id anObject in fifteen) {
+	e = [fifteen objectEnumerator];
+	while (anObject = [e nextObject]) {
 		[buffer appendObject:anObject];
 		[buffer appendObject:anObject];
 		[buffer appendObject:anObject];
@@ -434,7 +459,8 @@
 
 - (void) testRemoveObject {
 	STAssertNoThrow([buffer removeObject:@"A"], @"No effect when empty.");
-	for (id anObject in abc)
+	e = [abc objectEnumerator];
+	while (anObject = [e nextObject])
 		[buffer appendObject:anObject];
 	STAssertEquals([buffer count], [abc count], @"Incorrect count.");
 	STAssertNoThrow([buffer removeObject:nil],  @"No effect with nil object.");
@@ -442,19 +468,21 @@
 	
 	// Test removing all instances of an object in various scenarios
 	[self removeObjectSetup];
-	NSArray *testArrays = [self removeObjectTestArrays];
-	for (NSArray *testArray in testArrays) {
+	NSEnumerator *testArrays = [[self removeObjectTestArrays] objectEnumerator];
+	NSArray *testArray;
+	while (testArray = [testArrays nextObject]) {
 		for (int i = 0; i <= 1; i++) {
 			// Offset the head pointer by 3 to force wrapping
 			if (i == 1) {
-				for (id anObject in abc) {
+				e = [abc objectEnumerator];
+				while (anObject = [e nextObject]) {
 					[buffer appendObject:anObject];
 					[buffer removeFirstObject];
 				}				
 			}
-			for (id anObject in testArray) {
+			e = [testArray objectEnumerator];
+			while (anObject = [e nextObject])
 				[buffer appendObject:anObject];
-			}
 			STAssertEquals([buffer count], [testArray count], @"Incorrect count.");
 			[buffer removeObject:@"Z"];
 			STAssertEquals([buffer count], [testArray count], @"Incorrect count.");
@@ -494,19 +522,21 @@
 	// Test removing all instances of an object
 	// Test removing all instances of an object in various scenarios
 	[self removeObjectSetup];
-	NSArray *testArrays = [self removeObjectTestArrays];
-	for (NSArray *testArray in testArrays) {
+	NSEnumerator *testArrays = [[self removeObjectTestArrays] objectEnumerator];
+	NSArray *testArray;
+	while (testArray = [testArrays nextObject]) {
 		for (int i = 0; i <= 1; i++) {
 			// Offset the head pointer by 3 to force wrapping
 			if (i == 1) {
-				for (id anObject in abc) {
+				e = [abc objectEnumerator];
+							while (anObject = [e nextObject]) {
 					[buffer appendObject:anObject];
 					[buffer removeFirstObject];
 				}				
 			}
-			for (id anObject in testArray) {
+			e = [testArray objectEnumerator];
+			while (anObject = [e nextObject])
 				[buffer appendObject:anObject];
-			}
 			STAssertEquals([buffer count], [testArray count], @"Incorrect count.");
 			[buffer removeObjectIdenticalTo:x];
 			STAssertEquals([buffer count], [testArray count], @"Incorrect count.");
@@ -522,7 +552,8 @@
 - (void) testRemoveObjectAtIndex {
 	STAssertThrows([buffer removeObjectAtIndex:0],
 				   @"Should raise NSRangeException.");
-	for (id anObject in abc)
+	e = [abc objectEnumerator];
+	while (anObject = [e nextObject])
 		[buffer appendObject:anObject];
 	STAssertThrows([buffer removeObjectAtIndex:[abc count]],
 				   @"Should raise NSRangeException.");
@@ -536,7 +567,8 @@
 	STAssertNoThrow([buffer removeObjectAtIndex:0], @"Should be no exception.");
 	STAssertEquals([buffer count], (NSUInteger)0, @"Wrong count.");
 	
-	for (id anObject in fifteen)
+	e = [fifteen objectEnumerator];
+	while (anObject = [e nextObject])
 		[buffer appendObject:anObject];
 	
 	[buffer removeObjectAtIndex:[buffer count] - 1];
@@ -550,8 +582,9 @@
 - (void) testNSCoding {
 	NSArray *objects = [NSArray arrayWithObjects:@"A",@"B",@"C",@"D",@"E",@"F",
 						@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O",@"P",nil];
-	for (id object in objects)
-		[buffer appendObject:object];
+	e = [objects objectEnumerator];
+	while (anObject = [e nextObject])
+		[buffer appendObject:anObject];
 	STAssertEquals([buffer count], [objects count], @"Incorrect count.");
 	STAssertEquals([buffer capacity], (NSUInteger)32, @"Incorrect count.");
 	STAssertEqualObjects([buffer allObjects], objects, @"Wrong ordering before archiving.");
@@ -570,8 +603,9 @@
 - (void) testNSCopying {
 	NSArray *objects = [NSArray arrayWithObjects:@"A",@"B",@"C",@"D",@"E",@"F",
 						@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O",@"P",nil];
-	for (id object in objects)
-		[buffer appendObject:object];
+	e = [objects objectEnumerator];
+	while (anObject = [e nextObject])
+		[buffer appendObject:anObject];
 	id buffer2 = [buffer copy];
 	[buffer removeAllObjects];
 	STAssertNotNil(buffer2, @"-copy should not return nil for valid collection.");
@@ -581,22 +615,24 @@
 	[buffer2 release];
 }
 
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 - (void) testNSFastEnumeration {
-	NSUInteger number, expected, count;
+	int number, expected, count;
 	for (number = 1; number <= 32; number++)
-		[buffer appendObject:[NSNumber numberWithUnsignedInteger:number]];
+		[buffer appendObject:[NSNumber numberWithInt:number]];
 	count = 0;
 	expected = 1;
-	for (NSNumber *object in buffer) {
-		STAssertEquals([object unsignedIntegerValue], expected++,
+	e = [buffer objectEnumerator];
+	while (anObject = [e nextObject]) {
+		STAssertEquals([anObject intValue], expected++,
 					   @"Objects should be enumerated in ascending order.");
 		++count;
 	}
-	STAssertEquals(count, (NSUInteger)32, @"Count of enumerated items is wrong.");
+	STAssertEquals(count, 32, @"Count of enumerated items is wrong.");
 
 	BOOL raisedException = NO;
 	@try {
-		for (id object in buffer)
+		for (NSNumber *number in buffer)
 			[buffer appendObject:@"123"];
 	}
 	@catch (NSException *exception) {
@@ -608,22 +644,25 @@
 	
 	[buffer removeAllObjects];
 	// Insert and remove 3 elements to make the buffer wrap with 15 elements
-	for (id anObject in abc) {
+	e = [abc objectEnumerator];
+	while (anObject = [e nextObject]) {
 		[buffer appendObject:anObject];
 		[buffer removeFirstObject];
 	}
 	STAssertEquals([buffer headIndex], (NSUInteger)3, @"Wrong head index.");
 	STAssertEquals([buffer tailIndex], (NSUInteger)3, @"Wrong tail index.");
 	for (number = 1; number < 16; number++)
-		[buffer appendObject:[NSNumber numberWithUnsignedInteger:number]];
+		[buffer appendObject:[NSNumber numberWithInt:number]];
 	count = 0;
 	expected = 1;
-	for (NSNumber *object in buffer) {
-		STAssertEquals([object unsignedIntegerValue], expected++,
+	e = [buffer objectEnumerator];
+	while (anObject = [e nextObject]) {
+		STAssertEquals([anObject intValue], expected++,
 					   @"Objects should be enumerated in ascending order.");
 		++count;
 	}
-	STAssertEquals(count, (NSUInteger)15, @"Count of enumerated items is wrong.");
+	STAssertEquals(count, 15, @"Count of enumerated items is wrong.");
 }
+#endif
 
 @end

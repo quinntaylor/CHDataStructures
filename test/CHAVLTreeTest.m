@@ -65,6 +65,8 @@ static NSMutableString *balanceErrors;
 @interface CHAVLTreeTest : SenTestCase {
 	CHAVLTree *tree;
 	NSArray *objects, *order, *correct;
+	NSEnumerator *e;
+	id anObject;
 }
 @end
 
@@ -89,8 +91,9 @@ static NSMutableString *balanceErrors;
 	STAssertThrows([tree addObject:nil], @"Should raise an exception.");
 	
 	STAssertEquals([tree count], (NSUInteger)0, @"Incorrect count.");
-	for (id object in objects)
-		[tree addObject:object];
+	e = [objects objectEnumerator];
+	while (anObject = [e nextObject])
+		[tree addObject:anObject];
 	STAssertEquals([tree count], [objects count], @"Incorrect count.");
 	
 	// Test adding identical object--should be replaced, and count stay the same
@@ -144,8 +147,9 @@ static NSMutableString *balanceErrors;
 
 
 - (void) testAllObjectsWithTraversalOrder {
-	for (id object in objects)
-		[tree addObject:object];
+	e = [objects objectEnumerator];
+	while (anObject = [e nextObject])
+		[tree addObject:anObject];
 	
 	order = [tree allObjectsWithTraversalOrder:CHTraverseAscending];
 	correct = [NSArray arrayWithObjects:@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",
@@ -181,8 +185,9 @@ static NSMutableString *balanceErrors;
 - (void) testRemoveObject {
 	STAssertNoThrow([tree removeObject:nil], @"Should not raise an exception.");
 	
-	for (id object in objects)
-		[tree addObject:object];
+	e = [objects objectEnumerator];
+	while (anObject = [e nextObject])
+		[tree addObject:anObject];
 	NSEnumerator *enumerator = [objects objectEnumerator];
 	
 	NSUInteger expectedCount = [objects count];

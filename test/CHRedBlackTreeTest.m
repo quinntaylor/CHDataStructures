@@ -75,6 +75,8 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 @interface CHRedBlackTreeTest : SenTestCase {
 	CHRedBlackTree *tree;
 	NSArray *objects, *order, *correct;
+	NSEnumerator *e;
+	id anObject;
 }
 @end
 
@@ -100,7 +102,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 - (void) testAddObject {
 	STAssertThrows([tree addObject:nil], @"Should raise an exception.");
 	
-	NSEnumerator *e = [objects objectEnumerator];
+	e = [objects objectEnumerator];
 	NSUInteger count = 0;
 	STAssertEquals([tree count], count, @"Incorrect count.");
 	
@@ -231,7 +233,8 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 - (void) testAddObjectsAscending {
 	objects = [NSArray arrayWithObjects:@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",
 			   @"I",@"J",@"K",@"L",@"M",@"N",@"O",@"P",@"Q",@"R",nil];
-	for (id anObject in objects)
+	e = [objects objectEnumerator];
+	while (anObject = [e nextObject])
 		[tree addObject:anObject];
 	STAssertEquals([tree count], [objects count], @"Incorrect count.");
 	
@@ -246,7 +249,8 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 - (void) testAddObjectsDescending {
 	objects = [NSArray arrayWithObjects:@"R",@"Q",@"P",@"O",@"N",@"M",@"L",@"K",
 			   @"J",@"I",@"H",@"G",@"F",@"E",@"D",@"C",@"B",@"A",nil];
-	for (id anObject in objects)
+	e = [objects objectEnumerator];
+	while (anObject = [e nextObject])
 		[tree addObject:anObject];
 	STAssertEquals([tree count], [objects count], @"Incorrect count.");
 	
@@ -259,8 +263,9 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 }
 
 - (void) testAllObjectsWithTraversalOrder {
-	for (id object in objects)
-		[tree addObject:object];
+	e = [objects objectEnumerator];
+	while (anObject = [e nextObject])
+		[tree addObject:anObject];
 	
 	order = [tree allObjectsWithTraversalOrder:CHTraverseAscending];
 	correct = [NSArray arrayWithObjects:@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",
@@ -294,8 +299,9 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 }
 
 - (void) testRemoveObject {
-	for (id object in objects)
-		[tree addObject:object];
+	e = [objects objectEnumerator];
+	while (anObject = [e nextObject])
+		[tree addObject:anObject];
 
 	// Test removing nil
 	STAssertNoThrow([tree removeObject:nil], @"Should not raise an exception.");
@@ -306,7 +312,8 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	STAssertEquals([tree count], [objects count], @"Incorrect count.");
 	
 	NSUInteger count = [objects count];
-	for (id anObject in objects) {
+	e = [objects objectEnumerator];
+	while (anObject = [e nextObject]) {
 		[tree removeObject:anObject];
 		STAssertEquals([tree count], --count, @"Incorrect count.");
 		STAssertNoThrow([tree verify], @"Not a valid red-black tree: %@",

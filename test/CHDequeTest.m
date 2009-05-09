@@ -16,6 +16,8 @@
 @interface CHDequeTest : SenTestCase {
 	CHListDeque *deque;
 	NSArray *objects, *dequeClasses;
+	NSEnumerator *e;
+	id anObject;
 }
 @end
 
@@ -32,16 +34,19 @@
 }
 
 - (void) testPrependObject {
-	for (Class aClass in dequeClasses) {
+	NSEnumerator *classes = [dequeClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		deque = [[aClass alloc] init];
 		STAssertThrows([deque prependObject:nil],
 					   @"Should raise nilArgumentException.");
 		
 		STAssertEquals([deque count], (NSUInteger)0, @"Incorrect count.");
-		for (id anObject in objects)
+		e = [objects objectEnumerator];
+		while (anObject = [e nextObject])
 			[deque prependObject:anObject];
 		STAssertEquals([deque count], (NSUInteger)3, @"Incorrect count.");
-		NSEnumerator *e = [deque objectEnumerator];
+		e = [deque objectEnumerator];
 		STAssertEqualObjects([e nextObject], @"C", @"Wrong -nextObject.");
 		STAssertEqualObjects([e nextObject], @"B", @"Wrong -nextObject.");
 		STAssertEqualObjects([e nextObject], @"A", @"Wrong -nextObject.");
@@ -50,16 +55,19 @@
 }
 
 - (void) testAppendObject {
-	for (Class aClass in dequeClasses) {
+	NSEnumerator *classes = [dequeClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		deque = [[aClass alloc] init];
 		STAssertThrows([deque appendObject:nil],
 					   @"Should raise nilArgumentException.");
 		
 		STAssertEquals([deque count], (NSUInteger)0, @"Incorrect count.");
-		for (id anObject in objects)
+		e = [objects objectEnumerator];
+		while (anObject = [e nextObject])
 			[deque appendObject:anObject];
 		STAssertEquals([deque count], (NSUInteger)3, @"Incorrect count.");
-		NSEnumerator *e = [deque objectEnumerator];
+		e = [deque objectEnumerator];
 		STAssertEqualObjects([e nextObject], @"A", @"Wrong -nextObject.");
 		STAssertEqualObjects([e nextObject], @"B", @"Wrong -nextObject.");
 		STAssertEqualObjects([e nextObject], @"C", @"Wrong -nextObject.");
@@ -68,11 +76,14 @@
 }
 
 - (void) testFirstObject {
-	for (Class aClass in dequeClasses) {
+	NSEnumerator *classes = [dequeClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		deque = [[aClass alloc] init];
 		STAssertEqualObjects([deque firstObject], nil,
 							 @"Wrong -firstObject.");
-		for (id anObject in objects) {
+		e = [objects objectEnumerator];
+		while (anObject = [e nextObject]) {
 			[deque prependObject:anObject];
 			STAssertEqualObjects([deque firstObject], anObject,
 								 @"Wrong -firstObject.");
@@ -82,11 +93,14 @@
 }
 
 - (void) testLastObject {
-	for (Class aClass in dequeClasses) {
+	NSEnumerator *classes = [dequeClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		deque = [[aClass alloc] init];
 		STAssertEqualObjects([deque lastObject], nil,
 							 @"-lastObject is wrong.");
-		for (id anObject in objects) {
+		e = [objects objectEnumerator];
+		while (anObject = [e nextObject]) {
 			[deque appendObject:anObject];
 			STAssertEqualObjects([deque lastObject], anObject,
 								 @"-lastObject is wrong.");
@@ -96,9 +110,12 @@
 }
 
 - (void) testRemoveFirstObject {
-	for (Class aClass in dequeClasses) {
+	NSEnumerator *classes = [dequeClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		deque = [[aClass alloc] init];
-		for (id anObject in objects) {
+		e = [objects objectEnumerator];
+		while (anObject = [e nextObject]) {
 			[deque appendObject:anObject];
 			STAssertEqualObjects([deque lastObject], anObject, @"Wrong -lastObject.");
 		}
@@ -129,9 +146,12 @@
 }
 
 - (void) testRemoveLastObject {
-	for (Class aClass in dequeClasses) {
+	NSEnumerator *classes = [dequeClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		deque = [[aClass alloc] init];
-		for (id anObject in objects)
+		e = [objects objectEnumerator];
+		while (anObject = [e nextObject])
 			[deque appendObject:anObject];
 		STAssertEqualObjects([deque lastObject], @"C", @"Wrong -lastObject.");
 		[deque removeLastObject];
@@ -148,11 +168,14 @@
 }
 
 - (void) testReverseObjectEnumerator {
-	for (Class aClass in dequeClasses) {
+	NSEnumerator *classes = [dequeClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		deque = [[aClass alloc] init];
-		for (id anObject in objects)
+		e = [objects objectEnumerator];
+		while (anObject = [e nextObject])
 			[deque appendObject:anObject];
-		NSEnumerator *e = [deque reverseObjectEnumerator];
+		e = [deque reverseObjectEnumerator];
 		STAssertEqualObjects([e nextObject], @"C", @"Wrong -nextObject.");
 		STAssertEqualObjects([e nextObject], @"B", @"Wrong -nextObject.");
 		STAssertEqualObjects([e nextObject], @"A", @"Wrong -nextObject.");

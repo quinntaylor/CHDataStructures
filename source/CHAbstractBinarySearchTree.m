@@ -160,9 +160,9 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 	if (mutationCount != *mutationPtr)
 		CHMutatedCollectionException([self class], _cmd);
 	NSMutableArray *array = [[NSMutableArray alloc] init];
-	id object;
-	while ((object = [self nextObject]))
-		[array addObject:object];
+	id anObject;
+	while ((anObject = [self nextObject]))
+		[array addObject:anObject];
 	[collection release];
 	collection = nil;
 	return [array autorelease];

@@ -48,6 +48,8 @@
 @interface CHHeapTest : SenTestCase {
 	id heap; // Removed protocol type <CHHeap> to prevent warnings for -isValid.
 	NSArray *objects, *heapClasses;
+	NSEnumerator *e;
+	id anObject;
 }
 @end
 
@@ -66,9 +68,12 @@
 	NSInteger sortOrder = NSOrderedDescending; // Switches to ascending first.
 	do {
 		sortOrder *= -1;
-		for (Class aClass in heapClasses) {
+		NSEnumerator *classes = [heapClasses objectEnumerator];
+		Class aClass;
+		while (aClass = [classes nextObject]) {
 			heap = [[aClass alloc] initWithOrdering:sortOrder];
-			for (id anObject in objects)
+			e = [objects objectEnumerator];
+			while (anObject = [e nextObject])
 				[heap addObject:anObject];
 			STAssertEquals([heap count], (NSUInteger)9, @"Incorrect count.");
 			STAssertTrue([heap isValid], @"Wrong ordering before archiving.");
@@ -87,9 +92,12 @@
 }
 
 - (void) testNSCopying {
-	for (Class aClass in heapClasses) {
+	NSEnumerator *classes = [heapClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		heap = [[aClass alloc] init];
-		for (id anObject in objects)
+		e = [objects objectEnumerator];
+		while (anObject = [e nextObject])
 			[heap addObject:anObject];
 		CHAbstractMutableArrayCollection *heap2 = [heap copyWithZone:nil];
 		STAssertNotNil(heap2, @"-copy should not return nil for valid heap.");
@@ -100,25 +108,28 @@
 	}
 }
 
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 - (void) testNSFastEnumeration {
-	for (Class aClass in heapClasses) {
+	NSEnumerator *classes = [heapClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		heap = [[aClass alloc] init];
-		NSUInteger number, expected, count = 0;
+		int number, expected, count = 0;
 		for (number = 1; number <= 32; number++)
-			[heap addObject:[NSNumber numberWithUnsignedInteger:number]];
+			[heap addObject:[NSNumber numberWithInt:number]];
 		expected = 1;
-		for (NSNumber *object in heap) {
-			STAssertEquals([object unsignedIntegerValue], expected++,
+		for (NSNumber *number in heap) {
+			STAssertEquals([number intValue], expected++,
 						   @"Objects should be enumerated in ascending order.");
 			count++;
 		}
-		STAssertEquals(count, (NSUInteger)32, @"Count of enumerated items is incorrect.");
+		STAssertEquals(count, 32, @"Count of enumerated items is incorrect.");
 		
 		// Check that a mutation exception is raised if the heap is modified
 		BOOL raisedException = NO;
 		@try {
-			for (NSNumber *object in heap)
-				[heap addObject:[NSNumber numberWithUnsignedInteger:NSUIntegerMax]];
+			for (NSNumber *number in heap)
+				[heap addObject:number];
 		}
 		@catch (NSException * e) {
 			raisedException = YES;
@@ -127,11 +138,14 @@
 		[heap release];
 	}
 }
+#endif
 
 #pragma mark -
 
 - (void) testInitWithArray {
-	for (Class aClass in heapClasses) {
+	NSEnumerator *classes = [heapClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		heap = [[aClass alloc] initWithArray:objects];
 		// TODO: Test count, etc.
 		[heap release];
@@ -139,18 +153,23 @@
 }
 
 - (void) testInvalidInit {
-	for (Class aClass in heapClasses)
+	NSEnumerator *classes = [heapClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject])
 		STAssertThrows([[[aClass alloc] autorelease] initWithOrdering:0],
 					   @"Invalid ordering not correctly detected.");
 }
 
 - (void) testAddObject {
-	for (Class aClass in heapClasses) {
+	NSEnumerator *classes = [heapClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		heap = [[aClass alloc] init];
 		STAssertThrows([heap addObject:nil], @"Should raise nilArgumentException.");
 		
 		STAssertEquals([heap count], (NSUInteger)0, @"Incorrect count.");
-		for (id anObject in objects) {
+		e = [objects objectEnumerator];
+		while (anObject = [e nextObject]) {
 			[heap addObject:anObject];
 			STAssertTrue([heap isValid], @"Violation of heap property.");
 		}
@@ -160,7 +179,9 @@
 }
 
 - (void) testAddObjectsFromArray {
-	for (Class aClass in heapClasses) {
+	NSEnumerator *classes = [heapClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		heap = [[aClass alloc] init];
 		[heap addObjectsFromArray:objects];
 		STAssertTrue([heap isValid], @"Violation of heap property.");
@@ -169,7 +190,9 @@
 }
 
 - (void) testFirstObject {
-	for (Class aClass in heapClasses) {
+	NSEnumerator *classes = [heapClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		heap = [[aClass alloc] init];
 		[heap addObjectsFromArray:objects];
 		STAssertEqualObjects([heap firstObject], @"A", @"-firstObject returned bad value.");
@@ -178,18 +201,20 @@
 }
 
 - (void) testRemoveFirstObject {
-	for (Class aClass in heapClasses) {
+	NSEnumerator *classes = [heapClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		heap = [[aClass alloc] init];
 		[heap addObjectsFromArray:objects];
 		
-		id object, lastObject = nil;
+		id lastObject = nil;
 		NSUInteger count = [heap count];
-		while (object = [heap firstObject]) {
+		while (anObject = [heap firstObject]) {
 			if (lastObject)
-				STAssertEquals([lastObject compare:object],
+				STAssertEquals([lastObject compare:anObject],
 							   (NSComparisonResult)NSOrderedAscending,
 							   @"Wrong ordering.");
-			lastObject = object;
+			lastObject = anObject;
 			[heap removeFirstObject];
 			STAssertEquals([heap count], --count, @"Incorrect count.");	
 			STAssertTrue([heap isValid], @"Violation of heap property.");
@@ -202,14 +227,17 @@
 }
 
 - (void) testRemoveObject {
-	for (Class aClass in heapClasses) {
+	NSEnumerator *classes = [heapClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		heap = [[aClass alloc] init];
 		// Add objects twice in order
 		[heap addObjectsFromArray:objects];
 		[heap addObjectsFromArray:objects];
 		
 		NSUInteger expected = [objects count] * 2;
-		for (id anObject in objects) {
+		e = [objects objectEnumerator];
+		while (anObject = [e nextObject]) {
 			STAssertEquals([heap count], expected, @"Incorrect count.");
 			[heap removeObject:anObject];
 			expected -= 2;
@@ -222,7 +250,9 @@
 
 - (void) testRemoveObjectIdenticalTo {
 	NSString *a = [NSString stringWithFormat:@"A"];
-	for (Class aClass in heapClasses) {
+	NSEnumerator *classes = [heapClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		heap = [[aClass alloc] init];
 		// Add objects twice in order
 		[heap addObjectsFromArray:objects];
@@ -232,7 +262,8 @@
 		STAssertEquals([heap count], expected, @"Incorrect count.");
 		[heap removeObjectIdenticalTo:a];
 		STAssertEquals([heap count], expected, @"Incorrect count.");
-		for (id anObject in objects) {
+		e = [objects objectEnumerator];
+		while (anObject = [e nextObject]) {
 			STAssertEquals([heap count], expected, @"Incorrect count.");
 			[heap removeObjectIdenticalTo:anObject];
 			expected -= 2;
@@ -244,7 +275,9 @@
 }
 
 - (void) testRemoveAllObjects {
-	for (Class aClass in heapClasses) {
+	NSEnumerator *classes = [heapClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		heap = [[aClass alloc] init];
 		[heap addObjectsFromArray:objects];
 		STAssertEquals([heap count], (NSUInteger)9, @"Incorrect count.");
@@ -255,10 +288,11 @@
 }
 
 - (void) testObjectEnumerator {
-	NSEnumerator *e;
 	NSArray *allObjects;
 	
-	for (Class aClass in heapClasses) {
+	NSEnumerator *classes = [heapClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
 		heap = [[aClass alloc] init];
 		e = [heap objectEnumerator];
 		STAssertNotNil(e, @"-objectEnumerator should never return nil.");

@@ -20,6 +20,8 @@
 
 @interface CHLinkedSetTest : SenTestCase {
 	CHLinkedSet *set;
+	NSEnumerator *e;
+	id anObject;
 }
 
 - (NSArray*) randomNumbers;
@@ -41,11 +43,11 @@
 	NSMutableArray *array = [NSMutableArray array];
 	NSNumber *number;
 	for (int count = 1; count <= 20; count++) {
-		number = [NSNumber numberWithUnsignedInteger:arc4random()];
+		number = [NSNumber numberWithUnsignedInt:arc4random()];
 		if ([array containsObject:number])
 			count--;
 		else
-			[array addObject:[NSNumber numberWithUnsignedInteger:arc4random()]];
+			[array addObject:number];
 	}
 	return array;
 }
@@ -72,33 +74,38 @@
 	NSArray *cab = [NSArray arrayWithObjects:@"C",@"A",@"B",nil];
 	
 	// Test -addObject:
-	for (id anObject in array)
+	e = [array objectEnumerator];
+	while (anObject = [e nextObject])
 		[set addObject:anObject];
 	STAssertEqualObjects([set allObjects], array,
 						 @"Wrong ordering.");
 	
 	[set removeAllObjects];
 	[set setRepeatObjectsMoveToBack:NO];
-	for (id anObject in abca)
+	e = [abca objectEnumerator];
+	while (anObject = [e nextObject])
 		[set addObject:anObject];
 	STAssertEqualObjects([set allObjects], abc,
 						 @"Wrong ordering.");
 	
 	[set removeAllObjects];
 	[set setRepeatObjectsMoveToBack:YES];
-	for (id anObject in abca)
+	e = [abca objectEnumerator];
+	while (anObject = [e nextObject])
 		[set addObject:anObject];
 	STAssertEqualObjects([set allObjects], bca,
 						 @"Wrong ordering.");
 	
 	[set setRepeatObjectsMoveToBack:NO];
-	for (id anObject in abab)
+	e = [abab objectEnumerator];
+	while (anObject = [e nextObject])
 		[set addObject:anObject];
 	STAssertEqualObjects([set allObjects], bca,
 						 @"Wrong ordering with multiple duplicates.");
 	
 	[set setRepeatObjectsMoveToBack:YES];
-	for (id anObject in abab)
+	e = [abab objectEnumerator];
+	while (anObject = [e nextObject])
 		[set addObject:anObject];
 	STAssertEqualObjects([set allObjects], cab,
 						 @"Wrong ordering with multiple duplicates.");
@@ -140,7 +147,8 @@
 	// Test when duplicates stay in place.
 	[set setRepeatObjectsMoveToBack:NO];
 	order = [NSMutableArray arrayWithObjects:@"A",@"B",@"C",nil];
-	for (id anObject in ade)
+	e = [ade objectEnumerator];
+	while (anObject = [e nextObject])
 		if (![anObject isEqual:@"A"])
 			[order addObject:anObject];
 	[set addObjectsFromArray:abc];
@@ -152,7 +160,8 @@
 	[set setRepeatObjectsMoveToBack:YES];
 	
 	order = [NSMutableArray arrayWithObjects:@"B",@"C",nil];
-	for (id anObject in ade)
+	e = [ade objectEnumerator];
+	while (anObject = [e nextObject])
 		[order addObject:anObject];
 	[set addObjectsFromArray:abc];
 	[set unionSet:ade];
@@ -469,6 +478,7 @@
 	STAssertEqualObjects([set allObjects], [copy allObjects], @"Wrong ordering.");
 }
 
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 - (void) testNSFastEnumeration {
 	NSArray *array = [self randomNumbers];
 	[set addObjectsFromArray:array];
@@ -478,5 +488,6 @@
 	}
 	STAssertNil([enumerator nextObject], @"Enumerator was not exhausted.");
 }
+#endif
 
 @end
