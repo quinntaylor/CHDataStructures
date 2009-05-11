@@ -54,7 +54,7 @@
 						   withObject:[NSNumber numberWithInt:1]];
 	STAssertNil(number, @"The ivar 'number' should be nil.");
 	[lockable unlock];
-	[NSThread sleepForTimeInterval:0.1];
+	[NSThread sleepUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
 	[lockable lock];
 	[lockable unlock];
 	STAssertNotNil(number, @"The ivar 'number' should no longer be nil.");
@@ -69,9 +69,9 @@
 	[NSThread detachNewThreadSelector:@selector(setNumberAndSleep:)
 							 toTarget:self
 						   withObject:nil];
-	[NSThread sleepForTimeInterval:0.1];
+	[NSThread sleepUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
 	STAssertFalse([lockable tryLock], @"Should not be able to acquire lock.");
-	[NSThread sleepForTimeInterval:0.2];
+	[NSThread sleepUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.2]];
 	STAssertTrue([lockable tryLock], @"Should be able to acquire lock.");
 	[lockable unlock];
 }
@@ -94,7 +94,7 @@
 - (void) setNumberAndSleep:(NSNumber*)aNumber {
 	[lockable lock];
 	number = aNumber;
-	[NSThread sleepForTimeInterval:0.2];
+	[NSThread sleepUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.2]];
 	[lockable unlock];
 }
 

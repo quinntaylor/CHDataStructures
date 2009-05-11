@@ -28,7 +28,11 @@ static BOOL gcDisabled;
 @implementation CHLinkedListTest
 
 + (void) initialize {
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 	gcDisabled = !objc_collectingEnabled();
+#else
+	gcDisabled = NO; // Don't know exactly why, but this works for 10.4 SDK...
+#endif
 }
 
 - (void) setUp {
@@ -59,7 +63,7 @@ static BOOL gcDisabled;
 		STAssertEquals([list count], [objects count], @"Incorrect count.");
 		STAssertEqualObjects([list allObjects], objects,
 							 @"Wrong ordering on reconstruction.");
-		[[NSFileManager defaultManager] removeItemAtPath:filePath error:NULL];
+		[[NSFileManager defaultManager] removeFileAtPath:filePath handler:nil];
 		[list release];
 	}
 }

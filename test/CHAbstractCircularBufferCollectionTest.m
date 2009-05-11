@@ -597,7 +597,7 @@
 	STAssertEquals([buffer count], [objects count], @"Incorrect count.");
 	STAssertEquals([buffer capacity], (NSUInteger)32, @"Incorrect count.");
 	STAssertEqualObjects([buffer allObjects], objects, @"Wrong ordering on reconstruction.");
-	[[NSFileManager defaultManager] removeItemAtPath:filePath error:NULL];
+	[[NSFileManager defaultManager] removeFileAtPath:filePath handler:nil];
 }
 
 - (void) testNSCopying {

@@ -79,7 +79,7 @@
 	STAssertEquals([collection count], [objects count], @"Incorrect count.");
 	order = [collection allObjects];
 	STAssertEqualObjects(order, objects, @"Wrong ordering on reconstruction.");
-	[[NSFileManager defaultManager] removeItemAtPath:filePath error:NULL];
+	[[NSFileManager defaultManager] removeFileAtPath:filePath handler:nil];
 }
 
 - (void) testNSCopying {

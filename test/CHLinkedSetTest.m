@@ -466,7 +466,7 @@
 	CHLinkedSet *set2 = [[NSKeyedUnarchiver unarchiveObjectWithFile:filePath] retain];
 	STAssertEquals([set2 count], [set count], @"Incorrect count on reconstruction.");
 	STAssertEqualObjects([set2 allObjects], [set allObjects], @"Wrong ordering on reconstruction.");
-	[[NSFileManager defaultManager] removeItemAtPath:filePath error:NULL];
+	[[NSFileManager defaultManager] removeFileAtPath:filePath handler:nil];
 	[set2 release];
 	
 }

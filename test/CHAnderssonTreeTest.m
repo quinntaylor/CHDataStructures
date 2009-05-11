@@ -14,10 +14,15 @@
 static BOOL gcDisabled;
 
 static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct) {
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 	return [[[NSString stringWithFormat:@"%@ should be %@, was %@",
-			  traversal, correct, order]
-			 stringByReplacingOccurrencesOfString:@"\n" withString:@""]
-			stringByReplacingOccurrencesOfString:@"    " withString:@""];
+	          traversal, correct, order]
+	         stringByReplacingOccurrencesOfString:@"\n" withString:@""]
+	        stringByReplacingOccurrencesOfString:@"    " withString:@""];
+#else
+	return [NSString stringWithFormat:@"%@ should be %@, was %@",
+	        traversal, correct, order];
+#endif
 }
 
 @interface CHAnderssonTreeTest : SenTestCase {

@@ -20,10 +20,15 @@
 static BOOL gcDisabled;
 
 static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct) {
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 	return [[[NSString stringWithFormat:@"%@ should be %@, was %@",
-			  traversal, correct, order]
-			 stringByReplacingOccurrencesOfString:@"\n" withString:@""]
-			stringByReplacingOccurrencesOfString:@"    " withString:@""];
+	          traversal, correct, order]
+	         stringByReplacingOccurrencesOfString:@"\n" withString:@""]
+	        stringByReplacingOccurrencesOfString:@"    " withString:@""];
+#else
+	return [NSString stringWithFormat:@"%@ should be %@, was %@",
+	        traversal, correct, order];
+#endif
 }
 
 #pragma mark -
@@ -41,7 +46,11 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 @implementation CHAbstractBinarySearchTreeTest
 
 + (void) initialize {
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 	gcDisabled = !objc_collectingEnabled();
+#else
+	gcDisabled = NO; // Don't know exactly why, but this works for 10.4 SDK...
+#endif
 }
 
 - (void) setUp {
@@ -306,7 +315,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 		
 		// Enumerator should retain collection when it has 1+ objects, release when 0
 		e = [objects objectEnumerator];
-			while (anObject = [e nextObject])
+		while (anObject = [e nextObject])
 			[tree addObject:anObject];
 		if (gcDisabled)
 			STAssertEquals([tree retainCount], (NSUInteger)1, @"Wrong retain count");
@@ -432,7 +441,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 		STAssertEqualObjects(before, after,
 							 badOrder(@"Bad order after decode", before, after));
 		[tree release];
-		[[NSFileManager defaultManager] removeItemAtPath:filePath error:NULL];
+		[[NSFileManager defaultManager] removeFileAtPath:filePath handler:nil];
 	}	
 }
 
