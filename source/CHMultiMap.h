@@ -128,6 +128,8 @@
  
  @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
  
+ @since Mac OS X v10.5 and later.
+ 
  @see NSFastEnumeration protocol
  @see allKeys
  @see keyEnumerator

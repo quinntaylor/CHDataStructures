@@ -319,7 +319,7 @@ hr {
 	margin: 6px 0;
 }
 
-.memdoc dl.attention, .memdoc dl.warning, .memdoc dl.todo, .memdoc dl.bug {
+.memdoc dl.attention, .memdoc dl.warning, .memdoc dl.since, .memdoc dl.todo, .memdoc dl.bug {
 	padding: 3px;
 	margin: 3px -3px 0px;
 	-webkit-border-radius: 8px;
@@ -336,9 +336,14 @@ hr {
 	border: solid 1px #b66;
 }
 
-.memdoc dl.todo {
+.memdoc dl.since {
 	background-color: #efe;
 	border: solid 1px #090;
+}
+
+.memdoc dl.todo {
+	background-color: #fed;
+	border: 1px solid #b60;
 }
 
 .memdoc dl.bug {

@@ -65,11 +65,16 @@
  @param stackbuf Pointer to a C array into which the receiver may copy objects for the sender to iterate over.
  @param len The maximum number of objects that may be stored in @a stackbuf.
  @return The number of objects in @c state->itemsPtr that may be iterated over, or @c 0 when the iteration is finished.
-
- @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
- @see NSFastEnumeration protocol
-
+ 
  @attention Since the top of the stack is at the back of the array, rather than passing the call to <code>-countByEnumeratingWithState:objects:count:</code> straight through to the underlying array, we must obtain an NSEnumerator from @c -reverseObjectEnumerator and store it in the fast enumeration @c state struct. Unfortunately for this particular scenario, NSEnumerator objects only return one object per call from the NSFastEnumeration boilerplate, so it's actually slower than using an NSEnumerator directly. (CHCircularBufferStack is significantly more performant.)
+ 
+ @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
+ 
+ @since Mac OS X v10.5 and later.
+ 
+ @see NSFastEnumeration protocol
+ @see allObjects
+ @see objectEnumerator
  */
 #if MAC_OS_X_VERSION_10_5_AND_LATER
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
