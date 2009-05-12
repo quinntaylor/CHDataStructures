@@ -328,14 +328,10 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 
 - (id) copyWithZone:(NSZone*)zone {
 	id<CHSearchTree> newTree = [[[self class] alloc] init];
-#if MAC_OS_X_VERSION_10_5_AND_LATER
-	for (id anObject in [self allObjectsWithTraversalOrder:CHTraverseLevelOrder])
-#else
+	// No point in using fast enumeration here until rdar://6296108 is addressed.
 	NSEnumerator *e = [self objectEnumeratorWithTraversalOrder:CHTraverseLevelOrder];
 	id anObject;
-	while (anObject = [e nextObject])
-#endif
-	{
+	while (anObject = [e nextObject]) {
 		[newTree addObject:anObject];
 	}
 	return newTree;
