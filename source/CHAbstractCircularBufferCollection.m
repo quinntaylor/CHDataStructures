@@ -422,7 +422,7 @@ static size_t kCHPointerSize = sizeof(void*);
 		incrementIndex(scanIndex);
 	}
 	// Under GC, zero the rest of the array to avoid holding unneeded references
-	if (objc_collectingEnabled()) {
+	if (!kCHGarbageCollectionNotEnabled) {
 		if (tailIndex > copyIndex) {
 			memset(&array[copyIndex], 0, kCHPointerSize * (tailIndex - copyIndex));
 		}
@@ -466,7 +466,7 @@ static size_t kCHPointerSize = sizeof(void*);
 		incrementIndex(scanIndex);
 	}
 	// Under GC, zero the rest of the array to avoid holding unneeded references
-	if (objc_collectingEnabled()) {
+	if (!kCHGarbageCollectionNotEnabled) {
 		if (tailIndex > copyIndex) {
 			memset(&array[copyIndex], 0, kCHPointerSize * (tailIndex - copyIndex));
 		}
@@ -519,7 +519,7 @@ static size_t kCHPointerSize = sizeof(void*);
 
 - (void) removeAllObjects {
 	if (count > 0) {
-		if (!objc_collectingEnabled()) {
+		if (kCHGarbageCollectionNotEnabled) {
 			while (headIndex != tailIndex) {
 				[array[headIndex] release];
 				incrementIndex(headIndex);

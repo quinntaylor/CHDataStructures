@@ -139,7 +139,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 #define removeNode(node) \
 	{ \
 		node->prev->next = node->next; node->next->prev = node->prev; \
-		if (!objc_collectingEnabled() && node != NULL) { \
+		if (kCHGarbageCollectionNotEnabled && node != NULL) { \
 			[node->object release]; \
 			free(node); \
 		} \
@@ -415,7 +415,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 }
 
 - (void) removeAllObjects {
-	if (count > 0 && !objc_collectingEnabled()) {
+	if (kCHGarbageCollectionNotEnabled && count > 0) {
 		// Only bother with free() calls if garbage collection is NOT enabled.
 		CHDoublyLinkedListNode *node = head->next, *temp;
 		while (node != tail) {

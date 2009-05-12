@@ -10,7 +10,24 @@
 
 #import "CHLockable.h"
 
+BOOL kCHGarbageCollectionNotEnabled = YES; // A variable declared extern in Util.h
+static BOOL initialized = NO;
+
 @implementation CHLockable
+
++ (void) initialize {
+	if (!initialized) {
+		// Discover whether garbage collection is enabled (if running on 10.5).
+		// This bit of hackery avoids linking errors via indirect invocation.
+		// The check is done here since all our collections extend CHLockable.
+		Class gcClass = NSClassFromString(@"NSGarbageCollector");
+		if (gcClass != nil) {
+			id collector = objc_msgSend(gcClass, @selector(defaultCollector));
+			kCHGarbageCollectionNotEnabled = (collector == nil);
+		}
+		initialized = YES;
+	}
+}
 
 - (void) dealloc {
 	[lock release];

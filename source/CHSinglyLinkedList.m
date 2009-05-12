@@ -105,7 +105,7 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 	CHSinglyLinkedListNode *old = node->next;
 	node->next = old->next;
-	if (!objc_collectingEnabled()) {
+	if (kCHGarbageCollectionNotEnabled) {
 		[old->object release];
 		free(old);
 	}
@@ -388,7 +388,7 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 }
 
 - (void) removeAllObjects {
-	if (count > 0 && !objc_collectingEnabled()) {
+	if (kCHGarbageCollectionNotEnabled && count > 0) {
 		CHSinglyLinkedListNode *node;
 		// Use tail pointer to iterate through all nodes, then reset it to head
 		tail = head->next;

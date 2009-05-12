@@ -120,7 +120,7 @@
 		}
 //		NSAssert(parent != nil, @"Illegal state, parent should never be nil!");
 		parent->link[parent->right == current] = sentinel;
-		if (kCHGarbageCollectionDisabled) {
+		if (kCHGarbageCollectionNotEnabled) {
 			[current->object release];
 			free(current);
 		}

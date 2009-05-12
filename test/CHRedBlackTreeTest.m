@@ -11,8 +11,6 @@
 #import <SenTestingKit/SenTestingKit.h>
 #import "CHRedBlackTree.h"
 
-static BOOL gcDisabled;
-
 static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct) {
 #if MAC_OS_X_VERSION_10_5_AND_LATER
 	return [[[NSString stringWithFormat:@"%@ should be %@, was %@",
@@ -86,10 +84,6 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 @end
 
 @implementation CHRedBlackTreeTest
-
-+ (void) initialize {
-	gcDisabled = !objc_collectingEnabled();
-}
 
 - (void) setUp {
 	tree = [[CHRedBlackTree alloc] init];

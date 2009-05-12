@@ -13,9 +13,6 @@
 #import "CHDoublyLinkedList.h"
 #import "CHSinglyLinkedList.h"
 
-static BOOL gcDisabled;
-
-
 @interface CHLinkedListTest : SenTestCase {
 	id<CHLinkedList> list;
 	NSArray* linkedListClasses;
@@ -26,14 +23,6 @@ static BOOL gcDisabled;
 @end
 
 @implementation CHLinkedListTest
-
-+ (void) initialize {
-#if MAC_OS_X_VERSION_10_5_AND_LATER
-	gcDisabled = !objc_collectingEnabled();
-#else
-	gcDisabled = NO; // Don't know exactly why, but this works for 10.4 SDK...
-#endif
-}
 
 - (void) setUp {
 	objects = [NSArray arrayWithObjects:@"A", @"B", @"C", nil];
@@ -244,11 +233,11 @@ static BOOL gcDisabled;
 	while (aClass = [classes nextObject]) {
 		list = [[aClass alloc] init];
 		// Enumerator shouldn't retain collection if there are no objects
-		if (gcDisabled)
+		if (kCHGarbageCollectionNotEnabled)
 			STAssertEquals([list retainCount], (NSUInteger)1, @"Wrong retain count");
 		e = [list objectEnumerator];
 		STAssertNotNil(e, @"Enumerator should not be nil.");
-		if (gcDisabled)
+		if (kCHGarbageCollectionNotEnabled)
 			STAssertEquals([list retainCount], (NSUInteger)1, @"Should not retain collection");
 		STAssertNil([e nextObject], @"-nextObject should return nil.");
 		
@@ -256,28 +245,28 @@ static BOOL gcDisabled;
 		e = [objects objectEnumerator];
 		while (anObject = [e nextObject])
 			[list appendObject:anObject];
-		if (gcDisabled)
+		if (kCHGarbageCollectionNotEnabled)
 			STAssertEquals([list retainCount], (NSUInteger)1, @"Wrong retain count");
 		e = [list objectEnumerator];
 		STAssertNotNil(e, @"Enumerator should not be nil.");
-		if (gcDisabled)
+		if (kCHGarbageCollectionNotEnabled)
 			STAssertEquals([list retainCount], (NSUInteger)2, @"Enumerator should retain collection");
 		
 		STAssertEqualObjects([e nextObject], @"A", @"Wrong -nextObject.");
 		STAssertEqualObjects([e nextObject], @"B", @"Wrong -nextObject.");
 		STAssertEqualObjects([e nextObject], @"C", @"Wrong -nextObject.");
 		
-		if (gcDisabled)
+		if (kCHGarbageCollectionNotEnabled)
 			STAssertEquals([list retainCount], (NSUInteger)2, @"Collection should still be retained");
 		STAssertNil([e nextObject], @"-nextObject should return nil.");
-		if (gcDisabled)
+		if (kCHGarbageCollectionNotEnabled)
 			STAssertEquals([list retainCount], (NSUInteger)1, @"Enumerator should release collection");
 		
 		e = [list objectEnumerator];
-		if (gcDisabled)
+		if (kCHGarbageCollectionNotEnabled)
 			STAssertEquals([list retainCount], (NSUInteger)2, @"Enumerator should retain collection");
 		NSArray *array = [e allObjects];
-		if (gcDisabled)
+		if (kCHGarbageCollectionNotEnabled)
 			STAssertEquals([list retainCount], (NSUInteger)1, @"Enumerator should release collection");
 		STAssertNotNil(array, @"Array should not be nil");
 		STAssertEquals([array count], [objects count], @"Incorrect count.");
@@ -286,14 +275,14 @@ static BOOL gcDisabled;
 		
 		// Test that enumerator releases on -dealloc
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		if (gcDisabled)
+		if (kCHGarbageCollectionNotEnabled)
 			STAssertEquals([list retainCount], (NSUInteger)1, @"Wrong retain count");
 		e = [list objectEnumerator];
 		STAssertNotNil(e, @"Enumerator should not be nil.");
-		if (gcDisabled)
+		if (kCHGarbageCollectionNotEnabled)
 			STAssertEquals([list retainCount], (NSUInteger)2, @"Enumerator should retain collection");
 		[pool drain]; // Force deallocation of enumerator
-		if (gcDisabled)
+		if (kCHGarbageCollectionNotEnabled)
 			STAssertEquals([list retainCount], (NSUInteger)1, @"Enumerator should release collection");	
 		
 		// Test mutation in the middle of enumeration

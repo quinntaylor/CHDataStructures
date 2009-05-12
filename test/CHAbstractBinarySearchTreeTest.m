@@ -17,8 +17,6 @@
 #import "CHTreap.h"
 #import "CHUnbalancedTree.h"
 
-static BOOL gcDisabled;
-
 static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct) {
 #if MAC_OS_X_VERSION_10_5_AND_LATER
 	return [[[NSString stringWithFormat:@"%@ should be %@, was %@",
@@ -44,14 +42,6 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 @end
 
 @implementation CHAbstractBinarySearchTreeTest
-
-+ (void) initialize {
-#if MAC_OS_X_VERSION_10_5_AND_LATER
-	gcDisabled = !objc_collectingEnabled();
-#else
-	gcDisabled = NO; // Don't know exactly why, but this works for 10.4 SDK...
-#endif
-}
 
 - (void) setUp {
 	objects = [NSArray arrayWithObjects:@"A",@"B",@"C",@"D",@"E",nil];
@@ -306,42 +296,42 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 		id<CHSearchTree> tree = [[aClass alloc] init];
 	
 		// Enumerator shouldn't retain collection if there are no objects
-		if (gcDisabled)
+		if (kCHGarbageCollectionNotEnabled)
 			STAssertEquals([tree retainCount], (NSUInteger)1, @"Wrong retain count");
 		e = [tree objectEnumerator];
 		STAssertNotNil(e, @"Enumerator should not be nil.");
-		if (gcDisabled)
+		if (kCHGarbageCollectionNotEnabled)
 			STAssertEquals([tree retainCount], (NSUInteger)1, @"Should not retain collection");
 		
 		// Enumerator should retain collection when it has 1+ objects, release when 0
 		e = [objects objectEnumerator];
 		while (anObject = [e nextObject])
 			[tree addObject:anObject];
-		if (gcDisabled)
+		if (kCHGarbageCollectionNotEnabled)
 			STAssertEquals([tree retainCount], (NSUInteger)1, @"Wrong retain count");
 		e = [tree objectEnumerator];
 		STAssertNotNil(e, @"Enumerator should not be nil.");
-		if (gcDisabled)
+		if (kCHGarbageCollectionNotEnabled)
 			STAssertEquals([tree retainCount], (NSUInteger)2, @"Enumerator should retain collection");
 		// Grab one object from the enumerator
 		[e nextObject];
-		if (gcDisabled)
+		if (kCHGarbageCollectionNotEnabled)
 			STAssertEquals([tree retainCount], (NSUInteger)2, @"Collection should still be retained.");
 		// Empty the enumerator of all objects
 		[e allObjects];
-		if (gcDisabled)
+		if (kCHGarbageCollectionNotEnabled)
 			STAssertEquals([tree retainCount], (NSUInteger)1, @"Enumerator should release collection");
 		
 		// Test that enumerator releases on -dealloc
 		NSAutoreleasePool *pool  = [[NSAutoreleasePool alloc] init];
-		if (gcDisabled)
+		if (kCHGarbageCollectionNotEnabled)
 			STAssertEquals([tree retainCount], (NSUInteger)1, @"Wrong retain count");
 		e = [tree objectEnumerator];
 		STAssertNotNil(e, @"Enumerator should not be nil.");
-		if (gcDisabled)
+		if (kCHGarbageCollectionNotEnabled)
 			STAssertEquals([tree retainCount], (NSUInteger)2, @"Enumerator should retain collection");
 		[pool drain]; // Force deallocation of enumerator
-		if (gcDisabled)
+		if (kCHGarbageCollectionNotEnabled)
 			STAssertEquals([tree retainCount], (NSUInteger)1, @"Enumerator should release collection");
 		
 		// Test mutation in the middle of enumeration

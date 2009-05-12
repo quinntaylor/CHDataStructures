@@ -123,7 +123,7 @@ done:
 		NSAssert(parent != nil, @"Illegal state, parent should never be nil!");
 		parent->link[parent->right == current]
 			= current->link[current->left == sentinel];
-		if (kCHGarbageCollectionDisabled)
+		if (kCHGarbageCollectionNotEnabled)
 			free(current);
 	} else {
 		// Two child case -- replace with minimum object in right subtree
@@ -137,7 +137,7 @@ done:
 		// Grab object from replacement node, steal its right child, deallocate
 		current->object = replacement->object;
 		parent->link[parent->right == replacement] = replacement->right;
-		if (kCHGarbageCollectionDisabled)
+		if (kCHGarbageCollectionNotEnabled)
 			free(replacement);
 	}
 	

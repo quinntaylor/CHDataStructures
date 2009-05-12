@@ -10,12 +10,6 @@
 
 #import "Util.h"
 
-#if MAC_OS_X_VERSION_MAX_ALLOWED < MAC_OS_X_VERSION_10_5
-BOOL objc_collectingEnabled(void) {
-	return NO;
-}
-#endif
-
 void CHIndexOutOfRangeException(Class aClass, SEL method,
                                 NSUInteger index, NSUInteger elements) {
 	[NSException raise:NSRangeException

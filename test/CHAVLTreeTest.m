@@ -11,8 +11,6 @@
 #import <SenTestingKit/SenTestingKit.h>
 #import "CHAVLTree.h"
 
-static BOOL gcDisabled;
-
 static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct) {
 #if MAC_OS_X_VERSION_10_5_AND_LATER
 	return [[[NSString stringWithFormat:@"%@ should be %@, was %@",
@@ -77,10 +75,6 @@ static NSMutableString *balanceErrors;
 
 
 @implementation CHAVLTreeTest
-
-+ (void) initialize {
-	gcDisabled = !objc_collectingEnabled();
-}
 
 - (void) setUp {
 	tree = [[CHAVLTree alloc] init];

@@ -212,7 +212,7 @@ static inline CHBinaryTreeNode* doubleRotation(CHBinaryTreeNode *node, BOOL goin
 		found->object = current->object;
 		parent->link[(parent->right == current)]
 			= current->link[(current->left == sentinel)];
-		if (kCHGarbageCollectionDisabled)
+		if (kCHGarbageCollectionNotEnabled)
 			free(current);
 		--count;
     }

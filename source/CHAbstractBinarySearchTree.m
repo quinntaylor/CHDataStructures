@@ -14,7 +14,6 @@
 // Definitions of variables declared as 'extern' in CHAbstractBinarySearchTree.h
 size_t kCHBinaryTreeNodeSize = sizeof(CHBinaryTreeNode);
 size_t kCHPointerSize = sizeof(void*);
-BOOL kCHGarbageCollectionDisabled;
 
 /**
  A dummy object that resides in the header node for a tree. Using a header node can simplify insertion logic by eliminating the need to check whether the root is null. The actual root of the tree is generally stored as the right child of the header node. In order to always proceed to the actual root node when traversing down the tree, instances of this class always return @c NSOrderedAscending when called as the receiver of the @c -compare: method.
@@ -272,7 +271,6 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 @implementation CHAbstractBinarySearchTree
 
 + (void) initialize {
-	kCHGarbageCollectionDisabled = !objc_collectingEnabled();
 	if (headerObject == nil) {
 		headerObject = [[CHSearchTreeHeaderObject alloc] init];
 	}
@@ -487,7 +485,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 	++mutations;
 	count = 0;
 	
-	if (kCHGarbageCollectionDisabled) {
+	if (kCHGarbageCollectionNotEnabled) {
 		// Only deal with memory management if garbage collection is NOT enabled.
 		// Remove each node from the tree and release the object it points to.
 		// Use pre-order (depth-first) traversal for simplicity and performance.

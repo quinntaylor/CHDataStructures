@@ -48,12 +48,7 @@
 #define MAC_OS_X_VERSION_10_5_AND_LATER \
         MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5
 
-#if MAC_OS_X_VERSION_MAX_ALLOWED < MAC_OS_X_VERSION_10_5
-/**
- Function to discover whether garbage collection is enabled. Declared here to prevent compile warnings and errors. Since we define this only when using a version of OS X prior to 10.5 (Leopard), this will always return false.
- */
-OBJC_EXPORT BOOL objc_collectingEnabled(void);
-#endif
+OBJC_EXPORT BOOL kCHGarbageCollectionNotEnabled;
 
 /**
  Convenience function for raising an exception for an invalid range (index).

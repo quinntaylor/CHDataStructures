@@ -32,7 +32,7 @@
 }
 
 #define CHBinaryTreeStack_FREE(stack) { \
-	if (stack != NULL && kCHGarbageCollectionDisabled) \
+	if (stack != NULL && kCHGarbageCollectionNotEnabled) \
 		free(stack); \
 	stack = NULL; \
 }
@@ -66,7 +66,7 @@ NSUInteger queueCapacity, queueHead, queueTail
 }
 
 #define CHBinaryTreeQueue_FREE(queue) { \
-	if (queue != NULL && kCHGarbageCollectionDisabled) \
+	if (queue != NULL && kCHGarbageCollectionNotEnabled) \
 		free(queue); \
 	queue = NULL; \
 }
