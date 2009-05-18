@@ -49,7 +49,7 @@
  */
 @interface CHTreap : CHAbstractBinarySearchTree
 
-// Returned as priority for object not in a treap (maximum value for u_int32_t).
+/** Priority when an object is not found in a treap (max value for u_int32_t). */
 #define CHTreapNotFound UINT32_MAX
 
 /**
