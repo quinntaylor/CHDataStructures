@@ -15,39 +15,42 @@
  A group of utility C functions for simplifying common exceptions and logging.
  */
 
-// Macro for reducing visibility of symbol names not indended to be exported.
+/** Macro for reducing visibility of symbol names not indended to be exported. */
 #define HIDDEN __attribute__((visibility("hidden")))
 
-// Macro for designating symbols as being unused to supress compile warnings.
+/** Macro for designating symbols as being unused to supress compile warnings. */
 #define UNUSED __attribute__((unused))
 
-// Used for indicating that an object is not found when returning an NSUInteger.
-#define CHNotFound NSUIntegerMax
-
-// Availability macros for screening out functionality that requires Leopard.
-#if MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4
+// Define Mac OS X version for Leopard if it's not already defined.
+#ifndef MAC_OS_X_VERSION_10_5
 	#define MAC_OS_X_VERSION_10_5 1050
-
-	#ifndef NSINTEGER_DEFINED
-		#if __LP64__ || NS_BUILD_32_LIKE_64
-			typedef long NSInteger;
-			typedef unsigned long NSUInteger;
-		#else
-			typedef int NSInteger;
-			typedef unsigned int NSUInteger;
-		#endif
-
-		#define NSIntegerMax    LONG_MAX
-		#define NSIntegerMin    LONG_MIN
-		#define NSUIntegerMax   ULONG_MAX
-
-		#define NSINTEGER_DEFINED 1
-	#endif
 #endif
 
+/** Availability macro for screening out functionality that requires Leopard. */
 #define MAC_OS_X_VERSION_10_5_AND_LATER \
-        MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5
+        MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 
+// NSInteger/NSUInteger are new in Leopard; define if on an earlier OS version.
+#ifndef NSINTEGER_DEFINED
+	#if __LP64__ || NS_BUILD_32_LIKE_64
+		typedef long NSInteger;
+		typedef unsigned long NSUInteger;
+	#else
+		typedef int NSInteger;
+		typedef unsigned int NSUInteger;
+	#endif
+
+	#define NSIntegerMax    LONG_MAX
+	#define NSIntegerMin    LONG_MIN
+	#define NSUIntegerMax   ULONG_MAX
+
+	#define NSINTEGER_DEFINED 1
+#endif
+
+/** Indicates that an object was not found when returning an NSUInteger. */
+#define CHNotFound NSUIntegerMax
+
+/** Global variable to simplify checking if garbage collection is enabled. */
 OBJC_EXPORT BOOL kCHGarbageCollectionNotEnabled;
 
 /**
