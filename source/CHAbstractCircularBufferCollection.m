@@ -386,9 +386,9 @@ static size_t kCHPointerSize = sizeof(void*);
 - (void) removeLastObject {
 	if (count == 0)
 		return;
+	decrementIndex(tailIndex);
 	[array[tailIndex] release];
 	array[tailIndex] = nil; // Let GC do its thing
-	decrementIndex(tailIndex);
 	--count;
 	++mutations;
 }
