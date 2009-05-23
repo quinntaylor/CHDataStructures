@@ -171,6 +171,10 @@
     <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSSet_Class/Reference/Reference.html</filename>
   </compound>
   <compound kind="class">
+    <name>NSSortDescriptor</name>
+    <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSSortDescriptor_Class/Reference/Reference.html</filename>
+  </compound>
+  <compound kind="class">
     <name>NSString</name>
     <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSString_Class/Reference/NSString.html</filename>
   </compound>
