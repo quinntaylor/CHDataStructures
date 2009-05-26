@@ -406,6 +406,19 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	}
 }
 
+- (void) testSet {
+	objects = [NSArray arrayWithObjects:@"B",@"M",@"C",@"K",@"D",@"I",@"E",@"G",
+			   @"J",@"L",@"N",@"F",@"A",@"H",nil];
+	NSSet *set = [NSSet setWithArray:objects];
+	NSEnumerator *classes = [treeClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
+		id<CHSearchTree> tree = [[aClass alloc] initWithArray:objects];
+		STAssertEqualObjects([tree set], set, @"Unequal sets");
+		[tree release];
+	}
+}
+
 #pragma mark -
 
 - (void) testNSCoding {

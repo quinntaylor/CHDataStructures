@@ -518,6 +518,16 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 	return [self objectEnumeratorWithTraversalOrder:CHTraverseDescending];
 }
 
+- (NSSet*) set {
+	NSMutableSet *set = [NSMutableSet new];
+	NSEnumerator *e = [self objectEnumeratorWithTraversalOrder:CHTraversePreOrder];
+	id anObject;
+	while (anObject = [e nextObject]) {
+		[set addObject:anObject];
+	}
+	return [set autorelease];
+}
+
 - (NSString*) debugDescription {
 	NSMutableString *description = [NSMutableString stringWithFormat:
 	                                @"<%@: 0x%x> = {\n", [self class], self];

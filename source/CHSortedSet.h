@@ -106,6 +106,7 @@
  @see countByEnumeratingWithState:objects:count:
  @see objectEnumerator
  @see removeAllObjects
+ @see set
  */
 - (NSArray*) allObjects;
 
@@ -138,6 +139,7 @@
  @attention To test whether the matching object is identical to @a anObject, compare @a anObject with the value returned from #member: using the == operator.
  
  @see member:
+ @see set
  */
 - (BOOL) containsObject:(id)anObject;
 
@@ -173,6 +175,7 @@
  @attention If you override \link NSObject#isEqual: -isEqual:\endlink for a custom class, you must also override \link NSObject#hash -hash\endlink for #member: to work correctly on objects of your class.
 
  @see containsObject:
+ @see set
  */
 - (id) member:(id)anObject;
 
@@ -201,6 +204,16 @@
  @see objectEnumerator
  */
 - (NSEnumerator*) reverseObjectEnumerator;
+
+/**
+ Returns an (autoreleased) NSSet object containing the objects in the receiver. This is an alternative to @c -allObjects, which returns the objects in sorted order. Returning an unordered set may be more efficient for the receiver, and thus preferable when the caller doesn't care about ordering, such as for fast tests of membership. The receiver may choose to return a mutable subclass if desired, since the objects may be stored internally using a different data structure. (For example, CHSearchTree implementations store elements in custom nodes, not an NSSet or subclass thereof.)
+ 
+ @return An (autoreleased) NSSet object containing the objects in the receiver.
+ 
+ @see allObjects
+ @see objectEnumerator
+ */
+- (NSSet*) set;
 
 // @}
 #pragma mark Removing Objects
