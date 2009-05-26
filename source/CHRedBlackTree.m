@@ -147,7 +147,7 @@ static inline CHBinaryTreeNode* doubleRotation(CHBinaryTreeNode *node, BOOL goin
 /**
  @param anObject The object to be removed from the tree.
  
- @bug Perfomance decays exponentially (not linearly) when removing objects.
+ @bug Performance decays exponentially (not linearly) when removing objects.
  @todo Speed up red-black removal. The EternallyConfuzzled.com tutorial opts to push a red node down the tree using rotations and flips to avoid a nasty case of deleting a black node. This is almost certainly what causes the performance problems.
 
  @see http://www.stanford.edu/~blp/avl/libavl.html/Deleting-from-an-RB-Tree.html
