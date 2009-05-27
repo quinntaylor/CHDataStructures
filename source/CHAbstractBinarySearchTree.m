@@ -528,6 +528,46 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 	return [set autorelease];
 }
 
+- (id<CHSortedSet>) subsetFromObject:(id)fromObject toObject:(id)toObject {
+	// If both parameters are nil, return a copy containing all the objects.
+	if (fromObject == nil && toObject == nil)
+		return [self copy];
+	
+	id<CHSortedSet> subset = [[[self class] alloc] init];
+	NSEnumerator *e;
+	id anObject;
+	
+	if (fromObject == nil) {
+		// Start from the first object and add until we pass the end parameter.
+		e = [self objectEnumeratorWithTraversalOrder:CHTraverseAscending];
+		while ([(anObject = [e nextObject]) compare:toObject] != NSOrderedDescending) {
+			[subset addObject:anObject];
+		}
+	}
+	else if (toObject == nil) {
+		// Start from the last object and add until we pass the start parameter.
+		e = [self objectEnumeratorWithTraversalOrder:CHTraverseDescending];
+		while ([(anObject = [e nextObject]) compare:fromObject] != NSOrderedAscending) {
+			[subset addObject:anObject];
+		}
+	}
+	else {
+		// If toObject comes before fromObject, raise an exception.
+		if ([fromObject compare:toObject] == NSOrderedDescending)
+			CHInvalidArgumentException([self class], _cmd, @"Invalid parameters.");
+
+		// Include subset of objects delineated by the start and end parameters.
+		e = [self objectEnumeratorWithTraversalOrder:CHTraverseAscending];
+		while ([(anObject = [e nextObject]) compare:fromObject] != NSOrderedDescending)
+			;
+		do {
+			[subset addObject:anObject];
+		} while ([(anObject = [e nextObject]) compare:toObject] != NSOrderedDescending);
+	}
+	return [subset autorelease];
+}
+
+
 - (NSString*) debugDescription {
 	NSMutableString *description = [NSMutableString stringWithFormat:
 	                                @"<%@: 0x%x> = {\n", [self class], self];

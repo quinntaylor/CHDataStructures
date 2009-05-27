@@ -210,11 +210,24 @@
  
  @return An (autoreleased) NSSet object containing the objects in the receiver. The receiver may choose to return a mutable subclass if desired, since the objects may be stored internally using a different data structure. (For example, CHSearchTree implementations store elements in custom nodes, not an NSSet or subclass thereof.)
  
- 
  @see allObjects
  @see objectEnumerator
  */
 - (NSSet*) set;
+
+/**
+ Returns a new sorted set containing the objects delineated by two given objects. The subset is a shallow copy (new memory is allocated for the structure, but the copy points to the same objects) so any changes to the objects in the subset affect the original objects as well. The subset is also an instance of the same class as the receiver.
+ 
+ @param fromObject Low endpoint of the subset to be returned; need not be present in the set.
+ @param toObject High endpoint of the subset to be returned; need not be present in the set.
+ @throw NSInternalInconsistencyException If @a toObject comes before @a fromObject in an ordered set.
+ @return A new sorted set containing the objects delineated by @a fromObject and @a toObject. The contents of the returned subset depend on the input parameters as follows:
+ - If both @a fromObject and @a toObject are @c nil, all objects in the receiver are included. (Equivalent to calling @c -copy.)
+ - If only @a fromObject is @c nil, objects that match or follow @a fromObject are included.
+ - If only @a toObject is @c nil, objects that match or preceed @a fromObject are included.
+ - Otherwise, objects between @a fromObject and @a toObject (or which match either object) are included.
+ */
+- (id<CHSortedSet>) subsetFromObject:(id)fromObject toObject:(id)toObject;
 
 // @}
 #pragma mark Removing Objects
