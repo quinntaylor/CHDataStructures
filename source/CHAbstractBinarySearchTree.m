@@ -528,47 +528,56 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 	return [set autorelease];
 }
 
-- (id<CHSortedSet>) subsetFromObject:(id)fromObject toObject:(id)toObject {
+- (id<CHSortedSet>) subsetFromObject:(id)start toObject:(id)end {
 	// If both parameters are nil, return a copy containing all the objects.
-	if (fromObject == nil && toObject == nil)
+	if (start == nil && end == nil)
 		return [[self copy] autorelease];
 	
-	id<CHSortedSet> subset = [[[self class] alloc] init];
+	id<CHSortedSet> subset = [[[[self class] alloc] init] autorelease];
 	NSEnumerator *e;
 	id anObject;
 	
-	if (fromObject == nil) {
+	if (start == nil) {
 		// Start from the first object and add until we pass the end parameter.
 		e = [self objectEnumeratorWithTraversalOrder:CHTraverseAscending];
 		while ((anObject = [e nextObject]) &&
-			   [anObject compare:toObject] != NSOrderedDescending) {
+			   [anObject compare:end] != NSOrderedDescending) {
 			[subset addObject:anObject];
 		}
 	}
-	else if (toObject == nil) {
+	else if (end == nil) {
 		// Start from the last object and add until we pass the start parameter.
 		e = [self objectEnumeratorWithTraversalOrder:CHTraverseDescending];
 		while ((anObject = [e nextObject]) &&
-			   [anObject compare:fromObject] != NSOrderedAscending) {
+			   [anObject compare:start] != NSOrderedAscending) {
 			[subset addObject:anObject];
 		}
 	}
 	else {
-		// If toObject comes before fromObject, raise an exception.
-		if ([fromObject compare:toObject] == NSOrderedDescending)
-			CHInvalidArgumentException([self class], _cmd, @"Invalid parameters.");
-
-		// Include subset of objects delineated by the start and end parameters.
-		e = [self objectEnumeratorWithTraversalOrder:CHTraverseAscending];
-		while ((anObject = [e nextObject]) &&
-			   [anObject compare:fromObject] == NSOrderedAscending)
-			;
-		do {
-			[subset addObject:anObject];
-		} while ((anObject = [e nextObject]) &&
-				 [anObject compare:toObject] != NSOrderedDescending);
+		if ([start compare:end] == NSOrderedAscending) {
+			// Include subset of objects between the range parameters.
+			e = [self objectEnumeratorWithTraversalOrder:CHTraverseAscending];
+			while ((anObject = [e nextObject]) &&
+				   [anObject compare:start] == NSOrderedAscending)
+				;
+			do {
+				[subset addObject:anObject];
+			} while ((anObject = [e nextObject]) &&
+					 [anObject compare:end] != NSOrderedDescending);
+		}
+		else {
+			// Include subset of objects NOT between the range parameters.
+			e = [self objectEnumeratorWithTraversalOrder:CHTraverseDescending];
+			while ((anObject = [e nextObject]) &&
+				   [anObject compare:start] != NSOrderedAscending)
+				[subset addObject:anObject];
+			e = [self objectEnumeratorWithTraversalOrder:CHTraverseAscending];
+			while ((anObject = [e nextObject]) &&
+				   [anObject compare:end] != NSOrderedDescending)
+				[subset addObject:anObject];
+		}
 	}
-	return [subset autorelease];
+	return subset;
 }
 
 

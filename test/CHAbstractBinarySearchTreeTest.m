@@ -427,9 +427,6 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	while (aClass = [classes nextObject]) {
 		id<CHSearchTree> tree = [[aClass alloc] initWithArray:objects];
 
-		// Test with invalid non-nil parameters
-		STAssertThrows([tree subsetFromObject:@"F" toObject:@"B"], @"Should raise exception.");
-		
 		// Test including all objects (2 nil params, or match first and last)
 		subset = [[tree subsetFromObject:nil toObject:nil] allObjects];
 		STAssertTrue([subset isEqual:objects], badOrder(@"Subset", objects, subset));
@@ -461,6 +458,17 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 		subset = [[tree subsetFromObject:@"B" toObject:@"G"] allObjects];
 		STAssertTrue([subset isEqual:expected], badOrder(@"Subset", expected, subset));
 		subset = [[tree subsetFromObject:@"C" toObject:@"G"] allObjects];
+		STAssertTrue([subset isEqual:expected], badOrder(@"Subset", expected, subset));
+		
+		// Test excluding elements in the middle (parameters in reverse order)
+		expected = [NSArray arrayWithObjects:@"A",@"C",@"E",@"G",nil];
+		
+		subset = [[tree subsetFromObject:@"E" toObject:@"C"] allObjects];
+		STAssertTrue([subset isEqual:expected], badOrder(@"Subset", expected, subset));
+		
+		expected = [NSArray arrayWithObjects:@"A",@"G",nil];
+		
+		subset = [[tree subsetFromObject:@"F" toObject:@"B"] allObjects];
 		STAssertTrue([subset isEqual:expected], badOrder(@"Subset", expected, subset));
 		
 		[tree release];
