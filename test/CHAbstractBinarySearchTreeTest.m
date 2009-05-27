@@ -419,6 +419,54 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	}
 }
 
+- (void) testSubsetFromObjectToObject {
+	objects = [NSArray arrayWithObjects:@"A",@"C",@"D",@"E",@"G",nil];
+	NSArray *subset, *expected;
+	NSEnumerator *classes = [treeClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
+		id<CHSearchTree> tree = [[aClass alloc] initWithArray:objects];
+
+		// Test with invalid non-nil parameters
+		STAssertThrows([tree subsetFromObject:@"F" toObject:@"B"], @"Should raise exception.");
+		
+		// Test including all objects (2 nil params, or match first and last)
+		subset = [[tree subsetFromObject:nil toObject:nil] allObjects];
+		STAssertTrue([subset isEqual:objects], badOrder(@"Subset", objects, subset));
+		
+		subset = [[tree subsetFromObject:@"A" toObject:@"G"] allObjects];
+		STAssertTrue([subset isEqual:objects], badOrder(@"Subset", objects, subset));
+		
+		// Test excluding elements at the end
+		expected = [NSArray arrayWithObjects:@"A",@"C",@"D",@"E",nil];
+		
+		subset = [[tree subsetFromObject:nil toObject:@"F"] allObjects];
+		STAssertTrue([subset isEqual:expected], badOrder(@"Subset", expected, subset));
+		subset = [[tree subsetFromObject:nil toObject:@"E"] allObjects];
+		STAssertTrue([subset isEqual:expected], badOrder(@"Subset", expected, subset));
+		
+		subset = [[tree subsetFromObject:@"A" toObject:@"F"] allObjects];
+		STAssertTrue([subset isEqual:expected], badOrder(@"Subset", expected, subset));
+		subset = [[tree subsetFromObject:@"A" toObject:@"E"] allObjects];
+		STAssertTrue([subset isEqual:expected], badOrder(@"Subset", expected, subset));
+		
+		// Test excluding elements at the start
+		expected = [NSArray arrayWithObjects:@"C",@"D",@"E",@"G",nil];
+		
+		subset = [[tree subsetFromObject:@"B" toObject:nil] allObjects];
+		STAssertTrue([subset isEqual:expected], badOrder(@"Subset", expected, subset));
+		subset = [[tree subsetFromObject:@"C" toObject:nil] allObjects];
+		STAssertTrue([subset isEqual:expected], badOrder(@"Subset", expected, subset));
+
+		subset = [[tree subsetFromObject:@"B" toObject:@"G"] allObjects];
+		STAssertTrue([subset isEqual:expected], badOrder(@"Subset", expected, subset));
+		subset = [[tree subsetFromObject:@"C" toObject:@"G"] allObjects];
+		STAssertTrue([subset isEqual:expected], badOrder(@"Subset", expected, subset));
+		
+		[tree release];
+	}
+}
+
 #pragma mark -
 
 - (void) testNSCoding {

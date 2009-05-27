@@ -531,7 +531,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 - (id<CHSortedSet>) subsetFromObject:(id)fromObject toObject:(id)toObject {
 	// If both parameters are nil, return a copy containing all the objects.
 	if (fromObject == nil && toObject == nil)
-		return [self copy];
+		return [[self copy] autorelease];
 	
 	id<CHSortedSet> subset = [[[self class] alloc] init];
 	NSEnumerator *e;
@@ -540,14 +540,16 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 	if (fromObject == nil) {
 		// Start from the first object and add until we pass the end parameter.
 		e = [self objectEnumeratorWithTraversalOrder:CHTraverseAscending];
-		while ([(anObject = [e nextObject]) compare:toObject] != NSOrderedDescending) {
+		while ((anObject = [e nextObject]) &&
+			   [anObject compare:toObject] != NSOrderedDescending) {
 			[subset addObject:anObject];
 		}
 	}
 	else if (toObject == nil) {
 		// Start from the last object and add until we pass the start parameter.
 		e = [self objectEnumeratorWithTraversalOrder:CHTraverseDescending];
-		while ([(anObject = [e nextObject]) compare:fromObject] != NSOrderedAscending) {
+		while ((anObject = [e nextObject]) &&
+			   [anObject compare:fromObject] != NSOrderedAscending) {
 			[subset addObject:anObject];
 		}
 	}
@@ -558,11 +560,13 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 
 		// Include subset of objects delineated by the start and end parameters.
 		e = [self objectEnumeratorWithTraversalOrder:CHTraverseAscending];
-		while ([(anObject = [e nextObject]) compare:fromObject] != NSOrderedDescending)
+		while ((anObject = [e nextObject]) &&
+			   [anObject compare:fromObject] == NSOrderedAscending)
 			;
 		do {
 			[subset addObject:anObject];
-		} while ([(anObject = [e nextObject]) compare:toObject] != NSOrderedDescending);
+		} while ((anObject = [e nextObject]) &&
+				 [anObject compare:toObject] != NSOrderedDescending);
 	}
 	return [subset autorelease];
 }
