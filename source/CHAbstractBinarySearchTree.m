@@ -18,19 +18,19 @@ size_t kCHPointerSize = sizeof(void*);
 /**
  A dummy object that resides in the header node for a tree. Using a header node can simplify insertion logic by eliminating the need to check whether the root is null. The actual root of the tree is generally stored as the right child of the header node. In order to always proceed to the actual root node when traversing down the tree, instances of this class always return @c NSOrderedAscending when called as the receiver of the @c -compare: method.
  
- Since all header objects behave the same way, all search tree instances can share the same dummy header object. The singleton instance can be obtained via the \link #headerObject +headerObject\endlink method. The singleton is created the first time a subclass of CHAbstractBinarySearchTree is used, and persists for the duration of the program.
+ Since all header objects behave the same way, all search tree instances can share the same dummy header object. The singleton instance can be obtained via the \link #headerObject +headerObject\endlink method. The singleton is created once and persists for the duration of the program.
  */
 @interface CHSearchTreeHeaderObject : NSObject
 
 /**
- Returns the singleton instance of this class. The singleton variable is defined in this file and is initialized only once in the @c +initialize method of CHAbstractBinarySearchTree.
+ Returns the singleton instance of this class. The singleton variable is defined in this file and is initialized only once.
  
  @return The singleton instance of this class.
  */
 + (id) headerObject;
 
 /**
- Always indicate that the other object should appear to the right side.
+ Always indicate that another given object should appear to the right side.
  
  @param otherObject The object to be compared to the receiver.
  @return @c NSOrderedAscending, indicating that traversal should go to the right child of the containing tree node.
@@ -46,6 +46,13 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 @implementation CHSearchTreeHeaderObject
 
 + (id) headerObject {
+	if (headerObject == nil) {
+		@synchronized([CHSearchTreeHeaderObject class]) {
+			if (headerObject == nil) {
+				headerObject = [[CHSearchTreeHeaderObject alloc] init];
+			}
+		}		
+	}
 	return headerObject;
 }
 
@@ -269,12 +276,6 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 #pragma mark -
 
 @implementation CHAbstractBinarySearchTree
-
-+ (void) initialize {
-	if (headerObject == nil) {
-		headerObject = [[CHSearchTreeHeaderObject alloc] init];
-	}
-}
 
 - (void) dealloc {
 	[self removeAllObjects];
