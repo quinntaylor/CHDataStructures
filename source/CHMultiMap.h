@@ -41,7 +41,7 @@
 }
 
 /**
- Initialize a multi-dictionary with no key-value entries.
+ Initialize the receiver with no key-value entries.
  
  @see initWithObjectsAndKeys:
  @see initWithObjects:forKeys:
@@ -49,26 +49,30 @@
 - (id) init;
 
 /**
- Initialize a multi-dictionary with entries constructed from pairs of objects and keys.
+ Initialize the receiver with entries constructed from pairs of objects and keys.
  
- @param firstObject The first object or set of objects to add to the dictionary.
+ @param firstObject The first object or set of objects to add to the receiver.
  @param ... First the key for @a firstObject, then a null-terminated list of alternating values and keys.
  @throw NSInvalidArgumentException If any non-terminating parameter is @c nil.
  
  Each value parameter may be an object or an NSArray or NSSet of objects to be associated with the corresponding key parameter.
  
- This method is similar to #initWithObjects:forKeys: and differs only in the way in which the key-value pairs are specified.
+ @see init
+ @see initWithObjects:forKeys:
  */
 - (id) initWithObjectsAndKeys:(id)firstObject, ...;
 
 /**
- Initialize a multi-dictionary with entries constructed from arrays of objects and keys.
+ Initialize the receiver with entries constructed from arrays of objects and keys.
  
  @param keyArray An array containing the keys for the new dictionary. 
  @param objectsArray An array containing the values for the new dictionary.
  @throw NSInvalidArgumentException If the array counts are not equal.
  
  Each element in @a objects can be either an object or an NSArray or NSSet of objects to be associated with the corresponding key in @a keys.
+ 
+ @see init
+ @see initWithObjectsAndKeys:
  */
 - (id) initWithObjects:(NSArray*)objectsArray forKeys:(NSArray*)keyArray;
 
@@ -112,10 +116,10 @@
 
 // @}
 #pragma mark <NSFastEnumeration>
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 /** @name <NSFastEnumeration> */
 // @{
 
-#if MAC_OS_X_VERSION_10_5_AND_LATER
 /**
  Called within <code>@b for (type variable @b in collection)</code> constructs. Returns by reference a C array of objects over which the sender should iterate, and as the return value the number of objects in the array.
  
@@ -137,9 +141,9 @@
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len;
-#endif
 
 // @}
+#endif
 #pragma mark Adding Objects
 /** @name Adding Objects */
 // @{
@@ -276,13 +280,14 @@
 - (BOOL) containsObject:(id)anObject;
 
 /**
- Returns an enumerator that lets you access each key in the multimap.
+ Returns an enumerator that lets you access each key in the receiver.
  
- @return An enumerator that lets you access each key in the multimap. The enumerator returned is never @c nil; if the multimap is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
+ @return An enumerator that lets you access each key in the receiver. The enumerator returned is never @c nil; if the receiver is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
  
  @attention The enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
  @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
- @warning If you need to modify the entries concurrently, use #allKeys to create a "snapshot" of the dictionary's keys and work from this snapshot to modify the entries.
+ 
+ @note If you need to modify the entries concurrently, use #allKeys to create a "snapshot" of the dictionary's keys and work from this snapshot to modify the entries.
  
  @see allKeys
  @see countByEnumeratingWithState:objects:count:
@@ -290,9 +295,9 @@
 - (NSEnumerator*) keyEnumerator;
 
 /**
- Returns an enumerator that lets you access each value in the multimap.
+ Returns an enumerator that lets you access each value in the receiver.
  
- @return An enumerator that lets you access each value in the multimap. The enumerator returned is never @c nil; if the multimap is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
+ @return An enumerator that lets you access each value in the receiver. The enumerator returned is never @c nil; if the receiver is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
  
  @attention The enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
  @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
