@@ -136,7 +136,7 @@ static inline CHBinaryTreeNode* doubleRotation(CHBinaryTreeNode *node, BOOL goin
 		if (parent->color == kRED) 	{
 			grandparent->color = kRED;
 			if ([grandparent->object compare:anObject] != [parent->object compare:anObject])
-				parent = rotateObjectOnAncestor(anObject, grandparent);
+				rotateObjectOnAncestor(anObject, grandparent);
 			current = rotateObjectOnAncestor(anObject, greatgrandparent);
 			current->color = kBLACK;
 		}
@@ -159,7 +159,7 @@ static inline CHBinaryTreeNode* doubleRotation(CHBinaryTreeNode *node, BOOL goin
 	++mutations;
 	
 	CHBinaryTreeNode *current, *parent, *grandparent;
-	grandparent = parent = current = header;
+	parent = current = header;
 	
 	CHBinaryTreeNode *found = NULL, *sibling;
 	sentinel->object = anObject;

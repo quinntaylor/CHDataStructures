@@ -211,10 +211,10 @@
 }
 
 - (NSArray*) allObjectsInSortedOrder {
-	NSSortDescriptor *sortDescriptor = [[[NSSortDescriptor alloc] autorelease]
+	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc]
 										initWithKey:nil
 										ascending:(sortOrder == NSOrderedAscending)];
-	return [array sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+	return [array sortedArrayUsingDescriptors:[NSArray arrayWithObject:[sortDescriptor autorelease]]];
 }
 
 - (NSEnumerator*) objectEnumerator {
