@@ -529,7 +529,10 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 	return [set autorelease];
 }
 
-- (id<CHSortedSet>) subsetFromObject:(id)start toObject:(id)end {
+- (id<CHSortedSet>) subsetFromObject:(id)start
+                            toObject:(id)end
+                             options:(CHSubsetConstructionOptions)options
+{
 	// If both parameters are nil, return a copy containing all the objects.
 	if (start == nil && end == nil)
 		return [[self copy] autorelease];
@@ -578,6 +581,11 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 				[subset addObject:anObject];
 		}
 	}
+	// If the start and/or end value is to be excluded, remove before returning.
+	if (options & CHSubsetExcludeLowEndpoint)
+		[subset removeObject:start];
+	if (options & CHSubsetExcludeHighEndpoint)
+		[subset removeObject:end];
 	return subset;
 }
 

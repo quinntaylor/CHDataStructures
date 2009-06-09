@@ -421,56 +421,70 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 
 - (void) testSubsetFromObjectToObject {
 	objects = [NSArray arrayWithObjects:@"A",@"C",@"D",@"E",@"G",nil];
-	NSArray *subset, *expected;
+	NSArray *acde = [NSArray arrayWithObjects:@"A",@"C",@"D",@"E",nil];
+	NSArray *aceg = [NSArray arrayWithObjects:@"A",@"C",@"E",@"G",nil];
+	NSArray *ag   = [NSArray arrayWithObjects:@"A",@"G",nil];
+	NSArray *cde  = [NSArray arrayWithObjects:@"C",@"D",@"E",nil];
+	NSArray *cdeg = [NSArray arrayWithObjects:@"C",@"D",@"E",@"G",nil];
+	NSArray *subset;
 	NSEnumerator *classes = [treeClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
 		id<CHSearchTree> tree = [[aClass alloc] initWithArray:objects];
 
 		// Test including all objects (2 nil params, or match first and last)
-		subset = [[tree subsetFromObject:nil toObject:nil] allObjects];
-		STAssertTrue([subset isEqual:objects], badOrder(@"Subset", objects, subset));
+		subset = [[tree subsetFromObject:nil toObject:nil options:0] allObjects];
+		STAssertTrue([subset isEqual:objects], badOrder(@"Subset", subset, objects));
 		
-		subset = [[tree subsetFromObject:@"A" toObject:@"G"] allObjects];
-		STAssertTrue([subset isEqual:objects], badOrder(@"Subset", objects, subset));
+		subset = [[tree subsetFromObject:@"A" toObject:@"G" options:0] allObjects];
+		STAssertTrue([subset isEqual:objects], badOrder(@"Subset", subset, objects));
 		
 		// Test excluding elements at the end
-		expected = [NSArray arrayWithObjects:@"A",@"C",@"D",@"E",nil];
+		subset = [[tree subsetFromObject:nil toObject:@"F" options:0] allObjects];
+		STAssertTrue([subset isEqual:acde], badOrder(@"Subset", subset, acde));
+		subset = [[tree subsetFromObject:nil toObject:@"E" options:0] allObjects];
+		STAssertTrue([subset isEqual:acde], badOrder(@"Subset", subset, acde));
 		
-		subset = [[tree subsetFromObject:nil toObject:@"F"] allObjects];
-		STAssertTrue([subset isEqual:expected], badOrder(@"Subset", expected, subset));
-		subset = [[tree subsetFromObject:nil toObject:@"E"] allObjects];
-		STAssertTrue([subset isEqual:expected], badOrder(@"Subset", expected, subset));
-		
-		subset = [[tree subsetFromObject:@"A" toObject:@"F"] allObjects];
-		STAssertTrue([subset isEqual:expected], badOrder(@"Subset", expected, subset));
-		subset = [[tree subsetFromObject:@"A" toObject:@"E"] allObjects];
-		STAssertTrue([subset isEqual:expected], badOrder(@"Subset", expected, subset));
+		subset = [[tree subsetFromObject:@"A" toObject:@"F" options:0] allObjects];
+		STAssertTrue([subset isEqual:acde], badOrder(@"Subset", subset, acde));
+		subset = [[tree subsetFromObject:@"A" toObject:@"E" options:0] allObjects];
+		STAssertTrue([subset isEqual:acde], badOrder(@"Subset", subset, acde));
 		
 		// Test excluding elements at the start
-		expected = [NSArray arrayWithObjects:@"C",@"D",@"E",@"G",nil];
-		
-		subset = [[tree subsetFromObject:@"B" toObject:nil] allObjects];
-		STAssertTrue([subset isEqual:expected], badOrder(@"Subset", expected, subset));
-		subset = [[tree subsetFromObject:@"C" toObject:nil] allObjects];
-		STAssertTrue([subset isEqual:expected], badOrder(@"Subset", expected, subset));
+		subset = [[tree subsetFromObject:@"B" toObject:nil options:0] allObjects];
+		STAssertTrue([subset isEqual:cdeg], badOrder(@"Subset", subset, cdeg));
+		subset = [[tree subsetFromObject:@"C" toObject:nil options:0] allObjects];
+		STAssertTrue([subset isEqual:cdeg], badOrder(@"Subset", subset, cdeg));
 
-		subset = [[tree subsetFromObject:@"B" toObject:@"G"] allObjects];
-		STAssertTrue([subset isEqual:expected], badOrder(@"Subset", expected, subset));
-		subset = [[tree subsetFromObject:@"C" toObject:@"G"] allObjects];
-		STAssertTrue([subset isEqual:expected], badOrder(@"Subset", expected, subset));
+		subset = [[tree subsetFromObject:@"B" toObject:@"G" options:0] allObjects];
+		STAssertTrue([subset isEqual:cdeg], badOrder(@"Subset", subset, cdeg));
+		subset = [[tree subsetFromObject:@"C" toObject:@"G" options:0] allObjects];
+		STAssertTrue([subset isEqual:cdeg], badOrder(@"Subset", subset, cdeg));
 		
 		// Test excluding elements in the middle (parameters in reverse order)
-		expected = [NSArray arrayWithObjects:@"A",@"C",@"E",@"G",nil];
+		subset = [[tree subsetFromObject:@"E" toObject:@"C" options:0] allObjects];
+		STAssertTrue([subset isEqual:aceg], badOrder(@"Subset", subset, aceg));
 		
-		subset = [[tree subsetFromObject:@"E" toObject:@"C"] allObjects];
-		STAssertTrue([subset isEqual:expected], badOrder(@"Subset", expected, subset));
+		subset = [[tree subsetFromObject:@"F" toObject:@"B" options:0] allObjects];
+		STAssertTrue([subset isEqual:ag], badOrder(@"Subset", subset, ag));
 		
-		expected = [NSArray arrayWithObjects:@"A",@"G",nil];
+		// Test using options to exclude zero, one, or both endpoints.
+		CHSubsetConstructionOptions o;
 		
-		subset = [[tree subsetFromObject:@"F" toObject:@"B"] allObjects];
-		STAssertTrue([subset isEqual:expected], badOrder(@"Subset", expected, subset));
+		o = CHSubsetExcludeLowEndpoint;
+		subset = [[tree subsetFromObject:@"A" toObject:@"G" options:o] allObjects];
+		STAssertTrue([subset isEqual:cdeg], badOrder(@"Subset", subset, cdeg));
 		
+		o = CHSubsetExcludeHighEndpoint;
+		subset = [[tree subsetFromObject:@"A" toObject:@"G" options:o] allObjects];
+		STAssertTrue([subset isEqual:acde], badOrder(@"Subset", subset, acde));
+		
+		o = CHSubsetExcludeLowEndpoint | CHSubsetExcludeHighEndpoint;
+		subset = [[tree subsetFromObject:@"A" toObject:@"G" options:o] allObjects];
+		STAssertTrue([subset isEqual:cde], badOrder(@"Subset", subset, cde));
+		
+		subset = [[tree subsetFromObject:nil toObject:nil options:o] allObjects];
+		STAssertTrue([subset isEqual:objects], badOrder(@"Subset", subset, objects));
 		[tree release];
 	}
 }
@@ -498,7 +512,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 		after = [tree allObjectsWithTraversalOrder:CHTraverseLevelOrder];
 		if (aClass != [CHTreap class])
 		STAssertEqualObjects(before, after,
-							 badOrder(@"Bad order after decode", before, after));
+							 badOrder(@"Bad order after decode", after, before));
 		[tree release];
 		[[NSFileManager defaultManager] removeFileAtPath:filePath handler:nil];
 	}	

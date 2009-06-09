@@ -18,6 +18,16 @@
  */
 
 /**
+ These constants are passed to \link CHSortedSet#subsetFromObject:toObject:options: -[CHSortedSet subsetFromObject:toObject:options:]\endlink and affect how the subset is constructed. You can pass 0 to use the default behavior.
+ */
+typedef enum {
+	/** Indicates that a subset should exclude the low endpoint if it is not nil. */
+	CHSubsetExcludeLowEndpoint  = 0x01,
+	/** Indicates that a subset should exclude the high endpoint if it is not nil. */
+	CHSubsetExcludeHighEndpoint = 0x02
+} CHSubsetConstructionOptions;
+
+/**
  A protocol which specifes an interface for sorted sets.
  
  A <strong>sorted set</strong> is a <a href="http://en.wikipedia.org/wiki/Set_(computer_science)">set</a> that further provides a <em>total ordering</em> on its elements. This protocol defines sorted set methods for insertion, removal, search, and object enumeration. Though any conforming class must implement all these methods, they may document that certain of them are unsupported, and/or raise exceptions when they are called.
@@ -220,6 +230,7 @@
  
  @param start Low endpoint of the subset to be returned; need not be present in the set.
  @param end High endpoint of the subset to be returned; need not be present in the set.
+ @param options A combination of @c CHSubsetConstructionOptions values that specifies how to construct the subset. Pass 0 for the default behavior, or one or more options combined with a bitwise OR to specify different behavior.
  @return A new sorted set containing the objects delineated by @a start and @a end. The contents of the returned subset depend on the input parameters as follows:
  - If both @a start and @a end are @c nil, all objects in the receiver are included. (Equivalent to calling @c -copy.)
  - If only @a start is @c nil, objects that match or follow @a start are included.
@@ -227,7 +238,9 @@
  - If @a start comes before @a end in an ordered set, objects between @a start and @a end (or which match either object) are included.
  - Otherwise, all objects @b except those that fall between @a start and @a end are included.
  */
-- (id<CHSortedSet>) subsetFromObject:(id)start toObject:(id)end;
+- (id<CHSortedSet>) subsetFromObject:(id)start
+							toObject:(id)end
+							 options:(CHSubsetConstructionOptions)options;
 
 // @}
 #pragma mark Removing Objects
