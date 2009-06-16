@@ -16,4 +16,51 @@
 	id<CHQueue> insertionOrder;
 }
 
+#pragma mark Querying Contents
+/** @name Querying Contents */
+// @{
+
+/**
+ Returns the first key in the receiver, according to insertion order.
+ 
+ @return The first key in the receiver, or @c nil if the receiver is empty.
+ 
+ @see lastKey
+ @see removeObjectForFirstKey
+ */
+- (id) firstKey;
+
+/**
+ Returns the last key in the receiver, according to insertion order.
+ 
+ @return The last key in the receiver, or @c nil if the receiver is empty.
+ 
+ @see firstKey
+ @see removeObjectForLastKey
+ */
+- (id) lastKey;
+
+// @}
+#pragma mark Removing Objects
+/** @name Removing Objects */
+// @{
+/**
+ Remove the first key and object from the receiver, according to insertion order.
+ 
+ @see firstKey
+ @see removeObjectForKey:
+ @see removeObjectForLastKey
+ */
+- (void) removeObjectForFirstKey;
+
+/**
+ Remove the last key and object from the receiver, according to insertion order.
+ 
+ @see lastKey
+ @see removeObjectForKey:
+ @see removeObjectForFirstKey
+ */
+- (void) removeObjectForLastKey;
+
+// @}
 @end

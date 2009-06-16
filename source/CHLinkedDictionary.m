@@ -9,7 +9,77 @@
  */
 
 #import "CHLinkedDictionary.h"
+#import "CHCircularBufferQueue.h"
 
 @implementation CHLinkedDictionary
+
+- (id) initWithObjects:(id*)objects forKeys:(id*)keys count:(NSUInteger)count {
+	// Create collection for ordering keys first, since super will add objects.
+	insertionOrder = [[CHCircularBufferQueue alloc] init];
+	if ((self = [super initWithObjects:objects
+	                           forKeys:keys
+	                             count:count]) == nil) return nil;
+	return self;
+}
+
+- (id) initWithCoder:(NSCoder *)decoder {
+	if ((self = [super initWithCoder:decoder]) == nil) return nil;
+	insertionOrder = [[decoder decodeObjectForKey:@"insertionOrder"] retain];
+	return self;
+}
+
+- (void) encodeWithCoder:(NSCoder *)encoder {
+	[super encodeWithCoder:encoder];
+	[encoder encodeObject:insertionOrder forKey:@"insertionOrder"];
+}
+
+#pragma mark Adding Objects
+
+- (void) setObject:(id)anObject forKey:(id)aKey {
+	id clonedKey = [[aKey copy] autorelease];
+	if (!CFDictionaryContainsKey(dictionary, aKey))
+		[insertionOrder addObject:clonedKey];
+	CFDictionarySetValue(dictionary, clonedKey, anObject);
+}
+
+#pragma mark Querying Contents
+
+- (NSUInteger) count {
+	return CFDictionaryGetCount(dictionary);
+}
+
+- (NSEnumerator*) keyEnumerator {
+	return [insertionOrder objectEnumerator];
+}
+
+- (id) firstKey {
+	return [insertionOrder firstObject];
+}
+
+- (id) lastKey {
+	return [insertionOrder lastObject];
+}
+
+#pragma mark Removing Objects
+
+- (void) removeAllObjects {
+	[insertionOrder removeAllObjects];
+	[super removeAllObjects];
+}
+
+- (void) removeObjectForKey:(id)aKey {
+	if (CFDictionaryContainsKey(dictionary, aKey)) {
+		[insertionOrder removeObject:aKey];
+		CFDictionaryRemoveValue(dictionary, aKey);
+	}
+}
+
+- (void) removeObjectForFirstKey {
+	[self removeObjectForKey:[insertionOrder firstObject]];
+}
+
+- (void) removeObjectForLastKey {
+	[self removeObjectForKey:[insertionOrder lastObject]];
+}
 
 @end

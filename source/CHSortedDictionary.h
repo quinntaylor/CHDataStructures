@@ -16,4 +16,51 @@
 	id<CHSortedSet> sortedKeys;
 }
 
+#pragma mark Querying Contents
+/** @name Querying Contents */
+// @{
+
+/**
+ Returns the minimum key in the receiver, according to natural sorted order.
+ 
+ @return The minimum key in the receiver, or @c nil if the receiver is empty.
+ 
+ @see lastKey
+ @see removeObjectForFirstKey
+ */
+- (id) firstKey;
+
+/**
+ Returns the maximum key in the receiver, according to natural sorted order.
+ 
+ @return The maximum key in the receiver, or @c nil if the receiver is empty.
+ 
+ @see firstKey
+ @see removeObjectForLastKey
+ */
+- (id) lastKey;
+
+// @}
+#pragma mark Removing Objects
+/** @name Removing Objects */
+// @{
+/**
+ Remove the minimum object from the receiver, according to natural sorted order.
+ 
+ @see firstKey
+ @see removeObjectForKey:
+ @see removeObjectForLastKey
+ */
+- (void) removeObjectForFirstKey;
+
+/**
+ Remove the maximum object from the receiver, according to natural sorted order.
+ 
+ @see lastKey
+ @see removeObjectForKey:
+ @see removeObjectForFirstKey
+ */
+- (void) removeObjectForLastKey;
+
+// @}
 @end

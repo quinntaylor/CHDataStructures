@@ -9,7 +9,77 @@
  */
 
 #import "CHSortedDictionary.h"
+#import "CHAVLTree.h"
 
 @implementation CHSortedDictionary
+
+- (id) initWithObjects:(id*)objects forKeys:(id*)keys count:(NSUInteger)count {
+	// Create collection for ordering keys first, since super will add objects.
+	sortedKeys = [[CHAVLTree alloc] init];
+	if ((self = [super initWithObjects:objects
+	                           forKeys:keys
+	                             count:count]) == nil) return nil;
+	return self;
+}
+
+- (id) initWithCoder:(NSCoder *)decoder {
+	if ((self = [super initWithCoder:decoder]) == nil) return nil;
+	sortedKeys = [[decoder decodeObjectForKey:@"sortedKeys"] retain];
+	return self;
+}
+
+- (void) encodeWithCoder:(NSCoder *)encoder {
+	[super encodeWithCoder:encoder];
+	[encoder encodeObject:sortedKeys forKey:@"sortedKeys"];
+}
+
+#pragma mark Adding Objects
+
+- (void) setObject:(id)anObject forKey:(id)aKey {
+	id clonedKey = [[aKey copy] autorelease];
+	if (!CFDictionaryContainsKey(dictionary, aKey))
+		[sortedKeys addObject:clonedKey];
+	CFDictionarySetValue(dictionary, clonedKey, anObject);
+}
+
+#pragma mark Querying Contents
+
+- (NSUInteger) count {
+	return CFDictionaryGetCount(dictionary);
+}
+
+- (NSEnumerator*) keyEnumerator {
+	return [sortedKeys objectEnumerator];
+}
+
+- (id) firstKey {
+	return [sortedKeys firstObject];
+}
+
+- (id) lastKey {
+	return [sortedKeys lastObject];
+}
+
+#pragma mark Removing Objects
+
+- (void) removeAllObjects {
+	[super removeAllObjects];
+	[sortedKeys removeAllObjects];
+}
+
+- (void) removeObjectForKey:(id)aKey {
+	if (CFDictionaryContainsKey(dictionary, aKey)) {
+		[sortedKeys removeObject:aKey];
+		CFDictionaryRemoveValue(dictionary, aKey);
+	}
+}
+
+- (void) removeObjectForFirstKey {
+	[self removeObjectForKey:[sortedKeys firstObject]];
+}
+
+- (void) removeObjectForLastKey {
+	[self removeObjectForKey:[sortedKeys lastObject]];
+}
 
 @end
