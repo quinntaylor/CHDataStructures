@@ -29,6 +29,21 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 #endif
 }
 
+@interface CHAbstractBinarySearchTree (Test)
+
+- (id) headerObject;
+
+@end
+
+@implementation CHAbstractBinarySearchTree (Test)
+
+- (id) headerObject {
+	return header->object;
+}
+
+@end
+
+
 #pragma mark -
 
 @interface CHAbstractBinarySearchTreeTest : SenTestCase
@@ -590,6 +605,21 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	id<CHSearchTree> tree = [[CHAbstractBinarySearchTree alloc] init];
 	STAssertThrows([tree removeObject:nil],
 				   @"Should raise exception, abstract.");
+}
+
+- (void) testHeaderObject {
+	id tree = [[[CHAbstractBinarySearchTree alloc] init] autorelease];
+	id headerObject = [tree headerObject];
+	STAssertNotNil(headerObject, @"Header object should be nil.");
+	if (kCHGarbageCollectionNotEnabled) {
+		STAssertThrows([headerObject retain],
+					   @"Should raise exception, unsupported.");
+		STAssertThrows([headerObject release],
+					   @"Should raise exception, unsupported.");
+		STAssertThrows([headerObject autorelease],
+					   @"Should raise exception, unsupported.");
+			
+	}
 }
 
 @end
