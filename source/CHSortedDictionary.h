@@ -11,7 +11,7 @@
 #import "CHLockableDictionary.h"
 #import "CHSortedSet.h"
 
-/** @todo Implement and document CHSortedDictionary */
+/** @todo Document CHSortedDictionary */
 @interface CHSortedDictionary : CHLockableDictionary {
 	id<CHSortedSet> sortedKeys;
 }

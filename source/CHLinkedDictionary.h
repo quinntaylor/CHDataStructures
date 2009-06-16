@@ -11,7 +11,7 @@
 #import "CHLockableDictionary.h"
 #import "CHQueue.h"
 
-/** @todo Implement and document CHLinkedDictionary */
+/** @todo Document CHLinkedDictionary */
 @interface CHLinkedDictionary : CHLockableDictionary {
 	id<CHQueue> insertionOrder;
 }

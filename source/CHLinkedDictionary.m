@@ -22,6 +22,7 @@
 	return self;
 }
 
+/** @todo Check whether keys are equal on decode, fix if they aren't. */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ((self = [super initWithCoder:decoder]) == nil) return nil;
 	insertionOrder = [[decoder decodeObjectForKey:@"insertionOrder"] retain];
@@ -36,10 +37,11 @@
 #pragma mark Adding Objects
 
 - (void) setObject:(id)anObject forKey:(id)aKey {
-	id clonedKey = [[aKey copy] autorelease];
-	if (!CFDictionaryContainsKey(dictionary, aKey))
+	if (!CFDictionaryContainsKey(dictionary, aKey)) {
+		id clonedKey = [[aKey copy] autorelease];
 		[insertionOrder addObject:clonedKey];
-	CFDictionarySetValue(dictionary, clonedKey, anObject);
+		CFDictionarySetValue(dictionary, clonedKey, anObject);
+	}
 }
 
 #pragma mark Querying Contents
