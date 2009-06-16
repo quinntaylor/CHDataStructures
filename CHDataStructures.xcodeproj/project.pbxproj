@@ -79,11 +79,11 @@
 		E44B59C70E95852400F9DD1A /* Benchmarks.m in Sources */ = {isa = PBXBuildFile; fileRef = E44B58C40E95820400F9DD1A /* Benchmarks.m */; };
 		E44EB0F20ECB83230071F93A /* UtilTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E44EB0F10ECB83230071F93A /* UtilTest.m */; };
 		E4558CF70FE749FC00CC5860 /* CHLockableObject.h in Headers */ = {isa = PBXBuildFile; fileRef = E4558CF60FE749FC00CC5860 /* CHLockableObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E4558D910FE758C300CC5860 /* CHLockableDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = E4558D8F0FE758C300CC5860 /* CHLockableDictionary.h */; };
+		E4558D910FE758C300CC5860 /* CHLockableDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = E4558D8F0FE758C300CC5860 /* CHLockableDictionary.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4558D920FE758C300CC5860 /* CHLockableDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = E4558D900FE758C300CC5860 /* CHLockableDictionary.m */; };
-		E4558DB00FE7598700CC5860 /* CHLinkedDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = E4558DAE0FE7598700CC5860 /* CHLinkedDictionary.h */; };
+		E4558DB00FE7598700CC5860 /* CHLinkedDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = E4558DAE0FE7598700CC5860 /* CHLinkedDictionary.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4558DB10FE7598700CC5860 /* CHLinkedDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = E4558DAF0FE7598700CC5860 /* CHLinkedDictionary.m */; };
-		E4558DB60FE7599500CC5860 /* CHSortedDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = E4558DB40FE7599500CC5860 /* CHSortedDictionary.h */; };
+		E4558DB60FE7599500CC5860 /* CHSortedDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = E4558DB40FE7599500CC5860 /* CHSortedDictionary.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4558DB70FE7599500CC5860 /* CHSortedDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = E4558DB50FE7599500CC5860 /* CHSortedDictionary.m */; };
 		E46300B20ECBEDAE00E1AF73 /* CHTreapTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E410360E0EC424E600C2CFB9 /* CHTreapTest.m */; };
 		E46300B30ECBEDAF00E1AF73 /* CHLinkedListTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D499690E93CD1300434CBA /* CHLinkedListTest.m */; };
