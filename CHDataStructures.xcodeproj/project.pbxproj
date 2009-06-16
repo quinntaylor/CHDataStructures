@@ -619,9 +619,9 @@
 			projectRoot = "";
 			targets = (
 				8DC2EF4F0486A6940098B216 /* Framework */,
-				E4FE76D80E89556A00971EE6 /* Documentation */,
 				E473CB540E9346CB005CA997 /* Unit Testing */,
 				E44B59B30E95850F00F9DD1A /* Benchmarks */,
+				E4FE76D80E89556A00971EE6 /* Documentation */,
 				E43C87680EA3D35500B3B31E /* Deployment */,
 				E4FAE15B0E968F1B007BB1F9 /* All */,
 			);
@@ -970,7 +970,7 @@
 				OTHER_LDFLAGS = "-lgcov";
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
 				PRODUCT_NAME = CHDataStructures;
-				SDKROOT = macosx10.4;
+				SDKROOT = macosx10.5;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Coverage;
