@@ -72,7 +72,7 @@
 		current->object = anObject;
 		current->left   = sentinel;
 		current->right  = sentinel;
-		current->priority = priority;
+		current->priority = (u_int32_t) (priority % CHTreapNotFound);
 		++count;
 		// Link from parent as the correct child, based on the last comparison
 		comparison = [parent->object compare:anObject];
