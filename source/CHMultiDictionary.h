@@ -1,5 +1,5 @@
 /*
- CHDataStructures.framework -- CHMultiMap.h
+ CHDataStructures.framework -- CHMultiDictionary.h
  
  Copyright (c) 2008-2009, Quinn Taylor <http://homepage.mac.com/quinntaylor>
  
@@ -11,7 +11,7 @@
 #import "CHLockableObject.h"
 
 /**
- @file CHMultiMap.h
+ @file CHMultiDictionary.h
  
  A <a href="http://en.wikipedia.org/wiki/Multimap_(data_structure)">multimap</a> in which multiple values may be associated with a given key.
  */
@@ -21,15 +21,15 @@
  
  A map is the same as a "dictionary", "associative array", etc. and consists of a unique set of keys and a collection of values. In a standard map, each key is associated with one value; in a multimap, more than one value may be associated with a given key. A multimap is appropriate for any situation in which one item may correspond to (map to) multiple values, such as a term in an book index and occurrences of that term, courses for which a student is registered, etc.
  
- The values for a key may or may not be ordered. This implementation does not maintain an ordering for objects associated with a key, nor does it allow for multiple occurrences of an object associated with the same key. Internally, this class uses an NSMutableDictionary, and the associated values for each key are stored in distinct NSMutableSet instances. (Just as with NSDictionary, each key added to a CHMultiMap is copied using \link NSCopying#copyWithZone: -copyWithZone:\endlink and all keys must conform to the NSCopying protocol.) Objects are retained on insertion and released on removal or deallocation.
+ The values for a key may or may not be ordered. This implementation does not maintain an ordering for objects associated with a key, nor does it allow for multiple occurrences of an object associated with the same key. Internally, this class uses an NSMutableDictionary, and the associated values for each key are stored in distinct NSMutableSet instances. (Just as with NSDictionary, each key added to a CHMultiDictionary is copied using \link NSCopying#copyWithZone: -copyWithZone:\endlink and all keys must conform to the NSCopying protocol.) Objects are retained on insertion and released on removal or deallocation.
  
- Since NSDictionary and NSSet conform to the NSCoding protocol, any internal data can be serialized. However, NSSet cannot automatically be written to or read from a property list, since it has no specified order. Thus, instances of CHMultiMap must be encoded as an NSData object before saving to disk.
+ Since NSDictionary and NSSet conform to the NSCoding protocol, any internal data can be serialized. However, NSSet cannot automatically be written to or read from a property list, since it has no specified order. Thus, instances of CHMultiDictionary must be encoded as an NSData object before saving to disk.
  
  Currently, this multimap implementation does not support key-value coding, observing, or binding like NSDictionary does. Consequently, the distinction between "object" and "value" is blurrier, although hopefully consistent with the Cocoa APIs in general....
  
- Unlike NSDictionary and other Cocoa collections, CHMultiMap has not been designed with mutable and immutable variants. A multimap is not any more useful if it is immutable, so any copies made of this class are mutable by definition.
+ Unlike NSDictionary and other Cocoa collections, CHMultiDictionary has not been designed with mutable and immutable variants. A multimap is not any more useful if it is immutable, so any copies made of this class are mutable by definition.
  */
-@interface CHMultiMap : CHLockableObject 
+@interface CHMultiDictionary : CHLockableObject 
 #if MAC_OS_X_VERSION_10_5_AND_LATER
 <NSCoding, NSCopying, NSFastEnumeration>
 #else
@@ -158,7 +158,7 @@
  
  If a key from @a otherMultiMap already exists in the receiver, the objects associated with the key are combined using -[NSMutableSet unionSet:]. If the key does not yet exist in the receiver, an entry is created with the set of objects in @a otherMultiMap.
  */
-- (void) addEntriesFromMultiMap:(CHMultiMap*)otherMultiMap;
+- (void) addEntriesFromMultiMap:(CHMultiDictionary*)otherMultiMap;
 
 /**
  Adds a given object to an entry for a given key in the receiver.

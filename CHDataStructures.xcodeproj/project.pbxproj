@@ -93,9 +93,9 @@
 		E48860BB0EA66072000F132A /* CHAbstractListCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = E48860B90EA66072000F132A /* CHAbstractListCollection.m */; };
 		E48860C30EA660A1000F132A /* CHAbstractMutableArrayCollection.h in Headers */ = {isa = PBXBuildFile; fileRef = E48860C10EA660A1000F132A /* CHAbstractMutableArrayCollection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E48860C40EA660A1000F132A /* CHAbstractMutableArrayCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = E48860C20EA660A1000F132A /* CHAbstractMutableArrayCollection.m */; };
-		E48BF92F0EE79AAE0004D5E6 /* CHMultiMap.h in Headers */ = {isa = PBXBuildFile; fileRef = E48BF92E0EE79AAE0004D5E6 /* CHMultiMap.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E48BF9730EE7A2010004D5E6 /* CHMultiMap.m in Sources */ = {isa = PBXBuildFile; fileRef = E48BF9720EE7A2010004D5E6 /* CHMultiMap.m */; };
-		E48BFA850EE842CF0004D5E6 /* CHMultiMapTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E48BFA840EE842CF0004D5E6 /* CHMultiMapTest.m */; };
+		E48BF92F0EE79AAE0004D5E6 /* CHMultiDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = E48BF92E0EE79AAE0004D5E6 /* CHMultiDictionary.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E48BF9730EE7A2010004D5E6 /* CHMultiDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = E48BF9720EE7A2010004D5E6 /* CHMultiDictionary.m */; };
+		E48BFA850EE842CF0004D5E6 /* CHMultiDictionaryTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E48BFA840EE842CF0004D5E6 /* CHMultiDictionaryTest.m */; };
 		E48BFBB00EE858F40004D5E6 /* CHHeapTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D18220E9452BB007F39D8 /* CHHeapTest.m */; };
 		E49BE2830FB21058002904AB /* CHLinkedSet.h in Headers */ = {isa = PBXBuildFile; fileRef = E49BE2810FB21058002904AB /* CHLinkedSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E49BE2840FB21058002904AB /* CHLinkedSet.m in Sources */ = {isa = PBXBuildFile; fileRef = E49BE2820FB21058002904AB /* CHLinkedSet.m */; };
@@ -263,9 +263,9 @@
 		E48860B90EA66072000F132A /* CHAbstractListCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHAbstractListCollection.m; path = source/CHAbstractListCollection.m; sourceTree = "<group>"; };
 		E48860C10EA660A1000F132A /* CHAbstractMutableArrayCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHAbstractMutableArrayCollection.h; path = source/CHAbstractMutableArrayCollection.h; sourceTree = "<group>"; };
 		E48860C20EA660A1000F132A /* CHAbstractMutableArrayCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHAbstractMutableArrayCollection.m; path = source/CHAbstractMutableArrayCollection.m; sourceTree = "<group>"; };
-		E48BF92E0EE79AAE0004D5E6 /* CHMultiMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHMultiMap.h; path = source/CHMultiMap.h; sourceTree = "<group>"; };
-		E48BF9720EE7A2010004D5E6 /* CHMultiMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHMultiMap.m; path = source/CHMultiMap.m; sourceTree = "<group>"; };
-		E48BFA840EE842CF0004D5E6 /* CHMultiMapTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHMultiMapTest.m; path = test/CHMultiMapTest.m; sourceTree = "<group>"; };
+		E48BF92E0EE79AAE0004D5E6 /* CHMultiDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHMultiDictionary.h; path = source/CHMultiDictionary.h; sourceTree = "<group>"; };
+		E48BF9720EE7A2010004D5E6 /* CHMultiDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHMultiDictionary.m; path = source/CHMultiDictionary.m; sourceTree = "<group>"; };
+		E48BFA840EE842CF0004D5E6 /* CHMultiDictionaryTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHMultiDictionaryTest.m; path = test/CHMultiDictionaryTest.m; sourceTree = "<group>"; };
 		E49BE2810FB21058002904AB /* CHLinkedSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHLinkedSet.h; path = source/CHLinkedSet.h; sourceTree = "<group>"; };
 		E49BE2820FB21058002904AB /* CHLinkedSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHLinkedSet.m; path = source/CHLinkedSet.m; sourceTree = "<group>"; };
 		E49BE3DB0FB230D4002904AB /* CHLinkedSetTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHLinkedSetTest.m; path = test/CHLinkedSetTest.m; sourceTree = "<group>"; };
@@ -426,8 +426,8 @@
 				E4558D900FE758C300CC5860 /* CHLockableDictionary.m */,
 				E4558CF60FE749FC00CC5860 /* CHLockableObject.h */,
 				E4EF44D70F86C52200C59C52 /* CHLockableObject.m */,
-				E48BF92E0EE79AAE0004D5E6 /* CHMultiMap.h */,
-				E48BF9720EE7A2010004D5E6 /* CHMultiMap.m */,
+				E48BF92E0EE79AAE0004D5E6 /* CHMultiDictionary.h */,
+				E48BF9720EE7A2010004D5E6 /* CHMultiDictionary.m */,
 				E44771F20E912491000889F7 /* CHMutableArrayDeque.h */,
 				E44771F30E912491000889F7 /* CHMutableArrayDeque.m */,
 				E4ADBB060E88174200B570BC /* CHMutableArrayHeap.h */,
@@ -483,7 +483,7 @@
 				E4D499690E93CD1300434CBA /* CHLinkedListTest.m */,
 				E49BE3DB0FB230D4002904AB /* CHLinkedSetTest.m */,
 				E4FBE17F0F8B21860039E4D0 /* CHLockableObjectTest.m */,
-				E48BFA840EE842CF0004D5E6 /* CHMultiMapTest.m */,
+				E48BFA840EE842CF0004D5E6 /* CHMultiDictionaryTest.m */,
 				E4FD52F50ECA8A9F006D9FF8 /* CHQueueTest.m */,
 				E40D181C0E9452BB007F39D8 /* CHRedBlackTreeTest.m */,
 				E4FD53020ECA9212006D9FF8 /* CHStackTest.m */,
@@ -547,7 +547,7 @@
 				E445580B0EBCB70A00D9C482 /* CHAVLTree.h in Headers */,
 				E4E7C1270EC0CACE009B19D7 /* CHDataStructures_Prefix.pch in Headers */,
 				E41035280EC409B900C2CFB9 /* CHTreap.h in Headers */,
-				E48BF92F0EE79AAE0004D5E6 /* CHMultiMap.h in Headers */,
+				E48BF92F0EE79AAE0004D5E6 /* CHMultiDictionary.h in Headers */,
 				E41D293E0F6CC44900AF80C4 /* CHAbstractBinarySearchTree_Internal.h in Headers */,
 				E4C430850F74AC4F00EDBB0B /* CHAbstractCircularBufferCollection.h in Headers */,
 				E400CAAC0F7919B7003189D3 /* CHCircularBufferQueue.h in Headers */,
@@ -763,7 +763,7 @@
 				E4723A720EB91B7A006FE465 /* Util.m in Sources */,
 				E445580C0EBCB70A00D9C482 /* CHAVLTree.m in Sources */,
 				E41035290EC409B900C2CFB9 /* CHTreap.m in Sources */,
-				E48BF9730EE7A2010004D5E6 /* CHMultiMap.m in Sources */,
+				E48BF9730EE7A2010004D5E6 /* CHMultiDictionary.m in Sources */,
 				E4C430860F74AC4F00EDBB0B /* CHAbstractCircularBufferCollection.m in Sources */,
 				E400CAAD0F7919B7003189D3 /* CHCircularBufferQueue.m in Sources */,
 				E400CAC40F791A08003189D3 /* CHCircularBufferDeque.m in Sources */,
@@ -801,7 +801,7 @@
 				E46300B20ECBEDAE00E1AF73 /* CHTreapTest.m in Sources */,
 				E46300B30ECBEDAF00E1AF73 /* CHLinkedListTest.m in Sources */,
 				E46300B40ECBEDB000E1AF73 /* CHAbstractBinarySearchTreeTest.m in Sources */,
-				E48BFA850EE842CF0004D5E6 /* CHMultiMapTest.m in Sources */,
+				E48BFA850EE842CF0004D5E6 /* CHMultiDictionaryTest.m in Sources */,
 				E48BFBB00EE858F40004D5E6 /* CHHeapTest.m in Sources */,
 				E4D3A4C70F789FF500E21CF8 /* CHAbstractCircularBufferCollectionTest.m in Sources */,
 				E4FBE1800F8B21860039E4D0 /* CHLockableObjectTest.m in Sources */,

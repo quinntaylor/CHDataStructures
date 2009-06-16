@@ -34,7 +34,7 @@
 #import "CHListStack.h"
 #import "CHLockableDictionary.h"
 #import "CHLockableObject.h"
-#import "CHMultiMap.h"
+#import "CHMultiDictionary.h"
 #import "CHMutableArrayDeque.h"
 #import "CHMutableArrayHeap.h"
 #import "CHMutableArrayQueue.h"
@@ -61,16 +61,20 @@
  
  Apple's extensive and flexible <a href="http://developer.apple.com/cocoa/">Cocoa frameworks</a> include several collections classes that are highly optimized and amenable to many situations. However, sometimes an honest-to-goodness stack, queue, linked list, tree, etc. can greatly improve the clarity and comprehensibility of code. This framework provides Objective-C implementations of common data structures which are currently beyond the purview of Cocoa.
  
- The currently supported abstract data type protocols include:
+ The abstract data type protocols include:
  - CHDeque
  - CHHeap
  - CHLinkedList
  - CHLinkedSet
- - CHMultiMap
+ - CHMultiDictionary
  - CHQueue
  - CHSearchTree
  - CHSortedSet
  - CHStack
+ 
+ The concreted subclasses of NSMutableDictionary include:
+ - CHLinkedDictionary
+ - CHSortedDictionary
  
  The code is written for <a href="http://www.apple.com/macosx/">Mac OS X</a> and does use some features of <a href="http://developer.apple.com/documentation/Cocoa/Conceptual/ObjectiveC/">Objective-C 2.0</a> which shipped with Mac OS X 10.5 "Leopard". Most of the code could be  ported to other Objective-C environments (such as <a href="http://www.gnustep.org">GNUStep</a>) without too much trouble. However, such efforts would probably be better accomplished by forking this project rather than integrating with it, for several main reasons:
  

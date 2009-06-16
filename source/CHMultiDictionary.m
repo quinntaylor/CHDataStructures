@@ -1,5 +1,5 @@
 /*
- CHDataStructures.framework -- CHMultiMap.m
+ CHDataStructures.framework -- CHMultiDictionary.m
  
  Copyright (c) 2008-2009, Quinn Taylor <http://homepage.mac.com/quinntaylor>
  
@@ -8,7 +8,7 @@
  The software is  provided "as is", without warranty of any kind, including all implied warranties of merchantability and fitness. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
  */
 
-#import "CHMultiMap.h"
+#import "CHMultiDictionary.h"
 
 /**
  Utility function for creating a new NSMutableSet containing object; if object is a set or array, the set containts all objects in the collection.
@@ -26,9 +26,9 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 
 
 /**
- @todo Combine \link CHMultiMap#addObject:forKey: -addObject:forKey:\endlink and \link CHMultiMap#addObjects:forKey: -addObjects:forKey:\endlink into a single method that accepts an NSArray, NSSet, or generic object, then wraps in a mutable set?
+ @todo Combine \link CHMultiDictionary#addObject:forKey: -addObject:forKey:\endlink and \link CHMultiDictionary#addObjects:forKey: -addObjects:forKey:\endlink into a single method that accepts an NSArray, NSSet, or generic object, then wraps in a mutable set?
  */
-@implementation CHMultiMap
+@implementation CHMultiDictionary
 
 - (void) dealloc {
 	[dictionary release];
@@ -117,7 +117,7 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 #pragma mark <NSCopying>
 
 - (id) copyWithZone:(NSZone*)zone {
-	CHMultiMap *newMultiMap = [[CHMultiMap alloc] init];
+	CHMultiDictionary *newMultiMap = [[CHMultiDictionary alloc] init];
 #if MAC_OS_X_VERSION_10_5_AND_LATER
 	for (id key in [self allKeys])
 #else
@@ -145,7 +145,7 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 
 #pragma mark Adding Objects
 
-- (void) addEntriesFromMultiMap:(CHMultiMap*)otherMultiMap; {
+- (void) addEntriesFromMultiMap:(CHMultiDictionary*)otherMultiMap; {
 #if MAC_OS_X_VERSION_10_5_AND_LATER
 	for (id key in [otherMultiMap allKeys])
 #else

@@ -1,5 +1,5 @@
 /*
- CHDataStructures.framework -- CHMultiMapTest.m
+ CHDataStructures.framework -- CHMultiDictionaryTest.m
  
  Copyright (c) 2008-2009, Quinn Taylor <http://homepage.mac.com/quinntaylor>
  
@@ -9,28 +9,28 @@
  */
 
 #import <SenTestingKit/SenTestingKit.h>
-#import "CHMultiMap.h"
+#import "CHMultiDictionary.h"
 #import "Util.h"
 
-void populateMultimap(CHMultiMap* multimap) {
+void populateMultimap(CHMultiDictionary* multimap) {
 	[multimap addObjects:[NSSet setWithObjects:@"A",@"B",@"C",nil] forKey:@"foo"];
 	[multimap addObjects:[NSSet setWithObjects:@"X",@"Y",@"Z",nil] forKey:@"bar"];
 	[multimap addObjects:[NSSet setWithObjects:@"1",@"2",@"3",nil] forKey:@"baz"];
 }
 
-@interface CHMultiMapTest : SenTestCase
+@interface CHMultiDictionaryTest : SenTestCase
 {
-	CHMultiMap *multimap;
+	CHMultiDictionary *multimap;
 	NSEnumerator *e;
 	id anObject;
 }
 
 @end
 
-@implementation CHMultiMapTest
+@implementation CHMultiDictionaryTest
 
 - (void) setUp {
-	multimap = [[CHMultiMap alloc] init];
+	multimap = [[CHMultiDictionary alloc] init];
 }
 
 - (void) tearDown {
@@ -45,7 +45,7 @@ void populateMultimap(CHMultiMap* multimap) {
 	NSString *filePath = @"/tmp/CHDataStructures-multimap.plist";
 	[NSKeyedArchiver archiveRootObject:multimap toFile:filePath];
 	
-	CHMultiMap *multimap2 = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
+	CHMultiDictionary *multimap2 = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
 	STAssertEquals([multimap2 count], [multimap count], @"Incorrect key count.");
 	
 	NSEnumerator *keys1 = [multimap keyEnumerator];
@@ -62,7 +62,7 @@ void populateMultimap(CHMultiMap* multimap) {
 - (void) testNSCopying {
 	populateMultimap(multimap);
 	
-	CHMultiMap *multimap2 = [multimap copy];
+	CHMultiDictionary *multimap2 = [multimap copy];
 	STAssertEquals([multimap2 count], [multimap count], @"Incorrect key count.");
 
 	NSEnumerator *keys1 = [multimap keyEnumerator];
@@ -90,7 +90,7 @@ void populateMultimap(CHMultiMap* multimap) {
 #pragma mark -
 
 - (void) testAddEntriesFromMultiMap {
-	CHMultiMap *multimap2 = [[CHMultiMap alloc] init];
+	CHMultiDictionary *multimap2 = [[CHMultiDictionary alloc] init];
 	populateMultimap(multimap2);
 	
 	STAssertEquals([multimap count], (NSUInteger)0, @"Incorrect key count.");
@@ -214,7 +214,7 @@ void populateMultimap(CHMultiMap* multimap) {
 
 - (void) testInitWithObjectsAndKeys {
 	[multimap release];
-	multimap = [[CHMultiMap alloc] initWithObjectsAndKeys:
+	multimap = [[CHMultiDictionary alloc] initWithObjectsAndKeys:
 				[NSSet setWithObjects:@"A",@"B",@"C",nil], @"foo",
 				[NSArray arrayWithObjects:@"X",@"Y",nil], @"bar",
 				@"z", @"baz", nil];
@@ -223,11 +223,11 @@ void populateMultimap(CHMultiMap* multimap) {
 	STAssertEquals([multimap countForKey:@"bar"], (NSUInteger)2, @"Incorrect object count.");
 	STAssertEquals([multimap countForKey:@"baz"], (NSUInteger)1, @"Incorrect object count.");
 	
-	STAssertThrows(([[CHMultiMap alloc] initWithObjectsAndKeys:
+	STAssertThrows(([[CHMultiDictionary alloc] initWithObjectsAndKeys:
 					@"A", @"foo", @"Z", nil]),
 				   @"Should raise exception for nil key parameter.");
 
-	STAssertThrows([[CHMultiMap alloc] initWithObjectsAndKeys:nil],
+	STAssertThrows([[CHMultiDictionary alloc] initWithObjectsAndKeys:nil],
 				   @"Should raise exception for nil first parameter.");
 }
 
@@ -242,7 +242,7 @@ void populateMultimap(CHMultiMap* multimap) {
 	[objects addObject:[NSNull null]];
 	
 	[multimap release];
-	multimap = [[CHMultiMap alloc] initWithObjects:objects forKeys:keys];
+	multimap = [[CHMultiDictionary alloc] initWithObjects:objects forKeys:keys];
 	
 	STAssertEquals([multimap count],              (NSUInteger)2, @"Incorrect key count.");
 	STAssertEquals([multimap countForKey:@"foo"], (NSUInteger)3, @"Incorrect object count.");
@@ -250,7 +250,7 @@ void populateMultimap(CHMultiMap* multimap) {
 	STAssertEquals([multimap countForAllKeys],    (NSUInteger)4, @"Incorrect object count.");
 	
 	[keys removeLastObject];
-	STAssertThrows([[CHMultiMap alloc] initWithObjects:objects forKeys:keys],
+	STAssertThrows([[CHMultiDictionary alloc] initWithObjects:objects forKeys:keys],
 				   @"Init with arrays of unequal length should raise exception.");
 }
 
