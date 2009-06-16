@@ -145,7 +145,7 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 
 #pragma mark Adding Objects
 
-- (void) addEntriesFromMultiMap:(CHMultiDictionary*)otherMultiMap; {
+- (void) addEntriesFromMultiDictionary:(CHMultiDictionary*)otherMultiMap; {
 #if MAC_OS_X_VERSION_10_5_AND_LATER
 	for (id key in [otherMultiMap allKeys])
 #else

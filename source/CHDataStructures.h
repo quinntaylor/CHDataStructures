@@ -72,7 +72,7 @@
  - CHSortedSet
  - CHStack
  
- The concreted subclasses of NSMutableDictionary include:
+ The concrete subclasses of NSMutableDictionary include:
  - CHLinkedDictionary
  - CHSortedDictionary
  

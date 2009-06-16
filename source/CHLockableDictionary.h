@@ -13,16 +13,24 @@
 /**
  @file CHLockableDictionary.h
  
- An abstract mutable dictionary class with simple built-in locking capabilities.
+ A mutable dictionary class with simple built-in locking capabilities.
  */
 
 /**
- An abstract mutable dictionary class with simple built-in locking capabilities. An NSLock is used internally to coordinate the operation of multiple threads of execution within the same application, and methods are exposed to allow clients to manipulate the lock in simple ways. Since not all clients will use the lock, it is created lazily the first time a client attempts to acquire the lock.
+ A mutable dictionary class with simple built-in locking capabilities.
+ 
+ This class is a subclass of NSMutableDictionary by design, so any of its children may be used anywhere an NSDictionary or NSMutableDictionary is required. A CFMutableDictionaryRef is used internally to store the key-value pairs. Subclasses may choose to add other instance variables to enable a specific ordering of keys, override methods to modify behavior, and add methods to extend existing behaviors. However, all subclasses should behave like a standard Cocoa dictionary as much as possible.
+ 
+ This class is designed primarily as a parent class to centralize common behaviors of its children. However, rather than disallowing that this class be abstract, the contract is implied. If this class were actually instantiated, it is designed to behave virtually identically to a standard NSMutableDictionary, but with the addition of built-in locking. Its child classes
+ 
+ An NSLock is used internally to coordinate the operation of multiple threads of execution within the same application, and methods are exposed to allow clients to manipulate the lock in simple ways. Since not all clients will use the lock, it is created lazily the first time a client attempts to acquire the lock.
+ 
+ @todo Implement @c -copy and @c -mutableCopy differently (so users can actually obtain an immutable copy) and make mutation methods aware of immutability?
  */
 @interface CHLockableDictionary : NSMutableDictionary <CHLockable>
 {
 	NSLock* lock; /**< A lock for synchronizing interaction between threads. */
-	CFMutableDictionaryRef dictionary;
+	CFMutableDictionaryRef dictionary; /**< A Core Foundation dictionary reference. */
 }
 
 /**
@@ -130,11 +138,13 @@
 // @{
 
 /**
- Add entried from another dictionary to the receiver. If both dictionaries contain the same key, the receiver's previous value object for that key is sent a release message, and the new value object takes its place.
+ Add entries from another dictionary to the receiver.
  
  @param otherDictionary The dictionary from which to add entries.
  
- Each value object from @a otherDictionary is sent a @c -retain message before being added to the receiver. In contrast, each key object is copied (using @c -copyWithZone: — keys must conform to the NSCopying protocol), and the copy is added to the receiver.
+ Each value from @a otherDictionary is sent a @c -retain message before being added to the receiver. Each key object is copied using @c -copyWithZone: and must conform to the NSCopying protocol.
+ 
+ If a key from @a otherDictionary already exists in the receiver, the receiver's previous value for that key is sent a @c -release message, and the new value object takes its place.
  
  @see setObject:forKey:
  */

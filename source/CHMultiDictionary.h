@@ -27,7 +27,7 @@
  
  Currently, this multimap implementation does not support key-value coding, observing, or binding like NSDictionary does. Consequently, the distinction between "object" and "value" is blurrier, although hopefully consistent with the Cocoa APIs in general....
  
- Unlike NSDictionary and other Cocoa collections, CHMultiDictionary has not been designed with mutable and immutable variants. A multimap is not any more useful if it is immutable, so any copies made of this class are mutable by definition.
+ Unlike NSDictionary and other Cocoa collections, CHMultiDictionary has not been designed with mutable and immutable variants. A multimap is not that much more useful if it is immutable, so any copies made of this class are mutable by definition.
  */
 @interface CHMultiDictionary : CHLockableObject 
 #if MAC_OS_X_VERSION_10_5_AND_LATER
@@ -150,15 +150,15 @@
 // @{
 
 /**
- Adds to the receiver the entries from another multimap.
+ Adds to the receiver the entries from another CHMultiDictionary.
  
- @param otherMultiMap The multimap from which to add entries.
+ @param otherMultiDictionary The CHMultiDictionary from which to add entries.
  
- Each value object from @a otherMultiMap is sent a retain message before being added to the receiver. Each key object is copied using -copyWithZone: and must conform to the NSCopying protocol.
+ Each value from @a otherMultiDictionary is sent a @c -retain message before being added to the receiver. Each key object is copied using @c -copyWithZone: and must conform to the NSCopying protocol.
  
- If a key from @a otherMultiMap already exists in the receiver, the objects associated with the key are combined using -[NSMutableSet unionSet:]. If the key does not yet exist in the receiver, an entry is created with the set of objects in @a otherMultiMap.
+ If a key from @a otherMultiDictionary already exists in the receiver, the objects associated with the key are combined using -[NSMutableSet unionSet:]. If the key does not yet exist in the receiver, an entry is created with the associated set of objects in @a otherMultiDictionary.
  */
-- (void) addEntriesFromMultiMap:(CHMultiDictionary*)otherMultiMap;
+- (void) addEntriesFromMultiDictionary:(CHMultiDictionary*)otherMultiDictionary;
 
 /**
  Adds a given object to an entry for a given key in the receiver.

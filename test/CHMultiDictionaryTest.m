@@ -89,12 +89,12 @@ void populateMultimap(CHMultiDictionary* multimap) {
 
 #pragma mark -
 
-- (void) testAddEntriesFromMultiMap {
+- (void) testAddEntriesFromMultiDictionary {
 	CHMultiDictionary *multimap2 = [[CHMultiDictionary alloc] init];
 	populateMultimap(multimap2);
 	
 	STAssertEquals([multimap count], (NSUInteger)0, @"Incorrect key count.");
-	[multimap addEntriesFromMultiMap:multimap2];
+	[multimap addEntriesFromMultiDictionary:multimap2];
 	STAssertEquals([multimap count], (NSUInteger)3, @"Incorrect key count.");
 	STAssertEquals([multimap countForAllKeys], (NSUInteger)9, @"Incorrect object count.");
 }
