@@ -46,10 +46,6 @@
 
 #pragma mark Querying Contents
 
-- (NSUInteger) count {
-	return CFDictionaryGetCount(dictionary);
-}
-
 - (NSEnumerator*) keyEnumerator {
 	return [insertionOrder objectEnumerator];
 }
