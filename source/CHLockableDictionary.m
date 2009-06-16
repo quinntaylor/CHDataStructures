@@ -33,20 +33,20 @@ CFHashCode CHSortedDictionaryHash(const void *value) {
 }
 
 static const CFDictionaryKeyCallBacks kCHSortedDictionaryKeyCallBacks = {
-0, // default version
-CHSortedDictionaryRetain,
-CHSortedDictionaryRelease,
-CHSortedDictionaryDescription,
-CHSortedDictionaryEqual,
-CHSortedDictionaryHash
+	0, // default version
+	CHSortedDictionaryRetain,
+	CHSortedDictionaryRelease,
+	CHSortedDictionaryDescription,
+	CHSortedDictionaryEqual,
+	CHSortedDictionaryHash
 };
 
 static const CFDictionaryValueCallBacks kCHSortedDictionaryValueCallBacks = {
-0, // default version
-CHSortedDictionaryRetain,
-CHSortedDictionaryRelease,
-CHSortedDictionaryDescription,
-CHSortedDictionaryEqual
+	0, // default version
+	CHSortedDictionaryRetain,
+	CHSortedDictionaryRelease,
+	CHSortedDictionaryDescription,
+	CHSortedDictionaryEqual
 };
 
 #pragma mark -
