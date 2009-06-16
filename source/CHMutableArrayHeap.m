@@ -89,7 +89,7 @@
 #pragma mark <NSCopying>
 
 - (id) copyWithZone:(NSZone *)zone {
-	return [[[self class] alloc] initWithOrdering:sortOrder array:array];
+	return [[[self class] allocWithZone:zone] initWithOrdering:sortOrder array:array];
 }
 
 #pragma mark <NSFastEnumeration>

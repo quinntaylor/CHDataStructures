@@ -68,7 +68,7 @@ static const CFDictionaryValueCallBacks kCHSortedDictionaryValueCallBacks = {
 										   0, // no maximum capacity limit
 										   &kCHSortedDictionaryKeyCallBacks,
 										   &kCHSortedDictionaryValueCallBacks);
-	for (int i = 0; i < count; i++) {
+	for (NSUInteger i = 0; i < count; i++) {
 		[self setObject:objects[i] forKey:keys[i]];
 	}
 	return self;
@@ -89,7 +89,7 @@ static const CFDictionaryValueCallBacks kCHSortedDictionaryValueCallBacks = {
 #pragma mark <NSCopying>
 
 - (id) copyWithZone:(NSZone*) zone {
-	CHLockableDictionary *copy = [[[self class] alloc] init];
+	CHLockableDictionary *copy = [[[self class] allocWithZone:zone] init];
 	NSEnumerator *keys = [self keyEnumerator];
 	id aKey;
 	while (aKey = [keys nextObject]) {

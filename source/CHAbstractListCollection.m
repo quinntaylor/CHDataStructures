@@ -47,7 +47,7 @@
 #pragma mark <NSCopying>
 
 - (id) copyWithZone:(NSZone *)zone {
-	id copy = [[[self class] alloc] init];
+	id copy = [[[self class] allocWithZone:zone] init];
 #if MAC_OS_X_VERSION_10_5_AND_LATER
 	for (id anObject in self)
 #else

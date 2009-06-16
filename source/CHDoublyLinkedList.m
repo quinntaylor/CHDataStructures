@@ -202,7 +202,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 #pragma mark <NSCopying>
 
 - (id) copyWithZone:(NSZone *)zone {
-	CHDoublyLinkedList *newList = [[CHDoublyLinkedList alloc] init];
+	CHDoublyLinkedList *newList = [[CHDoublyLinkedList allocWithZone:zone] init];
 #if MAC_OS_X_VERSION_10_5_AND_LATER
 	for (id anObject in self)
 #else

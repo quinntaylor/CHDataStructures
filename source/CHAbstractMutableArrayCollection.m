@@ -45,7 +45,7 @@
 #pragma mark <NSCopying>
 
 - (id) copyWithZone:(NSZone *)zone {
-	return [[[self class] alloc] initWithArray:array];
+	return [[[self class] allocWithZone:zone] initWithArray:array];
 }
 
 #pragma mark <NSFastEnumeration>

@@ -343,7 +343,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 #pragma mark <NSCopying> methods
 
 - (id) copyWithZone:(NSZone*)zone {
-	id<CHSearchTree> newTree = [[[self class] alloc] init];
+	id<CHSearchTree> newTree = [[[self class] allocWithZone:zone] init];
 	// No point in using fast enumeration here until rdar://6296108 is addressed.
 	NSEnumerator *e = [self objectEnumeratorWithTraversalOrder:CHTraverseLevelOrder];
 	id anObject;
@@ -671,7 +671,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 		CHBinaryTreeStack_FREE(stack);
 		
 		// Create entry for each null leaf node (each nil is modeled separately)
-		for (int i = 1; i <= sentinelCount; i++)
+		for (NSUInteger i = 1; i <= sentinelCount; i++)
 			[graph appendFormat:@"  nil%d [shape=point,fillcolor=black];\n", i];
 	}
 	// Terminate the graph string, then return it

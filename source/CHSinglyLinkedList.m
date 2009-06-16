@@ -162,7 +162,7 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 #pragma mark <NSCopying>
 
 - (id) copyWithZone:(NSZone *)zone {
-	CHSinglyLinkedList *newList = [[CHSinglyLinkedList alloc] init];
+	CHSinglyLinkedList *newList = [[CHSinglyLinkedList allocWithZone:zone] init];
 #if MAC_OS_X_VERSION_10_5_AND_LATER
 	for (id anObject in self)
 #else

@@ -187,7 +187,7 @@ static size_t kCHPointerSize = sizeof(void*);
 #pragma mark <NSCopying>
 
 - (id) copyWithZone:(NSZone *)zone {
-	return [[[self class] alloc] initWithArray:[self allObjects]];
+	return [[[self class] allocWithZone:zone] initWithArray:[self allObjects]];
 }
 
 #pragma mark <NSFastEnumeration>

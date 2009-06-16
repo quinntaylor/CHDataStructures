@@ -117,7 +117,7 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 #pragma mark <NSCopying>
 
 - (id) copyWithZone:(NSZone*)zone {
-	CHMultiDictionary *newMultiMap = [[CHMultiDictionary alloc] init];
+	CHMultiDictionary *newMultiMap = [[CHMultiDictionary allocWithZone:zone] init];
 #if MAC_OS_X_VERSION_10_5_AND_LATER
 	for (id key in [self allKeys])
 #else

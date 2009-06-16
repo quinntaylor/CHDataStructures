@@ -51,7 +51,7 @@
 #pragma mark <NSCopying>
 
 - (id) copyWithZone:(NSZone*)zone {
-	CHLinkedSet *copy = [[CHLinkedSet alloc] init];
+	CHLinkedSet *copy = [[CHLinkedSet allocWithZone:zone] init];
 #if MAC_OS_X_VERSION_10_5_AND_LATER
 	for (id anObject in ordering)
 #else
