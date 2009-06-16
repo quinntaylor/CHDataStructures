@@ -8,7 +8,7 @@
  The software is  provided "as is", without warranty of any kind, including all implied warranties of merchantability and fitness. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
  */
 
-#import "CHLockable.h"
+#import "CHLockableObject.h"
 #import "CHLinkedList.h"
 
 /**
@@ -25,10 +25,11 @@
  
  Rather than enforcing that this class be abstract, the contract is implied.
  */
+@interface CHAbstractListCollection : CHLockableObject 
 #if MAC_OS_X_VERSION_10_5_AND_LATER
-@interface CHAbstractListCollection : CHLockable <NSCoding, NSCopying, NSFastEnumeration>
+<NSCoding, NSCopying, NSFastEnumeration>
 #else
-@interface CHAbstractListCollection : CHLockable <NSCoding, NSCopying>
+<NSCoding, NSCopying>
 #endif
 {
 	id<CHLinkedList> list; /**< List used for storing contents of collection. */

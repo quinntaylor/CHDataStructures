@@ -10,6 +10,23 @@
 
 #import "Util.h"
 
+BOOL kCHGarbageCollectionNotEnabled = YES; // A variable declared extern in Util.h
+static BOOL initialized = NO;
+
+void initializeGCStatus() {
+	if (!initialized) {
+		// Discover whether garbage collection is enabled (if running on 10.5).
+		// This bit of hackery avoids linking errors via indirect invocation.
+		// The check is done here since all our collections extend CHLockableObject.
+		Class gcClass = NSClassFromString(@"NSGarbageCollector");
+		if (gcClass != nil) {
+			id collector = objc_msgSend(gcClass, @selector(defaultCollector));
+			kCHGarbageCollectionNotEnabled = (collector == nil);
+		}
+		initialized = YES;
+	}	
+}
+
 void CHIndexOutOfRangeException(Class aClass, SEL method,
                                 NSUInteger index, NSUInteger elements) {
 	[NSException raise:NSRangeException

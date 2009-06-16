@@ -22,10 +22,11 @@
  
  A stack is commonly compared to a stack of plates. Objects may be added in any order (\link #pushObject: -pushObject:\endlink) and the most recently added object may be removed (\link #popObject -popObject\endlink) or returned without removing it (\link #topObject -topObject\endlink).
  */
+@protocol CHStack
 #if MAC_OS_X_VERSION_10_5_AND_LATER
-@protocol CHStack <NSObject, NSCoding, NSCopying, NSFastEnumeration>
+<NSObject, NSCoding, NSCopying, NSFastEnumeration>
 #else
-@protocol CHStack <NSObject, NSCoding, NSCopying>
+<NSObject, NSCoding, NSCopying>
 #endif
 
 /**

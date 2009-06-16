@@ -8,7 +8,7 @@
  The software is  provided "as is", without warranty of any kind, including all implied warranties of merchantability and fitness. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
  */
 
-#import "CHLockable.h"
+#import "CHLockableObject.h"
 
 /**
  @file CHMultiMap.h
@@ -29,10 +29,11 @@
  
  Unlike NSDictionary and other Cocoa collections, CHMultiMap has not been designed with mutable and immutable variants. A multimap is not any more useful if it is immutable, so any copies made of this class are mutable by definition.
  */
+@interface CHMultiMap : CHLockableObject 
 #if MAC_OS_X_VERSION_10_5_AND_LATER
-@interface CHMultiMap : CHLockable <NSCoding, NSCopying, NSFastEnumeration>
+<NSCoding, NSCopying, NSFastEnumeration>
 #else
-@interface CHMultiMap : CHLockable <NSCoding, NSCopying>
+<NSCoding, NSCopying>
 #endif
 {
 	NSMutableDictionary *dictionary; /**< Dictionary for key-value entries. */

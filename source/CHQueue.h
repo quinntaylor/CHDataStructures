@@ -22,10 +22,11 @@
  
  A queue is commonly compared to waiting in line. When objects are added, they go to the back of the line, and objects are always removed from the front of the line. These actions are accomplished using \link #addObject: -addObject:\endlink and \link #removeFirstObject -removeFirstObject\endlink, respectively. The frontmost object may be examined (not removed) using \link #firstObject -firstObject\endlink.
  */
+@protocol CHQueue
 #if MAC_OS_X_VERSION_10_5_AND_LATER
-@protocol CHQueue <NSObject, NSCoding, NSCopying, NSFastEnumeration>
+<NSObject, NSCoding, NSCopying, NSFastEnumeration>
 #else
-@protocol CHQueue <NSObject, NSCoding, NSCopying>
+<NSObject, NSCoding, NSCopying>
 #endif
 
 /**

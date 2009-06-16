@@ -1,5 +1,5 @@
 /*
- CHDataStructures.framework -- CHLockableTest.m
+ CHDataStructures.framework -- CHLockableObjectTest.m
  
  Copyright (c) 2009, Quinn Taylor <http://homepage.mac.com/quinntaylor>
  
@@ -9,17 +9,17 @@
  */
 
 #import <SenTestingKit/SenTestingKit.h>
-#import "CHLockable.h"
+#import "CHLockableObject.h"
 
-@interface CHLockable (Test)
+@interface CHLockableObject (Test)
 
-- (id<NSLocking>) nsLock;
+- (id<NSLocking>) theLock;
 
 @end
 
-@implementation CHLockable (Test)
+@implementation CHLockableObject (Test)
 
-- (id<NSLocking>) nsLock {
+- (id<NSLocking>) theLock {
 	return lock;
 }
 
@@ -27,17 +27,17 @@
 
 #pragma mark -
 
-@interface CHLockableTest : SenTestCase {
-	CHLockable* lockable;
+@interface CHLockableObjectTest : SenTestCase {
+	CHLockableObject* lockable;
 	NSNumber* number;
 }
 
 @end
 
-@implementation CHLockableTest
+@implementation CHLockableObjectTest
 
 - (void) setUp {
-	lockable = [[CHLockable alloc] init];
+	lockable = [[CHLockableObject alloc] init];
 }
 
 - (void) tearDown {
@@ -45,9 +45,9 @@
 }
 
 - (void) testLockUnlock {
-	STAssertNil([lockable nsLock], @"The NSLock should be nil.");
+	STAssertNil([lockable theLock], @"The NSLock should be nil.");
 	[lockable lock];
-	STAssertNotNil([lockable nsLock], @"The NSLock should no longer be nil.");
+	STAssertNotNil([lockable theLock], @"The NSLock should no longer be nil.");
 	STAssertNil(number, @"The ivar 'number' should be nil.");
 	[NSThread detachNewThreadSelector:@selector(setNumber:)
 							 toTarget:self
@@ -61,9 +61,9 @@
 }
 
 - (void) testTryLock {
-	STAssertNil([lockable nsLock], @"The NSLock should be nil.");
+	STAssertNil([lockable theLock], @"The NSLock should be nil.");
 	STAssertTrue([lockable tryLock], @"Should be able to acquire lock.");
-	STAssertNotNil([lockable nsLock], @"The NSLock should no longer be nil.");
+	STAssertNotNil([lockable theLock], @"The NSLock should no longer be nil.");
 	[lockable unlock];
 	
 	[NSThread detachNewThreadSelector:@selector(setNumberAndSleep:)
@@ -77,9 +77,9 @@
 }
 
 - (void) testLockBeforeDate {
-	STAssertNil([lockable nsLock], @"The NSLock should be nil.");
+	STAssertNil([lockable theLock], @"The NSLock should be nil.");
 	[lockable lockBeforeDate:[NSDate date]];
-	STAssertNotNil([lockable nsLock], @"The NSLock should no longer be nil.");
+	STAssertNotNil([lockable theLock], @"The NSLock should no longer be nil.");
 	[lockable unlock];
 }
 

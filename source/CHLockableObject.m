@@ -1,5 +1,5 @@
 /*
- CHDataStructures.framework -- CHLockable.m
+ CHDataStructures.framework -- CHLockableObject.m
  
  Copyright (c) 2009, Quinn Taylor <http://homepage.mac.com/quinntaylor>
  
@@ -8,25 +8,12 @@
  The software is  provided "as is", without warranty of any kind, including all implied warranties of merchantability and fitness. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
  */
 
-#import "CHLockable.h"
+#import "CHLockableObject.h"
 
-BOOL kCHGarbageCollectionNotEnabled = YES; // A variable declared extern in Util.h
-static BOOL initialized = NO;
-
-@implementation CHLockable
+@implementation CHLockableObject
 
 + (void) initialize {
-	if (!initialized) {
-		// Discover whether garbage collection is enabled (if running on 10.5).
-		// This bit of hackery avoids linking errors via indirect invocation.
-		// The check is done here since all our collections extend CHLockable.
-		Class gcClass = NSClassFromString(@"NSGarbageCollector");
-		if (gcClass != nil) {
-			id collector = objc_msgSend(gcClass, @selector(defaultCollector));
-			kCHGarbageCollectionNotEnabled = (collector == nil);
-		}
-		initialized = YES;
-	}
+	initializeGCStatus();
 }
 
 - (void) dealloc {
