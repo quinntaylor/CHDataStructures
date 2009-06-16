@@ -18,7 +18,7 @@ size_t kCHPointerSize = sizeof(void*);
 /**
  A dummy object that resides in the header node for a tree. Using a header node can simplify insertion logic by eliminating the need to check whether the root is null. The actual root of the tree is generally stored as the right child of the header node. In order to always proceed to the actual root node when traversing down the tree, instances of this class always return @c NSOrderedAscending when called as the receiver of the @c -compare: method.
  
- Since all header objects behave the same way, all search tree instances can share the same dummy header object. The singleton instance can be obtained via the \link #headerObject +headerObject\endlink method. The singleton is created once and persists for the duration of the program.
+ Since all header objects behave the same way, all search tree instances can share the same dummy header object. The singleton instance can be obtained via the \link #headerObject +headerObject\endlink method. The singleton is created once and persists for the duration of the program. Any calls to @c -retain, @c -release, or @c -autorelease will raise an exception.
  */
 @interface CHSearchTreeHeaderObject : NSObject
 
@@ -41,13 +41,16 @@ size_t kCHPointerSize = sizeof(void*);
 
 @end
 
+// Static variable for storing singleton instance of search tree header object.
 static CHSearchTreeHeaderObject *headerObject = nil;
 
 @implementation CHSearchTreeHeaderObject
 
 + (id) headerObject {
+	// Protecting the @synchronized block prevents unnecessary lock contention.
 	if (headerObject == nil) {
 		@synchronized([CHSearchTreeHeaderObject class]) {
+			// Make sure the object wasn't created since we blocked on the lock.
 			if (headerObject == nil) {
 				headerObject = [[CHSearchTreeHeaderObject alloc] init];
 			}
@@ -58,6 +61,24 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 
 - (NSComparisonResult) compare:(id)otherObject {
 	return NSOrderedAscending;
+}
+
++ (id) new {
+	return [self headerObject];
+}
+
+- (id) retain {
+	CHUnsupportedOperationException([self class], _cmd);
+	return nil;
+}
+
+- (oneway void) release {
+	CHUnsupportedOperationException([self class], _cmd);
+}
+
+- (id) autorelease {
+	CHUnsupportedOperationException([self class], _cmd);
+	return nil;
 }
 
 @end
