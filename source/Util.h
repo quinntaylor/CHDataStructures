@@ -54,7 +54,7 @@
 OBJC_EXPORT BOOL kCHGarbageCollectionNotEnabled;
 
 /** Determines GC status and sets @c kCHGarbageCollectionNotEnabled appropriately. */
-void initializeGCStatus();
+HIDDEN void initializeGCStatus();
 
 /**
  Convenience function for raising an exception for an invalid range (index).
