@@ -88,7 +88,7 @@
 	STAssertNotNil(keyEnumerator, @"Key enumerator should be non-nil");
 	NSArray *allKeys = [keyEnumerator allObjects];
 	STAssertNotNil(allKeys, @"Key enumerator should return non-nil array.");
-	STAssertEquals([allKeys count], 0u, @"Wrong number of keys.");
+	STAssertEquals([allKeys count], (NSUInteger)0, @"Wrong number of keys.");
 	
 	[self populateDictionary];
 	
@@ -101,12 +101,12 @@
 }
 
 - (void) testRemoveAllObjects {
-	STAssertEquals([dictionary count], 0u, @"Dictionary should be empty.");
+	STAssertEquals([dictionary count], (NSUInteger)0, @"Dictionary should be empty.");
 	STAssertNoThrow([dictionary removeAllObjects], @"Should be no exception.");
 	[self populateDictionary];
 	STAssertEquals([dictionary count], [keyArray count], @"Wrong key count.");
 	[dictionary removeAllObjects];
-	STAssertEquals([dictionary count], 0u, @"Dictionary should be empty.");
+	STAssertEquals([dictionary count], (NSUInteger)0, @"Dictionary should be empty.");
 }
 
 - (void) testRemoveObjectForKey {
@@ -121,7 +121,7 @@
 - (void) testRemoveObjectForFirstKey {
 	if (![dictionary respondsToSelector:@selector(firstKey)])
 		return;
-	STAssertEquals([dictionary count], 0u, @"Dictionary should be empty.");
+	STAssertEquals([dictionary count], (NSUInteger)0, @"Dictionary should be empty.");
 	STAssertNoThrow([dictionary removeObjectForFirstKey], @"Should be no exception.");
 	[self populateDictionary];
 	STAssertEqualObjects([dictionary firstKey],
@@ -136,7 +136,7 @@
 - (void) testRemoveObjectForLastKey {
 	if (![dictionary respondsToSelector:@selector(lastKey)])
 		return;
-	STAssertEquals([dictionary count], 0u, @"Dictionary should be empty.");
+	STAssertEquals([dictionary count], (NSUInteger)0, @"Dictionary should be empty.");
 	STAssertNoThrow([dictionary removeObjectForLastKey], @"Should be no exception.");
 	[self populateDictionary];
 	STAssertEqualObjects([dictionary lastKey],
@@ -171,7 +171,7 @@
 
 - (void) testNSCopying {
 	id copy = [dictionary copy];
-	STAssertEquals([copy count], 0u, @"Copy of dictionary should be empty.");
+	STAssertEquals([copy count], (NSUInteger)0, @"Copy of dictionary should be empty.");
 	STAssertEqualObjects([copy class], [dictionary class], @"Wrong class.");
 	[copy release];
 	
