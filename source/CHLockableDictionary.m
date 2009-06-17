@@ -117,6 +117,11 @@ static const CFDictionaryValueCallBacks kCHLockableDictionaryValueCallBacks = {
 
 #pragma mark <NSCoding>
 
+// Overridden from NSObject to encode/decode as the proper class.
+- (Class) classForKeyedArchiver {
+	return [self class];
+}
+
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ([super init] == nil) return nil;
 	dictionary = (CFMutableDictionaryRef)[[decoder decodeObjectForKey:@"dictionary"] retain];
