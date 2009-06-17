@@ -1,5 +1,5 @@
 /*
- UtilTest.m
+ CHDataStructures.framework -- UtilTest.m
  
  Copyright (c) 2008-2009, Quinn Taylor <http://homepage.mac.com/quinntaylor>
  
