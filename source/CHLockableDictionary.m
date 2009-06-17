@@ -53,17 +53,58 @@ static const CFDictionaryValueCallBacks kCHSortedDictionaryValueCallBacks = {
 
 @implementation CHLockableDictionary
 
+// Private method used for creating a lock on-demand and naming it uniquely.
+- (void) createLock {
+	@synchronized (self) {
+		if (lock == nil) {
+			lock = [[NSLock alloc] init];
+#if MAC_OS_X_VERSION_10_5_AND_LATER
+			[lock setName:[NSString stringWithFormat:@"NSLock-%@-0x%x", [self class], self]];
+#endif
+		}
+	}
+}
+
+- (BOOL) tryLock {
+	if (lock == nil)
+		[self createLock];
+	return [lock tryLock];
+}
+
+- (void) lock {
+	if (lock == nil)
+		[self createLock];
+	[lock lock];
+}
+
+- (BOOL) lockBeforeDate:(NSDate*)limit {
+	if (lock == nil)
+		[self createLock];
+	return [lock lockBeforeDate:limit];
+}
+
+- (void) unlock {
+	[lock unlock];
+}
+
+#pragma mark -
+
 + (void) initialize {
 	initializeGCStatus();
 }
 
 - (void) dealloc {
+	CFRelease(dictionary);
 	[lock release];
 	[super dealloc];
 }
 
+- (id) init {
+	return [self initWithObjects:nil forKeys:nil count:0];
+}
+
 - (id) initWithObjects:(id*)objects forKeys:(id*)keys count:(NSUInteger)count {
-	if ((self = [super init]) == nil) return nil;
+	// No call to super's designated init, since we override its behavior.
 	dictionary = CFDictionaryCreateMutable(kCFAllocatorDefault,
 										   0, // no maximum capacity limit
 										   &kCHSortedDictionaryKeyCallBacks,
@@ -143,40 +184,6 @@ static const CFDictionaryValueCallBacks kCHSortedDictionaryValueCallBacks = {
 
 - (void) removeObjectForKey:(id)aKey {
 	CFDictionaryRemoveValue(dictionary, aKey);
-}
-
-#pragma mark <CHLockable>
-
-// Private method used for creating a lock on-demand and naming it uniquely.
-- (void) createLock {
-	lock = [[NSLock alloc] init];
-#if MAC_OS_X_VERSION_10_5_AND_LATER
-	[lock setName:[NSString stringWithFormat:@"NSLock-%@-0x%x", [self class], self]];
-#endif
-}
-
-#pragma mark -
-
-- (BOOL) tryLock {
-	if (lock == nil)
-		[self createLock];
-	return [lock tryLock];
-}
-
-- (void) lock {
-	if (lock == nil)
-		[self createLock];
-	[lock lock];
-}
-
-- (BOOL) lockBeforeDate:(NSDate*)limit {
-	if (lock == nil)
-		[self createLock];
-	return [lock lockBeforeDate:limit];
-}
-
-- (void) unlock {
-	[lock unlock];
 }
 
 @end

@@ -12,26 +12,17 @@
 
 @implementation CHLockableObject
 
-+ (void) initialize {
-	initializeGCStatus();
-}
-
-- (void) dealloc {
-	[lock release];
-	[super dealloc];
-}
-
-// No need for an -init method, since the lock is created lazily (on demand)
-
 // Private method used for creating a lock on-demand and naming it uniquely.
 - (void) createLock {
-	lock = [[NSLock alloc] init];
+	@synchronized (self) {
+		if (lock == nil) {
+			lock = [[NSLock alloc] init];
 #if MAC_OS_X_VERSION_10_5_AND_LATER
-	[lock setName:[NSString stringWithFormat:@"NSLock-%@-0x%x", [self class], self]];
+			[lock setName:[NSString stringWithFormat:@"NSLock-%@-0x%x", [self class], self]];
 #endif
+		}
+	}
 }
-
-#pragma mark -
 
 - (BOOL) tryLock {
 	if (lock == nil)
@@ -53,6 +44,17 @@
 
 - (void) unlock {
 	[lock unlock];
+}
+
+#pragma mark -
+
++ (void) initialize {
+	initializeGCStatus();
+}
+
+- (void) dealloc {
+	[lock release];
+	[super dealloc];
 }
 
 @end

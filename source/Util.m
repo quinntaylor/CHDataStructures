@@ -24,7 +24,7 @@ void initializeGCStatus() {
 			kCHGarbageCollectionNotEnabled = (collector == nil);
 		}
 		initialized = YES;
-	}	
+	}
 }
 
 void CHIndexOutOfRangeException(Class aClass, SEL method,
