@@ -12,41 +12,41 @@
 
 #pragma mark CHDictionary callbacks
 
-const void* CHSortedDictionaryRetain(CFAllocatorRef allocator, const void *value) {
+const void* CHLockableDictionaryRetain(CFAllocatorRef allocator, const void *value) {
 	return [(id)value retain];
 }
 
-void CHSortedDictionaryRelease(CFAllocatorRef allocator, const void *value) {
+void CHLockableDictionaryRelease(CFAllocatorRef allocator, const void *value) {
 	[(id)value release];
 }
 
-CFStringRef CHSortedDictionaryDescription(const void *value) {
+CFStringRef CHLockableDictionaryDescription(const void *value) {
 	return (CFStringRef)[(id)value description];
 }
 
-Boolean CHSortedDictionaryEqual(const void *value1, const void *value2) {
+Boolean CHLockableDictionaryEqual(const void *value1, const void *value2) {
 	return [(id)value1 isEqual:(id)value2];
 }
 
-CFHashCode CHSortedDictionaryHash(const void *value) {
+CFHashCode CHLockableDictionaryHash(const void *value) {
 	return (CFHashCode)[(id)value hash];
 }
 
-static const CFDictionaryKeyCallBacks kCHSortedDictionaryKeyCallBacks = {
+static const CFDictionaryKeyCallBacks kCHLockableDictionaryKeyCallBacks = {
 	0, // default version
-	CHSortedDictionaryRetain,
-	CHSortedDictionaryRelease,
-	CHSortedDictionaryDescription,
-	CHSortedDictionaryEqual,
-	CHSortedDictionaryHash
+	CHLockableDictionaryRetain,
+	CHLockableDictionaryRelease,
+	CHLockableDictionaryDescription,
+	CHLockableDictionaryEqual,
+	CHLockableDictionaryHash
 };
 
-static const CFDictionaryValueCallBacks kCHSortedDictionaryValueCallBacks = {
+static const CFDictionaryValueCallBacks kCHLockableDictionaryValueCallBacks = {
 	0, // default version
-	CHSortedDictionaryRetain,
-	CHSortedDictionaryRelease,
-	CHSortedDictionaryDescription,
-	CHSortedDictionaryEqual
+	CHLockableDictionaryRetain,
+	CHLockableDictionaryRelease,
+	CHLockableDictionaryDescription,
+	CHLockableDictionaryEqual
 };
 
 #pragma mark -
@@ -107,8 +107,8 @@ static const CFDictionaryValueCallBacks kCHSortedDictionaryValueCallBacks = {
 	// No call to super's designated init, since we override its behavior.
 	dictionary = CFDictionaryCreateMutable(kCFAllocatorDefault,
 										   0, // no maximum capacity limit
-										   &kCHSortedDictionaryKeyCallBacks,
-										   &kCHSortedDictionaryValueCallBacks);
+										   &kCHLockableDictionaryKeyCallBacks,
+										   &kCHLockableDictionaryValueCallBacks);
 	for (NSUInteger i = 0; i < count; i++) {
 		[self setObject:objects[i] forKey:keys[i]];
 	}
@@ -168,7 +168,7 @@ static const CFDictionaryValueCallBacks kCHSortedDictionaryValueCallBacks = {
 	CFDictionaryGetKeysAndValues(dictionary, (const void **)keyBuffer, NULL);
 	NSArray *keys = [NSArray arrayWithObjects:keyBuffer count:count];
 	if (kCHGarbageCollectionNotEnabled)
-		free(keys);
+		free(keyBuffer);
 	return [keys objectEnumerator];
 }
 

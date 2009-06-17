@@ -132,6 +132,8 @@
 		E4D941410F93C147001BAE05 /* CHCircularBufferStack.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D9413F0F93C147001BAE05 /* CHCircularBufferStack.m */; };
 		E4DCD17A0EA7B0DF006383FC /* CHDataStructures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* CHDataStructures.framework */; };
 		E4E7C1270EC0CACE009B19D7 /* CHDataStructures_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = E4E7C1260EC0CACE009B19D7 /* CHDataStructures_Prefix.pch */; };
+		E4E9F25E0FE8BEA500DDF254 /* CHLinkedDictionaryTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E9F25D0FE8BEA500DDF254 /* CHLinkedDictionaryTest.m */; };
+		E4E9F2610FE8BEB100DDF254 /* CHSortedDictionaryTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E9F2600FE8BEB100DDF254 /* CHSortedDictionaryTest.m */; };
 		E4EF44D80F86C52200C59C52 /* CHLockable.h in Headers */ = {isa = PBXBuildFile; fileRef = E4EF44D60F86C52200C59C52 /* CHLockable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4EF44D90F86C52200C59C52 /* CHLockableObject.m in Sources */ = {isa = PBXBuildFile; fileRef = E4EF44D70F86C52200C59C52 /* CHLockableObject.m */; };
 		E4FBE1800F8B21860039E4D0 /* CHLockableTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FBE17F0F8B21860039E4D0 /* CHLockableTest.m */; };
@@ -305,6 +307,8 @@
 		E4D9413E0F93C147001BAE05 /* CHCircularBufferStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHCircularBufferStack.h; path = source/CHCircularBufferStack.h; sourceTree = "<group>"; };
 		E4D9413F0F93C147001BAE05 /* CHCircularBufferStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHCircularBufferStack.m; path = source/CHCircularBufferStack.m; sourceTree = "<group>"; };
 		E4E7C1260EC0CACE009B19D7 /* CHDataStructures_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHDataStructures_Prefix.pch; path = source/CHDataStructures_Prefix.pch; sourceTree = "<group>"; };
+		E4E9F25D0FE8BEA500DDF254 /* CHLinkedDictionaryTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHLinkedDictionaryTest.m; path = test/CHLinkedDictionaryTest.m; sourceTree = "<group>"; };
+		E4E9F2600FE8BEB100DDF254 /* CHSortedDictionaryTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHSortedDictionaryTest.m; path = test/CHSortedDictionaryTest.m; sourceTree = "<group>"; };
 		E4EF44D60F86C52200C59C52 /* CHLockable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHLockable.h; path = source/CHLockable.h; sourceTree = "<group>"; };
 		E4EF44D70F86C52200C59C52 /* CHLockableObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHLockableObject.m; path = source/CHLockableObject.m; sourceTree = "<group>"; };
 		E4FBE17F0F8B21860039E4D0 /* CHLockableTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHLockableTest.m; path = test/CHLockableTest.m; sourceTree = "<group>"; };
@@ -480,12 +484,14 @@
 				E400FCF30EBE15F300AC172B /* CHAVLTreeTest.m */,
 				E4FD52CC0ECA8589006D9FF8 /* CHDequeTest.m */,
 				E40D18220E9452BB007F39D8 /* CHHeapTest.m */,
+				E4E9F25D0FE8BEA500DDF254 /* CHLinkedDictionaryTest.m */,
 				E4D499690E93CD1300434CBA /* CHLinkedListTest.m */,
 				E49BE3DB0FB230D4002904AB /* CHLinkedSetTest.m */,
 				E4FBE17F0F8B21860039E4D0 /* CHLockableTest.m */,
 				E48BFA840EE842CF0004D5E6 /* CHMultiDictionaryTest.m */,
 				E4FD52F50ECA8A9F006D9FF8 /* CHQueueTest.m */,
 				E40D181C0E9452BB007F39D8 /* CHRedBlackTreeTest.m */,
+				E4E9F2600FE8BEB100DDF254 /* CHSortedDictionaryTest.m */,
 				E4FD53020ECA9212006D9FF8 /* CHStackTest.m */,
 				E410360E0EC424E600C2CFB9 /* CHTreapTest.m */,
 				E40D181E0E9452BB007F39D8 /* CHUnbalancedTreeTest.m */,
@@ -806,6 +812,8 @@
 				E4D3A4C70F789FF500E21CF8 /* CHAbstractCircularBufferCollectionTest.m in Sources */,
 				E4FBE1800F8B21860039E4D0 /* CHLockableTest.m in Sources */,
 				E49BE3DC0FB230D4002904AB /* CHLinkedSetTest.m in Sources */,
+				E4E9F25E0FE8BEA500DDF254 /* CHLinkedDictionaryTest.m in Sources */,
+				E4E9F2610FE8BEB100DDF254 /* CHSortedDictionaryTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

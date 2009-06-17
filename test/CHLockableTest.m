@@ -1,5 +1,5 @@
 /*
- CHDataStructures.framework -- CHLockableObjectTest.m
+ CHDataStructures.framework -- CHLockableTest.m
  
  Copyright (c) 2009, Quinn Taylor <http://homepage.mac.com/quinntaylor>
  
@@ -56,7 +56,6 @@
 - (void) testLockUnlock {
 	classes = [lockableClasses objectEnumerator];
 	while (aClass = [classes nextObject]) {
-		CHQuietLog([aClass description]);
 		lockable = [[[aClass alloc] init] autorelease];
 		STAssertNil([lockable theLock], @"The NSLock should be nil.");
 		[lockable lock];
@@ -77,7 +76,6 @@
 - (void) testTryLock {
 	classes = [lockableClasses objectEnumerator];
 	while (aClass = [classes nextObject]) {
-		CHQuietLog([aClass description]);
 		lockable = [[[aClass alloc] init] autorelease];
 		STAssertNil([lockable theLock], @"The NSLock should be nil.");
 		STAssertTrue([lockable tryLock], @"Should be able to acquire lock.");
@@ -92,7 +90,6 @@
 - (void) testLockBeforeDate {
 	classes = [lockableClasses objectEnumerator];
 	while (aClass = [classes nextObject]) {
-		CHQuietLog([aClass description]);
 		lockable = [[[aClass alloc] init] autorelease];
 		STAssertNil([lockable theLock], @"The NSLock should be nil.");
 		[lockable lockBeforeDate:[NSDate date]];
