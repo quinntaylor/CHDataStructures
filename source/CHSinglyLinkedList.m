@@ -242,7 +242,7 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 - (void) insertObject:(id)anObject atIndex:(NSUInteger)index {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
-	if (index < 0 || index > count)
+	if (index > count)
 		CHIndexOutOfRangeException([self class], _cmd, index, count);
 	
 	CHSinglyLinkedListNode *new = NSAllocateCollectable(kCHSinglyLinkedListNodeSize, NSScannedOption);
