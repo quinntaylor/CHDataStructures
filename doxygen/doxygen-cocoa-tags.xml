@@ -2,6 +2,14 @@
 
   <!-- Foundation classes & protocols -->
   <compound kind="class">
+    <name>CFDictionary</name>
+    <filename>http://developer.apple.com/documentation/CoreFoundation/Reference/CFDictionaryRef/Reference/Reference.html</filename>
+  </compound>
+  <compound kind="class">
+    <name>CFMutableDictionary</name>
+    <filename>http://developer.apple.com/documentation/CoreFoundation/Reference/CFMutableDictionaryRef/Reference/Reference.html</filename>
+  </compound>
+  <compound kind="class">
     <name>NSArray</name>
     <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSArray_Class/Reference/Reference.html</filename>
   </compound>
@@ -48,6 +56,22 @@
   <compound kind="class">
     <name>NSDictionary</name>
     <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSDictionary_Class/Reference/Reference.html</filename>
+    <member kind="function">
+      <name>allKeys</name>
+      <anchor>//apple_ref/occ/instm/NSDictionary/allKeys</anchor>
+    </member>
+    <member kind="function">
+      <name>allKeysForObject:</name>
+      <anchor>//apple_ref/occ/instm/NSDictionary/allKeysForObject:</anchor>
+    </member>
+    <member kind="function">
+      <name>allValues</name>
+      <anchor>//apple_ref/occ/instm/NSDictionary/allValues</anchor>
+    </member>
+    <member kind="function">
+      <name>containsKey:</name>
+      <anchor>//apple_ref/occ/instm/NSDictionary/containsKey:</anchor>
+    </member>
   </compound>
   <compound kind="class">
     <name>NSEnumerator</name>
