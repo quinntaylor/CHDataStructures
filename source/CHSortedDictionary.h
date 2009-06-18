@@ -11,11 +11,41 @@
 #import "CHLockableDictionary.h"
 #import "CHSortedSet.h"
 
-/** @todo Document CHSortedDictionary */
+/**
+ A dictionary which enumerates keys according to their natural sorted order. The following additional operations are provided to take advantage of the ordering:
+   - \link #firstKey -firstKey\endlink
+   - \link #lastKey -lastKey\endlink
+   - \link #subsetFromKey:toKey: -subsetFromKey:toKey:\endlink
+ 
+ Key-value entries are inserted just as in a normal dictionary, including replacement of values for existing keys, as detailed in \link #setObject:forKey: -setObject:forKey:\endlink. However, an additional CHSortedSet structure is used in parallel to sort the keys, and keys are enumerated in that order.
+ 
+ Implementations of sorted maps include to Java's <a href="http://java.sun.com/javase/6/docs/api/java/util/SortedMap.html">SortedMap</a> interface and concrete <a href="http://java.sun.com/javase/6/docs/api/java/util/TreeMap.html">TreeMap</a>.
+ 
+ @note Any method inherited from NSDictionary or NSMutableDictionary is supported, but only overridden methods are listed here.
+ 
+ @todo Document CHSortedDictionary
+ */
 @interface CHSortedDictionary : CHLockableDictionary {
 	id<CHSortedSet> sortedKeys;
 }
 
+#pragma mark Adding Objects
+/** @name Adding Objects */
+// @{
+
+/**
+ Adds a given key-value pair to the receiver.
+ 
+ @param anObject The value for @a key. The object receives a @c -retain message before being added to the receiver. This value must not be @c nil.
+ @param aKey The key for @a value. The key is copied (using @c -copyWithZone: — keys must conform to the NSCopying protocol). The key must not be @c nil.
+ @throws NSInvalidArgumentException If @a aKey or @a anObject is @c nil. If you need to represent a @c nil value in the dictionary, use NSNull.
+ 
+ @see objectForKey:
+ @see removeObjectForKey:
+ */
+- (void) setObject:(id)anObject forKey:(id)aKey;
+
+// @}
 #pragma mark Querying Contents
 /** @name Querying Contents */
 // @{
@@ -40,27 +70,19 @@
  */
 - (id) lastKey;
 
-// @}
-#pragma mark Removing Objects
-/** @name Removing Objects */
-// @{
 /**
- Remove the minimum object from the receiver, according to natural sorted order.
+ Returns a new dictionary containing the entries for keys delineated by two given objects. The subset is a shallow copy (new memory is allocated for the structure, but the copy points to the same objects) so any changes to the objects in the subset affect the receiver as well. The subset is an instance of the same class as the receiver.
  
- @see firstKey
- @see removeObjectForKey:
- @see removeObjectForLastKey
+ @param start Low endpoint of the subset to be returned; need not be a key in receiver.
+ @param end High endpoint of the subset to be returned; need not be a key in receiver.
+ @return A new sorted map containing the key-value entries delineated by @a start and @a end. The contents of the returned subset depend on the input parameters as follows:
+ - If both @a start and @a end are @c nil, all keys in the receiver are included. (Equivalent to calling @c -copy.)
+ - If only @a start is @c nil, keys that match or follow @a start are included.
+ - If only @a end is @c nil, keys that match or preceed @a start are included.
+ - If @a start comes before @a end in an ordered set, keys between @a start and @a end (or which match either object) are included.
+ - Otherwise, all keys @b except those that fall between @a start and @a end are included.
  */
-- (void) removeObjectForFirstKey;
-
-/**
- Remove the maximum object from the receiver, according to natural sorted order.
- 
- @see lastKey
- @see removeObjectForKey:
- @see removeObjectForFirstKey
- */
-- (void) removeObjectForLastKey;
+- (NSMutableDictionary*) subsetFromKey:(id)start toKey:(id)end;
 
 // @}
 @end

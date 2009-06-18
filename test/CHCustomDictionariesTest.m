@@ -18,6 +18,7 @@
 	id dictionary;
 	NSArray *keyArray;
 	NSArray *expectedKeyOrder;
+	NSEnumerator *enumerator;
 }
 @end
 
@@ -30,18 +31,19 @@
 }
 
 - (void) populateDictionary {
-	NSEnumerator *keys = [keyArray objectEnumerator];
+	enumerator = [keyArray objectEnumerator];
 	id aKey;
-	while (aKey = [keys nextObject]) {
+	while (aKey = [enumerator nextObject]) {
 		[dictionary setObject:aKey forKey:aKey];
 	}
 }
 
-- (void) verifyKeyCountAndOrdering {
+- (void) verifyKeyCountAndOrdering:(NSArray*)allKeys {
 	STAssertEquals([dictionary count], [keyArray count], @"Incorrect key count.");
 
 	if (expectedKeyOrder != nil) {
-		NSArray *allKeys = [[dictionary keyEnumerator] allObjects];
+		if (allKeys == nil)
+			allKeys = [dictionary allKeys];
 		NSUInteger count = MIN([dictionary count], [expectedKeyOrder count]);
 		for (int i = 0; i < count; i++) {
 			STAssertEqualObjects([allKeys objectAtIndex:i],
@@ -49,6 +51,10 @@
 								 @"Wrong output ordering of keys.");
 		}
 	}
+}
+
+- (void) verifyKeyCountAndOrdering {
+	[self verifyKeyCountAndOrdering:nil];
 }
 
 - (void) testInitWithObjectsForKeysCount {
@@ -61,6 +67,10 @@
 	[dictionary setObject:@"bar" forKey:@"foo"];
 	STAssertEqualObjects([dictionary objectForKey:@"foo"], @"bar",
 						 @"Wrong object for key.");
+}
+
+- (void) testDescription {
+	STAssertEqualObjects([dictionary description], [[NSDictionary dictionary] description], @"Incorrect description");
 }
 
 - (void) testFirstKey {
@@ -84,20 +94,45 @@
 }
 
 - (void) testKeyEnumerator {
-	NSEnumerator *keyEnumerator = [dictionary keyEnumerator];
-	STAssertNotNil(keyEnumerator, @"Key enumerator should be non-nil");
-	NSArray *allKeys = [keyEnumerator allObjects];
+	enumerator = [dictionary keyEnumerator];
+	STAssertNotNil(enumerator, @"Key enumerator should be non-nil");
+	NSArray *allKeys = [enumerator allObjects];
 	STAssertNotNil(allKeys, @"Key enumerator should return non-nil array.");
 	STAssertEquals([allKeys count], (NSUInteger)0, @"Wrong number of keys.");
 	
 	[self populateDictionary];
 	
-	keyEnumerator = [dictionary keyEnumerator];
-	STAssertNotNil(keyEnumerator, @"Key enumerator should be non-nil");
-	allKeys = [keyEnumerator allObjects];
+	enumerator = [dictionary keyEnumerator];
+	STAssertNotNil(enumerator, @"Key enumerator should be non-nil");
+	allKeys = [enumerator allObjects];
 	STAssertNotNil(allKeys, @"Key enumerator should return non-nil array.");
 	
 	[self verifyKeyCountAndOrdering];
+}
+
+- (void) testReverseKeyEnumerator {
+	if (![dictionary respondsToSelector:@selector(reverseKeyEnumerator)])
+		return;
+	enumerator = [dictionary reverseKeyEnumerator];
+	STAssertNotNil(enumerator, @"Key enumerator should be non-nil");
+	NSArray *allKeys = [enumerator allObjects];
+	STAssertNotNil(allKeys, @"Key enumerator should return non-nil array.");
+	STAssertEquals([allKeys count], (NSUInteger)0, @"Wrong number of keys.");
+	
+	[self populateDictionary];
+
+	enumerator = [dictionary reverseKeyEnumerator];
+	STAssertNotNil(enumerator, @"Key enumerator should be non-nil");
+	allKeys = [enumerator allObjects];
+	STAssertNotNil(allKeys, @"Key enumerator should return non-nil array.");
+	
+	if ([dictionary isMemberOfClass:[CHLinkedDictionary class]]) {
+		expectedKeyOrder = keyArray;
+	} else {
+		expectedKeyOrder = [keyArray sortedArrayUsingSelector:@selector(compare:)];
+	}
+	expectedKeyOrder = [[expectedKeyOrder reverseObjectEnumerator] allObjects];
+	[self verifyKeyCountAndOrdering:[[dictionary reverseKeyEnumerator] allObjects]];
 }
 
 - (void) testRemoveAllObjects {
@@ -118,53 +153,20 @@
 	STAssertNil([dictionary objectForKey:@"foo"], @"Object should not exist.");
 }
 
-- (void) testRemoveObjectForFirstKey {
-	if (![dictionary respondsToSelector:@selector(firstKey)])
-		return;
-	STAssertEquals([dictionary count], (NSUInteger)0, @"Dictionary should be empty.");
-	STAssertNoThrow([dictionary removeObjectForFirstKey], @"Should be no exception.");
-	[self populateDictionary];
-	STAssertEqualObjects([dictionary firstKey],
-						 [expectedKeyOrder objectAtIndex:0],
-						 @"Wrong first key.");
-	[dictionary removeObjectForFirstKey];
-	STAssertEqualObjects([dictionary firstKey],
-						 [expectedKeyOrder objectAtIndex:1],
-						 @"Wrong last key.");
-}
-
-- (void) testRemoveObjectForLastKey {
-	if (![dictionary respondsToSelector:@selector(lastKey)])
-		return;
-	STAssertEquals([dictionary count], (NSUInteger)0, @"Dictionary should be empty.");
-	STAssertNoThrow([dictionary removeObjectForLastKey], @"Should be no exception.");
-	[self populateDictionary];
-	STAssertEqualObjects([dictionary lastKey],
-						 [expectedKeyOrder objectAtIndex:[expectedKeyOrder count]-1],
-						 @"Wrong last key.");
-	[dictionary removeObjectForLastKey];
-	STAssertEqualObjects([dictionary lastKey],
-						 [expectedKeyOrder objectAtIndex:[expectedKeyOrder count]-2],
-						 @"Wrong last key.");
-}
-
 #pragma mark -
 
 - (void) testNSCoding {
 	[self populateDictionary];
 	[self verifyKeyCountAndOrdering];
 	
-	CHQuietLog(@"Before NSCoding: %@", [dictionary className]);
-	CHQuietLog([dictionary description]);
-	
 	NSString *filePath = @"/tmp/CHDataStructures-dictionary.plist";
 	[NSKeyedArchiver archiveRootObject:dictionary toFile:filePath];
-	dictionary = nil; // created as autoreleased object
+	id oldDictionary = dictionary;
 	
 	dictionary = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
-	CHQuietLog(@"After NSCoding:  %@", [dictionary className]);
-	CHQuietLog([dictionary description]);
 	[self verifyKeyCountAndOrdering];
+	STAssertEqualObjects([dictionary allKeys], [oldDictionary allKeys],
+						 @"Wrong key ordering on reconstruction.");
 	
 	[[NSFileManager defaultManager] removeFileAtPath:filePath handler:nil];
 }
@@ -196,6 +198,17 @@
 	expectedKeyOrder = [keyArray sortedArrayUsingSelector:@selector(compare:)];
 }
 
+/*
+- (void) testSubsetFromKeyToKey {
+	STAssertNoThrow([dictionary subsetFromKey:nil toKey:nil],
+					@"Should not raise exception.");
+	STAssertNoThrow([dictionary subsetFromKey:@"A" toKey:@"Z"],
+					@"Should not raise exception.");
+	
+	STFail(@"Incomplete test.");
+}
+*/
+
 @end
 
 #pragma mark -
@@ -209,6 +222,19 @@
 	[super setUp];
 	dictionary = [[[CHLinkedDictionary alloc] init] autorelease];
 	expectedKeyOrder = keyArray;
+}
+
+- (void) testKeyAtIndex {
+	STAssertThrows([dictionary keyAtIndex:0], @"Should raise exception.");
+	STAssertThrows([dictionary keyAtIndex:1], @"Should raise exception.");
+	
+	[self populateDictionary];
+	NSUInteger i;
+	for (i = 0; i < [keyArray count]; i++) {
+		STAssertEqualObjects([dictionary keyAtIndex:i], [keyArray objectAtIndex:i],
+							 @"Wrong key for index %d.", i);
+	}
+	STAssertThrows([dictionary keyAtIndex:i], @"Should raise exception.");
 }
 
 @end

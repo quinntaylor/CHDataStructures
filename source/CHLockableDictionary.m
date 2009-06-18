@@ -146,14 +146,14 @@ static const CFDictionaryValueCallBacks kCHLockableDictionaryValueCallBacks = {
 
 #pragma mark <NSFastEnumeration>
 
-//#if MAC_OS_X_VERSION_10_5_AND_LATER
-//- (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
-//                                   objects:(id*)stackbuf
-//                                     count:(NSUInteger)len
-//{
-//	
-//}
-//#endif
+#if MAC_OS_X_VERSION_10_5_AND_LATER
+- (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
+                                   objects:(id*)stackbuf
+                                     count:(NSUInteger)len
+{
+	return [super countByEnumeratingWithState:state objects:stackbuf count:len];
+}
+#endif
 
 #pragma mark Adding Objects
 

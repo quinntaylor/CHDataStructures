@@ -20,7 +20,6 @@
 	return self;
 }
 
-/** @todo Check whether keys are equal on decode, fix if they aren't. */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ((self = [super initWithCoder:decoder]) == nil) return nil;
 	sortedKeys = [[decoder decodeObjectForKey:@"sortedKeys"] retain];
@@ -44,8 +43,18 @@
 
 #pragma mark Querying Contents
 
-- (NSEnumerator*) keyEnumerator {
-	return [sortedKeys objectEnumerator];
+/**
+ Returns an array containing the receiver's keys in sorted order.
+ 
+ @return An array containing the receiver's keys in sorted order. The array is empty if the receiver has no entries.
+ 
+ @see allValues
+ @see count
+ @see keyEnumerator
+ @see countByEnumeratingWithState:objects:count:
+ */
+- (NSArray*) allKeys {
+	return [super allKeys];
 }
 
 - (id) firstKey {
@@ -54,6 +63,19 @@
 
 - (id) lastKey {
 	return [sortedKeys lastObject];
+}
+
+- (NSEnumerator*) keyEnumerator {
+	return [sortedKeys objectEnumerator];
+}
+
+- (NSEnumerator*) reverseKeyEnumerator {
+	return [sortedKeys reverseObjectEnumerator];
+}
+
+/** @todo Implement this method. */
+- (NSMutableDictionary*) subsetFromKey:(id)start toKey:(id)end {
+	CHUnsupportedOperationException([self class], _cmd); return nil;
 }
 
 #pragma mark Removing Objects
@@ -68,14 +90,6 @@
 		[sortedKeys removeObject:aKey];
 		CFDictionaryRemoveValue(dictionary, aKey);
 	}
-}
-
-- (void) removeObjectForFirstKey {
-	[self removeObjectForKey:[sortedKeys firstObject]];
-}
-
-- (void) removeObjectForLastKey {
-	[self removeObjectForKey:[sortedKeys lastObject]];
 }
 
 @end

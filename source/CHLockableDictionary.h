@@ -19,11 +19,13 @@
 /**
  A mutable dictionary class with simple built-in locking capabilities.
  
- This class is a subclass of NSMutableDictionary by design, so any of its children may be used anywhere an NSDictionary or NSMutableDictionary is required. A CFMutableDictionaryRef is used internally to store the key-value pairs. Subclasses may choose to add other instance variables to enable a specific ordering of keys, override methods to modify behavior, and add methods to extend existing behaviors. However, all subclasses should behave like a standard Cocoa dictionary as much as possible.
- 
- This class is designed primarily as a parent class to centralize common behaviors of its children. However, rather than disallowing that this class be abstract, the contract is implied. If this class were actually instantiated, it is designed to behave virtually identically to a standard NSMutableDictionary, but with the addition of built-in locking. Its child classes
+ Since this class extends NSMutableDictionary, it or any of its children may be used anywhere an NSDictionary or NSMutableDictionary is required. It is designed to behave virtually identically to a standard NSMutableDictionary, but with the addition of built-in locking.
  
  An NSLock is used internally to coordinate the operation of multiple threads of execution within the same application, and methods are exposed to allow clients to manipulate the lock in simple ways. Since not all clients will use the lock, it is created lazily the first time a client attempts to acquire the lock.
+ 
+ A CFMutableDictionary is used internally to store the key-value pairs. Subclasses may choose to add other instance variables to enable a specific ordering of keys, override methods to modify behavior, and add methods to extend existing behaviors. However, all subclasses should behave like a standard Cocoa dictionary as much as possible, and document clearly when they do not.
+ 
+ @note Any method inherited from NSDictionary or NSMutableDictionary is supported, but only overridden methods are listed here.
  
  @todo Implement @c -copy and @c -mutableCopy differently (so users can actually obtain an immutable copy) and make mutation methods aware of immutability?
  */
@@ -34,36 +36,16 @@
 }
 
 /**
- Initialize the receiver with no key-value entries.
+ Initializes the receiver with key-value entries provided in a pair of C arrays. This method steps through the @a objects and @a keys arrays, creating entries in the new dictionary as it goes. 
  
- @see initWithObjectsAndKeys:
- @see initWithObjects:forKeys:
+ @param objects A C array of values for the new dictionary.
+ @param keys A C array of keys for the new dictionary. Each key is copied using @c -copyWithZone: (must conform to the NSCopying protocol) and the copy is used in the dictionary.
+ @param count The number of elements to use from the @a keys and @a objects arrays; @a count must not exceed the number of elements in @a objects or @a keys.
+ @throws An NSInvalidArgumentException if a key or value object is @c nil.
+ 
+ @note This is the designated initializer for CHLockableDictionary, overridden from NSDictionary. Any initializer inherited from parent classes also invokes this intializer.
  */
-- (id) init;
-
-/**
- Initialize the receiver with entries constructed from pairs of objects and keys.
- 
- @param firstObject The first object or set of objects to add to the receiver.
- @param ... First the key for @a firstObject, then a null-terminated list of alternating values and keys.
- @throw NSInvalidArgumentException If any non-terminating parameter is @c nil.
- 
- @see init
- @see initWithObjects:forKeys:
- */
-- (id) initWithObjectsAndKeys:(id)firstObject, ...;
-
-/**
- Initialize the receiver with entries constructed from arrays of objects and keys.
- 
- @param keyArray An array containing the keys to add to the receiver. 
- @param objectsArray An array containing the values to add to the receiver.
- @throw NSInvalidArgumentException If the array counts are not equal.
- 
- @see init
- @see initWithObjectsAndKeys:
- */
-- (id) initWithObjects:(NSArray*)objectsArray forKeys:(NSArray*)keyArray;
+- (id) initWithObjects:(id*)objects forKeys:(id*)keys count:(NSUInteger)count;
 
 #pragma mark <NSCoding>
 /** @name <NSCoding> */
@@ -138,19 +120,6 @@
 // @{
 
 /**
- Add entries from another dictionary to the receiver.
- 
- @param otherDictionary The dictionary from which to add entries.
- 
- Each value from @a otherDictionary is sent a @c -retain message before being added to the receiver. Each key object is copied using @c -copyWithZone: and must conform to the NSCopying protocol.
- 
- If a key from @a otherDictionary already exists in the receiver, the receiver's previous value for that key is sent a @c -release message, and the new value object takes its place.
- 
- @see setObject:forKey:
- */
-- (void) addEntriesFromDictionary:(NSDictionary*)otherDictionary;
-
-/**
  Adds a given key-value pair to the receiver.
  
  @param anObject The value for @a key. The object receives a @c -retain message before being added to the receiver. This value must not be @c nil.
@@ -168,73 +137,29 @@
 // @{
 
 /**
- Returns an array containing the receiver's keys in sorted order.
- 
- @return An array containing the receiver's keys in sorted order. The array is empty if the receiver has no entries..
- 
- @see allValues
- @see count
- @see keyEnumerator
- @see countByEnumeratingWithState:objects:count:
- */
-- (NSArray*) allKeys;
-
-/**
- Returns an NSArray containing the values in the receiver in ascending order by key.
- 
- @return An array containing the values in the receiver. If the receiver is empty, the array is also empty.
- 
- @see count
- @see countByEnumeratingWithState:objects:count:
- @see objectEnumerator
- @see removeAllObjects
- */
-- (NSArray*) allValues;
-
-/**
  Returns the number of keys in the receiver.
  
  @return The number of keys in the receiver, regardless of how many objects are associated with any given key in the dictionary.
  
- @see allKeys
+ @see NSDictionary#allKeys
  */
 - (NSUInteger) count;
 
 /**
- Determine whether a given key is present in the receiver.
- 
- @param aKey The key to check for membership in the receiver.
- @return @c YES if an entry for @a aKey exists in the receiver.
- 
- @see objectForKey:
- @see removeObjectForKey:
- */
-- (BOOL) containsKey:(id)aKey;
-
-/**
  Returns an enumerator that lets you access each key in the receiver.
  
- @return An enumerator that lets you access each key in the receiver. The enumerator returned is never @c nil; if the map is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
+ @return An enumerator that lets you access each key in the receiver. The enumerator returned is never @c nil; if the dictionary is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
  
  @attention The enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
  @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
  
- @note If you need to modify the entries concurrently, use #allKeys to create a "snapshot" of the dictionary's keys and work from this snapshot to modify the entries.
+ @note If you need to modify the entries concurrently, use \link NSDictionary#allKeys -allKeys\endlink to create a "snapshot" of the dictionary's keys and work from this snapshot to modify the entries.
  
- @see allKeys
- @see countByEnumeratingWithState:objects:count:
+ @see \link NSDictionary#allKeys - allKeys\endlink
+ @see \link NSDictionary#allKeysForObject: - allKeysForObject:\endlink
+ @see NSFastEnumeration protocol
  */
 - (NSEnumerator*) keyEnumerator;
-
-/**
- Returns an enumerator that accesses each object in the receiver in ascending order.
- 
- @return An enumerator that accesses each object in the receiver in ascending order. The enumerator returned is never @c nil; if the receiver is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
- 
- @attention The enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
- @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
- */
-- (NSEnumerator*) objectEnumerator;
 
 /**
  Returns the value associated with a given key.
@@ -242,24 +167,11 @@
  @param aKey The key for which to return the corresponding value.
  @return The value associated with @a aKey, or @c nil if no value is associated with @a aKey.
  
+ @see \link NSDictionary#containsKey: - containsKey:\endlink
  @see removeObjectForKey:
  @see setObject:forKey:
  */
 - (id) objectForKey:(id)aKey;
-
-/**
- Returns a new dictionary containing the entries for keys delineated by two given objects. The subset is a shallow copy (new memory is allocated for the structure, but the copy points to the same objects) so any changes to the objects in the subset affect the receiver as well. The subset is an instance of the same class as the receiver.
- 
- @param start Low endpoint of the subset to be returned; need not be a key in receiver.
- @param end High endpoint of the subset to be returned; need not be a key in receiver.
- @return A new sorted map containing the key-value entries delineated by @a start and @a end. The contents of the returned subset depend on the input parameters as follows:
- - If both @a start and @a end are @c nil, all keys in the receiver are included. (Equivalent to calling @c -copy.)
- - If only @a start is @c nil, keys that match or follow @a start are included.
- - If only @a end is @c nil, keys that match or preceed @a start are included.
- - If @a start comes before @a end in an ordered set, keys between @a start and @a end (or which match either object) are included.
- - Otherwise, all keys @b except those that fall between @a start and @a end are included.
- */
-- (NSMutableDictionary*) subsetFromObject:(id)start toObject:(id)end;
 
 // @}
 #pragma mark Removing Objects
@@ -270,8 +182,6 @@
  Remove all objects from the receiver; if the receiver is already empty, there is no effect.
  
  @see removeObjectForKey:
- @see removeObjectForFirstKey
- @see removeObjectForLastKey
  */
 - (void) removeAllObjects;
 
@@ -280,9 +190,8 @@
  
  @param aKey The key to remove.
  
+ @see \link NSDictionary#containsKey: - containsKey:\endlink
  @see objectForKey:
- @see removeObjectForFirstKey
- @see removeObjectForLastKey
  */
 - (void) removeObjectForKey:(id)aKey;
 

@@ -20,7 +20,6 @@
 	return self;
 }
 
-/** @todo Check whether keys are equal on decode, fix if they aren't. */
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ((self = [super initWithCoder:decoder]) == nil) return nil;
 	insertionOrder = [[decoder decodeObjectForKey:@"insertionOrder"] retain];
@@ -44,16 +43,26 @@
 
 #pragma mark Querying Contents
 
-- (NSEnumerator*) keyEnumerator {
-	return [insertionOrder objectEnumerator];
-}
-
 - (id) firstKey {
 	return [insertionOrder firstObject];
 }
 
 - (id) lastKey {
 	return [insertionOrder lastObject];
+}
+
+- (id) keyAtIndex:(NSUInteger)index {
+	if (index >= [self count])
+		CHIndexOutOfRangeException([self class], _cmd, index, [self count]);
+	return [insertionOrder objectAtIndex:index];
+}
+
+- (NSEnumerator*) keyEnumerator {
+	return [insertionOrder objectEnumerator];
+}
+
+- (NSEnumerator*) reverseKeyEnumerator {
+	return [insertionOrder reverseObjectEnumerator];
 }
 
 #pragma mark Removing Objects
@@ -68,14 +77,6 @@
 		[insertionOrder removeObject:aKey];
 		CFDictionaryRemoveValue(dictionary, aKey);
 	}
-}
-
-- (void) removeObjectForFirstKey {
-	[self removeObjectForKey:[insertionOrder firstObject]];
-}
-
-- (void) removeObjectForLastKey {
-	[self removeObjectForKey:[insertionOrder lastObject]];
 }
 
 @end
