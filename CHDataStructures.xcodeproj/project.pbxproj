@@ -27,10 +27,11 @@
 			);
 			dependencies = (
 				E4FAE15F0E968F20007BB1F9 /* PBXTargetDependency */,
+				E4FAE1610E968F20007BB1F9 /* PBXTargetDependency */,
 				E4FAE1630E968F20007BB1F9 /* PBXTargetDependency */,
 				E4FAE1650E968F20007BB1F9 /* PBXTargetDependency */,
-				E4FAE1610E968F20007BB1F9 /* PBXTargetDependency */,
 				E43C87A50EA3E19500B3B31E /* PBXTargetDependency */,
+				E499238E0FEB7DD800923859 /* PBXTargetDependency */,
 			);
 			name = All;
 			productName = All;
@@ -97,6 +98,7 @@
 		E48BF9730EE7A2010004D5E6 /* CHMultiDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = E48BF9720EE7A2010004D5E6 /* CHMultiDictionary.m */; };
 		E48BFA850EE842CF0004D5E6 /* CHMultiDictionaryTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E48BFA840EE842CF0004D5E6 /* CHMultiDictionaryTest.m */; };
 		E48BFBB00EE858F40004D5E6 /* CHHeapTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D18220E9452BB007F39D8 /* CHHeapTest.m */; };
+		E49923750FEB7B2600923859 /* CustomDataViews.plist in Resources */ = {isa = PBXBuildFile; fileRef = E49923740FEB7B2600923859 /* CustomDataViews.plist */; };
 		E49BE2830FB21058002904AB /* CHLinkedSet.h in Headers */ = {isa = PBXBuildFile; fileRef = E49BE2810FB21058002904AB /* CHLinkedSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E49BE2840FB21058002904AB /* CHLinkedSet.m in Sources */ = {isa = PBXBuildFile; fileRef = E49BE2820FB21058002904AB /* CHLinkedSet.m */; };
 		E49BE3DC0FB230D4002904AB /* CHLinkedSetTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E49BE3DB0FB230D4002904AB /* CHLinkedSetTest.m */; };
@@ -164,6 +166,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = E43C87680EA3D35500B3B31E;
 			remoteInfo = "Disk Image";
+		};
+		E499238D0FEB7DD800923859 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E49923580FEB6D4800923859;
+			remoteInfo = "Xcode Formatter";
 		};
 		E4A721A90EA7AEFB00E0AC21 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -267,6 +276,9 @@
 		E48BF92E0EE79AAE0004D5E6 /* CHMultiDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHMultiDictionary.h; path = source/CHMultiDictionary.h; sourceTree = "<group>"; };
 		E48BF9720EE7A2010004D5E6 /* CHMultiDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHMultiDictionary.m; path = source/CHMultiDictionary.m; sourceTree = "<group>"; };
 		E48BFA840EE842CF0004D5E6 /* CHMultiDictionaryTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHMultiDictionaryTest.m; path = test/CHMultiDictionaryTest.m; sourceTree = "<group>"; };
+		E49923590FEB6D4800923859 /* CHDataStructuresFormatter.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CHDataStructuresFormatter.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		E499235A0FEB6D4800923859 /* Info-XcodeFormatter.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Info-XcodeFormatter.plist"; path = "resources/Info-XcodeFormatter.plist"; sourceTree = "<group>"; };
+		E49923740FEB7B2600923859 /* CustomDataViews.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = CustomDataViews.plist; path = resources/CustomDataViews.plist; sourceTree = "<group>"; };
 		E49BE2810FB21058002904AB /* CHLinkedSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHLinkedSet.h; path = source/CHLinkedSet.h; sourceTree = "<group>"; };
 		E49BE2820FB21058002904AB /* CHLinkedSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHLinkedSet.m; path = source/CHLinkedSet.m; sourceTree = "<group>"; };
 		E49BE3DB0FB230D4002904AB /* CHLinkedSetTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHLinkedSetTest.m; path = test/CHLinkedSetTest.m; sourceTree = "<group>"; };
@@ -352,6 +364,7 @@
 				8DC2EF5B0486A6940098B216 /* CHDataStructures.framework */,
 				E473CB550E9346CB005CA997 /* CHDataStructures_test.octest */,
 				E44B59B40E95850F00F9DD1A /* Benchmarks */,
+				E49923590FEB6D4800923859 /* CHDataStructuresFormatter.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -383,9 +396,11 @@
 		089C1665FE841158C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				E49923740FEB7B2600923859 /* CustomDataViews.plist */,
 				089C1666FE841158C02AAC07 /* InfoPlist.strings */,
 				E4FE17F70FA6765D00C34601 /* Info-Framework.plist */,
 				E473C9890E9331FA005CA997 /* Info-Unit-Testing.plist */,
+				E499235A0FEB6D4800923859 /* Info-XcodeFormatter.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -626,6 +641,21 @@
 			productReference = E473CB550E9346CB005CA997 /* CHDataStructures_test.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
+		E49923580FEB6D4800923859 /* Xcode Formatter */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E499235E0FEB6D4900923859 /* Build configuration list for PBXNativeTarget "Xcode Formatter" */;
+			buildPhases = (
+				E49923550FEB6D4800923859 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Xcode Formatter";
+			productName = CHDataStructuresFormatter;
+			productReference = E49923590FEB6D4800923859 /* CHDataStructuresFormatter.bundle */;
+			productType = "com.apple.product-type.bundle";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -644,9 +674,10 @@
 			targets = (
 				8DC2EF4F0486A6940098B216 /* Framework */,
 				E473CB540E9346CB005CA997 /* Unit Testing */,
-				E44B59B30E95850F00F9DD1A /* Benchmarks */,
 				E4FE76D80E89556A00971EE6 /* Documentation */,
+				E44B59B30E95850F00F9DD1A /* Benchmarks */,
 				E43C87680EA3D35500B3B31E /* Deployment */,
+				E49923580FEB6D4800923859 /* Xcode Formatter */,
 				E4FAE15B0E968F1B007BB1F9 /* All */,
 			);
 		};
@@ -665,6 +696,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E49923550FEB6D4800923859 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E49923750FEB7B2600923859 /* CustomDataViews.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -830,6 +869,11 @@
 			isa = PBXTargetDependency;
 			target = E43C87680EA3D35500B3B31E /* Deployment */;
 			targetProxy = E43C87A40EA3E19500B3B31E /* PBXContainerItemProxy */;
+		};
+		E499238E0FEB7DD800923859 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E49923580FEB6D4800923859 /* Xcode Formatter */;
+			targetProxy = E499238D0FEB7DD800923859 /* PBXContainerItemProxy */;
 		};
 		E4A721AA0EA7AEFB00E0AC21 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1226,6 +1270,78 @@
 			};
 			name = Release;
 		};
+		E499235B0FEB6D4900923859 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INFOPLIST_FILE = "resources/Info-XcodeFormatter.plist";
+				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = CHDataStructuresFormatter;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		E499235C0FEB6D4900923859 /* Coverage */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INFOPLIST_FILE = "resources/Info-XcodeFormatter.plist";
+				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = CHDataStructuresFormatter;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Coverage;
+		};
+		E499235D0FEB6D4900923859 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INFOPLIST_FILE = "resources/Info-XcodeFormatter.plist";
+				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = CHDataStructuresFormatter;
+				WRAPPER_EXTENSION = bundle;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 		E4FAE15C0E968F1B007BB1F9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1317,6 +1433,16 @@
 				E473CB580E9346CB005CA997 /* Debug */,
 				E40C05B00FB4D3FB004351C9 /* Coverage */,
 				E473CB590E9346CB005CA997 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E499235E0FEB6D4900923859 /* Build configuration list for PBXNativeTarget "Xcode Formatter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E499235B0FEB6D4900923859 /* Debug */,
+				E499235C0FEB6D4900923859 /* Coverage */,
+				E499235D0FEB6D4900923859 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

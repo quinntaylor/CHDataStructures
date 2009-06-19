@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>File Version</key>
+	<string>1</string>
+	<key>CHAbstractBinarySearchTree *</key>
+	<dict>
+		<key>SummaryString</key>
+		<string>{(int)[$VAR count]} objects</string>
+	</dict>
+	<key>CHAbstractCircularBufferCollection *</key>
+	<dict>
+		<key>SummaryString</key>
+		<string>{(int)[$VAR count]} objects</string>
+	</dict>
+	<key>CHAbstractListCollection *</key>
+	<dict>
+		<key>SummaryString</key>
+		<string>{(int)[$VAR count]} objects</string>
+	</dict>
+	<key>CHAbstractMutableArrayCollection *</key>
+	<dict>
+		<key>SummaryString</key>
+		<string>{(int)[$VAR count]} objects</string>
+	</dict>
+	<key>CHAnderssonTree *</key>
+	<dict>
+		<key>SummaryString</key>
+		<string>{(int)[$VAR count]} objects</string>
+	</dict>
+	<key>CHAVLTree *</key>
+	<dict>
+		<key>SummaryString</key>
+		<string>{(int)[$VAR count]} objects</string>
+	</dict>
+	<key>CHBinaryTreeNode *</key>
+	<dict>
+		<key>SummaryString</key>
+		<string>{(*$VAR).object} (left={(*$VAR).left}, right={(*$VAR).right}) [{(long)(*$VAR).balance}]</string>
+	</dict>
+	<key>CHCircularBufferDeque *</key>
+	<dict>
+		<key>SummaryString</key>
+		<string>{(int)[$VAR count]} objects</string>
+	</dict>
+	<key>CHCircularBufferQueue *</key>
+	<dict>
+		<key>SummaryString</key>
+		<string>{(int)[$VAR count]} objects</string>
+	</dict>
+	<key>CHCircularBufferStack *</key>
+	<dict>
+		<key>SummaryString</key>
+		<string>{(int)[$VAR count]} objects</string>
+	</dict>
+	<key>CHDoublyLinkedList *</key>
+	<dict>
+		<key>SummaryString</key>
+		<string>{(int)[$VAR count]} objects</string>
+	</dict>
+	<key>CHDoublyLinkedListNode *</key>
+	<dict>
+		<key>SummaryString</key>
+		<string>object={(*$VAR).object}, prev={(*$VAR).prev}, next={(*$VAR).next}</string>
+	</dict>
+	<key>CHLockableObject *</key>
+	<dict>
+		<key>SummaryString</key>
+		<string>{(int)[$VAR count]} objects</string>
+	</dict>
+	<key>CHLockableDictionary *</key>
+	<dict>
+		<key>SummaryString</key>
+		<string>{(int)[$VAR count]} key/value pairs</string>
+	</dict>
+	<key>CHLinkedDictionary *</key>
+	<dict>
+		<key>SummaryString</key>
+		<string>{(int)[$VAR count]} key/value pairs</string>
+	</dict>
+	<key>CHLinkedSet *</key>
+	<dict>
+		<key>SummaryString</key>
+		<string>{(int)[$VAR count]} objects</string>
+	</dict>
+	<key>CHListDeque *</key>
+	<dict>
+		<key>SummaryString</key>
+		<string>{(int)[$VAR count]} objects</string>
+	</dict>
+	<key>CHListQueue *</key>
+	<dict>
+		<key>SummaryString</key>
+		<string>{(int)[$VAR count]} objects</string>
+	</dict>
+	<key>CHListStack *</key>
+	<dict>
+		<key>SummaryString</key>
+		<string>{(int)[$VAR count]} objects</string>
+	</dict>
+	<key>CHMultiDictionary *</key>
+	<dict>
+		<key>SummaryString</key>
+		<string>{(int)[$VAR count]} keys, {(int)[$VAR countForAllKeys]} values</string>
+	</dict>
+	<key>CHMutableArrayDeque *</key>
+	<dict>
+		<key>SummaryString</key>
+		<string>{(int)[$VAR count]} objects</string>
+	</dict>
+	<key>CHMutableArrayHeap *</key>
+	<dict>
+		<key>SummaryString</key>
+		<string>{(int)[$VAR count]} objects</string>
+	</dict>
+	<key>CHMutableArrayQueue *</key>
+	<dict>
+		<key>SummaryString</key>
+		<string>{(int)[$VAR count]} objects</string>
+	</dict>
+	<key>CHMutableArrayStack *</key>
+	<dict>
+		<key>SummaryString</key>
+		<string>{(int)[$VAR count]} objects</string>
+	</dict>
+	<key>CHRedBlackTree *</key>
+	<dict>
+		<key>SummaryString</key>
+		<string>{(int)[$VAR count]} objects</string>
+	</dict>
+	<key>CHSearchTreeHeaderObject *</key>
+	<dict>
+		<key>SummaryString</key>
+		<string>(singleton dummy header object)</string>
+	</dict>
+	<key>CHSinglyLinkedList *</key>
+	<dict>
+		<key>SummaryString</key>
+		<string>{(int)[$VAR count]} objects</string>
+	</dict>
+	<key>CHSinglyLinkedListNode *</key>
+	<dict>
+		<key>SummaryString</key>
+		<string>object={(*$VAR).object}, next={(*$VAR).next}</string>
+	</dict>
+	<key>CHSortedDictionary *</key>
+	<dict>
+		<key>SummaryString</key>
+		<string>{(int)[$VAR count]} key/value pairs</string>
+	</dict>
+	<key>CHTreap *</key>
+	<dict>
+		<key>SummaryString</key>
+		<string>{(int)[$VAR count]} objects</string>
+	</dict>
+	<key>CHUnbalancedTree *</key>
+	<dict>
+		<key>SummaryString</key>
+		<string>{(int)[$VAR count]} objects</string>
+	</dict>
+</dict>
+</plist>
