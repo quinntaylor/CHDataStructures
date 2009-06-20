@@ -51,6 +51,13 @@
 	return [insertionOrder lastObject];
 }
 
+- (NSUInteger) indexOfKey:(id)aKey {
+	if (CFDictionaryContainsKey(dictionary, aKey))
+		return [insertionOrder indexOfObject:aKey];
+	else
+		return NSNotFound;
+}
+
 - (id) keyAtIndex:(NSUInteger)index {
 	if (index >= [self count])
 		CHIndexOutOfRangeException([self class], _cmd, index, [self count]);

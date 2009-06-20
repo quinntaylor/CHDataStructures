@@ -224,10 +224,19 @@
 	expectedKeyOrder = keyArray;
 }
 
+- (void) testIndexOfKey {
+	STAssertEquals([dictionary indexOfKey:@"foo"], (NSUInteger)NSNotFound,
+				   @"Key should not be found in dictionary");
+	[self populateDictionary];
+	for (NSUInteger i = 0; i < [keyArray count]; i++) {
+		STAssertEquals([dictionary indexOfKey:[keyArray objectAtIndex:i]], i,
+					   @"Wrong index for key.");
+	}
+}
+
 - (void) testKeyAtIndex {
 	STAssertThrows([dictionary keyAtIndex:0], @"Should raise exception.");
 	STAssertThrows([dictionary keyAtIndex:1], @"Should raise exception.");
-	
 	[self populateDictionary];
 	NSUInteger i;
 	for (i = 0; i < [keyArray count]; i++) {

@@ -59,6 +59,18 @@
 - (id) lastKey;
 
 /**
+ Returns the index of a given key based on insertion order.
+ 
+ @param aKey The key to search for in the receiver.
+ @return The index of a given key based on insertion order. If the key does not exists in the receiver, @c NSNotFound is returned.
+ 
+ @see firstKey
+ @see keyAtIndex:
+ @see lastKey
+ */
+- (NSUInteger) indexOfKey:(id)aKey;
+
+/**
  Returns the key at the specified index, based on insertion order.
  
  @param index The insertion-order index of the key to retrieve.
@@ -67,6 +79,7 @@
  
  @see \link NSDictionary#containsKey: - containsKey:\endlink
  @see firstKey
+ @see indexOfKey:
  @see lastKey
  */
 - (id) keyAtIndex:(NSUInteger)index;
