@@ -133,6 +133,10 @@ static size_t kCHPointerSize = sizeof(void*);
 
 #pragma mark -
 
+/**
+ @todo Consolidate @c -removeObject: and @c -removeObjectIdenticalTo: methods.
+ @todo Add insertObject:atIndex: implementation, even though it's inefficient.
+ */
 @implementation CHAbstractCircularBufferCollection
 
 - (void) dealloc {
