@@ -80,7 +80,7 @@ OBJC_EXPORT void CHIndexOutOfRangeException(Class aClass, SEL method,
  @param aClass The class object for the originator of the exception. Callers should pass the result of <code>[self class]</code> for this parameter.
  @param method The method selector where the problem originated. Callers should pass @c _cmd for this parameter.
  @param str An NSString describing the offending invalid argument.
- @throw NSInternalInconsistencyException
+ @throw NSInvalidArgumentException
  
  @see \link NSException#raise:format: +[NSException raise:format:]\endlink
  */
@@ -93,7 +93,7 @@ OBJC_EXPORT void CHInvalidArgumentException(Class aClass, SEL method, NSString *
  
  @param aClass The class object for the originator of the exception. Callers should pass the result of <code>[self class]</code> for this parameter.
  @param method The method selector where the problem originated. Callers should pass @c _cmd for this parameter.
- @throw NSInternalInconsistencyException
+ @throw NSInvalidArgumentException
  
  @see CHInvalidArgumentException()
  */

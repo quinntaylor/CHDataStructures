@@ -35,7 +35,7 @@ void CHIndexOutOfRangeException(Class aClass, SEL method,
 }
 
 void CHInvalidArgumentException(Class aClass, SEL method, NSString *string) {
-	[NSException raise:NSInternalInconsistencyException
+	[NSException raise:NSInvalidArgumentException
 	            format:@"[%@ %s] -- %@",
 	                   aClass, sel_getName(method), string];
 }

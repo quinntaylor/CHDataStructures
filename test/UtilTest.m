@@ -50,7 +50,7 @@
 	}
 	@catch (NSException * e) {
 		raisedException = YES;
-		STAssertEqualObjects([e name], NSInternalInconsistencyException,
+		STAssertEqualObjects([e name], NSInvalidArgumentException,
 							 @"Incorrect exception name.");
 		[reason appendString:@"Some silly reason."];
 		STAssertEqualObjects([e reason], reason, @"Incorrect exception reason.");
@@ -64,7 +64,7 @@
 	}
 	@catch (NSException * e) {
 		raisedException = YES;
-		STAssertEqualObjects([e name], NSInternalInconsistencyException,
+		STAssertEqualObjects([e name], NSInvalidArgumentException,
 							 @"Incorrect exception name.");
 		[reason appendString:@"Invalid nil argument."];
 		STAssertEqualObjects([e reason], reason, @"Incorrect exception reason.");
