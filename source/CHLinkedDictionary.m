@@ -9,51 +9,65 @@
  */
 
 #import "CHLinkedDictionary.h"
-#import "CHCircularBufferQueue.h"
+#import "CHDoublyLinkedList.h"
 
 @implementation CHLinkedDictionary
 
+- (void) dealloc {
+	[keyOrdering release];
+	[super dealloc];
+}
+
 - (id) initWithObjects:(id*)objects forKeys:(id*)keys count:(NSUInteger)count {
 	// Create collection for ordering keys first, since super will add objects.
-	insertionOrder = [[CHCircularBufferQueue alloc] init];
+	keyOrdering = [[CHDoublyLinkedList alloc] init];
 	if ((self = [super initWithObjects:objects forKeys:keys count:count]) == nil) return nil;
 	return self;
 }
 
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ((self = [super initWithCoder:decoder]) == nil) return nil;
-	insertionOrder = [[decoder decodeObjectForKey:@"insertionOrder"] retain];
+	keyOrdering = [[decoder decodeObjectForKey:@"keyOrdering"] retain];
 	return self;
 }
 
 - (void) encodeWithCoder:(NSCoder *)encoder {
 	[super encodeWithCoder:encoder];
-	[encoder encodeObject:insertionOrder forKey:@"insertionOrder"];
+	[encoder encodeObject:keyOrdering forKey:@"keyOrdering"];
 }
 
 #pragma mark Adding Objects
 
-- (void) setObject:(id)anObject forKey:(id)aKey {
-	if (!CFDictionaryContainsKey(dictionary, aKey)) {
-		id clonedKey = [[aKey copy] autorelease];
-		[insertionOrder addObject:clonedKey];
-		CFDictionarySetValue(dictionary, clonedKey, anObject);
+- (void) insertObject:(id)anObject forKey:(id)aKey atIndex:(NSUInteger)index {
+	if (index > [self count])
+		CHIndexOutOfRangeException([self class], _cmd, index, [self count]);
+	if (anObject == nil || aKey == nil)
+		CHNilArgumentException([self class], _cmd);
+	
+	id clonedKey = [[aKey copy] autorelease];
+	if (!CFDictionaryContainsKey(dictionary, clonedKey)) {
+		[keyOrdering insertObject:clonedKey atIndex:index];
 	}
+	CFDictionarySetValue(dictionary, clonedKey, anObject);
+}
+
+- (void) setObject:(id)anObject forKey:(id)aKey {
+	[self insertObject:anObject forKey:aKey atIndex:[self count]];
 }
 
 #pragma mark Querying Contents
 
 - (id) firstKey {
-	return [insertionOrder firstObject];
+	return [keyOrdering firstObject];
 }
 
 - (id) lastKey {
-	return [insertionOrder lastObject];
+	return [keyOrdering lastObject];
 }
 
 - (NSUInteger) indexOfKey:(id)aKey {
 	if (CFDictionaryContainsKey(dictionary, aKey))
-		return [insertionOrder indexOfObject:aKey];
+		return [keyOrdering indexOfObject:aKey];
 	else
 		return NSNotFound;
 }
@@ -61,27 +75,27 @@
 - (id) keyAtIndex:(NSUInteger)index {
 	if (index >= [self count])
 		CHIndexOutOfRangeException([self class], _cmd, index, [self count]);
-	return [insertionOrder objectAtIndex:index];
+	return [keyOrdering objectAtIndex:index];
 }
 
 - (NSEnumerator*) keyEnumerator {
-	return [insertionOrder objectEnumerator];
+	return [keyOrdering objectEnumerator];
 }
 
 - (NSEnumerator*) reverseKeyEnumerator {
-	return [insertionOrder reverseObjectEnumerator];
+	return [keyOrdering reverseObjectEnumerator];
 }
 
 #pragma mark Removing Objects
 
 - (void) removeAllObjects {
-	[insertionOrder removeAllObjects];
+	[keyOrdering removeAllObjects];
 	[super removeAllObjects];
 }
 
 - (void) removeObjectForKey:(id)aKey {
 	if (CFDictionaryContainsKey(dictionary, aKey)) {
-		[insertionOrder removeObject:aKey];
+		[keyOrdering removeObject:aKey];
 		CFDictionaryRemoveValue(dictionary, aKey);
 	}
 }

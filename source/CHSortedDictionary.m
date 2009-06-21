@@ -13,6 +13,11 @@
 
 @implementation CHSortedDictionary
 
+- (void) dealloc {
+	[sortedKeys release];
+	[super dealloc];
+}
+
 - (id) initWithObjects:(id*)objects forKeys:(id*)keys count:(NSUInteger)count {
 	// Create collection for ordering keys first, since super will add objects.
 	sortedKeys = [[CHAVLTree alloc] init];

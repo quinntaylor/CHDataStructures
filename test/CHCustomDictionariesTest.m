@@ -246,4 +246,24 @@
 	STAssertThrows([dictionary keyAtIndex:i], @"Should raise exception.");
 }
 
+- (void) testInsertObjectForKeyAtIndex {
+	STAssertThrows([dictionary insertObject:@"foo" forKey:@"foo" atIndex:1],
+	               @"Should raise NSRangeException for bad index.");
+	STAssertThrows([dictionary insertObject:nil forKey:@"foo" atIndex:0],
+	               @"Should raise NSInvalidArgumentException for nil param.");
+	STAssertThrows([dictionary insertObject:@"foo" forKey:nil atIndex:0],
+	               @"Should raise NSInvalidArgumentException for nil param.");
+	
+	[self populateDictionary];
+	NSUInteger count = [dictionary count];
+	STAssertThrows([dictionary insertObject:@"foo" forKey:@"foo" atIndex:count+1],
+	               @"Should raise NSRangeException for bad index.");
+	STAssertNoThrow([dictionary insertObject:@"xyz" forKey:@"xyz" atIndex:count],
+	                @"Should be able to insert a new value at the end");
+	STAssertEqualObjects([dictionary lastKey], @"xyz", @"Last key should be 'xyz'.");
+	STAssertNoThrow([dictionary insertObject:@"abc" forKey:@"abc" atIndex:0],
+	                @"Should be able to insert a new value at the end");
+	STAssertEqualObjects([dictionary firstKey], @"abc", @"First key should be 'abc'.");
+}
+
 @end

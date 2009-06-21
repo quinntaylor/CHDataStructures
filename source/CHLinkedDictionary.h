@@ -29,8 +29,38 @@
  @todo Allow the option for re-inserting a key to move it to the end of the list.
  */
 @interface CHLinkedDictionary : CHLockableDictionary {
-	id insertionOrder;
+	id keyOrdering;
 }
+
+#pragma mark Adding Objects
+/** @name Adding Objects */
+// @{
+
+/**
+ Adds a given key-value pair to the receiver, with the key added at the end of the ordering.
+ 
+ @copydetails CHLockableDictionary::setObject:forKey:
+ 
+ @see insertObject:forKey:atIndex:
+ */
+- (void) setObject:(id)anObject forKey:(id)aKey;
+
+
+/**
+ Adds a given key-value pair to the receiver, with the key at a given index in the ordering.
+ 
+ @param anObject The value for @a aKey. The object receives a @c -retain message before being added to the receiver. Must not be @c nil.
+ @param aKey The key for @a anObject. The key is copied (using @c -copyWithZone: — keys must conform to the NSCopying protocol). Must not be @c nil.
+ @param index The index in the receiver's key ordering at which to insert @a anObject.
+ 
+ @throws NSRangeException If @a index is greater than the current number of keys.
+ @throws NSInvalidArgumentException If @a aKey or @a anObject is @c nil.  If you need to represent a @c nil value in the dictionary, use NSNull.
+ 
+ @see indexOfKey:
+ @see keyAtIndex:
+ @see setObject:forKey:
+ */
+- (void) insertObject:(id)anObject forKey:(id)aKey atIndex:(NSUInteger)index;
 
 #pragma mark Querying Contents
 /** @name Querying Contents */
