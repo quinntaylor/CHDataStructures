@@ -52,9 +52,9 @@ typedef struct CHDoublyLinkedListNode {
 }
 
 /**
- Returns an enumerator that accesses each object in the list from back to front.
+ Returns an enumerator that accesses each object in the receiver from back to front.
  
- @return An enumerator that accesses each object in the list from back to front. The enumerator returned is never @c nil; if the list is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
+ @return An enumerator that accesses each object in the receiver from back to front. The enumerator returned is never @c nil; if the receiver is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
  
  @attention The enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
  @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.

@@ -50,19 +50,26 @@
 
 - (NSUInteger) count;
 - (NSEnumerator*) objectEnumerator;
+
+/**
+ Returns an enumerator that accesses each object in the receiver from back to front.
+ 
+ @return An enumerator that accesses each object in the receiver from back to front. The enumerator returned is never @c nil; if the receiver is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
+ 
+ @attention The enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
+ @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
+ */
 - (NSEnumerator*) reverseObjectEnumerator;
 
 - (void) appendObject:(id)anObject;
 - (void) prependObject:(id)anObject;
+
 - (id) firstObject;
 - (id) lastObject;
 - (NSArray*) allObjects;	
 
 - (BOOL) containsObject:(id)anObject;
 - (BOOL) containsObjectIdenticalTo:(id)anObject;
-- (NSUInteger) indexOfObject:(id)anObject;
-- (NSUInteger) indexOfObjectIdenticalTo:(id)anObject;
-- (id) objectAtIndex:(NSUInteger)index;
 
 - (void) removeFirstObject;
 - (void) removeLastObject;
@@ -70,6 +77,58 @@
 - (void) removeObjectIdenticalTo:(id)anObject;
 - (void) removeObjectAtIndex:(NSUInteger)index;
 - (void) removeAllObjects;
+
+#pragma mark Indexed Operations
+// These operations aren't strictly a part of stack/queue/deque subclasses, but
+// they are provided as a convenience for working directly with a buffer.
+
+/**
+ Returns the lowest index of a given object, matched using @c isEqual:.
+ 
+ @param anObject The object to be matched and located in the receiver.
+ @return The index of the first object which is equal to @a anObject. If none of the objects in the receiver match @a anObject, returns @c CHNotFound.
+ 
+ @see indexOfObjectIdenticalTo:
+ @see objectAtIndex:
+ */
+- (NSUInteger) indexOfObject:(id)anObject;
+
+/**
+ Returns the lowest index of a given object, matched using the == operator.
+ 
+ @param anObject The object to be matched and located in the receiver.
+ @return The index of the first object which is equal to @a anObject. If none of the objects in the receiver match @a anObject, returns @c CHNotFound.
+ 
+ @see indexOfObject:
+ @see objectAtIndex:
+ */
+- (NSUInteger) indexOfObjectIdenticalTo:(id)anObject;
+
+/**
+ Insert a given object at a given index. If @a index is already occupied, then objects from @a index to the non-wrapped end of the buffer are shifted one spot to make room for @a anObject.
+ 
+ @param anObject The object to add to the receiver.
+ @param index The index at which to insert @a anObject.
+ 
+ @throw NSInvalidArgumentException If @a anObject is @c nil.
+ @throw NSRangeException If @a index is greater than the number of elements in the receiver.
+ 
+ @attention Inserting in the middle of an array is a somewhat inefficient operation &mdash; one or more values must be shifted by one slot using @c memmove().
+ */
+- (void) insertObject:(id)anObject atIndex:(NSUInteger)index;
+
+/**
+ Returns the object located at @a index.
+ 
+ @param index An index from which to retrieve an object.
+ @return The object located at @a index.
+ 
+ @throw NSRangeException If @a index is greater than the number of elements in the receiver.
+ 
+ @see indexOfObject:
+ @see indexOfObjectIdenticalTo:
+ */
+- (id) objectAtIndex:(NSUInteger)index;
 
 #pragma mark Adopted Protocols
 

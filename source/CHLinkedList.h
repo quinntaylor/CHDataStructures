@@ -51,9 +51,9 @@
 // @{
 
 /**
- Add an object to the front of the list.
+ Add an object to the receiver, inserted at the front.
  
- @param anObject The object to add to the list.
+ @param anObject The object to add to the receiver.
 
  @throw NSInvalidArgumentException If @a anObject is @c nil.
  
@@ -63,9 +63,9 @@
 - (void) prependObject:(id)anObject;
 
 /**
- Add an object to the back of the list.
+ Add an object to the receiver, inserted at the back.
  
- @param anObject The object to add to the list.
+ @param anObject The object to add to the receiver.
  
  @throw NSInvalidArgumentException If @a anObject is @c nil.
  
@@ -75,15 +75,15 @@
 - (void) appendObject:(id)anObject;
 
 /**
- Insert a given object at a given index. If @a index is already occupied, then objects at @a index and beyond are shifted one spot toward the end of the list.
+ Insert a given object at a given index. If @a index is already occupied, then objects at @a index and beyond are shifted one spot toward the end.
  
- @param anObject The object to add to the list.
+ @param anObject The object to add to the receiver.
  @param index The index at which to insert @a anObject.
  
  @throw NSInvalidArgumentException If @a anObject is @c nil.
- @throw NSRangeException If @a index is greater than the list size.
+ @throw NSRangeException If @a index is greater than the number of elements in the receiver.
  
- @warning Inserting in the middle of a linked list is a somewhat inefficient operation; although values aren't shifted by one like in arrays, the list must be traversed to find the specified index.
+ @attention Inserting in the middle of a linked list is a somewhat inefficient operation &mdash; although values aren't shifted by one like in arrays, elements must be traversed one by one to find the specified index.
  */
 - (void) insertObject:(id)anObject atIndex:(NSUInteger)index;
 
@@ -93,10 +93,9 @@
 // @{
 
 /**
- Returns an array with the objects in this linked list, ordered front to back.
+ Returns an array containing the objects in the receiver, ordered front to back.
  
- @return An array with the objects in this linked list. If the list is empty,
- the array is also empty.
+ @return An array containing the objects in the receiver. If the receiver is empty, the array is also empty.
  
  @see count
  @see countByEnumeratingWithState:objects:count:
@@ -128,18 +127,18 @@
 - (BOOL) containsObjectIdenticalTo:(id)anObject;
 
 /**
- Returns the number of objects currently in the list.
+ Returns the number of objects currently in the receiver.
  
- @return The number of objects currently in the list.
+ @return The number of objects currently in the receiver.
  
  @see allObjects
  */
 - (NSUInteger) count;
 
 /**
- Returns the object at the head of the list.
+ Returns the first object in the receiver.
  
- @return The object at the head of the list, or @c nil if the list is empty.
+ @return The first object in the receiver, or @c nil if the receiver is empty.
  
  @see lastObject
  @see removeFirstObject
@@ -147,9 +146,9 @@
 - (id) firstObject;
 
 /**
- Returns the object at the tail of the list.
+ Returns the last object in the receiver.
  
- @return The object at the tail of the list, or @c nil if the list is empty.
+ @return The last object in the receiver, or @c nil if the receiver is empty.
  
  @see firstObject
  @see removeLastObject
@@ -157,18 +156,18 @@
 - (id) lastObject;
 
 /**
- Returns the lowest indexof a given object, matched using @c isEqual:.
+ Returns the lowest index of a given object, matched using @c isEqual:.
  
- @param anObject The object to be matched and located in the tree.
- @return The index of the first object which is equal to @a anObject. If none of the objects in the list match @a anObject, returns @c CHNotFound.
+ @param anObject The object to be matched and located in the receiver.
+ @return The index of the first object which is equal to @a anObject. If none of the objects in the receiver match @a anObject, returns @c CHNotFound.
  */
 - (NSUInteger) indexOfObject:(id)anObject;
 
 /**
- Returns the lowest indexof a given object, matched using the == operator.
+ Returns the lowest index of a given object, matched using the == operator.
  
- @param anObject The object to be matched and located in the tree.
- @return The index of the first object which is equal to @a anObject. If none of the objects in the list match @a anObject, returns @c CHNotFound.
+ @param anObject The object to be matched and located in the receiver.
+ @return The index of the first object which is equal to @a anObject. If none of the objects in the receiver match @a anObject, returns @c CHNotFound.
  */
 - (NSUInteger) indexOfObjectIdenticalTo:(id)anObject;
 
@@ -176,8 +175,9 @@
  Returns the object located at @a index.
  
  @param index An index from which to retrieve an object.
- @throw NSRangeException If @a index is greater than or equal to the list size.
  @return The object located at index.
+ 
+ @throw NSRangeException If @a index is greater than the number of elements in the receiver.
  
  @see indexOfObject:
  @see indexOfObjectIdenticalTo:
@@ -185,9 +185,9 @@
 - (id) objectAtIndex:(NSUInteger)index;
 
 /**
- Returns an enumerator that accesses each object in the list from front to back.
+ Returns an enumerator that accesses each object in the receiver from front to back.
  
- @return An enumerator that accesses each object in the list from front to back. The enumerator returned is never @c nil; if the list is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
+ @return An enumerator that accesses each object in the receiver from front to back. The enumerator returned is never @c nil; if the receiver is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
  
  @attention The enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
  @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
@@ -203,7 +203,7 @@
 // @{
 
 /**
- Removes the item at the head of the list.
+ Removes the first item in the receiver.
  
  @see firstObject
  @see removeLastObject
@@ -211,7 +211,7 @@
 - (void) removeFirstObject;
 
 /**
- Remove the item at the tail of the list.
+ Remove the last item in the receiver.
  
  @see lastObject
  @see removeFirstObject
@@ -221,9 +221,9 @@
 /**
  Remove @b all occurrences of @a anObject, matched using @c isEqual:.
  
- @param anObject The object to remove from the list.
+ @param anObject The object to remove from the receiver.
  
- If the list is empty, @a anObject is @c nil, or no object matching @a anObject is found, there is no effect, aside from the possible overhead of searching the contents.
+ If the receiver is empty, @a anObject is @c nil, or no object matching @a anObject is found, there is no effect, aside from the possible overhead of searching the contents.
  
  @note Use #indexOfObject: and #removeObjectAtIndex: to search for and remove only a specific match.
  
@@ -235,9 +235,9 @@
 /**
  Remove @b all occurrences of @a anObject, matched using the == operator.
  
- @param anObject The object to remove from the list.
+ @param anObject The object to remove from the receiver.
  
- If the list is empty, @a anObject is @c nil, or no object matching @a anObject is found, there is no effect, aside from the possible overhead of searching the contents.
+ If the receiver is empty, @a anObject is @c nil, or no object matching @a anObject is found, there is no effect, aside from the possible overhead of searching the contents.
  
  @note Use #indexOfObjectIdenticalTo: and #removeObjectAtIndex: to search for and remove only a specific match.
  
@@ -250,7 +250,8 @@
  Remove the object at @a index. To fill the gap, elements beyond @a index have 1 subtracted from their index.
  
  @param index The index from which to remove the object.
- @throw NSRangeException If @a index is greater than or equal to the list size. 
+ 
+ @throw NSRangeException If @a index is greater than the number of elements in the receiver.
  */
 - (void) removeObjectAtIndex:(NSUInteger)index;
 

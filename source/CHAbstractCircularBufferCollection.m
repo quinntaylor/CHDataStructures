@@ -135,7 +135,6 @@ static size_t kCHPointerSize = sizeof(void*);
 
 /**
  @todo Consolidate @c -removeObject: and @c -removeObjectIdenticalTo: methods.
- @todo Add insertObject:atIndex: implementation, even though it's inefficient.
  */
 @implementation CHAbstractCircularBufferCollection
 
@@ -228,26 +227,49 @@ static size_t kCHPointerSize = sizeof(void*);
 #pragma mark Adding Objects
 
 - (void) appendObject:(id)anObject {
-	if (anObject == nil)
-		CHNilArgumentException([self class], _cmd);
-	array[tailIndex] = [anObject retain];
-	incrementIndex(tailIndex);
-	if (headIndex == tailIndex) {
-		array = NSReallocateCollectable(array, kCHPointerSize * arrayCapacity * 2, NSScannedOption);
-		// Copy wrapped-around portion to end of queue and move tail index
-		memcpy(array + arrayCapacity, array, kCHPointerSize * tailIndex);
-		tailIndex += arrayCapacity;
-		arrayCapacity *= 2;
-	}
-	++count;
-	++mutations;
+	[self insertObject:anObject atIndex:count];
 }
 
 - (void) prependObject:(id)anObject {
+	[self insertObject:anObject atIndex:0];
+}
+
+- (void) insertObject:(id)anObject atIndex:(NSUInteger)index {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
-	decrementIndex(headIndex);
-	array[headIndex] = [anObject retain];
+	[anObject retain];
+	if (index == 0) {
+		// To prepend, just move the head backward one slot (wrapping if needed)
+		decrementIndex(headIndex);
+		array[headIndex] = anObject;
+	} else if (index == count) {
+		// To append, just move the tail forward one slot (wrapping if needed)
+		array[tailIndex] = anObject;
+		incrementIndex(tailIndex);
+	} else {
+		if (index > count) {
+			[anObject release];
+			CHIndexOutOfRangeException([self class], _cmd, index, count);
+		}
+		NSUInteger actualIndex = transformIndex(index);
+		if (actualIndex > tailIndex) {
+			// If the buffer wraps and index is between head and end, shift left.
+			memmove(&array[headIndex-1], &array[headIndex],
+					kCHPointerSize * index);
+			decrementIndex(headIndex);
+			decrementIndex(actualIndex); // Head moved back, so does destination
+		}
+		else {
+			// Otherwise, shift everything from given index onward to the right.
+			memmove(&array[actualIndex+1], &array[actualIndex],
+					kCHPointerSize * (tailIndex - actualIndex));
+			incrementIndex(tailIndex);
+		}
+		array[actualIndex] = anObject;
+	}
+	++count;
+	++mutations;	
+	// If this insertion filled the array to capacity, double its size and copy.
 	if (headIndex == tailIndex) {
 		array = NSReallocateCollectable(array, kCHPointerSize * arrayCapacity * 2, NSScannedOption);
 		// Copy wrapped-around portion to end of queue and move tail index
@@ -255,8 +277,6 @@ static size_t kCHPointerSize = sizeof(void*);
 		tailIndex += arrayCapacity;
 		arrayCapacity *= 2;
 	}
-	++count;
-	++mutations;
 }
 
 #pragma mark Querying Contents
@@ -411,7 +431,7 @@ static size_t kCHPointerSize = sizeof(void*);
 	NSUInteger scanIndex = headIndex;
 	while (scanIndex != tailIndex && ![array[scanIndex] isEqual:anObject])
 		incrementIndex(scanIndex);
-	// Bail out here if no objects need to be removed internally.
+	// Bail out here if no objects need to be removed internally (none found)
 	if (scanIndex == tailIndex)
 		return;
 	// Copy individual elements, excluding objects to be removed
@@ -429,8 +449,7 @@ static size_t kCHPointerSize = sizeof(void*);
 	if (!kCHGarbageCollectionNotEnabled) {
 		if (tailIndex > copyIndex) {
 			memset(&array[copyIndex], 0, kCHPointerSize * (tailIndex - copyIndex));
-		}
-		else {
+		} else {
 			memset(array + copyIndex, 0, kCHPointerSize * (arrayCapacity - copyIndex));
 			memset(array,             0, kCHPointerSize * tailIndex);
 		}
@@ -455,7 +474,7 @@ static size_t kCHPointerSize = sizeof(void*);
 	NSUInteger scanIndex = headIndex;
 	while (scanIndex != tailIndex && array[scanIndex] != anObject)
 		incrementIndex(scanIndex);
-	// Bail out here if no objects need to be removed internally.
+	// Bail out here if no objects need to be removed internally (none found)
 	if (scanIndex == tailIndex)
 		return;
 	// Copy individual elements, excluding objects to be removed
@@ -473,8 +492,7 @@ static size_t kCHPointerSize = sizeof(void*);
 	if (!kCHGarbageCollectionNotEnabled) {
 		if (tailIndex > copyIndex) {
 			memset(&array[copyIndex], 0, kCHPointerSize * (tailIndex - copyIndex));
-		}
-		else {
+		} else {
 			memset(array + copyIndex, 0, kCHPointerSize * (arrayCapacity - copyIndex));
 			memset(array,             0, kCHPointerSize * tailIndex);
 		}
@@ -501,21 +519,19 @@ static size_t kCHPointerSize = sizeof(void*);
 		array[actualIndex] = nil; // Let GC do its thing
 		decrementIndex(tailIndex);
 	} else {
-		// If the buffer wraps and index is between head and end, shift right.
 		if (actualIndex > tailIndex) {
+			// If the buffer wraps and index is in "the right side", shift right.
 			memmove(&array[headIndex+1], &array[headIndex],
 					kCHPointerSize * index);
-			//array[headIndex] = nil; // for debugging purposes only
+			array[headIndex] = nil; // Prevents possible memory leak under GC
 			incrementIndex(headIndex);
-		}
-		// Otherwise, shift everything from given index to the tail to the left.
-		else {
+		} else {
+			// Otherwise, shift everything from index to tail one to the left.
 			memmove(&array[actualIndex], &array[actualIndex+1],
 					kCHPointerSize * (tailIndex - actualIndex - 1));
 			decrementIndex(tailIndex);
-			//array[tailIndex] = nil; // for debugging purposes only
+			array[tailIndex] = nil; // Prevents possible memory leak under GC
 		}
-		// (In both cases, the pointer to the removed object is overwritten.)
 	}
 	--count;
 	++mutations;

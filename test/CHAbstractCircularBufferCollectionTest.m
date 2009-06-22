@@ -15,8 +15,7 @@
 @interface CHAbstractCircularBufferCollection (Test)
 
 - (NSUInteger) capacity;
-- (NSUInteger) headIndex;
-- (NSUInteger) tailIndex;
+- (NSUInteger) distanceFromHeadToTail;
 
 @end
 
@@ -26,12 +25,8 @@
 	return arrayCapacity;
 }
 
-- (NSUInteger) headIndex {
-	return headIndex;
-}
-
-- (NSUInteger) tailIndex {
-	return tailIndex;
+- (NSUInteger) distanceFromHeadToTail {
+	return (tailIndex - headIndex + arrayCapacity) % arrayCapacity;
 }
 
 @end
@@ -62,11 +57,17 @@
 	[buffer release];
 }
 
+// This method checks tail-head (accounting for wrapping) against the count.
+// This assumes
+- (void) checkCountMatchesDistanceFromHeadToTail:(NSUInteger) expectedValue {
+	STAssertEquals([buffer count], expectedValue, @"Wrong count");
+	STAssertEquals([buffer distanceFromHeadToTail], expectedValue,
+	               @"Wrong distance between head and tail indices.");
+}
+
 - (void) testInit {
-	STAssertEquals([buffer capacity],  (NSUInteger)16, @"Wrong capacity.");
-	STAssertEquals([buffer headIndex], (NSUInteger)0, @"Wrong head index.");
-	STAssertEquals([buffer tailIndex], (NSUInteger)0, @"Wrong tail index.");
-	STAssertEquals([buffer count],     (NSUInteger)0, @"Wrong count");
+	STAssertEquals([buffer capacity], (NSUInteger)16, @"Wrong capacity.");
+	[self checkCountMatchesDistanceFromHeadToTail:0];
 }
 
 - (void) testInitWithArray {
@@ -75,36 +76,28 @@
 		[array addObject:[NSNumber numberWithInt:i]];
 	[buffer release];
 	buffer = [[CHAbstractCircularBufferCollection alloc] initWithArray:array];
-	STAssertEquals([buffer count], (NSUInteger)15, @"Wrong count");
 	STAssertEquals([buffer capacity], (NSUInteger)16, @"Wrong capacity");
-	STAssertEquals([buffer headIndex], (NSUInteger)0, @"Wrong head index.");
-	STAssertEquals([buffer tailIndex], (NSUInteger)15, @"Wrong tail index.");
+	[self checkCountMatchesDistanceFromHeadToTail:15];
 	
 	[array addObject:[NSNumber numberWithInt:16]];
 	[buffer release];
 	buffer = [[CHAbstractCircularBufferCollection alloc] initWithArray:array];
-	STAssertEquals([buffer count], (NSUInteger)16, @"Wrong count");
 	STAssertEquals([buffer capacity], (NSUInteger)32, @"Wrong capacity");
-	STAssertEquals([buffer headIndex], (NSUInteger)0, @"Wrong head index.");
-	STAssertEquals([buffer tailIndex], (NSUInteger)16, @"Wrong tail index.");
+	[self checkCountMatchesDistanceFromHeadToTail:16];
 	
 	for (int i = 17; i <= 33; i++)
 		[array addObject:[NSNumber numberWithInt:i]];
 	[buffer release];
 	buffer = [[CHAbstractCircularBufferCollection alloc] initWithArray:array];
-	STAssertEquals([buffer count], (NSUInteger)33, @"Wrong count");
 	STAssertEquals([buffer capacity], (NSUInteger)64, @"Wrong capacity");
-	STAssertEquals([buffer headIndex], (NSUInteger)0, @"Wrong head index.");
-	STAssertEquals([buffer tailIndex], (NSUInteger)33, @"Wrong tail index.");
+	[self checkCountMatchesDistanceFromHeadToTail:33];
 }
 
 - (void) testInitWithCapacity {
 	[buffer release];
 	buffer = [[CHAbstractCircularBufferCollection alloc] initWithCapacity:8];
-	STAssertEquals([buffer capacity],  (NSUInteger)8, @"Wrong capacity.");
-	STAssertEquals([buffer headIndex], (NSUInteger)0, @"Wrong head index.");
-	STAssertEquals([buffer tailIndex], (NSUInteger)0, @"Wrong tail index.");
-	STAssertEquals([buffer count],     (NSUInteger)0, @"Wrong count");
+	STAssertEquals([buffer capacity], (NSUInteger)8, @"Wrong capacity.");
+	[self checkCountMatchesDistanceFromHeadToTail:0];
 }
 
 #pragma mark Insertion
@@ -113,11 +106,7 @@
 	[buffer appendObject:@"A"];
 	[buffer appendObject:@"B"];
 	[buffer appendObject:@"C"];
-	STAssertEquals([buffer count], (NSUInteger)3, @"Wrong object count");
-	STAssertEquals([buffer headIndex], (NSUInteger)0,
-				   @"Wrong position for head index");
-	STAssertEquals([buffer tailIndex], (NSUInteger)3,
-				   @"Wrong position for tail index");
+	[self checkCountMatchesDistanceFromHeadToTail:3];
 	
 	// Force expansion of original capacity
 	[buffer release];
@@ -134,11 +123,7 @@
 	[buffer prependObject:@"A"];
 	[buffer prependObject:@"B"];
 	[buffer prependObject:@"C"];
-	STAssertEquals([buffer count], (NSUInteger)3, @"Wrong object count");
-	STAssertEquals([buffer headIndex], [buffer capacity] - 3,
-				   @"Wrong position for head index");
-	STAssertEquals([buffer tailIndex], (NSUInteger)0,
-				   @"Wrong position for tail index");
+	[self checkCountMatchesDistanceFromHeadToTail:3];
 	
 	// Force expansion of original capacity
 	[buffer release];
@@ -149,6 +134,39 @@
 	for (int i = 17; i <= 33; i++)
 		[buffer prependObject:[NSNumber numberWithInt:i]];
 	STAssertEquals([buffer capacity], (NSUInteger)64, @"Wrong capacity");
+}
+
+- (void) testInsertObjectAtIndex {
+	// Test error conditions
+	STAssertThrows([buffer insertObject:nil atIndex:0],
+				   @"Should raise an exception on nil.");
+	STAssertThrows([buffer insertObject:@"Z" atIndex:-1],
+				   @"Should raise NSRangeException.");
+	STAssertThrows([buffer insertObject:@"Z" atIndex:1],
+				   @"Should raise NSRangeException.");
+	
+	e = [abc objectEnumerator];
+	while (anObject = [e nextObject])
+		[buffer appendObject:anObject];
+	[self checkCountMatchesDistanceFromHeadToTail:[abc count]];
+
+	// Try inserting at the beginning
+	[buffer insertObject:@"X" atIndex:0];
+	[self checkCountMatchesDistanceFromHeadToTail:[abc count]+1];
+	STAssertEqualObjects([buffer objectAtIndex:0], @"X", @"-objectAtIndex: is wrong.");
+	// Try inserting at the end
+	[buffer insertObject:@"Y" atIndex:4];
+	[self checkCountMatchesDistanceFromHeadToTail:[abc count]+2];
+	STAssertEqualObjects([buffer objectAtIndex:4], @"Y", @"-objectAtIndex: is wrong.");
+	// Try inserting in the middle
+	[buffer insertObject:@"Z" atIndex:2];
+	[self checkCountMatchesDistanceFromHeadToTail:[abc count]+3];
+	STAssertEqualObjects([buffer objectAtIndex:0], @"X", @"-objectAtIndex: is wrong.");
+	STAssertEqualObjects([buffer objectAtIndex:1], @"A", @"-objectAtIndex: is wrong.");
+	STAssertEqualObjects([buffer objectAtIndex:2], @"Z", @"-objectAtIndex: is wrong.");
+	STAssertEqualObjects([buffer objectAtIndex:3], @"B", @"-objectAtIndex: is wrong.");
+	STAssertEqualObjects([buffer objectAtIndex:4], @"C", @"-objectAtIndex: is wrong.");
+	STAssertEqualObjects([buffer objectAtIndex:5], @"Y", @"-objectAtIndex: is wrong.");
 }
 		
 #pragma mark Access
@@ -174,8 +192,7 @@
 	e = [abc objectEnumerator];
 	while (anObject = [e nextObject])
 		[buffer removeFirstObject];
-	STAssertEquals([buffer headIndex], (NSUInteger)3, @"Wrong head index.");
-	STAssertEquals([buffer tailIndex], (NSUInteger)3, @"Wrong tail index.");
+	[self checkCountMatchesDistanceFromHeadToTail:0];
 	NSMutableArray *objects = [NSMutableArray array];
 	for (int i = 1; i < 16; i++) {
 		[objects addObject:[NSNumber numberWithInt:i]];
@@ -420,14 +437,10 @@
 	e = [abc objectEnumerator];
 	while (anObject = [e nextObject])
 		[buffer appendObject:anObject];
-	STAssertEquals([buffer count], (NSUInteger)3, @"Incorrect count.");
-	STAssertEquals([buffer headIndex], (NSUInteger)0, @"Wrong head index.");
-	STAssertEquals([buffer tailIndex], (NSUInteger)3, @"Wrong tail index.");
+	[self checkCountMatchesDistanceFromHeadToTail:3];
 
 	[buffer removeAllObjects];
-	STAssertEquals([buffer count], (NSUInteger)0, @"Incorrect count.");
-	STAssertEquals([buffer headIndex], (NSUInteger)0, @"Wrong head index.");
-	STAssertEquals([buffer tailIndex], (NSUInteger)0, @"Wrong tail index.");
+	[self checkCountMatchesDistanceFromHeadToTail:0];
 	
 	// Test whether circular buffer contracts when all objects are removed.
 	STAssertEquals([buffer capacity], (NSUInteger)16, @"Wrong capacity.");
@@ -519,7 +532,6 @@
 	[buffer removeObjectIdenticalTo:b];
 	STAssertEquals([buffer count], (NSUInteger)1, @"Incorrect count.");
 
-	// Test removing all instances of an object
 	// Test removing all instances of an object in various scenarios
 	[self removeObjectSetup];
 	NSEnumerator *testArrays = [[self removeObjectTestArrays] objectEnumerator];
@@ -649,8 +661,7 @@
 		[buffer appendObject:anObject];
 		[buffer removeFirstObject];
 	}
-	STAssertEquals([buffer headIndex], (NSUInteger)3, @"Wrong head index.");
-	STAssertEquals([buffer tailIndex], (NSUInteger)3, @"Wrong tail index.");
+	[self checkCountMatchesDistanceFromHeadToTail:0];
 	for (number = 1; number < 16; number++)
 		[buffer appendObject:[NSNumber numberWithInt:number]];
 	count = 0;
