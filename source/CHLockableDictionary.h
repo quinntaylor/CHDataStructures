@@ -186,7 +186,7 @@
 - (void) removeAllObjects;
 
 /**
- Removes a given key and its associated value from the receiver.
+ Remove a given key and its associated value from the receiver.
  
  @param aKey The key to remove.
  

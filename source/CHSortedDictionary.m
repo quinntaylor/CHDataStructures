@@ -27,14 +27,11 @@
 
 - (id) initWithCoder:(NSCoder *)decoder {
 	if ((self = [super initWithCoder:decoder]) == nil) return nil;
-	sortedKeys = [[decoder decodeObjectForKey:@"sortedKeys"] retain];
+	sortedKeys = [[CHAVLTree alloc] initWithArray:[(NSDictionary*)dictionary allKeys]];
 	return self;
 }
 
-- (void) encodeWithCoder:(NSCoder *)encoder {
-	[super encodeWithCoder:encoder];
-	[encoder encodeObject:sortedKeys forKey:@"sortedKeys"];
-}
+// The -encodeWithCoder: inherited from CHLockableDictionary works fine here.
 
 #pragma mark Adding Objects
 
