@@ -235,22 +235,20 @@ static size_t kCHPointerSize = sizeof(void*);
 }
 
 - (void) insertObject:(id)anObject atIndex:(NSUInteger)index {
+	if (index > count)
+		CHIndexOutOfRangeException([self class], _cmd, index, count);
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
 	[anObject retain];
-	if (index == 0) {
-		// To prepend, just move the head backward one slot (wrapping if needed)
-		decrementIndex(headIndex);
-		array[headIndex] = anObject;
-	} else if (index == count) {
+	if (index == count || count == 0) {
 		// To append, just move the tail forward one slot (wrapping if needed)
 		array[tailIndex] = anObject;
 		incrementIndex(tailIndex);
+	} else if (index == 0) {
+		// To prepend, just move the head backward one slot (wrapping if needed)
+		decrementIndex(headIndex);
+		array[headIndex] = anObject;
 	} else {
-		if (index > count) {
-			[anObject release];
-			CHIndexOutOfRangeException([self class], _cmd, index, count);
-		}
 		NSUInteger actualIndex = transformIndex(index);
 		if (actualIndex > tailIndex) {
 			// If the buffer wraps and index is between head and end, shift left.

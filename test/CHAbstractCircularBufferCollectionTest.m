@@ -145,28 +145,29 @@
 	STAssertThrows([buffer insertObject:@"Z" atIndex:1],
 				   @"Should raise NSRangeException.");
 	
-	e = [abc objectEnumerator];
+	e = [abc reverseObjectEnumerator];
 	while (anObject = [e nextObject])
-		[buffer appendObject:anObject];
-	[self checkCountMatchesDistanceFromHeadToTail:[abc count]];
-
-	// Try inserting at the beginning
-	[buffer insertObject:@"X" atIndex:0];
+		[buffer prependObject:anObject];
+	[buffer appendObject:@"D"];
 	[self checkCountMatchesDistanceFromHeadToTail:[abc count]+1];
-	STAssertEqualObjects([buffer objectAtIndex:0], @"X", @"-objectAtIndex: is wrong.");
-	// Try inserting at the end
-	[buffer insertObject:@"Y" atIndex:4];
+	
+	// Note: Inserting at the front and back are covered by prepend/append tests
+
+	// Try inserting in the middle within both halves of a wraped-around buffer
+	[buffer insertObject:@"X" atIndex:1];
 	[self checkCountMatchesDistanceFromHeadToTail:[abc count]+2];
-	STAssertEqualObjects([buffer objectAtIndex:4], @"Y", @"-objectAtIndex: is wrong.");
-	// Try inserting in the middle
-	[buffer insertObject:@"Z" atIndex:2];
+	[buffer insertObject:@"Y" atIndex:3];
 	[self checkCountMatchesDistanceFromHeadToTail:[abc count]+3];
-	STAssertEqualObjects([buffer objectAtIndex:0], @"X", @"-objectAtIndex: is wrong.");
-	STAssertEqualObjects([buffer objectAtIndex:1], @"A", @"-objectAtIndex: is wrong.");
-	STAssertEqualObjects([buffer objectAtIndex:2], @"Z", @"-objectAtIndex: is wrong.");
-	STAssertEqualObjects([buffer objectAtIndex:3], @"B", @"-objectAtIndex: is wrong.");
+	[buffer insertObject:@"Z" atIndex:5];
+	[self checkCountMatchesDistanceFromHeadToTail:[abc count]+4];
+	
+	STAssertEqualObjects([buffer objectAtIndex:0], @"A", @"-objectAtIndex: is wrong.");
+	STAssertEqualObjects([buffer objectAtIndex:1], @"X", @"-objectAtIndex: is wrong.");
+	STAssertEqualObjects([buffer objectAtIndex:2], @"B", @"-objectAtIndex: is wrong.");
+	STAssertEqualObjects([buffer objectAtIndex:3], @"Y", @"-objectAtIndex: is wrong.");
 	STAssertEqualObjects([buffer objectAtIndex:4], @"C", @"-objectAtIndex: is wrong.");
-	STAssertEqualObjects([buffer objectAtIndex:5], @"Y", @"-objectAtIndex: is wrong.");
+	STAssertEqualObjects([buffer objectAtIndex:5], @"Z", @"-objectAtIndex: is wrong.");
+	STAssertEqualObjects([buffer objectAtIndex:6], @"D", @"-objectAtIndex: is wrong.");
 }
 
 - (void) testExchangeObjectAtIndexWithObjectAtIndex {
@@ -582,20 +583,24 @@
 - (void) testRemoveObjectAtIndex {
 	STAssertThrows([buffer removeObjectAtIndex:0],
 				   @"Should raise NSRangeException.");
-	e = [abc objectEnumerator];
+	e = [abc reverseObjectEnumerator];
 	while (anObject = [e nextObject])
-		[buffer appendObject:anObject];
-	STAssertThrows([buffer removeObjectAtIndex:[abc count]],
+		[buffer prependObject:anObject];
+	[buffer appendObject:@"D"];
+	STAssertThrows([buffer removeObjectAtIndex:[abc count]+1],
 				   @"Should raise NSRangeException.");
 	
-	STAssertNoThrow([buffer removeObjectAtIndex:1], @"Should be no exception.");
-	STAssertEquals([buffer count], (NSUInteger)2, @"Wrong count.");
+	STAssertNoThrow([buffer removeObjectAtIndex:2], @"Should be no exception.");
+	STAssertEquals([buffer count], [abc count], @"Wrong count.");
 
 	STAssertNoThrow([buffer removeObjectAtIndex:1], @"Should be no exception.");
-	STAssertEquals([buffer count], (NSUInteger)1, @"Wrong count.");
+	STAssertEquals([buffer count], [abc count]-1, @"Wrong count.");
 
+	STAssertNoThrow([buffer removeObjectAtIndex:1], @"Should be no exception.");
+	STAssertEquals([buffer count], [abc count]-2, @"Wrong count.");
+	
 	STAssertNoThrow([buffer removeObjectAtIndex:0], @"Should be no exception.");
-	STAssertEquals([buffer count], (NSUInteger)0, @"Wrong count.");
+	STAssertEquals([buffer count], [abc count]-3, @"Wrong count.");
 	
 	e = [fifteen objectEnumerator];
 	while (anObject = [e nextObject])
