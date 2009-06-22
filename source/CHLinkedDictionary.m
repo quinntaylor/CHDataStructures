@@ -25,13 +25,13 @@
 	return self;
 }
 
-- (id) initWithCoder:(NSCoder *)decoder {
+- (id) initWithCoder:(NSCoder*)decoder {
 	if ((self = [super initWithCoder:decoder]) == nil) return nil;
 	keyOrdering = [[decoder decodeObjectForKey:@"keyOrdering"] retain];
 	return self;
 }
 
-- (void) encodeWithCoder:(NSCoder *)encoder {
+- (void) encodeWithCoder:(NSCoder*)encoder {
 	[super encodeWithCoder:encoder];
 	[encoder encodeObject:keyOrdering forKey:@"keyOrdering"];
 }

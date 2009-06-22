@@ -34,19 +34,19 @@
 
 #pragma mark <NSCoding>
 
-- (id) initWithCoder:(NSCoder *)decoder {
+- (id) initWithCoder:(NSCoder*)decoder {
 	if ([super init] == nil) return nil;
 	list = [[decoder decodeObjectForKey:@"list"] retain];
 	return self;
 }
 
-- (void) encodeWithCoder:(NSCoder *)encoder {
+- (void) encodeWithCoder:(NSCoder*)encoder {
 	[encoder encodeObject:list forKey:@"list"];
 }
 
 #pragma mark <NSCopying>
 
-- (id) copyWithZone:(NSZone *)zone {
+- (id) copyWithZone:(NSZone*)zone {
 	id copy = [[[self class] allocWithZone:zone] init];
 #if MAC_OS_X_VERSION_10_5_AND_LATER
 	for (id anObject in self)

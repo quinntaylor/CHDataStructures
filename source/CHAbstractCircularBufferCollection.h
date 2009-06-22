@@ -157,9 +157,9 @@
 
 #pragma mark Adopted Protocols
 
-- (void) encodeWithCoder:(NSCoder *)encoder;
-- (id) initWithCoder:(NSCoder *)decoder;
-- (id) copyWithZone:(NSZone *)zone;
+- (void) encodeWithCoder:(NSCoder*)encoder;
+- (id) initWithCoder:(NSCoder*)decoder;
+- (id) copyWithZone:(NSZone*)zone;
 #if MAC_OS_X_VERSION_10_5_AND_LATER
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf

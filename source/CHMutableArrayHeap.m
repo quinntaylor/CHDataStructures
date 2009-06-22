@@ -72,7 +72,7 @@
 
 #pragma mark <NSCoding>
 
-- (id) initWithCoder:(NSCoder *)decoder {
+- (id) initWithCoder:(NSCoder*)decoder {
 	if ([super initWithCoder:decoder] == nil) return nil;
 	if ([decoder decodeBoolForKey:@"sortAscending"])
 		sortOrder = NSOrderedAscending;
@@ -81,14 +81,14 @@
 	return self;
 }
 
-- (void) encodeWithCoder:(NSCoder *)encoder {
+- (void) encodeWithCoder:(NSCoder*)encoder {
 	[super encodeWithCoder:encoder];
 	[encoder encodeBool:(sortOrder == NSOrderedAscending) forKey:@"sortAscending"];
 }
 
 #pragma mark <NSCopying>
 
-- (id) copyWithZone:(NSZone *)zone {
+- (id) copyWithZone:(NSZone*)zone {
 	return [[[self class] allocWithZone:zone] initWithOrdering:sortOrder array:array];
 }
 

@@ -88,7 +88,7 @@
  
  @see NSCoding protocol
  */
-- (id) initWithCoder:(NSCoder *)decoder;
+- (id) initWithCoder:(NSCoder*)decoder;
 
 /**
  Encodes data from the receiver using a given keyed archiver.
@@ -97,7 +97,7 @@
  
  @see NSCoding protocol
  */
-- (void) encodeWithCoder:(NSCoder *)encoder;
+- (void) encodeWithCoder:(NSCoder*)encoder;
 
 // @}
 #pragma mark <NSCopying>

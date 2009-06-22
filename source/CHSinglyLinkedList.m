@@ -150,18 +150,18 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 
 #pragma mark <NSCoding>
 
-- (id) initWithCoder:(NSCoder *)decoder {
+- (id) initWithCoder:(NSCoder*)decoder {
 	return [self initWithArray:[decoder decodeObjectForKey:@"objects"]];
 }
 
-- (void) encodeWithCoder:(NSCoder *)encoder {
+- (void) encodeWithCoder:(NSCoder*)encoder {
 	NSArray *array = [[self objectEnumerator] allObjects];
 	[encoder encodeObject:array forKey:@"objects"];
 }
 
 #pragma mark <NSCopying>
 
-- (id) copyWithZone:(NSZone *)zone {
+- (id) copyWithZone:(NSZone*)zone {
 	CHSinglyLinkedList *newList = [[CHSinglyLinkedList allocWithZone:zone] init];
 #if MAC_OS_X_VERSION_10_5_AND_LATER
 	for (id anObject in self)

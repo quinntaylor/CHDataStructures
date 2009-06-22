@@ -25,7 +25,7 @@
 	return self;
 }
 
-- (id) initWithCoder:(NSCoder *)decoder {
+- (id) initWithCoder:(NSCoder*)decoder {
 	if ((self = [super initWithCoder:decoder]) == nil) return nil;
 	sortedKeys = [[CHAVLTree alloc] initWithArray:[(NSDictionary*)dictionary allKeys]];
 	return self;
