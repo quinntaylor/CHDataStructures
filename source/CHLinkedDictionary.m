@@ -82,6 +82,11 @@
 	return [keyOrdering objectEnumerator];
 }
 
+- (id) objectForKeyAtIndex:(NSUInteger)index {
+	// Note: -keyAtIndex: will raise an exception if the index is invalid.
+	return [self objectForKey:[self keyAtIndex:index]];
+}
+
 - (NSEnumerator*) reverseKeyEnumerator {
 	return [keyOrdering reverseObjectEnumerator];
 }
@@ -101,8 +106,8 @@
 }
 
 - (void) removeObjectForKeyAtIndex:(NSUInteger)index {
-	id theKey = [self keyAtIndex:index]; // Raises exception for invalid index.
-	CFDictionaryRemoveValue(dictionary, theKey);
+	// Note: -keyAtIndex: will raise an exception if the index is invalid.
+	CFDictionaryRemoveValue(dictionary, [self keyAtIndex:index]);
 	[keyOrdering removeObjectAtIndex:index];
 }
 

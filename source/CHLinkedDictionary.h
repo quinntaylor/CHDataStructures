@@ -115,6 +115,20 @@
 - (id) keyAtIndex:(NSUInteger)index;
 
 /**
+ Returns the value for the key at the specified index, based on insertion order.
+ 
+ @param index The insertion-order index of the key for the value to retrieve.
+ @return The value for the key at the specified index, based on insertion order.
+ @throw NSRangeException If @a index is greater than or equal to the key count.
+ 
+ @see indexOfKey:
+ @see keyAtIndex:
+ @see objectForKey:
+ @see removeObjectForKeyAtIndex:
+ */
+- (id) objectForKeyAtIndex:(NSUInteger)index;
+
+/**
  Returns an enumerator that lets you access each key in the receiver in reverse order.
  
  @return An enumerator that lets you access each key in the receiver in reverse order. The enumerator returned is never @c nil; if the dictionary is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
@@ -144,6 +158,7 @@
  
  @see indexOfKey:
  @see keyAtIndex:
+ @see objectForKeyAtIndex:
  @see removeObjectForKey:
  */
 - (void) removeObjectForKeyAtIndex:(NSUInteger)index;
