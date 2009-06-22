@@ -130,7 +130,7 @@
 - (id) objectAtIndex:(NSUInteger)index;
 
 /**
- Remove the object at a given index. Elements on the non-wrapped end of the buffer are shifted one spot  to fill the gap.
+ Remove the object at a given index. Elements on the non-wrapped end of the buffer are shifted one spot to fill the gap.
  
  @param index The index from which to remove the object.
  

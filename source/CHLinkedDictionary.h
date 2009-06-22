@@ -131,4 +131,22 @@
 - (NSEnumerator*) reverseKeyEnumerator;
 
 // @}
+#pragma mark Removing Objects
+/** @name Removing Objects */
+// @{
+
+/**
+ Removes the key at a given index and its associated value from the receiver. Elements on the non-wrapped end of the buffer are shifted one spot to fill the gap.
+ 
+ @param index The index from which to remove the key.
+ 
+ @throw NSRangeException If @a index is greater than the number of elements in the receiver.
+ 
+ @see indexOfKey:
+ @see keyAtIndex:
+ @see removeObjectForKey:
+ */
+- (void) removeObjectForKeyAtIndex:(NSUInteger)index;
+
+// @}
 @end

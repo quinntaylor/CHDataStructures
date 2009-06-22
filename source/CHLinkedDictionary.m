@@ -9,7 +9,7 @@
  */
 
 #import "CHLinkedDictionary.h"
-#import "CHDoublyLinkedList.h"
+#import "CHAbstractCircularBufferCollection.h"
 
 @implementation CHLinkedDictionary
 
@@ -20,7 +20,7 @@
 
 - (id) initWithObjects:(id*)objects forKeys:(id*)keys count:(NSUInteger)count {
 	// Create collection for ordering keys first, since super will add objects.
-	keyOrdering = [[CHDoublyLinkedList alloc] init];
+	keyOrdering = [[CHAbstractCircularBufferCollection alloc] init];
 	if ((self = [super initWithObjects:objects forKeys:keys count:count]) == nil) return nil;
 	return self;
 }
@@ -95,9 +95,15 @@
 
 - (void) removeObjectForKey:(id)aKey {
 	if (CFDictionaryContainsKey(dictionary, aKey)) {
-		[keyOrdering removeObject:aKey];
 		CFDictionaryRemoveValue(dictionary, aKey);
+		[keyOrdering removeObject:aKey];
 	}
+}
+
+- (void) removeObjectForKeyAtIndex:(NSUInteger)index {
+	id theKey = [self keyAtIndex:index]; // Raises exception for invalid index.
+	CFDictionaryRemoveValue(dictionary, theKey);
+	[keyOrdering removeObjectAtIndex:index];
 }
 
 @end
