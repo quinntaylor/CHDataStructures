@@ -168,6 +168,24 @@
 	STAssertEqualObjects([buffer objectAtIndex:4], @"C", @"-objectAtIndex: is wrong.");
 	STAssertEqualObjects([buffer objectAtIndex:5], @"Y", @"-objectAtIndex: is wrong.");
 }
+
+- (void) testExchangeObjectAtIndexWithObjectAtIndex {
+	STAssertThrows([buffer exchangeObjectAtIndex:0 withObjectAtIndex:1],
+				   @"Should raise exception, collection is empty.");
+	STAssertThrows([buffer exchangeObjectAtIndex:1 withObjectAtIndex:0],
+				   @"Should raise exception, collection is empty.");
+	
+	e = [abc objectEnumerator];
+	while (anObject = [e nextObject])
+		[buffer appendObject:anObject];
+	
+	[buffer exchangeObjectAtIndex:1 withObjectAtIndex:1];
+	STAssertEqualObjects([buffer allObjects], abc,
+	                     @"Should have no effect.");
+	[buffer exchangeObjectAtIndex:0 withObjectAtIndex:2];
+	STAssertEqualObjects([buffer allObjects], [[abc reverseObjectEnumerator] allObjects],
+	                     @"Should swap first and last element.");
+}
 		
 #pragma mark Access
 

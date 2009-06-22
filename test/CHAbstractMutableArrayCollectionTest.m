@@ -150,6 +150,25 @@
 	STAssertFalse([collection containsObjectIdenticalTo:@"Z"], @"Should return NO.");
 }
 
+- (void) testExchangeObjectAtIndexWithObjectAtIndex {
+	STAssertThrows([collection exchangeObjectAtIndex:0 withObjectAtIndex:1],
+				   @"Should raise exception, collection is empty.");
+	STAssertThrows([collection exchangeObjectAtIndex:1 withObjectAtIndex:0],
+				   @"Should raise exception, collection is empty.");
+	
+	NSArray *abc = [NSArray arrayWithObjects:@"A", @"B", @"C", nil];
+	e = [abc objectEnumerator];
+	while (anObject = [e nextObject])
+		[collection addObject:anObject];
+	
+	[collection exchangeObjectAtIndex:1 withObjectAtIndex:1];
+	STAssertEqualObjects([collection allObjects], abc,
+	                     @"Should have no effect.");
+	[collection exchangeObjectAtIndex:0 withObjectAtIndex:2];
+	STAssertEqualObjects([collection allObjects], [[abc reverseObjectEnumerator] allObjects],
+	                     @"Should swap first and last element.");
+}
+
 - (void) testIndexOfObject {
 	e = [objects objectEnumerator];
 	while (anObject = [e nextObject])

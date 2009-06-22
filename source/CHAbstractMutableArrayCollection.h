@@ -35,20 +35,93 @@
 }
 
 - (id) initWithArray:(NSArray*)anArray;
+
+- (NSArray*) allObjects;
+- (BOOL) containsObject:(id)anObject;
+- (BOOL) containsObjectIdenticalTo:(id)anObject;
 - (NSUInteger) count;
 - (NSEnumerator*) objectEnumerator;
+/**
+ Returns an enumerator that accesses each object in the receiver from back to front.
+ 
+ @return An enumerator that accesses each object in the receiver from back to front. The enumerator returned is never @c nil; if the receiver is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
+ 
+ @attention The enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
+ @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
+ */
 - (NSEnumerator*) reverseObjectEnumerator;
-- (NSArray*) allObjects;
+
 - (void) removeAllObjects;
 - (void) removeObject:(id)anObject;
 - (void) removeObjectIdenticalTo:(id)anObject;
-- (void) removeObjectAtIndex:(NSUInteger)index;
 
-- (BOOL) containsObject:(id)anObject;
-- (BOOL) containsObjectIdenticalTo:(id)anObject;
+#pragma mark Indexed Operations
+// These operations aren't a part of the stack/queue/deque protocols, but are
+// provided as a convenience for working directly with a circular buffer.
+
+/**
+ Exchange the objects in the receiver at given indexes.
+ 
+ @param idx1 The index of the object to replace with the object at @a idx2.
+ @param idx2 The index of the object to replace with the object at @a idx1.
+ 
+ @throw NSRangeException If @a idx1 or @idx2 is greater than the number of elements in the receiver.
+ 
+ @see indexOfObject:
+ @see objectAtIndex:
+ */
+- (void) exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2;
+
+/**
+ Returns the lowest index of a given object, matched using @c isEqual:.
+ 
+ @param anObject The object to be matched and located in the receiver.
+ @return The index of the first object which is equal to @a anObject. If none of the objects in the receiver match @a anObject, returns @c CHNotFound.
+ 
+ @see indexOfObjectIdenticalTo:
+ @see objectAtIndex:
+ @see removeObjectAtIndex:
+ */
 - (NSUInteger) indexOfObject:(id)anObject;
+
+/**
+ Returns the lowest index of a given object, matched using the == operator.
+ 
+ @param anObject The object to be matched and located in the receiver.
+ @return The index of the first object which is equal to @a anObject. If none of the objects in the receiver match @a anObject, returns @c CHNotFound.
+ 
+ @see indexOfObject:
+ @see objectAtIndex:
+ @see removeObjectAtIndex:
+ */
 - (NSUInteger) indexOfObjectIdenticalTo:(id)anObject;
+
+/**
+ Returns the object located at @a index in the receiver.
+ 
+ @param index An index from which to retrieve an object.
+ @return The object located at @a index.
+ 
+ @throw NSRangeException If @a index is greater than the number of elements in the receiver.
+ 
+ @see indexOfObject:
+ @see indexOfObjectIdenticalTo:
+ @see removeObjectAtIndex:
+ */
 - (id) objectAtIndex:(NSUInteger)index;
+
+/**
+ Remove the object at a given index from the receiver.
+ 
+ @param index The index from which to remove the object.
+ 
+ @throw NSRangeException If @a index is greater than the number of elements in the receiver.
+ 
+ @see indexOfObject:
+ @see indexOfObjectIdenticalTo:
+ @see objectAtIndex:
+ */
+- (void) removeObjectAtIndex:(NSUInteger)index;
 
 #pragma mark Adopted Protocols
 

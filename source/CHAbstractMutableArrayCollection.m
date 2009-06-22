@@ -73,6 +73,10 @@
 	return ([array indexOfObjectIdenticalTo:anObject] != NSNotFound);
 }
 
+- (void) exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2 {
+	[array exchangeObjectAtIndex:idx1 withObjectAtIndex:idx2];
+}
+
 - (NSUInteger) indexOfObject:(id)anObject {
 	return [array indexOfObject:anObject];
 }

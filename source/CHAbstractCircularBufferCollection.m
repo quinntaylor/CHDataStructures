@@ -279,6 +279,21 @@ static size_t kCHPointerSize = sizeof(void*);
 	}
 }
 
+- (void) exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2 {
+	if (idx1 > count)
+		CHIndexOutOfRangeException([self class], _cmd, idx1, count);
+	if (idx2 > count)
+		CHIndexOutOfRangeException([self class], _cmd, idx2, count);
+	if (idx1 != idx2) {
+		NSUInteger realIdx1 = transformIndex(idx1);
+		NSUInteger realIdx2 = transformIndex(idx2);
+		id tempObject = array[realIdx1];
+		array[realIdx1] = array[realIdx2];
+		array[realIdx2] = tempObject;
+		++mutations;
+	}
+}
+
 #pragma mark Querying Contents
 
 - (NSArray*) allObjects {

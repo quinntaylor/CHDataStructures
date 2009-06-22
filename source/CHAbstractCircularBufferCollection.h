@@ -75,8 +75,21 @@
 - (void) removeObjectIdenticalTo:(id)anObject;
 
 #pragma mark Indexed Operations
-// These operations aren't strictly a part of stack/queue/deque subclasses, but
-// are provided as a convenience for working directly with a circular buffer.
+// These operations aren't a part of the stack/queue/deque protocols, but are
+// provided as a convenience for working directly with a circular buffer.
+
+/**
+ Exchange the objects in the receiver at given indexes.
+ 
+ @param idx1 The index of the object to replace with the object at @a idx2.
+ @param idx2 The index of the object to replace with the object at @a idx1.
+ 
+ @throw NSRangeException If @a idx1 or @idx2 is greater than the number of elements in the receiver.
+ 
+ @see indexOfObject:
+ @see objectAtIndex:
+ */
+- (void) exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2;
 
 /**
  Returns the lowest index of a given object, matched using @c isEqual:.
@@ -116,7 +129,7 @@
 - (void) insertObject:(id)anObject atIndex:(NSUInteger)index;
 
 /**
- Returns the object located at @a index.
+ Returns the object located at @a index in the receiver.
  
  @param index An index from which to retrieve an object.
  @return The object located at @a index.
@@ -130,7 +143,7 @@
 - (id) objectAtIndex:(NSUInteger)index;
 
 /**
- Remove the object at a given index. Elements on the non-wrapped end of the buffer are shifted one spot to fill the gap.
+ Remove the object at a given index from the receiver. Elements on the non-wrapped end of the buffer are shifted one spot to fill the gap.
  
  @param index The index from which to remove the object.
  
