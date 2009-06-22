@@ -48,9 +48,16 @@
 - (id) initWithCapacity:(NSUInteger)capacity;
 - (id) initWithArray:(NSArray*)anArray;
 
-- (NSUInteger) count;
-- (NSEnumerator*) objectEnumerator;
+- (void) appendObject:(id)anObject;
+- (void) prependObject:(id)anObject;
 
+- (NSArray*) allObjects;	
+- (NSUInteger) count;
+- (BOOL) containsObject:(id)anObject;
+- (BOOL) containsObjectIdenticalTo:(id)anObject;
+- (id) firstObject;
+- (id) lastObject;
+- (NSEnumerator*) objectEnumerator;
 /**
  Returns an enumerator that accesses each object in the receiver from back to front.
  
@@ -61,26 +68,15 @@
  */
 - (NSEnumerator*) reverseObjectEnumerator;
 
-- (void) appendObject:(id)anObject;
-- (void) prependObject:(id)anObject;
-
-- (id) firstObject;
-- (id) lastObject;
-- (NSArray*) allObjects;	
-
-- (BOOL) containsObject:(id)anObject;
-- (BOOL) containsObjectIdenticalTo:(id)anObject;
-
+- (void) removeAllObjects;
 - (void) removeFirstObject;
 - (void) removeLastObject;
 - (void) removeObject:(id)anObject;
 - (void) removeObjectIdenticalTo:(id)anObject;
-- (void) removeObjectAtIndex:(NSUInteger)index;
-- (void) removeAllObjects;
 
 #pragma mark Indexed Operations
 // These operations aren't strictly a part of stack/queue/deque subclasses, but
-// they are provided as a convenience for working directly with a buffer.
+// are provided as a convenience for working directly with a circular buffer.
 
 /**
  Returns the lowest index of a given object, matched using @c isEqual:.
@@ -90,6 +86,7 @@
  
  @see indexOfObjectIdenticalTo:
  @see objectAtIndex:
+ @see removeObjectAtIndex:
  */
 - (NSUInteger) indexOfObject:(id)anObject;
 
@@ -101,6 +98,7 @@
  
  @see indexOfObject:
  @see objectAtIndex:
+ @see removeObjectAtIndex:
  */
 - (NSUInteger) indexOfObjectIdenticalTo:(id)anObject;
 
@@ -127,8 +125,22 @@
  
  @see indexOfObject:
  @see indexOfObjectIdenticalTo:
+ @see removeObjectAtIndex:
  */
 - (id) objectAtIndex:(NSUInteger)index;
+
+/**
+ Remove the object at a given index. Elements on the non-wrapped end of the buffer are shifted one spot  to fill the gap.
+ 
+ @param index The index from which to remove the object.
+ 
+ @throw NSRangeException If @a index is greater than the number of elements in the receiver.
+ 
+ @see indexOfObject:
+ @see indexOfObjectIdenticalTo:
+ @see objectAtIndex:
+ */
+- (void) removeObjectAtIndex:(NSUInteger)index;
 
 #pragma mark Adopted Protocols
 
