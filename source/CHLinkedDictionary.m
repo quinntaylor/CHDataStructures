@@ -55,6 +55,10 @@
 	[self insertObject:anObject forKey:aKey atIndex:[self count]];
 }
 
+- (void) setObject:(id)anObject forKeyAtIndex:(NSUInteger)index {
+	[self insertObject:anObject forKey:[self keyAtIndex:index] atIndex:index];
+}
+
 #pragma mark Querying Contents
 
 - (id) firstKey {

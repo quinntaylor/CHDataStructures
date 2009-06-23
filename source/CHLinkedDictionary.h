@@ -42,9 +42,23 @@
  @copydetails CHLockableDictionary::setObject:forKey:
  
  @see insertObject:forKey:atIndex:
+ @see setObject:forKeyAtIndex:
  */
 - (void) setObject:(id)anObject forKey:(id)aKey;
 
+/**
+ Sets the value for the key at the specified index in the receiver.
+ 
+ @param anObject The new value to be set for the key at @a index. The object receives a @c -retain message before being added to the receiver. Must not be @c nil.
+ @param index The index of the key for which to set the value.
+ 
+ @throws NSInvalidArgumentException If @a anObject is @c nil. If you need to represent a @c nil value in the dictionary, use NSNull.
+ @throws NSRangeException If @a index is greater than the current number of keys.
+ 
+ @see insertObject:forKey:atIndex:
+ @see setObject:forKey:
+ */
+- (void) setObject:(id)anObject forKeyAtIndex:(NSUInteger)index;
 
 /**
  Adds a given key-value pair to the receiver, with the key at a given index in the ordering.
