@@ -41,7 +41,7 @@
  @param objects A C array of values for the new dictionary.
  @param keys A C array of keys for the new dictionary. Each key is copied using @c -copyWithZone: (must conform to the NSCopying protocol) and the copy is used in the dictionary.
  @param count The number of elements to use from the @a keys and @a objects arrays; @a count must not exceed the number of elements in @a objects or @a keys.
- @throws An NSInvalidArgumentException if a key or value object is @c nil.
+ @throw An NSInvalidArgumentException if a key or value object is @c nil.
  
  @note This is the designated initializer for CHLockableDictionary, overridden from NSDictionary. Any initializer inherited from parent classes also invokes this intializer.
  */
@@ -124,7 +124,7 @@
  
  @param anObject The value for @a aKey. The object receives a @c -retain message before being added to the receiver. Must not be @c nil.
  @param aKey The key for @a anObject. The key is copied (using @c -copyWithZone: — keys must conform to the NSCopying protocol). Must not be @c nil.
- @throws NSInvalidArgumentException If @a aKey or @a anObject is @c nil. If you need to represent a @c nil value in the dictionary, use NSNull.
+ @throw NSInvalidArgumentException If @a aKey or @a anObject is @c nil. If you need to represent a @c nil value in the dictionary, use NSNull.
  
  @see objectForKey:
  @see removeObjectForKey:

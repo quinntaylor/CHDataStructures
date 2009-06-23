@@ -9,7 +9,6 @@
  */
 
 #import "CHLockableObject.h"
-#import "CHDoublyLinkedList.h"
 
 /**
  @file CHLinkedSet.h
@@ -19,18 +18,15 @@
 /**
  A set structure that also maintains order of insertion using a doubly-linked list.
  
- A <strong>linked set</strong> is a composite data structure which combines a <a href="http://en.wikipedia.org/wiki/Set_(computer_science)">set</a> and a <a href="http://en.wikipedia.org/wiki/Linked_list">linked list</a>. It blends the uniqueness aspect of sets with the ability to recall the order in which items were added to the set. While this is possible with only a linked list, the speedy test for membership is a set means  that many basic operations (such as add, remove, and contains) that take linear time for a list can be accomplished in constant time (i.e. O(1) instead of O(n) complexity. Compared to these gains, the time overhead required for maintaining the list is negligible, although it does increase memory requirements significantly.
+ A <strong>linked set</strong> is a composite data structure which combines a <a href="http://en.wikipedia.org/wiki/Set_(computer_science)">set</a> and a <a href="http://en.wikipedia.org/wiki/Linked_list">linked list</a>. It blends the uniqueness aspect of sets with the ability to recall the order in which items were added to the set. While this is possible with only a linked list, the speedy test for membership is a set means  that many basic operations (such as add, remove, and contains) that take linear time for a list can be accomplished in constant time (i.e. O(1) instead of O(n) complexity. Compared to these gains, the time overhead required for maintaining the list is negligible, although it does increase memory requirements.
  
  One of the most common implementations of a linked set is Java's <a href="http://java.sun.com/javase/6/docs/api/java/util/LinkedHashSet.html">LinkedHashSet</a>. This implementation wraps an NSMutableSet and a CHDoublyLinkedList to maintain insertion order. (A singly-linked list could also be used. This would reduce memory usage, but also makes removing the youngest item expensive.) The API is designed to be as consistent as possible with that of NSSet and NSMutableSet.
- 
- The default behavior is that inserting an object that already exists in the linked set does not affect insertion order. The alternate behavior is that whenever an object is added, even if it is a duplicate, that it becomes the last-inserted item. This is configurable via the \link #setRepeatObjectsMoveToBack: -setRepeatObjectsMoveToBack:\endlink method. However, be aware that the "always move to the back" behavior incurs additional bookkeeping overhead for maintaining the insertion order list.
  
  @todo Allow setting a maximum size, and either reject additions or evict the "oldest" item when the limit is reached? (Perhaps this would be better done by the user...)
  */
 @interface CHLinkedSet : CHLockableObject {
 	NSMutableSet *objects; /**< A mutable set for maintaining item uniquenes. */
-	CHDoublyLinkedList *ordering; /**< A list for maintaining insert order. */
-	BOOL repeatObjectsShouldMoveToBack; /**< If duplicate move to the back. */
+	id ordering; /**< A structure for maintaining ordering of the objects. */
 }
 
 /**
@@ -134,48 +130,18 @@
 #endif
 
 // @}
-#pragma mark Insertion Order
-/** @name Insertion Order */
-// @{
-
-/**
- Whether adding an object that already exists in the receiver causes it to become the "youngest" object. The default for a new linked set is @c NO.
- 
- @see addObject:
- @see addObjectsFromArray:
- @see setRepeatObjectsMoveToBack:
- @see unionSet:
- */
-- (BOOL) repeatObjectsMoveToBack;
-
-/**
- Set whether adding an object that already exists in the receiver causes it to become the "youngest" object.
- 
- @param flag Whether adding an object that already exists in the receiver will cause that object to become the "youngest" object.
- 
- @attention Setting @a flag to @c YES will incur additional overhead (for searching the linked list and moving the object to the end) whenever a duplicate object is added.
- 
- @note Changing whether reinsertion changes ordering does not affect the order of object that have already been added, only for subsequent additions. If desired, this value can safely be changed at any time to toggle the behavior.
-  
- @see repeatObjectsMoveToBack
- */
-- (void) setRepeatObjectsMoveToBack:(BOOL)flag;
-
-// @}
 #pragma mark Adding Objects
 /** @name Adding Objects */
 // @{
 
 /**
- Adds a given object to the receiver, if the object is not already a member.
- 
- The insertion order for duplicates is only changed if #repeatObjectsMoveToBack returns @a YES.
+ Adds a given object to the receiver. If the receiver does not yet contain the object, the object is added to the end of the ordering, otherwise the existing object is replaced with @a anObject.
  
  @param anObject The object to add to the receiver.
  
  @see addObjectsFromArray:
+ @see insertObject:atIndex:
  @see lastObject
- @see repeatObjectsMoveToBack
  @see unionSet:
  */
 - (void) addObject:(id)anObject;
@@ -183,30 +149,47 @@
 /**
  Adds to the receiver each object contained in a given array that is not already a member.
  
- The insertion order for duplicates is only changed if #repeatObjectsMoveToBack returns @c YES.
- 
  @param anArray An array of objects to add to the receiver.
  
  @see addObject:
  @see lastObject
- @see repeatObjectsMoveToBack
  @see unionSet:
  */
 - (void) addObjectsFromArray:(NSArray*)anArray;
 
 /**
- Adds to the receiver each object in another given set that is not yet present in the receiver. If all members of @a otherSet are already present in the receiver, and if #repeatObjectsMoveToBack returns @c NO, there is no effect on the receiver. In no case is @a otherSet directly modified.
+ Adds a given object to the receiver at a given index. If the receiver already contains an equivalent object, it is replaced with @a anObject.
+ 
+ @param anObject The object to add to the receiver.
+ @param index The index at which @a anObject should be inserted.
+ 
+ @see addObject:
+ */
+- (void) insertObject:(id)anObject atIndex:(NSUInteger)index;
+
+/**
+ Exchange the objects in the receiver at given indexes.
+ 
+ @param idx1 The index of the object to replace with the object at @a idx2.
+ @param idx2 The index of the object to replace with the object at @a idx1.
+ 
+ @throw NSRangeException If @a idx1 or @a idx2 is greater than the number of elements in the receiver.
+ 
+ @see indexOfObject:
+ @see objectAtIndex:
+ */
+- (void) exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2;
+
+/**
+ Adds to the receiver each object in another given set that is not yet present in the receiver. If all members of @a otherSet are already present in the receiver, there is no effect on the receiver. In no case is @a otherSet directly modified.
  
  @param otherSet The set of objects to add to the receiver.
  
  @note The insertion order of objects from @a otherSet is undefined.
  
- @attention The bookkeeping for tracking insertion order adds O(n) cost (worst-case) of searching the list if #repeatObjectsMoveToBack returns @c YES.
- 
  @see addObjectsFromArray:
  @see intersectSet:
  @see minusSet:
- @see repeatObjectsMoveToBack
  */
 - (void) unionSet:(NSSet*)otherSet;
 
@@ -261,9 +244,9 @@
 - (NSUInteger) count;
 
 /**
- Returns a string that represents the contents of the receiver, formatted as a property list. The objects are represented in the order in which they were (re)inserted, depending on the value returned by #repeatObjectsMoveToBack.
+ Returns a string that represents the contents of the receiver in a predictable order.
  
- @return A string that represents the contents of the receiver, formatted as a property list.
+ @return A string that represents the contents of the receiver in a predictable order.
  
  @see allObjects
  @see objectEnumerator
@@ -275,13 +258,25 @@
  
  @return The "oldest" member of the receiver.
  
- @attention If #repeatObjectsMoveToBack returns @c YES, this is the least recently (re)inserted object, otherwise it is the first-inserted member of the receiver
- 
  @see addObject:
  @see anyObject
+ @see lastObject
  @see removeFirstObject
  */
 - (id) firstObject;
+
+/**
+ Returns the index of a given object based on insertion order.
+ 
+ @param anObject The object to search for in the receiver.
+ @return The index of @a anObject based on insertion order. If the object does not existsin the receiver, @c NSNotFound is returned.
+ 
+ @see firstobject
+ @see lastObject
+ @see objectAtIndex:
+ @see removeObjectAtIndex:
+ */
+- (NSUInteger) indexOfObject:(id)anObject;
 
 /**
  Returns whether at least one object in the receiver is also present in another given set.
@@ -289,18 +284,24 @@
  @param otherSet The set with which to compare the receiver.
  
  @return @c YES if at least one object in the receiver is also present in @a otherSet, otherwise @c NO.
+ 
+ @see containsObject:
+ @see isEqualToSet:
+ @see isSubsetOfSet:
  */
 - (BOOL) intersectsSet:(NSSet*)otherSet;
 
 /**
  Compares the receiver to another set, without regard for insertion order. Two sets have equal contents if they each have the same number of members and if each member of one set is present in the other.
  
- @param otherSet
- The set with which to compare the receiver.
+ @param otherSet The set with which to compare the receiver.
  
  @return @c YES if the contents of @a otherSet are equal to the contents of the receiver, otherwise @c NO.
  
  @attention This method does not regard insertion order. To see whether two linked sets contain the same objects in the same order, compare the results of #allObjects.
+ 
+ @see intersectsSet:
+ @see isSubsetOfSet:
  */
 - (BOOL) isEqualToSet:(NSSet*)otherSet;
 
@@ -310,15 +311,17 @@
  @param otherSet The set with which to compare the receiver.
  
  @return @c YES if every object in the receiver is also present in @a otherSet, otherwise @c NO.
+
+ @see intersectsSet:
+ @see isEqualToSet:
  */
 - (BOOL) isSubsetOfSet:(NSSet*)otherSet;
 
 /**
  Returns the "youngest" member of the receiver.
 
- @attention If #repeatObjectsMoveToBack returns @c YES, this is the most recently (re)inserted object, otherwise it is the last object inserted that did not already exist in the receiver.
- 
  @see addObject:
+ @see firstObject
  @see removeLastObject
  */
 - (id) lastObject;
@@ -336,6 +339,20 @@
 - (id) member:(id)anObject;
 
 /**
+ Returns the value at the specified index.
+ 
+ @param index The insertion-order index of the value to retrieve.
+ @return The value at the specified index, based on insertion order.
+ 
+ @throw NSRangeException If @a index is greater than or equal to the number of key in the receiver.
+ 
+ @see indexOfObject:
+ @see objectAtIndex:
+ @see removeObjectAtIndex:
+ */
+- (id) objectAtIndex:(NSUInteger)index;
+
+/**
  Returns an enumerator object that lets you access each object in the receiver in order.
  
  @return An enumerator object that lets you access each object in the receiver in order.
@@ -351,9 +368,9 @@
 - (NSEnumerator*) objectEnumerator;
 
 /**
- Returns an (autoreleased) immutable copy of the underlying set, without maintaining insertion order.
+ Returns an (autoreleased) immutable copy of the underlying set.
 
- @return An (autoreleased) immutable copy of the underlying set.
+ @return An (autoreleased) immutable copy of the underlying set. The ordering of objects in the returned set is undefined.
  
  @see allObjects
  */
@@ -409,6 +426,8 @@
  Remove the "oldest" member of the receiver.
  
  @see firstObject
+ @see removeObject:
+ @see removeObjectAtIndex:
  */
 - (void) removeFirstObject;
 
@@ -416,6 +435,8 @@
  Remove the "youngest" member of the receiver. 
 
  @see lastObject
+ @see removeObject:
+ @see removeObjectAtIndex:
  */
 - (void) removeLastObject;
 
@@ -430,6 +451,21 @@
  @see removeLastObject
  */
 - (void) removeObject:(id)anObject;
+
+/**
+ Remove the object at a given object from the receiver.
+ 
+ @param index The index of the object to remove.
+ 
+ @throw NSRangeException If @a index is greater than the number of elements in the receiver.
+ 
+ @see minusSet:
+ @see removeAllObjects
+ @see removeFirstObject
+ @see removeLastObject
+ @see removeObject:
+ */
+- (void) removeObjectAtIndex:(NSUInteger)index;
 
 // @}
 @end

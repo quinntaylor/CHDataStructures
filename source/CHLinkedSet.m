@@ -9,6 +9,7 @@
  */
 
 #import "CHLinkedSet.h"
+#import "CHCircularBufferQueue.h"
 
 @implementation CHLinkedSet
 
@@ -24,7 +25,7 @@
 
 - (id) initWithCapacity:(NSUInteger)numItems {
 	if ([super init] == nil) return nil;
-	ordering = [[CHDoublyLinkedList alloc] init];
+	ordering = [[CHCircularBufferQueue alloc] init];
 	if (numItems > 0)
 		objects = [[NSMutableSet alloc] initWithCapacity:numItems];
 	else
@@ -38,14 +39,12 @@
 	if ([super init] == nil) return nil;
 	objects = [[decoder decodeObjectForKey:@"objects"] retain];
 	ordering = [[decoder decodeObjectForKey:@"ordering"] retain];
-	repeatObjectsShouldMoveToBack = [decoder decodeBoolForKey:@"duplicatesMoveToBack"];
 	return self;
 }
 
 - (void) encodeWithCoder:(NSCoder *)encoder {
 	[encoder encodeObject:objects forKey:@"objects"];
 	[encoder encodeObject:ordering forKey:@"ordering"];
-	[encoder encodeBool:repeatObjectsShouldMoveToBack forKey:@"duplicatesMoveToBack"];
 }
 
 #pragma mark <NSCopying>
@@ -76,35 +75,19 @@
 }
 #endif
 
-#pragma mark Insertion Order
-
-- (BOOL) repeatObjectsMoveToBack {
-	return repeatObjectsShouldMoveToBack;
-}
-
-- (void) setRepeatObjectsMoveToBack:(BOOL)flag {
-	repeatObjectsShouldMoveToBack = flag;
-}
-
 #pragma mark Adding Objects
 
-// Private method, only to be used by internal methods that insert objects.
-// Adds an object, moving duplicates to the end if repeatObjectsShouldMoveToBack
-- (void) modifyInsertionListWithObject:(id)anObject {
-	if (![objects containsObject:anObject]) {
-		[ordering appendObject:anObject];
-	} else if (repeatObjectsShouldMoveToBack) {
-		[ordering removeObject:anObject];
-		[ordering appendObject:anObject];
-	}
-}
-
 - (void) addObject:(id)anObject {
-	[self modifyInsertionListWithObject:anObject];
+	if (anObject == nil)
+		CHNilArgumentException([self class], _cmd);
+	if (![objects containsObject:anObject])
+		[ordering appendObject:anObject];
 	[objects addObject:anObject];
 }
 
 - (void) addObjectsFromArray:(NSArray*)anArray {
+	if (anArray == nil)
+		CHNilArgumentException([self class], _cmd);
 #if MAC_OS_X_VERSION_10_5_AND_LATER
 	for (id anObject in anArray)
 #else
@@ -113,9 +96,23 @@
 	while (anObject = [e nextObject])
 #endif
 	{
-		[self modifyInsertionListWithObject:anObject]; // tests if in objects
+		if (![objects containsObject:anObject])
+			[ordering appendObject:anObject];
 		[objects addObject:anObject];
 	}
+}
+
+- (void) exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2 {
+	[ordering exchangeObjectAtIndex:idx1 withObjectAtIndex:idx2];
+}
+
+- (void) insertObject:(id)anObject atIndex:(NSUInteger)index {
+	if (index > [objects count])
+		CHIndexOutOfRangeException([self class], _cmd, index, [objects count]);
+	if ([objects containsObject:anObject])
+		[ordering removeObject:anObject];
+	[ordering insertObject:anObject atIndex:index];
+	[objects addObject:anObject];
 }
 
 - (void) unionSet:(NSSet*)otherSet {
@@ -127,7 +124,8 @@
 	while (anObject = [e nextObject])
 #endif
 	{
-		[self modifyInsertionListWithObject:anObject]; // tests if in objects
+		if (![objects containsObject:anObject])
+			[ordering appendObject:anObject];
 		[objects addObject:anObject];
 	}
 }
@@ -163,6 +161,10 @@
 	return [ordering firstObject];
 }
 
+- (NSUInteger) indexOfObject:(id)anObject {
+	return [ordering indexOfObject:anObject];
+}
+
 - (BOOL) intersectsSet:(NSSet*)otherSet {
 	return [objects intersectsSet:otherSet];
 }
@@ -183,6 +185,10 @@
 	return [objects member:anObject];
 }
 
+- (id) objectAtIndex:(NSUInteger)index {
+	return [ordering objectAtIndex:index];
+}
+
 - (NSEnumerator*) objectEnumerator {
 	return [ordering objectEnumerator];
 }
@@ -201,7 +207,7 @@
 	else {
 		[objects intersectSet:otherSet];
 		// Remove from insertion ordering items NOT present in intersected set.
-		CHDoublyLinkedList *newOrdering = [[CHDoublyLinkedList alloc] init];
+		id newOrdering = [[[ordering class] alloc] init];
 #if MAC_OS_X_VERSION_10_5_AND_LATER
 		for (id anObject in ordering)
 #else
@@ -262,6 +268,11 @@
 		[objects removeObject:anObject];
 		[ordering removeObject:anObject];
 	}
+}
+
+- (void) removeObjectAtIndex:(NSUInteger)index {
+	[objects removeObject:[ordering objectAtIndex:index]];
+	[ordering removeObjectAtIndex:index];
 }
 
 @end

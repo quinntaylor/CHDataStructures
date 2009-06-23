@@ -38,7 +38,7 @@
  
  @param anObject The value for @a key. The object receives a @c -retain message before being added to the receiver. This value must not be @c nil.
  @param aKey The key for @a value. The key is copied (using @c -copyWithZone: — keys must conform to the NSCopying protocol). The key must not be @c nil.
- @throws NSInvalidArgumentException If @a aKey or @a anObject is @c nil. If you need to represent a @c nil value in the dictionary, use NSNull.
+ @throw NSInvalidArgumentException If @a aKey or @a anObject is @c nil. If you need to represent a @c nil value in the dictionary, use NSNull.
  
  @see objectForKey:
  @see removeObjectForKey:

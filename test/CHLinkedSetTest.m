@@ -66,77 +66,61 @@
 #pragma mark Adding Objects
 
 - (void) testAddObjectsAndOrdering {
-	NSArray *array = [self randomNumbers];
-	NSArray *abca = [NSArray arrayWithObjects:@"A",@"B",@"C",@"A",nil];
+	STAssertThrows([set addObject:nil], @"Should raise exception");
+	
 	NSArray *abc = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
-	NSArray *abab = [NSArray arrayWithObjects:@"A",@"B",@"A",@"B",nil];
-	NSArray *bca = [NSArray arrayWithObjects:@"B",@"C",@"A",nil];
-	NSArray *cab = [NSArray arrayWithObjects:@"C",@"A",@"B",nil];
-	
-	// Test -addObject:
-	e = [array objectEnumerator];
+	e = [abc objectEnumerator];
 	while (anObject = [e nextObject])
 		[set addObject:anObject];
-	STAssertEqualObjects([set allObjects], array,
-						 @"Wrong ordering.");
+	STAssertEqualObjects([set allObjects], abc, @"Wrong ordering.");
+	STAssertEquals([set count], [abc count], @"Wrong count.");
 	
-	[set removeAllObjects];
-	[set setRepeatObjectsMoveToBack:NO];
-	e = [abca objectEnumerator];
+	e = [abc objectEnumerator];
 	while (anObject = [e nextObject])
 		[set addObject:anObject];
-	STAssertEqualObjects([set allObjects], abc,
-						 @"Wrong ordering.");
-	
-	[set removeAllObjects];
-	[set setRepeatObjectsMoveToBack:YES];
-	e = [abca objectEnumerator];
-	while (anObject = [e nextObject])
-		[set addObject:anObject];
-	STAssertEqualObjects([set allObjects], bca,
-						 @"Wrong ordering.");
-	
-	[set setRepeatObjectsMoveToBack:NO];
-	e = [abab objectEnumerator];
-	while (anObject = [e nextObject])
-		[set addObject:anObject];
-	STAssertEqualObjects([set allObjects], bca,
-						 @"Wrong ordering with multiple duplicates.");
-	
-	[set setRepeatObjectsMoveToBack:YES];
-	e = [abab objectEnumerator];
-	while (anObject = [e nextObject])
-		[set addObject:anObject];
-	STAssertEqualObjects([set allObjects], cab,
-						 @"Wrong ordering with multiple duplicates.");
+	STAssertEqualObjects([set allObjects], abc, @"Wrong ordering.");
+	STAssertEquals([set count], [abc count], @"Wrong count.");
+}
 
-	// Test -addObjectsFromArray:
-	[set removeAllObjects];
-	[set addObjectsFromArray:array];
-	STAssertEqualObjects([set allObjects], array,
-						 @"Wrong ordering.");
+- (void) testAddObjectsFromArray {
+	STAssertThrows([set addObjectsFromArray:nil], @"Should raise exception");
 	
-	[set removeAllObjects];
-	[set setRepeatObjectsMoveToBack:NO];
-	[set addObjectsFromArray:abca];
-	STAssertEqualObjects([set allObjects], abc,
-						 @"Wrong ordering.");
+	NSArray *abc = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
+	[set addObjectsFromArray:abc];
+	STAssertEqualObjects([set allObjects], abc, @"Wrong ordering.");
+	STAssertEquals([set count], [abc count], @"Wrong count.");
 	
-	[set removeAllObjects];
-	[set setRepeatObjectsMoveToBack:YES];
-	[set addObjectsFromArray:abca];
-	STAssertEqualObjects([set allObjects], bca,
-						 @"Wrong ordering.");
+	[set addObjectsFromArray:abc];
+	STAssertEqualObjects([set allObjects], abc, @"Wrong ordering.");
+	STAssertEquals([set count], [abc count], @"Wrong count.");
+}
 
-	[set setRepeatObjectsMoveToBack:NO];
-	[set addObjectsFromArray:abab];
-	STAssertEqualObjects([set allObjects], bca,
-						 @"Wrong ordering with multiple duplicates.");
+- (void) testExchangeObjectAtIndexWithObjectAtIndex {
+	STAssertThrows([set exchangeObjectAtIndex:0 withObjectAtIndex:1],
+				   @"Should raise exception, set is empty.");
+	
+	NSArray *abc  = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
+	[set addObjectsFromArray:abc];
+	// Just sanity-check the code, since the implementation is tested elsewhere.
+	[set exchangeObjectAtIndex:0 withObjectAtIndex:2];
+	STAssertEqualObjects([set objectAtIndex:2], [abc objectAtIndex:0], @"Bad order");
+	STAssertEqualObjects([set objectAtIndex:0], [abc objectAtIndex:2], @"Bad order");
+}
 
-	[set setRepeatObjectsMoveToBack:YES];
-	[set addObjectsFromArray:abab];
-	STAssertEqualObjects([set allObjects], cab,
-						 @"Wrong ordering with multiple duplicates.");
+- (void) testInsertObjectAtIndex {
+	NSArray *abc  = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
+	NSArray *acb  = [NSArray arrayWithObjects:@"A",@"C",@"B",nil];
+	NSArray *dacb  = [NSArray arrayWithObjects:@"D",@"A",@"C",@"B",nil];
+	
+	STAssertThrows([set insertObject:@"X" atIndex:1], @"Should raise exception");
+	
+	[set addObjectsFromArray:abc];
+	
+	[set insertObject:@"C" atIndex:1];
+	STAssertEqualObjects([set allObjects], acb, @"Wrong ordering");
+	
+	[set insertObject:@"D" atIndex:0];
+	STAssertEqualObjects([set allObjects], dacb, @"Wrong ordering");
 }
 
 - (void) testUnionSet {
@@ -144,25 +128,11 @@
 	NSSet *ade = [NSSet setWithObjects:@"A",@"D",@"E",nil];
 	NSMutableArray *order;
 	
-	// Test when duplicates stay in place.
-	[set setRepeatObjectsMoveToBack:NO];
 	order = [NSMutableArray arrayWithObjects:@"A",@"B",@"C",nil];
 	e = [ade objectEnumerator];
 	while (anObject = [e nextObject])
 		if (![anObject isEqual:@"A"])
 			[order addObject:anObject];
-	[set addObjectsFromArray:abc];
-	[set unionSet:ade];
-	STAssertEqualObjects([set allObjects], order, @"Wrong ordering on union.");
-	
-	// Test when duplicates are moved to the back.
-	[set removeAllObjects];	
-	[set setRepeatObjectsMoveToBack:YES];
-	
-	order = [NSMutableArray arrayWithObjects:@"B",@"C",nil];
-	e = [ade objectEnumerator];
-	while (anObject = [e nextObject])
-		[order addObject:anObject];
 	[set addObjectsFromArray:abc];
 	[set unionSet:ade];
 	STAssertEqualObjects([set allObjects], order, @"Wrong ordering on union.");
@@ -183,19 +153,8 @@
 	array = [NSArray arrayWithObjects:@"A", @"B", @"C", nil];
 	STAssertEqualObjects([set allObjects], array, @"Wrong ordering from -allObjects.");
 	
-	[set removeAllObjects];
-	STAssertFalse([set repeatObjectsMoveToBack], @"Should be false by default.");
-	[set setRepeatObjectsMoveToBack:YES];
-	[set addObject:@"A"];
-	[set addObject:@"B"];
-	[set addObject:@"C"];
-	[set addObject:@"A"];
-	array = [NSArray arrayWithObjects:@"B",@"C",@"A",nil];
-	STAssertEqualObjects([set allObjects], array, @"Wrong ordering from -allObjects.");
-
 	[set addObject:@"C"];
 	[set addObject:@"B"];
-	array = [NSArray arrayWithObjects:@"A",@"C",@"B",nil];
 	STAssertEqualObjects([set allObjects], array, @"Wrong ordering from -allObjects.");
 }
 
@@ -251,25 +210,13 @@
 						 @"Wrong description.");
 }
 
-- (void) testFirstObjectAndLastObject {
-	[set setRepeatObjectsMoveToBack:YES];
-	STAssertNil([set firstObject], @"Should be nil.");
-	STAssertNil([set lastObject],  @"Should be nil.");
-	[set addObject:@"A"];
-	STAssertEqualObjects([set firstObject], @"A", @"Incorrect first object.");
-	STAssertEqualObjects([set lastObject],  @"A", @"Incorrect first object.");
-	[set addObject:@"B"];
-	STAssertEqualObjects([set firstObject], @"A", @"Incorrect first object.");
-	STAssertEqualObjects([set lastObject],  @"B", @"Incorrect first object.");
-	[set addObject:@"C"];
-	STAssertEqualObjects([set firstObject], @"A", @"Incorrect first object.");
-	STAssertEqualObjects([set lastObject],  @"C", @"Incorrect first object.");
-	[set addObject:@"A"];
-	STAssertEqualObjects([set firstObject], @"B", @"Incorrect first object.");
-	STAssertEqualObjects([set lastObject],  @"A", @"Incorrect first object.");
-	[set removeObject:@"A"];
-	STAssertEqualObjects([set firstObject], @"B", @"Incorrect first object.");
-	STAssertEqualObjects([set lastObject],  @"C", @"Incorrect first object.");
+- (void) testIndexOfObject {
+	NSArray *abc = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
+	[set addObjectsFromArray:abc];
+	for (NSUInteger i = 0; i < [abc count]; i++) {
+		STAssertEquals([set indexOfObject:[abc objectAtIndex:i]], i,
+					   @"Wrong index for object");
+	}
 }
 
 - (void) testIntersectsSet {
@@ -313,6 +260,15 @@
 	STAssertNil([set member:@"Z"], @"Should not be a member.");
 	[set removeAllObjects];
 	STAssertNil([set member:@"A"], @"Should not be a member.");
+}
+
+- (void) testObjectAtIndex {
+	NSArray *abc = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
+	[set addObjectsFromArray:abc];
+	for (NSUInteger i = 0; i < [abc count]; i++) {
+		STAssertEquals([set objectAtIndex:i], [abc objectAtIndex:i],
+					   @"Wrong object at index");
+	}
 }
 
 - (void) testObjectEnumerator {
@@ -451,6 +407,26 @@
 }
 
 - (void) testRemoveObject {
+	STAssertNoThrow([set removeObject:nil], @"Should not raise exception");
+	
+	NSArray *abc = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
+	[set addObjectsFromArray:abc];
+	STAssertTrue([set containsObject:@"A"], @"Should contain object.");
+	[set removeObject:@"A"];
+	STAssertFalse([set containsObject:@"A"], @"Should not contain object.");
+}
+
+- (void) testRemoveObjectAtIndex {
+	STAssertThrows([set removeObjectAtIndex:0], @"Should raise exception");
+	
+	NSArray *abc = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
+	[set addObjectsFromArray:abc];
+	STAssertThrows([set removeObjectAtIndex:[abc count]], @"Should raise exception");
+	for (int i = [abc count]-1; i >= 0; i--) {
+		STAssertEqualObjects([set lastObject], [abc objectAtIndex:i],
+							 @"Wrong object at index before removing at index");
+		[set removeObjectAtIndex:i];
+	}
 }
 
 #pragma mark <Protocols>

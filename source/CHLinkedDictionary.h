@@ -52,8 +52,8 @@
  @param anObject The new value to be set for the key at @a index. The object receives a @c -retain message before being added to the receiver. Must not be @c nil.
  @param index The index of the key for which to set the value.
  
- @throws NSInvalidArgumentException If @a anObject is @c nil. If you need to represent a @c nil value in the dictionary, use NSNull.
- @throws NSRangeException If @a index is greater than the current number of keys.
+ @throw NSInvalidArgumentException If @a anObject is @c nil. If you need to represent a @c nil value in the dictionary, use NSNull.
+ @throw NSRangeException If @a index is greater than the current number of keys.
  
  @see insertObject:forKey:atIndex:
  @see setObject:forKey:
@@ -67,8 +67,8 @@
  @param aKey The key for @a anObject. The key is copied (using @c -copyWithZone: — keys must conform to the NSCopying protocol). Must not be @c nil.
  @param index The index in the receiver's key ordering at which to insert @a anObject.
  
- @throws NSRangeException If @a index is greater than the current number of keys.
- @throws NSInvalidArgumentException If @a aKey or @a anObject is @c nil.  If you need to represent a @c nil value in the dictionary, use NSNull.
+ @throw NSRangeException If @a index is greater than the current number of keys.
+ @throw NSInvalidArgumentException If @a aKey or @a anObject is @c nil.  If you need to represent a @c nil value in the dictionary, use NSNull.
  
  @see indexOfKey:
  @see keyAtIndex:
@@ -119,7 +119,7 @@
  Returns the index of a given key based on insertion order.
  
  @param aKey The key to search for in the receiver.
- @return The index of a given key based on insertion order. If the key does not exists in the receiver, @c NSNotFound is returned.
+ @return The index of @a akey based on insertion order. If the key does not exist in the receiver, @c NSNotFound is returned.
  
  @see firstKey
  @see keyAtIndex:
@@ -132,6 +132,7 @@
  
  @param index The insertion-order index of the key to retrieve.
  @return The key at the specified index, based on insertion order.
+ 
  @throw NSRangeException If @a index is greater than or equal to the number of key in the receiver.
  
  @see \link NSDictionary#containsKey: - containsKey:\endlink
@@ -146,6 +147,7 @@
  
  @param index The insertion-order index of the key for the value to retrieve.
  @return The value for the key at the specified index, based on insertion order.
+ 
  @throw NSRangeException If @a index is greater than or equal to the number of key in the receiver.
  
  @see indexOfKey:
@@ -179,7 +181,7 @@
 /**
  Removes the key at a given index and its associated value from the receiver. Elements on the non-wrapped end of the buffer are shifted one spot to fill the gap.
  
- @param index The index from which to remove the key.
+ @param index The index of the key to remove.
  
  @throw NSRangeException If @a index is greater than the number of elements in the receiver.
  
