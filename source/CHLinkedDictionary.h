@@ -76,6 +76,19 @@
  */
 - (void) insertObject:(id)anObject forKey:(id)aKey atIndex:(NSUInteger)index;
 
+/**
+ Exchange the keys in the receiver at given indexes.
+ 
+ @param idx1 The index of the key to replace with the key at @a idx2.
+ @param idx2 The index of the key to replace with the key at @a idx1.
+ 
+ @throw NSRangeException If @a idx1 or @a idx2 is greater than the number of key in the receiver.
+ 
+ @see indexOfKey:
+ @see keyAtIndex:
+ */
+- (void) exchangeKeyAtIndex:(NSUInteger)idx1 withKeyAtIndex:(NSUInteger)idx2;
+
 #pragma mark Querying Contents
 /** @name Querying Contents */
 // @{
@@ -119,7 +132,7 @@
  
  @param index The insertion-order index of the key to retrieve.
  @return The key at the specified index, based on insertion order.
- @throw NSRangeException If @a index is greater than or equal to the key count.
+ @throw NSRangeException If @a index is greater than or equal to the number of key in the receiver.
  
  @see \link NSDictionary#containsKey: - containsKey:\endlink
  @see firstKey
@@ -133,7 +146,7 @@
  
  @param index The insertion-order index of the key for the value to retrieve.
  @return The value for the key at the specified index, based on insertion order.
- @throw NSRangeException If @a index is greater than or equal to the key count.
+ @throw NSRangeException If @a index is greater than or equal to the number of key in the receiver.
  
  @see indexOfKey:
  @see keyAtIndex:

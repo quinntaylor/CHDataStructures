@@ -224,6 +224,20 @@
 	expectedKeyOrder = keyArray;
 }
 
+- (void) testExchangeKeyAtIndexWithKeyAtIndex {
+	STAssertThrows([dictionary exchangeKeyAtIndex:0 withKeyAtIndex:1],
+				   @"Should raise exception, collection is empty.");
+	STAssertThrows([dictionary exchangeKeyAtIndex:1 withKeyAtIndex:0],
+				   @"Should raise exception, collection is empty.");
+	
+	[self populateDictionary];
+	[dictionary exchangeKeyAtIndex:1 withKeyAtIndex:1];
+	STAssertEqualObjects([dictionary allKeys], keyArray, @"Should have no effect.");
+	[dictionary exchangeKeyAtIndex:0 withKeyAtIndex:[keyArray count]-1];
+	STAssertEqualObjects([dictionary firstKey], @"hoo", @"Bad order after swap.");
+	STAssertEqualObjects([dictionary lastKey],  @"baz", @"Bad order after swap.");
+}
+
 - (void) testIndexOfKey {
 	STAssertEquals([dictionary indexOfKey:@"foo"], (NSUInteger)NSNotFound,
 				   @"Key should not be found in dictionary");
@@ -232,18 +246,6 @@
 		STAssertEquals([dictionary indexOfKey:[keyArray objectAtIndex:i]], i,
 					   @"Wrong index for key.");
 	}
-}
-
-- (void) testKeyAtIndex {
-	STAssertThrows([dictionary keyAtIndex:0], @"Should raise exception.");
-	STAssertThrows([dictionary keyAtIndex:1], @"Should raise exception.");
-	[self populateDictionary];
-	NSUInteger i;
-	for (i = 0; i < [keyArray count]; i++) {
-		STAssertEqualObjects([dictionary keyAtIndex:i], [keyArray objectAtIndex:i],
-							 @"Wrong key at index %d.", i);
-	}
-	STAssertThrows([dictionary keyAtIndex:i], @"Should raise exception.");
 }
 
 - (void) testInsertObjectForKeyAtIndex {
@@ -264,6 +266,18 @@
 	STAssertNoThrow([dictionary insertObject:@"abc" forKey:@"abc" atIndex:0],
 	                @"Should be able to insert a new value at the end");
 	STAssertEqualObjects([dictionary firstKey], @"abc", @"First key should be 'abc'.");
+}
+
+- (void) testKeyAtIndex {
+	STAssertThrows([dictionary keyAtIndex:0], @"Should raise exception.");
+	STAssertThrows([dictionary keyAtIndex:1], @"Should raise exception.");
+	[self populateDictionary];
+	NSUInteger i;
+	for (i = 0; i < [keyArray count]; i++) {
+		STAssertEqualObjects([dictionary keyAtIndex:i], [keyArray objectAtIndex:i],
+							 @"Wrong key at index %d.", i);
+	}
+	STAssertThrows([dictionary keyAtIndex:i], @"Should raise exception.");
 }
 
 - (void) testObjectForKeyAtIndex {
@@ -294,6 +308,18 @@
 	[expected removeObjectAtIndex:0];
 	STAssertNoThrow([dictionary removeObjectForKeyAtIndex:0], @"Should be no exception");
 	STAssertEqualObjects([dictionary allKeys], expected, @"Wrong key ordering");	
+}
+
+- (void) testSetObjectForKeyAtIndex {
+	STAssertThrows([dictionary setObject:@"new foo" forKeyAtIndex:0],
+	               @"Should raise exception");
+	
+	[self populateDictionary];
+	STAssertEqualObjects([dictionary objectForKey:@"foo"], @"foo", @"Wrong object");
+	[dictionary setObject:@"X" forKeyAtIndex:1];
+	STAssertEqualObjects([dictionary objectForKey:@"foo"], @"X", @"Wrong object");
+	STAssertThrows([dictionary setObject:@"X" forKeyAtIndex:[keyArray count]],
+	               @"Should raise exception");
 }
 
 @end

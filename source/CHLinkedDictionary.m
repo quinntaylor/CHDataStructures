@@ -59,6 +59,10 @@
 	[self insertObject:anObject forKey:[self keyAtIndex:index] atIndex:index];
 }
 
+- (void) exchangeKeyAtIndex:(NSUInteger)idx1 withKeyAtIndex:(NSUInteger)idx2 {
+	[keyOrdering exchangeObjectAtIndex:idx1 withObjectAtIndex:idx2];
+}
+
 #pragma mark Querying Contents
 
 - (id) firstKey {
