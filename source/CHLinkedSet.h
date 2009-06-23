@@ -164,6 +164,8 @@
  @param index The index at which @a anObject should be inserted.
  
  @see addObject:
+ @see indexOfObject:
+ @see objectAtIndex:
  */
 - (void) insertObject:(id)anObject atIndex:(NSUInteger)index;
 
@@ -176,6 +178,7 @@
  @throw NSRangeException If @a idx1 or @a idx2 is greater than the number of elements in the receiver.
  
  @see indexOfObject:
+ @see insertObject:atIndex:
  @see objectAtIndex:
  */
 - (void) exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2;
@@ -189,6 +192,7 @@
  
  @see addObjectsFromArray:
  @see intersectSet:
+ @see isSubsetOfSet:
  @see minusSet:
  */
 - (void) unionSet:(NSSet*)otherSet;
@@ -271,7 +275,7 @@
  @param anObject The object to search for in the receiver.
  @return The index of @a anObject based on insertion order. If the object does not existsin the receiver, @c NSNotFound is returned.
  
- @see firstobject
+ @see firstObject
  @see lastObject
  @see objectAtIndex:
  @see removeObjectAtIndex:
@@ -332,7 +336,7 @@
  @param anObject The object to test for membership in the receiver.
  @return If the receiver contains an object equal to @a anObject (as determined by \link NSObject#isEqual: -isEqual:\endlink) then that object (typically this will be @a anObject) is returned, otherwise @c nil.
  
- @attention If you override \link NSObject#isEqual: -isEqual:\endlink for a custom class, you must also override \link NSObject#hash -hash\endlink for #member: to work correctly on objects of your class.
+ @attention If you override \link NSObject#isEqual: -isEqual:\endlink for a custom class, you must also override \link NSObject#hash -hash\endlink in order for #member: to work correctly on objects of your class.
  
  @see containsObject:
  */
