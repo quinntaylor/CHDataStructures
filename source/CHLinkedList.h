@@ -93,7 +93,7 @@
  @param idx1 The index of the object to replace with the object at @a idx2.
  @param idx2 The index of the object to replace with the object at @a idx1.
  
- @throw NSRangeException If @a idx1 or @idx2 is greater than the number of elements in the receiver.
+ @throw NSRangeException If @a idx1 or @a idx2 is greater than the number of elements in the receiver.
  
  @attention Index-oriented operations are generally slow in linked lists, which are not optimized for random access. Arrays are much faster for such functionality.
  

@@ -354,8 +354,15 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 		[self removeObjectAtIndex:0];
 }
 
+/**
+ Remove the last item in the receiver.
+ 
+ @attention This operation is expensive for singly-linked lists since there are no reverse links to facilitate finding the penultimate node.
+ 
+ @see lastObject
+ @see removeFirstObject
+ */
 - (void) removeLastObject {
-	// Note: This is expensive -- O(n) instead of O(1) for doubly-linked lists
 	if (count > 0)
 		[self removeObjectAtIndex:(count-1)];
 }

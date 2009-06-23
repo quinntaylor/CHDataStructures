@@ -65,7 +65,7 @@
  @param idx1 The index of the object to replace with the object at @a idx2.
  @param idx2 The index of the object to replace with the object at @a idx1.
  
- @throw NSRangeException If @a idx1 or @idx2 is greater than the number of elements in the receiver.
+ @throw NSRangeException If @a idx1 or @a idx2 is greater than the number of elements in the receiver.
  
  @see indexOfObject:
  @see objectAtIndex:
