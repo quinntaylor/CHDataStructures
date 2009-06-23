@@ -581,7 +581,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 		BOOL raisedException = NO;
 		@try {
 			for (id object in tree)
-				[tree addObject:@"123"];
+				[tree addObject:[NSNumber numberWithInt:-1]];
 		}
 		@catch (NSException *exception) {
 			raisedException = YES;
