@@ -262,6 +262,25 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 	++mutations;
 }
 
+- (void) exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2 {
+	NSUInteger firstIndex = MIN(idx1, idx2), secondIndex = MAX(idx1,idx2);
+	if (secondIndex > count)
+		CHIndexOutOfRangeException([self class], _cmd, secondIndex, count);
+	if (idx1 != idx2) {
+		NSUInteger nodeIndex = 0;
+		CHSinglyLinkedListNode *node1 = head->next;
+		while (nodeIndex++ < firstIndex)
+			node1 = node1->next;
+		CHSinglyLinkedListNode *node2 = node1->next;
+		while (nodeIndex++ < secondIndex)
+			node2 = node2->next;
+		id tempObject = node1->object;
+		node1->object = node2->object;
+		node2->object = tempObject;
+		++mutations;
+	}
+}
+
 #pragma mark Querying Contents
 
 - (NSArray*) allObjects {

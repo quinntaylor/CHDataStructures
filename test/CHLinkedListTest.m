@@ -199,9 +199,15 @@
 		[list exchangeObjectAtIndex:1 withObjectAtIndex:1];
 		STAssertEqualObjects([list allObjects], abc,
 							 @"Should have no effect.");
-		[list exchangeObjectAtIndex:0 withObjectAtIndex:[list count]-1];
-		STAssertEqualObjects([list allObjects], [[abc reverseObjectEnumerator] allObjects],
-							 @"Should swap first and last element.");
+		[list exchangeObjectAtIndex:0 withObjectAtIndex:2];
+		STAssertEqualObjects([list firstObject],     @"C", @"Bad order after swap.");
+		STAssertEqualObjects([list lastObject],      @"A", @"Bad order after swap.");
+		[list exchangeObjectAtIndex:0 withObjectAtIndex:1];
+		STAssertEqualObjects([list firstObject],     @"B", @"Bad order after swap.");
+		STAssertEqualObjects([list objectAtIndex:1], @"C", @"Bad order after swap.");
+		[list exchangeObjectAtIndex:2 withObjectAtIndex:1];
+		STAssertEqualObjects([list objectAtIndex:1], @"A", @"Bad order after swap.");
+		STAssertEqualObjects([list lastObject],      @"C", @"Bad order after swap.");
 		[list release];
 	}
 	
