@@ -86,6 +86,10 @@
 	return [list containsObjectIdenticalTo:anObject];
 }
 
+- (void) exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2 {
+	[list exchangeObjectAtIndex:idx1 withObjectAtIndex:idx2];
+}
+
 - (NSUInteger) indexOfObject:(id)anObject {
 	return [list indexOfObject:anObject];
 }
@@ -104,6 +108,10 @@
 
 - (void) removeObjectIdenticalTo:(id)anObject {
 	[list removeObjectIdenticalTo:anObject];
+}
+
+- (void) removeObjectAtIndex:(NSUInteger)index {
+	[list removeObjectAtIndex:index];
 }
 
 - (void) removeAllObjects {
