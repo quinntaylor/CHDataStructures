@@ -16,7 +16,7 @@
 @interface CHLinkedListTest : SenTestCase {
 	id<CHLinkedList> list;
 	NSArray* linkedListClasses;
-	NSArray* objects;
+	NSArray* abc;
 	NSEnumerator *e;
 	id anObject;
 }
@@ -25,7 +25,7 @@
 @implementation CHLinkedListTest
 
 - (void) setUp {
-	objects = [NSArray arrayWithObjects:@"A", @"B", @"C", nil];
+	abc = [NSArray arrayWithObjects:@"A", @"B", @"C", nil];
 	linkedListClasses = [NSArray arrayWithObjects:
 						 [CHDoublyLinkedList class],
 						 [CHSinglyLinkedList class],
@@ -39,18 +39,18 @@
 	Class aClass;
 	while (aClass = [classes nextObject]) {
 		list = [[aClass alloc] init];
-		e = [objects objectEnumerator];
+		e = [abc objectEnumerator];
 		while (anObject = [e nextObject])
 			[list appendObject:anObject];
-		STAssertEquals([list count], [objects count], @"Incorrect count.");
+		STAssertEquals([list count], [abc count], @"Incorrect count.");
 		
 		NSString *filePath = @"/tmp/CHDataStructures-list.plist";
 		[NSKeyedArchiver archiveRootObject:list toFile:filePath];
 		[list release];
 		
 		list = [[NSKeyedUnarchiver unarchiveObjectWithFile:filePath] retain];
-		STAssertEquals([list count], [objects count], @"Incorrect count.");
-		STAssertEqualObjects([list allObjects], objects,
+		STAssertEquals([list count], [abc count], @"Incorrect count.");
+		STAssertEqualObjects([list allObjects], abc,
 							 @"Wrong ordering on reconstruction.");
 		[[NSFileManager defaultManager] removeFileAtPath:filePath handler:nil];
 		[list release];
@@ -62,12 +62,12 @@
 	Class aClass;
 	while (aClass = [classes nextObject]) {
 		list = [[aClass alloc] init];
-		e = [objects objectEnumerator];
+		e = [abc objectEnumerator];
 		while (anObject = [e nextObject])
 			[list appendObject:anObject];
 		id<CHLinkedList> list2 = [list copyWithZone:nil];
 		STAssertNotNil(list2, @"-copy should not return nil for valid list.");
-		STAssertEquals([list2 count], [objects count], @"Incorrect count.");
+		STAssertEquals([list2 count], [abc count], @"Incorrect count.");
 		STAssertEqualObjects([list allObjects], [list2 allObjects], @"Unequal lists.");
 		[list2 release];
 		[list release];
@@ -123,9 +123,9 @@
 	NSEnumerator *classes = [linkedListClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
-		list = [[aClass alloc] initWithArray:objects];
-		STAssertEquals([list count], [objects count], @"Incorrect count.");
-		STAssertEqualObjects([list allObjects], objects,
+		list = [[aClass alloc] initWithArray:abc];
+		STAssertEquals([list count], [abc count], @"Incorrect count.");
+		STAssertEqualObjects([list allObjects], abc,
 							 @"Bad array ordering on -initWithArray:");
 		[list release];
 	}
@@ -136,10 +136,10 @@
 	Class aClass;
 	while (aClass = [classes nextObject]) {
 		list = [[aClass alloc] init];
-		e = [objects objectEnumerator];
+		e = [abc objectEnumerator];
 		while (anObject = [e nextObject])
 			[list appendObject:anObject];
-		STAssertEqualObjects([list description], [objects description],
+		STAssertEqualObjects([list description], [abc description],
 							 @"-description uses bad ordering.");
 		[list release];
 	}
@@ -154,11 +154,11 @@
 		list = [[aClass alloc] init];
 		STAssertThrows([list prependObject:nil], @"Should raise an exception on nil.");
 		
-		e = [objects objectEnumerator];
+		e = [abc objectEnumerator];
 		while (anObject = [e nextObject])
 			[list prependObject:anObject];
 		
-		STAssertEquals([list count], [objects count], @"Incorrect count.");
+		STAssertEquals([list count], [abc count], @"Incorrect count.");
 		STAssertEqualObjects([list firstObject], @"C", @"Wrong -firstObject.");
 		STAssertEqualObjects([list lastObject],  @"A", @"-lastObject is wrong.");
 		[list release];
@@ -172,15 +172,39 @@
 		list = [[aClass alloc] init];
 		STAssertThrows([list appendObject:nil], @"Should raise an exception on nil.");
 		
-		e = [objects objectEnumerator];
+		e = [abc objectEnumerator];
 		while (anObject = [e nextObject])
 			[list appendObject:anObject];
 		
-		STAssertEquals([list count], [objects count], @"Incorrect count.");
+		STAssertEquals([list count], [abc count], @"Incorrect count.");
 		STAssertEqualObjects([list firstObject], @"A", @"Wrong -firstObject.");
 		STAssertEqualObjects([list lastObject], @"C", @"-lastObject is wrong.");
 		[list release];
 	}
+}
+
+- (void) testExchangeObjectAtIndexWithObjectAtIndex {
+	NSEnumerator *classes = [linkedListClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
+		list = [[aClass alloc] init];
+		STAssertThrows([list exchangeObjectAtIndex:0 withObjectAtIndex:1],
+		               @"Should raise exception, list is empty.");
+		STAssertThrows([list exchangeObjectAtIndex:1 withObjectAtIndex:0],
+		               @"Should raise exception, list is empty.");
+		e = [abc objectEnumerator];
+		while (anObject = [e nextObject])
+			[list appendObject:anObject];
+		
+		[list exchangeObjectAtIndex:1 withObjectAtIndex:1];
+		STAssertEqualObjects([list allObjects], abc,
+							 @"Should have no effect.");
+		[list exchangeObjectAtIndex:0 withObjectAtIndex:[list count]-1];
+		STAssertEqualObjects([list allObjects], [[abc reverseObjectEnumerator] allObjects],
+							 @"Should swap first and last element.");
+		[list release];
+	}
+	
 }
 
 - (void) testInsertObjectAtIndex {
@@ -196,24 +220,24 @@
 		STAssertNoThrow([list insertObject:@"Z" atIndex:0], @"Should not raise exception.");
 		[list removeLastObject];
 		
-		e = [objects objectEnumerator];
+		e = [abc objectEnumerator];
 		while (anObject = [e nextObject])
 			[list appendObject:anObject];
-		STAssertEquals([list count], [objects count], @"Incorrect count.");
-		STAssertThrows([list insertObject:@"Z" atIndex:[objects count]+1], @"Should raise NSRangeException.");
-		STAssertNoThrow([list insertObject:@"Z" atIndex:[objects count]], @"Should not raise exception.");
+		STAssertEquals([list count], [abc count], @"Incorrect count.");
+		STAssertThrows([list insertObject:@"Z" atIndex:[abc count]+1], @"Should raise NSRangeException.");
+		STAssertNoThrow([list insertObject:@"Z" atIndex:[abc count]], @"Should not raise exception.");
 		[list removeLastObject];
 		
 		// Try inserting in the middle
 		[list insertObject:@"D" atIndex:1];
-		STAssertEquals([list count], [objects count]+1, @"Incorrect count.");
+		STAssertEquals([list count], [abc count]+1, @"Incorrect count.");
 		STAssertEqualObjects([list objectAtIndex:0], @"A", @"-objectAtIndex: is wrong.");
 		STAssertEqualObjects([list objectAtIndex:1], @"D", @"-objectAtIndex: is wrong.");
 		STAssertEqualObjects([list objectAtIndex:2], @"B", @"-objectAtIndex: is wrong.");
 		STAssertEqualObjects([list objectAtIndex:3], @"C", @"-objectAtIndex: is wrong.");
 		// Try inserting at the beginning
 		[list insertObject:@"E" atIndex:0];
-		STAssertEquals([list count], [objects count]+2, @"Incorrect count.");
+		STAssertEquals([list count], [abc count]+2, @"Incorrect count.");
 		STAssertEqualObjects([list objectAtIndex:0], @"E", @"-objectAtIndex: is wrong.");
 		STAssertEqualObjects([list objectAtIndex:1], @"A", @"-objectAtIndex: is wrong.");
 		STAssertEqualObjects([list objectAtIndex:2], @"D", @"-objectAtIndex: is wrong.");
@@ -221,7 +245,7 @@
 		STAssertEqualObjects([list objectAtIndex:4], @"C", @"-objectAtIndex: is wrong.");
 		// Try inserting at the end
 		[list insertObject:@"F" atIndex:5];
-		STAssertEquals([list count], [objects count]+3, @"Incorrect count.");
+		STAssertEquals([list count], [abc count]+3, @"Incorrect count.");
 		STAssertEqualObjects([list objectAtIndex:5], @"F", @"-objectAtIndex: is wrong.");
 		[list release];
 	}
@@ -242,7 +266,7 @@
 		STAssertNil([e nextObject], @"-nextObject should return nil.");
 		
 		// Enumerator should retain collection when it has 1+ objects, release when 0
-		e = [objects objectEnumerator];
+		e = [abc objectEnumerator];
 		while (anObject = [e nextObject])
 			[list appendObject:anObject];
 		if (kCHGarbageCollectionNotEnabled)
@@ -269,7 +293,7 @@
 		if (kCHGarbageCollectionNotEnabled)
 			STAssertEquals([list retainCount], (NSUInteger)1, @"Enumerator should release collection");
 		STAssertNotNil(array, @"Array should not be nil");
-		STAssertEquals([array count], [objects count], @"Incorrect count.");
+		STAssertEquals([array count], [abc count], @"Incorrect count.");
 		STAssertEqualObjects([array objectAtIndex:0], @"A", @"Object order is wrong.");
 		STAssertEqualObjects([array lastObject],      @"C", @"Object order is wrong.");
 		
@@ -369,7 +393,7 @@
 	Class aClass;
 	while (aClass = [classes nextObject]) {
 		list = [[aClass alloc] init];
-		e = [objects objectEnumerator];
+		e = [abc objectEnumerator];
 		while (anObject = [e nextObject])
 			[list appendObject:anObject];
 		STAssertThrows([list objectAtIndex:-1], @"Should raise NSRangeException.");
@@ -390,7 +414,7 @@
 		list = [[aClass alloc] init];
 		
 		[list removeFirstObject]; // Should have no effect
-		e = [objects objectEnumerator];
+		e = [abc objectEnumerator];
 		while (anObject = [e nextObject])
 			[list appendObject:anObject];
 		
@@ -423,7 +447,7 @@
 		list = [[aClass alloc] init];
 		
 		[list removeLastObject]; // Should have no effect
-		e = [objects objectEnumerator];
+		e = [abc objectEnumerator];
 		while (anObject = [e nextObject])
 			[list appendObject:anObject];
 		
@@ -453,7 +477,7 @@
 		[list removeObject:@"Z"]; // Should have no effect
 		STAssertNoThrow([list removeObject:nil], @"Should not raise an exception.");
 		
-		e = [objects objectEnumerator];
+		e = [abc objectEnumerator];
 		while (anObject = [e nextObject])
 			[list appendObject:anObject];
 		STAssertNoThrow([list removeObject:nil], @"Should not raise an exception.");
@@ -532,7 +556,7 @@
 	Class aClass;
 	while (aClass = [classes nextObject]) {
 		list = [[aClass alloc] init];
-		e = [objects objectEnumerator];
+		e = [abc objectEnumerator];
 		while (anObject = [e nextObject])
 			[list appendObject:anObject];
 		
@@ -553,7 +577,7 @@
 		STAssertEquals([list count], (NSUInteger)0, @"Incorrect count.");
 		
 		// Test removing from an index in the middle
-		e = [objects objectEnumerator];
+		e = [abc objectEnumerator];
 		while (anObject = [e nextObject])
 			[list appendObject:anObject];
 		
@@ -570,10 +594,10 @@
 	Class aClass;
 	while (aClass = [classes nextObject]) {
 		list = [[aClass alloc] init];
-		e = [objects objectEnumerator];
+		e = [abc objectEnumerator];
 		while (anObject = [e nextObject])
 			[list appendObject:anObject];
-		STAssertEquals([list count], [objects count], @"Incorrect count.");
+		STAssertEquals([list count], [abc count], @"Incorrect count.");
 		[list removeAllObjects];
 		STAssertEquals([list count], (NSUInteger)0, @"Incorrect count.");
 		[list release];
