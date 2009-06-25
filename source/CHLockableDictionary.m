@@ -109,6 +109,7 @@ static const CFDictionaryValueCallBacks kCHLockableDictionaryValueCallBacks = {
 										   0, // no maximum capacity limit
 										   &kCHLockableDictionaryKeyCallBacks,
 										   &kCHLockableDictionaryValueCallBacks);
+	CFMakeCollectable(dictionary); // Works under GC, and is a no-op otherwise.
 	for (NSUInteger i = 0; i < count; i++) {
 		[self setObject:objects[i] forKey:keys[i]];
 	}

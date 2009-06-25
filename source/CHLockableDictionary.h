@@ -32,7 +32,7 @@
 @interface CHLockableDictionary : NSMutableDictionary <CHLockable>
 {
 	NSLock* lock; /**< A lock for synchronizing interaction between threads. */
-	CFMutableDictionaryRef dictionary; /**< A Core Foundation dictionary reference. */
+	__strong CFMutableDictionaryRef dictionary; /**< A Core Foundation dictionary. */
 }
 
 /**
