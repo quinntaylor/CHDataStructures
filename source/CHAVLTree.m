@@ -49,6 +49,8 @@ static inline void adjustBalance(CHBinaryTreeNode *root, int dir, int bal) {
 
 @implementation CHAVLTree
 
+// NOTE: The header and sentinel nodes are initialized to balance 0 by default.
+
 - (void) addObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
@@ -78,11 +80,9 @@ static inline void adjustBalance(CHBinaryTreeNode *root, int dir, int bal) {
 		// No need to rebalance up the path since we didn't modify the structure
 		goto done;
 	} else {
-		current = NSAllocateCollectable(kCHBinaryTreeNodeSize, NSScannedOption);
-		current->object = anObject;
+		current = CHCreateBinaryTreeNodeWithObject(anObject);
 		current->left   = sentinel;
 		current->right  = sentinel;
-		current->balance  = 0;
 		++count;
 		// Link from parent as the proper child, based on last comparison
 		parent = CHBinaryTreeStack_POP();

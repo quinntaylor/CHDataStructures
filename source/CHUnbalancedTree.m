@@ -34,8 +34,7 @@
 		current->object = anObject;		
 	} else {
 		// Create a new node to hold the value being inserted
-		current = NSAllocateCollectable(kCHBinaryTreeNodeSize, NSScannedOption);
-		current->object = anObject;
+		current = CHCreateBinaryTreeNodeWithObject(anObject);
 		current->left   = sentinel;
 		current->right  = sentinel;
 		++count;

@@ -18,7 +18,7 @@ size_t kCHPointerSize = sizeof(void*);
 /**
  A dummy object that resides in the header node for a tree. Using a header node can simplify insertion logic by eliminating the need to check whether the root is null. The actual root of the tree is generally stored as the right child of the header node. In order to always proceed to the actual root node when traversing down the tree, instances of this class always return @c NSOrderedAscending when called as the receiver of the @c -compare: method.
  
- Since all header objects behave the same way, all search tree instances can share the same dummy header object. The singleton instance can be obtained via the \link #headerObject +headerObject\endlink method. The singleton is created once and persists for the duration of the program. Any calls to @c -retain, @c -release, or @c -autorelease will raise an exception. (Note: If garbage collection is enabled, any such calls are likely to be ignored or "optimized out" by the compiler before the object can respond anyway.)
+ Since all header objects behave the same way, all search tree instances can share the same dummy header object. The singleton instance can be obtained via the \link #object +object\endlink method. The singleton is created once and persists for the duration of the program. Any calls to @c -retain, @c -release, or @c -autorelease will raise an exception. (Note: If garbage collection is enabled, any such calls are likely to be ignored or "optimized out" by the compiler before the object can respond anyway.)
  */
 @interface CHSearchTreeHeaderObject : NSObject
 
@@ -27,7 +27,7 @@ size_t kCHPointerSize = sizeof(void*);
  
  @return The singleton instance of this class.
  */
-+ (id) headerObject;
++ (id) object;
 
 /**
  Always indicate that another given object should appear to the right side.
@@ -46,7 +46,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 
 @implementation CHSearchTreeHeaderObject
 
-+ (id) headerObject {
++ (id) object {
 	// Protecting the @synchronized block prevents unnecessary lock contention.
 	if (headerObject == nil) {
 		@synchronized([CHSearchTreeHeaderObject class]) {
@@ -96,8 +96,8 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 {
 	CHTraversalOrder traversalOrder; /**< Order in which to traverse the tree. */
 	id<CHSearchTree> collection; /**< The collection that is being enumerated. */
-	CHBinaryTreeNode *current; /**< The next node to be enumerated. */
-	CHBinaryTreeNode *sentinelNode;  /**< Sentinel in the tree being traversed. */
+	__strong CHBinaryTreeNode *current; /**< The next node to be enumerated. */
+	__strong CHBinaryTreeNode *sentinelNode;  /**< Sentinel in the tree being traversed. */
 	unsigned long mutationCount; /**< Stores the collection's initial mutation. */
 	unsigned long *mutationPtr; /**< Pointer for checking changes in mutation. */
 	
@@ -290,6 +290,15 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 
 #pragma mark -
 
+CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
+	CHBinaryTreeNode *node;
+	// NSScannedOption tells the garbage collector to scan object and children.
+	node = NSAllocateCollectable(kCHBinaryTreeNodeSize, NSScannedOption);
+	node->object = anObject;
+	node->balance = 0; // Affects balancing info for any subclass (anon. union)
+	return node;
+}
+
 @implementation CHAbstractBinarySearchTree
 
 - (void) dealloc {
@@ -305,16 +314,10 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 	if ([super init] == nil) return nil;
 	count = 0;
 	mutations = 0;
-	
-	// Allocate with no options, since it should never root its object reference
-	sentinel = NSAllocateCollectable(kCHBinaryTreeNodeSize, 0);
-	sentinel->object = nil;
+	sentinel = CHCreateBinaryTreeNodeWithObject(nil);
 	sentinel->right = sentinel;
 	sentinel->left = sentinel;
-	
-	// Allocate with NSScannedOption so garbage collector scans object reference
-	header = NSAllocateCollectable(kCHBinaryTreeNodeSize, NSScannedOption);
-	header->object = [CHSearchTreeHeaderObject headerObject];
+	header = CHCreateBinaryTreeNodeWithObject([CHSearchTreeHeaderObject object]);
 	header->right = sentinel;
 	header->left = sentinel;
 	return self;

@@ -36,12 +36,7 @@
 
 @implementation CHAnderssonTree
 
-- (id) init {
-	if ([super init] == nil) return nil;
-	sentinel->level = 0;
-	header->level = 0;
-	return self;
-}
+// NOTE: The header and sentinel nodes are initialized to level 0 by default.
 
 - (void) addObject:(id)anObject {
 	if (anObject == nil)
@@ -67,8 +62,7 @@
 		// No need to rebalance up the path since we didn't modify the structure
 		goto done;
 	} else {
-		current = NSAllocateCollectable(kCHBinaryTreeNodeSize, NSScannedOption);
-		current->object = anObject;
+		current = CHCreateBinaryTreeNodeWithObject(anObject);
 		current->left   = sentinel;
 		current->right  = sentinel;
 		current->level  = 1;

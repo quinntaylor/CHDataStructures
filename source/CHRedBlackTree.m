@@ -67,12 +67,7 @@ static inline CHBinaryTreeNode* doubleRotation(CHBinaryTreeNode *node, BOOL goin
 
 @implementation CHRedBlackTree
 
-- (id) init {
-	if ([super init] == nil) return nil;
-	sentinel->color = kBLACK;
-	header->color = kBLACK;
-	return self;
-}
+// NOTE: The header and sentinel nodes are initialized to black (0) by default.
 
 /*
  Basically, as you walk down the tree to insert, if the present node has two red children, color it red and change the two children to black. If its parent is red, the tree must be rotated. (Just change the root's color back to black if you changed it). Returns without incrementing the count if the object already exists in the tree.
@@ -121,8 +116,7 @@ static inline CHBinaryTreeNode* doubleRotation(CHBinaryTreeNode *node, BOOL goin
 		current->object = anObject;
 	} else {
 		++count;
-		current = NSAllocateCollectable(kCHBinaryTreeNodeSize, NSScannedOption);
-		current->object = anObject;
+		current = CHCreateBinaryTreeNodeWithObject(anObject);
 		current->left = sentinel;
 		current->right = sentinel;
 		

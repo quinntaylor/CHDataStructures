@@ -23,8 +23,7 @@
 
 - (id) init {
 	if ([super init] == nil) return nil;
-	header->priority = CHTreapNotFound;
-	sentinel->priority = 0;
+	header->priority = CHTreapNotFound; // This is the highest possible priority
 	return self;
 }
 
@@ -68,8 +67,7 @@
 			current = current->link[!direction];
 		}
 	} else {
-		current = NSAllocateCollectable(kCHBinaryTreeNodeSize, NSScannedOption);
-		current->object = anObject;
+		current = CHCreateBinaryTreeNodeWithObject(anObject);
 		current->left   = sentinel;
 		current->right  = sentinel;
 		current->priority = (u_int32_t) (priority % CHTreapNotFound);

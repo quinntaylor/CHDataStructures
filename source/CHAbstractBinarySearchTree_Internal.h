@@ -19,10 +19,18 @@
  Memory for stacks and queues is (re)allocated using NSScannedOption, since (if garbage collection is enabled) the nodes which may be placed in a stack or queue are known to the garbage collector. (If garbage collection is @b not enabled, the macros explicitly free the allocated memory.) We assume that a stack or queue will not outlive the nodes it contains, since they are only used in connection with an active tree (usually during insertion, removal or iteration). An enumerator may contain a stack or queue, but also retains the underlying collection, so correct retain-release calls will not leak.
  */
 
+/**
+ Convenience function for allocating a new CHBinaryTreeNode. This centralizes the allocation so all subclasses can be sure they're allocating nodes correctly. Explicitly sets the "extra" field used by self-balancing trees to zero.
+ 
+ @param anObject The object to be stored in the @a object field of the struct; may be @c nil.
+ @return An struct allocated with @c NSAllocateCollectable() and @c NSScannedOption  so the garbage collector (if enabled) will scan the object stored in the node, as well as the node's children (if any).
+ */
+HIDDEN CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject);
+
 #pragma mark Stack macros
 
 #define CHBinaryTreeStack_DECLARE() \
-	CHBinaryTreeNode** stack; \
+	__strong CHBinaryTreeNode** stack; \
 	NSUInteger stackCapacity, stackSize
 
 #define CHBinaryTreeStack_INIT() { \
@@ -56,8 +64,8 @@
 #pragma mark Queue macros
 
 #define CHBinaryTreeQueue_DECLARE() \
-CHBinaryTreeNode** queue; \
-NSUInteger queueCapacity, queueHead, queueTail
+	__strong CHBinaryTreeNode** queue; \
+	NSUInteger queueCapacity, queueHead, queueTail
 
 #define CHBinaryTreeQueue_INIT() { \
 	queueCapacity = 128; \
