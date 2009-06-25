@@ -319,9 +319,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 			STAssertEquals([tree retainCount], (NSUInteger)1, @"Should not retain collection");
 		
 		// Enumerator should retain collection when it has 1+ objects, release when 0
-		e = [objects objectEnumerator];
-		while (anObject = [e nextObject])
-			[tree addObject:anObject];
+		[tree addObjectsFromArray:objects];
 		if (kCHGarbageCollectionNotEnabled)
 			STAssertEquals([tree retainCount], (NSUInteger)1, @"Wrong retain count");
 		e = [tree objectEnumerator];
@@ -544,9 +542,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 		STAssertEquals([copy count], (NSUInteger)0, @"Incorrect count.");
 		[copy release];
 
-		e = [objects objectEnumerator];
-		while (anObject =[e nextObject])
-			[tree addObject:anObject];
+		[tree addObjectsFromArray:objects];
 		copy = [tree copyWithZone:nil];
 		STAssertNotNil(copy, @"-copy should not return nil for valid tree.");
 		STAssertEquals([copy count], [objects count], @"Incorrect count.");
@@ -610,7 +606,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 - (void) testHeaderObject {
 	id tree = [[[CHAbstractBinarySearchTree alloc] init] autorelease];
 	id headerObject = [tree headerObject];
-	STAssertNotNil(headerObject, @"Header object should be nil.");
+	STAssertNotNil(headerObject, @"Header object should not be nil.");
 	if (kCHGarbageCollectionNotEnabled) {
 		STAssertThrows([headerObject retain],
 					   @"Should raise exception, unsupported.");
