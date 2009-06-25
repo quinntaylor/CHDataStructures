@@ -11,7 +11,7 @@
 #import "CHAbstractBinarySearchTree.h"
 #import "CHAbstractBinarySearchTree_Internal.h"
 
-// Definitions of variables declared as 'extern' in CHAbstractBinarySearchTree.h
+// Definitions of extern variables from CHAbstractBinarySearchTree_Internal.h
 size_t kCHBinaryTreeNodeSize = sizeof(CHBinaryTreeNode);
 size_t kCHPointerSize = sizeof(void*);
 
@@ -94,10 +94,10 @@ static CHSearchTreeHeaderObject *headerObject = nil;
  */
 @interface CHBinarySearchTreeEnumerator : NSEnumerator
 {
-	CHTraversalOrder traversalOrder; /**< Order in which to traverse the tree. */
-	id<CHSearchTree> collection; /**< The collection that is being enumerated. */
+	__strong id<CHSearchTree> searchTree; /**< The tree being enumerated. */
 	__strong CHBinaryTreeNode *current; /**< The next node to be enumerated. */
-	__strong CHBinaryTreeNode *sentinelNode;  /**< Sentinel in the tree being traversed. */
+	__strong CHBinaryTreeNode *sentinelNode;  /**< Sentinel node in the tree. */
+	CHTraversalOrder traversalOrder; /**< Order in which to traverse the tree. */
 	unsigned long mutationCount; /**< Stores the collection's initial mutation. */
 	unsigned long *mutationPtr; /**< Pointer for checking changes in mutation. */
 	
@@ -151,7 +151,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 {
 	if ([super init] == nil || !isValidTraversalOrder(order)) return nil;
 	traversalOrder = order;
-	collection = (root != sentinel) ? [tree retain] : nil;
+	searchTree = (root != sentinel) ? [tree retain] : nil;
 	if (traversalOrder == CHTraverseLevelOrder) {
 		CHBinaryTreeQueue_INIT();
 		CHBinaryTreeQueue_ENQUEUE(root);
@@ -171,7 +171,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 }
 
 - (void) dealloc {
-	[collection release];
+	[searchTree release];
 	free(stack);
 	free(queue);
 	[super dealloc];
@@ -184,8 +184,8 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 	id anObject;
 	while ((anObject = [self nextObject]))
 		[array addObject:anObject];
-	[collection release];
-	collection = nil;
+	[searchTree release];
+	searchTree = nil;
 	return [array autorelease];
 }
 
@@ -276,9 +276,9 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 		}
 			
 		collectionExhausted:
-			if (collection != nil) {
-				[collection release];
-				collection = nil;
+			if (searchTree != nil) {
+				[searchTree release];
+				searchTree = nil;
 				CHBinaryTreeStack_FREE(stack);
 				CHBinaryTreeQueue_FREE(queue);
 			}

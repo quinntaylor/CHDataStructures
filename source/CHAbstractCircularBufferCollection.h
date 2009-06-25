@@ -32,7 +32,7 @@
 <NSCoding, NSCopying>
 #endif
 {
-	id *array; /**< Primitive C array used for storing contents of collection. */
+	__strong id *array; /**< Primitive C array for storing collection contents. */
 	NSUInteger arrayCapacity; /**< How many pointers @a array can accommodate. */
 	NSUInteger count; /**< The number of objects currently in the buffer. */
 	NSUInteger headIndex; /**< The array index of the first object. */
