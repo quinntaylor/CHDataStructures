@@ -527,7 +527,11 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 		STAssertEqualObjects(before, after,
 							 badOrder(@"Bad order after decode", after, before));
 		[tree release];
+#if MAC_OS_X_VERSION_10_5_AND_LATER
+		[[NSFileManager defaultManager] removeItemAtPath:filePath error:NULL];
+#else
 		[[NSFileManager defaultManager] removeFileAtPath:filePath handler:nil];
+#endif
 	}	
 }
 

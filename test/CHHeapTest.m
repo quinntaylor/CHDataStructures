@@ -86,7 +86,11 @@
 			STAssertEquals([heap count], (NSUInteger)9, @"Incorrect count.");
 			STAssertTrue([heap isValid], @"Wrong ordering on reconstruction.");
 			[heap release];
+#if MAC_OS_X_VERSION_10_5_AND_LATER
+			[[NSFileManager defaultManager] removeItemAtPath:filePath error:NULL];
+#else
 			[[NSFileManager defaultManager] removeFileAtPath:filePath handler:nil];
+#endif
 		}
 	} while (sortOrder != NSOrderedDescending);
 }

@@ -56,7 +56,11 @@ void populateMultimap(CHMultiDictionary* multimap) {
 		STAssertEqualObjects([multimap objectsForKey:key1],
 							 [multimap2 objectsForKey:key2], @"Values are not equal.");
 	}
+#if MAC_OS_X_VERSION_10_5_AND_LATER
+	[[NSFileManager defaultManager] removeItemAtPath:filePath error:NULL];
+#else
 	[[NSFileManager defaultManager] removeFileAtPath:filePath handler:nil];
+#endif
 }
 
 - (void) testNSCopying {

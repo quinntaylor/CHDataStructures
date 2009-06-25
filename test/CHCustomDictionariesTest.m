@@ -168,7 +168,11 @@
 	STAssertEqualObjects([dictionary allKeys], [oldDictionary allKeys],
 						 @"Wrong key ordering on reconstruction.");
 	
+#if MAC_OS_X_VERSION_10_5_AND_LATER
+	[[NSFileManager defaultManager] removeItemAtPath:filePath error:NULL];
+#else
 	[[NSFileManager defaultManager] removeFileAtPath:filePath handler:nil];
+#endif
 }
 
 - (void) testNSCopying {
