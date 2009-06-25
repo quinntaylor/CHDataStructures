@@ -234,7 +234,9 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 	new = NSAllocateCollectable(kCHSinglyLinkedListNodeSize, NSScannedOption);
 	new->object = [anObject retain];
 	new->next = NULL;
-	tail = tail->next = new;
+	tail->next = new;
+	tail = tail->next;
+
 	++count;
 	++mutations;
 }
@@ -249,7 +251,8 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 	new->object = [anObject retain];
 	if (index == count) {
 		new->next = NULL;
-		tail = tail->next = new;
+		tail->next = new;
+		tail = tail->next;
 	}
 	else {
 		CHSinglyLinkedListNode *node = head; // So the index lands at prior node

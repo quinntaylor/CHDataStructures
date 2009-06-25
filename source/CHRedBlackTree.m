@@ -34,16 +34,18 @@ static inline CHBinaryTreeNode* rotateNodeWithRightChild(CHBinaryTreeNode *node)
 
 HIDDEN CHBinaryTreeNode* rotateObjectOnAncestor(id anObject, CHBinaryTreeNode *ancestor) {
 	if ([ancestor->object compare:anObject] == NSOrderedDescending) {
-		return ancestor->left =
-			([ancestor->left->object compare:anObject] == NSOrderedDescending)
-				? rotateNodeWithLeftChild(ancestor->left)
-				: rotateNodeWithRightChild(ancestor->left);
+		if ([ancestor->left->object compare:anObject] == NSOrderedDescending)
+			ancestor->left = rotateNodeWithLeftChild(ancestor->left);
+		else
+			ancestor->left = rotateNodeWithRightChild(ancestor->left);
+		return ancestor->left;
 	}
 	else {
-		return ancestor->right =
-			([ancestor->right->object compare:anObject] == NSOrderedDescending)
-				? rotateNodeWithLeftChild(ancestor->right)
-				: rotateNodeWithRightChild(ancestor->right);
+		if ([ancestor->right->object compare:anObject] == NSOrderedDescending)
+			ancestor->right = rotateNodeWithLeftChild(ancestor->right);
+		else
+			ancestor->right = rotateNodeWithRightChild(ancestor->right);
+		return ancestor->right;
 	}
 }
 
@@ -178,8 +180,10 @@ static inline CHBinaryTreeNode* doubleRotation(CHBinaryTreeNode *node, BOOL goin
 		// There are only potential violations when removing a black node.
 		// If so, push the child red node down using rotations and color flips.
 		if (current->color != kRED && current->link[isGoingRight]->color != kRED) {
-			if (current->link[!isGoingRight]->color == kRED)
-				parent = parent->link[prevWentRight] = singleRotation(current, isGoingRight);
+			if (current->link[!isGoingRight]->color == kRED) {
+				parent->link[prevWentRight] = singleRotation(current, isGoingRight);
+				parent = parent->link[prevWentRight];
+			}
 			else {
 				sibling = parent->link[prevWentRight];
 				if (sibling != sentinel) {
@@ -190,8 +194,7 @@ static inline CHBinaryTreeNode* doubleRotation(CHBinaryTreeNode *node, BOOL goin
 						current->color = kRED;
 					}
 					else {
-						CHBinaryTreeNode *tempNode =
-							grandparent->link[(grandparent->right == parent)];
+						CHBinaryTreeNode *tempNode = grandparent->link[(grandparent->right == parent)];
 						if (sibling->link[prevWentRight]->color == kRED)
 							tempNode = doubleRotation(parent, prevWentRight);
 						else if (sibling->link[!prevWentRight]->color == kRED)
