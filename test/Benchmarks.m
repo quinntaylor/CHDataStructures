@@ -733,7 +733,15 @@ int main (int argc, const char * argv[]) {
 	NSString *path = @"../../benchmark_data/";
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	if (![fileManager fileExistsAtPath:path])
-		[fileManager createDirectoryAtPath:path attributes:nil];
+#if MAC_OS_X_VERSION_10_5_AND_LATER
+		[fileManager createDirectoryAtPath:path
+			   withIntermediateDirectories:YES
+								attributes:nil
+									 error:NULL];
+#else
+		[fileManager createDirectoryAtPath:path
+								attributes:nil];
+#endif
 	NSArray *results;
 	NSEnumerator *classNames = [[treeResults allKeys] objectEnumerator], *operations;
 	NSString *className, *operation;
