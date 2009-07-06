@@ -1,5 +1,5 @@
 /*
- CHDataStructures.framework -- CHLinkedSetTest.m
+ CHDataStructures.framework -- CHOrderedSetTest.m
  
  Copyright (c) 2009, Quinn Taylor <http://homepage.mac.com/quinntaylor>
  
@@ -9,17 +9,17 @@
  */
 
 #import <SenTestingKit/SenTestingKit.h>
-#import "CHLinkedSet.h"
+#import "CHOrderedSet.h"
 
-@interface CHLinkedSet (Test)
+@interface CHOrderedSet (Test)
 
 - (NSString*) debugDescription; // Declare here to prevent compiler warnings.
 
 @end
 
 
-@interface CHLinkedSetTest : SenTestCase {
-	CHLinkedSet *set;
+@interface CHOrderedSetTest : SenTestCase {
+	CHOrderedSet *set;
 	NSEnumerator *e;
 	id anObject;
 }
@@ -28,10 +28,10 @@
 
 @end
 
-@implementation CHLinkedSetTest
+@implementation CHOrderedSetTest
 
 - (void) setUp {
-	set = [[CHLinkedSet alloc] init];
+	set = [[CHOrderedSet alloc] init];
 }
 
 - (void) tearDown {
@@ -59,7 +59,7 @@
 	[set release];
 	// This tests -initWithArray: directly, and -initWithCapacity: indirectly.
 	NSArray *array = [self randomNumbers];
-	set = [[CHLinkedSet alloc] initWithArray:array];
+	set = [[CHOrderedSet alloc] initWithArray:array];
 	STAssertEqualObjects([set allObjects], array, @"Incorrect insertion order.");
 }
 
@@ -439,7 +439,7 @@
 	NSString *filePath = @"/tmp/CHDataStructures-linked-set.plist";
 	[NSKeyedArchiver archiveRootObject:set toFile:filePath];
 
-	CHLinkedSet *set2 = [[NSKeyedUnarchiver unarchiveObjectWithFile:filePath] retain];
+	CHOrderedSet *set2 = [[NSKeyedUnarchiver unarchiveObjectWithFile:filePath] retain];
 	STAssertEquals([set2 count], [set count], @"Incorrect count on reconstruction.");
 	STAssertEqualObjects([set2 allObjects], [set allObjects], @"Wrong ordering on reconstruction.");
 #if MAC_OS_X_VERSION_10_5_AND_LATER
@@ -452,7 +452,7 @@
 
 - (void) testNSCopying {
 	[set addObjectsFromArray:[self randomNumbers]];
-	CHLinkedSet *copy = [set copy];
+	CHOrderedSet *copy = [set copy];
 	STAssertEquals([set count], [copy count], @"Count mismatch.");
 	STAssertEqualObjects([set allObjects], [copy allObjects], @"Wrong ordering.");
 }

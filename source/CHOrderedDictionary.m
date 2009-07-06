@@ -1,5 +1,5 @@
 /*
- CHDataStructures.framework -- CHLinkedDictionary.m
+ CHDataStructures.framework -- CHOrderedDictionary.m
  
  Copyright (c) 2009, Quinn Taylor <http://homepage.mac.com/quinntaylor>
  
@@ -8,10 +8,10 @@
  The software is  provided "as is", without warranty of any kind, including all implied warranties of merchantability and fitness. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
  */
 
-#import "CHLinkedDictionary.h"
+#import "CHOrderedDictionary.h"
 #import "CHAbstractCircularBufferCollection.h"
 
-@implementation CHLinkedDictionary
+@implementation CHOrderedDictionary
 
 - (void) dealloc {
 	[keyOrdering release];

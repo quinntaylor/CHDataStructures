@@ -11,7 +11,7 @@
 #import <SenTestingKit/SenTestingKit.h>
 
 #import "CHLockableDictionary.h"
-#import "CHLinkedDictionary.h"
+#import "CHOrderedDictionary.h"
 #import "CHSortedDictionary.h"
 
 @interface CHCustomDictionariesTest : SenTestCase {
@@ -126,7 +126,7 @@
 	allKeys = [enumerator allObjects];
 	STAssertNotNil(allKeys, @"Key enumerator should return non-nil array.");
 	
-	if ([dictionary isMemberOfClass:[CHLinkedDictionary class]]) {
+	if ([dictionary isMemberOfClass:[CHOrderedDictionary class]]) {
 		expectedKeyOrder = keyArray;
 	} else {
 		expectedKeyOrder = [keyArray sortedArrayUsingSelector:@selector(compare:)];
@@ -217,14 +217,14 @@
 
 #pragma mark -
 
-@interface CHLinkedDictionaryTest : CHCustomDictionariesTest
+@interface CHOrderedDictionaryTest : CHCustomDictionariesTest
 @end
 
-@implementation CHLinkedDictionaryTest
+@implementation CHOrderedDictionaryTest
 
 - (void) setUp {
 	[super setUp];
-	dictionary = [[[CHLinkedDictionary alloc] init] autorelease];
+	dictionary = [[[CHOrderedDictionary alloc] init] autorelease];
 	expectedKeyOrder = keyArray;
 }
 

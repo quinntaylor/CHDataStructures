@@ -1,5 +1,5 @@
 /*
- CHDataStructures.framework -- CHLinkedSet.h
+ CHDataStructures.framework -- CHOrderedSet.h
  
  Copyright (c) 2009, Quinn Taylor <http://homepage.mac.com/quinntaylor>
  
@@ -11,7 +11,7 @@
 #import "CHLockableObject.h"
 
 /**
- @file CHLinkedSet.h
+ @file CHOrderedSet.h
  A set structure that also maintains order of insertion using a doubly-linked list.
  */
 
@@ -20,11 +20,11 @@
  
  A <strong>linked set</strong> is a composite data structure which combines a <a href="http://en.wikipedia.org/wiki/Set_(computer_science)">set</a> and a <a href="http://en.wikipedia.org/wiki/Linked_list">linked list</a>. It blends the uniqueness aspect of sets with the ability to recall the order in which items were added to the set. While this is possible with only a linked list, the speedy test for membership is a set means  that many basic operations (such as add, remove, and contains) that take linear time for a list can be accomplished in constant time (i.e. O(1) instead of O(n) complexity. Compared to these gains, the time overhead required for maintaining the list is negligible, although it does increase memory requirements.
  
- One of the most common implementations of a linked set is Java's <a href="http://java.sun.com/javase/6/docs/api/java/util/LinkedHashSet.html">LinkedHashSet</a>. This implementation wraps an NSMutableSet and a CHDoublyLinkedList to maintain insertion order. (A singly-linked list could also be used. This would reduce memory usage, but also makes removing the youngest item expensive.) The API is designed to be as consistent as possible with that of NSSet and NSMutableSet.
+ One of the most common implementations of an insertion-ordered set is Java's <a href="http://java.sun.com/javase/6/docs/api/java/util/LinkedHashSet.html">LinkedHashSet</a>. This implementation wraps an NSMutableSet and a circular buffer to maintain insertion order. The API is designed to be as consistent as possible with that of NSSet and NSMutableSet.
  
  @todo Allow setting a maximum size, and either reject additions or evict the "oldest" item when the limit is reached? (Perhaps this would be better done by the user...)
  */
-@interface CHLinkedSet : CHLockableObject {
+@interface CHOrderedSet : CHLockableObject {
 	NSMutableSet *objects; /**< A mutable set for maintaining item uniquenes. */
 	id ordering; /**< A structure for maintaining ordering of the objects. */
 }

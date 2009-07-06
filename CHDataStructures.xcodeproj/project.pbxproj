@@ -82,8 +82,8 @@
 		E4558CF70FE749FC00CC5860 /* CHLockableObject.h in Headers */ = {isa = PBXBuildFile; fileRef = E4558CF60FE749FC00CC5860 /* CHLockableObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4558D910FE758C300CC5860 /* CHLockableDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = E4558D8F0FE758C300CC5860 /* CHLockableDictionary.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4558D920FE758C300CC5860 /* CHLockableDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = E4558D900FE758C300CC5860 /* CHLockableDictionary.m */; };
-		E4558DB00FE7598700CC5860 /* CHLinkedDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = E4558DAE0FE7598700CC5860 /* CHLinkedDictionary.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E4558DB10FE7598700CC5860 /* CHLinkedDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = E4558DAF0FE7598700CC5860 /* CHLinkedDictionary.m */; };
+		E4558DB00FE7598700CC5860 /* CHOrderedDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = E4558DAE0FE7598700CC5860 /* CHOrderedDictionary.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E4558DB10FE7598700CC5860 /* CHOrderedDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = E4558DAF0FE7598700CC5860 /* CHOrderedDictionary.m */; };
 		E4558DB60FE7599500CC5860 /* CHSortedDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = E4558DB40FE7599500CC5860 /* CHSortedDictionary.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4558DB70FE7599500CC5860 /* CHSortedDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = E4558DB50FE7599500CC5860 /* CHSortedDictionary.m */; };
 		E46300B20ECBEDAE00E1AF73 /* CHTreapTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E410360E0EC424E600C2CFB9 /* CHTreapTest.m */; };
@@ -99,9 +99,9 @@
 		E48BFA850EE842CF0004D5E6 /* CHMultiDictionaryTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E48BFA840EE842CF0004D5E6 /* CHMultiDictionaryTest.m */; };
 		E48BFBB00EE858F40004D5E6 /* CHHeapTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D18220E9452BB007F39D8 /* CHHeapTest.m */; };
 		E49923750FEB7B2600923859 /* CustomDataViews.plist in Resources */ = {isa = PBXBuildFile; fileRef = E49923740FEB7B2600923859 /* CustomDataViews.plist */; };
-		E49BE2830FB21058002904AB /* CHLinkedSet.h in Headers */ = {isa = PBXBuildFile; fileRef = E49BE2810FB21058002904AB /* CHLinkedSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E49BE2840FB21058002904AB /* CHLinkedSet.m in Sources */ = {isa = PBXBuildFile; fileRef = E49BE2820FB21058002904AB /* CHLinkedSet.m */; };
-		E49BE3DC0FB230D4002904AB /* CHLinkedSetTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E49BE3DB0FB230D4002904AB /* CHLinkedSetTest.m */; };
+		E49BE2830FB21058002904AB /* CHOrderedSet.h in Headers */ = {isa = PBXBuildFile; fileRef = E49BE2810FB21058002904AB /* CHOrderedSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E49BE2840FB21058002904AB /* CHOrderedSet.m in Sources */ = {isa = PBXBuildFile; fileRef = E49BE2820FB21058002904AB /* CHOrderedSet.m */; };
+		E49BE3DC0FB230D4002904AB /* CHOrderedSetTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E49BE3DB0FB230D4002904AB /* CHOrderedSetTest.m */; };
 		E4A720C60EA78DCE00E0AC21 /* CHAbstractListCollectionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A720C50EA78DCE00E0AC21 /* CHAbstractListCollectionTest.m */; };
 		E4A720CB0EA78DFB00E0AC21 /* CHAbstractMutableArrayCollectionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A720CA0EA78DFB00E0AC21 /* CHAbstractMutableArrayCollectionTest.m */; };
 		E4A721A50EA7AED700E0AC21 /* CHDataStructures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* CHDataStructures.framework */; };
@@ -261,8 +261,8 @@
 		E4558CF60FE749FC00CC5860 /* CHLockableObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHLockableObject.h; path = source/CHLockableObject.h; sourceTree = "<group>"; };
 		E4558D8F0FE758C300CC5860 /* CHLockableDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHLockableDictionary.h; path = source/CHLockableDictionary.h; sourceTree = "<group>"; };
 		E4558D900FE758C300CC5860 /* CHLockableDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHLockableDictionary.m; path = source/CHLockableDictionary.m; sourceTree = "<group>"; };
-		E4558DAE0FE7598700CC5860 /* CHLinkedDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHLinkedDictionary.h; path = source/CHLinkedDictionary.h; sourceTree = "<group>"; };
-		E4558DAF0FE7598700CC5860 /* CHLinkedDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHLinkedDictionary.m; path = source/CHLinkedDictionary.m; sourceTree = "<group>"; };
+		E4558DAE0FE7598700CC5860 /* CHOrderedDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHOrderedDictionary.h; path = source/CHOrderedDictionary.h; sourceTree = "<group>"; };
+		E4558DAF0FE7598700CC5860 /* CHOrderedDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHOrderedDictionary.m; path = source/CHOrderedDictionary.m; sourceTree = "<group>"; };
 		E4558DB40FE7599500CC5860 /* CHSortedDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHSortedDictionary.h; path = source/CHSortedDictionary.h; sourceTree = "<group>"; };
 		E4558DB50FE7599500CC5860 /* CHSortedDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHSortedDictionary.m; path = source/CHSortedDictionary.m; sourceTree = "<group>"; };
 		E4723A710EB91B7A006FE465 /* Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Util.m; path = source/Util.m; sourceTree = "<group>"; };
@@ -279,9 +279,9 @@
 		E49923590FEB6D4800923859 /* CHDataStructuresFormatter.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CHDataStructuresFormatter.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		E499235A0FEB6D4800923859 /* Info-XcodeFormatter.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Info-XcodeFormatter.plist"; path = "resources/Info-XcodeFormatter.plist"; sourceTree = "<group>"; };
 		E49923740FEB7B2600923859 /* CustomDataViews.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = CustomDataViews.plist; path = resources/CustomDataViews.plist; sourceTree = "<group>"; };
-		E49BE2810FB21058002904AB /* CHLinkedSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHLinkedSet.h; path = source/CHLinkedSet.h; sourceTree = "<group>"; };
-		E49BE2820FB21058002904AB /* CHLinkedSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHLinkedSet.m; path = source/CHLinkedSet.m; sourceTree = "<group>"; };
-		E49BE3DB0FB230D4002904AB /* CHLinkedSetTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHLinkedSetTest.m; path = test/CHLinkedSetTest.m; sourceTree = "<group>"; };
+		E49BE2810FB21058002904AB /* CHOrderedSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHOrderedSet.h; path = source/CHOrderedSet.h; sourceTree = "<group>"; };
+		E49BE2820FB21058002904AB /* CHOrderedSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHOrderedSet.m; path = source/CHOrderedSet.m; sourceTree = "<group>"; };
+		E49BE3DB0FB230D4002904AB /* CHOrderedSetTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHOrderedSetTest.m; path = test/CHOrderedSetTest.m; sourceTree = "<group>"; };
 		E4A720C50EA78DCE00E0AC21 /* CHAbstractListCollectionTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHAbstractListCollectionTest.m; path = test/CHAbstractListCollectionTest.m; sourceTree = "<group>"; };
 		E4A720CA0EA78DFB00E0AC21 /* CHAbstractMutableArrayCollectionTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHAbstractMutableArrayCollectionTest.m; path = test/CHAbstractMutableArrayCollectionTest.m; sourceTree = "<group>"; };
 		E4ADBB060E88174200B570BC /* CHMutableArrayHeap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHMutableArrayHeap.h; path = source/CHMutableArrayHeap.h; sourceTree = "<group>"; };
@@ -428,10 +428,6 @@
 				E4D9413F0F93C147001BAE05 /* CHCircularBufferStack.m */,
 				E4ADBB1E0E88174200B570BC /* CHDoublyLinkedList.h */,
 				E4ADBB1F0E88174200B570BC /* CHDoublyLinkedList.m */,
-				E4558DAE0FE7598700CC5860 /* CHLinkedDictionary.h */,
-				E4558DAF0FE7598700CC5860 /* CHLinkedDictionary.m */,
-				E49BE2810FB21058002904AB /* CHLinkedSet.h */,
-				E49BE2820FB21058002904AB /* CHLinkedSet.m */,
 				E40D184A0E945580007F39D8 /* CHListDeque.h */,
 				E40D184B0E945580007F39D8 /* CHListDeque.m */,
 				E4ADBB130E88174200B570BC /* CHListQueue.h */,
@@ -452,6 +448,10 @@
 				E4ADBB090E88174200B570BC /* CHMutableArrayQueue.m */,
 				E4ADBB0A0E88174200B570BC /* CHMutableArrayStack.h */,
 				E4ADBB0B0E88174200B570BC /* CHMutableArrayStack.m */,
+				E4558DAE0FE7598700CC5860 /* CHOrderedDictionary.h */,
+				E4558DAF0FE7598700CC5860 /* CHOrderedDictionary.m */,
+				E49BE2810FB21058002904AB /* CHOrderedSet.h */,
+				E49BE2820FB21058002904AB /* CHOrderedSet.m */,
 				E4ADBB1B0E88174200B570BC /* CHRedBlackTree.h */,
 				E4ADBB1C0E88174200B570BC /* CHRedBlackTree.m */,
 				E41180250E91E7E700E66053 /* CHSinglyLinkedList.h */,
@@ -494,9 +494,9 @@
 				E4FD52CC0ECA8589006D9FF8 /* CHDequeTest.m */,
 				E40D18220E9452BB007F39D8 /* CHHeapTest.m */,
 				E4D499690E93CD1300434CBA /* CHLinkedListTest.m */,
-				E49BE3DB0FB230D4002904AB /* CHLinkedSetTest.m */,
 				E4FBE17F0F8B21860039E4D0 /* CHLockableTest.m */,
 				E48BFA840EE842CF0004D5E6 /* CHMultiDictionaryTest.m */,
+				E49BE3DB0FB230D4002904AB /* CHOrderedSetTest.m */,
 				E4FD52F50ECA8A9F006D9FF8 /* CHQueueTest.m */,
 				E40D181C0E9452BB007F39D8 /* CHRedBlackTreeTest.m */,
 				E4FD53020ECA9212006D9FF8 /* CHStackTest.m */,
@@ -580,11 +580,11 @@
 				E400CAC30F791A08003189D3 /* CHCircularBufferDeque.h in Headers */,
 				E4EF44D80F86C52200C59C52 /* CHLockable.h in Headers */,
 				E4D941400F93C147001BAE05 /* CHCircularBufferStack.h in Headers */,
-				E49BE2830FB21058002904AB /* CHLinkedSet.h in Headers */,
+				E49BE2830FB21058002904AB /* CHOrderedSet.h in Headers */,
 				E4128A970FB27E4F00CC187D /* CHSortedSet.h in Headers */,
 				E4558CF70FE749FC00CC5860 /* CHLockableObject.h in Headers */,
 				E4558D910FE758C300CC5860 /* CHLockableDictionary.h in Headers */,
-				E4558DB00FE7598700CC5860 /* CHLinkedDictionary.h in Headers */,
+				E4558DB00FE7598700CC5860 /* CHOrderedDictionary.h in Headers */,
 				E4558DB60FE7599500CC5860 /* CHSortedDictionary.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -819,9 +819,9 @@
 				E400CAC40F791A08003189D3 /* CHCircularBufferDeque.m in Sources */,
 				E4EF44D90F86C52200C59C52 /* CHLockableObject.m in Sources */,
 				E4D941410F93C147001BAE05 /* CHCircularBufferStack.m in Sources */,
-				E49BE2840FB21058002904AB /* CHLinkedSet.m in Sources */,
+				E49BE2840FB21058002904AB /* CHOrderedSet.m in Sources */,
 				E4558D920FE758C300CC5860 /* CHLockableDictionary.m in Sources */,
-				E4558DB10FE7598700CC5860 /* CHLinkedDictionary.m in Sources */,
+				E4558DB10FE7598700CC5860 /* CHOrderedDictionary.m in Sources */,
 				E4558DB70FE7599500CC5860 /* CHSortedDictionary.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -855,7 +855,7 @@
 				E48BFBB00EE858F40004D5E6 /* CHHeapTest.m in Sources */,
 				E4D3A4C70F789FF500E21CF8 /* CHAbstractCircularBufferCollectionTest.m in Sources */,
 				E4FBE1800F8B21860039E4D0 /* CHLockableTest.m in Sources */,
-				E49BE3DC0FB230D4002904AB /* CHLinkedSetTest.m in Sources */,
+				E49BE3DC0FB230D4002904AB /* CHOrderedSetTest.m in Sources */,
 				E4D48E970FE9510B009BA8BC /* CHCustomDictionariesTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

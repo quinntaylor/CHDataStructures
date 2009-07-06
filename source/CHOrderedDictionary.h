@@ -1,5 +1,5 @@
 /*
- CHDataStructures.framework -- CHLinkedDictionary.h
+ CHDataStructures.framework -- CHOrderedDictionary.h
  
  Copyright (c) 2009, Quinn Taylor <http://homepage.mac.com/quinntaylor>
  
@@ -9,7 +9,6 @@
  */
 
 #import "CHLockableDictionary.h"
-#import "CHQueue.h"
 
 /**
  A dictionary which enumerates keys in the order in which they are inserted. The following additional operations are provided to take advantage of the ordering:
@@ -20,15 +19,18 @@
  
  Key-value entries are inserted just as in a normal dictionary, including replacement of values for existing keys, as detailed in \link #setObject:forKey: -setObject:forKey:\endlink. However, an additional structure is used in parallel to track insertion order, and keys are enumerated in that order. If a key to be added does not currently exist in the dictionary, it is added to the end of the list, otherwise the insertion order of the key does not change.
 
- Implementations of linked maps include <a href="http://java.sun.com/javase/6/docs/api/java/util/LinkedHashMap.html">LinkedHashMap</a> in <b>Java SE</b>, <a href="http://commons.apache.org/collections/apidocs/org/apache/commons/collections/map/LinkedMap.html">LinkedMap</a> in <b>Apache Commons</b>, and <a href="http://sano.luaforge.net/documentation/LinkedMap.html">LinkedMap</a> in <b>Lua</b>.
+ Implementations of insertion-ordered dictionaries (aka "maps") in other languages include the following:
+ 
+ - <a href="http://java.sun.com/javase/6/docs/api/java/util/LinkedHashMap.html">LinkedHashMap</a> in Java SE
+ - <a href="http://commons.apache.org/collections/apidocs/org/apache/commons/collections/map/LinkedMap.html">LinkedMap</a> in Apache Commons
+ - <a href="http://sano.luaforge.net/documentation/LinkedMap.html">LinkedMap</a> in Lua
+ - <a href="http://www.python.org/dev/peps/pep-0372/">OrderedDict</a> in Python
+ - <a href="http://msdn.microsoft.com/en-us/library/system.collections.specialized.ordereddictionary.aspx">OrderedDictionary</a> in .NET
+ - <a href="http://codeendeavor.com/gsdocs/net/guttershark/util/collections/OrderedDictionary.html">OrderedDictionary</a> in Flash
  
  @note Any method inherited from NSDictionary or NSMutableDictionary is supported, but only overridden methods are listed here.
- 
- @todo Add support for evicting the eldest key-value entry at a given size (like a cache)?
- 
- @todo Allow the option for re-inserting a key to move it to the end of the list.
  */
-@interface CHLinkedDictionary : CHLockableDictionary {
+@interface CHOrderedDictionary : CHLockableDictionary {
 	id keyOrdering;
 }
 

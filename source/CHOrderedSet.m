@@ -1,5 +1,5 @@
 /*
- CHDataStructures.framework -- CHLinkedSet.h
+ CHDataStructures.framework -- CHOrderedSet.h
  
  Copyright (c) 2009, Quinn Taylor <http://homepage.mac.com/quinntaylor>
  
@@ -8,10 +8,10 @@
  The software is  provided "as is", without warranty of any kind, including all implied warranties of merchantability and fitness. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
  */
 
-#import "CHLinkedSet.h"
-#import "CHCircularBufferQueue.h"
+#import "CHOrderedSet.h"
+#import "CHAbstractCircularBufferCollection.h"
 
-@implementation CHLinkedSet
+@implementation CHOrderedSet
 
 - (id) init {
 	return [self initWithCapacity:0];
@@ -25,7 +25,7 @@
 
 - (id) initWithCapacity:(NSUInteger)numItems {
 	if ([super init] == nil) return nil;
-	ordering = [[CHCircularBufferQueue alloc] init];
+	ordering = [[CHAbstractCircularBufferCollection alloc] init];
 	if (numItems > 0)
 		objects = [[NSMutableSet alloc] initWithCapacity:numItems];
 	else
@@ -50,7 +50,7 @@
 #pragma mark <NSCopying>
 
 - (id) copyWithZone:(NSZone*)zone {
-	CHLinkedSet *copy = [[CHLinkedSet allocWithZone:zone] init];
+	CHOrderedSet *copy = [[CHOrderedSet allocWithZone:zone] init];
 #if MAC_OS_X_VERSION_10_5_AND_LATER
 	for (id anObject in ordering)
 #else
