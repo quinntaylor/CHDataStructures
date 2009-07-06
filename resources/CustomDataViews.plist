@@ -39,6 +39,11 @@
 		<key>SummaryString</key>
 		<string>{(*$VAR).object} (left={(*$VAR).left}, right={(*$VAR).right}) [{(long)(*$VAR).balance}]</string>
 	</dict>
+	<key>struct CHBinaryTreeNode *</key>
+	<dict>
+		<key>SummaryString</key>
+		<string>{(*$VAR).object} (left={(*$VAR).left}, right={(*$VAR).right}) [{(long)(*$VAR).balance}]</string>
+	</dict>
 	<key>CHCircularBufferDeque *</key>
 	<dict>
 		<key>SummaryString</key>
@@ -73,16 +78,6 @@
 	<dict>
 		<key>SummaryString</key>
 		<string>{(int)[$VAR count]} key/value pairs</string>
-	</dict>
-	<key>CHLinkedDictionary *</key>
-	<dict>
-		<key>SummaryString</key>
-		<string>{(int)[$VAR count]} key/value pairs</string>
-	</dict>
-	<key>CHLinkedSet *</key>
-	<dict>
-		<key>SummaryString</key>
-		<string>{(int)[$VAR count]} objects</string>
 	</dict>
 	<key>CHListDeque *</key>
 	<dict>
@@ -120,6 +115,16 @@
 		<string>{(int)[$VAR count]} objects</string>
 	</dict>
 	<key>CHMutableArrayStack *</key>
+	<dict>
+		<key>SummaryString</key>
+		<string>{(int)[$VAR count]} objects</string>
+	</dict>
+	<key>CHOrderedDictionary *</key>
+	<dict>
+		<key>SummaryString</key>
+		<string>{(int)[$VAR count]} key/value pairs</string>
+	</dict>
+	<key>CHOrderedSet *</key>
 	<dict>
 		<key>SummaryString</key>
 		<string>{(int)[$VAR count]} objects</string>
