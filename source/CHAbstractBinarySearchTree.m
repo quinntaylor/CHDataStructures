@@ -556,6 +556,9 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 		return [[self copy] autorelease];
 	
 	id<CHSortedSet> subset = [[[[self class] alloc] init] autorelease];
+	if (count == 0)
+		return subset;
+	
 	NSEnumerator *e;
 	id anObject;
 	
