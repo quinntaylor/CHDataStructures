@@ -202,16 +202,27 @@
 	expectedKeyOrder = [keyArray sortedArrayUsingSelector:@selector(compare:)];
 }
 
-/*
-- (void) testSubsetFromKeyToKey {
-	STAssertNoThrow([dictionary subsetFromKey:nil toKey:nil],
+- (void) testSubsetFromKeyToKeyOptions {
+	STAssertNoThrow([dictionary subsetFromKey:nil toKey:nil options:0],
 					@"Should not raise exception.");
-	STAssertNoThrow([dictionary subsetFromKey:@"A" toKey:@"Z"],
+	STAssertNoThrow([dictionary subsetFromKey:@"A" toKey:@"Z" options:0],
 					@"Should not raise exception.");
 	
-	STFail(@"Incomplete test.");
+	[self populateDictionary];
+	NSMutableDictionary* subset;
+	
+	STAssertNoThrow(subset = [dictionary subsetFromKey:[expectedKeyOrder objectAtIndex:0]
+												 toKey:[expectedKeyOrder lastObject]
+											   options:0],
+					@"Should not raise exception.");
+	STAssertEquals([subset count], [expectedKeyOrder count], @"Wrong count for subset");
+
+	STAssertNoThrow(subset = [dictionary subsetFromKey:[expectedKeyOrder objectAtIndex:1]
+												 toKey:[expectedKeyOrder objectAtIndex:3]
+											   options:0],
+					@"Should not raise exception.");
+	STAssertEquals([subset count], (NSUInteger)3, @"Wrong count for subset");
 }
-*/
 
 @end
 
