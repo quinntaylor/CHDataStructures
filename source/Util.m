@@ -15,9 +15,9 @@ static BOOL initialized = NO;
 
 void initializeGCStatus() {
 	if (!initialized) {
-		// Discover whether garbage collection is enabled (if running on 10.5).
+		// Discover whether garbage collection is enabled (if running on 10.5+).
 		// This bit of hackery avoids linking errors via indirect invocation.
-		// The check is done here since all our collections extend CHLockableObject.
+		// (On previous version of OS X, NSGarbageCollector doesn't even exist.)
 		Class gcClass = NSClassFromString(@"NSGarbageCollector");
 		if (gcClass != nil) {
 			id collector = objc_msgSend(gcClass, @selector(defaultCollector));

@@ -53,7 +53,10 @@
 /** Global variable to simplify checking if garbage collection is enabled. */
 OBJC_EXPORT BOOL kCHGarbageCollectionNotEnabled;
 
-/** Determines GC status and sets @c kCHGarbageCollectionNotEnabled appropriately. */
+/**
+ Determines GC status and sets @c kCHGarbageCollectionNotEnabled appropriately.
+ Intended to be called from @c +initialize of direct implementors of CHLockable.
+ */
 HIDDEN void initializeGCStatus();
 
 /**
