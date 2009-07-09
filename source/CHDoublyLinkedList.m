@@ -395,7 +395,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 	tail->object = anObject;
 	CHDoublyLinkedListNode *node = head->next, *temp;
 	do {
-		while ([node->object compare:anObject] != NSOrderedSame)
+		while (![node->object isEqual:anObject])
 			node = node->next;
 		if (node != tail) {
 			temp = node->next;
