@@ -133,6 +133,16 @@ static size_t kCHPointerSize = sizeof(void*);
 
 #pragma mark -
 
+BOOL objectsAreEqual(id o1, id o2) {
+	return [o1 isEqual:o2];
+}
+
+BOOL objectsAreIdentical(id o1, id o2) {
+	return (o1 == o2);
+}
+
+#pragma mark -
+
 /**
  @todo Consolidate @c -removeObject: and @c -removeObjectIdenticalTo: methods.
  */
@@ -430,11 +440,12 @@ static size_t kCHPointerSize = sizeof(void*);
 	++mutations;
 }
 
-- (void) removeObject:(id)anObject {
+// Remove method that accepts a function pointer for testing object equality.
+- (void) removeObject:(id)anObject withEqualityTest:(BOOL(*)(id,id))objectsMatch {
 	if (count == 0 || anObject == nil)
 		return;
 	// Strip off leading matches if any exist in the buffer.
-	while (count > 0 && [array[headIndex] isEqual:anObject]) {
+	while (count > 0 && objectsMatch(array[headIndex], anObject)) {
 		[array[headIndex] release];
 		array[headIndex] = nil; // Let GC do its thing
 		incrementIndex(headIndex);
@@ -442,7 +453,7 @@ static size_t kCHPointerSize = sizeof(void*);
 	}
 	// Scan to find the first match, if one exists
 	NSUInteger scanIndex = headIndex;
-	while (scanIndex != tailIndex && ![array[scanIndex] isEqual:anObject])
+	while (scanIndex != tailIndex && !objectsMatch(array[scanIndex], anObject))
 		incrementIndex(scanIndex);
 	// Bail out here if no objects need to be removed internally (none found)
 	if (scanIndex == tailIndex)
@@ -451,7 +462,7 @@ static size_t kCHPointerSize = sizeof(void*);
 	NSUInteger copyIndex = scanIndex;
 	incrementIndex(scanIndex);
 	while (scanIndex != tailIndex) {
-		if (![array[scanIndex] isEqual:anObject]) {
+		if (!objectsMatch(array[scanIndex], anObject)) {
 			[array[copyIndex] release];
 			array[copyIndex] = array[scanIndex];
 			incrementIndex(copyIndex);
@@ -473,47 +484,12 @@ static size_t kCHPointerSize = sizeof(void*);
 	++mutations;
 }
 
+- (void) removeObject:(id)anObject {
+	[self removeObject:anObject withEqualityTest:&objectsAreEqual];
+}
+
 - (void) removeObjectIdenticalTo:(id)anObject {
-	if (count == 0 || anObject == nil)
-		return;
-	// Strip off leading or trailing matches if any exist in the buffer.
-	while (count > 0 && array[headIndex] == anObject) {
-		[array[headIndex] release];
-		array[headIndex] = nil; // Let GC do its thing
-		incrementIndex(headIndex);
-		--count;
-	}
-	// Scan to find the first match, if one exists
-	NSUInteger scanIndex = headIndex;
-	while (scanIndex != tailIndex && array[scanIndex] != anObject)
-		incrementIndex(scanIndex);
-	// Bail out here if no objects need to be removed internally (none found)
-	if (scanIndex == tailIndex)
-		return;
-	// Copy individual elements, excluding objects to be removed
-	NSUInteger copyIndex = scanIndex;
-	incrementIndex(scanIndex);
-	while (scanIndex != tailIndex) {
-		if (array[scanIndex] != anObject) {
-			[array[copyIndex] release];
-			array[copyIndex] = array[scanIndex];
-			incrementIndex(copyIndex);
-		}
-		incrementIndex(scanIndex);
-	}
-	// Under GC, zero the rest of the array to avoid holding unneeded references
-	if (!kCHGarbageCollectionNotEnabled) {
-		if (tailIndex > copyIndex) {
-			memset(&array[copyIndex], 0, kCHPointerSize * (tailIndex - copyIndex));
-		} else {
-			memset(array + copyIndex, 0, kCHPointerSize * (arrayCapacity - copyIndex));
-			memset(array,             0, kCHPointerSize * tailIndex);
-		}
-	}
-	// Set the tail pointer to the new end point and recalculate element count.
-	tailIndex = copyIndex;
-	count = (tailIndex + arrayCapacity - headIndex) % arrayCapacity;
-	++mutations;
+	[self removeObject:anObject withEqualityTest:&objectsAreIdentical];
 }
 
 // This algorithm is from: http://www.javafaq.nu/java-article808.html
