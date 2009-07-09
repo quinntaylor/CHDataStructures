@@ -15,7 +15,7 @@
  A dictionary which enumerates keys according to their natural sorted order. The following additional operations are provided to take advantage of the ordering:
    - \link #firstKey -firstKey\endlink
    - \link #lastKey -lastKey\endlink
-   - \link #subsetFromKey:toKey: -subsetFromKey:toKey:\endlink
+   - \link #subsetFromKey:toKey:options: -subsetFromKey:toKey:options:\endlink
  
  Key-value entries are inserted just as in a normal dictionary, including replacement of values for existing keys, as detailed in \link #setObject:forKey: -setObject:forKey:\endlink. However, an additional CHSortedSet structure is used in parallel to sort the keys, and keys are enumerated in that order.
  
@@ -75,6 +75,7 @@
  
  @param start Low endpoint of the subset to be returned; need not be a key in receiver.
  @param end High endpoint of the subset to be returned; need not be a key in receiver.
+ @param options A combination of @c CHSubsetConstructionOptions values that specifies how to construct the subset. Pass 0 for the default behavior, or one or more options combined with a bitwise OR to specify different behavior.
  @return A new sorted map containing the key-value entries delineated by @a start and @a end. The contents of the returned subset depend on the input parameters as follows:
  - If both @a start and @a end are @c nil, all keys in the receiver are included. (Equivalent to calling @c -copy.)
  - If only @a start is @c nil, keys that match or follow @a start are included.
@@ -82,7 +83,9 @@
  - If @a start comes before @a end in an ordered set, keys between @a start and @a end (or which match either object) are included.
  - Otherwise, all keys @b except those that fall between @a start and @a end are included.
  */
-- (NSMutableDictionary*) subsetFromKey:(id)start toKey:(id)end;
+- (NSMutableDictionary*) subsetFromKey:(id)start
+                                 toKey:(id)end
+                               options:(CHSubsetConstructionOptions)options;
 
 // @}
 @end

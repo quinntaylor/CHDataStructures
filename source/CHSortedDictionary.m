@@ -18,16 +18,15 @@
 	[super dealloc];
 }
 
-- (id) initWithObjects:(id*)objects forKeys:(id*)keys count:(NSUInteger)count {
-	// Create collection for ordering keys first, since super will add objects.
+- (id) initWithCapacity:(NSUInteger)numItems {
+	if ((self = [super initWithCapacity:numItems]) == nil) return nil;
 	sortedKeys = [[CHAVLTree alloc] init];
-	if ((self = [super initWithObjects:objects forKeys:keys count:count]) == nil) return nil;
 	return self;
 }
 
 - (id) initWithCoder:(NSCoder*)decoder {
 	if ((self = [super initWithCoder:decoder]) == nil) return nil;
-	sortedKeys = [[CHAVLTree alloc] initWithArray:[(NSDictionary*)dictionary allKeys]];
+	[sortedKeys addObjectsFromArray:[(NSDictionary*)dictionary allKeys]];
 	return self;
 }
 
@@ -75,9 +74,16 @@
 	return [sortedKeys reverseObjectEnumerator];
 }
 
-/** @todo Implement this method. */
-- (NSMutableDictionary*) subsetFromKey:(id)start toKey:(id)end {
-	CHUnsupportedOperationException([self class], _cmd); return nil;
+- (NSMutableDictionary*) subsetFromKey:(id)start
+                                 toKey:(id)end
+                               options:(CHSubsetConstructionOptions)options
+{
+	id<CHSortedSet> keySubset = [sortedKeys subsetFromObject:start toObject:end options:options];
+	NSMutableDictionary* subset = [[[[self class] alloc] init] autorelease];
+	for (id aKey in keySubset) {
+		[subset setObject:[self objectForKey:aKey] forKey:aKey];
+	}
+	return subset;
 }
 
 #pragma mark Removing Objects

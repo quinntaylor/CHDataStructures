@@ -18,10 +18,9 @@
 	[super dealloc];
 }
 
-- (id) initWithObjects:(id*)objects forKeys:(id*)keys count:(NSUInteger)count {
-	// Create collection for ordering keys first, since super will add objects.
+- (id) initWithCapacity:(NSUInteger)numItems {
+	if ((self = [super initWithCapacity:numItems]) == nil) return nil;
 	keyOrdering = [[CHAbstractCircularBufferCollection alloc] init];
-	if ((self = [super initWithObjects:objects forKeys:keys count:count]) == nil) return nil;
 	return self;
 }
 

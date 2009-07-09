@@ -100,19 +100,25 @@ static const CFDictionaryValueCallBacks kCHLockableDictionaryValueCallBacks = {
 }
 
 - (id) init {
-	return [self initWithObjects:nil forKeys:nil count:0];
+	return [self initWithCapacity:0]; // 0 means no capacity hint
 }
 
 - (id) initWithObjects:(id*)objects forKeys:(id*)keys count:(NSUInteger)count {
-	// No call to super's designated init, since we override its behavior.
-	dictionary = CFDictionaryCreateMutable(kCFAllocatorDefault,
-										   0, // no maximum capacity limit
-										   &kCHLockableDictionaryKeyCallBacks,
-										   &kCHLockableDictionaryValueCallBacks);
-	CFMakeCollectable(dictionary); // Works under GC, and is a no-op otherwise.
+	[self initWithCapacity:count]; // Give subclasses a chance to init first.
 	for (NSUInteger i = 0; i < count; i++) {
 		[self setObject:objects[i] forKey:keys[i]];
 	}
+	return self;
+}
+
+// Note: This is the designated initializer
+- (id) initWithCapacity:(NSUInteger)numItems {
+	if ((self = [super init]) == nil) return nil;
+	dictionary = CFDictionaryCreateMutable(kCFAllocatorDefault,
+	                                       numItems,
+	                                       &kCHLockableDictionaryKeyCallBacks,
+	                                       &kCHLockableDictionaryValueCallBacks);
+	CFMakeCollectable(dictionary); // Works under GC, and is a no-op otherwise.
 	return self;
 }
 
@@ -124,7 +130,7 @@ static const CFDictionaryValueCallBacks kCHLockableDictionaryValueCallBacks = {
 }
 
 - (id) initWithCoder:(NSCoder*)decoder {
-	if ([super init] == nil) return nil;
+	if ([self init] == nil) return nil;
 	dictionary = (CFMutableDictionaryRef)[[decoder decodeObjectForKey:@"dictionary"] retain];
 	return self;
 }
