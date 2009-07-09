@@ -99,19 +99,24 @@ static const CFDictionaryValueCallBacks kCHLockableDictionaryValueCallBacks = {
 	[super dealloc];
 }
 
+// Note: Defined here since -init is not implemented in NS(Mutable)Dictionary.
 - (id) init {
-	return [self initWithCapacity:0]; // 0 means no capacity hint
+	return [self initWithCapacity:0]; // The 0 means we provide no capacity hint
 }
 
+// Note: This is the designated initializer for NSMutableDictionary.
+// Every call to this invokes -initWithCapacity: first (here or on a subclass)
 - (id) initWithObjects:(id*)objects forKeys:(id*)keys count:(NSUInteger)count {
-	[self initWithCapacity:count]; // Give subclasses a chance to init first.
-	for (NSUInteger i = 0; i < count; i++) {
-		[self setObject:objects[i] forKey:keys[i]];
+	if ([self initWithCapacity:count]) {
+		for (NSUInteger i = 0; i < count; i++) {
+			[self setObject:objects[i] forKey:keys[i]];
+		}
 	}
 	return self;
 }
 
-// Note: This is the designated initializer
+// Note: This is the designated initializer for CHLockableDictionary.
+// Subclasses may override this as necessary, but must call back here first.
 - (id) initWithCapacity:(NSUInteger)numItems {
 	if ((self = [super init]) == nil) return nil;
 	dictionary = CFDictionaryCreateMutable(kCFAllocatorDefault,
@@ -142,6 +147,8 @@ static const CFDictionaryValueCallBacks kCHLockableDictionaryValueCallBacks = {
 #pragma mark <NSCopying>
 
 - (id) copyWithZone:(NSZone*) zone {
+	// We could use -initWithDictionary: here, but it would just use more memory.
+	// (It marshals key-value pairs into two id* arrays, then inits from those.)
 	CHLockableDictionary *copy = [[[self class] allocWithZone:zone] init];
 	NSEnumerator *keys = [self keyEnumerator];
 	id aKey;

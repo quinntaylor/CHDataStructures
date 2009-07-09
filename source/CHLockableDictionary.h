@@ -36,6 +36,19 @@
 }
 
 /**
+ Initializes the receiver, allocating enough memory to hold @a numItems entries.
+ 
+ @param numItems The initial capacity of the initialized dictionary. This parameter is provided as a hint to the underlying implementation, but is not necessarily binding.
+ 
+ Mutable dictionaries allocate additional memory as needed, so @a numItems simply establishes the object's initial capacity.
+ 
+ @attention This is the designated initializer for CHLockableDictionary and its subclasses.
+ 
+ @see \link NSMutableDictionary#initWithCapacity: -[NSMutableDictionary initWithCapacity:]\endlink
+ */
+- (id) initWithCapacity:(NSUInteger)numItems;
+
+/**
  Initializes the receiver with key-value entries provided in a pair of C arrays. This method steps through the @a objects and @a keys arrays, creating entries in the new dictionary as it goes. 
  
  @param objects A C array of values for the new dictionary.
@@ -43,7 +56,7 @@
  @param count The number of elements to use from the @a keys and @a objects arrays; @a count must not exceed the number of elements in @a objects or @a keys.
  @throw An NSInvalidArgumentException if a key or value object is @c nil.
  
- @note This is the designated initializer for CHLockableDictionary, overridden from NSDictionary. Any initializer inherited from parent classes also invokes this intializer.
+ @attention This is the designated initializer for NSDictionary. Any non-overridden initializer inherited from parent classes will invoke this initializer.
  */
 - (id) initWithObjects:(id*)objects forKeys:(id*)keys count:(NSUInteger)count;
 

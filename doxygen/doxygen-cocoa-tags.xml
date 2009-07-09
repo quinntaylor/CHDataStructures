@@ -137,6 +137,10 @@
   <compound kind="class">
     <name>NSMutableDictionary</name>
     <filename>http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSMutableDictionary_Class/Reference/Reference.html</filename>
+    <member kind="function">
+      <name>initWithCapacity:</name>
+      <anchor>//apple_ref/occ/instm/NSMutableDictionary/initWithCapacity:</anchor>
+    </member>
   </compound>
   <compound kind="class">
     <name>NSMutableSet</name>
