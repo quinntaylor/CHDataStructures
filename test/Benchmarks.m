@@ -61,7 +61,7 @@ void benchmarkDeque(Class testClass) {
 	printf("(Operation)         ");
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject])
-		printf("\t%-8d", [array count]);
+		printf("\t%-8lu", (unsigned long)[array count]);
 	
 	printf("\nprependObject:    ");
 	arrayEnumerator = [objects objectEnumerator];
@@ -200,7 +200,7 @@ void benchmarkQueue(Class testClass) {
 	printf("(Operation)         ");
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject])
-		printf("\t%-8d", [array count]);
+		printf("\t%-8lu", (unsigned long)[array count]);
 	
 	printf("\naddObject:         ");
 	arrayEnumerator = [objects objectEnumerator];
@@ -302,7 +302,7 @@ void benchmarkStack(Class testClass) {
 	printf("(Operation)         ");
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject])
-		printf("\t%-8d", [array count]);
+		printf("\t%-8lu", (unsigned long)[array count]);
 	
 	printf("\npushObject:       ");
 	arrayEnumerator = [objects objectEnumerator];
@@ -403,7 +403,7 @@ void benchmarkHeap(Class testClass) {
 	printf("(Operation)         ");
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject])
-		printf("\t%-8d", [array count]);
+		printf("\t%-8lu", (unsigned long)[array count]);
 	
 	printf("\naddObject:          ");
 	arrayEnumerator = [objects objectEnumerator];
@@ -503,7 +503,7 @@ void benchmarkTree(Class testClass) {
 	printf("(Operation)         ");
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
-		printf("\t%-8d", [array count]);
+		printf("\t%-8lu", (unsigned long)[array count]);
 	}	
 	
 	printf("\naddObject:          ");
@@ -650,9 +650,9 @@ int main (int argc, const char * argv[]) {
 	NSUInteger scale = 1000000; // 10^6, which gives microseconds
 	
 	for (NSUInteger trial = 1; trial <= reps; trial++) {
-		printf("\nPass %u / %u", trial, reps);
+		printf("\nPass %lu / %lu", (unsigned long)trial, (unsigned long)reps);
 		for (NSUInteger size = 10; size <= limit; size *= 10) {
-			printf("\n%8u objects --", size);
+			printf("\n%8lu objects --", (unsigned long)size);
 			// Create a set of N unique random numbers
 			NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 			while ([objectSet count] < size)
