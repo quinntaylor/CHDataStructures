@@ -143,9 +143,8 @@ BOOL objectsAreIdentical(id o1, id o2) {
 
 #pragma mark -
 
-/**
- @todo Consolidate @c -removeObject: and @c -removeObjectIdenticalTo: methods.
- */
+#define DEFAULT_BUFFER_SIZE 16u
+
 @implementation CHAbstractCircularBufferCollection
 
 - (void) dealloc {
@@ -155,11 +154,11 @@ BOOL objectsAreIdentical(id o1, id o2) {
 }
 
 - (id) init {
-	return [self initWithCapacity:16];
+	return [self initWithCapacity:DEFAULT_BUFFER_SIZE];
 }
 
 - (id) initWithArray:(NSArray*)anArray {
-	NSUInteger capacity = 16;
+	NSUInteger capacity = DEFAULT_BUFFER_SIZE;
 	while (capacity <= [anArray count])
 		capacity *= 2;
 	if ([self initWithCapacity:capacity] == nil) return nil;
@@ -534,8 +533,12 @@ BOOL objectsAreIdentical(id o1, id o2) {
 				incrementIndex(headIndex);
 			}
 		}
-		if (arrayCapacity > 16) {
-			arrayCapacity = 16;
+		else {
+			// Only zero out pointers that will remain when the buffer shrinks.
+			memset(array, 0, kCHPointerSize * MIN(arrayCapacity, DEFAULT_BUFFER_SIZE));
+		}
+		if (arrayCapacity > DEFAULT_BUFFER_SIZE) {
+			arrayCapacity = DEFAULT_BUFFER_SIZE;
 			// Shrink the size of allocated memory; calls realloc() under non-GC
 			array = NSReallocateCollectable(array, kCHPointerSize * arrayCapacity, NSScannedOption);
 		}
