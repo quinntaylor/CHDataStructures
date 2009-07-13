@@ -398,6 +398,31 @@
 	}
 }
 
+- (void) testIsEqualToLinkedList {
+	// TODO: Test -isEqualToLinkedList:
+	NSMutableArray *emptyLinkedLists = [NSMutableArray array];
+	NSMutableArray *equalLinkedLists = [NSMutableArray array];
+	NSEnumerator *classes = [linkedListClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
+		[emptyLinkedLists addObject:[[aClass alloc] init]];
+		[equalLinkedLists addObject:[[aClass alloc] initWithArray:abc]];
+	}
+	// Add a repeat of the first class to avoid wrapping.
+	[equalLinkedLists addObject:[equalLinkedLists objectAtIndex:0]];
+	
+	id<CHLinkedList> tree1, tree2;
+	for (NSUInteger i = 0; i < [linkedListClasses count]; i++) {
+		tree1 = [equalLinkedLists objectAtIndex:i];
+		tree2 = [emptyLinkedLists objectAtIndex:i];
+		STAssertFalse([tree1 isEqualToLinkedList:tree2], @"Should not be equal.");
+		tree2 = [equalLinkedLists objectAtIndex:i+1];
+		STAssertTrue([tree1 isEqualToLinkedList:tree2], @"Should be equal.");
+	}
+	STAssertFalse([tree1 isEqualToLinkedList:[NSArray array]], @"Should not be equal.");
+	STAssertThrows([tree1 isEqualToLinkedList:[NSString string]], @"Should raise exception.");
+}
+
 - (void) testObjectAtIndex {
 	NSEnumerator *classes = [linkedListClasses objectEnumerator];
 	Class aClass;

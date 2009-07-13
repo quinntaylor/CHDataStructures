@@ -117,6 +117,14 @@
 - (id) firstObject;
 
 /**
+ Compares the receiving queue to another queue. Two queues have equal contents if they each hold the same number of objects and objects at a given position in each queue satisfy the \link NSObject#isEqual: -isEqual:\endlink test.
+ 
+ @param otherQueue A queue.
+ @return @c YES if the contents of @a otherQueue are equal to the contents of the receiver, otherwise @c NO.
+ */
+- (BOOL) isEqualToQueue:(id<CHQueue>)otherQueue;
+
+/**
  Returns the object at the back of the queue without removing it.
  
  @return The last object in the queue, or @c nil if the queue is empty.

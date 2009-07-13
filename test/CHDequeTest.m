@@ -92,6 +92,35 @@
 	}
 }
 
+- (void) testIsEqualToDeque {
+	NSMutableArray *emptyDeques = [NSMutableArray array];
+	NSMutableArray *equalDeques = [NSMutableArray array];
+	NSMutableArray *reversedDeques = [NSMutableArray array];
+	NSArray *reversedObjects = [[objects reverseObjectEnumerator] allObjects];
+	NSEnumerator *classes = [dequeClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
+		[emptyDeques addObject:[[aClass alloc] init]];
+		[equalDeques addObject:[[aClass alloc] initWithArray:objects]];
+		[reversedDeques addObject:[[aClass alloc] initWithArray:reversedObjects]];
+	}
+	// Add a repeat of the first class to avoid wrapping.
+	[equalDeques addObject:[equalDeques objectAtIndex:0]];
+	
+	id<CHDeque> deque1, deque2;
+	for (NSUInteger i = 0; i < [dequeClasses count]; i++) {
+		deque1 = [equalDeques objectAtIndex:i];
+		deque2 = [equalDeques objectAtIndex:i+1];
+		STAssertTrue([deque1 isEqualToDeque:deque2], @"Should be equal.");
+		deque2 = [emptyDeques objectAtIndex:i];
+		STAssertFalse([deque1 isEqualToDeque:deque2], @"Should not be equal.");
+		deque2 = [reversedDeques objectAtIndex:i];
+		STAssertFalse([deque1 isEqualToDeque:deque2], @"Should not be equal.");
+	}
+	STAssertFalse([deque1 isEqualToDeque:[NSArray array]], @"Should not be equal.");
+	STAssertThrows([deque1 isEqualToDeque:[NSString string]], @"Should raise exception.");
+}
+
 - (void) testLastObject {
 	NSEnumerator *classes = [dequeClasses objectEnumerator];
 	Class aClass;

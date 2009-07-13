@@ -107,6 +107,14 @@
 - (NSUInteger) count;
 
 /**
+ Compares the receiving stack to another stack. Two stacks have equal contents if they each hold the same number of objects and objects at a given position in each stack satisfy the \link NSObject#isEqual: -isEqual:\endlink test.
+ 
+ @param otherStack A stack.
+ @return @c YES if the contents of @a otherStack are equal to the contents of the receiver, otherwise @c NO.
+ */
+- (BOOL) isEqualToStack:(id<CHStack>)otherStack;
+
+/**
  Returns an enumerator that accesses each object in the stack from top to bottom.
  
  @return An enumerator that accesses each object in the stack from top to bottom. The enumerator returned is never @c nil; if the stack is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.

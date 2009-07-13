@@ -64,6 +64,35 @@
 	}
 }
 
+- (void) testIsEqualToStack {
+	NSMutableArray *emptyStacks = [NSMutableArray array];
+	NSMutableArray *equalStacks = [NSMutableArray array];
+	NSMutableArray *reversedStacks = [NSMutableArray array];
+	NSArray *reversedObjects = [[objects reverseObjectEnumerator] allObjects];
+	NSEnumerator *classes = [stackClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
+		[emptyStacks addObject:[[aClass alloc] init]];
+		[equalStacks addObject:[[aClass alloc] initWithArray:objects]];
+		[reversedStacks addObject:[[aClass alloc] initWithArray:reversedObjects]];
+	}
+	// Add a repeat of the first class to avoid wrapping.
+	[equalStacks addObject:[equalStacks objectAtIndex:0]];
+	
+	id<CHStack> stack1, stack2;
+	for (NSUInteger i = 0; i < [stackClasses count]; i++) {
+		stack1 = [equalStacks objectAtIndex:i];
+		stack2 = [equalStacks objectAtIndex:i+1];
+		STAssertTrue([stack1 isEqualToStack:stack2], @"Should be equal.");
+		stack2 = [emptyStacks objectAtIndex:i];
+		STAssertFalse([stack1 isEqualToStack:stack2], @"Should not be equal.");
+		stack2 = [reversedStacks objectAtIndex:i];
+		STAssertFalse([stack1 isEqualToStack:stack2], @"Should not be equal.");
+	}
+	STAssertFalse([stack1 isEqualToStack:[NSArray array]], @"Should not be equal.");
+	STAssertThrows([stack1 isEqualToStack:[NSString string]], @"Should raise exception.");
+}
+
 - (void) testPushObject {
 	NSEnumerator *classes = [stackClasses objectEnumerator];
 	Class aClass;

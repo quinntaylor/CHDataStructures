@@ -22,9 +22,9 @@
  */
 typedef enum {
 	/** Indicates that a subset should exclude the low endpoint if it is not nil. */
-	CHSubsetExcludeLowEndpoint  = 0x01,
+	CHSubsetExcludeLowEndpoint  = 1 << 0,
 	/** Indicates that a subset should exclude the high endpoint if it is not nil. */
-	CHSubsetExcludeHighEndpoint = 0x02
+	CHSubsetExcludeHighEndpoint = 1 << 1
 } CHSubsetConstructionOptions;
 
 /**
@@ -164,6 +164,14 @@ typedef enum {
  @see removeFirstObject
  */
 - (id) firstObject;
+
+/**
+ Compares the receiving sorted set to another sorted set. Two sorted sets have equal contents if they each hold the same number of objects and objects at a given position in each sorted set satisfy the \link NSObject#isEqual: -isEqual:\endlink test.
+ 
+ @param otherSortedSet A sorted set.
+ @return @c YES if the contents of @a otherSortedSet are equal to the contents of the receiver, otherwise @c NO.
+ */
+- (BOOL) isEqualToSortedSet:(id<CHSortedSet>)otherSortedSet;
 
 /**
  Returns the maximum object in the receiver, according to natural sorted order.

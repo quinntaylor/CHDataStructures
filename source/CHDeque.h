@@ -125,6 +125,14 @@
 - (id) firstObject;
 
 /**
+ Compares the receiving deque to another deque. Two deques have equal contents if they each hold the same number of objects and objects at a given position in each deque satisfy the \link NSObject#isEqual: -isEqual:\endlink test.
+ 
+ @param otherDeque A deque.
+ @return @c YES if the contents of @a otherDeque are equal to the contents of the receiver, otherwise @c NO.
+ */
+- (BOOL) isEqualToDeque:(id<CHDeque>)otherDeque;
+
+/**
  Returns the last object in the deque without removing it.
  
  @return The last object in the deque, or @c nil if it is empty.

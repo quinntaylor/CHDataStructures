@@ -19,15 +19,20 @@
 	return self;
 }
 
-- (void) pushObject:(id)anObject {
-	if (anObject == nil)
-		CHNilArgumentException([self class], _cmd);
-	else
-		[array addObject:anObject];
+- (NSArray*) allObjects {
+	return [[array reverseObjectEnumerator] allObjects];
 }
 
-- (id) topObject {
-	return [array lastObject];
+- (NSString*) description {
+	return [[self allObjects] description];
+}
+
+- (BOOL) isEqualToStack:(id<CHStack>)otherStack {
+	return collectionsAreEqual(self, otherStack);
+}
+
+- (NSEnumerator*) objectEnumerator {
+	return [array reverseObjectEnumerator];  // top of stack is at the back
 }
 
 - (void) popObject {
@@ -37,20 +42,19 @@
 	@catch (NSException *exception) {}
 }
 
-- (NSArray*) allObjects {
-	return [[array reverseObjectEnumerator] allObjects];
-}
-
-- (NSEnumerator*) objectEnumerator {
-	return [array reverseObjectEnumerator];  // top of stack is at the back
+- (void) pushObject:(id)anObject {
+	if (anObject == nil)
+		CHNilArgumentException([self class], _cmd);
+	else
+		[array addObject:anObject];
 }
 
 - (NSEnumerator*) reverseObjectEnumerator {
 	return [array objectEnumerator];         // bottom of stack is at the front
 }
 
-- (NSString*) description {
-	return [[self allObjects] description];
+- (id) topObject {
+	return [array lastObject];
 }
 
 #pragma mark <NSFastEnumeration>

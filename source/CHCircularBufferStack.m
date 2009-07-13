@@ -33,16 +33,20 @@
 	return self;
 }
 
+- (BOOL) isEqualToStack:(id<CHStack>)otherStack {
+	return collectionsAreEqual(self, otherStack);
+}
+
+- (void) popObject {
+	[self removeFirstObject];
+}
+
 - (void) pushObject:(id)anObject {
 	[self prependObject:anObject];
 }
 
 - (id) topObject {
 	return [self firstObject];
-}
-
-- (void) popObject {
-	[self removeFirstObject];
 }
 
 @end

@@ -44,6 +44,35 @@
 	}
 }
 
+- (void) testIsEqualToQueue {
+	NSMutableArray *emptyQueues = [NSMutableArray array];
+	NSMutableArray *equalQueues = [NSMutableArray array];
+	NSMutableArray *reversedQueues = [NSMutableArray array];
+	NSArray *reversedObjects = [[objects reverseObjectEnumerator] allObjects];
+	NSEnumerator *classes = [queueClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
+		[emptyQueues addObject:[[aClass alloc] init]];
+		[equalQueues addObject:[[aClass alloc] initWithArray:objects]];
+		[reversedQueues addObject:[[aClass alloc] initWithArray:reversedObjects]];
+	}
+	// Add a repeat of the first class to avoid wrapping.
+	[equalQueues addObject:[equalQueues objectAtIndex:0]];
+	
+	id<CHQueue> queue1, queue2;
+	for (NSUInteger i = 0; i < [queueClasses count]; i++) {
+		queue1 = [equalQueues objectAtIndex:i];
+		queue2 = [equalQueues objectAtIndex:i+1];
+		STAssertTrue([queue1 isEqualToQueue:queue2], @"Should be equal.");
+		queue2 = [emptyQueues objectAtIndex:i];
+		STAssertFalse([queue1 isEqualToQueue:queue2], @"Should not be equal.");
+		queue2 = [reversedQueues objectAtIndex:i];
+		STAssertFalse([queue1 isEqualToQueue:queue2], @"Should not be equal.");
+	}
+	STAssertFalse([queue1 isEqualToQueue:[NSArray array]], @"Should not be equal.");
+	STAssertThrows([queue1 isEqualToQueue:[NSString string]], @"Should raise exception.");
+}
+
 - (void) testAddObject {
 	NSEnumerator *classes = [queueClasses objectEnumerator];
 	Class aClass;

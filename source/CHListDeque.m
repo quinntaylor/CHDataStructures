@@ -35,6 +35,10 @@
 	return [list firstObject];
 }
 
+- (BOOL) isEqualToDeque:(id<CHDeque>)otherDeque {
+	return collectionsAreEqual(self, otherDeque);
+}
+
 - (id) lastObject {
 	return [list lastObject];
 }

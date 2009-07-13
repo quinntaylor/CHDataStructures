@@ -461,6 +461,14 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 	return current->object;
 }
 
+- (BOOL) isEqualToSearchTree:(id<CHSearchTree>)otherTree {
+	return collectionsAreEqual(self, otherTree);
+}
+
+- (BOOL) isEqualToSortedSet:(id<CHSortedSet>)otherSortedSet {
+	return collectionsAreEqual(self, otherSortedSet);
+}
+
 - (id) lastObject {
 	sentinel->object = nil;
 	CHBinaryTreeNode *current = header->right;

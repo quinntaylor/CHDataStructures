@@ -100,6 +100,14 @@ typedef enum {
 - (NSArray*) allObjectsWithTraversalOrder:(CHTraversalOrder)order;
 
 /**
+ Compares the receiving search tree to another search tree. Two search trees have equal contents if they each hold the same number of objects and objects at a given position in each search tree satisfy the \link NSObject#isEqual: -isEqual:\endlink test.
+ 
+ @param otherTree A search tree.
+ @return @c YES if the contents of @a otherTree are equal to the contents of the receiver, otherwise @c NO.
+ */
+- (BOOL) isEqualToSearchTree:(id<CHSearchTree>)otherTree;
+
+/**
  Returns an enumerator that accesses each object using a given traversal order.
  
  @param order The order in which an enumerator should traverse nodes in the tree. @return An enumerator that accesses each object in the tree in a given order. The enumerator returned is never @c nil; if the tree is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.

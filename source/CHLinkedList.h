@@ -187,6 +187,14 @@
 - (NSUInteger) indexOfObjectIdenticalTo:(id)anObject;
 
 /**
+ Compares the receiving linked list to another linked list. Two linked lists have equal contents if they each hold the same number of objects and objects at a given position in each linked list satisfy the \link NSObject#isEqual: -isEqual:\endlink test.
+ 
+ @param otherLinkedList A linked list.
+ @return @c YES if the contents of @a otherLinkedList are equal to the contents of the receiver, otherwise @c NO.
+ */
+- (BOOL) isEqualToLinkedList:(id<CHLinkedList>)otherLinkedList;
+
+/**
  Returns the object located at @a index.
  
  @param index An index from which to retrieve an object.

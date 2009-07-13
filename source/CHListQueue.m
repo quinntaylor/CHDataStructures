@@ -36,6 +36,10 @@
 	return [list firstObject];
 }
 
+- (BOOL) isEqualToQueue:(id<CHQueue>)otherQueue {
+	return collectionsAreEqual(self, otherQueue);
+}
+
 - (id) lastObject {
 	return [list lastObject];
 }

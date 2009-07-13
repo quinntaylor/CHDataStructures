@@ -38,6 +38,14 @@
 	return self;
 }
 
+- (BOOL) isEqualToStack:(id<CHStack>)otherStack {
+	return collectionsAreEqual(self, otherStack);
+}
+
+- (void) popObject {
+	[list removeFirstObject];
+}
+
 - (void) pushObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
@@ -46,10 +54,6 @@
 
 - (id) topObject {
 	return [list firstObject];
-}
-
-- (void) popObject {
-	[list removeFirstObject];
 }
 
 @end

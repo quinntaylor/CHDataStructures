@@ -12,4 +12,8 @@
 
 @implementation CHCircularBufferDeque
 
+- (BOOL) isEqualToDeque:(id<CHDeque>)otherDeque {
+	return collectionsAreEqual(self, otherDeque);
+}
+
 @end

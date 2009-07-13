@@ -34,6 +34,10 @@
 	return nil;
 }
 
+- (BOOL) isEqualToDeque:(id<CHDeque>)otherDeque {
+	return collectionsAreEqual(self, otherDeque);
+}
+
 - (id) lastObject {
 	return [array lastObject];
 }

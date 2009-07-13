@@ -43,7 +43,6 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 
 @end
 
-
 #pragma mark -
 
 @interface CHAbstractBinarySearchTreeTest : SenTestCase
@@ -257,6 +256,33 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 		STAssertNotNil([tree firstObject], @"Should not be nil for non-empty tree.");
 		STAssertEqualObjects([tree firstObject], @"A", @"Incorrect result.");
 	}
+}
+
+- (void) testIsEqualToSearchTree {
+	NSMutableArray *emptyTrees = [NSMutableArray array];
+	NSMutableArray *equalTrees = [NSMutableArray array];
+	NSEnumerator *classes = [treeClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
+		[emptyTrees addObject:[[aClass alloc] init]];
+		[equalTrees addObject:[[aClass alloc] initWithArray:objects]];
+	}
+	// Add a repeat of the first class to avoid wrapping.
+	[equalTrees addObject:[equalTrees objectAtIndex:0]];
+	
+	id<CHSearchTree> tree1, tree2;
+	for (NSUInteger i = 0; i < [treeClasses count]; i++) {
+		tree1 = [equalTrees objectAtIndex:i];
+		tree2 = [emptyTrees objectAtIndex:i];
+		STAssertFalse([tree1 isEqualToSearchTree:tree2], @"Should not be equal.");
+		tree2 = [equalTrees objectAtIndex:i+1];
+		STAssertTrue([tree1 isEqualToSearchTree:tree2],       @"Should be equal.");
+		STAssertTrue([tree1 isEqualToSearchTree:insideTree],  @"Should be equal.");
+		STAssertTrue([tree1 isEqualToSearchTree:outsideTree], @"Should be equal.");
+		STAssertTrue([tree1 isEqualToSearchTree:zigzagTree],  @"Should be equal.");
+	}
+	STAssertFalse([tree1 isEqualToSearchTree:[NSArray array]], @"Should not be equal.");
+	STAssertThrows([tree1 isEqualToSearchTree:[NSString string]], @"Should raise exception.");
 }
 
 - (void) testLastObject {

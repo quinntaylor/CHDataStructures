@@ -75,3 +75,21 @@ void CHQuietLog(NSString *format, ...) {
 	[string release];
 	va_end(argList);
 }
+
+#pragma mark -
+
+BOOL collectionsAreEqual(id collection1, id collection2) {
+	if ([collection1 count] != [collection2 count])
+		return NO;
+	NSEnumerator *otherObjects = [collection2 objectEnumerator];
+#if MAC_OS_X_VERSION_10_5_AND_LATER
+	for (id anObject in collection1)
+#else
+	NSEnumerator *objects = [collection1 objectEnumerator];
+	id anObject;
+	while (anObject = [objects nextObject])
+#endif
+		if (![anObject isEqual:[otherObjects nextObject]])
+			return NO;
+	return YES;	
+}

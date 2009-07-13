@@ -157,3 +157,15 @@ OBJC_EXPORT void CHQuietLog(NSString *format, ...);
 	CHQuietLog((format),##__VA_ARGS__); \
 }
 #endif
+
+#pragma mark -
+
+/**
+ Determine whether two collections enumerate the equivalent objects in the same order.
+ 
+ @param collection1 The first collection to be compared.
+ @param collection2 The second collection to be compared.
+ 
+ @throw Exception If one of both of the arguments do not respond to the @c -count or @c -objectEnumerator selectors.
+ */
+HIDDEN OBJC_EXPORT BOOL collectionsAreEqual(id collection1, id collection2);

@@ -16,4 +16,8 @@
 	[self appendObject:anObject];
 }
 
+- (BOOL) isEqualToQueue:(id<CHQueue>)otherQueue {
+	return collectionsAreEqual(self, otherQueue);
+}
+
 @end

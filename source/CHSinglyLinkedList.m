@@ -306,15 +306,12 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 	return (count == 0) ? nil : head->next->object;
 }
 
-- (id) lastObject {
-	return (count == 0) ? nil : tail->object;
+- (BOOL) isEqualToLinkedList:(id<CHLinkedList>)otherLinkedList {
+	return collectionsAreEqual(self, otherLinkedList);
 }
 
-- (NSEnumerator*) objectEnumerator {
-	return [[[CHSinglyLinkedListEnumerator alloc]
-              initWithList:self
-                 startNode:head->next
-           mutationPointer:&mutations] autorelease];
+- (id) lastObject {
+	return (count == 0) ? nil : tail->object;
 }
 
 - (NSUInteger) indexOfObject:(id)anObject {
@@ -348,6 +345,13 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 			node = node->next;
 		return node->object;
 	}
+}
+
+- (NSEnumerator*) objectEnumerator {
+	return [[[CHSinglyLinkedListEnumerator alloc]
+              initWithList:self
+                 startNode:head->next
+           mutationPointer:&mutations] autorelease];
 }
 
 #pragma mark Removing Objects
