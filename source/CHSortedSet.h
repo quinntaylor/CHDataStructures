@@ -48,8 +48,6 @@ typedef enum {
 	- <code>- (void) minusSet:</code>
 	- <code>- (void) unionSet:</code>
  
- @todo Add <code>-subsetFromObject:toObject:</code> to return a new subset instance with new nodes pointing to the same objects. If an object matches one of the parameters, it is included. (Neither parameter must be a member of the set. Either parameter may be nil to designate the first/last element in the set. If the first object is greater than the second, should the result include elements sliced from both ends?) See Java's <a href="http://java.sun.com/javase/6/docs/api/java/util/SortedSet.html">SortedSet</a> for ideas.
- 
  @todo Consider adding other possible sorted set implementations, such as <a href="http://en.wikipedia.org/wiki/Skip_list">skip lists</a>, <a href="http://www.concentric.net/~Ttwang/tech/sorthash.htm">sorted linear hash sets</a>, and <a href="http://code.activestate.com/recipes/230113/">sorted lists</a>.
 
  */
