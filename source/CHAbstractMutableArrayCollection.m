@@ -17,25 +17,21 @@
 	[super dealloc];
 }
 
-// This is the designated initializer for CHAbstractMutableArrayCollection.
 - (id) init {
-	if ([super init] == nil) return nil;
-	array = [[NSMutableArray alloc] init];
-	return self;
+	return [self initWithArray:nil];
 }
 
+// This is the designated initializer for CHAbstractMutableArrayCollection
 - (id) initWithArray:(NSArray*)anArray {
-	if ([self init] == nil) return nil;
-	[array addObjectsFromArray:anArray];
+	if ((self = [super init]) == nil) return nil;
+	array = [[NSMutableArray alloc] initWithArray:anArray];
 	return self;
 }
 
 #pragma mark <NSCoding>
 
 - (id) initWithCoder:(NSCoder*)decoder {
-	if ([super init] == nil) return nil;
-	array = [[decoder decodeObjectForKey:@"array"] retain];
-	return self;
+	return [self initWithArray:[decoder decodeObjectForKey:@"array"]];
 }
 
 - (void) encodeWithCoder:(NSCoder*)encoder {

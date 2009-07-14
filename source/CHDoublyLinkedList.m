@@ -72,7 +72,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
           direction:(NSComparisonResult)direction
     mutationPointer:(unsigned long*)mutations;
 {
-	if ([super init] == nil) return nil;
+	if ((self = [super init]) == nil) return nil;
 	collection = ([list count] > 0) ? [list retain] : nil;
 	current = startNode;
 	sentinel = endNode;
@@ -162,7 +162,13 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 }
 
 - (id) init {
-	if ([super init] == nil) return nil;
+	if ([self init] == nil) return nil;
+	return [self initWithArray:nil];
+}
+
+// This is the designated initializer for CHDoublyLinkedList
+- (id) initWithArray:(NSArray*)anArray {
+	if ((self = [super init]) == nil) return nil;
 	head = NSAllocateCollectable(kCHDoublyLinkedListNodeSize, NSScannedOption);
 	tail = NSAllocateCollectable(kCHDoublyLinkedListNodeSize, NSScannedOption);
 	head->object = tail->object = nil;
@@ -172,11 +178,6 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 	tail->prev = head;
 	count = 0;
 	mutations = 0;
-	return self;
-}
-
-- (id) initWithArray:(NSArray*)anArray {
-	if ([self init] == nil) return nil;
 #if MAC_OS_X_VERSION_10_5_AND_LATER
 	for (id anObject in anArray)
 #else
@@ -201,8 +202,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 }
 
 - (void) encodeWithCoder:(NSCoder*)encoder {
-	NSArray *array = [[self objectEnumerator] allObjects];
-	[encoder encodeObject:array forKey:@"objects"];
+	[encoder encodeObject:[[self objectEnumerator] allObjects] forKey:@"objects"];
 }
 
 #pragma mark <NSCopying>

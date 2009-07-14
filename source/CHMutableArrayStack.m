@@ -13,12 +13,6 @@
 
 @implementation CHMutableArrayStack
 
-- (id) initWithArray:(NSArray*)anArray {
-	if ([self init] == nil) return nil;
-	[array addObjectsFromArray:anArray];
-	return self;
-}
-
 - (NSArray*) allObjects {
 	return [[array reverseObjectEnumerator] allObjects];
 }

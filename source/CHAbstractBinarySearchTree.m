@@ -149,7 +149,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
      traversalOrder:(CHTraversalOrder)order
     mutationPointer:(unsigned long*)mutations
 {
-	if ([super init] == nil || !isValidTraversalOrder(order)) return nil;
+	if ((self = [super init]) == nil || !isValidTraversalOrder(order)) return nil;
 	traversalOrder = order;
 	searchTree = (root != sentinel) ? [tree retain] : nil;
 	if (traversalOrder == CHTraverseLevelOrder) {
@@ -311,7 +311,7 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 // This is the designated initializer for CHAbstractBinarySearchTree.
 // Only to be called from concrete child classes to initialize shared variables.
 - (id) init {
-	if ([super init] == nil) return nil;
+	if ((self = [super init]) == nil) return nil;
 	count = 0;
 	mutations = 0;
 	sentinel = CHCreateBinaryTreeNodeWithObject(nil);

@@ -58,7 +58,7 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
           startNode:(CHSinglyLinkedListNode*)startNode
     mutationPointer:(unsigned long*)mutations;
 {
-	if ([super init] == nil) return nil;
+	if ((self = [super init]) == nil) return nil;
 	collection = (startNode != NULL) ? collection = [list retain] : nil;
 	current = startNode; // If startNode == endNode, will always return nil.
 	mutationCount = *mutations;
@@ -120,7 +120,7 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 }
 
 - (id) init {
-	if ([super init] == nil) return nil;
+	if ((self = [super init]) == nil) return nil;
 	head = NSAllocateCollectable(kCHSinglyLinkedListNodeSize, NSScannedOption);
 	head->next = NULL;
 	tail = head;

@@ -24,7 +24,7 @@
 }
 
 - (id) initWithCapacity:(NSUInteger)numItems {
-	if ([super init] == nil) return nil;
+	if ((self = [super init]) == nil) return nil;
 	ordering = [[CHAbstractCircularBufferCollection alloc] init];
 	if (numItems > 0)
 		objects = [[NSMutableSet alloc] initWithCapacity:numItems];
@@ -36,7 +36,7 @@
 #pragma mark <NSCoding>
 
 - (id) initWithCoder:(NSCoder *)decoder {
-	if ([super init] == nil) return nil;
+	if ((self = [super init]) == nil) return nil;
 	objects = [[decoder decodeObjectForKey:@"objects"] retain];
 	ordering = [[decoder decodeObjectForKey:@"ordering"] retain];
 	return self;

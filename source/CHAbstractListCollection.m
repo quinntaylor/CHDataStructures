@@ -17,6 +17,8 @@
 	[super dealloc];
 }
 
+// Child classes must implement -init to initialize the "list" instance variable
+
 - (id) initWithArray:(NSArray*)anArray {
 	if ([self init] == nil) return nil;
 #if MAC_OS_X_VERSION_10_5_AND_LATER
@@ -35,7 +37,7 @@
 #pragma mark <NSCoding>
 
 - (id) initWithCoder:(NSCoder*)decoder {
-	if ([super init] == nil) return nil;
+	if ((self = [super init]) == nil) return nil;
 	list = [[decoder decodeObjectForKey:@"list"] retain];
 	return self;
 }

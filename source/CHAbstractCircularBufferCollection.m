@@ -80,7 +80,7 @@ static size_t kCHPointerSize = sizeof(void*);
              reverse:(BOOL)isReversed
      mutationPointer:(unsigned long*)mutations
 {
-	if ([super init] == nil) return nil;
+	if ((self = [super init]) == nil) return nil;
 	array = anArray;
 	arrayCapacity = capacity;
 	arrayCount = count;
@@ -178,7 +178,7 @@ BOOL objectsAreIdentical(id o1, id o2) {
 
 // This is the designated initializer for CHAbstractCircularBufferCollection.
 - (id) initWithCapacity:(NSUInteger)capacity {
-	if ([super init] == nil) return nil;
+	if ((self = [super init]) == nil) return nil;
 	arrayCapacity = capacity;
 	array = NSAllocateCollectable(kCHPointerSize*arrayCapacity, NSScannedOption);
 	count = headIndex = tailIndex = 0;

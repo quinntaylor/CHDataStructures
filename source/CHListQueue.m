@@ -21,7 +21,7 @@
 @implementation CHListQueue
 
 - (id) init {
-	if ([super init] == nil) return nil;
+	if ((self = [super init]) == nil) return nil;
 	list = [[CHSinglyLinkedList alloc] init];
 	return self;
 }

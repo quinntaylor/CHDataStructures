@@ -36,7 +36,7 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 }
 
 - (id) init {
-	if ([super init] == nil) return nil;
+	if ((self = [super init]) == nil) return nil;
 	dictionary = [[NSMutableDictionary alloc] init];
 	objectCount = 0;
 	mutations = 0;

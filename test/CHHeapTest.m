@@ -76,7 +76,7 @@
 			while (anObject = [e nextObject])
 				[heap addObject:anObject];
 			STAssertEquals([heap count], (NSUInteger)9, @"Incorrect count.");
-			STAssertTrue([heap isValid], @"Wrong ordering before archiving.");
+			STAssertTrue([heap isValid], @"Invalid ordering before archiving.");
 			
 			NSString *filePath = @"/tmp/CHDataStructures-array-heap.plist";
 			[NSKeyedArchiver archiveRootObject:heap toFile:filePath];
@@ -84,7 +84,7 @@
 			
 			heap = [[NSKeyedUnarchiver unarchiveObjectWithFile:filePath] retain];
 			STAssertEquals([heap count], (NSUInteger)9, @"Incorrect count.");
-			STAssertTrue([heap isValid], @"Wrong ordering on reconstruction.");
+			STAssertTrue([heap isValid], @"Invalid ordering on reconstruction.");
 			[heap release];
 #if MAC_OS_X_VERSION_10_5_AND_LATER
 			[[NSFileManager defaultManager] removeItemAtPath:filePath error:NULL];

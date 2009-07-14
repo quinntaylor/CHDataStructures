@@ -22,7 +22,7 @@
 }
 
 - (id) init {
-	if ([super init] == nil) return nil;
+	if ((self = [super init]) == nil) return nil;
 	header->priority = CHTreapNotFound; // This is the highest possible priority
 	return self;
 }

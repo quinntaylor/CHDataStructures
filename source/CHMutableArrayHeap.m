@@ -51,6 +51,7 @@
 	return [self initWithOrdering:NSOrderedAscending array:nil];
 }
 
+// Overrides the designated initializer from CHAbstractMutableArrayCollection
 - (id) initWithArray:(NSArray*)anArray {
 	return [self initWithOrdering:NSOrderedAscending array:anArray];
 }
@@ -59,10 +60,10 @@
 	return [self initWithOrdering:order array:nil];
 }
 
-// This is the designated initializer for CHMutableArrayHeap.
+// This is the designated initializer for CHMutableArrayHeap
 - (id) initWithOrdering:(NSComparisonResult)order array:(NSArray*)anArray {
-	// Parent's initializer allocates the actual array
-	if ([super init] == nil) return nil;
+	// Parent initializer allocates empty array; add objects after order is set.
+	if ((self = [super initWithArray:nil]) == nil) return nil;
 	if (order != NSOrderedAscending && order != NSOrderedDescending)
 		CHInvalidArgumentException([self class], _cmd, @"Invalid sort order.");
 	sortOrder = order;
@@ -73,12 +74,10 @@
 #pragma mark <NSCoding>
 
 - (id) initWithCoder:(NSCoder*)decoder {
-	if ([super initWithCoder:decoder] == nil) return nil;
-	if ([decoder decodeBoolForKey:@"sortAscending"])
-		sortOrder = NSOrderedAscending;
-	else
-		sortOrder = NSOrderedDescending;
-	return self;
+	// Ordinarily we'd call -[super initWithCoder:], but we must set order first
+	return [self initWithOrdering:([decoder decodeBoolForKey:@"sortAscending"]
+	                               ? NSOrderedAscending : NSOrderedDescending)
+	                        array:[decoder decodeObjectForKey:@"array"]];
 }
 
 - (void) encodeWithCoder:(NSCoder*)encoder {
@@ -141,7 +140,7 @@
 		return;
 	++mutations;
 	[array addObjectsFromArray:anArray];
-	// Re-heapify from the middle of the heap array bacwards to the beginning.
+	// Re-heapify from the middle of the heap array backwards to the beginning.
 	// (This must be done since we don't know the ordering of the new objects.)
 	// We could choose to bubble each new element up, but this is likely faster.
 	NSUInteger index = [array count]/2;
