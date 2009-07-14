@@ -66,6 +66,7 @@
 		E41180280E91E7E700E66053 /* CHSinglyLinkedList.m in Sources */ = {isa = PBXBuildFile; fileRef = E41180260E91E7E700E66053 /* CHSinglyLinkedList.m */; };
 		E4128A970FB27E4F00CC187D /* CHSortedSet.h in Headers */ = {isa = PBXBuildFile; fileRef = E4128A950FB27E4F00CC187D /* CHSortedSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E41D293E0F6CC44900AF80C4 /* CHAbstractBinarySearchTree_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = E41D293D0F6CC44900AF80C4 /* CHAbstractBinarySearchTree_Internal.h */; };
+		E4290A78100CE7F100C2C968 /* CHSortedSetTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4290A77100CE7F100C2C968 /* CHSortedSetTest.m */; };
 		E42DBAF20E8C3200000E1FBD /* CHDeque.h in Headers */ = {isa = PBXBuildFile; fileRef = E42DBAF10E8C3200000E1FBD /* CHDeque.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E442DFA80E8F1BDF00BD62F6 /* CHDataStructures.h in Headers */ = {isa = PBXBuildFile; fileRef = E442DFA70E8F1BDF00BD62F6 /* CHDataStructures.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E442DFB80E8F1E6D00BD62F6 /* CHAnderssonTree.h in Headers */ = {isa = PBXBuildFile; fileRef = E442DFB60E8F1E6D00BD62F6 /* CHAnderssonTree.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -248,6 +249,7 @@
 		E41180260E91E7E700E66053 /* CHSinglyLinkedList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHSinglyLinkedList.m; path = source/CHSinglyLinkedList.m; sourceTree = "<group>"; };
 		E4128A950FB27E4F00CC187D /* CHSortedSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHSortedSet.h; path = source/CHSortedSet.h; sourceTree = "<group>"; };
 		E41D293D0F6CC44900AF80C4 /* CHAbstractBinarySearchTree_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHAbstractBinarySearchTree_Internal.h; path = source/CHAbstractBinarySearchTree_Internal.h; sourceTree = "<group>"; };
+		E4290A77100CE7F100C2C968 /* CHSortedSetTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHSortedSetTest.m; path = test/CHSortedSetTest.m; sourceTree = "<group>"; };
 		E42DBAF10E8C3200000E1FBD /* CHDeque.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHDeque.h; path = source/CHDeque.h; sourceTree = "<group>"; };
 		E442DFA70E8F1BDF00BD62F6 /* CHDataStructures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHDataStructures.h; path = source/CHDataStructures.h; sourceTree = "<group>"; };
 		E442DFB60E8F1E6D00BD62F6 /* CHAnderssonTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHAnderssonTree.h; path = source/CHAnderssonTree.h; sourceTree = "<group>"; };
@@ -497,6 +499,7 @@
 				E49BE3DB0FB230D4002904AB /* CHOrderedSetTest.m */,
 				E4FD52F50ECA8A9F006D9FF8 /* CHQueueTest.m */,
 				E40D181C0E9452BB007F39D8 /* CHRedBlackTreeTest.m */,
+				E4290A77100CE7F100C2C968 /* CHSortedSetTest.m */,
 				E4FD53020ECA9212006D9FF8 /* CHStackTest.m */,
 				E410360E0EC424E600C2CFB9 /* CHTreapTest.m */,
 				E40D181E0E9452BB007F39D8 /* CHUnbalancedTreeTest.m */,
@@ -832,6 +835,7 @@
 				E4FBE1800F8B21860039E4D0 /* CHLockableTest.m in Sources */,
 				E49BE3DC0FB230D4002904AB /* CHOrderedSetTest.m in Sources */,
 				E4D48E970FE9510B009BA8BC /* CHCustomDictionariesTest.m in Sources */,
+				E4290A78100CE7F100C2C968 /* CHSortedSetTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
