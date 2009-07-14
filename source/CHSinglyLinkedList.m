@@ -120,17 +120,17 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 }
 
 - (id) init {
+	return [self initWithArray:nil];
+}
+
+// This is the designated initializer for CHSinglyLinkedList
+- (id) initWithArray:(NSArray*)anArray {
 	if ((self = [super init]) == nil) return nil;
 	head = NSAllocateCollectable(kCHSinglyLinkedListNodeSize, NSScannedOption);
 	head->next = NULL;
 	tail = head;
 	count = 0;
 	mutations = 0;
-	return self;
-}
-
-- (id) initWithArray:(NSArray*)anArray {
-	if ([self init] == nil) return nil;
 #if MAC_OS_X_VERSION_10_5_AND_LATER
 	for (id anObject in anArray)
 #else

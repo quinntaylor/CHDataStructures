@@ -162,7 +162,6 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 }
 
 - (id) init {
-	if ([self init] == nil) return nil;
 	return [self initWithArray:nil];
 }
 
