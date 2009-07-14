@@ -112,6 +112,7 @@
 		deque1 = [equalDeques objectAtIndex:i];
 		deque2 = [equalDeques objectAtIndex:i+1];
 		STAssertTrue([deque1 isEqualToDeque:deque2], @"Should be equal.");
+		STAssertEquals([deque1 hash], [deque2 hash], @"Hashes should match.");
 		deque2 = [emptyDeques objectAtIndex:i];
 		STAssertFalse([deque1 isEqualToDeque:deque2], @"Should not be equal.");
 		deque2 = [reversedDeques objectAtIndex:i];

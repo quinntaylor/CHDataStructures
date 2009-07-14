@@ -93,3 +93,8 @@ BOOL collectionsAreEqual(id collection1, id collection2) {
 			return NO;
 	return YES;	
 }
+
+NSUInteger hashOfCountAndObjects(NSUInteger count, id object1, id object2) {
+	NSUInteger hash = 17 * count ^ (count << 16);
+	return hash ^ (31*[object1 hash]) ^ ((31*[object2 hash]) << 4);
+}

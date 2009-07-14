@@ -21,12 +21,18 @@
 	return [[self allObjects] description];
 }
 
+- (NSUInteger) hash {
+	return hashOfCountAndObjects([array count],
+	                             [array lastObject],
+	                             [array objectAtIndex:0]);
+}
+
 - (BOOL) isEqualToStack:(id<CHStack>)otherStack {
 	return collectionsAreEqual(self, otherStack);
 }
 
 - (NSEnumerator*) objectEnumerator {
-	return [array reverseObjectEnumerator];  // top of stack is at the back
+	return [array reverseObjectEnumerator]; // top of stack is at back of array
 }
 
 - (void) popObject {
@@ -44,7 +50,7 @@
 }
 
 - (NSEnumerator*) reverseObjectEnumerator {
-	return [array objectEnumerator];         // bottom of stack is at the front
+	return [array objectEnumerator]; // bottom of stack is at front of array
 }
 
 - (id) topObject {
@@ -55,7 +61,7 @@
 /** @name <NSFastEnumeration> */
 // @{
 
-// Overrides parent's behavior to return the array contents in reverse order.
+#if MAC_OS_X_VERSION_10_5_AND_LATER
 /**
  Called within <code>@b for (type variable @b in collection)</code> constructs. Returns by reference a C array of objects over which the sender should iterate, and as the return value the number of objects in the array.
  
@@ -74,7 +80,7 @@
  @see allObjects
  @see objectEnumerator
  */
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+// Overrides parent's behavior to return the array contents in reverse order.
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len

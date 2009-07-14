@@ -241,6 +241,10 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 	return NO;
 }
 
+- (NSUInteger) hash {
+	return hashOfCountAndObjects([self countForAllKeys], dictionary, nil);
+}
+
 - (NSEnumerator*) keyEnumerator {
 	return [dictionary keyEnumerator];
 }

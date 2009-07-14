@@ -323,6 +323,10 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 	return head->next->object; // nil if there are no objects between head/tail
 }
 
+- (NSUInteger) hash {
+	return hashOfCountAndObjects(count, [self firstObject], [self lastObject]);
+}
+
 - (BOOL) isEqualToLinkedList:(id<CHLinkedList>)otherLinkedList {
 	return collectionsAreEqual(self, otherLinkedList);
 }

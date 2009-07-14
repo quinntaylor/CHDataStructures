@@ -64,6 +64,7 @@
 		queue1 = [equalQueues objectAtIndex:i];
 		queue2 = [equalQueues objectAtIndex:i+1];
 		STAssertTrue([queue1 isEqualToQueue:queue2], @"Should be equal.");
+		STAssertEquals([queue1 hash], [queue2 hash], @"Hashes should match.");
 		queue2 = [emptyQueues objectAtIndex:i];
 		STAssertFalse([queue1 isEqualToQueue:queue2], @"Should not be equal.");
 		queue2 = [reversedQueues objectAtIndex:i];

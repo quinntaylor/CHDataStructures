@@ -92,6 +92,10 @@
 	[list exchangeObjectAtIndex:idx1 withObjectAtIndex:idx2];
 }
 
+- (NSUInteger) hash {
+	return hashOfCountAndObjects([list count], [list firstObject], [list lastObject]);
+}
+
 - (NSUInteger) indexOfObject:(id)anObject {
 	return [list indexOfObject:anObject];
 }

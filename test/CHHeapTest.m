@@ -106,6 +106,7 @@
 		CHAbstractMutableArrayCollection *heap2 = [heap copyWithZone:nil];
 		STAssertNotNil(heap2, @"-copy should not return nil for valid heap.");
 		STAssertEquals([heap2 count], (NSUInteger)9, @"Incorrect count.");
+		STAssertEquals([heap hash], [heap2 hash], @"Hashes should match.");
 		STAssertEqualObjects([heap allObjects], [heap2 allObjects], @"Unequal heaps.");
 		[heap release];
 		[heap2 release];
@@ -202,6 +203,35 @@
 		STAssertEqualObjects([heap firstObject], @"A", @"-firstObject returned bad value.");
 		[heap release];
 	}
+}
+
+- (void) testIsEqualToHeap {
+	NSMutableArray *emptyHeaps = [NSMutableArray array];
+	NSMutableArray *equalHeaps = [NSMutableArray array];
+	NSMutableArray *reversedHeaps = [NSMutableArray array];
+	NSEnumerator *classes = [heapClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
+		[emptyHeaps addObject:[[aClass alloc] init]];
+		[equalHeaps addObject:[[aClass alloc] initWithOrdering:-1 array:objects]];
+		[reversedHeaps addObject:[[aClass alloc] initWithOrdering:1 array:objects]];
+	}
+	// Add a repeat of the first class to avoid wrapping.
+	[equalHeaps addObject:[equalHeaps objectAtIndex:0]];
+	
+	id<CHHeap> heap1, heap2;
+	for (NSUInteger i = 0; i < [heapClasses count]; i++) {
+		heap1 = [equalHeaps objectAtIndex:i];
+		heap2 = [equalHeaps objectAtIndex:i+1];
+		STAssertTrue([heap1 isEqualToHeap:heap2], @"Should be equal.");
+		STAssertEquals([heap1 hash], [heap2 hash], @"Hashes should match.");
+		heap2 = [emptyHeaps objectAtIndex:i];
+		STAssertFalse([heap1 isEqualToHeap:heap2], @"Should not be equal.");
+		heap2 = [reversedHeaps objectAtIndex:i];
+		STAssertFalse([heap1 isEqualToHeap:heap2], @"Should not be equal.");
+	}
+	STAssertFalse([heap1 isEqualToHeap:[NSArray array]], @"Should not be equal.");
+	STAssertThrows([heap1 isEqualToHeap:[NSString string]], @"Should raise exception.");
 }
 
 - (void) testRemoveFirstObject {

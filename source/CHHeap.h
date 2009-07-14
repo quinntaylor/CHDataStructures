@@ -172,6 +172,14 @@
  */
 - (NSEnumerator*) objectEnumerator;
 
+/**
+ Compares the receiving heap to another heap. Two heaps have equal contents if they each hold the same number of objects and (when fully sorted) objects at a given position in each heap satisfy the \link NSObject#isEqual: -isEqual:\endlink test.
+ 
+ @param otherHeap A heap.
+ @return @c YES if the contents of @a otherHeap are equal to the contents of the receiver, otherwise @c NO.
+ */
+- (BOOL) isEqualToHeap:(id<CHHeap>)otherHeap;
+
 // @}
 #pragma mark Removing Objects
 /** @name Removing Objects */

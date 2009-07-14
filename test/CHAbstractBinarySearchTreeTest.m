@@ -280,6 +280,10 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 		STAssertTrue([tree1 isEqualToSearchTree:insideTree],  @"Should be equal.");
 		STAssertTrue([tree1 isEqualToSearchTree:outsideTree], @"Should be equal.");
 		STAssertTrue([tree1 isEqualToSearchTree:zigzagTree],  @"Should be equal.");
+		STAssertEquals([tree1 hash], [tree2 hash],       @"Hashes should match.");
+		STAssertEquals([tree1 hash], [insideTree hash],  @"Hashes should match.");
+		STAssertEquals([tree1 hash], [outsideTree hash], @"Hashes should match.");
+		STAssertEquals([tree1 hash], [zigzagTree hash],  @"Hashes should match.");
 	}
 	STAssertFalse([tree1 isEqualToSearchTree:[NSArray array]], @"Should not be equal.");
 	STAssertThrows([tree1 isEqualToSearchTree:[NSString string]], @"Should raise exception.");
@@ -570,12 +574,14 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 		copy = [tree copyWithZone:nil];
 		STAssertNotNil(copy, @"-copy should not return nil for valid tree.");
 		STAssertEquals([copy count], (NSUInteger)0, @"Incorrect count.");
+		STAssertEquals([tree hash], [copy hash], @"Hashes should match.");
 		[copy release];
 
 		[tree addObjectsFromArray:objects];
 		copy = [tree copyWithZone:nil];
 		STAssertNotNil(copy, @"-copy should not return nil for valid tree.");
 		STAssertEquals([copy count], [objects count], @"Incorrect count.");
+		STAssertEquals([tree hash], [copy hash], @"Hashes should match.");
 		if (aClass != [CHTreap class])
 		STAssertEqualObjects([tree allObjectsWithTraversalOrder:CHTraverseLevelOrder],
 							 [copy allObjectsWithTraversalOrder:CHTraverseLevelOrder],

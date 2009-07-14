@@ -68,6 +68,7 @@ void populateMultimap(CHMultiDictionary* multimap) {
 	
 	CHMultiDictionary *multimap2 = [multimap copy];
 	STAssertEquals([multimap2 count], [multimap count], @"Incorrect key count.");
+	STAssertEquals([multimap2 hash], [multimap hash], @"Hashes should match.");
 
 	NSEnumerator *keys1 = [multimap keyEnumerator];
 	NSEnumerator *keys2 = [multimap2 keyEnumerator];

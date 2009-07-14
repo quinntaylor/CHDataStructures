@@ -152,6 +152,15 @@
 	return ([array count] > 0) ? [array objectAtIndex:0] : nil;
 }
 		
+- (NSUInteger) hash {
+	id anObject = ([array count] > 0) ? [array objectAtIndex:0] : array;
+	return hashOfCountAndObjects([self count], anObject, anObject);
+}
+
+- (BOOL) isEqualToHeap:(id<CHHeap>)otherHeap {
+	return collectionsAreEqual(self, otherHeap);
+}
+
 - (void) removeFirstObject {
 	if ([array count] > 0) {
 		[array exchangeObjectAtIndex:0 withObjectAtIndex:([array count]-1)];
@@ -217,7 +226,7 @@
 }
 
 - (NSEnumerator*) objectEnumerator {
-	return [[self allObjects] objectEnumerator];
+	return [[self allObjectsInSortedOrder] objectEnumerator];
 }
 
 @end

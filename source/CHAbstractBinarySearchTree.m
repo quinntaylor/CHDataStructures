@@ -461,6 +461,10 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 	return current->object;
 }
 
+- (NSUInteger) hash {
+	return hashOfCountAndObjects(count, [self firstObject], [self lastObject]);
+}
+
 - (BOOL) isEqualToSearchTree:(id<CHSearchTree>)otherTree {
 	return collectionsAreEqual(self, otherTree);
 }
@@ -555,6 +559,15 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 	return [set autorelease];
 }
 
+/*
+ \copydoc CHSortedSet::subsetFromObject:toObject:
+ 
+ \see     CHSortedSet#subsetFromObject:toObject:
+ 
+ \link    CHSortedSet#subsetFromObject:toObject: \endlink
+ 
+ \attention This implementation tests objects for membership in the subset according to their sorted order. This worst-case input causes more work for self-balancing trees, and subsets of unbalanced trees will always degenerate to linked lists.
+ */
 - (id<CHSortedSet>) subsetFromObject:(id)start
                             toObject:(id)end
                              options:(CHSubsetConstructionOptions)options

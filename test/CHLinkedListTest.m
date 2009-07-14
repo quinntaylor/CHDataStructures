@@ -411,16 +411,17 @@
 	// Add a repeat of the first class to avoid wrapping.
 	[equalLinkedLists addObject:[equalLinkedLists objectAtIndex:0]];
 	
-	id<CHLinkedList> tree1, tree2;
+	id<CHLinkedList> list1, list2;
 	for (NSUInteger i = 0; i < [linkedListClasses count]; i++) {
-		tree1 = [equalLinkedLists objectAtIndex:i];
-		tree2 = [emptyLinkedLists objectAtIndex:i];
-		STAssertFalse([tree1 isEqualToLinkedList:tree2], @"Should not be equal.");
-		tree2 = [equalLinkedLists objectAtIndex:i+1];
-		STAssertTrue([tree1 isEqualToLinkedList:tree2], @"Should be equal.");
+		list1 = [equalLinkedLists objectAtIndex:i];
+		list2 = [emptyLinkedLists objectAtIndex:i];
+		STAssertFalse([list1 isEqualToLinkedList:list2], @"Should not be equal.");
+		list2 = [equalLinkedLists objectAtIndex:i+1];
+		STAssertTrue([list1 isEqualToLinkedList:list2], @"Should be equal.");
+		STAssertEquals([list1 hash], [list2 hash], @"Hashes should match.");
 	}
-	STAssertFalse([tree1 isEqualToLinkedList:[NSArray array]], @"Should not be equal.");
-	STAssertThrows([tree1 isEqualToLinkedList:[NSString string]], @"Should raise exception.");
+	STAssertFalse([list1 isEqualToLinkedList:[NSArray array]], @"Should not be equal.");
+	STAssertThrows([list1 isEqualToLinkedList:[NSString string]], @"Should raise exception.");
 }
 
 - (void) testObjectAtIndex {

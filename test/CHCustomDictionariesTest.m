@@ -178,12 +178,15 @@
 - (void) testNSCopying {
 	id copy = [dictionary copy];
 	STAssertEquals([copy count], (NSUInteger)0, @"Copy of dictionary should be empty.");
+	STAssertEquals([dictionary hash], [copy hash], @"Hashes should match.");
 	STAssertEqualObjects([copy class], [dictionary class], @"Wrong class.");
 	[copy release];
+	copy = dictionary;
 	
 	[self populateDictionary];
 	dictionary = [dictionary copy];
 	[self verifyKeyCountAndOrdering];
+	STAssertEquals([dictionary hash], [copy hash], @"Hashes should match.");
 	[dictionary release];
 }
 

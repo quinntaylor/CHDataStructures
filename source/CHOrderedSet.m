@@ -161,6 +161,12 @@
 	return [ordering firstObject];
 }
 
+- (NSUInteger) hash {
+	return hashOfCountAndObjects([ordering count],
+	                             [ordering firstObject],
+	                             [ordering lastObject]);
+}
+
 - (NSUInteger) indexOfObject:(id)anObject {
 	return [ordering indexOfObject:anObject];
 }
@@ -171,6 +177,10 @@
 
 - (BOOL) isEqualToSet:(NSSet*)otherSet {
 	return [objects isEqualToSet:otherSet];
+}
+
+- (BOOL) isEqualToOrderedSet:(CHOrderedSet*)otherOrderedSet {
+	return collectionsAreEqual(self, otherOrderedSet);
 }
 
 - (BOOL) isSubsetOfSet:(NSSet*)otherSet {

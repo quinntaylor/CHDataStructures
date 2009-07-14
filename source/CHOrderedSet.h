@@ -12,13 +12,13 @@
 
 /**
  @file CHOrderedSet.h
- A set structure that also maintains order of insertion using a doubly-linked list.
+ A set structure that also maintains order of insertion using a doubly-ordered set.
  */
 
 /**
- A set structure that also maintains order of insertion using a doubly-linked list.
+ A set structure that also maintains order of insertion using a doubly-ordered set.
  
- A <strong>linked set</strong> is a composite data structure which combines a <a href="http://en.wikipedia.org/wiki/Set_(computer_science)">set</a> and a <a href="http://en.wikipedia.org/wiki/Linked_list">linked list</a>. It blends the uniqueness aspect of sets with the ability to recall the order in which items were added to the set. While this is possible with only a linked list, the speedy test for membership is a set means  that many basic operations (such as add, remove, and contains) that take linear time for a list can be accomplished in constant time (i.e. O(1) instead of O(n) complexity. Compared to these gains, the time overhead required for maintaining the list is negligible, although it does increase memory requirements.
+ A <strong>linked set</strong> is a composite data structure which combines a <a href="http://en.wikipedia.org/wiki/Set_(computer_science)">set</a> and a <a href="http://en.wikipedia.org/wiki/Linked_list">ordered set</a>. It blends the uniqueness aspect of sets with the ability to recall the order in which items were added to the set. While this is possible with only a ordered set, the speedy test for membership is a set means  that many basic operations (such as add, remove, and contains) that take linear time for a list can be accomplished in constant time (i.e. O(1) instead of O(n) complexity. Compared to these gains, the time overhead required for maintaining the list is negligible, although it does increase memory requirements.
  
  One of the most common implementations of an insertion-ordered set is Java's <a href="http://java.sun.com/javase/6/docs/api/java/util/LinkedHashSet.html">LinkedHashSet</a>. This implementation wraps an NSMutableSet and a circular buffer to maintain insertion order. The API is designed to be as consistent as possible with that of NSSet and NSMutableSet.
  
@@ -308,6 +308,14 @@
  @see isSubsetOfSet:
  */
 - (BOOL) isEqualToSet:(NSSet*)otherSet;
+
+/**
+ Compares the receiving ordered set to another ordered set. Two ordered sets have equal contents if they each hold the same number of objects and objects at a given position in each ordered set satisfy the \link NSObject#isEqual: -isEqual:\endlink test.
+ 
+ @param otherOrderedSet A ordered set.
+ @return @c YES if the contents of @a otherOrderedSet are equal to the contents of the receiver, otherwise @c NO.
+ */
+- (BOOL) isEqualToOrderedSet:(CHOrderedSet*)otherOrderedSet;
 
 /**
  Checks whether every object in the receiver is also present in another given set.

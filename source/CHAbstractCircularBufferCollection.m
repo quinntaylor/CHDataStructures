@@ -348,6 +348,10 @@ BOOL objectsAreIdentical(id o1, id o2) {
 	return (count > 0) ? array[headIndex] : nil;
 }
 
+- (NSUInteger) hash {
+	return hashOfCountAndObjects(count, [self firstObject], [self lastObject]);
+}
+
 - (id) lastObject {
 	return (count > 0) ? array[((tailIndex) ? tailIndex : arrayCapacity) - 1] : nil;
 }

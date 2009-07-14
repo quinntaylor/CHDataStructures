@@ -169,3 +169,13 @@ OBJC_EXPORT void CHQuietLog(NSString *format, ...);
  @throw Exception If one of both of the arguments do not respond to the @c -count or @c -objectEnumerator selectors.
  */
 HIDDEN OBJC_EXPORT BOOL collectionsAreEqual(id collection1, id collection2);
+
+/**
+ Generate a hash for a collection based on the count and up to two objects. If objects are provided, the result of their -hash method will be used.
+ 
+ @param count The number of objects in the collection.
+ @param o1 The first object to include in the hash.
+ @param o2 The second object to include in the hash.
+ @return An unsigned integer that can be used as a table address in a hash table structure.
+ */
+HIDDEN OBJC_EXPORT NSUInteger hashOfCountAndObjects(NSUInteger count, id o1, id o2);

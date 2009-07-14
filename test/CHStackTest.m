@@ -84,6 +84,7 @@
 		stack1 = [equalStacks objectAtIndex:i];
 		stack2 = [equalStacks objectAtIndex:i+1];
 		STAssertTrue([stack1 isEqualToStack:stack2], @"Should be equal.");
+		STAssertEquals([stack1 hash], [stack2 hash], @"Hashes should match.");
 		stack2 = [emptyStacks objectAtIndex:i];
 		STAssertFalse([stack1 isEqualToStack:stack2], @"Should not be equal.");
 		stack2 = [reversedStacks objectAtIndex:i];

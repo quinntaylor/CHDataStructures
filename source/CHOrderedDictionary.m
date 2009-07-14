@@ -68,6 +68,12 @@
 	return [keyOrdering firstObject];
 }
 
+- (NSUInteger) hash {
+	return hashOfCountAndObjects([keyOrdering count],
+	                             [keyOrdering firstObject],
+	                             [keyOrdering lastObject]);
+}
+
 - (id) lastKey {
 	return [keyOrdering lastObject];
 }

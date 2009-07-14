@@ -306,6 +306,10 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 	return (count == 0) ? nil : head->next->object;
 }
 
+- (NSUInteger) hash {
+	return hashOfCountAndObjects(count, [self firstObject], [self lastObject]);
+}
+
 - (BOOL) isEqualToLinkedList:(id<CHLinkedList>)otherLinkedList {
 	return collectionsAreEqual(self, otherLinkedList);
 }

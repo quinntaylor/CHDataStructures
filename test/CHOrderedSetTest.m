@@ -241,6 +241,20 @@
 	STAssertTrue([set isEqualToSet:[NSSet setWithArray:array]], @"Unequal sets.");
 }
 
+- (void) testIsEqualToOrderedSet {
+	NSArray *abc = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
+	NSArray *cba = [NSArray arrayWithObjects:@"C",@"B",@"A",nil];
+	NSArray *xyz = [NSArray arrayWithObjects:@"X",@"Y",@"Z",nil];
+	CHOrderedSet* set2;
+	[set addObjectsFromArray:abc];
+	set2 = [[[CHOrderedSet alloc] initWithArray:abc] autorelease];
+	STAssertTrue([set isEqualToOrderedSet:set2], @"Sets should be equal.");
+	set2 = [[[CHOrderedSet alloc] initWithArray:cba] autorelease];
+	STAssertFalse([set isEqualToOrderedSet:set2], @"Sets should not be equal.");
+	set2 = [[[CHOrderedSet alloc] initWithArray:xyz] autorelease];
+	STAssertFalse([set isEqualToOrderedSet:set2], @"Sets should not be equal.");
+}
+
 - (void) testIsSubsetOfSet {
 	NSSet *abc = [NSSet setWithObjects:@"A",@"B",@"C",nil];
 	[set addObject:@"A"];
@@ -251,6 +265,13 @@
 	STAssertTrue([set isSubsetOfSet:abc], @"Should be a subset.");
 	[set addObject:@"D"];
 	STAssertFalse([set isSubsetOfSet:abc], @"Should not be a subset.");
+}
+
+- (void) testHash {
+	NSArray *abc = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
+	[set addObjectsFromArray:abc];
+	CHOrderedSet* set2 = [[[CHOrderedSet alloc] initWithArray:abc] autorelease];
+	STAssertEquals([set hash], [set2 hash], @"Hashes should match.");
 }
 
 - (void) testMember {

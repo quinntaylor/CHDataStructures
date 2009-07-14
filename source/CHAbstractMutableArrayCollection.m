@@ -73,6 +73,12 @@
 	[array exchangeObjectAtIndex:idx1 withObjectAtIndex:idx2];
 }
 
+- (NSUInteger) hash {
+	return hashOfCountAndObjects([array count],
+	                             [array objectAtIndex:0],
+	                             [array lastObject]);
+}
+
 - (NSUInteger) indexOfObject:(id)anObject {
 	return [array indexOfObject:anObject];
 }
