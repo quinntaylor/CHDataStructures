@@ -489,17 +489,16 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 
 #if MAC_OS_X_VERSION_10_5_AND_LATER
 - (void) testNSFastEnumeration {
-	int limit = 32; // NSFastEnumeration asks for 16 objects at a time
+	NSUInteger limit = 32; // NSFastEnumeration asks for 16 objects at a time
 	NSEnumerator *classes = [sortedSetClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
 		sortedSet = [[aClass alloc] init];
-		int number, expected, count = 0;
-		for (number = 1; number <= limit; number++)
-			[sortedSet addObject:[NSNumber numberWithInt:number]];
-		expected = 1;
+		for (NSUInteger number = 1; number <= limit; number++)
+			[sortedSet addObject:[NSNumber numberWithUnsignedInteger:number]];
+		NSUInteger expected = 1, count = 0;
 		for (NSNumber *object in sortedSet) {
-			STAssertEquals([object intValue], expected++,
+			STAssertEquals([object unsignedIntegerValue], expected++,
 						   @"Objects should be enumerated in ascending order.");
 			count++;
 		}
@@ -508,7 +507,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 		BOOL raisedException = NO;
 		@try {
 			for (id object in sortedSet)
-				[sortedSet addObject:[NSNumber numberWithInt:-1]];
+				[sortedSet addObject:[NSNumber numberWithInteger:-1]];
 		}
 		@catch (NSException *exception) {
 			raisedException = YES;
@@ -519,6 +518,5 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	}
 }
 #endif
-
 
 @end

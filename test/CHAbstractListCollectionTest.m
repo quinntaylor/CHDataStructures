@@ -100,16 +100,16 @@
 
 #if MAC_OS_X_VERSION_10_5_AND_LATER
 - (void) testNSFastEnumeration {
-	int number, expected, count = 0;
-	for (number = 1; number <= 32; number++)
-		[collection addObject:[NSNumber numberWithInt:number]];
-	expected = 1;
+	NSUInteger limit = 32;
+	for (NSUInteger number = 1; number <= limit; number++)
+		[collection addObject:[NSNumber numberWithUnsignedInteger:number]];
+	NSUInteger expected = 1, count = 0;
 	for (NSNumber *object in collection) {
-		STAssertEquals([object intValue], expected++,
+		STAssertEquals([object unsignedIntegerValue], expected++,
 					   @"Objects should be enumerated in ascending order.");
 		++count;
 	}
-	STAssertEquals(count, 32, @"Count of enumerated items is incorrect.");
+	STAssertEquals(count, limit, @"Count of enumerated items is incorrect.");
 
 	BOOL raisedException = NO;
 	@try {

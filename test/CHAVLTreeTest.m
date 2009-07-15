@@ -54,7 +54,7 @@ static NSMutableString *balanceErrors;
 	NSInteger leftHeight  = [self heightForSubtreeAtNode:node->left];
 	NSInteger rightHeight = [self heightForSubtreeAtNode:node->right];
 	if (node->balance != (rightHeight-leftHeight)) {
-		[balanceErrors appendFormat:@". | At \"%@\" should be %d, was %d",
+		[balanceErrors appendFormat:@". | At \"%@\" should be %ld, was %d",
 		 node->object, (rightHeight-leftHeight), node->balance];
 		validBalanceFactors = NO;
 	}

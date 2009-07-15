@@ -583,14 +583,15 @@ void benchmarkTree(Class testClass) {
 
 int main (int argc, const char * argv[]) {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	int size, item, limit = 100000;
+	NSUInteger item;
+	NSUInteger limit = 100000;
 	objects = [[NSMutableArray alloc] init];
 	
-	for (size = 10; size <= limit; size *= 10) {
+	for (NSUInteger size = 10; size <= limit; size *= 10) {
 		NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:size+1];
 		[array addObjectsFromArray:[objects lastObject]];
 		for (item = [array count]+1; item <= size; item++)
-			[array addObject:[NSNumber numberWithInt:item]];
+			[array addObject:[NSNumber numberWithUnsignedInteger:item]];
 		[objects addObject:array];
 		[array release];
 	}
@@ -650,9 +651,9 @@ int main (int argc, const char * argv[]) {
 	NSUInteger scale = 1000000; // 10^6, which gives microseconds
 	
 	for (NSUInteger trial = 1; trial <= reps; trial++) {
-		printf("\nPass %lu / %lu", (unsigned long)trial, (unsigned long)reps);
+		printf("\nPass %lu / %lu", trial, reps);
 		for (NSUInteger size = 10; size <= limit; size *= 10) {
-			printf("\n%8lu objects --", (unsigned long)size);
+			printf("\n%8lu objects --", size);
 			// Create a set of N unique random numbers
 			NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 			while ([objectSet count] < size)
@@ -680,12 +681,12 @@ int main (int argc, const char * argv[]) {
 					[tree addObject:anObject];
 				duration = timestamp() - startTime;
 				[[dictionary objectForKey:@"addObject"] addObject:
-				 [NSString stringWithFormat:@"%u,%f",
+				 [NSString stringWithFormat:@"%lu,%f",
 				  jitteredSize, duration/size*scale]];
 				
 				// containsObject:
 				nanosleep(&sleepDelay, &sleepRemain);
-				int index = 0;
+				NSUInteger index = 0;
 				startTime = timestamp();
 #if MAC_OS_X_VERSION_10_5_AND_LATER
 				for (id anObject in objects)
@@ -700,13 +701,13 @@ int main (int argc, const char * argv[]) {
 				}
 				duration = timestamp() - startTime;
 				[[dictionary objectForKey:@"member"] addObject:
-				 [NSString stringWithFormat:@"%u,%f",
+				 [NSString stringWithFormat:@"%lu,%f",
 				  jitteredSize, duration/size*scale]];
 				
 				// Maximum height
 				if ([aClass conformsToProtocol:@protocol(CHSearchTree)])
 					[[dictionary objectForKey:@"height"] addObject:
-					 [NSString stringWithFormat:@"%u,%u",
+					 [NSString stringWithFormat:@"%lu,%lu",
 					  jitteredSize, [tree height]]];
 				
 				// removeObject:
@@ -721,7 +722,7 @@ int main (int argc, const char * argv[]) {
 					[tree removeObject:anObject];
 				duration = timestamp() - startTime;
 				[[dictionary objectForKey:@"removeObject"] addObject:
-				 [NSString stringWithFormat:@"%u,%f", jitteredSize, duration/size*scale]];
+				 [NSString stringWithFormat:@"%lu,%f", jitteredSize, duration/size*scale]];
 				
 				[tree release];
 				[pool drain];

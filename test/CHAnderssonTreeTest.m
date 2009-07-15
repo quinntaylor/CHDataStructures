@@ -230,7 +230,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	node->object = [NSString stringWithString:@"A B C"];
 	node->level = 1;
 	STAssertEqualObjects([tree debugDescriptionForNode:node],
-						 @"[ 1]\t\"A B C\"", nil);
+						 @"[1]\t\"A B C\"", nil);
 	free(node);
 }
 

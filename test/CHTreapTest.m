@@ -100,7 +100,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	
 	NSUInteger count;
 	// Repeat a few times to get a decent random spread.
-	for (int tries = 1; tries <= 5; tries++) {
+	for (NSUInteger tries = 1; tries <= 5; tries++) {
 		[tree removeAllObjects];
 		count = 0;
 		e = [objects objectEnumerator];
@@ -259,7 +259,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	// Inserting from 'objects' with these priorities creates a known ordering.
 	NSUInteger priorities[] = {8,11,13,12,1,4,5,9,6,3,10,7,2};
 	
-	int index = 0;
+	NSUInteger index = 0;
 	[tree removeAllObjects];
 	e = [objects objectEnumerator];
 	while (anObject = [e nextObject]) {

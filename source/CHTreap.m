@@ -50,7 +50,7 @@
 	NSAssert(parent != nil, @"Illegal state, parent should never be nil!");
 	
 	[anObject retain]; // Must retain whether replacing value or adding new node
-	int direction;
+	u_int32_t direction;
 	if (current != sentinel) {
 		// Replace the existing object with the new object.
 		[current->object release];
@@ -97,7 +97,7 @@
 	
 	CHBinaryTreeNode *parent = nil, *current = header;
 	NSComparisonResult comparison;
-	int direction;
+	u_int32_t direction;
 	
 	// First, we must locate the object to be removed, or we exit if not found
 	sentinel->object = anObject; // Assure that we stop at a sentinel leaf node

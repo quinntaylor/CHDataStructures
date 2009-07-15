@@ -163,7 +163,7 @@ done:
 }
 
 - (NSString*) debugDescriptionForNode:(CHBinaryTreeNode*)node {
-	return [NSString stringWithFormat:@"[%2d]\t\"%@\"", node->level, node->object];
+	return [NSString stringWithFormat:@"[%d]\t\"%@\"", node->level, node->object];
 }
 
 - (NSString*) dotGraphStringForNode:(CHBinaryTreeNode*)node {

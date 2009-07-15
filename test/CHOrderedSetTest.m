@@ -42,7 +42,7 @@
 - (NSArray*) randomNumbers {
 	NSMutableArray *array = [NSMutableArray array];
 	NSNumber *number;
-	for (int count = 1; count <= 20; count++) {
+	for (NSUInteger count = 1; count <= 20; count++) {
 		number = [NSNumber numberWithUnsignedInt:arc4random()];
 		if ([array containsObject:number])
 			count--;
@@ -443,7 +443,7 @@
 	NSArray *abc = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
 	[set addObjectsFromArray:abc];
 	STAssertThrows([set removeObjectAtIndex:[abc count]], @"Should raise exception");
-	for (int i = [abc count]-1; i >= 0; i--) {
+	for (NSInteger i = [abc count]-1; i >= 0; i--) {
 		STAssertEqualObjects([set lastObject], [abc objectAtIndex:i],
 							 @"Wrong object at index before removing at index");
 		[set removeObjectAtIndex:i];

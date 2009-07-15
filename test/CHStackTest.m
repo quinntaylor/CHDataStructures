@@ -49,7 +49,7 @@
 - (void) testInitWithArray {
 	NSMutableArray *moreObjects = [NSMutableArray array];
 	for (NSUInteger i = 0; i < 32; i++)
-		[moreObjects addObject:[NSNumber numberWithUnsignedInt:i]];
+		[moreObjects addObject:[NSNumber numberWithUnsignedInteger:i]];
 	
 	NSEnumerator *classes = [stackClasses objectEnumerator];
 	Class aClass;
@@ -222,15 +222,16 @@
 
 #if MAC_OS_X_VERSION_10_5_AND_LATER
 - (void) testNSFastEnumeration {
-	int number, expected = 32, count = 0;
-	for (number = 1; number <= expected; number++)
-		[stack pushObject:[NSNumber numberWithInt:number]];
+	NSUInteger limit = 32;
+	for (NSInteger number = 1; number <= limit; number++)
+		[stack pushObject:[NSNumber numberWithUnsignedInteger:number]];
+	NSUInteger expected = limit, count = 0;
 	for (NSNumber *object in stack) {
-		STAssertEquals([object intValue], expected--,
+		STAssertEquals([object unsignedIntegerValue], expected--,
 		               @"Objects should be enumerated in descending order.");
 		++count;
 	}
-	STAssertEquals(count, 32, @"Count of enumerated items is incorrect.");
+	STAssertEquals(count, limit, @"Count of enumerated items is incorrect.");
 	
 	BOOL raisedException = NO;
 	@try {

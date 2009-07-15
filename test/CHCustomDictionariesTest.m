@@ -45,7 +45,7 @@
 		if (allKeys == nil)
 			allKeys = [dictionary allKeys];
 		NSUInteger count = MIN([dictionary count], [expectedKeyOrder count]);
-		for (int i = 0; i < count; i++) {
+		for (NSUInteger i = 0; i < count; i++) {
 			STAssertEqualObjects([allKeys objectAtIndex:i],
 								 [expectedKeyOrder objectAtIndex:i],
 								 @"Wrong output ordering of keys.");

@@ -12,7 +12,7 @@
 #import "CHAbstractBinarySearchTree_Internal.h"
 
 // Two-way single rotation
-static inline CHBinaryTreeNode* singleRotation(CHBinaryTreeNode *node, int dir) {
+static inline CHBinaryTreeNode* singleRotation(CHBinaryTreeNode *node, u_int32_t dir) {
     CHBinaryTreeNode *save = node->link[!dir];
     node->link[!dir] = save->link[dir];
     save->link[dir] = node;
@@ -20,7 +20,7 @@ static inline CHBinaryTreeNode* singleRotation(CHBinaryTreeNode *node, int dir) 
 }
 
 // Two-way double rotation
-static inline CHBinaryTreeNode* doubleRotation(CHBinaryTreeNode *node, int dir) {
+static inline CHBinaryTreeNode* doubleRotation(CHBinaryTreeNode *node, u_int32_t dir) {
     CHBinaryTreeNode *save = node->link[!dir]->link[dir];
     node->link[!dir]->link[dir] = save->link[!dir];
     save->link[!dir] = node->link[!dir];
@@ -32,7 +32,7 @@ static inline CHBinaryTreeNode* doubleRotation(CHBinaryTreeNode *node, int dir) 
     return save;
 }
 
-static inline void adjustBalance(CHBinaryTreeNode *root, int dir, int bal) {
+static inline void adjustBalance(CHBinaryTreeNode *root, u_int32_t dir, int32_t bal) {
     CHBinaryTreeNode *n = root->link[dir];
     CHBinaryTreeNode *nn = n->link[!dir];
     if (nn->balance == 0)
@@ -192,7 +192,7 @@ done:
 		// If the subtree heights differ by more than 1, rebalance them
 		if (parent->balance > 1 || parent->balance < -1) {
 			CHBinaryTreeNode *node = parent->link[!isRightChild];
-			int bal = (isRightChild) ? +1 : -1;
+			int32_t bal = (isRightChild) ? +1 : -1;
 			if (node->balance == -bal) {
 				parent->balance = node->balance = 0;
 				parent = singleRotation(parent, isRightChild);

@@ -687,10 +687,10 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 			[graph appendString:[self dotGraphStringForNode:current]];
 			// Append entry for edges from current node to both its children.
 			leftChild = (current->left->object == nil)
-				? [NSString stringWithFormat:@"nil%d", ++sentinelCount]
+				? [NSString stringWithFormat:@"nil%lu", ++sentinelCount]
 				: [NSString stringWithFormat:@"\"%@\"", current->left->object];
 			rightChild = (current->right->object == nil)
-				? [NSString stringWithFormat:@"nil%d", ++sentinelCount]
+				? [NSString stringWithFormat:@"nil%lu", ++sentinelCount]
 				: [NSString stringWithFormat:@"\"%@\"", current->right->object];
 			[graph appendFormat:@"  \"%@\" -> {%@;%@};\n",
 			                    current->object, leftChild, rightChild];
@@ -699,7 +699,7 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 		
 		// Create entry for each null leaf node (each nil is modeled separately)
 		for (NSUInteger i = 1; i <= sentinelCount; i++)
-			[graph appendFormat:@"  nil%d [shape=point,fillcolor=black];\n", i];
+			[graph appendFormat:@"  nil%lu [shape=point,fillcolor=black];\n", i];
 	}
 	// Terminate the graph string, then return it
 	[graph appendString:@"}\n"];

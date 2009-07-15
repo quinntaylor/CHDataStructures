@@ -30,7 +30,7 @@ void initializeGCStatus() {
 void CHIndexOutOfRangeException(Class aClass, SEL method,
                                 NSUInteger index, NSUInteger elements) {
 	[NSException raise:NSRangeException
-	            format:@"[%@ %s] -- Index (%d) out of range (0-%d).",
+	            format:@"[%@ %s] -- Index (%lu) out of range (0-%lu).",
 	                   aClass, sel_getName(method), index, elements-1];
 }
 
