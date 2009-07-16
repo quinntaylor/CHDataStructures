@@ -92,7 +92,7 @@ HIDDEN OBJC_EXPORT size_t kCHPointerSize;
 		/* Copy wrapped-around portion to end of queue and move tail index */ \
 		memcpy(queue+queueCapacity, queue, kCHPointerSize*queueTail); \
 		/* Zeroing out shifted memory can simplify debugging queue problems */ \
-		/*memset(queue, 0, kCHPointerSize*queueTail);*/ \
+		/*bzero(queue, kCHPointerSize*queueTail);*/ \
 		queueTail += queueCapacity; \
 		queueCapacity *= 2; \
 	} \

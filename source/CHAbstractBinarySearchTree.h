@@ -24,10 +24,10 @@
         id object;
         union {
             struct {
-                struct CHBinaryTreeNode *left;
-                struct CHBinaryTreeNode *right;
+                __strong struct CHBinaryTreeNode *left;
+                __strong struct CHBinaryTreeNode *right;
             };
-            struct CHBinaryTreeNode *link[2];
+            __strong struct CHBinaryTreeNode *link[2];
         };
         union {
               int32_t balance;   // Used by CHAVLTree

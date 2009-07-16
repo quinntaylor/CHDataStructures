@@ -281,6 +281,7 @@ BOOL objectsAreIdentical(id o1, id o2) {
 		array = NSReallocateCollectable(array, kCHPointerSize * arrayCapacity * 2, NSScannedOption);
 		// Copy wrapped-around portion to end of queue and move tail index
 		memcpy(array + arrayCapacity, array, kCHPointerSize * tailIndex);
+		bzero(array, kCHPointerSize * tailIndex); // Zero the source of the copy
 		tailIndex += arrayCapacity;
 		arrayCapacity *= 2;
 	}
@@ -539,7 +540,7 @@ BOOL objectsAreIdentical(id o1, id o2) {
 		}
 		else {
 			// Only zero out pointers that will remain when the buffer shrinks.
-			memset(array, 0, kCHPointerSize * MIN(arrayCapacity, DEFAULT_BUFFER_SIZE));
+			bzero(array, kCHPointerSize * MIN(arrayCapacity, DEFAULT_BUFFER_SIZE));
 		}
 		if (arrayCapacity > DEFAULT_BUFFER_SIZE) {
 			arrayCapacity = DEFAULT_BUFFER_SIZE;
