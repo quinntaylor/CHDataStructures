@@ -157,6 +157,13 @@
 	return hashOfCountAndObjects([self count], anObject, anObject);
 }
 
+- (BOOL) isEqual:(id)otherObject {
+	if ([otherObject conformsToProtocol:@protocol(CHHeap)])
+		return [self isEqualToHeap:otherObject];
+	else
+		return NO;
+}
+
 - (BOOL) isEqualToHeap:(id<CHHeap>)otherHeap {
 	return collectionsAreEqual(self, otherHeap);
 }

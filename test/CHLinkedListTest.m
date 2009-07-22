@@ -399,7 +399,6 @@
 }
 
 - (void) testIsEqualToLinkedList {
-	// TODO: Test -isEqualToLinkedList:
 	NSMutableArray *emptyLinkedLists = [NSMutableArray array];
 	NSMutableArray *equalLinkedLists = [NSMutableArray array];
 	NSEnumerator *classes = [linkedListClasses objectEnumerator];
@@ -414,14 +413,15 @@
 	id<CHLinkedList> list1, list2;
 	for (NSUInteger i = 0; i < [linkedListClasses count]; i++) {
 		list1 = [equalLinkedLists objectAtIndex:i];
+		STAssertThrows([list1 isEqualToLinkedList:[NSString string]], @"Should raise exception.");
+		STAssertFalse([list1 isEqual:[NSString string]], @"Should not be equal.");
+		STAssertTrue([list1 isEqual:list1], @"Should be equal to itself.");
 		list2 = [emptyLinkedLists objectAtIndex:i];
-		STAssertFalse([list1 isEqualToLinkedList:list2], @"Should not be equal.");
+		STAssertFalse([list1 isEqual:list2], @"Should not be equal.");
 		list2 = [equalLinkedLists objectAtIndex:i+1];
-		STAssertTrue([list1 isEqualToLinkedList:list2], @"Should be equal.");
+		STAssertTrue([list1 isEqual:list2], @"Should be equal.");
 		STAssertEquals([list1 hash], [list2 hash], @"Hashes should match.");
 	}
-	STAssertFalse([list1 isEqualToLinkedList:[NSArray array]], @"Should not be equal.");
-	STAssertThrows([list1 isEqualToLinkedList:[NSString string]], @"Should raise exception.");
 }
 
 - (void) testObjectAtIndex {

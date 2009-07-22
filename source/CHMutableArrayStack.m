@@ -27,6 +27,13 @@
 	                             [array objectAtIndex:0]);
 }
 
+- (BOOL) isEqual:(id)otherObject {
+	if ([otherObject conformsToProtocol:@protocol(CHStack)])
+		return [self isEqualToStack:otherObject];
+	else
+		return NO;
+}
+
 - (BOOL) isEqualToStack:(id<CHStack>)otherStack {
 	return collectionsAreEqual(self, otherStack);
 }

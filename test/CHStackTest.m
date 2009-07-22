@@ -82,16 +82,17 @@
 	id<CHStack> stack1, stack2;
 	for (NSUInteger i = 0; i < [stackClasses count]; i++) {
 		stack1 = [equalStacks objectAtIndex:i];
+		STAssertThrows([stack1 isEqualToStack:[NSString string]], @"Should raise exception.");
+		STAssertFalse([stack1 isEqual:[NSString string]], @"Should not be equal.");
+		STAssertTrue([stack1 isEqual:stack1], @"Should be equal to itself.");
 		stack2 = [equalStacks objectAtIndex:i+1];
-		STAssertTrue([stack1 isEqualToStack:stack2], @"Should be equal.");
+		STAssertTrue([stack1 isEqual:stack2], @"Should be equal.");
 		STAssertEquals([stack1 hash], [stack2 hash], @"Hashes should match.");
 		stack2 = [emptyStacks objectAtIndex:i];
-		STAssertFalse([stack1 isEqualToStack:stack2], @"Should not be equal.");
+		STAssertFalse([stack1 isEqual:stack2], @"Should not be equal.");
 		stack2 = [reversedStacks objectAtIndex:i];
-		STAssertFalse([stack1 isEqualToStack:stack2], @"Should not be equal.");
+		STAssertFalse([stack1 isEqual:stack2], @"Should not be equal.");
 	}
-	STAssertFalse([stack1 isEqualToStack:[NSArray array]], @"Should not be equal.");
-	STAssertThrows([stack1 isEqualToStack:[NSString string]], @"Should raise exception.");
 }
 
 - (void) testPushObject {

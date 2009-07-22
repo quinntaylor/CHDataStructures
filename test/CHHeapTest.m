@@ -222,6 +222,9 @@
 	id<CHHeap> heap1, heap2;
 	for (NSUInteger i = 0; i < [heapClasses count]; i++) {
 		heap1 = [equalHeaps objectAtIndex:i];
+		STAssertThrows([heap1 isEqualToHeap:[NSString string]], @"Should raise exception.");
+		STAssertFalse([heap1 isEqual:[NSString string]], @"Should not be equal.");
+		STAssertTrue([heap1 isEqual:heap1], @"Should be equal to itself.");
 		heap2 = [equalHeaps objectAtIndex:i+1];
 		STAssertTrue([heap1 isEqualToHeap:heap2], @"Should be equal.");
 		STAssertEquals([heap1 hash], [heap2 hash], @"Hashes should match.");
@@ -230,8 +233,6 @@
 		heap2 = [reversedHeaps objectAtIndex:i];
 		STAssertFalse([heap1 isEqualToHeap:heap2], @"Should not be equal.");
 	}
-	STAssertFalse([heap1 isEqualToHeap:[NSArray array]], @"Should not be equal.");
-	STAssertThrows([heap1 isEqualToHeap:[NSString string]], @"Should raise exception.");
 }
 
 - (void) testRemoveFirstObject {

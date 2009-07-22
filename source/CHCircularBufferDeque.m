@@ -12,6 +12,13 @@
 
 @implementation CHCircularBufferDeque
 
+- (BOOL) isEqual:(id)otherObject {
+	if ([otherObject conformsToProtocol:@protocol(CHDeque)])
+		return [self isEqualToDeque:otherObject];
+	else
+		return NO;
+}
+
 - (BOOL) isEqualToDeque:(id<CHDeque>)otherDeque {
 	return collectionsAreEqual(self, otherDeque);
 }

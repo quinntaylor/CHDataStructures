@@ -327,6 +327,13 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 	return hashOfCountAndObjects(count, [self firstObject], [self lastObject]);
 }
 
+- (BOOL) isEqual:(id)otherObject {
+	if ([otherObject conformsToProtocol:@protocol(CHLinkedList)])
+		return [self isEqualToLinkedList:otherObject];
+	else
+		return NO;
+}
+
 - (BOOL) isEqualToLinkedList:(id<CHLinkedList>)otherLinkedList {
 	return collectionsAreEqual(self, otherLinkedList);
 }

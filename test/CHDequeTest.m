@@ -110,16 +110,17 @@
 	id<CHDeque> deque1, deque2;
 	for (NSUInteger i = 0; i < [dequeClasses count]; i++) {
 		deque1 = [equalDeques objectAtIndex:i];
+		STAssertThrows([deque1 isEqualToDeque:[NSString string]], @"Should raise exception.");
+		STAssertFalse([deque1 isEqual:[NSString string]], @"Should not be equal.");
+		STAssertTrue([deque1 isEqual:deque1], @"Should be equal to itself.");
 		deque2 = [equalDeques objectAtIndex:i+1];
-		STAssertTrue([deque1 isEqualToDeque:deque2], @"Should be equal.");
+		STAssertTrue([deque1 isEqual:deque2], @"Should be equal.");
 		STAssertEquals([deque1 hash], [deque2 hash], @"Hashes should match.");
 		deque2 = [emptyDeques objectAtIndex:i];
-		STAssertFalse([deque1 isEqualToDeque:deque2], @"Should not be equal.");
+		STAssertFalse([deque1 isEqual:deque2], @"Should not be equal.");
 		deque2 = [reversedDeques objectAtIndex:i];
-		STAssertFalse([deque1 isEqualToDeque:deque2], @"Should not be equal.");
+		STAssertFalse([deque1 isEqual:deque2], @"Should not be equal.");
 	}
-	STAssertFalse([deque1 isEqualToDeque:[NSArray array]], @"Should not be equal.");
-	STAssertThrows([deque1 isEqualToDeque:[NSString string]], @"Should raise exception.");
 }
 
 - (void) testLastObject {
