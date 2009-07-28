@@ -39,7 +39,7 @@
  
  The nested anonymous union and structs are to provide flexibility for dealing with various types of trees and access. (For those not familiar, a <a href="http://en.wikipedia.org/wiki/Union_(computer_science)">union</a> is a data structure in which all members are stored at the same memory location, and can take on the value of any of its fields. A union occupies only as much space as the largest member, whereas a struct requires space equal to at least the sum of the size of its members.)
  
- - The first union provides two equivalent ways to access child nodes, based on what is most convenient and efficient. Due to the order in which the fields are declared, <code>left == link[0]</code> and <code>right == link[1]</code>.
+ - The first union provides two equivalent ways to access child nodes, based on what is most convenient and efficient. Due to the order in which the fields are declared, <code>left == link[0]</code> and <code>right == link[1]</code>. (This tehnique is adapted from the idiom used in BST tutorials on <a href="http://eternallyconfuzzled.com/tuts/datastructures/jsw_tut_bst1.aspx">EternallyConfuzzled.com</a>)
  - The second union allows balanced trees to store extra data at each node, using the field name and type that makes sense for its algorithms. This allows for generic reuse while promoting meaningful semantics.
  
  Since CHUnbalancedTree doesn't store any extra data, the second union is essentially 4 bytes of pure overhead per node. However, since unbalanced trees are generally not a good choice for sorting large data sets anyway, this is largely a moot point.
