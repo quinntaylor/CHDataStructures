@@ -9,20 +9,19 @@
  */
 
 #import "Util.h"
+#import <objc/message.h>
 
-BOOL kCHGarbageCollectionNotEnabled = YES; // A variable declared extern in Util.h
 static BOOL initialized = NO;
+BOOL kCHGarbageCollectionNotEnabled; // A variable declared extern in Util.h
 
 void initializeGCStatus() {
 	if (!initialized) {
 		// Discover whether garbage collection is enabled (if running on 10.5+).
 		// This bit of hackery avoids linking errors via indirect invocation.
-		// (On previous version of OS X, NSGarbageCollector doesn't even exist.)
-		Class gcClass = NSClassFromString(@"NSGarbageCollector");
-		if (gcClass != nil) {
-			id collector = objc_msgSend(gcClass, @selector(defaultCollector));
-			kCHGarbageCollectionNotEnabled = (collector == nil);
-		}
+		// If NSGarbageCollector doesn't exist, NSClassFromString() returns nil.
+		// If it does exist, +defaultCollector will be non-nil if GC is enabled.
+		kCHGarbageCollectionNotEnabled = (objc_msgSend(NSClassFromString(@"NSGarbageCollector"),
+													   @selector(defaultCollector)) == nil);
 		initialized = YES;
 	}
 }
