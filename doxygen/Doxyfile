@@ -1,4 +1,4 @@
-# Doxyfile 1.5.7.1
+# Doxyfile 1.6.0
 
 #---------------------------------------------------------------------------
 # Project related configuration options
@@ -74,7 +74,6 @@ GENERATE_BUGLIST       = YES
 GENERATE_DEPRECATEDLIST= YES
 ENABLED_SECTIONS       = 
 MAX_INITIALIZER_LINES  = 30
-SHOW_USED_FILES        = YES
 SHOW_DIRECTORIES       = NO
 SHOW_FILES             = YES
 SHOW_NAMESPACES        = NO
