@@ -104,18 +104,7 @@ static const CFDictionaryValueCallBacks kCHLockableDictionaryValueCallBacks = {
 	return [self initWithCapacity:0]; // The 0 means we provide no capacity hint
 }
 
-// Note: This is the designated initializer for NSMutableDictionary.
-// Every call to this invokes -initWithCapacity: first (here or on a subclass)
-- (id) initWithObjects:(id*)objects forKeys:(id*)keys count:(NSUInteger)count {
-	if ([self initWithCapacity:count]) {
-		for (NSUInteger i = 0; i < count; i++) {
-			[self setObject:objects[i] forKey:keys[i]];
-		}
-	}
-	return self;
-}
-
-// Note: This is the designated initializer for CHLockableDictionary.
+// Note: This is the designated initializer for NSMutableDictionary and this class.
 // Subclasses may override this as necessary, but must call back here first.
 - (id) initWithCapacity:(NSUInteger)numItems {
 	if ((self = [super init]) == nil) return nil;

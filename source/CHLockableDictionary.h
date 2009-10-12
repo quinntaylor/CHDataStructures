@@ -42,23 +42,11 @@
  
  Mutable dictionaries allocate additional memory as needed, so @a numItems simply establishes the object's initial capacity.
  
- @attention This is the designated initializer for CHLockableDictionary and its subclasses.
+ @attention This is the designated initializer for NSMutableDictionary, and also for CHLockableDictionary and its subclasses.
  
  @see \link NSMutableDictionary#initWithCapacity: -[NSMutableDictionary initWithCapacity:]\endlink
  */
 - (id) initWithCapacity:(NSUInteger)numItems;
-
-/**
- Initializes the receiver with key-value entries provided in a pair of C arrays. This method steps through the @a objects and @a keys arrays, creating entries in the new dictionary as it goes. 
- 
- @param objects A C array of values for the new dictionary.
- @param keys A C array of keys for the new dictionary. Each key is copied using @c -copyWithZone: (must conform to the NSCopying protocol) and the copy is used in the dictionary.
- @param count The number of elements to use from the @a keys and @a objects arrays; @a count must not exceed the number of elements in @a objects or @a keys.
- @throw An NSInvalidArgumentException if a key or value object is @c nil.
- 
- @attention This is the designated initializer for NSDictionary. Any non-overridden initializer inherited from parent classes will invoke this initializer.
- */
-- (id) initWithObjects:(id*)objects forKeys:(id*)keys count:(NSUInteger)count;
 
 #pragma mark <NSCoding>
 /** @name <NSCoding> */
