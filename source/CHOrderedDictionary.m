@@ -26,6 +26,7 @@
 
 - (id) initWithCoder:(NSCoder*)decoder {
 	if ((self = [super initWithCoder:decoder]) == nil) return nil;
+	[keyOrdering release];
 	keyOrdering = [[decoder decodeObjectForKey:@"keyOrdering"] retain];
 	return self;
 }

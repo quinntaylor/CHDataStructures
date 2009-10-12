@@ -124,13 +124,11 @@ static const CFDictionaryValueCallBacks kCHLockableDictionaryValueCallBacks = {
 }
 
 - (id) initWithCoder:(NSCoder*)decoder {
-	if ([self init] == nil) return nil;
-	dictionary = (CFMutableDictionaryRef)[[decoder decodeObjectForKey:@"dictionary"] retain];
-	return self;
+	return [self initWithDictionary:[decoder decodeObjectForKey:@"dictionary"]];
 }
 
 - (void) encodeWithCoder:(NSCoder*)encoder {
-	[encoder encodeObject:(NSMutableDictionary*)dictionary forKey:@"dictionary"];
+	[encoder encodeObject:(NSDictionary*)dictionary forKey:@"dictionary"];
 }
 
 #pragma mark <NSCopying>

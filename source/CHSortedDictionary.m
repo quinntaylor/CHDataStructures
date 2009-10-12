@@ -24,13 +24,7 @@
 	return self;
 }
 
-- (id) initWithCoder:(NSCoder*)decoder {
-	if ((self = [super initWithCoder:decoder]) == nil) return nil;
-	[sortedKeys addObjectsFromArray:[(NSDictionary*)dictionary allKeys]];
-	return self;
-}
-
-// The -encodeWithCoder: inherited from CHLockableDictionary works fine here.
+// The NSCoding methods inherited from CHLockableDictionary work fine here.
 
 #pragma mark Adding Objects
 
