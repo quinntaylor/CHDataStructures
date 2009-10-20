@@ -75,11 +75,14 @@
  - CHOrderedDictionary
  - CHSortedDictionary
  
- The concrete subclasses of CHLockableObject (which don't have a protocol) include:
+ The concrete subclasses of NSMutableSet include:
+ - CHLockableSet
  - CHOrderedSet
+ 
+ The concrete subclasses of CHLockableObject (which don't have a protocol) include:
  - CHMultiDictionary
  
- The code is written for <a href="http://www.apple.com/macosx/">Mac OS X</a> and does use some features of <a href="http://developer.apple.com/documentation/Cocoa/Conceptual/ObjectiveC/">Objective-C 2.0</a> which shipped with Mac OS X 10.5 "Leopard". Most of the code could be  ported to other Objective-C environments (such as <a href="http://www.gnustep.org">GNUStep</a>) without too much trouble. However, such efforts would probably be better accomplished by forking this project rather than integrating with it, for several main reasons:
+ The code is written for <a href="http://www.apple.com/macosx/">Mac OS X</a> and does use some features of <a href="http://developer.apple.com/documentation/Cocoa/Conceptual/ObjectiveC/">Objective-C 2.0</a> which shipped with Mac OS X 10.5 "Leopard". Most of the code could be ported to other Objective-C environments (such as <a href="http://www.gnustep.org">GNUStep</a>) without too much trouble. However, such efforts would probably be better accomplished by forking this project rather than integrating with it, for several main reasons:
  
  <ol>
  <li>Supporting multiple environments increases code complexity, and consequently the effort required to test, maintain, and improve it.</li>
