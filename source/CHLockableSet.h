@@ -201,15 +201,6 @@
  */
 - (NSEnumerator*) objectEnumerator;
 
-/**
- Returns an (autoreleased) immutable copy of the underlying set.
- 
- @return An (autoreleased) immutable copy of the underlying set. The ordering of objects in the returned set is undefined.
- 
- @see allObjects
- */
-- (NSSet*) set;
-
 // @}
 #pragma mark Removing Objects
 /** @name Removing Objects */

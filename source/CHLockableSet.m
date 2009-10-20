@@ -89,6 +89,11 @@ static const CFSetCallBacks kCHLockableSetCallbacks = {
 	[super dealloc];
 }
 
+// Note: Defined here since -init is not implemented in NS(Mutable)Set.
+- (id) init {
+	return [self initWithCapacity:0]; // The 0 means we provide no capacity hint
+}
+
 // Note: This is the designated initializer for NSMutableSet and this class.
 // Subclasses may override this as necessary, but must call back here first.
 - (id) initWithCapacity:(NSUInteger)numItems {
@@ -162,10 +167,6 @@ static const CFSetCallBacks kCHLockableSetCallbacks = {
 
 - (NSEnumerator*) objectEnumerator {
 	return [(id)set objectEnumerator];
-}
-
-- (NSSet*) set {
-	return [[(id)set copy] autorelease];
 }
 
 #pragma mark Removing Objects
