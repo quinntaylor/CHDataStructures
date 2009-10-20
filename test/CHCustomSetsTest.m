@@ -111,6 +111,12 @@
 	STAssertFalse([set containsObject:@"Z"], @"Should not contain object.");
 }
 
+- (void) testDebugDescription {
+	STAssertNotNil([set debugDescription], @"Description was nil.");
+	[set addObjectsFromArray:[self randomNumbers]];
+	STAssertNotNil([set debugDescription], @"Description was nil.");
+}
+
 - (void) testHash {
 	NSArray *abc = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
 	[set addObjectsFromArray:abc];

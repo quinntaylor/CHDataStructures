@@ -14,6 +14,14 @@
 #import "CHOrderedDictionary.h"
 #import "CHSortedDictionary.h"
 
+@interface CHLockableDictionary (Test)
+
+- (NSString*) debugDescription; // Declare here to prevent compiler warnings.
+
+@end
+
+#pragma mark -
+
 @interface CHCustomDictionariesTest : SenTestCase {
 	id dictionary;
 	NSArray *keyArray;
@@ -67,6 +75,12 @@
 	[dictionary setObject:@"bar" forKey:@"foo"];
 	STAssertEqualObjects([dictionary objectForKey:@"foo"], @"bar",
 						 @"Wrong object for key.");
+}
+
+- (void) testDebugDescription {
+	STAssertNotNil([dictionary debugDescription], @"Description was nil.");
+	[dictionary setObject:@"xyz" forKey:@"abc"];
+	STAssertNotNil([dictionary debugDescription], @"Description was nil.");
 }
 
 - (void) testDescription {

@@ -21,7 +21,7 @@ void CHLockableDictionaryRelease(CFAllocatorRef allocator, const void *value) {
 }
 
 CFStringRef CHLockableDictionaryDescription(const void *value) {
-	return (CFStringRef)[(id)value description];
+	return (CFStringRef)[[(id)value description] retain];
 }
 
 Boolean CHLockableDictionaryEqual(const void *value1, const void *value2) {
@@ -162,6 +162,10 @@ static const CFDictionaryValueCallBacks kCHLockableDictionaryValueCallBacks = {
 
 - (NSUInteger) count {
 	return CFDictionaryGetCount(dictionary);
+}
+
+- (NSString*) debugDescription {
+	return [NSMakeCollectable(CFCopyDescription(dictionary)) autorelease];
 }
 
 - (NSEnumerator*) keyEnumerator {

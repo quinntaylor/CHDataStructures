@@ -19,7 +19,7 @@ void CHLockableSetRelease(CFAllocatorRef allocator, const void *value) {
 }
 
 CFStringRef CHLockableSetCopyDescription(const void *value) {
-	return (CFStringRef)[(id)value description];
+	return (CFStringRef)[[(id)value description] retain];
 }
 
 Boolean CHLockableSetEqual(const void *value1, const void *value2) {
@@ -155,6 +155,10 @@ static const CFSetCallBacks kCHLockableSetCallbacks = {
 
 - (NSUInteger) count {
 	return CFSetGetCount(set);
+}
+
+- (NSString*) debugDescription {
+	return [NSMakeCollectable(CFCopyDescription(set)) autorelease];
 }
 
 - (NSString*) description {
