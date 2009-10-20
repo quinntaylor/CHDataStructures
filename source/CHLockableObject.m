@@ -17,9 +17,9 @@
 	@synchronized (self) {
 		if (lock == nil) {
 			lock = [[NSLock alloc] init];
-#if MAC_OS_X_VERSION_10_5_AND_LATER
-			[lock setName:[NSString stringWithFormat:@"NSLock-%@-0x%x", [self class], self]];
-#endif
+			if ([lock respondsToSelector:@selector(setName:)])
+				[lock performSelector:@selector(setName:)
+				           withObject:[NSString stringWithFormat:@"NSLock-%@-0x%x", [self class], self]];
 		}
 	}
 }

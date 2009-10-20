@@ -11,6 +11,7 @@
 #import <SenTestingKit/SenTestingKit.h>
 #import "CHLockableDictionary.h"
 #import "CHLockableObject.h"
+#import "CHLockableSet.h"
 
 @interface CHLockableDictionary (Test)
 - (id<NSLocking>) theLock;
@@ -36,6 +37,18 @@
 
 #pragma mark -
 
+@interface CHLockableSet (Test)
+- (id<NSLocking>) theLock;
+@end
+
+@implementation CHLockableSet (Test)
+- (id<NSLocking>) theLock {
+	return lock;
+}
+@end
+
+#pragma mark -
+
 @interface CHLockableTest : SenTestCase {
 	id lockable;
 	NSArray* lockableClasses;
@@ -50,6 +63,7 @@
 - (void) setUp {
 	lockableClasses = [NSArray arrayWithObjects:[CHLockableDictionary class],
 	                                            [CHLockableObject class],
+	                                            [CHLockableSet class],
 											    nil];
 }
 
