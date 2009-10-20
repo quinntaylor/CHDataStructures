@@ -55,6 +55,8 @@
 		E400CAC30F791A08003189D3 /* CHCircularBufferDeque.h in Headers */ = {isa = PBXBuildFile; fileRef = E400CAC10F791A08003189D3 /* CHCircularBufferDeque.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E400CAC40F791A08003189D3 /* CHCircularBufferDeque.m in Sources */ = {isa = PBXBuildFile; fileRef = E400CAC20F791A08003189D3 /* CHCircularBufferDeque.m */; };
 		E400FCF40EBE15F300AC172B /* CHAVLTreeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E400FCF30EBE15F300AC172B /* CHAVLTreeTest.m */; };
+		E40C4D02108D7A6A00A63A23 /* CHLockableSet.h in Headers */ = {isa = PBXBuildFile; fileRef = E40C4D00108D7A6A00A63A23 /* CHLockableSet.h */; };
+		E40C4D03108D7A6A00A63A23 /* CHLockableSet.m in Sources */ = {isa = PBXBuildFile; fileRef = E40C4D01108D7A6A00A63A23 /* CHLockableSet.m */; };
 		E40D18060E94519F007F39D8 /* CHAnderssonTreeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D18050E94519F007F39D8 /* CHAnderssonTreeTest.m */; };
 		E40D18270E9452BB007F39D8 /* CHRedBlackTreeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D181C0E9452BB007F39D8 /* CHRedBlackTreeTest.m */; };
 		E40D18290E9452BB007F39D8 /* CHUnbalancedTreeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D181E0E9452BB007F39D8 /* CHUnbalancedTreeTest.m */; };
@@ -236,6 +238,8 @@
 		E400CAC10F791A08003189D3 /* CHCircularBufferDeque.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHCircularBufferDeque.h; path = source/CHCircularBufferDeque.h; sourceTree = "<group>"; };
 		E400CAC20F791A08003189D3 /* CHCircularBufferDeque.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHCircularBufferDeque.m; path = source/CHCircularBufferDeque.m; sourceTree = "<group>"; };
 		E400FCF30EBE15F300AC172B /* CHAVLTreeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHAVLTreeTest.m; path = test/CHAVLTreeTest.m; sourceTree = "<group>"; };
+		E40C4D00108D7A6A00A63A23 /* CHLockableSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHLockableSet.h; path = source/CHLockableSet.h; sourceTree = "<group>"; };
+		E40C4D01108D7A6A00A63A23 /* CHLockableSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHLockableSet.m; path = source/CHLockableSet.m; sourceTree = "<group>"; };
 		E40D18050E94519F007F39D8 /* CHAnderssonTreeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHAnderssonTreeTest.m; path = test/CHAnderssonTreeTest.m; sourceTree = "<group>"; };
 		E40D181C0E9452BB007F39D8 /* CHRedBlackTreeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHRedBlackTreeTest.m; path = test/CHRedBlackTreeTest.m; sourceTree = "<group>"; };
 		E40D181E0E9452BB007F39D8 /* CHUnbalancedTreeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHUnbalancedTreeTest.m; path = test/CHUnbalancedTreeTest.m; sourceTree = "<group>"; };
@@ -462,6 +466,8 @@
 				E41035270EC409B900C2CFB9 /* CHTreap.m */,
 				E4ADBB220E88174200B570BC /* CHUnbalancedTree.h */,
 				E4ADBB230E88174200B570BC /* CHUnbalancedTree.m */,
+				E40C4D00108D7A6A00A63A23 /* CHLockableSet.h */,
+				E40C4D01108D7A6A00A63A23 /* CHLockableSet.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -587,6 +593,7 @@
 				E4558D910FE758C300CC5860 /* CHLockableDictionary.h in Headers */,
 				E4558DB00FE7598700CC5860 /* CHOrderedDictionary.h in Headers */,
 				E4558DB60FE7599500CC5860 /* CHSortedDictionary.h in Headers */,
+				E40C4D02108D7A6A00A63A23 /* CHLockableSet.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -801,6 +808,7 @@
 				E4558D920FE758C300CC5860 /* CHLockableDictionary.m in Sources */,
 				E4558DB10FE7598700CC5860 /* CHOrderedDictionary.m in Sources */,
 				E4558DB70FE7599500CC5860 /* CHSortedDictionary.m in Sources */,
+				E40C4D03108D7A6A00A63A23 /* CHLockableSet.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -989,6 +997,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_GC = supported;
 				GCC_ENABLE_SYMBOL_SEPARATION = NO;

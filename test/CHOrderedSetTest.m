@@ -83,7 +83,7 @@
 }
 
 - (void) testAddObjectsFromArray {
-	STAssertThrows([set addObjectsFromArray:nil], @"Should raise exception");
+	STAssertNoThrow([set addObjectsFromArray:nil], @"Should not raise exception");
 	
 	NSArray *abc = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
 	[set addObjectsFromArray:abc];
@@ -186,27 +186,6 @@
 	NSArray *array = [self randomNumbers];
 	[set addObjectsFromArray:array];
 	STAssertEqualObjects([set description], [array description],
-						 @"Wrong description.");
-}
-
-- (void) testDebugDescription {
-	NSString *debugDescription;
-	
-	NSArray *myArray = [NSArray array];
-	NSSet *mySet = [NSSet set];
-	
-	debugDescription = [NSString stringWithFormat:@"objects = %@,\nordering = %@", [mySet description], [myArray description]];
-	
-	STAssertEqualObjects([set debugDescription], debugDescription,
-						 @"Wrong description.");
-
-	myArray = [NSArray arrayWithObjects:@"B",@"C",@"A",nil];
-	mySet = [NSSet setWithArray:myArray];
-	[set addObjectsFromArray:myArray];
-	
-	debugDescription = [NSString stringWithFormat:@"objects = %@,\nordering = %@", [mySet description], [myArray description]];
-	
-	STAssertEqualObjects([set debugDescription], debugDescription,
 						 @"Wrong description.");
 }
 
@@ -418,13 +397,13 @@
 	[set addObject:@"B"];
 	[set addObject:@"C"];
 	
-	STAssertEqualObjects([set lastObject], @"C", @"Wrong first object.");
+	STAssertEqualObjects([set lastObject], @"C", @"Wrong last object.");
 	[set removeLastObject];
-	STAssertEqualObjects([set lastObject], @"B", @"Wrong first object.");
+	STAssertEqualObjects([set lastObject], @"B", @"Wrong last object.");
 	[set removeLastObject];
-	STAssertEqualObjects([set lastObject], @"A", @"Wrong first object.");
+	STAssertEqualObjects([set lastObject], @"A", @"Wrong last object.");
 	[set removeLastObject];
-	STAssertNil([set lastObject], @"Wrong first object.");
+	STAssertNil([set lastObject], @"Wrong last object.");
 }
 
 - (void) testRemoveObject {
@@ -457,7 +436,7 @@
 	[set addObjectsFromArray:array];
 	STAssertEquals([set count], [array count], @"Incorrect count.");
 	STAssertEqualObjects([set allObjects], array, @"Wrong ordering before archiving.");
-	NSString *filePath = @"/tmp/CHDataStructures-linked-set.plist";
+	NSString *filePath = @"/tmp/CHDataStructures-ordered-set.plist";
 	[NSKeyedArchiver archiveRootObject:set toFile:filePath];
 
 	CHOrderedSet *set2 = [[NSKeyedUnarchiver unarchiveObjectWithFile:filePath] retain];
