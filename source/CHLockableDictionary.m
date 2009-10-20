@@ -58,9 +58,9 @@ static const CFDictionaryValueCallBacks kCHLockableDictionaryValueCallBacks = {
 	@synchronized (self) {
 		if (lock == nil) {
 			lock = [[NSLock alloc] init];
-#if MAC_OS_X_VERSION_10_5_AND_LATER
-			[lock setName:[NSString stringWithFormat:@"NSLock-%@-0x%x", [self class], self]];
-#endif
+			if ([lock respondsToSelector:@selector(setName:)])
+				[lock performSelector:@selector(setName:)
+				           withObject:[NSString stringWithFormat:@"NSLock-%@-0x%x", [self class], self]];
 		}
 	}
 }
@@ -118,7 +118,7 @@ static const CFDictionaryValueCallBacks kCHLockableDictionaryValueCallBacks = {
 
 #pragma mark <NSCoding>
 
-// Overridden from NSObject to encode/decode as the proper class.
+// Overridden from NSMutableDictionary to encode/decode as the proper class.
 - (Class) classForKeyedArchiver {
 	return [self class];
 }
@@ -137,11 +137,7 @@ static const CFDictionaryValueCallBacks kCHLockableDictionaryValueCallBacks = {
 	// We could use -initWithDictionary: here, but it would just use more memory.
 	// (It marshals key-value pairs into two id* arrays, then inits from those.)
 	CHLockableDictionary *copy = [[[self class] allocWithZone:zone] init];
-	NSEnumerator *keys = [self keyEnumerator];
-	id aKey;
-	while (aKey = [keys nextObject]) {
-		[copy setObject:[self objectForKey:aKey] forKey:aKey];
-	}
+	[copy addEntriesFromDictionary:self];
 	return copy;
 }
 
