@@ -11,8 +11,7 @@
 #import <SenTestingKit/SenTestingKit.h>
 #import "Util.h"
 
-@interface UtilTest : SenTestCase
-{
+@interface UtilTest : SenTestCase {
 	Class aClass;
 	SEL aMethod;
 	NSMutableString *reason;
@@ -28,6 +27,37 @@
 	aMethod = @selector(foo:bar:);
 	reason = [NSMutableString stringWithString:@"[NSObject foo:bar:] -- "];
 	raisedException = NO;
+}
+
+- (void) testCollectionsAreEqual {
+	NSArray *array = [NSArray arrayWithObjects:@"A", @"B", @"C", nil];
+	NSDictionary *dict = [NSDictionary dictionaryWithObjects:array forKeys:array];
+	NSSet *set = [NSSet setWithObjects:@"A", @"B", @"C", nil];
+	
+	STAssertTrue(collectionsAreEqual(nil, nil),     @"Should be equal.");
+	
+	STAssertTrue(collectionsAreEqual(array, array), @"Should be equal.");
+	STAssertTrue(collectionsAreEqual(dict, dict),   @"Should be equal.");
+	STAssertTrue(collectionsAreEqual(set, set),     @"Should be equal.");
+
+	STAssertTrue(collectionsAreEqual(array, [array copy]), @"Should be equal.");
+	STAssertTrue(collectionsAreEqual(dict,  [dict copy]),  @"Should be equal.");
+	STAssertTrue(collectionsAreEqual(set,   [set copy]),   @"Should be equal.");
+	
+	STAssertFalse(collectionsAreEqual(array, nil),  @"Should not be equal.");
+	STAssertFalse(collectionsAreEqual(dict,  nil),  @"Should not be equal.");
+	STAssertFalse(collectionsAreEqual(set,   nil),  @"Should not be equal.");
+
+	id obj = [NSString string];
+	STAssertThrowsSpecificNamed(collectionsAreEqual(array, obj),
+	                            NSException, NSInvalidArgumentException,
+	                            @"Should raise NSInvalidArgumentException");
+	STAssertThrowsSpecificNamed(collectionsAreEqual(dict, obj),
+	                            NSException, NSInvalidArgumentException,
+	                            @"Should raise NSInvalidArgumentException");
+	STAssertThrowsSpecificNamed(collectionsAreEqual(set, obj),
+	                            NSException, NSInvalidArgumentException,
+	                            @"Should raise NSInvalidArgumentException");
 }
 
 - (void) testIndexOutOfRangeException {

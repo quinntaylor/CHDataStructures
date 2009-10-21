@@ -168,7 +168,7 @@ OBJC_EXPORT void CHQuietLog(NSString *format, ...);
  
  @throw Exception If one of both of the arguments do not respond to the @c -count or @c -objectEnumerator selectors.
  */
-HIDDEN OBJC_EXPORT BOOL collectionsAreEqual(id collection1, id collection2);
+OBJC_EXPORT BOOL collectionsAreEqual(id collection1, id collection2);
 
 /**
  Generate a hash for a collection based on the count and up to two objects. If objects are provided, the result of their -hash method will be used.

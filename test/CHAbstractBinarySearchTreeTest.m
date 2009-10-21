@@ -243,7 +243,9 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 		STAssertEquals([tree1 hash], [zigzagTree hash],  @"Hashes should match.");
 	}
 	STAssertFalse([tree1 isEqualToSearchTree:[NSArray array]], @"Should not be equal.");
-	STAssertThrows([tree1 isEqualToSearchTree:[NSString string]], @"Should raise exception.");
+	STAssertThrowsSpecificNamed([tree1 isEqualToSearchTree:[NSString string]],
+	                            NSException, NSInvalidArgumentException,
+	                            @"Should raise NSInvalidArgumentException");
 }
 
 #pragma mark -

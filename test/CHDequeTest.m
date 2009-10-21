@@ -110,7 +110,9 @@
 	id<CHDeque> deque1, deque2;
 	for (NSUInteger i = 0; i < [dequeClasses count]; i++) {
 		deque1 = [equalDeques objectAtIndex:i];
-		STAssertThrows([deque1 isEqualToDeque:[NSString string]], @"Should raise exception.");
+		STAssertThrowsSpecificNamed([deque1 isEqualToDeque:[NSString string]],
+		                            NSException, NSInvalidArgumentException,
+		                            @"Should raise NSInvalidArgumentException");
 		STAssertFalse([deque1 isEqual:[NSString string]], @"Should not be equal.");
 		STAssertTrue([deque1 isEqual:deque1], @"Should be equal to itself.");
 		deque2 = [equalDeques objectAtIndex:i+1];

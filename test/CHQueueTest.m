@@ -62,7 +62,9 @@
 	id<CHQueue> queue1, queue2;
 	for (NSUInteger i = 0; i < [queueClasses count]; i++) {
 		queue1 = [equalQueues objectAtIndex:i];
-		STAssertThrows([queue1 isEqualToQueue:[NSString string]], @"Should raise exception.");
+		STAssertThrowsSpecificNamed([queue1 isEqualToQueue:[NSString string]],
+		                            NSException, NSInvalidArgumentException,
+		                            @"Should raise NSInvalidArgumentException");
 		STAssertFalse([queue1 isEqual:[NSString string]], @"Should not be equal.");
 		STAssertTrue([queue1 isEqual:queue1], @"Should be equal to itself.");
 		queue2 = [equalQueues objectAtIndex:i+1];

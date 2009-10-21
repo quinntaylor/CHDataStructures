@@ -78,6 +78,14 @@ void CHQuietLog(NSString *format, ...) {
 #pragma mark -
 
 BOOL collectionsAreEqual(id collection1, id collection2) {
+	if ((collection1 && ![collection1 respondsToSelector:@selector(count)]) ||
+		(collection2 && ![collection2 respondsToSelector:@selector(count)]))
+	{
+		[NSException raise:NSInvalidArgumentException
+		            format:@"Parameter does not respond to -count selector."];
+	}
+	if (collection1 == collection2)
+		return YES;
 	if ([collection1 count] != [collection2 count])
 		return NO;
 	NSEnumerator *otherObjects = [collection2 objectEnumerator];

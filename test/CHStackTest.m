@@ -82,7 +82,9 @@
 	id<CHStack> stack1, stack2;
 	for (NSUInteger i = 0; i < [stackClasses count]; i++) {
 		stack1 = [equalStacks objectAtIndex:i];
-		STAssertThrows([stack1 isEqualToStack:[NSString string]], @"Should raise exception.");
+		STAssertThrowsSpecificNamed([stack1 isEqualToStack:[NSString string]],
+		                            NSException, NSInvalidArgumentException,
+		                            @"Should raise NSInvalidArgumentException");
 		STAssertFalse([stack1 isEqual:[NSString string]], @"Should not be equal.");
 		STAssertTrue([stack1 isEqual:stack1], @"Should be equal to itself.");
 		stack2 = [equalStacks objectAtIndex:i+1];

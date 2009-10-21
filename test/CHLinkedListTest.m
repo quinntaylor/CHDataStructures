@@ -413,7 +413,9 @@
 	id<CHLinkedList> list1, list2;
 	for (NSUInteger i = 0; i < [linkedListClasses count]; i++) {
 		list1 = [equalLinkedLists objectAtIndex:i];
-		STAssertThrows([list1 isEqualToLinkedList:[NSString string]], @"Should raise exception.");
+		STAssertThrowsSpecificNamed([list1 isEqualToLinkedList:[NSString string]],
+		                            NSException, NSInvalidArgumentException,
+		                            @"Should raise NSInvalidArgumentException");
 		STAssertFalse([list1 isEqual:[NSString string]], @"Should not be equal.");
 		STAssertTrue([list1 isEqual:list1], @"Should be equal to itself.");
 		list2 = [emptyLinkedLists objectAtIndex:i];
