@@ -1,5 +1,5 @@
 /*
- CHDataStructures.framework -- CHOrderedSetTest.m
+ CHDataStructures.framework -- CHCustomSetsTest.m
  
  Copyright (c) 2009, Quinn Taylor <http://homepage.mac.com/quinntaylor>
  
@@ -20,7 +20,7 @@
 
 #pragma mark -
 
-@interface CHCustomSetsTest : SenTestCase {
+@interface CHLockableSetTest : SenTestCase {
 	id set;
 	NSEnumerator *e;
 	id anObject;
@@ -33,7 +33,7 @@
 @end
 
 
-@implementation CHCustomSetsTest
+@implementation CHLockableSetTest
 
 - (void) setUp {
 	set = [[CHLockableSet alloc] init];
@@ -310,7 +310,7 @@
 
 #pragma mark -
 
-@interface CHOrderedSetTest : CHCustomSetsTest
+@interface CHOrderedSetTest : CHLockableSetTest
 
 @end
 

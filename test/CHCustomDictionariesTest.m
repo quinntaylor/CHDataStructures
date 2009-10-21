@@ -22,7 +22,7 @@
 
 #pragma mark -
 
-@interface CHCustomDictionariesTest : SenTestCase {
+@interface CHLockableDictionaryTest : SenTestCase {
 	id dictionary;
 	NSArray *keyArray;
 	NSArray *expectedKeyOrder;
@@ -30,7 +30,7 @@
 }
 @end
 
-@implementation CHCustomDictionariesTest
+@implementation CHLockableDictionaryTest
 
 - (void) setUp {
 	dictionary = [[[CHLockableDictionary alloc] init] autorelease];
@@ -179,8 +179,13 @@
 	
 	dictionary = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
 	[self verifyKeyCountAndOrdering];
-	STAssertEqualObjects([dictionary allKeys], [oldDictionary allKeys],
-						 @"Wrong key ordering on reconstruction.");
+	if ([dictionary isMemberOfClass:[CHLockableDictionary class]])
+		STAssertTrue([[NSSet setWithArray:[dictionary allKeys]] isEqualToSet:
+		              [NSSet setWithArray:[oldDictionary allKeys]]],
+		             @"Wrong keys on reconstruction.");
+	else
+		STAssertEqualObjects([dictionary allKeys], [oldDictionary allKeys],
+		                     @"Wrong key ordering on reconstruction.");
 	
 #if MAC_OS_X_VERSION_10_5_AND_LATER
 	[[NSFileManager defaultManager] removeItemAtPath:filePath error:NULL];
@@ -208,7 +213,7 @@
 
 #pragma mark -
 
-@interface CHSortedDictionaryTest : CHCustomDictionariesTest
+@interface CHSortedDictionaryTest : CHLockableDictionaryTest
 @end
 
 @implementation CHSortedDictionaryTest
@@ -245,7 +250,7 @@
 
 #pragma mark -
 
-@interface CHOrderedDictionaryTest : CHCustomDictionariesTest
+@interface CHOrderedDictionaryTest : CHLockableDictionaryTest
 @end
 
 @implementation CHOrderedDictionaryTest
