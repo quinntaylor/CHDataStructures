@@ -171,13 +171,7 @@ static const CFDictionaryValueCallBacks kCHLockableDictionaryValueCallBacks = {
 }
 
 - (NSEnumerator*) keyEnumerator {
-	NSUInteger count = CFDictionaryGetCount(dictionary);
-	id *keyBuffer = NSAllocateCollectable(count * sizeof(void*), 0);
-	CFDictionaryGetKeysAndValues(dictionary, (const void **)keyBuffer, NULL);
-	NSArray *keys = [NSArray arrayWithObjects:keyBuffer count:count];
-	if (kCHGarbageCollectionNotEnabled)
-		free(keyBuffer);
-	return [keys objectEnumerator];
+	return [(id)dictionary keyEnumerator];
 }
 
 - (id) objectForKey:(id)aKey {
