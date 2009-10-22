@@ -44,11 +44,13 @@
 	if (anObject == nil || aKey == nil)
 		CHNilArgumentException([self class], _cmd);
 	
+	[self willChangeValueForKey:aKey];
 	id clonedKey = [[aKey copy] autorelease];
 	if (!CFDictionaryContainsKey(dictionary, clonedKey)) {
 		[keyOrdering insertObject:clonedKey atIndex:index];
 	}
 	CFDictionarySetValue(dictionary, clonedKey, anObject);
+	[self didChangeValueForKey:aKey];
 }
 
 - (void) setObject:(id)anObject forKey:(id)aKey {
@@ -108,20 +110,20 @@
 #pragma mark Removing Objects
 
 - (void) removeAllObjects {
+	[super removeAllObjects]; // Sends KVO notifications
 	[keyOrdering removeAllObjects];
-	[super removeAllObjects];
 }
 
 - (void) removeObjectForKey:(id)aKey {
 	if (CFDictionaryContainsKey(dictionary, aKey)) {
-		CFDictionaryRemoveValue(dictionary, aKey);
+		[super removeObjectForKey:aKey]; // Sends KVO notifications
 		[keyOrdering removeObject:aKey];
 	}
 }
 
 - (void) removeObjectForKeyAtIndex:(NSUInteger)index {
 	// Note: -keyAtIndex: will raise an exception if the index is invalid.
-	CFDictionaryRemoveValue(dictionary, [self keyAtIndex:index]);
+	[super removeObjectForKey:[self keyAtIndex:index]]; // Sends KVO notifications
 	[keyOrdering removeObjectAtIndex:index];
 }
 

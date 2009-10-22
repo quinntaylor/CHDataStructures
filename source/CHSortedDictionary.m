@@ -29,9 +29,11 @@
 #pragma mark Adding Objects
 
 - (void) setObject:(id)anObject forKey:(id)aKey {
+	[self willChangeValueForKey:aKey];
 	id clonedKey = [[aKey copy] autorelease];
 	[sortedKeys addObject:clonedKey];
 	CFDictionarySetValue(dictionary, clonedKey, anObject);
+	[self didChangeValueForKey:aKey];
 }
 
 #pragma mark Querying Contents
@@ -87,14 +89,14 @@
 #pragma mark Removing Objects
 
 - (void) removeAllObjects {
+	[super removeAllObjects]; // Sends KVO notifications
 	[sortedKeys removeAllObjects];
-	[super removeAllObjects];
 }
 
 - (void) removeObjectForKey:(id)aKey {
 	if (CFDictionaryContainsKey(dictionary, aKey)) {
+		[super removeObjectForKey:aKey]; // Sends KVO notifications
 		[sortedKeys removeObject:aKey];
-		CFDictionaryRemoveValue(dictionary, aKey);
 	}
 }
 
