@@ -29,11 +29,9 @@
 #pragma mark Adding Objects
 
 - (void) setObject:(id)anObject forKey:(id)aKey {
-	if (!CFDictionaryContainsKey(dictionary, aKey)) {
-		id clonedKey = [[aKey copy] autorelease];
-		[sortedKeys addObject:clonedKey];
-		CFDictionarySetValue(dictionary, clonedKey, anObject);
-	}
+	id clonedKey = [[aKey copy] autorelease];
+	[sortedKeys addObject:clonedKey];
+	CFDictionarySetValue(dictionary, clonedKey, anObject);
 }
 
 #pragma mark Querying Contents

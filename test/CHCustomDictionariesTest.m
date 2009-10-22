@@ -75,6 +75,18 @@
 	[dictionary setObject:@"bar" forKey:@"foo"];
 	STAssertEqualObjects([dictionary objectForKey:@"foo"], @"bar",
 						 @"Wrong object for key.");
+
+	// Verify that setting a different value for a key "takes" the new value
+	[dictionary removeAllObjects];
+	[self populateDictionary];
+	id key = [keyArray lastObject];
+	NSString *value = [dictionary objectForKey:key];
+	
+	[dictionary setObject:value forKey:key];
+	STAssertTrue([value isEqual:[dictionary objectForKey:key]], @"Should be equal.");
+	
+	[dictionary setObject:[NSString string] forKey:key];
+	STAssertFalse([value isEqual:[dictionary objectForKey:key]], @"Should not be equal.");
 }
 
 - (void) testDebugDescription {
