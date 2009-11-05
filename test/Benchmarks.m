@@ -668,7 +668,7 @@ int main (int argc, const char * argv[]) {
 				printf(" %s", class_getName(aClass));
 				tree = [[aClass alloc] init];
 				dictionary = [treeResults objectForKey:NSStringFromClass(aClass)];
-				jitteredSize = size + (size * .1 * jitterOffset++);
+				jitteredSize = size + ((size / 10) * jitterOffset++);
 				
 				// addObject:
 				nanosleep(&sleepDelay, &sleepRemain);

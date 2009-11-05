@@ -226,7 +226,7 @@
 #if MAC_OS_X_VERSION_10_5_AND_LATER
 - (void) testNSFastEnumeration {
 	NSUInteger limit = 32;
-	for (NSInteger number = 1; number <= limit; number++)
+	for (NSUInteger number = 1; number <= limit; number++)
 		[stack pushObject:[NSNumber numberWithUnsignedInteger:number]];
 	NSUInteger expected = limit, count = 0;
 	for (NSNumber *object in stack) {
