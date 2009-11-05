@@ -44,20 +44,13 @@
 			[list appendObject:anObject];
 		STAssertEquals([list count], [abc count], @"Incorrect count.");
 		
-		NSString *filePath = @"/tmp/CHDataStructures-list.plist";
-		[NSKeyedArchiver archiveRootObject:list toFile:filePath];
+		NSData *data = [NSKeyedArchiver archivedDataWithRootObject:list];
 		[list release];
+		list = [NSKeyedUnarchiver unarchiveObjectWithData:data];
 		
-		list = [[NSKeyedUnarchiver unarchiveObjectWithFile:filePath] retain];
 		STAssertEquals([list count], [abc count], @"Incorrect count.");
 		STAssertEqualObjects([list allObjects], abc,
 							 @"Wrong ordering on reconstruction.");
-#if MAC_OS_X_VERSION_10_5_AND_LATER
-		[[NSFileManager defaultManager] removeItemAtPath:filePath error:NULL];
-#else
-		[[NSFileManager defaultManager] removeFileAtPath:filePath handler:nil];
-#endif
-		[list release];
 	}
 }
 

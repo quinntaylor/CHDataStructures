@@ -269,18 +269,12 @@
 	[set addObjectsFromArray:array];
 	STAssertEquals([set count], [array count], @"Incorrect count.");
 	[self checkEqualityWithArray:array];
-	NSString *filePath = @"/tmp/CHDataStructures-ordered-set.plist";
-	[NSKeyedArchiver archiveRootObject:set toFile:filePath];
 	
-	CHOrderedSet *set2 = [[NSKeyedUnarchiver unarchiveObjectWithFile:filePath] retain];
+	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:set];
+	CHOrderedSet *set2 = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+	
 	STAssertEquals([set2 count], [set count], @"Incorrect count on reconstruction.");
 	[self checkEqualityWithArray:[set2 allObjects]];
-#if MAC_OS_X_VERSION_10_5_AND_LATER
-	[[NSFileManager defaultManager] removeItemAtPath:filePath error:NULL];
-#else
-	[[NSFileManager defaultManager] removeFileAtPath:filePath handler:nil];
-#endif
-	[set2 release];	
 }
 
 - (void) testNSCopying {

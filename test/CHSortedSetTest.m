@@ -435,11 +435,10 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 		else
 			before = [sortedSet allObjects];
 		
-		NSString *filePath = @"/tmp/CHDataStructures-sortedSet.plist";
-		[NSKeyedArchiver archiveRootObject:sortedSet toFile:filePath];
+		NSData *data = [NSKeyedArchiver archivedDataWithRootObject:sortedSet];
 		[sortedSet release];
+		sortedSet = [NSKeyedUnarchiver unarchiveObjectWithData:data];
 		
-		sortedSet = [[NSKeyedUnarchiver unarchiveObjectWithFile:filePath] retain];
 		STAssertEquals([sortedSet count], [objects count], @"Incorrect count.");
 		if ([sortedSet conformsToProtocol:@protocol(CHSortedSet)])
 			after = [sortedSet allObjectsWithTraversalOrder:CHTraverseLevelOrder];
@@ -448,12 +447,6 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 		if (aClass != [CHTreap class])
 			STAssertEqualObjects(before, after,
 								 badOrder(@"Bad order after decode", after, before));
-		[sortedSet release];
-#if MAC_OS_X_VERSION_10_5_AND_LATER
-		[[NSFileManager defaultManager] removeItemAtPath:filePath error:NULL];
-#else
-		[[NSFileManager defaultManager] removeFileAtPath:filePath handler:nil];
-#endif
 	}	
 }
 

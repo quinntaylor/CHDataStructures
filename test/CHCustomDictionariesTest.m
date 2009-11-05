@@ -185,11 +185,10 @@
 	[self populateDictionary];
 	[self verifyKeyCountAndOrdering];
 	
-	NSString *filePath = @"/tmp/CHDataStructures-dictionary.plist";
-	[NSKeyedArchiver archiveRootObject:dictionary toFile:filePath];
+	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:dictionary];
 	id oldDictionary = dictionary;
+	dictionary = [NSKeyedUnarchiver unarchiveObjectWithData:data];
 	
-	dictionary = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
 	[self verifyKeyCountAndOrdering];
 	if ([dictionary isMemberOfClass:[CHLockableDictionary class]])
 		STAssertTrue([[NSSet setWithArray:[dictionary allKeys]] isEqualToSet:
@@ -198,12 +197,6 @@
 	else
 		STAssertEqualObjects([dictionary allKeys], [oldDictionary allKeys],
 		                     @"Wrong key ordering on reconstruction.");
-	
-#if MAC_OS_X_VERSION_10_5_AND_LATER
-	[[NSFileManager defaultManager] removeItemAtPath:filePath error:NULL];
-#else
-	[[NSFileManager defaultManager] removeFileAtPath:filePath handler:nil];
-#endif
 }
 
 - (void) testNSCopying {

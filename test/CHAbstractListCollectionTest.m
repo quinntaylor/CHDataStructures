@@ -71,19 +71,13 @@
 	NSArray *order = [collection allObjects];
 	STAssertEqualObjects(order, objects, @"Wrong ordering before archiving.");
 	
-	NSString *filePath = @"/tmp/CHDataStructures-list-collection.plist";
-	[NSKeyedArchiver archiveRootObject:collection toFile:filePath];
+	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:collection];
 	[collection release];
+	collection = [[NSKeyedUnarchiver unarchiveObjectWithData:data] retain];
 	
-	collection = [[NSKeyedUnarchiver unarchiveObjectWithFile:filePath] retain];
 	STAssertEquals([collection count], [objects count], @"Incorrect count.");
 	order = [collection allObjects];
 	STAssertEqualObjects(order, objects, @"Wrong ordering on reconstruction.");
-#if MAC_OS_X_VERSION_10_5_AND_LATER
-	[[NSFileManager defaultManager] removeItemAtPath:filePath error:NULL];
-#else
-	[[NSFileManager defaultManager] removeFileAtPath:filePath handler:nil];
-#endif
 }
 
 - (void) testNSCopying {

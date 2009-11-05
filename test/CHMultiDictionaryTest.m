@@ -42,12 +42,10 @@ void populateMultimap(CHMultiDictionary* multimap) {
 - (void) testNSCoding {
 	populateMultimap(multimap);
 	
-	NSString *filePath = @"/tmp/CHDataStructures-multimap.plist";
-	[NSKeyedArchiver archiveRootObject:multimap toFile:filePath];
+	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:multimap];
+	CHMultiDictionary *multimap2 = [NSKeyedUnarchiver unarchiveObjectWithData:data];
 	
-	CHMultiDictionary *multimap2 = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
 	STAssertEquals([multimap2 count], [multimap count], @"Incorrect key count.");
-	
 	NSEnumerator *keys1 = [multimap keyEnumerator];
 	NSEnumerator *keys2 = [multimap2 keyEnumerator];
 	id key1, key2;
@@ -56,11 +54,6 @@ void populateMultimap(CHMultiDictionary* multimap) {
 		STAssertEqualObjects([multimap objectsForKey:key1],
 							 [multimap2 objectsForKey:key2], @"Values are not equal.");
 	}
-#if MAC_OS_X_VERSION_10_5_AND_LATER
-	[[NSFileManager defaultManager] removeItemAtPath:filePath error:NULL];
-#else
-	[[NSFileManager defaultManager] removeFileAtPath:filePath handler:nil];
-#endif
 }
 
 - (void) testNSCopying {
