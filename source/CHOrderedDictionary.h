@@ -11,6 +11,12 @@
 #import "CHLockableDictionary.h"
 
 /**
+ @file CHOrderedDictionary.h
+ 
+ A dictionary which enumerates keys in the order in which they are inserted.
+ */
+
+/**
  A dictionary which enumerates keys in the order in which they are inserted. The following additional operations are provided to take advantage of the ordering:
    - \link #firstKey -firstKey\endlink
    - \link #lastKey -lastKey\endlink

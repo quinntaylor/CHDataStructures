@@ -12,6 +12,12 @@
 #import "CHSortedSet.h"
 
 /**
+ @file CHSortedDictionary.h
+ 
+ A dictionary which enumerates keys according to their natural sorted order.
+ */
+
+/**
  A dictionary which enumerates keys according to their natural sorted order. The following additional operations are provided to take advantage of the ordering:
    - \link #firstKey -firstKey\endlink
    - \link #lastKey -lastKey\endlink
