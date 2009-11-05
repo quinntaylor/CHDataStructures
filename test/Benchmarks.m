@@ -11,6 +11,7 @@
 #import <Foundation/Foundation.h>
 #import <CHDataStructures/CHDataStructures.h>
 #import <sys/time.h>
+#import <objc/runtime.h>
 
 @interface CHAbstractBinarySearchTree (Height)
 - (NSUInteger) height;
@@ -636,14 +637,14 @@ int main (int argc, const char * argv[]) {
 		[dictionary setObject:[NSMutableArray array] forKey:@"removeObject"];
 		if ([aClass conformsToProtocol:@protocol(CHSearchTree)])
 			[dictionary setObject:[NSMutableArray array] forKey:@"height"];
-		[treeResults setObject:dictionary forKey:[aClass className]];
+		[treeResults setObject:dictionary forKey:NSStringFromClass(aClass)];
 	}
 	
 	NSMutableSet *objectSet = [NSMutableSet set];
 	CHAbstractBinarySearchTree *tree;
 	double startTime, duration;
 	
-	NSUInteger jitteredSize; // For making sure scatterplot dots not overlap
+	NSUInteger jitteredSize; // For making sure scatterplot dots do not overlap
 	NSInteger jitterOffset;
 	
 	limit = 100000;
@@ -664,9 +665,9 @@ int main (int argc, const char * argv[]) {
 			classEnumerator = [testClasses objectEnumerator];
 			while (aClass = [classEnumerator nextObject]) {
 				pool = [[NSAutoreleasePool alloc] init];
-				printf(" %s", [[aClass className] UTF8String]);
+				printf(" %s", class_getName(aClass));
 				tree = [[aClass alloc] init];
-				dictionary = [treeResults objectForKey:[aClass className]];
+				dictionary = [treeResults objectForKey:NSStringFromClass(aClass)];
 				jitteredSize = size + (size * .1 * jitterOffset++);
 				
 				// addObject:

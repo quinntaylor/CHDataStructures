@@ -665,7 +665,7 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 // DOT tools will render the graph as a binary search tree is expected to look.
 - (NSString*) dotGraphString {
 	NSMutableString *graph = [NSMutableString stringWithFormat:
-							  @"digraph %@\n{\n", [self className]];
+							  @"digraph %@\n{\n", NSStringFromClass([self class])];
 	if (header->right == sentinel) {
 		[graph appendFormat:@"  nil;\n"];
 	} else {
