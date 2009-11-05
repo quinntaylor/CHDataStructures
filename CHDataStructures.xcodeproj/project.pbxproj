@@ -926,7 +926,7 @@
 				GCC_WARN_SIGN_COMPARE = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = "resources/Info-Framework.plist";
-				INSTALL_PATH = "$(HOME)/Library/Frameworks";
+				INSTALL_PATH = "@executable_path/../Frameworks";
 				OTHER_LDFLAGS = "";
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
 				PRODUCT_NAME = CHDataStructures;
@@ -951,7 +951,7 @@
 				GCC_WARN_SIGN_COMPARE = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = "resources/Info-Framework.plist";
-				INSTALL_PATH = "$(HOME)/Library/Frameworks";
+				INSTALL_PATH = "@executable_path/../Frameworks";
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
 				PRODUCT_NAME = CHDataStructures;
 				WRAPPER_EXTENSION = framework;
@@ -1035,7 +1035,7 @@
 				GCC_WARN_SIGN_COMPARE = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = "resources/Info-Framework.plist";
-				INSTALL_PATH = "$(HOME)/Library/Frameworks";
+				INSTALL_PATH = "@executable_path/../Frameworks";
 				OTHER_LDFLAGS = "-lgcov";
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
 				PRODUCT_NAME = CHDataStructures;
