@@ -38,17 +38,14 @@
 
 #pragma mark -
 
-static id anObject;
 static NSEnumerator *objectEnumerator, *arrayEnumerator;
 static NSArray *array;
 static NSMutableArray *objects;
-static NSUInteger item, arrayCount;
-struct timeval timeOfDay;
-struct timespec sleepDelay = {0,1}, sleepRemain;
 static double startTime;
 
 /* Return the current time in seconds, using a double precision number. */
 double timestamp() {
+	struct timeval timeOfDay;
 	gettimeofday(&timeOfDay, NULL);
 	return ((double) timeOfDay.tv_sec + (double) timeOfDay.tv_usec * 1e-6);
 }
@@ -100,7 +97,6 @@ void benchmarkDeque(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		deque = [[testClass alloc] init];
-		arrayCount = [array count];
 #if MAC_OS_X_VERSION_10_5_AND_LATER
 		for (id anObject in array)
 #else
@@ -109,7 +105,7 @@ void benchmarkDeque(Class testClass) {
 #endif
 			[deque appendObject:anObject];
 		startTime = timestamp();
-		for (item = 1; item <= arrayCount; item++)
+		for (NSUInteger item = 1; item <= [array count]; item++)
 			[deque removeFirstObject];
 		printf("\t%f", timestamp() - startTime);
 		[deque release];
@@ -119,7 +115,6 @@ void benchmarkDeque(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		deque = [[testClass alloc] init];
-		arrayCount = [array count];
 #if MAC_OS_X_VERSION_10_5_AND_LATER
 		for (id anObject in array)
 #else
@@ -128,7 +123,7 @@ void benchmarkDeque(Class testClass) {
 #endif
 			[deque appendObject:anObject];
 		startTime = timestamp();
-		for (item = 1; item <= arrayCount; item++)
+		for (NSUInteger item = 1; item <= [array count]; item++)
 			[deque removeLastObject];
 		printf("\t%f", timestamp() - startTime);
 		[deque release];
@@ -138,7 +133,6 @@ void benchmarkDeque(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		deque = [[testClass alloc] init];
-		arrayCount = [array count];
 #if MAC_OS_X_VERSION_10_5_AND_LATER
 		for (id anObject in array)
 #else
@@ -156,7 +150,6 @@ void benchmarkDeque(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		deque = [[testClass alloc] init];
-		arrayCount = [array count];
 #if MAC_OS_X_VERSION_10_5_AND_LATER
 		for (id anObject in array)
 #else
@@ -177,7 +170,6 @@ void benchmarkDeque(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		deque = [[testClass alloc] init];
-		arrayCount = [array count];
 		for (id anObject in array)
 			[deque appendObject:anObject];
 		startTime = timestamp();
@@ -231,8 +223,7 @@ void benchmarkQueue(Class testClass) {
 #endif
 			[queue addObject:anObject];
 		startTime = timestamp();
-		arrayCount = [array count];
-		for (item = 1; item <= arrayCount; item++)
+		for (NSUInteger item = 1; item <= [array count]; item++)
 			[queue removeFirstObject];
 		printf("\t%f", timestamp() - startTime);
 		[queue release];
@@ -282,7 +273,6 @@ void benchmarkQueue(Class testClass) {
 		for (id anObject in array)
 			[queue addObject:anObject];
 		startTime = timestamp();
-		arrayCount = [array count];
 		for (id object in queue)
 			;
 		printf("\t%f", timestamp() - startTime);
@@ -333,8 +323,7 @@ void benchmarkStack(Class testClass) {
 #endif
 			[stack pushObject:anObject];
 		startTime = timestamp();
-		arrayCount = [array count];
-		for (item = 1; item <= arrayCount; item++)
+		for (NSUInteger item = 1; item <= [array count]; item++)
 			[stack popObject];
 		printf("\t%f", timestamp() - startTime);
 		[stack release];
@@ -434,8 +423,7 @@ void benchmarkHeap(Class testClass) {
 #endif
 			[heap addObject:anObject];
 		startTime = timestamp();
-		arrayCount = [array count];
-		for (item = 1; item <= arrayCount; item++)
+		for (NSUInteger item = 1; item <= [array count]; item++)
 			[heap removeFirstObject];
 		printf("\t%f", timestamp() - startTime);
 		[heap release];
@@ -516,6 +504,7 @@ void benchmarkTree(Class testClass) {
 		for (id anObject in array)
 #else
 		objectEnumerator = [array objectEnumerator];
+		id anObject;
 		while (anObject = [objectEnumerator nextObject])
 #endif
 			[tree addObject:anObject];
@@ -526,7 +515,7 @@ void benchmarkTree(Class testClass) {
 	printf("\nmember:         ");
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
-		tree = [[testClass alloc] init];
+		tree = [[testClass alloc] initWithArray:array];
 		startTime = timestamp();
 #if MAC_OS_X_VERSION_10_5_AND_LATER
 		for (id anObject in array)
@@ -542,16 +531,13 @@ void benchmarkTree(Class testClass) {
 	printf("\nremoveObject:       ");
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
-		tree = [[testClass alloc] init];
-		objectEnumerator = [array objectEnumerator];
-		while (anObject = [objectEnumerator nextObject])
-			[tree addObject:anObject];
-		arrayCount = [array count];
+		tree = [[testClass alloc] initWithArray:array];
 		startTime = timestamp();
 #if MAC_OS_X_VERSION_10_5_AND_LATER
 		for (id anObject in array)
 #else
 		objectEnumerator = [array objectEnumerator];
+		id anObject;
 		while (anObject = [objectEnumerator nextObject])
 #endif
 			[tree removeObject:anObject];
@@ -582,19 +568,27 @@ void benchmarkTree(Class testClass) {
 	[pool drain];
 }
 
+NSArray* randomNumberArray(NSUInteger count) {
+	NSMutableSet *objectSet = [NSMutableSet set];
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	while ([objectSet count] < count)
+		[objectSet addObject:[NSNumber numberWithInt:arc4random()]];
+	[pool drain];
+	return [objectSet allObjects];
+}
+
 int main (int argc, const char * argv[]) {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	NSUInteger item;
 	NSUInteger limit = 100000;
 	objects = [[NSMutableArray alloc] init];
 	
 	for (NSUInteger size = 10; size <= limit; size *= 10) {
-		NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:size+1];
-		[array addObjectsFromArray:[objects lastObject]];
-		for (item = [array count]+1; item <= size; item++)
-			[array addObject:[NSNumber numberWithUnsignedInteger:item]];
-		[objects addObject:array];
-		[array release];
+		NSMutableArray *temp = [[NSMutableArray alloc] initWithCapacity:size+1];
+		[temp addObjectsFromArray:[objects lastObject]];
+		for (NSUInteger item = [temp count]+1; item <= size; item++)
+			[temp addObject:[NSNumber numberWithUnsignedInteger:item]];
+		[objects addObject:temp];
+		[temp release];
 	}
 	
 	CHQuietLog(@"\n<CHDeque> Implemenations");
@@ -640,9 +634,9 @@ int main (int argc, const char * argv[]) {
 		[treeResults setObject:dictionary forKey:NSStringFromClass(aClass)];
 	}
 	
-	NSMutableSet *objectSet = [NSMutableSet set];
 	CHAbstractBinarySearchTree *tree;
-	double startTime, duration;
+	double duration;
+	struct timespec sleepDelay = {0,1}, sleepRemain;
 	
 	NSUInteger jitteredSize; // For making sure scatterplot dots do not overlap
 	NSInteger jitterOffset;
@@ -656,15 +650,11 @@ int main (int argc, const char * argv[]) {
 		for (NSUInteger size = 10; size <= limit; size *= 10) {
 			printf("\n%8lu objects --", (unsigned long)size);
 			// Create a set of N unique random numbers
-			NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-			while ([objectSet count] < size)
-				[objectSet addObject:[NSNumber numberWithInt:arc4random()]];
-			[pool drain];
-			NSArray *objects = [objectSet allObjects];
+			NSArray *randomNumbers = randomNumberArray(size);
 			jitterOffset = -([testClasses count]/2);
 			classEnumerator = [testClasses objectEnumerator];
 			while (aClass = [classEnumerator nextObject]) {
-				pool = [[NSAutoreleasePool alloc] init];
+				NSAutoreleasePool *pool2 = [[NSAutoreleasePool alloc] init];
 				printf(" %s", class_getName(aClass));
 				tree = [[aClass alloc] init];
 				dictionary = [treeResults objectForKey:NSStringFromClass(aClass)];
@@ -674,9 +664,9 @@ int main (int argc, const char * argv[]) {
 				nanosleep(&sleepDelay, &sleepRemain);
 				startTime = timestamp();
 #if MAC_OS_X_VERSION_10_5_AND_LATER
-				for (id anObject in objects)
+				for (id anObject in randomNumbers)
 #else
-					objectEnumerator = [objects objectEnumerator];
+				objectEnumerator = [randomNumbers objectEnumerator];
 				while (anObject = [objectEnumerator nextObject])
 #endif
 					[tree addObject:anObject];
@@ -690,9 +680,9 @@ int main (int argc, const char * argv[]) {
 				NSUInteger index = 0;
 				startTime = timestamp();
 #if MAC_OS_X_VERSION_10_5_AND_LATER
-				for (id anObject in objects)
+				for (id anObject in randomNumbers)
 #else
-					objectEnumerator = [objects objectEnumerator];
+				objectEnumerator = [randomNumbers objectEnumerator];
 				while (anObject = [objectEnumerator nextObject])
 #endif
 				{
@@ -715,9 +705,9 @@ int main (int argc, const char * argv[]) {
 				nanosleep(&sleepDelay, &sleepRemain);
 				startTime = timestamp();
 #if MAC_OS_X_VERSION_10_5_AND_LATER
-				for (id anObject in objectSet)
+				for (id anObject in randomNumbers)
 #else
-				objectEnumerator = [objectSet objectEnumerator];
+				objectEnumerator = [randomNumbers objectEnumerator];
 				while (anObject = [objectEnumerator nextObject])
 #endif
 					[tree removeObject:anObject];
@@ -726,10 +716,9 @@ int main (int argc, const char * argv[]) {
 				 [NSString stringWithFormat:@"%lu,%f", jitteredSize, duration/size*scale]];
 				
 				[tree release];
-				[pool drain];
+				[pool2 drain];
 			}
 		}
-		[objectSet removeAllObjects];
 	}
 	
 	NSString *path = @"../../benchmark_data/";
