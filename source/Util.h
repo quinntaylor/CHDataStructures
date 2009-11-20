@@ -21,14 +21,11 @@
 /** Macro for designating symbols as being unused to supress compile warnings. */
 #define UNUSED __attribute__((unused))
 
-// Define Mac OS X version for Leopard if it's not already defined.
-#ifndef MAC_OS_X_VERSION_10_5
-	#define MAC_OS_X_VERSION_10_5 1050
-#endif
-
 /** Availability macro for screening out functionality that requires Leopard. */
 #define MAC_OS_X_VERSION_10_5_AND_LATER \
-        MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+        MAC_OS_X_VERSION_MIN_REQUIRED >= 1050
+
+#pragma mark -
 
 // NSInteger/NSUInteger are new in Leopard; define if on an earlier OS version.
 #ifndef NSINTEGER_DEFINED
@@ -47,8 +44,23 @@
 	#define NSINTEGER_DEFINED 1
 #endif
 
-/** Indicates that an object was not found when returning an NSUInteger. */
-#define CHNotFound NSUIntegerMax
+#pragma mark -
+
+// For iPhone OS, define enum and dummy functions used for Garbage Collection.
+#if (TARGET_OS_IPHONE || TARGET_OS_EMBEDDED || !TARGET_OS_MAC)
+
+enum {
+    NSScannedOption = (1UL << 0), 
+    NSCollectorDisabledOption = (1UL << 1),
+};
+
+void* __strong NSAllocateCollectable(NSUInteger size, NSUInteger options);
+
+void* __strong NSReallocateCollectable(void *ptr, NSUInteger size, NSUInteger options);
+
+#endif
+
+#pragma mark -
 
 /** Global variable to simplify checking if garbage collection is enabled. */
 OBJC_EXPORT BOOL kCHGarbageCollectionNotEnabled;
@@ -58,6 +70,11 @@ OBJC_EXPORT BOOL kCHGarbageCollectionNotEnabled;
  Intended to be called from @c +initialize of direct implementors of CHLockable.
  */
 HIDDEN void initializeGCStatus();
+
+#pragma mark -
+
+/** Indicates that an object was not found when returning an NSUInteger. */
+#define CHNotFound NSUIntegerMax
 
 /**
  Convenience function for raising an exception for an invalid range (index).
