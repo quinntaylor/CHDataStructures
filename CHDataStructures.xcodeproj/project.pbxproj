@@ -276,7 +276,7 @@
 		E4723A710EB91B7A006FE465 /* Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Util.m; path = source/Util.m; sourceTree = "<group>"; };
 		E473C9890E9331FA005CA997 /* Info-Unit-Testing.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Info-Unit-Testing.plist"; path = "resources/Info-Unit-Testing.plist"; sourceTree = "<group>"; };
 		E473C99E0E93333C005CA997 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		E473CB550E9346CB005CA997 /* CHDataStructures_test.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CHDataStructures_test.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E473CB550E9346CB005CA997 /* CHDataStructures.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CHDataStructures.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E48860B80EA66072000F132A /* CHAbstractListCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHAbstractListCollection.h; path = source/CHAbstractListCollection.h; sourceTree = "<group>"; };
 		E48860B90EA66072000F132A /* CHAbstractListCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHAbstractListCollection.m; path = source/CHAbstractListCollection.m; sourceTree = "<group>"; };
 		E48860C10EA660A1000F132A /* CHAbstractMutableArrayCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHAbstractMutableArrayCollection.h; path = source/CHAbstractMutableArrayCollection.h; sourceTree = "<group>"; };
@@ -368,7 +368,7 @@
 			isa = PBXGroup;
 			children = (
 				8DC2EF5B0486A6940098B216 /* CHDataStructures.framework */,
-				E473CB550E9346CB005CA997 /* CHDataStructures_test.octest */,
+				E473CB550E9346CB005CA997 /* CHDataStructures.octest */,
 				E44B59B40E95850F00F9DD1A /* Benchmarks */,
 			);
 			name = Products;
@@ -655,7 +655,7 @@
 			);
 			name = "Unit Testing";
 			productName = "Unit Testing";
-			productReference = E473CB550E9346CB005CA997 /* CHDataStructures_test.octest */;
+			productReference = E473CB550E9346CB005CA997 /* CHDataStructures.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -1048,7 +1048,7 @@
 					"-framework",
 					SenTestingKit,
 				);
-				PRODUCT_NAME = CHDataStructures_test;
+				PRODUCT_NAME = CHDataStructures;
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Coverage;
@@ -1134,7 +1134,7 @@
 					"-framework",
 					SenTestingKit,
 				);
-				PRODUCT_NAME = CHDataStructures_test;
+				PRODUCT_NAME = CHDataStructures;
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Debug;
@@ -1152,7 +1152,7 @@
 					"-framework",
 					SenTestingKit,
 				);
-				PRODUCT_NAME = CHDataStructures_test;
+				PRODUCT_NAME = CHDataStructures;
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
