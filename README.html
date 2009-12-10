@@ -54,11 +54,23 @@
 <p>The original page for the framework when it was maintained by Phillip Morelock (back when its name was "Cocoa Data Structures Framework") is <a href="http://www.phillipmorelock.com/examples/cocoadata/"> here.</a></p>
 
 <h2>Using the Framework</h2>
-<p>The framework is a directory called <code>CHDataStructures.framework</code>. When building from source, compile the All target in the Release configuration, which produces a disk image containing the framework. You can either copy the framework directory to <code>/Library/Frameworks/</code> for all applications, or bundle it inside your own application. (For details, consult the <a href="http://developer.apple.com/documentation/MacOSX/Conceptual/BPFrameworks/Tasks/IncludingFrameworks.html">Framework Programming Guide</a>.)</p>
+<p>The framework is a directory called <code>CHDataStructures.framework</code>. When building from source, compile the All target in the Release configuration, which produces a disk image containing the framework. The framework bundle included on the disk image is built to live in the <code>Contents/Frameworks/</code> directory inside your application. (For details, consult the <a href="http://developer.apple.com/documentation/MacOSX/Conceptual/BPFrameworks/Tasks/IncludingFrameworks.html">Framework Programming Guide</a>.)</p>
 <p>To use code from the framework, simply <code>#import &lt;CHDataStructures/CHDataStructures.h&gt;</code> where necessary. This will import all the public headers in the framework, just as happens with <code>#import &lt;Cocoa/Cocoa.h&gt;</code>. If you want to use only a specific subset of functionality, replace the name of the .h file with the one you want to use. (Use one <code>#import</code> for each header file.)</p>
 
+<h2>Using in an iPhone Application</h2>
+<p>Because the iPhone does not support third-party frameworks, the Xcode project also includes a static library target for the iPhone that you can link into your own projects.</p>
+<p>To use code from the static library:</p>
+<ol>
+  <li>Open the Xcode project for your iPhone app.</li>
+  <li>Drag the icon for CHDataStructures-iPhone.xcodeproj into the "Groups &amp; Files" pane of your app's project, just under the icon for your project.</li>
+  <li>Expand CHDataStructures-iPhone.xcodeproj in that pane and drag the <code>libCHDataStructures.a</code> product into the "Link Binary With Libraries" section of your app's target.</li>
+  <li>In your target's build settings, include <code>PATH_TO_CHDATASTRUCTURES/source</code> in Header Search Paths (<code>HEADER_SEARCH_PATHS</code>).</li>
+  <li>Add <code>#import &lt;CHDataStructures/CHDataStructures.h&gt;</code> where necessary in your code.</li>
+  <li>If you get a "Declaration does not declare anything" compiler warning, set the "C Language Dialect" (<code>GCC_C_LANGUAGE_STANDARD</code>) setting in your target's build settings to <code>GNU99 [-std=gnu99]</code>.</li>
+</ol>
+
 <h2>Documentation</h2>
-<p>Documentation is auto-generated after each Subversion commit, and is available online here: <a href="http://dysart.cs.byu.edu/CHDataStructures/">http://dysart.cs.byu.edu/CHDataStructures/</a>
+<p>Documentation is auto-generated after each Subversion commit, and is <a href="http://dysart.cs.byu.edu/CHDataStructures/">available online</a>. You can also generate it yourself from the main Xcode project by building the "Documentation" target (if <a href="http://doxygen.org">Doxygen</a> is installed and its executable is in your Unix <code>$PATH</code> variable).</p>
 
 <h2>Future Improvements</h2>
 <p>Let's just say it: no software is perfect. It would be foolish (and a lie) to claim that this framework is flawless, or even complete. There are several things that could be improved, and admitting you have a problem is the first step.... Accordingly, the online documentation includes lists of <a href="http://dysart.cs.byu.edu/CHDataStructures/bug.html">known bugs</a> and <a href="http://dysart.cs.byu.edu/CHDataStructures/todo.html">wish list items</a> that are documented in the code.</p>
@@ -79,6 +91,11 @@ The software is provided "as is", without warranty of any kind, including all im
 
 <p>Major contributors are listed below, alphabetically by last name:</p>
 <ul>
+  <li><strong>Ole Begemann</strong> (<a href="mailto:ole@oleb.net">Email</a>, <a href="http://oleb.net">Website</a>)
+    <ul>
+      <li>Assistance with adapting framework to work on iPhone; contribution of a unit test iPhone app.</li>
+    </ul>
+  </li>
   <li><strong>Max Horn</strong> (<a href="mailto:max@quendi.de">Email</a>, <a href="http://www.quendi.de/">Website</a>)
     <ul>
       <li>Ideas, example code, and impetus for conversions to C for speed.</li>
