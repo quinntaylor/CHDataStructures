@@ -34,7 +34,7 @@
 		5DFBC2CE10A7540A007BF56F /* UtilTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E44EB0F10ECB83230071F93A /* UtilTest.m */; };
 		5DFBC2E910A754AD007BF56F /* libCHDataStructures.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4399A0D10A33C1200209906 /* libCHDataStructures.a */; };
 		5DFBC30C10A7564E007BF56F /* libCHDataStructures.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4399A0D10A33C1200209906 /* libCHDataStructures.a */; };
-		5DFBC3B010A765AE007BF56F /* CHDataStructures_iPhone.octest in Resources */ = {isa = PBXBuildFile; fileRef = 5DFBC2D710A7540A007BF56F /* CHDataStructures_iPhone.octest */; };
+		5DFBC3B010A765AE007BF56F /* CHDataStructuresiPhone.octest in Resources */ = {isa = PBXBuildFile; fileRef = 5DFBC2D710A7540A007BF56F /* CHDataStructuresiPhone.octest */; };
 		E4399A1F10A33C7A00209906 /* CHAbstractBinarySearchTree.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBC990E88412C00B570BC /* CHAbstractBinarySearchTree.m */; };
 		E4399A2210A33C7A00209906 /* CHAbstractCircularBufferCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = E4C430840F74AC4F00EDBB0B /* CHAbstractCircularBufferCollection.m */; };
 		E4399A2410A33C7A00209906 /* CHAbstractListCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = E48860B90EA66072000F132A /* CHAbstractListCollection.m */; };
@@ -129,11 +129,11 @@
 		5DFBC1D710A748CC007BF56F /* iPhoneUnitTestingAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = iPhoneUnitTestingAppDelegate.m; path = iPhone/iPhoneUnitTestingAppDelegate.m; sourceTree = "<group>"; };
 		5DFBC1D910A748CC007BF56F /* iPhoneUnitTestingApp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = iPhoneUnitTestingApp.m; path = iPhone/iPhoneUnitTestingApp.m; sourceTree = "<group>"; };
 		5DFBC1DA10A748D8007BF56F /* iPhoneUnitTestingApp.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = iPhoneUnitTestingApp.xib; path = iPhone/iPhoneUnitTestingApp.xib; sourceTree = "<group>"; };
-		5DFBC1ED10A74964007BF56F /* CHDataStructures_iPhone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CHDataStructures_iPhone.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5DFBC1ED10A74964007BF56F /* CHDataStructures.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CHDataStructures.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DFBC1EF10A74964007BF56F /* iPhoneUnitTestingApp.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = iPhoneUnitTestingApp.plist; path = iPhone/iPhoneUnitTestingApp.plist; sourceTree = "<group>"; };
 		5DFBC1F410A749CA007BF56F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		5DFBC1F610A749CA007BF56F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		5DFBC2D710A7540A007BF56F /* CHDataStructures_iPhone.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CHDataStructures_iPhone.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5DFBC2D710A7540A007BF56F /* CHDataStructuresiPhone.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CHDataStructuresiPhone.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E400CAAA0F7919B7003189D3 /* CHCircularBufferQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHCircularBufferQueue.h; path = source/CHCircularBufferQueue.h; sourceTree = "<group>"; };
 		E400CAAB0F7919B7003189D3 /* CHCircularBufferQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHCircularBufferQueue.m; path = source/CHCircularBufferQueue.m; sourceTree = "<group>"; };
 		E400CAC10F791A08003189D3 /* CHCircularBufferDeque.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHCircularBufferDeque.h; path = source/CHCircularBufferDeque.h; sourceTree = "<group>"; };
@@ -261,8 +261,8 @@
 			isa = PBXGroup;
 			children = (
 				E4399A0D10A33C1200209906 /* libCHDataStructures.a */,
-				5DFBC2D710A7540A007BF56F /* CHDataStructures_iPhone.octest */,
-				5DFBC1ED10A74964007BF56F /* CHDataStructures_iPhone.app */,
+				5DFBC2D710A7540A007BF56F /* CHDataStructuresiPhone.octest */,
+				5DFBC1ED10A74964007BF56F /* CHDataStructures.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -498,7 +498,7 @@
 			);
 			name = "iPhone Unit Testing App";
 			productName = "iPhone Unit Testing App";
-			productReference = 5DFBC1ED10A74964007BF56F /* CHDataStructures_iPhone.app */;
+			productReference = 5DFBC1ED10A74964007BF56F /* CHDataStructures.app */;
 			productType = "com.apple.product-type.application";
 		};
 		5DFBC2B610A7540A007BF56F /* iPhone Unit Testing */ = {
@@ -507,7 +507,6 @@
 			buildPhases = (
 				5DFBC2BA10A7540A007BF56F /* Sources */,
 				5DFBC2CF10A7540A007BF56F /* Frameworks */,
-				5DFBC2D110A7540A007BF56F /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -516,7 +515,7 @@
 			);
 			name = "iPhone Unit Testing";
 			productName = "Unit Testing";
-			productReference = 5DFBC2D710A7540A007BF56F /* CHDataStructures_iPhone.octest */;
+			productReference = 5DFBC2D710A7540A007BF56F /* CHDataStructuresiPhone.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
 		E4399A0C10A33C1200209906 /* iPhone Static Library */ = {
@@ -564,29 +563,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5DFBC3B010A765AE007BF56F /* CHDataStructures_iPhone.octest in Resources */,
+				5DFBC3B010A765AE007BF56F /* CHDataStructuresiPhone.octest in Resources */,
 				5DFBC1FE10A74A1B007BF56F /* iPhoneUnitTestingApp.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		5DFBC2D110A7540A007BF56F /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		5DFBC1EA10A74964007BF56F /* Sources */ = {
@@ -758,7 +740,7 @@
 					"-framework",
 					SenTestingKit,
 				);
-				PRODUCT_NAME = CHDataStructures_iPhone;
+				PRODUCT_NAME = CHDataStructures;
 			};
 			name = Debug;
 		};
@@ -776,7 +758,7 @@
 					"-framework",
 					SenTestingKit,
 				);
-				PRODUCT_NAME = CHDataStructures_iPhone;
+				PRODUCT_NAME = CHDataStructures;
 			};
 			name = Release;
 		};
@@ -792,7 +774,7 @@
 					"-framework",
 					SenTestingKit,
 				);
-				PRODUCT_NAME = CHDataStructures_iPhone;
+				PRODUCT_NAME = CHDataStructuresiPhone;
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Debug;
@@ -809,7 +791,7 @@
 					"-framework",
 					SenTestingKit,
 				);
-				PRODUCT_NAME = CHDataStructures_iPhone;
+				PRODUCT_NAME = CHDataStructuresiPhone;
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
