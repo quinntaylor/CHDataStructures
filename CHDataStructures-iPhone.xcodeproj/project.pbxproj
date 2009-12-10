@@ -748,7 +748,7 @@
 		5DFBC1F010A74965007BF56F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				INFOPLIST_FILE = "resources/Info-Unit-Testing-iPhone-App.plist";
+				INFOPLIST_FILE = iPhone/iPhoneUnitTestingApp.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				OTHER_LDFLAGS = (
 					"-framework",
@@ -766,7 +766,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				INFOPLIST_FILE = "resources/Info-Unit-Testing-iPhone-App.plist";
+				INFOPLIST_FILE = iPhone/iPhoneUnitTestingApp.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				OTHER_LDFLAGS = (
 					"-framework",
