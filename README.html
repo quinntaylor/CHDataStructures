@@ -25,22 +25,22 @@
 <body>
 <div align="center">
 <h1>CHDataStructures.framework</h1>
-<h2>Version 1.3 &mdash; 20 Oct 2009</h2>
+<h2>Version 1.3.1 &mdash; 11 Dec 2009</h2>
 <h4><a href="http://cocoaheads.byu.edu/code/CHDataStructures">http://cocoaheads.byu.edu/code/CHDataStructures</a></h4>
 <h4>&copy; 2008&ndash;2009 <a href="http://homepage.mac.com/quinntaylor/">Quinn Taylor</a> &mdash; BYU CocoaHeads<br />
 &copy; 2002 <a href="http://www.phillipmorelock.com/">Phillip Morelock</a> &mdash; Los Angeles, CA</h4>
 </div>
 
 <h2>Overview</h2>
-<p><strong>CHDataStructures.framework</strong> is an attempt to create a library of standard data structures which can be used in any Objective-C program, for educational purposes or as a foundation for other data structures to build on. Data structures in this framework adopt Objective-C protocols that define the functionality of and API for interacting with any implementation thereof, regardless of its internals.</p>
-<p>This framework provides Objective-C implementations of common data structures which are currently beyond the purview of Apple's extensive and flexible <a href="http://developer.apple.com/cocoa/">Cocoa frameworks</a>. Collections that are a part of Cocoa are highly optimized and amenable to many situations. However, sometimes an honest-to-goodness stack, queue, linked list, tree, etc. can greatly improve the clarity and comprehensibility of code. The currently supported abstract data types include:
+<p><strong>CHDataStructures</strong> is a library of standard data structures which can be used in (virtually) any Objective-C program. Data structures in this library adopt Objective-C protocols that define the functionality of and API for interacting with any implementation thereof, regardless of its internals.</p>
+<p>This library provides Objective-C implementations of common data structures which are currently beyond the purview of Apple's extensive and flexible <a href="http://developer.apple.com/cocoa/">Cocoa frameworks</a>. Collections that are a part of Cocoa are highly optimized and amenable to many situations. However, sometimes an honest-to-goodness stack, queue, linked list, tree, etc. can greatly improve the clarity and comprehensibility of code. The currently supported abstract data types include:
 	<a href="http://en.wikipedia.org/wiki/Deque">deque</a>,
 	<a href="http://en.wikipedia.org/wiki/Heap_(data_structure)">heap</a>,
 	<a href="http://en.wikipedia.org/wiki/Linked_list">linked list</a>,
 	<a href="http://en.wikipedia.org/wiki/Queue_(data_structure)">queue</a>,
 	<a href="http://en.wikipedia.org/wiki/Stack_(data_structure)">stack</a>, and
 	<a href="http://en.wikipedia.org/wiki/Tree_(data_structure)">tree</a>.</p>
-<p>The code is written for <a href="http://www.apple.com/macosx/">Mac OS X</a> and does use some features of Objective-C 2.0 (part of 10.5 "Leopard"), but most of the code could be easily ported to other Objective-C environments, such as <a href="http://www.gnustep.org">GNUStep</a>. However, such efforts would be better accomplished by forking this project rather than integrating with it, for several main reasons:</p>
+<p>The code is written against Apple's <a href="http://developer.apple.com/mac/library/documentation/cocoa/Reference/Foundation/ObjC_classic/Intro/IntroFoundation.html">Foundation framework</a> and uses some features of <a href="http://developer.apple.com/leopard/overview/objectivec2.html">Objective-C 2.0</a> (available in OS X 10.5+ and iPhone OS) when possible. Most of the code could be easily ported to other Objective-C environments (such as <a href="http://www.gnustep.org">GNUStep</a>) but such efforts would be better accomplished by forking this project rather than integrating with it, for several main reasons:</p>
 <ol>
 	<li>Supporting multiple environments increases code complexity, and consequently the effort required to test, maintain, and improve it.</li>
 	<li>Libraries that have bigger and slower binaries to accommodate all possible platforms don't help the mainstream developer.</li>
@@ -50,24 +50,30 @@
   
 <h2>Getting the Code</h2>
 <p>All source code and resources for the framework are freely available at <a href="http://cocoaheads.byu.edu/code/CHDataStructures/">this link</a>. They are organized in an Xcode 3 project with all relevant dependencies.</p>
-<p>If you only need a few of the classes in the framework, you can cut down on code size by either excluding the parts you don't need from the framework, or just including the parts you do need in your own code. Please don't forget to include relevant copyright and license information if you choose to do so!</p>
+<p>If you only need a few of the classes in the framework, you can cut down on code size by either excluding parts you don't need from the framework, or just including the source you do need in your own code. Please don't forget to include relevant copyright and license information if you choose to do so!</p>
 <p>The original page for the framework when it was maintained by Phillip Morelock (back when its name was "Cocoa Data Structures Framework") is <a href="http://www.phillipmorelock.com/examples/cocoadata/"> here.</a></p>
 
-<h2>Using the Framework</h2>
-<p>The framework is a directory called <code>CHDataStructures.framework</code>. When building from source, compile the All target in the Release configuration, which produces a disk image containing the framework. The framework bundle included on the disk image is built to live in the <code>Contents/Frameworks/</code> directory inside your application. (For details, consult the <a href="http://developer.apple.com/documentation/MacOSX/Conceptual/BPFrameworks/Tasks/IncludingFrameworks.html">Framework Programming Guide</a>.)</p>
-<p>To use code from the framework, simply <code>#import &lt;CHDataStructures/CHDataStructures.h&gt;</code> where necessary. This will import all the public headers in the framework, just as happens with <code>#import &lt;Cocoa/Cocoa.h&gt;</code>. If you want to use only a specific subset of functionality, replace the name of the .h file with the one you want to use. (Use one <code>#import</code> for each header file.)</p>
+<h2>Using the Library</h2>
+<p>CHDataStructures now builds for both OS X (as a framework) and iPhone OS (as a static library, since third-party frameworks are not supported). The following directions assume that you have either built the appropriate library form (framework or static library) from source, or are using a binary distribution. (When building from source, compile the All target in the Release configuration, which produces a disk image containing the binaries.)</p>
+<p>When using this library, if you get a "Declaration does not declare anything" compiler warning, set the "C Language Dialect" (<code>GCC_C_LANGUAGE_STANDARD</code>) setting in your target's build settings to <code>GNU99 [-std=gnu99]</code>.</p>
 
-<h2>Using in an iPhone Application</h2>
-<p>Because the iPhone does not support third-party frameworks, the Xcode project also includes a static library target for the iPhone that you can link into your own projects.</p>
-<p>To use code from the static library:</p>
+<h3>Using the framework in a Mac application</h3>
+<ol>
+  <li>Open the Xcode project for your Mac application.</li>
+  <li>Add <code>CHDataStructures.framework</code> to your project by dragging it to the "Groups &amp; Files" pane.</li>
+  <li>Expand the appropriate target and use a "Copy Files" build phase to copy the framework to the <code>Contents/Frameworks/</code> directory in your application bundle. (The executable path in the framework binary expects this location.)</li>
+  <li>Add <code>#import &lt;CHDataStructures/CHDataStructures.h&gt;</code> where necessary in your code.</li>
+</ol>
+<p>For details or clarification about frameworks, consult the <a href="http://developer.apple.com/documentation/MacOSX/Conceptual/BPFrameworks/">Framework Programming Guide</a>.</p>
+
+<h3>Using the static library in an iPhone app</h3>
 <ol>
   <li>Open the Xcode project for your iPhone app.</li>
-  <li>Drag the icon for CHDataStructures-iPhone.xcodeproj into the "Groups &amp; Files" pane of your app's project, just under the icon for your project.</li>
-  <li>Expand CHDataStructures-iPhone.xcodeproj in that pane and drag the <code>libCHDataStructures.a</code> product into the "Link Binary With Libraries" section of your app's target.</li>
-  <li>In your target's build settings, include <code>PATH_TO_CHDATASTRUCTURES/source</code> in Header Search Paths (<code>HEADER_SEARCH_PATHS</code>).</li>
-  <li>Add <code>#import &lt;CHDataStructures/CHDataStructures.h&gt;</code> where necessary in your code.</li>
-  <li>If you get a "Declaration does not declare anything" compiler warning, set the "C Language Dialect" (<code>GCC_C_LANGUAGE_STANDARD</code>) setting in your target's build settings to <code>GNU99 [-std=gnu99]</code>.</li>
+  <li>Add <code>libCHDataStructures.a</code> and the library header files to your project by dragging them to the "Groups &amp; Files" pane. (You can organize the headers in their own physical directory and sidebar group to prevent clutter.)</li>
+  <li>Expand the appropriate target and drag <code>libCHDataStructures.a</code> into the "Link Binary With Libraries" build phase.</li>
+  <li>Add <code>#import "CHDataStructures.h"</code> where necessary in your code.</li>
 </ol>
+<p>If you have any issues with this approach, you can opt to drag <code>CHDataStructures-iPhone.xcodeproj</code> into the "Groups &amp; Files" pane and use the <code>libCHDataStructures.a</code> product from that project. In this case, you must also include <code>PATH_TO_CHDATASTRUCTURES/source</code> in Header Search Paths (<code>HEADER_SEARCH_PATHS</code>) for your target.</p>
 
 <h2>Documentation</h2>
 <p>Documentation is auto-generated after each Subversion commit, and is <a href="http://dysart.cs.byu.edu/CHDataStructures/">available online</a>. You can also generate it yourself from the main Xcode project by building the "Documentation" target (if <a href="http://doxygen.org">Doxygen</a> is installed and its executable is in your Unix <code>$PATH</code> variable).</p>
