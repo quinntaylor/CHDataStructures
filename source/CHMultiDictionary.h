@@ -30,7 +30,7 @@
  Unlike NSDictionary and other Cocoa collections, CHMultiDictionary has not been designed with mutable and immutable variants. A multimap is not that much more useful if it is immutable, so any copies made of this class are mutable by definition.
  */
 @interface CHMultiDictionary : CHLockableObject 
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 <NSCoding, NSCopying, NSFastEnumeration>
 #else
 <NSCoding, NSCopying>
@@ -117,7 +117,7 @@
 
 // @}
 #pragma mark <NSFastEnumeration>
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 /** @name <NSFastEnumeration> */
 // @{
 

@@ -177,7 +177,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 	tail->prev = head;
 	count = 0;
 	mutations = 0;
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 	for (id anObject in anArray)
 #else
 	NSEnumerator *e = [anArray objectEnumerator];
@@ -208,7 +208,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 
 - (id) copyWithZone:(NSZone*)zone {
 	CHDoublyLinkedList *newList = [[CHDoublyLinkedList allocWithZone:zone] init];
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 	for (id anObject in self)
 #else
 	NSEnumerator *e = [self objectEnumerator];
@@ -223,7 +223,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 
 #pragma mark <NSFastEnumeration>
 
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len

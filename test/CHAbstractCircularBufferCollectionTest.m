@@ -648,7 +648,7 @@
 	[buffer2 release];
 }
 
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 - (void) testNSFastEnumeration {
 	int number, expected, count;
 	for (number = 1; number <= 32; number++)

@@ -25,7 +25,7 @@
 
 - (id) initWithArray:(NSArray*)anArray {
 	if ([self init] == nil) return nil;
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 	for (id anObject in anArray)
 #else
 	NSEnumerator *e = [anArray objectEnumerator];

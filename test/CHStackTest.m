@@ -223,7 +223,7 @@
 						 @"-description uses bad ordering.");
 }
 
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 - (void) testNSFastEnumeration {
 	NSUInteger limit = 32;
 	for (NSUInteger number = 1; number <= limit; number++)

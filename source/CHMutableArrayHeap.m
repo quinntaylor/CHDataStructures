@@ -93,7 +93,7 @@
 
 #pragma mark <NSFastEnumeration>
 
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 // This overridden method returns the heap contents in fully-sorted order.
 // Just as -objectEnumerator above, the first call incurs a hidden sorting cost.
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state

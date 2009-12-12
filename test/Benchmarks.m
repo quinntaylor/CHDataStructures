@@ -66,7 +66,7 @@ void benchmarkDeque(Class testClass) {
 	while (array = [arrayEnumerator nextObject]) {
 		deque = [[testClass alloc] init];
 		startTime = timestamp();
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 		for (id anObject in array)
 #else
 		objectEnumerator = [array objectEnumerator];
@@ -82,7 +82,7 @@ void benchmarkDeque(Class testClass) {
 	while (array = [arrayEnumerator nextObject]) {
 		deque = [[testClass alloc] init];
 		startTime = timestamp();
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 		for (id anObject in array)
 #else
 		objectEnumerator = [array objectEnumerator];
@@ -97,7 +97,7 @@ void benchmarkDeque(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		deque = [[testClass alloc] init];
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 		for (id anObject in array)
 #else
 		objectEnumerator = [array objectEnumerator];
@@ -115,7 +115,7 @@ void benchmarkDeque(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		deque = [[testClass alloc] init];
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 		for (id anObject in array)
 #else
 		objectEnumerator = [array objectEnumerator];
@@ -133,7 +133,7 @@ void benchmarkDeque(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		deque = [[testClass alloc] init];
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 		for (id anObject in array)
 #else
 		objectEnumerator = [array objectEnumerator];
@@ -150,7 +150,7 @@ void benchmarkDeque(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		deque = [[testClass alloc] init];
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 		for (id anObject in array)
 #else
 		objectEnumerator = [array objectEnumerator];
@@ -165,7 +165,7 @@ void benchmarkDeque(Class testClass) {
 		[deque release];
 	}
 	
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 	printf("\nNSFastEnumeration  ");
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
@@ -200,7 +200,7 @@ void benchmarkQueue(Class testClass) {
 	while (array = [arrayEnumerator nextObject]) {
 		queue = [[testClass alloc] init];
 		startTime = timestamp();
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 		for (id anObject in array)
 #else
 		objectEnumerator = [array objectEnumerator];
@@ -215,7 +215,7 @@ void benchmarkQueue(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		queue = [[testClass alloc] init];
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 		for (id anObject in array)
 #else
 		objectEnumerator = [array objectEnumerator];
@@ -233,7 +233,7 @@ void benchmarkQueue(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		queue = [[testClass alloc] init];
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 		for (id anObject in array)
 #else
 		objectEnumerator = [array objectEnumerator];
@@ -250,7 +250,7 @@ void benchmarkQueue(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		queue = [[testClass alloc] init];
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 		for (id anObject in array)
 #else
 		objectEnumerator = [array objectEnumerator];
@@ -265,7 +265,7 @@ void benchmarkQueue(Class testClass) {
 		[queue release];
 	}
 	
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 	printf("\nNSFastEnumeration  ");
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
@@ -300,7 +300,7 @@ void benchmarkStack(Class testClass) {
 	while (array = [arrayEnumerator nextObject]) {
 		stack = [[testClass alloc] init];
 		startTime = timestamp();
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 		for (id anObject in array)
 #else
 		objectEnumerator = [array objectEnumerator];
@@ -315,7 +315,7 @@ void benchmarkStack(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		stack = [[testClass alloc] init];
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 		for (id anObject in array)
 #else
 		objectEnumerator = [array objectEnumerator];
@@ -333,7 +333,7 @@ void benchmarkStack(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		stack = [[testClass alloc] init];
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 		for (id anObject in array)
 #else
 		objectEnumerator = [array objectEnumerator];
@@ -350,7 +350,7 @@ void benchmarkStack(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		stack = [[testClass alloc] init];
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 		for (id anObject in array)
 #else
 		objectEnumerator = [array objectEnumerator];
@@ -365,7 +365,7 @@ void benchmarkStack(Class testClass) {
 		[stack release];
 	}
 	
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 	printf("\nNSFastEnumeration  ");
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
@@ -400,7 +400,7 @@ void benchmarkHeap(Class testClass) {
 	while (array = [arrayEnumerator nextObject]) {
 		heap = [[testClass alloc] init];
 		startTime = timestamp();
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 		for (id anObject in array)
 #else
 		objectEnumerator = [array objectEnumerator];
@@ -415,7 +415,7 @@ void benchmarkHeap(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		heap = [[testClass alloc] init];
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 		for (id anObject in array)
 #else
 		objectEnumerator = [array objectEnumerator];
@@ -433,7 +433,7 @@ void benchmarkHeap(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		heap = [[testClass alloc] init];
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 		for (id anObject in array)
 #else
 		objectEnumerator = [array objectEnumerator];
@@ -449,7 +449,7 @@ void benchmarkHeap(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		heap = [[testClass alloc] init];
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 		for (id anObject in array)
 #else
 		objectEnumerator = [array objectEnumerator];
@@ -464,7 +464,7 @@ void benchmarkHeap(Class testClass) {
 		[heap release];
 	}
 	
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 	printf("\nNSFastEnumeration  ");
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
@@ -500,7 +500,7 @@ void benchmarkTree(Class testClass) {
 	while (array = [arrayEnumerator nextObject]) {
 		tree = [[testClass alloc] init];
 		startTime = timestamp();
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 		for (id anObject in array)
 #else
 		objectEnumerator = [array objectEnumerator];
@@ -517,7 +517,7 @@ void benchmarkTree(Class testClass) {
 	while (array = [arrayEnumerator nextObject]) {
 		tree = [[testClass alloc] initWithArray:array];
 		startTime = timestamp();
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 		for (id anObject in array)
 #else
 		objectEnumerator = [array objectEnumerator];
@@ -533,7 +533,7 @@ void benchmarkTree(Class testClass) {
 	while (array = [arrayEnumerator nextObject]) {
 		tree = [[testClass alloc] initWithArray:array];
 		startTime = timestamp();
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 		for (id anObject in array)
 #else
 		objectEnumerator = [array objectEnumerator];
@@ -549,7 +549,7 @@ void benchmarkTree(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		tree = [[testClass alloc] init];
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 		for (id anObject in array)
 #else
 		objectEnumerator = [array objectEnumerator];
@@ -663,7 +663,7 @@ int main (int argc, const char * argv[]) {
 				// addObject:
 				nanosleep(&sleepDelay, &sleepRemain);
 				startTime = timestamp();
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 				for (id anObject in randomNumbers)
 #else
 				objectEnumerator = [randomNumbers objectEnumerator];
@@ -679,7 +679,7 @@ int main (int argc, const char * argv[]) {
 				nanosleep(&sleepDelay, &sleepRemain);
 				NSUInteger index = 0;
 				startTime = timestamp();
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 				for (id anObject in randomNumbers)
 #else
 				objectEnumerator = [randomNumbers objectEnumerator];
@@ -704,7 +704,7 @@ int main (int argc, const char * argv[]) {
 				// removeObject:
 				nanosleep(&sleepDelay, &sleepRemain);
 				startTime = timestamp();
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 				for (id anObject in randomNumbers)
 #else
 				objectEnumerator = [randomNumbers objectEnumerator];
@@ -724,7 +724,7 @@ int main (int argc, const char * argv[]) {
 	NSString *path = @"../../benchmark_data/";
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	if (![fileManager fileExistsAtPath:path])
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 		[fileManager createDirectoryAtPath:path
 			   withIntermediateDirectories:YES
 								attributes:nil

@@ -26,7 +26,7 @@
  Index-based operations are included in this protocol, but users should be aware that unless a subclass chooses to use a special indexing scheme, all index-based methods in a linked list are O(n). If indexed operations are used frequently, it is likely that a better alternative is to use an NSMutableArray.
  */ 
 @protocol CHLinkedList
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 <NSObject, NSCoding, NSCopying, NSFastEnumeration>
 #else
 <NSObject, NSCoding, NSCopying>
@@ -332,7 +332,7 @@
 /** @name <NSFastEnumeration> */
 // @{
 
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 /**
  Called within <code>@b for (type variable @b in collection)</code> constructs. Returns by reference a C array of objects over which the sender should iterate, and as the return value the number of objects in the array.
  

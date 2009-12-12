@@ -88,7 +88,7 @@
 
 // @}
 #pragma mark <NSFastEnumeration>
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 /** @name <NSFastEnumeration> */
 // @{
 

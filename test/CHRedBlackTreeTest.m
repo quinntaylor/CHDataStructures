@@ -12,7 +12,7 @@
 #import "CHRedBlackTree.h"
 
 static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct) {
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 	return [[[NSString stringWithFormat:@"%@ should be %@, was %@",
 	          traversal, correct, order]
 	         stringByReplacingOccurrencesOfString:@"\n" withString:@""]

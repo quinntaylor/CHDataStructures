@@ -21,7 +21,7 @@
 
 - (id) initWithArray:(NSArray*)anArray {
 	if ([self init] == nil) return nil;
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 	for (id anObject in anArray)
 #else
 	NSEnumerator *e = [anArray objectEnumerator];
@@ -50,7 +50,7 @@
 
 - (id) copyWithZone:(NSZone*)zone {
 	id copy = [[[self class] allocWithZone:zone] init];
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 	for (id anObject in self)
 #else
 	NSEnumerator *e = [self objectEnumerator];
@@ -65,7 +65,7 @@
 
 #pragma mark <NSFastEnumeration>
 
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len

@@ -26,7 +26,7 @@
  Rather than enforcing that this class be abstract, the contract is implied.
  */
 @interface CHAbstractListCollection : CHLockableObject 
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 <NSCoding, NSCopying, NSFastEnumeration>
 #else
 <NSCoding, NSCopying>
@@ -129,7 +129,7 @@
 - (void) encodeWithCoder:(NSCoder*)encoder;
 - (id) initWithCoder:(NSCoder*)decoder;
 - (id) copyWithZone:(NSZone*)zone;
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len;

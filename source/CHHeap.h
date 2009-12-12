@@ -23,7 +23,7 @@
  Objects are "heapified" according to their sorted order, so they must respond to the @c -compare: selector, which accepts another object and returns @c NSOrderedAscending, @c NSOrderedSame, or @c NSOrderedDescending (constants in <a href="http://tinyurl.com/NSComparisonResult">NSComparisonResult</a>) as the receiver is less than, equal to, or greater than the argument, respectively. (Several Cocoa classes already implement the @c -compare: method, including NSString, NSDate, NSNumber, NSDecimalNumber, and NSCell.) 
  */
 @protocol CHHeap
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 <NSObject, NSCoding, NSCopying, NSFastEnumeration>
 #else
 <NSObject, NSCoding, NSCopying>
@@ -269,7 +269,7 @@
 /** @name <NSFastEnumeration> */
 // @{
 
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 /**
  Called within <code>@b for (type variable @b in collection)</code> constructs. Returns by reference a C array of objects over which the sender should iterate, and as the return value the number of objects in the array.
  

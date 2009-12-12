@@ -49,7 +49,7 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 	if ([self init] == nil) return nil;
 	NSEnumerator *objects = [objectsArray objectEnumerator];
 	NSSet *objectSet;
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 	for (id key in keyArray)
 #else
 	NSEnumerator *e = [keyArray objectEnumerator];
@@ -93,7 +93,7 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 - (id) initWithCoder:(NSCoder*)decoder{
 	if ([self init] == nil) return nil;
 	dictionary = [[decoder decodeObjectForKey:@"dictionary"] retain];
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 	objectCount = (NSUInteger)[decoder decodeIntegerForKey:@"objectCount"];
 #elif __LP64__ || NS_BUILD_32_LIKE_64
 	objectCount = (NSUInteger)[decoder decodeInt64ForKey:@"objectCount"];
@@ -105,7 +105,7 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 
 - (void) encodeWithCoder:(NSCoder*)encoder {
 	[encoder encodeObject:dictionary forKey:@"dictionary"];
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 	[encoder encodeInteger:objectCount forKey:@"objectCount"];
 #elif __LP64__ || NS_BUILD_32_LIKE_64
 	[encoder encodeInt64:objectCount forKey:@"objectCount"];
@@ -118,7 +118,7 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 
 - (id) copyWithZone:(NSZone*)zone {
 	CHMultiDictionary *newMultiMap = [[CHMultiDictionary allocWithZone:zone] init];
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 	for (id key in [self allKeys])
 #else
 	NSEnumerator *e = [self keyEnumerator];
@@ -134,7 +134,7 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 
 #pragma mark <NSFastEnumeration>
 
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len
@@ -146,7 +146,7 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 #pragma mark Adding Objects
 
 - (void) addEntriesFromMultiDictionary:(CHMultiDictionary*)otherMultiMap; {
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 	for (id key in [otherMultiMap allKeys])
 #else
 	NSEnumerator *e = [otherMultiMap keyEnumerator];
@@ -195,7 +195,7 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 
 - (NSArray*) allObjects {
 	NSMutableArray *objects = [NSMutableArray array];
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 	for (id key in [self allKeys])
 #else
 	NSEnumerator *e = [self keyEnumerator];
@@ -226,7 +226,7 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 }
 
 - (BOOL) containsObject:(id)anObject {
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 	for (id key in [self allKeys])
 #else
 	NSEnumerator *e = [self keyEnumerator];

@@ -285,7 +285,7 @@
 	[self checkEqualityWithArray:[copy allObjects]];
 }
 
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 - (void) testNSFastEnumeration {
 	NSArray *array = [self randomNumbers];
 	[set addObjectsFromArray:array];
@@ -491,7 +491,7 @@
 
 #pragma mark <Protocols>
 
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 - (void) testNSFastEnumeration {
 	NSArray *array = [self randomNumbers];
 	[set addObjectsFromArray:array];

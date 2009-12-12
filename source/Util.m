@@ -104,7 +104,7 @@ BOOL collectionsAreEqual(id collection1, id collection2) {
 	if ([collection1 count] != [collection2 count])
 		return NO;
 	NSEnumerator *otherObjects = [collection2 objectEnumerator];
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 	for (id anObject in collection1)
 #else
 	NSEnumerator *objects = [collection1 objectEnumerator];

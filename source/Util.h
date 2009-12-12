@@ -21,9 +21,8 @@
 /** Macro for designating symbols as being unused to supress compile warnings. */
 #define UNUSED __attribute__((unused))
 
-/** Availability macro for screening out functionality that requires Leopard. */
-#define MAC_OS_X_VERSION_10_5_AND_LATER \
-        MAC_OS_X_VERSION_MIN_REQUIRED >= 1050
+/** Macro for screening out functionality that requires Objective-C 2.0 APIs. */
+#define OBJC_API_2 OBJC_API_VERSION >= 2
 
 #pragma mark -
 

@@ -68,7 +68,7 @@
 /** @name <NSFastEnumeration> */
 // @{
 
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 /**
  Called within <code>@b for (type variable @b in collection)</code> constructs. Returns by reference a C array of objects over which the sender should iterate, and as the return value the number of objects in the array.
  

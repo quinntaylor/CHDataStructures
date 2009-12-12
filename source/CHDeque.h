@@ -20,7 +20,7 @@
  A <a href="http://en.wikipedia.org/wiki/Deque">deque</a> protocol with methods for insertion and removal on both ends. This differs from standard stacks (where objects are inserted and removed from the same end, a.k.a. LIFO) and queues (where objects are inserted at one end and removed at the other, a.k.a. FIFO). However, a deque can act as either a stack or a queue (or other possible sub-types) by selectively restricting a subset of its input and output operations.
  */
 @protocol CHDeque
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 <NSObject, NSCoding, NSCopying, NSFastEnumeration>
 #else
 <NSObject, NSCoding, NSCopying>
@@ -271,7 +271,7 @@
 /** @name <NSFastEnumeration> */
 // @{
 
-#if MAC_OS_X_VERSION_10_5_AND_LATER
+#if OBJC_API_2
 /**
  Called within <code>@b for (type variable @b in collection)</code> constructs. Returns by reference a C array of objects over which the sender should iterate, and as the return value the number of objects in the array.
  
