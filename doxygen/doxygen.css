@@ -284,6 +284,7 @@ hr {
 
 .memitem {
 	padding: 0;
+	margin: 6px 0;
 }
 
 .memname, .memname a.elRef {
