@@ -23,7 +23,7 @@
  
  An NSLock is used internally to coordinate the operation of multiple threads of execution within the same application, and methods are exposed to allow clients to manipulate the lock in simple ways. Since not all clients will use the lock, it is created lazily the first time a client attempts to acquire the lock.
  
- A CFMutableSet is used internally to store the key-value pairs. Subclasses may choose to add other instance variables to enable a specific ordering of keys, override methods to modify behavior, and add methods to extend existing behaviors. However, all subclasses should behave like a standard Cocoa dictionary as much as possible, and document clearly when they do not.
+ A CFMutableSetRef is used internally to store the key-value pairs. Subclasses may choose to add other instance variables to enable a specific ordering of keys, override methods to modify behavior, and add methods to extend existing behaviors. However, all subclasses should behave like a standard Cocoa dictionary as much as possible, and document clearly when they do not.
  
  @note Any method inherited from NSSet or NSMutableSet is supported, but only overridden methods are listed here.
  */ 
@@ -39,7 +39,6 @@
  
  @return An initialized mutable set with initial capacity to hold @a numItems members.
  
- @see init
  @see initWithArray:
  */
 - (id) initWithCapacity:(NSUInteger)numItems;
@@ -120,8 +119,6 @@
  @param anObject The object to add to the receiver.
  
  @see addObjectsFromArray:
- @see insertObject:atIndex:
- @see lastObject
  @see unionSet:
  */
 - (void) addObject:(id)anObject;
@@ -134,11 +131,9 @@
 /**
  Returns one of the objects in the receiver, or @c nil if the receiver contains no objects.
  
- @return One of the objects in the receiver, or @c nil if the receiver contains no objects. The object returned is chosen at the receiver's convenience—the selection is not guaranteed to be random.
+ @return One of the objects in the receiver, or @c nil if the receiver contains no objects. The object returned is chosen at the receiver's convenience; the selection is not guaranteed to be random.
  
  @see allObjects
- @see firstObject
- @see lastObject
  */
 - (id) anyObject;
 
@@ -160,7 +155,6 @@
  @return The number of members in the receiver.
  
  @see allObjects
- @see set
  */
 - (NSUInteger) count;
 
@@ -197,7 +191,6 @@
  
  @see allObjects
  @see countByEnumeratingWithState:objects:count:
- @see set
  */
 - (NSEnumerator*) objectEnumerator;
 
@@ -212,21 +205,17 @@
  @see allObjects
  @see intersectSet:
  @see minusSet:
- @see removeFirstObject
- @see removeLastObject
  @see removeObject:
  */
 - (void) removeAllObjects;
 
 /**
- Remove a given object from the receiver.
+ Remove a given object from the receiver if it is present.
  
  @param anObject The object to remove from the receiver.
  
  @see minusSet:
  @see removeAllObjects
- @see removeFirstObject
- @see removeLastObject
  */
 - (void) removeObject:(id)anObject;
 

@@ -23,14 +23,13 @@
  
  An NSLock is used internally to coordinate the operation of multiple threads of execution within the same application, and methods are exposed to allow clients to manipulate the lock in simple ways. Since not all clients will use the lock, it is created lazily the first time a client attempts to acquire the lock.
  
- A CFMutableDictionary is used internally to store the key-value pairs. Subclasses may choose to add other instance variables to enable a specific ordering of keys, override methods to modify behavior, and add methods to extend existing behaviors. However, all subclasses should behave like a standard Cocoa dictionary as much as possible, and document clearly when they do not.
+ A CFMutableDictionaryRef is used internally to store the key-value pairs. Subclasses may choose to add other instance variables to enable a specific ordering of keys, override methods to modify behavior, and add methods to extend existing behaviors. However, all subclasses should behave like a standard Cocoa dictionary as much as possible, and document clearly when they do not.
  
  @note Any method inherited from NSDictionary or NSMutableDictionary is supported, but only overridden methods are listed here.
  
  @todo Implement @c -copy and @c -mutableCopy differently (so users can actually obtain an immutable copy) and make mutation methods aware of immutability?
  */
-@interface CHLockableDictionary : NSMutableDictionary <CHLockable>
-{
+@interface CHLockableDictionary : NSMutableDictionary <CHLockable> {
 	NSLock* lock; /**< A lock for synchronizing interaction between threads. */
 	__strong CFMutableDictionaryRef dictionary; /**< A Core Foundation dictionary. */
 }
@@ -107,8 +106,9 @@
  @since Mac OS X v10.5 and later.
  
  @see NSFastEnumeration protocol
- @see allKeys
- @see objectEnumerator
+ @see NSDictionary#allKeys
+ @see keyEnumerator
+ @see NSDictionary#objectEnumerator
  */
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
@@ -124,7 +124,7 @@
  Adds a given key-value pair to the receiver.
  
  @param anObject The value for @a aKey. The object receives a @c -retain message before being added to the receiver. Must not be @c nil.
- @param aKey The key for @a anObject. The key is copied (using @c -copyWithZone: — keys must conform to the NSCopying protocol). Must not be @c nil.
+ @param aKey The key for @a anObject. The key is copied using @c -copyWithZone: so keys must conform to the NSCopying protocol. Must not be @c nil.
  @throw NSInvalidArgumentException If @a aKey or @a anObject is @c nil. If you need to represent a @c nil value in the dictionary, use NSNull.
  
  @see objectForKey:

@@ -89,8 +89,6 @@
 }
 
 - (id) keyAtIndex:(NSUInteger)index {
-	if (index >= [self count])
-		CHIndexOutOfRangeException([self class], _cmd, index, [self count]);
 	return [keyOrdering objectAtIndex:index];
 }
 

@@ -43,7 +43,7 @@
  
  @return An array containing the receiver's keys in sorted order. The array is empty if the receiver has no entries.
  
- @see allValues
+ @see NSDictionary#allValues
  @see count
  @see keyEnumerator
  @see countByEnumeratingWithState:objects:count:

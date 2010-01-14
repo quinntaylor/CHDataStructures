@@ -99,7 +99,6 @@
  @see anyObject
  @see countByEnumeratingWithState:objects:count:
  @see objectEnumerator
- @see set
  */
 - (NSArray*) allObjects;
 
@@ -140,6 +139,7 @@
  Returns the "youngest" member of the receiver.
 
  @see addObject:
+ @see anyObject
  @see firstObject
  @see removeLastObject
  */
@@ -151,10 +151,9 @@
  @param index The insertion-order index of the value to retrieve.
  @return The value at the specified index, based on insertion order.
  
- @throw NSRangeException If @a index is greater than or equal to the number of key in the receiver.
+ @throw NSRangeException If @a index is greater than or equal to the number of keys in the receiver.
  
  @see indexOfObject:
- @see objectAtIndex:
  @see removeObjectAtIndex:
  */
 - (id) objectAtIndex:(NSUInteger)index;
@@ -170,7 +169,6 @@
  
  @see allObjects
  @see countByEnumeratingWithState:objects:count:
- @see set
  */
 - (NSEnumerator*) objectEnumerator;
 
@@ -183,6 +181,7 @@
  Remove the "oldest" member of the receiver.
  
  @see firstObject
+ @see removeAllObjects
  @see removeObject:
  @see removeObjectAtIndex:
  */
@@ -192,17 +191,18 @@
  Remove the "youngest" member of the receiver. 
 
  @see lastObject
+ @see removeAllObjects
  @see removeObject:
  @see removeObjectAtIndex:
  */
 - (void) removeLastObject;
 
 /**
- Remove the object at a given object from the receiver.
+ Remove the object at a given index from the receiver.
  
  @param index The index of the object to remove.
  
- @throw NSRangeException If @a index is greater than the number of elements in the receiver.
+ @throw NSRangeException if @a index is greater than the number of elements in the receiver.
  
  @see minusSet:
  @see removeAllObjects

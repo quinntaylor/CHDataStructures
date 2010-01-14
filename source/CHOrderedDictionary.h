@@ -72,7 +72,7 @@
  Adds a given key-value pair to the receiver, with the key at a given index in the ordering.
  
  @param anObject The value for @a aKey. The object receives a @c -retain message before being added to the receiver. Must not be @c nil.
- @param aKey The key for @a anObject. The key is copied (using @c -copyWithZone: — keys must conform to the NSCopying protocol). Must not be @c nil.
+ @param aKey The key for @a anObject. The key is copied using @c -copyWithZone: so keys must conform to the NSCopying protocol. Must not be @c nil.
  @param index The index in the receiver's key ordering at which to insert @a anObject.
  
  @throw NSRangeException If @a index is greater than the current number of keys.
