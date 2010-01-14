@@ -80,6 +80,14 @@
       <name>containsKey:</name>
       <anchor>//apple_ref/occ/instm/NSDictionary/containsKey:</anchor>
     </member>
+    <member kind="function">
+      <name>keyEnumerator</name>
+      <anchor>//apple_ref/occ/instm/NSDictionary/keyEnumerator</anchor>
+    </member>
+    <member kind="function">
+      <name>objectEnumerator</name>
+      <anchor>//apple_ref/occ/instm/NSDictionary/objectEnumerator</anchor>
+    </member>
   </compound>
   <compound kind="class">
     <name>NSEnumerator</name>
