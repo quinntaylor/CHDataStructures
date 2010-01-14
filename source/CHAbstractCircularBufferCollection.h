@@ -53,15 +53,46 @@
 
 - (NSArray*) allObjects;	
 - (NSUInteger) count;
+
+/**
+ Returns a boolean value that indicates whether a given object is present in the receiver.  Objects are considered equal if @c isEqual: returns @c YES.
+ 
+ @param anObject The object to be matched and located in the receiver.
+ @return @c YES if @a anObject is present in the receiver, otherwise @c NO.
+ 
+ @see containsObjectIdenticalTo:
+ @see indexOfObject:
+ */
 - (BOOL) containsObject:(id)anObject;
+
+/**
+ Returns a boolean value that indicates whether a given object is present in the receiver.  Objects are considered identical if their object addresses are the same.
+ 
+ @param anObject The object to be matched and located in the receiver.
+ @return @c YES if @a anObject is present in the receiver, otherwise @c NO.
+ 
+ @see containsObject:
+ @see indexOfObjectIdenticalTo:
+ */
 - (BOOL) containsObjectIdenticalTo:(id)anObject;
+
 - (id) firstObject;
 - (id) lastObject;
+
+/**
+ Returns an enumerator that accesses each object in the receiver from front to back.
+ 
+ @return An enumerator that lets you access each object in the receiver, in order, from front to back. The enumerator returned is never @c nil; if the receiver is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
+ 
+ @attention The enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
+ @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
+ */
 - (NSEnumerator*) objectEnumerator;
+
 /**
  Returns an enumerator that accesses each object in the receiver from back to front.
  
- @return An enumerator that accesses each object in the receiver from back to front. The enumerator returned is never @c nil; if the receiver is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
+ @return An enumerator that lets you access each object in the receiver, in order, from back to front. The enumerator returned is never @c nil; if the receiver is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
  
  @attention The enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
  @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
@@ -92,10 +123,10 @@
 - (void) exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2;
 
 /**
- Returns the lowest index of a given object, matched using @c isEqual:.
+ Returns the lowest index whose corresponding array value is equal to a given object. Objects are considered equal if @c isEqual: returns @c YES.
  
  @param anObject The object to be matched and located in the receiver.
- @return The index of the first object which is equal to @a anObject. If none of the objects in the receiver match @a anObject, returns @c CHNotFound.
+ @return The lowest index whose corresponding array value is equal to @a anObject. If none of the objects in the receiver is equal to @a anObject, returns @c CHNotFound.
  
  @see indexOfObjectIdenticalTo:
  @see objectAtIndex:
@@ -104,7 +135,20 @@
 - (NSUInteger) indexOfObject:(id)anObject;
 
 /**
- Returns the lowest index of a given object, matched using the == operator.
+ Returns the lowest index within a specified range whose corresponding array value is equal to a given object. Objects are considered equal if @c isEqual: returns @c YES.
+ 
+ @param anObject The object to be matched and located in the receiver.
+ @param range The range of indexes in the receiver within which to search for @a anObject.
+ @return The lowest index within @a range whose corresponding array value is equal to @a anObject. If none of the objects within range is equal to @a anObject, returns @c CHNotFound.
+ 
+ @see containsObject:
+ @see indexOfObject:
+ @see indexOfObjectIdenticalTo:inRange:
+ */
+- (NSUInteger) indexOfObject:(id)anObject inRange:(NSRange)range;
+
+/**
+ Returns the lowest index whose corresponding array value is identical to a given object. Objects are considered identical if their object addresses are the same.
  
  @param anObject The object to be matched and located in the receiver.
  @return The index of the first object which is equal to @a anObject. If none of the objects in the receiver match @a anObject, returns @c CHNotFound.
@@ -114,6 +158,18 @@
  @see removeObjectAtIndex:
  */
 - (NSUInteger) indexOfObjectIdenticalTo:(id)anObject;
+
+/**
+ Returns the lowest index within a specified range whose corresponding array value is identical to a given object. Objects are considered identical if their object addresses are the same.
+ 
+ @param anObject The object to be matched and located in the receiver.
+ @param range The range of indexes in the receiver within which to search for @a anObject.
+ @return The lowest index within @a range whose corresponding array value is equal to @a anObject. If none of the objects within range is equal to @a anObject, returns @c CHNotFound.
+ 
+ Return Value
+ The lowest index within range whose corresponding array value is identical to anObject. If none of the objects within range is identical to anObject, returns NSNotFound.
+ */
+- (NSUInteger) indexOfObjectIdenticalTo:(id)anObject inRange:(NSRange)range;
 
 /**
  Insert a given object at a given index. If @a index is already occupied, then objects from @a index to the non-wrapped end of the buffer are shifted one spot to make room for @a anObject.
@@ -138,9 +194,37 @@
  
  @see indexOfObject:
  @see indexOfObjectIdenticalTo:
+ @see objectsAtIndexes:
+ @see objectsInRange:
  @see removeObjectAtIndex:
  */
 - (id) objectAtIndex:(NSUInteger)index;
+
+/**
+ Returns an array containing the objects in the receiver at the indexes specified by a given index set.
+ 
+ @param indexes A set of positions for objects to retrieve from the receiver.
+ @return An array containing the objects in the receiver at the positions specified by @a indexes.
+ @throw NSRangeException If any location in @a indexes exceeds the bounds of the receiver.
+ 
+ @see indexOfObject:
+ @see indexOfObjectIdenticalTo:
+ @see objectAtIndex:
+ @see \link NSArray#objectsAtIndexes: - [NSArray objectsAtIndexes:]\endlink
+ */
+- (NSArray*) objectsAtIndexes:(NSIndexSet*)indexes;
+
+/**
+ Returns a new array containing the receiver’s elements that fall within the limits specified by a given range.
+ 
+ @param range A range within the receiver’s bounds.
+ @return An array containing the receiver’s elements that fall within the limits specified by @a range.
+ 
+ @see objectAtIndex:
+ @see objectsAtIndexes:
+ @see \link NSArray#subarrayWithRange: - [NSArray subarrayWithRange:]\endlink
+ */
+- (NSArray*) objectsInRange:(NSRange)range;
 
 /**
  Remove the object at a given index from the receiver. Elements on the non-wrapped end of the buffer are shifted one spot to fill the gap.

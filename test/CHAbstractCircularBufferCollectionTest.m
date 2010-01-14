@@ -57,6 +57,12 @@
 	[buffer release];
 }
 
+- (void) populateBuffer {
+	e = [abc objectEnumerator];
+	while (anObject = [e nextObject])
+		[buffer appendObject:anObject];
+}
+
 // This method checks tail-head (accounting for wrapping) against the count.
 // This assumes
 - (void) checkCountMatchesDistanceFromHeadToTail:(NSUInteger) expectedValue {
@@ -176,9 +182,7 @@
 	STAssertThrows([buffer exchangeObjectAtIndex:1 withObjectAtIndex:0],
 				   @"Should raise exception, collection is empty.");
 	
-	e = [abc objectEnumerator];
-	while (anObject = [e nextObject])
-		[buffer appendObject:anObject];
+	[self populateBuffer];
 	
 	[buffer exchangeObjectAtIndex:1 withObjectAtIndex:1];
 	STAssertEqualObjects([buffer allObjects], abc,
@@ -192,9 +196,7 @@
 
 - (void) testCount {
 	STAssertEquals([buffer count], (NSUInteger)0, @"Wrong count");
-	e = [abc objectEnumerator];
-	while (anObject = [e nextObject])
-		[buffer appendObject:anObject];
+	[self populateBuffer];
 	STAssertEquals([buffer count], [abc count], @"Wrong count");
 }
 
@@ -202,9 +204,7 @@
 	STAssertNotNil([buffer allObjects], @"-allObjects should never return nil");
 	STAssertEquals([[buffer allObjects] count], (NSUInteger)0, @"Wrong count");
 	
-	e = [abc objectEnumerator];
-	while (anObject = [e nextObject])
-		[buffer appendObject:anObject];
+	[self populateBuffer];
 	STAssertEqualObjects([buffer allObjects], abc, @"Bad result for -allObjects");
 	
 	// Test -allObjects when the buffer wraps around to the beginning
@@ -238,9 +238,7 @@
 	STAssertEquals([[[buffer reverseObjectEnumerator] allObjects] count], (NSUInteger)0,
 				   @"Wrong count");
 	
-	e = [abc objectEnumerator];
-	while (anObject = [e nextObject])
-		[buffer appendObject:anObject];
+	[self populateBuffer];
 	
 	NSArray *allObjects;
 	
@@ -297,9 +295,7 @@
 - (void) testDescription {
 	STAssertEqualObjects([buffer description], [[buffer allObjects] description],
 						 @"Descriptions should be equal");
-	e = [abc objectEnumerator];
-	while (anObject = [e nextObject])
-		[buffer appendObject:anObject];
+	[self populateBuffer];
 	STAssertEqualObjects([buffer description], [[buffer allObjects] description],
 						 @"Descriptions should be equal");
 }
@@ -311,9 +307,7 @@
 	while (anObject = [e nextObject])
 		STAssertFalse([buffer containsObject:anObject], @"Buffer is empty");
 	STAssertFalse([buffer containsObject:@"Z"], @"Buffer is empty");
-	e = [abc objectEnumerator];
-	while (anObject = [e nextObject])
-		[buffer appendObject:anObject];
+	[self populateBuffer];
 	e = [abc objectEnumerator];
 	while (anObject = [e nextObject])
 		STAssertTrue([buffer containsObject:anObject], @"Incorrect result");
@@ -327,9 +321,7 @@
 		STAssertFalse([buffer containsObjectIdenticalTo:anObject], @"Buffer is empty");
 	STAssertFalse([buffer containsObjectIdenticalTo:@"Z"], @"Buffer is empty");
 	STAssertFalse([buffer containsObjectIdenticalTo:a], @"Incorrect result");
-	e = [abc objectEnumerator];
-	while (anObject = [e nextObject])
-		[buffer appendObject:anObject];
+	[self populateBuffer];
 	e = [abc objectEnumerator];
 	while (anObject = [e nextObject])
 		STAssertTrue([buffer containsObjectIdenticalTo:anObject], @"Incorrect result");
@@ -387,13 +379,41 @@
 				   @"Object should not be found in buffer");
 }
 
+- (void) testIndexOfObjectInRange {
+	STAssertThrows([buffer indexOfObject:nil inRange:NSMakeRange(0, 1)],
+	               @"Should raise range exception.");
+	STAssertNoThrow([buffer indexOfObject:nil inRange:NSMakeRange(0, 0)],
+					@"Should raise range exception.");
+	[self populateBuffer];
+	NSRange range = NSMakeRange(1, 1);
+	STAssertEquals(CHNotFound, [buffer indexOfObject:@"A" inRange:range],
+				   @"Value should not appear in specified range.");
+	STAssertEquals((NSUInteger)1, [buffer indexOfObject:@"B" inRange:range],
+				   @"Value should appear in specified range.");
+	STAssertEquals(CHNotFound, [buffer indexOfObject:@"C" inRange:range],
+				   @"Value should not appear in specified range.");
+}
+
+- (void) testIndexOfObjectIdenticalToInRange {
+	STAssertThrows([buffer indexOfObjectIdenticalTo:nil inRange:NSMakeRange(0, 1)],
+	               @"Should raise range exception.");	
+	STAssertNoThrow([buffer indexOfObjectIdenticalTo:nil inRange:NSMakeRange(0, 0)],
+					@"Should raise range exception.");
+	[self populateBuffer];
+	NSRange range = NSMakeRange(1, 1);
+	STAssertEquals(CHNotFound, [buffer indexOfObjectIdenticalTo:@"A" inRange:range],
+				   @"Value should not appear in specified range.");
+	STAssertEquals((NSUInteger)1, [buffer indexOfObjectIdenticalTo:@"B" inRange:range],
+				   @"Value should appear in specified range.");
+	STAssertEquals(CHNotFound, [buffer indexOfObjectIdenticalTo:[NSString stringWithFormat:@"B"] inRange:range],
+				   @"Value should not appear in specified range.");
+	STAssertEquals(CHNotFound, [buffer indexOfObjectIdenticalTo:@"C" inRange:range],
+				   @"Value should not appear in specified range.");
+}
+
 - (void) testObjectAtIndex {
 	STAssertThrows([buffer objectAtIndex:0], @"Range exception.");
-	STAssertThrows([buffer objectAtIndex:[abc count]+1], @"Range exception.");
-	
-	e = [abc objectEnumerator];
-	while (anObject = [e nextObject])
-		[buffer appendObject:anObject];
+	[self populateBuffer];
 	for (NSUInteger searchIndex = 0; searchIndex < [abc count]; searchIndex++) {
 		STAssertEqualObjects([buffer objectAtIndex:searchIndex],
 							 [abc objectAtIndex:searchIndex], @"Search mismatch");
@@ -401,12 +421,39 @@
 	STAssertThrows([buffer objectAtIndex:[abc count]+1], @"Range exception.");
 }
 
+- (void) testObjectsAtIndexes {
+	[self populateBuffer];
+	NSUInteger count = [buffer count];
+	NSRange range;
+	for (NSUInteger location = 0; location <= count; location++) {
+		range.location = location;
+		for (NSUInteger length = 0; length <= count - location + 1; length++) {
+			range.length = length;
+			NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:range];
+			if (location + length > count) {
+				STAssertThrows([buffer objectsAtIndexes:indexes], @"Range exception");
+			} else {
+				STAssertEqualObjects([buffer objectsAtIndexes:indexes],
+									 [[buffer allObjects] objectsAtIndexes:indexes],
+									 @"Range selections should be equal.");
+			}
+		}
+	}
+}
+
+- (void) testObjectsInRange {
+	NSRange range = NSMakeRange(1, 1);
+	STAssertThrows([buffer objectsInRange:range], @"Range exception");
+	[self populateBuffer];
+	STAssertEqualObjects([buffer objectsInRange:range],
+						 [[buffer allObjects] subarrayWithRange:range],
+						 @"Range selections should be equal.");
+}
+
 #pragma mark Removal
 
 - (void) testRemoveFirstObject {
-	e = [abc objectEnumerator];
-	while (anObject = [e nextObject])
-		[buffer appendObject:anObject];
+	[self populateBuffer];
 	
 	NSUInteger expected = [abc count];
 	STAssertEqualObjects([buffer firstObject], @"A", @"Wrong -firstObject.");
@@ -432,9 +479,7 @@
 }
 
 - (void) testRemoveLastObject {
-	e = [abc objectEnumerator];
-	while (anObject = [e nextObject])
-		[buffer appendObject:anObject];
+	[self populateBuffer];
 	NSUInteger expected = [abc count];
 	STAssertEqualObjects([buffer lastObject], @"C", @"Wrong -lastObject.");
 	STAssertEquals([buffer count], expected--, @"Incorrect count.");
@@ -453,9 +498,7 @@
 
 - (void) testRemoveAllObjects {
 	STAssertEquals([buffer count], (NSUInteger)0, @"Incorrect count.");
-	e = [abc objectEnumerator];
-	while (anObject = [e nextObject])
-		[buffer appendObject:anObject];
+	[self populateBuffer];
 	[self checkCountMatchesDistanceFromHeadToTail:3];
 
 	[buffer removeAllObjects];
@@ -491,9 +534,7 @@
 
 - (void) testRemoveObject {
 	STAssertNoThrow([buffer removeObject:@"A"], @"No effect when empty.");
-	e = [abc objectEnumerator];
-	while (anObject = [e nextObject])
-		[buffer appendObject:anObject];
+	[self populateBuffer];
 	STAssertEquals([buffer count], [abc count], @"Incorrect count.");
 	STAssertNoThrow([buffer removeObject:nil],  @"No effect with nil object.");
 	STAssertEquals([buffer count], [abc count], @"Incorrect count.");

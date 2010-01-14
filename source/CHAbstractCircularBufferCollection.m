@@ -358,9 +358,16 @@ BOOL objectsAreIdentical(id o1, id o2) {
 }
 
 - (NSUInteger) indexOfObject:(id)anObject {
-	NSUInteger iterationIndex = headIndex;
-	NSUInteger relativeIndex = 0;
-	while (iterationIndex != tailIndex) {
+	return [self indexOfObject:anObject inRange:NSMakeRange(0, count)];
+}
+
+- (NSUInteger) indexOfObject:(id)anObject inRange:(NSRange)range {
+	NSUInteger onePastLastRelativeIndex = range.location + range.length;
+	if (onePastLastRelativeIndex > count)
+		CHIndexOutOfRangeException([self class], _cmd, onePastLastRelativeIndex, count);
+	NSUInteger iterationIndex = transformIndex(range.location);
+	NSUInteger relativeIndex = range.location;
+	while (relativeIndex < onePastLastRelativeIndex) {
 		if ([array[iterationIndex] isEqual:anObject])
 			return relativeIndex;
 		incrementIndex(iterationIndex);
@@ -370,9 +377,16 @@ BOOL objectsAreIdentical(id o1, id o2) {
 }
 
 - (NSUInteger) indexOfObjectIdenticalTo:(id)anObject {
-	NSUInteger iterationIndex = headIndex;
-	NSUInteger relativeIndex = 0;
-	while (iterationIndex != tailIndex) {
+	return [self indexOfObjectIdenticalTo:anObject inRange:NSMakeRange(0, count)];
+}
+
+- (NSUInteger)indexOfObjectIdenticalTo:(id)anObject inRange:(NSRange)range {
+	NSUInteger onePastLastRelativeIndex = range.location + range.length;
+	if (onePastLastRelativeIndex > count)
+		CHIndexOutOfRangeException([self class], _cmd, onePastLastRelativeIndex, count);
+	NSUInteger iterationIndex = transformIndex(range.location);
+	NSUInteger relativeIndex = range.location;
+	while (relativeIndex < onePastLastRelativeIndex) {
 		if (array[iterationIndex] == anObject)
 			return relativeIndex;
 		incrementIndex(iterationIndex);
@@ -385,6 +399,25 @@ BOOL objectsAreIdentical(id o1, id o2) {
 	if (index >= count)
 		CHIndexOutOfRangeException([self class], _cmd, index, count);
 	return array[transformIndex(index)];
+}
+
+- (NSArray*) objectsAtIndexes:(NSIndexSet*)indexes {
+	if ([indexes count] == 0)
+		return [NSArray array];
+	NSMutableArray *objects = [NSMutableArray arrayWithCapacity:[indexes count]];
+	NSUInteger index = [indexes firstIndex];
+	while (index != NSNotFound) {
+		[objects addObject:[self objectAtIndex:index]];
+		index = [indexes indexGreaterThanIndex:index];
+	}
+	return [[objects copy] autorelease];
+}
+
+- (NSArray*) objectsInRange:(NSRange)range {
+	NSUInteger lastIndex = range.length + range.location;
+	if (lastIndex >= count)
+		CHIndexOutOfRangeException([self class], _cmd, lastIndex, count);
+	return [self objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:range]];
 }
 
 - (NSEnumerator*) objectEnumerator {
