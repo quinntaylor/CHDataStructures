@@ -42,10 +42,10 @@ void initializeGCStatus() {
 }
 
 void CHIndexOutOfRangeException(Class aClass, SEL method,
-                                NSUInteger index, NSUInteger elements) {
+                                NSUInteger index, NSUInteger count) {
 	[NSException raise:NSRangeException
-	            format:@"[%@ %s] -- Index (%lu) out of range (0-%lu).",
-	                   aClass, sel_getName(method), index, elements-1];
+	            format:@"[%@ %s] -- Index (%lu) beyond bounds for count (%lu)",
+	                   aClass, sel_getName(method), index, count];
 }
 
 void CHInvalidArgumentException(Class aClass, SEL method, NSString *string) {
@@ -55,18 +55,18 @@ void CHInvalidArgumentException(Class aClass, SEL method, NSString *string) {
 }
 
 void CHNilArgumentException(Class aClass, SEL method) {
-	CHInvalidArgumentException(aClass, method, @"Invalid nil argument.");
+	CHInvalidArgumentException(aClass, method, @"Invalid nil argument");
 }
 
 void CHMutatedCollectionException(Class aClass, SEL method) {
 	[NSException raise:NSGenericException
-	            format:@"[%@ %s] -- Collection was mutated during enumeration.",
+	            format:@"[%@ %s] -- Collection was mutated during enumeration",
 	                   aClass, sel_getName(method)];
 }
 
 void CHUnsupportedOperationException(Class aClass, SEL method) {
 	[NSException raise:NSInternalInconsistencyException
-	            format:@"[%@ %s] -- Unsupported operation.",
+	            format:@"[%@ %s] -- Unsupported operation",
 	                   aClass, sel_getName(method)];
 }
 

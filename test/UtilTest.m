@@ -68,7 +68,7 @@
 		raisedException = YES;
 		STAssertEqualObjects([e name], NSRangeException,
 							 @"Incorrect exception name.");
-		[reason appendString:@"Index (4) out of range (0-3)."];
+		[reason appendString:@"Index (4) beyond bounds for count (4)"];
 		STAssertEqualObjects([e reason], reason, @"Incorrect exception reason.");
 	}
 	STAssertTrue(raisedException, @"Should have raised an exception.");
@@ -96,7 +96,7 @@
 		raisedException = YES;
 		STAssertEqualObjects([e name], NSInvalidArgumentException,
 							 @"Incorrect exception name.");
-		[reason appendString:@"Invalid nil argument."];
+		[reason appendString:@"Invalid nil argument"];
 		STAssertEqualObjects([e reason], reason, @"Incorrect exception reason.");
 	}
 	STAssertTrue(raisedException, @"Should have raised an exception.");
@@ -110,7 +110,7 @@
 		raisedException = YES;
 		STAssertEqualObjects([e name], NSGenericException,
 							 @"Incorrect exception name.");
-		[reason appendString:@"Collection was mutated during enumeration."];
+		[reason appendString:@"Collection was mutated during enumeration"];
 		STAssertEqualObjects([e reason], reason, @"Incorrect exception reason.");
 	}
 	STAssertTrue(raisedException, @"Should have raised an exception.");
@@ -124,7 +124,7 @@
 		raisedException = YES;
 		STAssertEqualObjects([e name], NSInternalInconsistencyException,
 							 @"Incorrect exception name.");
-		[reason appendString:@"Unsupported operation."];
+		[reason appendString:@"Unsupported operation"];
 		STAssertEqualObjects([e reason], reason, @"Incorrect exception reason.");
 	}
 	STAssertTrue(raisedException, @"Should have raised an exception.");
