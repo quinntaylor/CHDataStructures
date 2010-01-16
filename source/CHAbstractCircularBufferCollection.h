@@ -215,10 +215,10 @@
 - (NSArray*) objectsAtIndexes:(NSIndexSet*)indexes;
 
 /**
- Returns a new array containing the receiver’s elements that fall within the limits specified by a given range.
+ Returns a new array containing the receiver's elements that fall within the limits specified by a given range.
  
- @param range A range within the receiver’s bounds.
- @return An array containing the receiver’s elements that fall within the limits specified by @a range.
+ @param range A range within the receiver's bounds.
+ @return An array containing the receiver's elements that fall within the limits specified by @a range.
  
  @see objectAtIndex:
  @see objectsAtIndexes:
@@ -238,6 +238,19 @@
  @see objectAtIndex:
  */
 - (void) removeObjectAtIndex:(NSUInteger)index;
+
+/**
+ Removes the objects at the specified indexes from the receiver. This method is similar to #removeObjectAtIndex: but allows you to efficiently remove multiple objects with a single operation.
+ 
+ @param indexes The indexes of the objects to remove from the receiver.
+ @throw NSRangeException If any location in @a indexes exceeds the bounds of the receiver.
+ 
+ @attention To remove objects in a given @c NSRange, pass <code>[NSIndexSet indexSetWithIndexesInRange:range]</code> as the parameter to this method.
+ 
+ @see objectsAtIndexes:
+ @see removeObjectAtIndex:
+ */
+- (void) removeObjectsAtIndexes:(NSIndexSet*)indexes;
 
 #pragma mark Adopted Protocols
 

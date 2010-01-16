@@ -563,6 +563,19 @@ BOOL objectsAreIdentical(id o1, id o2) {
 	++mutations;
 }
 
+/**
+ @todo Implement logic for removing multiple objects efficiently.
+ */
+- (void) removeObjectsAtIndexes:(NSIndexSet*)indexes {
+	if ([indexes count] > 0) {
+		NSUInteger index = [indexes lastIndex];
+		while (index != NSNotFound) {
+			[self removeObjectAtIndex:index];
+			index = [indexes indexLessThanIndex:index];
+		}
+	}
+}
+
 - (void) removeAllObjects {
 	if (count > 0) {
 		if (kCHGarbageCollectionNotEnabled) {
