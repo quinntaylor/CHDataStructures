@@ -56,7 +56,7 @@
  @param idx1 The index of the object to replace with the object at @a idx2.
  @param idx2 The index of the object to replace with the object at @a idx1.
  
- @throw NSRangeException If @a idx1 or @a idx2 is greater than the number of elements in the receiver.
+ @throw NSRangeException If @a idx1 or @a idx2 exceeds the bounds of the receiver.
  
  @attention Indexed operations on linked lists generally require traversing nodes in order, which is significantly slower than similar operations on an array.
  
@@ -99,7 +99,7 @@
  @param index An index from which to retrieve an object.
  @return The object located at @a index.
  
- @throw NSRangeException If @a index is greater than the number of elements in the receiver.
+ @throw NSRangeException If @a index exceeds the bounds of the receiver.
  
  @attention Indexed operations on linked lists generally require traversing nodes in order, which is significantly slower than similar operations on an array.
  
@@ -114,7 +114,7 @@
  
  @param index The index from which to remove the object.
  
- @throw NSRangeException If @a index is greater than the number of elements in the receiver.
+ @throw NSRangeException If @a index exceeds the bounds of the receiver.
  
  @attention Indexed operations on linked lists generally require traversing nodes in order, which is significantly slower than similar operations on an array.
  

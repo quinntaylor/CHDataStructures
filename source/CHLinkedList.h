@@ -81,7 +81,7 @@
  @param index The index at which to insert @a anObject.
  
  @throw NSInvalidArgumentException If @a anObject is @c nil.
- @throw NSRangeException If @a index is greater than the number of elements in the receiver.
+ @throw NSRangeException If @a index exceeds the bounds of the receiver.
  
  @attention Inserting in the middle of a linked list is a somewhat inefficient operation &mdash; although values aren't shifted by one like in arrays, elements must be traversed one by one to find the specified index.
  */
@@ -93,7 +93,7 @@
  @param idx1 The index of the object to replace with the object at @a idx2.
  @param idx2 The index of the object to replace with the object at @a idx1.
  
- @throw NSRangeException If @a idx1 or @a idx2 is greater than the number of elements in the receiver.
+ @throw NSRangeException If @a idx1 or @a idx2 exceeds the bounds of the receiver.
  
  @attention Index-oriented operations are generally slow in linked lists, which are not optimized for random access. Arrays are much faster for such functionality.
  
@@ -200,7 +200,7 @@
  @param index An index from which to retrieve an object.
  @return The object located at index.
  
- @throw NSRangeException If @a index is greater than the number of elements in the receiver.
+ @throw NSRangeException If @a index exceeds the bounds of the receiver.
  
  @see indexOfObject:
  @see indexOfObjectIdenticalTo:
@@ -274,7 +274,7 @@
  
  @param index The index from which to remove the object.
  
- @throw NSRangeException If @a index is greater than the number of elements in the receiver.
+ @throw NSRangeException If @a index exceeds the bounds of the receiver.
  */
 - (void) removeObjectAtIndex:(NSUInteger)index;
 

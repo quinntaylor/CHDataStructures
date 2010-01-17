@@ -61,7 +61,7 @@
  @param index The index of the key for which to set the value.
  
  @throw NSInvalidArgumentException If @a anObject is @c nil. If you need to represent a @c nil value in the dictionary, use NSNull.
- @throw NSRangeException If @a index is greater than the current number of keys.
+ @throw NSRangeException If @a index exceeds the bounds of the receiver.
  
  @see insertObject:forKey:atIndex:
  @see setObject:forKey:
@@ -75,7 +75,7 @@
  @param aKey The key for @a anObject. The key is copied using @c -copyWithZone: so keys must conform to the NSCopying protocol. Must not be @c nil.
  @param index The index in the receiver's key ordering at which to insert @a anObject.
  
- @throw NSRangeException If @a index is greater than the current number of keys.
+ @throw NSRangeException If @a index exceeds the bounds of the receiver.
  @throw NSInvalidArgumentException If @a aKey or @a anObject is @c nil.  If you need to represent a @c nil value in the dictionary, use NSNull.
  
  @see indexOfKey:
@@ -90,7 +90,7 @@
  @param idx1 The index of the key to replace with the key at @a idx2.
  @param idx2 The index of the key to replace with the key at @a idx1.
  
- @throw NSRangeException If @a idx1 or @a idx2 is greater than the number of key in the receiver.
+ @throw NSRangeException If @a idx1 or @a idx2 exceeds the bounds of the receiver.
  
  @see indexOfKey:
  @see keyAtIndex:
@@ -141,7 +141,7 @@
  @param index The insertion-order index of the key to retrieve.
  @return The key at the specified index, based on insertion order.
  
- @throw NSRangeException If @a index is greater than or equal to the number of key in the receiver.
+ @throw NSRangeException If @a index exceeds the bounds of the receiver.
  
  @see \link NSDictionary#containsKey: - containsKey:\endlink
  @see firstKey
@@ -156,7 +156,7 @@
  @param index The insertion-order index of the key for the value to retrieve.
  @return The value for the key at the specified index, based on insertion order.
  
- @throw NSRangeException If @a index is greater than or equal to the number of key in the receiver.
+ @throw NSRangeException If @a index exceeds the bounds of the receiver.
  
  @see indexOfKey:
  @see keyAtIndex:
@@ -187,11 +187,11 @@
 // @{
 
 /**
- Removes the key at a given index and its associated value from the receiver. Elements on the non-wrapped end of the buffer are shifted one spot to fill the gap.
+ Removes the key at a given index from the receiver. Elements on the non-wrapped end of the buffer are shifted one spot to fill the gap.
  
  @param index The index of the key to remove.
  
- @throw NSRangeException If @a index is greater than the number of elements in the receiver.
+ @throw NSRangeException If @a index exceeds the bounds of the receiver.
  
  @see indexOfKey:
  @see keyAtIndex:

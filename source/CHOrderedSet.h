@@ -78,7 +78,7 @@
  @param idx1 The index of the object to replace with the object at @a idx2.
  @param idx2 The index of the object to replace with the object at @a idx1.
  
- @throw NSRangeException If @a idx1 or @a idx2 is greater than the number of elements in the receiver.
+ @throw NSRangeException If @a idx1 or @a idx2 exceeds the bounds of the receiver.
  
  @see indexOfObject:
  @see insertObject:atIndex:
@@ -151,7 +151,7 @@
  @param index The insertion-order index of the value to retrieve.
  @return The value at the specified index, based on insertion order.
  
- @throw NSRangeException If @a index is greater than or equal to the number of keys in the receiver.
+ @throw NSRangeException If @a index exceeds the bounds of the receiver.
  
  @see indexOfObject:
  @see removeObjectAtIndex:
@@ -202,7 +202,7 @@
  
  @param index The index of the object to remove.
  
- @throw NSRangeException if @a index is greater than the number of elements in the receiver.
+ @throw NSRangeException If @a index exceeds the bounds of the receiver.
  
  @see minusSet:
  @see removeAllObjects
