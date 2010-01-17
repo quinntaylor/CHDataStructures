@@ -370,9 +370,10 @@
 	while (aClass = [classes nextObject]) {
 		list = [[aClass alloc] init];
 		[list appendObject:@"A"];
-		STAssertEquals([list indexOfObject:@"A"], (NSUInteger)0, @"Should return 0.");
-		STAssertEquals([list indexOfObject:@"Z"], (NSUInteger)CHNotFound,
-					   @"Should return CHNotFound.");
+		STAssertEquals([list indexOfObject:@"A"], (NSUInteger)0,
+					   @"Wrong index for object.");
+		STAssertEquals([list indexOfObject:@"Z"], (NSUInteger)NSNotFound,
+					   @"Wrong index for object.");
 		[list release];
 	}
 }
@@ -384,9 +385,10 @@
 		list = [[aClass alloc] init];
 		NSString *a = [NSString stringWithFormat:@"A"];
 		[list appendObject:a];
-		STAssertEquals([list indexOfObjectIdenticalTo:a], (NSUInteger)0, @"Should return 0.");
-		STAssertEquals([list indexOfObjectIdenticalTo:@"A"], (NSUInteger)CHNotFound,
-					   @"Should return CHNotFound.");
+		STAssertEquals([list indexOfObjectIdenticalTo:a], (NSUInteger)0,
+					   @"Wrong index for object.");
+		STAssertEquals([list indexOfObjectIdenticalTo:@"A"], (NSUInteger)NSNotFound,
+					   @"Wrong index for object.");
 		[list release];
 	}
 }

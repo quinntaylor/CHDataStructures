@@ -126,7 +126,7 @@
  Returns the lowest index whose corresponding array value is equal to a given object. Objects are considered equal if @c isEqual: returns @c YES.
  
  @param anObject The object to be matched and located in the receiver.
- @return The lowest index whose corresponding array value is equal to @a anObject. If none of the objects in the receiver is equal to @a anObject, returns @c CHNotFound.
+ @return The lowest index whose corresponding array value is equal to @a anObject. If none of the objects in the receiver is equal to @a anObject, returns @c NSNotFound.
  
  @see indexOfObjectIdenticalTo:
  @see objectAtIndex:
@@ -139,7 +139,7 @@
  
  @param anObject The object to be matched and located in the receiver.
  @param range The range of indexes in the receiver within which to search for @a anObject.
- @return The lowest index within @a range whose corresponding array value is equal to @a anObject. If none of the objects within range is equal to @a anObject, returns @c CHNotFound.
+ @return The lowest index within @a range whose corresponding array value is equal to @a anObject. If none of the objects within range is equal to @a anObject, returns @c NSNotFound.
  
  @see containsObject:
  @see indexOfObject:
@@ -151,7 +151,7 @@
  Returns the lowest index whose corresponding array value is identical to a given object. Objects are considered identical if their object addresses are the same.
  
  @param anObject The object to be matched and located in the receiver.
- @return The index of the first object which is equal to @a anObject. If none of the objects in the receiver match @a anObject, returns @c CHNotFound.
+ @return The index of the first object which is equal to @a anObject. If none of the objects in the receiver match @a anObject, returns @c NSNotFound.
  
  @see indexOfObject:
  @see objectAtIndex:
@@ -164,7 +164,7 @@
  
  @param anObject The object to be matched and located in the receiver.
  @param range The range of indexes in the receiver within which to search for @a anObject.
- @return The lowest index within @a range whose corresponding array value is equal to @a anObject. If none of the objects within range is equal to @a anObject, returns @c CHNotFound.
+ @return The lowest index within @a range whose corresponding array value is equal to @a anObject. If none of the objects within range is equal to @a anObject, returns @c NSNotFound.
  
  Return Value
  The lowest index within range whose corresponding array value is identical to anObject. If none of the objects within range is identical to anObject, returns NSNotFound.

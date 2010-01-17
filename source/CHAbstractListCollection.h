@@ -69,7 +69,7 @@
  Returns the lowest index of a given object, matched using @c isEqual:.
  
  @param anObject The object to be matched and located in the receiver.
- @return The index of the first object which is equal to @a anObject. If none of the objects in the receiver match @a anObject, returns @c CHNotFound.
+ @return The index of the first object which is equal to @a anObject. If none of the objects in the receiver match @a anObject, returns @c NSNotFound.
  
  @attention Indexed operations on linked lists generally require traversing nodes in order, which is significantly slower than similar operations on an array.
  
@@ -83,7 +83,7 @@
  Returns the lowest index of a given object, matched using the == operator.
  
  @param anObject The object to be matched and located in the receiver.
- @return The index of the first object which is equal to @a anObject. If none of the objects in the receiver match @a anObject, returns @c CHNotFound.
+ @return The index of the first object which is equal to @a anObject. If none of the objects in the receiver match @a anObject, returns @c NSNotFound.
  
  @attention Indexed operations on linked lists generally require traversing nodes in order, which is significantly slower than similar operations on an array.
  

@@ -307,11 +307,11 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 }
 
 - (BOOL) containsObject:(id)anObject {
-	return ([self indexOfObject:anObject] != CHNotFound);
+	return ([self indexOfObject:anObject] != NSNotFound);
 }
 
 - (BOOL) containsObjectIdenticalTo:(id)anObject {
-	return ([self indexOfObjectIdenticalTo:anObject] != CHNotFound);
+	return ([self indexOfObjectIdenticalTo:anObject] != NSNotFound);
 }
 
 - (NSUInteger) count {
@@ -351,7 +351,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 		current = current->next;
 		++index;
 	}
-	return (current == tail) ? CHNotFound : index;
+	return (current == tail) ? NSNotFound : index;
 }
 
 - (NSUInteger) indexOfObjectIdenticalTo:(id)anObject {
@@ -362,7 +362,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 		current = current->next;
 		++index;
 	}
-	return (current == tail) ? CHNotFound : index;
+	return (current == tail) ? NSNotFound : index;
 }
 
 - (id) objectAtIndex:(NSUInteger)index {

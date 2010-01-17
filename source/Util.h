@@ -72,9 +72,6 @@ HIDDEN void initializeGCStatus();
 
 #pragma mark -
 
-/** Indicates that an object was not found when returning an NSUInteger. */
-#define CHNotFound NSUIntegerMax
-
 /**
  Convenience function for raising an exception for an invalid range (index).
  

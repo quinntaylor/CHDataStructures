@@ -330,7 +330,7 @@
 }
 
 - (void) testIndexOfObject {
-	STAssertEquals([buffer indexOfObject:@"Z"], (NSUInteger)CHNotFound,
+	STAssertEquals([buffer indexOfObject:@"Z"], (NSUInteger)NSNotFound,
 				   @"Empty buffer, object should not be found");
 	// Move the head index to 3 so adding 15 objects will wrap.
 	e = [abc objectEnumerator];
@@ -346,15 +346,15 @@
 		STAssertEquals([buffer indexOfObject:anObject], expectedIndex++,
 					   @"Wrong index for object");
 	}
-	STAssertEquals([buffer indexOfObject:@"Z"], (NSUInteger)CHNotFound,
+	STAssertEquals([buffer indexOfObject:@"Z"], (NSUInteger)NSNotFound,
 				   @"Object should not be found in buffer");
 }
 
 - (void) testIndexOfObjectIdenticalTo {
 	NSString *a = [NSString stringWithFormat:@"A"];
-	STAssertEquals([buffer indexOfObjectIdenticalTo:@"Z"], (NSUInteger)CHNotFound,
+	STAssertEquals([buffer indexOfObjectIdenticalTo:@"Z"], (NSUInteger)NSNotFound,
 				   @"Empty buffer, object should not be found");
-	STAssertEquals([buffer indexOfObjectIdenticalTo:a], (NSUInteger)CHNotFound,
+	STAssertEquals([buffer indexOfObjectIdenticalTo:a], (NSUInteger)NSNotFound,
 				   @"Empty buffer, object should not be found");
 	// Move the head index to 3 so adding 15 objects will wrap.
 	e = [abc objectEnumerator];
@@ -369,9 +369,9 @@
 	while (anObject = [e nextObject])
 		STAssertEquals([buffer indexOfObjectIdenticalTo:anObject], expectedIndex++,
 					   @"Wrong index for object");
-	STAssertEquals([buffer indexOfObjectIdenticalTo:@"Z"], (NSUInteger)CHNotFound,
+	STAssertEquals([buffer indexOfObjectIdenticalTo:@"Z"], (NSUInteger)NSNotFound,
 				   @"Object should not be found in buffer");
-	STAssertEquals([buffer indexOfObjectIdenticalTo:a], (NSUInteger)CHNotFound,
+	STAssertEquals([buffer indexOfObjectIdenticalTo:a], (NSUInteger)NSNotFound,
 				   @"Object should not be found in buffer");
 }
 
@@ -382,11 +382,11 @@
 					@"Should raise range exception.");
 	[buffer addObjectsFromArray:abc];
 	NSRange range = NSMakeRange(1, 1);
-	STAssertEquals(CHNotFound, [buffer indexOfObject:@"A" inRange:range],
+	STAssertEquals([buffer indexOfObject:@"A" inRange:range], (NSUInteger)NSNotFound, 
 				   @"Value should not appear in specified range.");
-	STAssertEquals((NSUInteger)1, [buffer indexOfObject:@"B" inRange:range],
+	STAssertEquals([buffer indexOfObject:@"B" inRange:range], (NSUInteger)1,
 				   @"Value should appear in specified range.");
-	STAssertEquals(CHNotFound, [buffer indexOfObject:@"C" inRange:range],
+	STAssertEquals([buffer indexOfObject:@"C" inRange:range], (NSUInteger)NSNotFound,
 				   @"Value should not appear in specified range.");
 }
 
@@ -397,13 +397,13 @@
 					@"Should raise range exception.");
 	[buffer addObjectsFromArray:abc];
 	NSRange range = NSMakeRange(1, 1);
-	STAssertEquals(CHNotFound, [buffer indexOfObjectIdenticalTo:@"A" inRange:range],
+	STAssertEquals([buffer indexOfObjectIdenticalTo:@"A" inRange:range], (NSUInteger)NSNotFound,
 				   @"Value should not appear in specified range.");
-	STAssertEquals((NSUInteger)1, [buffer indexOfObjectIdenticalTo:@"B" inRange:range],
+	STAssertEquals([buffer indexOfObjectIdenticalTo:@"B" inRange:range], (NSUInteger)1,
 				   @"Value should appear in specified range.");
-	STAssertEquals(CHNotFound, [buffer indexOfObjectIdenticalTo:[NSString stringWithFormat:@"B"] inRange:range],
+	STAssertEquals([buffer indexOfObjectIdenticalTo:[NSString stringWithFormat:@"B"] inRange:range], (NSUInteger)NSNotFound,
 				   @"Value should not appear in specified range.");
-	STAssertEquals(CHNotFound, [buffer indexOfObjectIdenticalTo:@"C" inRange:range],
+	STAssertEquals([buffer indexOfObjectIdenticalTo:@"C" inRange:range], (NSUInteger)NSNotFound,
 				   @"Value should not appear in specified range.");
 }
 

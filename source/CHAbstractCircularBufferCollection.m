@@ -373,7 +373,7 @@ BOOL objectsAreIdentical(id o1, id o2) {
 		incrementIndex(iterationIndex);
 		relativeIndex++;
 	}
-	return CHNotFound;
+	return NSNotFound;
 }
 
 - (NSUInteger) indexOfObjectIdenticalTo:(id)anObject {
@@ -392,7 +392,7 @@ BOOL objectsAreIdentical(id o1, id o2) {
 		incrementIndex(iterationIndex);
 		relativeIndex++;
 	}
-	return CHNotFound;
+	return NSNotFound;
 }
 
 - (id) objectAtIndex:(NSUInteger)index {
