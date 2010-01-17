@@ -322,6 +322,26 @@
 	STAssertThrows([dictionary keyAtIndex:i], @"Should raise exception.");
 }
 
+- (void) testKeysAtIndexes {
+	STAssertThrows([dictionary keysAtIndexes:[NSIndexSet indexSetWithIndex:0]],
+				   @"Should raise NSRangeException for nonexistent index.");
+	[self populateDictionary];
+	// Select ranges of indexes and test that they line up with what we expect.
+	NSIndexSet* indexes;
+	for (NSUInteger location = 0; location < [dictionary count]; location++) {
+		STAssertNoThrow([dictionary keysAtIndexes:[NSIndexSet indexSetWithIndex:location]],
+		                @"Should not raise exception, valid index.");
+		for (NSUInteger length = 0; length < [dictionary count] - location; length++) {
+			indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(location, length)]; 
+			STAssertNoThrow([dictionary keysAtIndexes:indexes],
+							@"Should not raise exception, valid index range.");
+			STAssertEqualObjects([dictionary keysAtIndexes:indexes],
+			                     [keyArray objectsAtIndexes:indexes],
+								 @"Key selection mismatch.");
+		}
+	}
+}
+
 - (void) testObjectForKeyAtIndex {
 	STAssertThrows([dictionary objectForKeyAtIndex:0], @"Should raise exception");
 	
@@ -334,11 +354,49 @@
 	STAssertThrows([dictionary objectForKeyAtIndex:i], @"Should raise exception.");
 }
 
+- (void) testObjectsForKeyAtIndexes {
+	STAssertThrows([dictionary objectsForKeysAtIndexes:nil], @"Should raise exception.");
+	[self populateDictionary];
+	STAssertThrows([dictionary objectsForKeysAtIndexes:nil], @"Should raise exception.");
+	
+	NSIndexSet* indexes;
+	for (NSUInteger location = 0; location < [dictionary count]; location++) {
+		for (NSUInteger length = 0; length < [dictionary count] - location; length++) {
+			indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(location, length)];
+			
+			[dictionary objectsForKeysAtIndexes:indexes];
+		}
+	}
+}
+
+- (void) testOrderedDictionaryWithKeysAtIndexes {
+	STAssertThrows([dictionary orderedDictionaryWithKeysAtIndexes:nil], @"Index set cannot be nil.");
+	[self populateDictionary];
+	STAssertThrows([dictionary orderedDictionaryWithKeysAtIndexes:nil], @"Index set cannot be nil.");
+
+	CHOrderedDictionary* newDictionary;
+	STAssertNoThrow(newDictionary = [dictionary orderedDictionaryWithKeysAtIndexes:[NSIndexSet indexSet]],
+	                @"Should not raise exception");
+	STAssertEquals([newDictionary count], (NSUInteger)0, @"Wrong count.");
+	// Select ranges of indexes and test that they line up with what we expect.
+	NSIndexSet* indexes;
+	for (NSUInteger location = 0; location < [dictionary count]; location++) {
+		for (NSUInteger length = 0; length < [dictionary count] - location; length++) {
+			indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(location, length)]; 
+			STAssertNoThrow(newDictionary = [dictionary orderedDictionaryWithKeysAtIndexes:indexes],
+							@"Should not raise exception, valid index range.");
+			STAssertEqualObjects([newDictionary allKeys],
+			                     [keyArray objectsAtIndexes:indexes],
+								 @"Key selection mismatch.");
+		}
+	}
+}
+
 - (void) testRemoveObjectForKeyAtIndex {
-	STAssertThrows([dictionary removeObjectForKeyAtIndex:0], @"Should raise exception");
+	STAssertThrows([dictionary removeObjectForKeyAtIndex:0], @"Nonexistent index.");
 	
 	[self populateDictionary];
-	STAssertThrows([dictionary removeObjectForKeyAtIndex:5], @"Should raise exception");
+	STAssertThrows([dictionary removeObjectForKeyAtIndex:[keyArray count]], @"Nonexistent index.");
 	
 	NSMutableArray *expected = [keyArray mutableCopy];
 	[expected removeObjectAtIndex:4];
@@ -362,6 +420,32 @@
 	STAssertEqualObjects([dictionary objectForKey:@"foo"], @"X", @"Wrong object");
 	STAssertThrows([dictionary setObject:@"X" forKeyAtIndex:[keyArray count]],
 	               @"Should raise exception");
+}
+
+- (void) testRemoveObjectsForKeysAtIndexes {
+	STAssertThrows([dictionary removeObjectsForKeysAtIndexes:nil], @"Index set cannot be nil.");
+	[self populateDictionary];
+	STAssertThrows([dictionary removeObjectsForKeysAtIndexes:nil], @"Index set cannot be nil.");
+	
+	NSDictionary* master = [NSDictionary dictionaryWithDictionary:dictionary];
+	NSMutableDictionary* expected = [NSMutableDictionary dictionary];
+	// Select ranges of indexes and test that they line up with what we expect.
+	NSIndexSet* indexes;
+	for (NSUInteger location = 0; location < [dictionary count]; location++) {
+		for (NSUInteger length = 0; length < [dictionary count] - location; length++) {
+			indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(location, length)]; 
+			// Repopulate dictionary and reset expected
+			[dictionary removeAllObjects];
+			[dictionary addEntriesFromDictionary:master];
+			expected = [NSMutableDictionary dictionaryWithDictionary:master];
+			[expected removeObjectsForKeys:[dictionary keysAtIndexes:indexes]];
+			STAssertNoThrow([dictionary removeObjectsForKeysAtIndexes:indexes],
+							@"Should not raise exception, valid index range.");
+			STAssertEqualObjects([dictionary allKeys],
+			                     [expected allKeys],
+								 @"Key selection mismatch.");
+		}
+	}	
 }
 
 @end

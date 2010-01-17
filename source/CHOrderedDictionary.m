@@ -92,6 +92,10 @@
 	return [keyOrdering objectAtIndex:index];
 }
 
+- (NSArray*) keysAtIndexes:(NSIndexSet*)indexes {
+	return [keyOrdering objectsAtIndexes:indexes];
+}
+
 - (NSEnumerator*) keyEnumerator {
 	return [keyOrdering objectEnumerator];
 }
@@ -99,6 +103,25 @@
 - (id) objectForKeyAtIndex:(NSUInteger)index {
 	// Note: -keyAtIndex: will raise an exception if the index is invalid.
 	return [self objectForKey:[self keyAtIndex:index]];
+}
+
+- (NSArray*) objectsForKeysAtIndexes:(NSIndexSet*)indexes {
+	return [self objectsForKeys:[self keysAtIndexes:indexes] notFoundMarker:self];
+}
+
+- (CHOrderedDictionary*) orderedDictionaryWithKeysAtIndexes:(NSIndexSet*)indexes {
+	if (indexes == nil)
+		CHNilArgumentException([self class], _cmd);
+	if ([indexes count] == 0)
+		return [[self class] dictionary];
+	CHOrderedDictionary* newDictionary = [[self class] dictionaryWithCapacity:[indexes count]];
+	NSUInteger index = [indexes firstIndex];
+	while (index != NSNotFound) {
+		id key = [self keyAtIndex:index];
+		[newDictionary setObject:[self objectForKey:key] forKey:key];
+		index = [indexes indexGreaterThanIndex:index];
+	}
+	return newDictionary;
 }
 
 - (NSEnumerator*) reverseKeyEnumerator {
@@ -123,6 +146,12 @@
 	// Note: -keyAtIndex: will raise an exception if the index is invalid.
 	[super removeObjectForKey:[self keyAtIndex:index]]; // Sends KVO notifications
 	[keyOrdering removeObjectAtIndex:index];
+}
+
+- (void) removeObjectsForKeysAtIndexes:(NSIndexSet*)indexes {
+	NSArray* keysToRemove = [keyOrdering objectsAtIndexes:indexes];
+	[keyOrdering removeObjectsAtIndexes:indexes];
+	[(NSMutableDictionary*)dictionary removeObjectsForKeys:keysToRemove];
 }
 
 @end

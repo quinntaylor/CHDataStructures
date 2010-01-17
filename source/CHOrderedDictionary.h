@@ -151,6 +151,18 @@
 - (id) keyAtIndex:(NSUInteger)index;
 
 /**
+ Returns an array containing the keys in the receiver at the indexes specified by a given index set.
+ 
+ @param indexes A set of positions corresponding to keys to retrieve from the receiver.
+ @return A new array containing the keys in the receiver specified by @a indexes.
+ @throw NSRangeException If any location in @a indexes exceeds the bounds of the receiver.
+ 
+ @see allObjects
+ @see orderedDictionaryWithKeysAtIndexes:
+ */
+- (NSArray*) keysAtIndexes:(NSIndexSet*)indexes;
+
+/**
  Returns the value for the key at the specified index, based on insertion order.
  
  @param index The insertion-order index of the key for the value to retrieve.
@@ -164,6 +176,32 @@
  @see removeObjectForKeyAtIndex:
  */
 - (id) objectForKeyAtIndex:(NSUInteger)index;
+
+/**
+ Returns the set of objects from the receiver corresponding to the keys at the indexes specified by a given index set.
+ 
+ @param indexes A set of positions corresponding to objects to retrieve from the receiver.
+ @return A new array containing the objects in the receiver for the keys specified by @a indexes.
+
+ @throw NSRangeException If any location in @a indexes exceeds the bounds of the receiver.
+ 
+ @see keysAtIndexes:
+ @see \link NSDictionary#objectsForKeys:notFoundMarker: - objectsForKeys:notFoundMarker:\endlink
+ @see removeObjectsForKeysAtIndexes:
+ */
+- (NSArray*) objectsForKeysAtIndexes:(NSIndexSet*)indexes;
+
+/**
+ Returns an ordered dictionary containing the entries in the receiver with keys at the indexes specified by a given index set.
+ 
+ @param indexes A set of indexes for keys to retrieve from the receiver.
+ @return An array containing the entries in the receiver at the indexes specified by @a indexes.
+ 
+ @throw NSRangeException If any location in @a indexes exceeds the bounds of the receiver.
+ 
+ @attention To retrieve entries in a given NSRange, pass <code>[NSIndexSet indexSetWithIndexesInRange:range]</code> as the parameter.
+ */
+- (CHOrderedDictionary*) orderedDictionaryWithKeysAtIndexes:(NSIndexSet*)indexes;
 
 /**
  Returns an enumerator that lets you access each key in the receiver in reverse order.
@@ -199,6 +237,18 @@
  @see removeObjectForKey:
  */
 - (void) removeObjectForKeyAtIndex:(NSUInteger)index;
+
+/**
+ Removes the keys at the specified indexes from the receiver. This method is similar to #removeObjectForKeyAtIndex: but allows you to efficiently remove multiple keys with a single operation.
+ 
+ @param indexes The indexes of the keys to remove from the receiver.
+ 
+ @throw NSRangeException If any location in @a indexes exceeds the bounds of the receiver.
+ 
+ @see objectsForKeysAtIndexes:
+ @see removeObjectForKeyAtIndex:
+ */
+- (void) removeObjectsForKeysAtIndexes:(NSIndexSet*)indexes;
 
 // @}
 @end

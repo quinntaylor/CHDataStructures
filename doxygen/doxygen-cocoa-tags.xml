@@ -88,6 +88,10 @@
       <name>objectEnumerator</name>
       <anchor>//apple_ref/occ/instm/NSDictionary/objectEnumerator</anchor>
     </member>
+    <member kind="function">
+      <name>objectsForKeys:notFoundMarker:</name>
+      <anchor>//apple_ref/occ/instm/NSDictionary/objectsForKeys:notFoundMarker:</anchor>
+    </member>
   </compound>
   <compound kind="class">
     <name>NSEnumerator</name>
