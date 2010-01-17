@@ -430,7 +430,7 @@
 				STAssertThrows([buffer objectsAtIndexes:indexes], @"Range exception");
 			} else {
 				STAssertEqualObjects([buffer objectsAtIndexes:indexes],
-									 [[buffer allObjects] objectsAtIndexes:indexes],
+									 [abc objectsAtIndexes:indexes],
 									 @"Range selections should be equal.");
 			}
 		}

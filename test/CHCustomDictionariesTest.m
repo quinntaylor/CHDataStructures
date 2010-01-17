@@ -377,6 +377,7 @@
 	CHOrderedDictionary* newDictionary;
 	STAssertNoThrow(newDictionary = [dictionary orderedDictionaryWithKeysAtIndexes:[NSIndexSet indexSet]],
 	                @"Should not raise exception");
+	STAssertNotNil(newDictionary, @"Result should not be nil.");
 	STAssertEquals([newDictionary count], (NSUInteger)0, @"Wrong count.");
 	// Select ranges of indexes and test that they line up with what we expect.
 	NSIndexSet* indexes;
