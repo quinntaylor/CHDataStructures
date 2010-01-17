@@ -105,11 +105,7 @@
 }
 
 - (void) removeLastObject {
-	// [self removeObject:] would require a search of the entire linked list...
-	if ([self count] > 0) {
-		[super removeObject:[ordering lastObject]];
-		[ordering removeLastObject]; // Much faster than searching for anObject
-	}
+	[self removeObject:[ordering lastObject]];
 }
 
 - (void) removeObject:(id)anObject {
