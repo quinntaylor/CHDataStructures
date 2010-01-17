@@ -402,6 +402,8 @@ BOOL objectsAreIdentical(id o1, id o2) {
 }
 
 - (NSArray*) objectsAtIndexes:(NSIndexSet*)indexes {
+	if (indexes == nil)
+		CHNilArgumentException([self class], _cmd);
 	if ([indexes count] == 0)
 		return [NSArray array];
 	NSMutableArray *objects = [NSMutableArray arrayWithCapacity:[indexes count]];
@@ -567,6 +569,8 @@ BOOL objectsAreIdentical(id o1, id o2) {
  @todo Implement logic for removing multiple objects efficiently.
  */
 - (void) removeObjectsAtIndexes:(NSIndexSet*)indexes {
+	if (indexes == nil)
+		CHNilArgumentException([self class], _cmd);
 	if ([indexes count] > 0) {
 		NSUInteger index = [indexes lastIndex];
 		while (index != NSNotFound) {

@@ -643,7 +643,7 @@
 }
 
 - (void) testRemoveObjectsAtIndexes {
-	STAssertNoThrow([buffer removeObjectsAtIndexes:nil], @"Should be no exception.");
+	STAssertThrows([buffer removeObjectsAtIndexes:nil], @"Index set cannot be nil.");
 	NSIndexSet* indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 1)];
 	STAssertThrows([buffer removeObjectsAtIndexes:indexes], @"Nonexistent index.");
 	
