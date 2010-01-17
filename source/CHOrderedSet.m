@@ -93,6 +93,36 @@
 	return [ordering objectEnumerator];
 }
 
+- (NSArray*) objectsAtIndexes:(NSIndexSet*)indexes {
+	if (indexes == nil)
+		CHNilArgumentException([self class], _cmd);
+	if ([indexes count] == 0)
+		return [NSArray array];
+	if ([indexes lastIndex] >= [self count])
+		CHIndexOutOfRangeException([self class], _cmd, [indexes lastIndex], [self count]);
+	NSMutableArray* objects = [NSMutableArray arrayWithCapacity:[self count]];
+	NSUInteger index = [indexes firstIndex];
+	while (index != NSNotFound) {
+		[objects addObject:[self objectAtIndex:index]];
+		index = [indexes indexGreaterThanIndex:index];
+	}
+	return objects;
+}
+
+- (CHOrderedSet*) orderedSetWithObjectsAtIndexes:(NSIndexSet*)indexes {
+	if (indexes == nil)
+		CHNilArgumentException([self class], _cmd);
+	if ([indexes count] == 0)
+		return [[self class] set];
+	CHOrderedSet* newSet = [[self class] setWithCapacity:[indexes count]];
+	NSUInteger index = [indexes firstIndex];
+	while (index != NSNotFound) {
+		[newSet addObject:[ordering objectAtIndex:index]];
+		index = [indexes indexGreaterThanIndex:index];
+	}
+	return newSet;
+}
+
 #pragma mark Removing Objects
 
 - (void) removeAllObjects {
@@ -116,6 +146,11 @@
 - (void) removeObjectAtIndex:(NSUInteger)index {
 	[super removeObject:[ordering objectAtIndex:index]];
 	[ordering removeObjectAtIndex:index];
+}
+
+- (void) removeObjectsAtIndexes:(NSIndexSet*)indexes {
+	[(NSMutableSet*)set minusSet:[NSSet setWithArray:[self objectsAtIndexes:indexes]]];
+	[ordering removeObjectsAtIndexes:indexes];
 }
 
 @end

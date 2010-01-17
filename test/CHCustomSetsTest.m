@@ -24,6 +24,7 @@
 	id set;
 	NSEnumerator *e;
 	id anObject;
+	NSArray *abc;
 }
 
 - (void) checkEqualityWithArray:(NSArray*)anArray;
@@ -37,6 +38,7 @@
 
 - (void) setUp {
 	set = [[CHLockableSet alloc] init];
+	abc = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
 }
 
 - (void) tearDown {
@@ -64,7 +66,6 @@
 - (void) testAddObjectsFromArray {
 	STAssertNoThrow([set addObjectsFromArray:nil], @"Should not raise exception");
 	
-	NSArray *abc = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
 	[set addObjectsFromArray:abc];
 	[self checkEqualityWithArray:abc];
 	
@@ -118,21 +119,20 @@
 }
 
 - (void) testHash {
-	NSArray *abc = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
 	[set addObjectsFromArray:abc];
 	id set2 = [[[[set class] alloc] initWithArray:abc] autorelease];
 	STAssertEquals([set hash], [set2 hash], @"Hashes should match.");
 }
 
 - (void) testIntersectsSet {
-	NSSet *abc = [NSSet setWithObjects:@"A",@"B",@"C",nil];
+	NSSet *abcSet = [NSSet setWithObjects:@"A",@"B",@"C",nil];
 	NSSet *cde = [NSSet setWithObjects:@"C",@"D",@"E",nil];
 	NSSet *xyz = [NSSet setWithObjects:@"X",@"Y",@"Z",nil];
 	
-	STAssertFalse([set intersectsSet:abc], @"Should not intersect.");
+	STAssertFalse([set intersectsSet:abcSet], @"Should not intersect.");
 	[set addObjectsFromArray:[NSArray arrayWithObjects:@"A",@"B",@"C",nil]];
 	
-	STAssertTrue([set intersectsSet:abc], @"Should intersect.");
+	STAssertTrue([set intersectsSet:abcSet], @"Should intersect.");
 	STAssertTrue([set intersectsSet:cde], @"Should intersect.");
 	STAssertFalse([set intersectsSet:xyz], @"Should not intersect.");
 	
@@ -147,7 +147,6 @@
 }
 
 - (void) testIntersectSet {
-	NSArray *abc = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
 	NSArray *cde = [NSArray arrayWithObjects:@"C",@"D",@"E",nil];
 	NSArray *def = [NSArray arrayWithObjects:@"D",@"E",@"F",nil];
 	NSArray *c = [NSArray arrayWithObjects:@"C",nil];
@@ -180,7 +179,6 @@
 - (void) testMinusSet {
 	NSArray *axbycz = [NSArray arrayWithObjects:@"A",@"X",@"B",@"Y",@"C",@"Z",nil];
 	NSArray *xaybzc = [NSArray arrayWithObjects:@"X",@"A",@"Y",@"B",@"Z",@"C",nil];
-	NSArray *abc = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
 	NSArray *empty = [NSArray array];
 	NSSet *xyz = [NSSet setWithObjects:@"X",@"Y",@"Z",nil];
 	
@@ -225,15 +223,15 @@
 }
 
 - (void) testIsSubsetOfSet {
-	NSSet *abc = [NSSet setWithObjects:@"A",@"B",@"C",nil];
+	NSSet *abcSet = [NSSet setWithObjects:@"A",@"B",@"C",nil];
 	[set addObject:@"A"];
-	STAssertTrue([set isSubsetOfSet:abc], @"Should be a subset.");
+	STAssertTrue([set isSubsetOfSet:abcSet], @"Should be a subset.");
 	[set addObject:@"B"];
-	STAssertTrue([set isSubsetOfSet:abc], @"Should be a subset.");
+	STAssertTrue([set isSubsetOfSet:abcSet], @"Should be a subset.");
 	[set addObject:@"C"];
-	STAssertTrue([set isSubsetOfSet:abc], @"Should be a subset.");
+	STAssertTrue([set isSubsetOfSet:abcSet], @"Should be a subset.");
 	[set addObject:@"D"];
-	STAssertFalse([set isSubsetOfSet:abc], @"Should not be a subset.");
+	STAssertFalse([set isSubsetOfSet:abcSet], @"Should not be a subset.");
 }
 
 - (void) testRemoveAllObjects {
@@ -255,7 +253,6 @@
 - (void) testRemoveObject {
 	STAssertNoThrow([set removeObject:nil], @"Should not raise exception");
 	
-	NSArray *abc = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
 	[set addObjectsFromArray:abc];
 	STAssertTrue([set containsObject:@"A"], @"Should contain object.");
 	[set removeObject:@"A"];
@@ -311,6 +308,8 @@
 @implementation CHOrderedSetTest
 
 - (void) setUp {
+	[super setUp];
+	[set release];
 	set = [[CHOrderedSet alloc] init];
 }
 
@@ -334,7 +333,6 @@
 - (void) testAddObjectsAndOrdering {
 	STAssertThrows([set addObject:nil], @"Should raise exception");
 	
-	NSArray *abc = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
 	e = [abc objectEnumerator];
 	while (anObject = [e nextObject])
 		[set addObject:anObject];
@@ -350,7 +348,6 @@
 	STAssertThrows([set exchangeObjectAtIndex:0 withObjectAtIndex:1],
 				   @"Should raise exception, set is empty.");
 	
-	NSArray *abc  = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
 	[set addObjectsFromArray:abc];
 	// Just sanity-check the code, since the implementation is tested elsewhere.
 	[set exchangeObjectAtIndex:0 withObjectAtIndex:2];
@@ -359,7 +356,6 @@
 }
 
 - (void) testInsertObjectAtIndex {
-	NSArray *abc  = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
 	NSArray *acb  = [NSArray arrayWithObjects:@"A",@"C",@"B",nil];
 	NSArray *dacb  = [NSArray arrayWithObjects:@"D",@"A",@"C",@"B",nil];
 	
@@ -375,7 +371,6 @@
 }
 
 - (void) testUnionSet {
-	NSArray *abc = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
 	NSSet *ade = [NSSet setWithObjects:@"A",@"D",@"E",nil];
 	NSMutableArray *order;
 	
@@ -402,7 +397,6 @@
 }
 
 - (void) testIndexOfObject {
-	NSArray *abc = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
 	[set addObjectsFromArray:abc];
 	for (NSUInteger i = 0; i < [abc count]; i++) {
 		STAssertEquals([set indexOfObject:[abc objectAtIndex:i]], i,
@@ -411,7 +405,6 @@
 }
 
 - (void) testIsEqualToOrderedSet {
-	NSArray *abc = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
 	NSArray *cba = [NSArray arrayWithObjects:@"C",@"B",@"A",nil];
 	NSArray *xyz = [NSArray arrayWithObjects:@"X",@"Y",@"Z",nil];
 	CHOrderedSet* set2;
@@ -425,11 +418,30 @@
 }
 
 - (void) testObjectAtIndex {
-	NSArray *abc = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
 	[set addObjectsFromArray:abc];
 	for (NSUInteger i = 0; i < [abc count]; i++) {
 		STAssertEquals([set objectAtIndex:i], [abc objectAtIndex:i],
 					   @"Wrong object at index");
+	}
+}
+
+- (void) testObjectsAtIndexes {
+	[set addObjectsFromArray:abc];
+	NSUInteger count = [set count];
+	NSRange range;
+	for (NSUInteger location = 0; location <= count; location++) {
+		range.location = location;
+		for (NSUInteger length = 0; length <= count - location + 1; length++) {
+			range.length = length;
+			NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:range];
+			if (location + length > count) {
+				STAssertThrows([set objectsAtIndexes:indexes], @"Range exception");
+			} else {
+				STAssertEqualObjects([set objectsAtIndexes:indexes],
+									 [abc objectsAtIndexes:indexes],
+									 @"Range selections should be equal.");
+			}
+		}
 	}
 }
 
@@ -444,6 +456,32 @@
 		setObject   = [setEnumerator nextObject];
 		STAssertEqualObjects(arrayObject, setObject, @"Error while enumerating.");
 	} while (arrayObject && setObject);
+}
+
+- (void) testOrderedSetWithObjectsAtIndexes {
+	STAssertThrows([set orderedSetWithObjectsAtIndexes:nil], @"Index set cannot be nil.");
+	NSArray* abcde = [NSArray arrayWithObjects:@"A",@"B",@"C",@"D",@"E",nil];
+	[set addObjectsFromArray:abcde];
+	STAssertThrows([set orderedSetWithObjectsAtIndexes:nil], @"Index set cannot be nil.");
+	
+	CHOrderedSet* newSet;
+	STAssertNoThrow(newSet = [set orderedSetWithObjectsAtIndexes:[NSIndexSet indexSet]],
+	                @"Should not raise exception");
+	STAssertNotNil(newSet, @"Result should not be nil.");
+	STAssertEquals([newSet count], (NSUInteger)0, @"Wrong count.");
+	
+	// Select ranges of indexes and test that they line up with what we expect.
+	NSIndexSet* indexes;
+	for (NSUInteger location = 0; location < [set count]; location++) {
+		for (NSUInteger length = 0; length < [set count] - location; length++) {
+			indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(location, length)]; 
+			STAssertNoThrow(newSet = [set orderedSetWithObjectsAtIndexes:indexes],
+							@"Should not raise exception, valid index range.");
+			STAssertEqualObjects([newSet allObjects],
+			                     [abcde objectsAtIndexes:indexes],
+								 @"Key selection mismatch.");
+		}
+	}	
 }
 
 #pragma mark Removing Objects
@@ -479,7 +517,6 @@
 - (void) testRemoveObjectAtIndex {
 	STAssertThrows([set removeObjectAtIndex:0], @"Should raise exception");
 	
-	NSArray *abc = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
 	[set addObjectsFromArray:abc];
 	STAssertThrows([set removeObjectAtIndex:[abc count]], @"Should raise exception");
 	for (NSInteger i = [abc count]-1; i >= 0; i--) {
@@ -487,6 +524,28 @@
 							 @"Wrong object at index before removing at index");
 		[set removeObjectAtIndex:i];
 	}
+}
+
+- (void) testRemoveObjectsAtIndexes {
+	STAssertThrows([set removeObjectsAtIndexes:nil], @"Index set cannot be nil.");
+	NSIndexSet* indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 1)];
+	STAssertThrows([set removeObjectsAtIndexes:indexes], @"Nonexistent index.");
+	
+	NSMutableArray* expected = [NSMutableArray array];
+	for (NSUInteger location = 0; location < [abc count]; location++) {
+		for (NSUInteger length = 0; length < [abc count] - location; length++) {
+			indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(location, length)]; 
+			// Repopulate set and expected
+			[expected removeAllObjects];
+			[expected addObjectsFromArray:abc];
+			[set removeAllObjects];
+			[set addObjectsFromArray:expected];
+			STAssertNoThrow([set removeObjectsAtIndexes:indexes],
+							@"Should not raise exception, valid index range.");
+			[expected removeObjectsAtIndexes:indexes];
+			STAssertEqualObjects(expected, [set allObjects], @"Array content mismatch.");
+		}
+	}	
 }
 
 #pragma mark <Protocols>

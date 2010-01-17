@@ -154,9 +154,25 @@
  @throw NSRangeException If @a index exceeds the bounds of the receiver.
  
  @see indexOfObject:
+ @see objectsAtIndexes:
  @see removeObjectAtIndex:
  */
 - (id) objectAtIndex:(NSUInteger)index;
+
+/**
+ Returns an array containing the objects in the receiver at the indexes specified by a given index set.
+ 
+ @param indexes A set of positions corresponding to objects to retrieve from the receiver.
+ @return A new array containing the objects in the receiver specified by @a indexes.
+ @throw NSRangeException If any location in @a indexes exceeds the bounds of the receiver.
+ 
+ @attention To retrieve objects in a given NSRange, pass <code>[NSIndexSet indexSetWithIndexesInRange:range]</code> as the parameter to this method.
+ 
+ @see allObjects
+ @see objectAtIndex:
+ @see removeObjectsAtIndexes:
+ */
+- (NSArray*) objectsAtIndexes:(NSIndexSet*)indexes;
 
 /**
  Returns an enumerator object that lets you access each object in the receiver in order.
@@ -171,6 +187,18 @@
  @see countByEnumeratingWithState:objects:count:
  */
 - (NSEnumerator*) objectEnumerator;
+
+/**
+ Returns an ordered dictionary containing the objects in the receiver at the indexes specified by a given index set.
+ 
+ @param indexes A set of indexes for keys to retrieve from the receiver.
+ @return An array containing the objects in the receiver at the indexes specified by @a indexes.
+ 
+ @throw NSRangeException If any location in @a indexes exceeds the bounds of the receiver.
+ 
+ @attention To retrieve entries in a given NSRange, pass <code>[NSIndexSet indexSetWithIndexesInRange:range]</code> as the parameter.
+ */
+- (CHOrderedSet*) orderedSetWithObjectsAtIndexes:(NSIndexSet*)indexes;
 
 // @}
 #pragma mark Removing Objects
@@ -205,12 +233,27 @@
  @throw NSRangeException If @a index exceeds the bounds of the receiver.
  
  @see minusSet:
+ @see objectAtIndex:
  @see removeAllObjects
  @see removeFirstObject
  @see removeLastObject
  @see removeObject:
+ @see removeObjectsAtIndexes:
  */
 - (void) removeObjectAtIndex:(NSUInteger)index;
+
+/**
+ Remove the objects at the specified indexes from the receiver.
+ @param indexes A set of positions corresponding to objects to remove from the receiver.
+ @throw NSRangeException If any location in @a indexes exceeds the bounds of the receiver.
+ 
+ @attention To remove objects in a given @c NSRange, pass <code>[NSIndexSet indexSetWithIndexesInRange:range]</code> as the parameter to this method.
+ 
+ @see objectsAtIndexes:
+ @see removeAllObjects
+ @see removeObjectAtIndex:
+ */
+- (void) removeObjectsAtIndexes:(NSIndexSet*)indexes;
 
 // @}
 @end
