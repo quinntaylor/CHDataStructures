@@ -205,7 +205,7 @@
  
  @param indexes A set of positions for objects to retrieve from the receiver.
  @return An array containing the objects in the receiver at the positions specified by @a indexes.
- @throw NSInvalidArgumentException If @indexes is @c nil.
+ @throw NSInvalidArgumentException If @a indexes is @c nil.
  @throw NSRangeException If any location in @a indexes exceeds the bounds of the receiver.
  
  @see indexOfObject:
@@ -244,7 +244,7 @@
  Removes the objects at the specified indexes from the receiver. This method is similar to #removeObjectAtIndex: but allows you to efficiently remove multiple objects with a single operation.
  
  @param indexes The indexes of the objects to remove from the receiver.
- @throw NSInvalidArgumentException If @indexes is @c nil.
+ @throw NSInvalidArgumentException If @a indexes is @c nil.
  @throw NSRangeException If any location in @a indexes exceeds the bounds of the receiver.
  
  @attention To remove objects in a given @c NSRange, pass <code>[NSIndexSet indexSetWithIndexesInRange:range]</code> as the parameter to this method.
