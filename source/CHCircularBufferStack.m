@@ -26,18 +26,20 @@
 	while (capacity <= [anArray count])
 		capacity *= 2;
 	if ([self initWithCapacity:capacity] == nil) return nil;
-	headIndex = capacity; // This puts the bottom of the stack at the last slot.
-	tailIndex = 0;
-	count = [anArray count];
+	if ([anArray count] > 0) {
+		headIndex = capacity; // Puts the bottom of the stack at the last slot.
+		tailIndex = 0;
+		count = [anArray count];
 #if OBJC_API_2
-	for (id anObject in anArray)
+		for (id anObject in anArray)
 #else
-	NSEnumerator *e = [anArray objectEnumerator];
-	id anObject;
-	while (anObject = [e nextObject])
+		NSEnumerator *e = [anArray objectEnumerator];
+		id anObject;
+		while (anObject = [e nextObject])
 #endif
-	{
-		array[--headIndex] = [anObject retain];
+		{
+			array[--headIndex] = [anObject retain];
+		}
 	}
 	return self;
 }

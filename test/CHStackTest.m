@@ -54,6 +54,11 @@
 	NSEnumerator *classes = [stackClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
+		stack = [[[aClass alloc] initWithArray:[NSArray array]] autorelease];
+		STAssertEquals([stack count], (NSUInteger)0, @"Incorrect count.");
+		STAssertNoThrow([stack pushObject:@"A"], @"Should not raise exception");
+		STAssertEqualObjects([stack topObject], @"A", @"Wrong first object");
+
 		stack = [[[aClass alloc] initWithArray:objects] autorelease];
 		STAssertEquals([stack count], [objects count], @"Incorrect count.");
 		STAssertEqualObjects([stack allObjects], stackOrder,
