@@ -181,8 +181,6 @@ BOOL objectsAreIdentical(id o1, id o2) {
 	if ((self = [super init]) == nil) return nil;
 	arrayCapacity = capacity;
 	array = NSAllocateCollectable(kCHPointerSize*arrayCapacity, NSScannedOption);
-	count = headIndex = tailIndex = 0;
-	mutations = 0;
 	return self;	
 }
 
