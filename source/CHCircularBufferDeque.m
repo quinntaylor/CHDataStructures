@@ -12,6 +12,14 @@
 
 @implementation CHCircularBufferDeque
 
+- (void) prependObject:(id)anObject {
+	[self insertObject:anObject atIndex:0];
+}
+
+- (void) appendObject:(id)anObject {
+	[self insertObject:anObject atIndex:count];	
+}
+
 - (BOOL) isEqual:(id)otherObject {
 	if ([otherObject conformsToProtocol:@protocol(CHDeque)])
 		return [self isEqualToDeque:otherObject];

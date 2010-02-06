@@ -12,10 +12,6 @@
 
 @implementation CHCircularBufferQueue
 
-- (void) addObject:(id)anObject {
-	[self appendObject:anObject];
-}
-
 - (BOOL) isEqual:(id)otherObject {
 	if ([otherObject conformsToProtocol:@protocol(CHQueue)])
 		return [self isEqualToQueue:otherObject];

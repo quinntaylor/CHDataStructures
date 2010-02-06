@@ -9,16 +9,16 @@
  */
 
 #import "CHQueue.h"
-#import "CHAbstractCircularBufferCollection.h"
+#import "CHCircularBuffer.h"
 
 /**
  @file CHCircularBufferQueue.h
- A simple CHQueue implemented using a CHAbstractCircularBufferCollection.
+ A simple CHQueue implemented using a CHCircularBuffer.
  */
 
 /**
- A simple CHQueue implemented using a CHAbstractCircularBufferCollection.
+ A simple CHQueue implemented using a CHCircularBuffer.
  */
-@interface CHCircularBufferQueue : CHAbstractCircularBufferCollection <CHQueue>
+@interface CHCircularBufferQueue : CHCircularBuffer <CHQueue>
 
 @end

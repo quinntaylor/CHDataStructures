@@ -9,7 +9,7 @@
  */
 
 #import "CHOrderedSet.h"
-#import "CHAbstractCircularBufferCollection.h"
+#import "CHCircularBuffer.h"
 
 @implementation CHOrderedSet
 
@@ -19,7 +19,7 @@
 
 - (id) initWithCapacity:(NSUInteger)numItems {
 	if ((self = [super initWithCapacity:numItems]) == nil) return nil;
-	ordering = [[CHAbstractCircularBufferCollection alloc] init];
+	ordering = [[CHCircularBuffer alloc] init];
 	return self;
 }
 
@@ -40,7 +40,7 @@
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
 	if (![self containsObject:anObject])
-		[ordering appendObject:anObject];
+		[ordering addObject:anObject];
 	[super addObject:anObject];
 }
 
@@ -68,9 +68,7 @@
 }
 
 - (NSUInteger) hash {
-	return hashOfCountAndObjects([self count],
-	                             [self firstObject],
-	                             [self lastObject]);
+	return [ordering hash];
 }
 
 - (NSUInteger) indexOfObject:(id)anObject {

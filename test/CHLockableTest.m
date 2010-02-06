@@ -9,9 +9,22 @@
  */
 
 #import <SenTestingKit/SenTestingKit.h>
+#import "CHCircularBuffer.h"
 #import "CHLockableDictionary.h"
 #import "CHLockableObject.h"
 #import "CHLockableSet.h"
+
+@interface CHCircularBuffer (Test)
+- (id<NSLocking>) theLock;
+@end
+
+@implementation CHCircularBuffer (Test)
+- (id<NSLocking>) theLock {
+	return lock;
+}
+@end
+
+#pragma mark -
 
 @interface CHLockableDictionary (Test)
 - (id<NSLocking>) theLock;
@@ -61,7 +74,8 @@
 @implementation CHLockableTest
 
 - (void) setUp {
-	lockableClasses = [NSArray arrayWithObjects:[CHLockableDictionary class],
+	lockableClasses = [NSArray arrayWithObjects:[CHCircularBuffer class],
+	                                            [CHLockableDictionary class],
 	                                            [CHLockableObject class],
 	                                            [CHLockableSet class],
 											    nil];

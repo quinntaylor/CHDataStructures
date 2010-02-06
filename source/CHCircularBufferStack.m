@@ -60,7 +60,7 @@
 }
 
 - (void) pushObject:(id)anObject {
-	[self prependObject:anObject];
+	[self insertObject:anObject atIndex:0];
 }
 
 - (id) topObject {

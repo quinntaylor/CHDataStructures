@@ -9,16 +9,16 @@
  */
 
 #import "CHStack.h"
-#import "CHAbstractCircularBufferCollection.h"
+#import "CHCircularBuffer.h"
 
 /**
  @file CHCircularBufferStack.h
- A simple CHStack implemented using a CHAbstractCircularBufferCollection.
+ A simple CHStack implemented using a CHCircularBuffer.
  */
 
 /**
- A simple CHStack implemented using a CHAbstractCircularBufferCollection.
+ A simple CHStack implemented using a CHCircularBuffer.
  */
-@interface CHCircularBufferStack : CHAbstractCircularBufferCollection <CHStack>
+@interface CHCircularBufferStack : CHCircularBuffer <CHStack>
 
 @end

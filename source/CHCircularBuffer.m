@@ -1,14 +1,14 @@
 /*
- CHDataStructures.framework -- CHAbstractCircularBufferCollection.m
+ CHDataStructures.framework -- CHCircularBuffer.m
  
- Copyright (c) 2009, Quinn Taylor <http://homepage.mac.com/quinntaylor>
+ Copyright (c) 2010, Quinn Taylor <http://homepage.mac.com/quinntaylor>
  
  Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
  
  The software is  provided "as is", without warranty of any kind, including all implied warranties of merchantability and fitness. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
  */
 
-#import "CHAbstractCircularBufferCollection.h"
+#import "CHCircularBuffer.h"
 
 static size_t kCHPointerSize = sizeof(void*);
 #define transformIndex(index) ((headIndex + index) % arrayCapacity)
@@ -133,11 +133,11 @@ static size_t kCHPointerSize = sizeof(void*);
 
 #pragma mark -
 
-BOOL objectsAreEqual(id o1, id o2) {
+static BOOL objectsAreEqual(id o1, id o2) {
 	return [o1 isEqual:o2];
 }
 
-BOOL objectsAreIdentical(id o1, id o2) {
+static BOOL objectsAreIdentical(id o1, id o2) {
 	return (o1 == o2);
 }
 
@@ -145,14 +145,56 @@ BOOL objectsAreIdentical(id o1, id o2) {
 
 #define DEFAULT_BUFFER_SIZE 16u
 
-@implementation CHAbstractCircularBufferCollection
+@implementation CHCircularBuffer
+
+// Private method used for creating a lock on-demand and naming it uniquely.
+- (void) createLock {
+	@synchronized (self) {
+		if (lock == nil) {
+			lock = [[NSLock alloc] init];
+			if ([lock respondsToSelector:@selector(setName:)])
+				[lock performSelector:@selector(setName:)
+				           withObject:[NSString stringWithFormat:@"NSLock-%@-0x%x", [self class], self]];
+		}
+	}
+}
+
+- (BOOL) tryLock {
+	if (lock == nil)
+		[self createLock];
+	return [lock tryLock];
+}
+
+- (void) lock {
+	if (lock == nil)
+		[self createLock];
+	[lock lock];
+}
+
+- (BOOL) lockBeforeDate:(NSDate*)limit {
+	if (lock == nil)
+		[self createLock];
+	return [lock lockBeforeDate:limit];
+}
+
+- (void) unlock {
+	[lock unlock];
+}
+
+#pragma mark -
+
++ (void) initialize {
+	initializeGCStatus();
+}
 
 - (void) dealloc {
 	[self removeAllObjects];
 	free(array);
+	[lock release];
 	[super dealloc];
 }
 
+// Note: Defined here since -init is not implemented in NS(Mutable)Array.
 - (id) init {
 	return [self initWithCapacity:DEFAULT_BUFFER_SIZE];
 }
@@ -179,12 +221,17 @@ BOOL objectsAreIdentical(id o1, id o2) {
 // This is the designated initializer for CHAbstractCircularBufferCollection.
 - (id) initWithCapacity:(NSUInteger)capacity {
 	if ((self = [super init]) == nil) return nil;
-	arrayCapacity = capacity;
+	arrayCapacity = capacity ? capacity : DEFAULT_BUFFER_SIZE;
 	array = NSAllocateCollectable(kCHPointerSize*arrayCapacity, NSScannedOption);
 	return self;	
 }
 
 #pragma mark <NSCoding>
+
+// Overridden from NSMutableArray to encode/decode as the proper class.
+- (Class) classForKeyedArchiver {
+	return [self class];
+}
 
 - (id) initWithCoder:(NSCoder*)decoder {
 	return [self initWithArray:[decoder decodeObjectForKey:@"array"]];
@@ -233,14 +280,12 @@ BOOL objectsAreIdentical(id o1, id o2) {
 
 #pragma mark Adding Objects
 
-- (void) appendObject:(id)anObject {
+// NSMutableArray primitive method
+- (void) addObject:(id)anObject {
 	[self insertObject:anObject atIndex:count];
 }
 
-- (void) prependObject:(id)anObject {
-	[self insertObject:anObject atIndex:0];
-}
-
+// NSMutableArray primitive method
 - (void) insertObject:(id)anObject atIndex:(NSUInteger)index {
 	if (index > count)
 		CHIndexOutOfRangeException([self class], _cmd, index, count);
@@ -339,6 +384,7 @@ BOOL objectsAreIdentical(id o1, id o2) {
 	return NO;
 }
 
+// NSArray primitive method
 - (NSUInteger) count {
 	return count;
 }
@@ -393,6 +439,7 @@ BOOL objectsAreIdentical(id o1, id o2) {
 	return NSNotFound;
 }
 
+// NSArray primitive method
 - (id) objectAtIndex:(NSUInteger)index {
 	if (index >= count)
 		CHIndexOutOfRangeException([self class], _cmd, index, count);
@@ -411,13 +458,6 @@ BOOL objectsAreIdentical(id o1, id o2) {
 		index = [indexes indexGreaterThanIndex:index];
 	}
 	return [[objects copy] autorelease];
-}
-
-- (NSArray*) objectsInRange:(NSRange)range {
-	NSUInteger lastIndex = range.length + range.location;
-	if (lastIndex >= count)
-		CHIndexOutOfRangeException([self class], _cmd, lastIndex, count);
-	return [self objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:range]];
 }
 
 - (NSEnumerator*) objectEnumerator {
@@ -440,21 +480,6 @@ BOOL objectsAreIdentical(id o1, id o2) {
 	       mutationPointer:&mutations] autorelease];
 }
 
-- (NSString*) description {
-	return [[self allObjects] description];
-	// TODO: Consider removing NSArray middleman -- need additional testing
-	//	NSMutableString *description = [NSMutableString string];
-	//	if (count > 0) {
-	//		NSUInteger descriptionIndex = headIndex;
-	//		[description appendFormat:@"\n    %@", array[descriptionIndex++]];
-	//		while (descriptionIndex != tailIndex) {
-	//			[description appendFormat:@",\n    %@", array[descriptionIndex++]];
-	//			descriptionIndex %= arrayCapacity;
-	//		}
-	//	}
-	//	return [NSString stringWithFormat:@"(%@\n)", description];
-}
-
 #pragma mark Removing Objects
 
 - (void) removeFirstObject {
@@ -467,6 +492,7 @@ BOOL objectsAreIdentical(id o1, id o2) {
 	++mutations;
 }
 
+// NSMutableArray primitive method
 - (void) removeLastObject {
 	if (count == 0)
 		return;
@@ -529,15 +555,16 @@ BOOL objectsAreIdentical(id o1, id o2) {
 	[self removeObject:anObject withEqualityTest:&objectsAreIdentical];
 }
 
-// This algorithm is from: http://www.javafaq.nu/java-article808.html
-// It could be optimized so the smaller half is always moved, but that requires
-// 1-2 memmove()s and usually copying of a single object. Since this operation
-// is inherently less efficient no matter the code, I just left it this way.
+// NSMutableArray primitive method
 - (void) removeObjectAtIndex:(NSUInteger)index {
 	if (index >= count)
 		CHIndexOutOfRangeException([self class], _cmd, index, count);
 	NSUInteger actualIndex = transformIndex(index);
 	[array[actualIndex] release];
+	// This algorithm is from: http://www.javafaq.nu/java-article808.html
+	// It could be optimized so the smaller half is always moved, but that would
+	// require 1-2 memmove()s and usually copying of a single object. Since this
+	// operation is inherently inefficient, I just left it this way.
 	if (actualIndex == headIndex) {
 		array[actualIndex] = nil; // Let GC do its thing
 		incrementIndex(headIndex);
@@ -599,6 +626,15 @@ BOOL objectsAreIdentical(id o1, id o2) {
 	headIndex = tailIndex = 0;
 	count = 0;
 	++mutations;
+}
+
+// NSMutableArray primitive method
+- (void) replaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject {
+	if (index >= count)
+		CHIndexOutOfRangeException([self class], _cmd, index, count);
+	[anObject retain];
+	[array[transformIndex(index)] release];
+	array[transformIndex(index)] = anObject;
 }
 
 @end

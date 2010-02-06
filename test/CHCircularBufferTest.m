@@ -1,5 +1,5 @@
 /*
- CHDataStructures.framework -- CHAbstractCircularBufferCollectionTest.m
+ CHDataStructures.framework -- CHCircularBufferTest.m
  
  Copyright (c) 2009, Quinn Taylor <http://homepage.mac.com/quinntaylor>
  
@@ -9,18 +9,17 @@
  */
 
 #import <SenTestingKit/SenTestingKit.h>
-#import "CHAbstractCircularBufferCollection.h"
+#import "CHCircularBuffer.h"
 #import "Util.h"
 
-@interface CHAbstractCircularBufferCollection (Test)
+@interface CHCircularBuffer (Internals)
 
 - (NSUInteger) capacity;
 - (NSUInteger) distanceFromHeadToTail;
-- (void) addObjectsFromArray:(NSArray*)array;
 
 @end
 
-@implementation CHAbstractCircularBufferCollection (Test)
+@implementation CHCircularBuffer (Internals)
 
 - (NSUInteger) capacity {
 	return arrayCapacity;
@@ -30,20 +29,13 @@
 	return (tailIndex - headIndex + arrayCapacity) % arrayCapacity;
 }
 
-- (void) addObjectsFromArray:(NSArray*)otherArray {
-	id anObject;
-	NSEnumerator *e = [otherArray objectEnumerator];
-	while (anObject = [e nextObject])
-		[self insertObject:anObject atIndex:count];
-}
-
 @end
 
 #pragma mark -
 
-@interface CHAbstractCircularBufferCollectionTest : SenTestCase
+@interface CHCircularBufferTest : SenTestCase
 {
-	CHAbstractCircularBufferCollection *buffer;
+	CHCircularBuffer *buffer;
 	NSArray *abc;
 	NSMutableArray *fifteen;
 	NSEnumerator *e;
@@ -51,10 +43,10 @@
 }
 @end
 
-@implementation CHAbstractCircularBufferCollectionTest
+@implementation CHCircularBufferTest
 
 - (void) setUp {
-	buffer = [[CHAbstractCircularBufferCollection alloc] init];
+	buffer = [[CHCircularBuffer alloc] init];
 	abc = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
 	fifteen = [[NSMutableArray alloc] init];
 	for (int i = 1; i <= 15; i++)
@@ -83,64 +75,47 @@
 	for (int i = 1; i <= 15; i++)
 		[array addObject:[NSNumber numberWithInt:i]];
 	[buffer release];
-	buffer = [[CHAbstractCircularBufferCollection alloc] initWithArray:array];
+	buffer = [[CHCircularBuffer alloc] initWithArray:array];
 	STAssertEquals([buffer capacity], (NSUInteger)16, @"Wrong capacity");
 	[self checkCountMatchesDistanceFromHeadToTail:15];
 	
 	[array addObject:[NSNumber numberWithInt:16]];
 	[buffer release];
-	buffer = [[CHAbstractCircularBufferCollection alloc] initWithArray:array];
+	buffer = [[CHCircularBuffer alloc] initWithArray:array];
 	STAssertEquals([buffer capacity], (NSUInteger)32, @"Wrong capacity");
 	[self checkCountMatchesDistanceFromHeadToTail:16];
 	
 	for (int i = 17; i <= 33; i++)
 		[array addObject:[NSNumber numberWithInt:i]];
 	[buffer release];
-	buffer = [[CHAbstractCircularBufferCollection alloc] initWithArray:array];
+	buffer = [[CHCircularBuffer alloc] initWithArray:array];
 	STAssertEquals([buffer capacity], (NSUInteger)64, @"Wrong capacity");
 	[self checkCountMatchesDistanceFromHeadToTail:33];
 }
 
 - (void) testInitWithCapacity {
 	[buffer release];
-	buffer = [[CHAbstractCircularBufferCollection alloc] initWithCapacity:8];
+	buffer = [[CHCircularBuffer alloc] initWithCapacity:8];
 	STAssertEquals([buffer capacity], (NSUInteger)8, @"Wrong capacity.");
 	[self checkCountMatchesDistanceFromHeadToTail:0];
 }
 
 #pragma mark Insertion
 
-- (void) testAppendObject {
-	[buffer appendObject:@"A"];
-	[buffer appendObject:@"B"];
-	[buffer appendObject:@"C"];
+- (void) testAddObject {
+	[buffer addObject:@"A"];
+	[buffer addObject:@"B"];
+	[buffer addObject:@"C"];
 	[self checkCountMatchesDistanceFromHeadToTail:3];
 	
 	// Force expansion of original capacity
 	[buffer release];
-	buffer = [[CHAbstractCircularBufferCollection alloc] init];
+	buffer = [[CHCircularBuffer alloc] init];
 	for (int i = 1; i <= 16; i++)
-		[buffer appendObject:[NSNumber numberWithInt:i]];
+		[buffer addObject:[NSNumber numberWithInt:i]];
 	STAssertEquals([buffer capacity], (NSUInteger)32, @"Wrong capacity");
 	for (int i = 17; i <= 33; i++)
-		[buffer appendObject:[NSNumber numberWithInt:i]];
-	STAssertEquals([buffer capacity], (NSUInteger)64, @"Wrong capacity");
-}
-
-- (void) testPrependObject {
-	[buffer prependObject:@"A"];
-	[buffer prependObject:@"B"];
-	[buffer prependObject:@"C"];
-	[self checkCountMatchesDistanceFromHeadToTail:3];
-	
-	// Force expansion of original capacity
-	[buffer release];
-	buffer = [[CHAbstractCircularBufferCollection alloc] init];
-	for (int i = 1; i <= 16; i++)
-		[buffer prependObject:[NSNumber numberWithInt:i]];
-	STAssertEquals([buffer capacity], (NSUInteger)32, @"Wrong capacity");
-	for (int i = 17; i <= 33; i++)
-		[buffer prependObject:[NSNumber numberWithInt:i]];
+		[buffer addObject:[NSNumber numberWithInt:i]];
 	STAssertEquals([buffer capacity], (NSUInteger)64, @"Wrong capacity");
 }
 
@@ -153,15 +128,14 @@
 	STAssertThrows([buffer insertObject:@"Z" atIndex:1],
 				   @"Should raise NSRangeException.");
 	
+	// Insert some at the front to force the buffer to "wrap around" the end.
 	e = [abc reverseObjectEnumerator];
 	while (anObject = [e nextObject])
-		[buffer prependObject:anObject];
-	[buffer appendObject:@"D"];
+		[buffer insertObject:anObject atIndex:0];
+	[buffer addObject:@"D"];
 	[self checkCountMatchesDistanceFromHeadToTail:[abc count]+1];
 	
-	// Note: Inserting at the front and back are covered by prepend/append tests
-
-	// Try inserting in the middle within both halves of a wraped-around buffer
+	// Try inserting in the middle within both halves of a wrapped-around buffer
 	[buffer insertObject:@"X" atIndex:1];
 	[self checkCountMatchesDistanceFromHeadToTail:[abc count]+2];
 	[buffer insertObject:@"Y" atIndex:3];
@@ -261,7 +235,7 @@
 	STAssertNil([e nextObject], @"Bad response, -nextObject should be nil");
 	
 	// Cause mutation exception
-	[buffer appendObject:@"Z"];
+	[buffer addObject:@"Z"];
 	STAssertThrows([e nextObject], @"Should throw exception after mutation.");
 	STAssertThrows([e allObjects], @"Should throw exception after mutation.");
 	[buffer removeLastObject];
@@ -286,7 +260,7 @@
 	STAssertNil([e nextObject], @"Bad response, -nextObject should be nil");
 
 	// Cause mutation exception
-	[buffer appendObject:@"Z"];
+	[buffer addObject:@"Z"];
 	STAssertThrows([e nextObject], @"Should throw exception after mutation.");
 	STAssertThrows([e allObjects], @"Should throw exception after mutation.");
 	[buffer removeLastObject];
@@ -335,7 +309,7 @@
 	// Move the head index to 3 so adding 15 objects will wrap.
 	e = [abc objectEnumerator];
 	while (anObject = [e nextObject]) {
-		[buffer appendObject:anObject];
+		[buffer addObject:anObject];
 		[buffer removeFirstObject];
 	}
 	[buffer addObjectsFromArray:fifteen];
@@ -359,7 +333,7 @@
 	// Move the head index to 3 so adding 15 objects will wrap.
 	e = [abc objectEnumerator];
 	while (anObject = [e nextObject]) {
-		[buffer appendObject:anObject];
+		[buffer addObject:anObject];
 		[buffer removeFirstObject];
 	}
 	[buffer addObjectsFromArray:fifteen];
@@ -437,15 +411,6 @@
 	}
 }
 
-- (void) testObjectsInRange {
-	NSRange range = NSMakeRange(1, 1);
-	STAssertThrows([buffer objectsInRange:range], @"Range exception");
-	[buffer addObjectsFromArray:abc];
-	STAssertEqualObjects([buffer objectsInRange:range],
-						 [[buffer allObjects] subarrayWithRange:range],
-						 @"Range selections should be equal.");
-}
-
 #pragma mark Removal
 
 - (void) testRemoveFirstObject {
@@ -505,9 +470,9 @@
 	// Insert each object 3 times to force array capacity to 64 elements
 	e = [fifteen objectEnumerator];
 	while (anObject = [e nextObject]) {
-		[buffer appendObject:anObject];
-		[buffer appendObject:anObject];
-		[buffer appendObject:anObject];
+		[buffer addObject:anObject];
+		[buffer addObject:anObject];
+		[buffer addObject:anObject];
 	}
 	STAssertEquals([buffer count], [fifteen count]*3, @"Incorrect count.");
 	STAssertEquals([buffer capacity], (NSUInteger)64, @"Wrong capacity.");
@@ -518,7 +483,7 @@
 
 - (void) removeObjectSetup {
 	[buffer release];
-	buffer = [[CHAbstractCircularBufferCollection alloc] initWithCapacity:8];
+	buffer = [[CHCircularBuffer alloc] initWithCapacity:8];
 }
 
 - (NSArray*) removeObjectTestArrays {
@@ -545,7 +510,7 @@
 			if (i == 1) {
 				e = [abc objectEnumerator];
 				while (anObject = [e nextObject]) {
-					[buffer appendObject:anObject];
+					[buffer addObject:anObject];
 					[buffer removeFirstObject];
 				}				
 			}
@@ -569,11 +534,11 @@
 	NSString *b = [NSString stringWithFormat:@"B"];
 	NSString *x = [NSString stringWithFormat:@"X"];
 	
-	[buffer appendObject:a];
-	[buffer appendObject:b];
-	[buffer appendObject:@"C"];
-	[buffer appendObject:a];
-	[buffer appendObject:b];
+	[buffer addObject:a];
+	[buffer addObject:b];
+	[buffer addObject:@"C"];
+	[buffer addObject:a];
+	[buffer addObject:b];
 	STAssertNoThrow([buffer removeObjectIdenticalTo:nil], @"No effect with nil object.");
 	
 	STAssertEquals([buffer count], (NSUInteger)5, @"Incorrect count.");
@@ -596,7 +561,7 @@
 			if (i == 1) {
 				e = [abc objectEnumerator];
 							while (anObject = [e nextObject]) {
-					[buffer appendObject:anObject];
+					[buffer addObject:anObject];
 					[buffer removeFirstObject];
 				}				
 			}
@@ -616,10 +581,8 @@
 - (void) testRemoveObjectAtIndex {
 	STAssertThrows([buffer removeObjectAtIndex:0],
 				   @"Should raise NSRangeException.");
-	e = [abc reverseObjectEnumerator];
-	while (anObject = [e nextObject])
-		[buffer prependObject:anObject];
-	[buffer appendObject:@"D"];
+	[buffer addObjectsFromArray:abc];
+	[buffer addObject:@"D"];
 	STAssertThrows([buffer removeObjectAtIndex:[abc count]+1],
 				   @"Should raise NSRangeException.");
 	
@@ -665,6 +628,23 @@
 	}	
 }
 
+- (void) testReplaceObjectAtIndexWithObject {
+	STAssertThrows([buffer replaceObjectAtIndex:0 withObject:nil],
+	               @"Should raise index exception.");
+	STAssertThrows([buffer replaceObjectAtIndex:1 withObject:nil],
+	               @"Should raise index exception.");
+	
+	[buffer addObjectsFromArray:abc];
+	
+	for (NSUInteger i = 0; i < [abc count]; i++) {
+		STAssertEqualObjects([buffer objectAtIndex:i], [abc objectAtIndex:i],
+		                     @"Incorrect object.");
+		[buffer replaceObjectAtIndex:i withObject:@"Z"];
+		STAssertEqualObjects([buffer objectAtIndex:i], @"Z",
+		                     @"Incorrect object.");
+	}
+}
+
 #pragma mark -
 #pragma mark <Protocols>
 
@@ -702,7 +682,7 @@
 - (void) testNSFastEnumeration {
 	int number, expected, count;
 	for (number = 1; number <= 32; number++)
-		[buffer appendObject:[NSNumber numberWithInt:number]];
+		[buffer addObject:[NSNumber numberWithInt:number]];
 	count = 0;
 	expected = 1;
 	e = [buffer objectEnumerator];
@@ -716,7 +696,7 @@
 	BOOL raisedException = NO;
 	@try {
 		for (NSNumber *number in buffer)
-			[buffer appendObject:@"123"];
+			[buffer addObject:@"123"];
 	}
 	@catch (NSException *exception) {
 		raisedException = YES;
@@ -729,12 +709,12 @@
 	// Insert and remove 3 elements to make the buffer wrap with 15 elements
 	e = [abc objectEnumerator];
 	while (anObject = [e nextObject]) {
-		[buffer appendObject:anObject];
+		[buffer addObject:anObject];
 		[buffer removeFirstObject];
 	}
 	[self checkCountMatchesDistanceFromHeadToTail:0];
 	for (number = 1; number < 16; number++)
-		[buffer appendObject:[NSNumber numberWithInt:number]];
+		[buffer addObject:[NSNumber numberWithInt:number]];
 	count = 0;
 	expected = 1;
 	e = [buffer objectEnumerator];

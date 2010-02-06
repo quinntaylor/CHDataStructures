@@ -9,7 +9,7 @@
  */
 
 #import "CHOrderedDictionary.h"
-#import "CHAbstractCircularBufferCollection.h"
+#import "CHCircularBuffer.h"
 
 @implementation CHOrderedDictionary
 
@@ -20,7 +20,7 @@
 
 - (id) initWithCapacity:(NSUInteger)numItems {
 	if ((self = [super initWithCapacity:numItems]) == nil) return nil;
-	keyOrdering = [[CHAbstractCircularBufferCollection alloc] init];
+	keyOrdering = [[CHCircularBuffer alloc] init];
 	return self;
 }
 
@@ -72,9 +72,7 @@
 }
 
 - (NSUInteger) hash {
-	return hashOfCountAndObjects([keyOrdering count],
-	                             [keyOrdering firstObject],
-	                             [keyOrdering lastObject]);
+	return [keyOrdering hash];
 }
 
 - (id) lastKey {
