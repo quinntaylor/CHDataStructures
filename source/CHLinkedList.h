@@ -46,63 +46,6 @@
  */
 - (id) initWithArray:(NSArray*)anArray;
 
-#pragma mark Adding Objects
-/** @name Adding Objects */
-// @{
-
-/**
- Add an object to the receiver, inserted at the front.
- 
- @param anObject The object to add to the receiver.
-
- @throw NSInvalidArgumentException If @a anObject is @c nil.
- 
- @see appendObject:
- @see firstObject
- */
-- (void) prependObject:(id)anObject;
-
-/**
- Add an object to the receiver, inserted at the back.
- 
- @param anObject The object to add to the receiver.
- 
- @throw NSInvalidArgumentException If @a anObject is @c nil.
- 
- @see lastObject
- @see prependObject:
- */
-- (void) appendObject:(id)anObject;
-
-/**
- Insert a given object at a given index. If @a index is already occupied, then objects at @a index and beyond are shifted one spot toward the end.
- 
- @param anObject The object to add to the receiver.
- @param index The index at which to insert @a anObject.
- 
- @throw NSInvalidArgumentException If @a anObject is @c nil.
- @throw NSRangeException If @a index exceeds the bounds of the receiver.
- 
- @attention Inserting in the middle of a linked list is a somewhat inefficient operation &mdash; although values aren't shifted by one like in arrays, elements must be traversed one by one to find the specified index.
- */
-- (void) insertObject:(id)anObject atIndex:(NSUInteger)index;
-
-/**
- Exchange the objects in the receiver at given indexes.
- 
- @param idx1 The index of the object to replace with the object at @a idx2.
- @param idx2 The index of the object to replace with the object at @a idx1.
- 
- @throw NSRangeException If @a idx1 or @a idx2 exceeds the bounds of the receiver.
- 
- @attention Index-oriented operations are generally slow in linked lists, which are not optimized for random access. Arrays are much faster for such functionality.
- 
- @see indexOfObject:
- @see objectAtIndex:
- */
-- (void) exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2;
-
-// @}
 #pragma mark Querying Contents
 /** @name Querying Contents */
 // @{
@@ -221,9 +164,61 @@
 - (NSEnumerator*) objectEnumerator;
 
 // @}
-#pragma mark Removing Objects
-/** @name Removing Objects */
+#pragma mark Modifying Contents
+/** @name Modifying Contents */
 // @{
+
+/**
+ Add an object to the receiver, inserted at the back.
+ 
+ @param anObject The object to add to the receiver.
+ 
+ @throw NSInvalidArgumentException If @a anObject is @c nil.
+ 
+ @see lastObject
+ @see prependObject:
+ */
+- (void) appendObject:(id)anObject;
+
+/**
+ Exchange the objects in the receiver at given indexes.
+ 
+ @param idx1 The index of the object to replace with the object at @a idx2.
+ @param idx2 The index of the object to replace with the object at @a idx1.
+ 
+ @throw NSRangeException If @a idx1 or @a idx2 exceeds the bounds of the receiver.
+ 
+ @attention Index-oriented operations are generally slow in linked lists, which are not optimized for random access. Arrays are much faster for such functionality.
+ 
+ @see indexOfObject:
+ @see objectAtIndex:
+ */
+- (void) exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2;
+
+/**
+ Insert a given object at a given index. If @a index is already occupied, then objects at @a index and beyond are shifted one spot toward the end.
+ 
+ @param anObject The object to add to the receiver.
+ @param index The index at which to insert @a anObject.
+ 
+ @throw NSInvalidArgumentException If @a anObject is @c nil.
+ @throw NSRangeException If @a index exceeds the bounds of the receiver.
+ 
+ @attention Inserting in the middle of a linked list is a somewhat inefficient operation &mdash; although values aren't shifted by one like in arrays, elements must be traversed one by one to find the specified index.
+ */
+- (void) insertObject:(id)anObject atIndex:(NSUInteger)index;
+
+/**
+ Add an object to the receiver, inserted at the front.
+ 
+ @param anObject The object to add to the receiver.
+ 
+ @throw NSInvalidArgumentException If @a anObject is @c nil.
+ 
+ @see appendObject:
+ @see firstObject
+ */
+- (void) prependObject:(id)anObject;
 
 /**
  Removes the first item in the receiver.
@@ -287,6 +282,17 @@
  @see removeObjectIdenticalTo:
  */
 - (void) removeAllObjects;
+
+/**
+ Replaces the object at a given index with a given object.
+ 
+ @param index The index of the object to be replaced.
+ @param anObject The object with which to replace the object at @a index in the receiver.
+ 
+ @throw NSRangeException If @a index exceeds the bounds of the receiver.
+ @throw NSInvalidArgumentException If @a anObject is @c nil.
+ */
+- (void) replaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject;
 
 // @}
 #pragma mark <NSCoding>

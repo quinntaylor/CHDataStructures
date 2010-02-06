@@ -637,4 +637,25 @@
 	}
 }
 
+- (void) testReplaceObjectAtIndexWithObject {
+	NSEnumerator *classes = [linkedListClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
+		list = [[aClass alloc] initWithArray:abc];
+		for (NSUInteger i = 0; i < [abc count]; i++) {
+			STAssertEqualObjects([list objectAtIndex:i], [abc objectAtIndex:i],
+								 @"Incorrect object.");
+			[list replaceObjectAtIndex:i withObject:@"Z"];
+			STAssertEqualObjects([list objectAtIndex:i], @"Z",
+								 @"Incorrect object.");
+		}
+		[list removeAllObjects];
+		STAssertThrows([list replaceObjectAtIndex:0 withObject:nil],
+					   @"Should raise index exception.");
+		STAssertThrows([list replaceObjectAtIndex:1 withObject:nil],
+					   @"Should raise index exception.");
+		[list release];
+	}
+}
+
 @end

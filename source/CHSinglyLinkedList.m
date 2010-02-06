@@ -211,79 +211,6 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 }
 #endif
 
-#pragma mark Adding Objects
-
-- (void) prependObject:(id)anObject {
-	if (anObject == nil)
-		CHNilArgumentException([self class], _cmd);
-	CHSinglyLinkedListNode *new;
-	new = NSAllocateCollectable(kCHSinglyLinkedListNodeSize, NSScannedOption);
-	new->object = [anObject retain];
-	new->next = head->next;
-	head->next = new;
-	if (tail == head)
-		tail = new;
-	++count;
-	++mutations;
-}
-
-- (void) appendObject:(id)anObject {
-	if (anObject == nil)
-		CHNilArgumentException([self class], _cmd);
-	CHSinglyLinkedListNode *new;
-	new = NSAllocateCollectable(kCHSinglyLinkedListNodeSize, NSScannedOption);
-	new->object = [anObject retain];
-	new->next = NULL;
-	tail->next = new;
-	tail = tail->next;
-
-	++count;
-	++mutations;
-}
-
-- (void) insertObject:(id)anObject atIndex:(NSUInteger)index {
-	if (anObject == nil)
-		CHNilArgumentException([self class], _cmd);
-	if (index > count)
-		CHIndexOutOfRangeException([self class], _cmd, index, count);
-	
-	CHSinglyLinkedListNode *new = NSAllocateCollectable(kCHSinglyLinkedListNodeSize, NSScannedOption);
-	new->object = [anObject retain];
-	if (index == count) {
-		new->next = NULL;
-		tail->next = new;
-		tail = tail->next;
-	}
-	else {
-		CHSinglyLinkedListNode *node = head; // So the index lands at prior node
-		for (NSUInteger nodeIndex = 0; nodeIndex < index; nodeIndex++)
-			node = node->next;
-		new->next = node->next;
-		node->next = new;
-	}
-	++count;
-	++mutations;
-}
-
-- (void) exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2 {
-	NSUInteger firstIndex = MIN(idx1, idx2), secondIndex = MAX(idx1,idx2);
-	if (secondIndex > count)
-		CHIndexOutOfRangeException([self class], _cmd, secondIndex, count);
-	if (idx1 != idx2) {
-		NSUInteger nodeIndex = 0;
-		CHSinglyLinkedListNode *node1 = head->next;
-		while (nodeIndex++ < firstIndex)
-			node1 = node1->next;
-		CHSinglyLinkedListNode *node2 = node1->next;
-		while (nodeIndex++ < secondIndex)
-			node2 = node2->next;
-		id tempObject = node1->object;
-		node1->object = node2->object;
-		node2->object = tempObject;
-		++mutations;
-	}
-}
-
 #pragma mark Querying Contents
 
 - (NSArray*) allObjects {
@@ -346,7 +273,7 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 }
 
 - (id) objectAtIndex:(NSUInteger)index {
-	if (index < 0 || index >= count)
+	if (index >= count)
 		CHIndexOutOfRangeException([self class], _cmd, index, count);
 	if (index == count - 1)
 		return tail->object;
@@ -365,7 +292,96 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
            mutationPointer:&mutations] autorelease];
 }
 
-#pragma mark Removing Objects
+#pragma mark Modifying Contents
+
+- (void) appendObject:(id)anObject {
+	if (anObject == nil)
+		CHNilArgumentException([self class], _cmd);
+	CHSinglyLinkedListNode *new;
+	new = NSAllocateCollectable(kCHSinglyLinkedListNodeSize, NSScannedOption);
+	new->object = [anObject retain];
+	new->next = NULL;
+	tail->next = new;
+	tail = tail->next;
+	
+	++count;
+	++mutations;
+}
+
+- (void) exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2 {
+	NSUInteger firstIndex = MIN(idx1, idx2), secondIndex = MAX(idx1,idx2);
+	if (secondIndex > count)
+		CHIndexOutOfRangeException([self class], _cmd, secondIndex, count);
+	if (idx1 != idx2) {
+		NSUInteger nodeIndex = 0;
+		CHSinglyLinkedListNode *node1 = head->next;
+		while (nodeIndex++ < firstIndex)
+			node1 = node1->next;
+		CHSinglyLinkedListNode *node2 = node1->next;
+		while (nodeIndex++ < secondIndex)
+			node2 = node2->next;
+		id tempObject = node1->object;
+		node1->object = node2->object;
+		node2->object = tempObject;
+		++mutations;
+	}
+}
+
+- (void) insertObject:(id)anObject atIndex:(NSUInteger)index {
+	if (anObject == nil)
+		CHNilArgumentException([self class], _cmd);
+	if (index > count)
+		CHIndexOutOfRangeException([self class], _cmd, index, count);
+	
+	CHSinglyLinkedListNode *new = NSAllocateCollectable(kCHSinglyLinkedListNodeSize, NSScannedOption);
+	new->object = [anObject retain];
+	if (index == count) {
+		new->next = NULL;
+		tail->next = new;
+		tail = tail->next;
+	}
+	else {
+		CHSinglyLinkedListNode *node = head; // So the index lands at prior node
+		for (NSUInteger nodeIndex = 0; nodeIndex < index; nodeIndex++)
+			node = node->next;
+		new->next = node->next;
+		node->next = new;
+	}
+	++count;
+	++mutations;
+}
+
+- (void) prependObject:(id)anObject {
+	if (anObject == nil)
+		CHNilArgumentException([self class], _cmd);
+	CHSinglyLinkedListNode *new;
+	new = NSAllocateCollectable(kCHSinglyLinkedListNodeSize, NSScannedOption);
+	new->object = [anObject retain];
+	new->next = head->next;
+	head->next = new;
+	if (tail == head)
+		tail = new;
+	++count;
+	++mutations;
+}
+
+- (void) removeAllObjects {
+	if (kCHGarbageCollectionNotEnabled && count > 0) {
+		CHSinglyLinkedListNode *node;
+		// Use tail pointer to iterate through all nodes, then reset it to head
+		tail = head->next;
+		while (tail != NULL) {
+			node = tail;
+			tail = tail->next;
+			[node->object release];
+			free(node);
+		}
+	}
+	head->next = NULL;
+	tail = head;
+	count = 0;
+	++mutations;
+}
 
 - (void) removeFirstObject {
 	if (count > 0)
@@ -401,6 +417,20 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 	++mutations;
 }
 
+- (void) removeObjectAtIndex:(NSUInteger)index {
+	if (index >= count)
+		CHIndexOutOfRangeException([self class], _cmd, index, count);
+
+	CHSinglyLinkedListNode *node = head; // So the index lands at prior node
+	for (NSUInteger nodeIndex = 0; nodeIndex < index; nodeIndex++)
+		node = node->next;
+	removeNodeAfterNode(node);
+	--count;
+	++mutations;
+	if (node->next == NULL)
+		tail = node;
+}
+
 - (void) removeObjectIdenticalTo:(id)anObject {
 	if (count == 0 || anObject == nil)
 		return;
@@ -417,36 +447,19 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 	++mutations;
 }
 
-- (void) removeObjectAtIndex:(NSUInteger)index {
-	if (index >= count || index < 0)
+- (void) replaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject {
+	if (index >= count)
 		CHIndexOutOfRangeException([self class], _cmd, index, count);
-
-	CHSinglyLinkedListNode *node = head; // So the index lands at prior node
-	for (NSUInteger nodeIndex = 0; nodeIndex < index; nodeIndex++)
-		node = node->next;
-	removeNodeAfterNode(node);
-	--count;
-	++mutations;
-	if (node->next == NULL)
-		tail = node;
-}
-
-- (void) removeAllObjects {
-	if (kCHGarbageCollectionNotEnabled && count > 0) {
-		CHSinglyLinkedListNode *node;
-		// Use tail pointer to iterate through all nodes, then reset it to head
-		tail = head->next;
-		while (tail != NULL) {
-			node = tail;
-			tail = tail->next;
-			[node->object release];
-			free(node);
-		}
-	}
-	head->next = NULL;
-	tail = head;
-	count = 0;
-	++mutations;
+	CHSinglyLinkedListNode *node;
+	if (index == count - 1)
+		node = tail;
+	else {
+		node = head->next;
+		for (NSUInteger nodeIndex = 0; nodeIndex < index; nodeIndex++)
+			node = node->next;
+	}	
+	[node->object autorelease];
+	node->object = [anObject retain];
 }
 
 @end

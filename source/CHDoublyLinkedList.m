@@ -257,49 +257,6 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 }
 #endif
 
-#pragma mark Adding Objects
-
-- (void) prependObject:(id)anObject {
-	if (anObject == nil)
-		CHNilArgumentException([self class], _cmd);
-	[self insertObject:anObject atIndex:0];
-}
-
-- (void) appendObject:(id)anObject {
-	if (anObject == nil)
-		CHNilArgumentException([self class], _cmd);
-	[self insertObject:anObject atIndex:count];
-}
-
-- (void) insertObject:(id)anObject atIndex:(NSUInteger)index {
-	if (anObject == nil)
-		CHNilArgumentException([self class], _cmd);
-	
-	CHDoublyLinkedListNode *node = [self nodeAtIndex:index];
-	CHDoublyLinkedListNode *newNode;
-	newNode = NSAllocateCollectable(kCHDoublyLinkedListNodeSize, NSScannedOption);
-	newNode->object = [anObject retain];
-	newNode->next = node;          // point forward to displaced node
-	newNode->prev = node->prev;    // point backward to preceding node
-	newNode->prev->next = newNode; // point preceding node forward to new node
-	node->prev = newNode;          // point displaced node backward to new node
-	++count;
-	++mutations;
-}
-
-- (void) exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2 {
-	if (MAX(idx1,idx2) > count)
-		CHIndexOutOfRangeException([self class], _cmd, MAX(idx1,idx2), count);
-	if (idx1 != idx2) {
-		CHDoublyLinkedListNode *node1 = [self nodeAtIndex:idx1];
-		CHDoublyLinkedListNode *node2 = [self nodeAtIndex:idx2];
-		id tempObject = node1->object;
-		node1->object = node2->object;
-		node2->object = tempObject;
-		++mutations;
-	}
-}
-
 #pragma mark Querying Contents
 
 - (NSArray*) allObjects {
@@ -389,7 +346,65 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 	       mutationPointer:&mutations] autorelease];
 }
 
-#pragma mark Removing Objects
+#pragma mark Modifying Contents
+
+- (void) appendObject:(id)anObject {
+	if (anObject == nil)
+		CHNilArgumentException([self class], _cmd);
+	[self insertObject:anObject atIndex:count];
+}
+
+- (void) exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2 {
+	if (MAX(idx1,idx2) > count)
+		CHIndexOutOfRangeException([self class], _cmd, MAX(idx1,idx2), count);
+	if (idx1 != idx2) {
+		CHDoublyLinkedListNode *node1 = [self nodeAtIndex:idx1];
+		CHDoublyLinkedListNode *node2 = [self nodeAtIndex:idx2];
+		id tempObject = node1->object;
+		node1->object = node2->object;
+		node2->object = tempObject;
+		++mutations;
+	}
+}
+
+- (void) insertObject:(id)anObject atIndex:(NSUInteger)index {
+	if (anObject == nil)
+		CHNilArgumentException([self class], _cmd);
+	
+	CHDoublyLinkedListNode *node = [self nodeAtIndex:index];
+	CHDoublyLinkedListNode *newNode;
+	newNode = NSAllocateCollectable(kCHDoublyLinkedListNodeSize, NSScannedOption);
+	newNode->object = [anObject retain];
+	newNode->next = node;          // point forward to displaced node
+	newNode->prev = node->prev;    // point backward to preceding node
+	newNode->prev->next = newNode; // point preceding node forward to new node
+	node->prev = newNode;          // point displaced node backward to new node
+	++count;
+	++mutations;
+}
+
+- (void) prependObject:(id)anObject {
+	if (anObject == nil)
+		CHNilArgumentException([self class], _cmd);
+	[self insertObject:anObject atIndex:0];
+}
+
+- (void) removeAllObjects {
+	if (kCHGarbageCollectionNotEnabled && count > 0) {
+		// Only bother with free() calls if garbage collection is NOT enabled.
+		CHDoublyLinkedListNode *node = head->next, *temp;
+		while (node != tail) {
+			temp = node->next;
+			[node->object release];
+			free(node);
+			node = temp;
+		}
+	}
+	head->next = tail;
+	tail->prev = head;
+	count = 0;
+	++mutations;
+}
 
 - (void) removeFirstObject {
 	if (count == 0)
@@ -419,6 +434,12 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 	} while (node != tail);
 }
 
+- (void) removeObjectAtIndex:(NSUInteger)index {
+	if (index >= count)
+		CHIndexOutOfRangeException([self class], _cmd, index, count);
+	[self removeNode:[self nodeAtIndex:index]];
+}
+
 - (void) removeObjectIdenticalTo:(id)anObject {
 	if (count == 0 || anObject == nil)
 		return;
@@ -435,27 +456,12 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 	} while (node != tail);
 }
 
-- (void) removeObjectAtIndex:(NSUInteger)index {
+- (void) replaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject {
 	if (index >= count)
 		CHIndexOutOfRangeException([self class], _cmd, index, count);
-	[self removeNode:[self nodeAtIndex:index]];
-}
-
-- (void) removeAllObjects {
-	if (kCHGarbageCollectionNotEnabled && count > 0) {
-		// Only bother with free() calls if garbage collection is NOT enabled.
-		CHDoublyLinkedListNode *node = head->next, *temp;
-		while (node != tail) {
-			temp = node->next;
-			[node->object release];
-			free(node);
-			node = temp;
-		}
-	}
-	head->next = tail;
-	tail->prev = head;
-	count = 0;
-	++mutations;
+	CHDoublyLinkedListNode *node = [self nodeAtIndex:index];
+	[node->object autorelease];
+	node->object = [anObject retain];
 }
 
 @end
