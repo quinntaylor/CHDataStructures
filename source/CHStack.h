@@ -43,22 +43,6 @@
  */
 - (id) initWithArray:(NSArray*)anArray;
 
-#pragma mark Adding Objects
-/** @name Adding Objects */
-// @{
-
-/**
- Add an object to the top of the stack.
- 
- @param anObject The object to add to the top of the stack.
- @throw NSInvalidArgumentException If @a anObject is @c nil.
- 
- @see popObject
- @see topObject
- */
-- (void) pushObject:(id)anObject;
-
-// @}
 #pragma mark Querying Contents
 /** @name Querying Contents */
 // @{
@@ -107,12 +91,50 @@
 - (NSUInteger) count;
 
 /**
+ Returns the lowest index of a given object, matched using @c isEqual:.
+ 
+ @param anObject The object to search for in the receiver.
+ @return The index of the first object which is equal to @a anObject. If none of the objects in the receiver match @a anObject, returns @c NSNotFound.
+ 
+ @see indexOfObjectIdenticalTo:
+ @see objectAtIndex:
+ @see removeObjectAtIndex:
+ */
+- (NSUInteger) indexOfObject:(id)anObject;
+
+/**
+ Returns the lowest index of a given object, matched using the == operator.
+ 
+ @param anObject The object to be matched and located in the receiver.
+ @return The index of the first object which is equal to @a anObject. If none of the objects in the receiver match @a anObject, returns @c NSNotFound.
+ 
+ @see indexOfObject:
+ @see objectAtIndex:
+ @see removeObjectAtIndex:
+ */
+- (NSUInteger) indexOfObjectIdenticalTo:(id)anObject;
+
+/**
  Compares the receiving stack to another stack. Two stacks have equal contents if they each hold the same number of objects and objects at a given position in each stack satisfy the \link NSObject#isEqual: -isEqual:\endlink test.
  
  @param otherStack A stack.
  @return @c YES if the contents of @a otherStack are equal to the contents of the receiver, otherwise @c NO.
  */
 - (BOOL) isEqualToStack:(id<CHStack>)otherStack;
+
+/**
+ Returns the object located at @a index in the receiver.
+ 
+ @param index An index from which to retrieve an object.
+ @return The object located at @a index.
+ 
+ @throw NSRangeException If @a index exceeds the bounds of the receiver.
+ 
+ @see indexOfObject:
+ @see indexOfObjectIdenticalTo:
+ @see removeObjectAtIndex:
+ */
+- (id) objectAtIndex:(NSUInteger)index;
 
 /**
  Returns an enumerator that accesses each object in the stack from top to bottom.
@@ -138,9 +160,22 @@
 - (id) topObject;
 
 // @}
-#pragma mark Removing Objects
-/** @name Removing Objects */
+#pragma mark Modifying Contents
+/** @name Modifying Contents */
 // @{
+
+/**
+ Exchange the objects in the receiver at given indexes.
+ 
+ @param idx1 The index of the object to replace with the object at @a idx2.
+ @param idx2 The index of the object to replace with the object at @a idx1.
+ 
+ @throw NSRangeException If @a idx1 or @a idx2 exceeds the bounds of the receiver.
+ 
+ @see indexOfObject:
+ @see objectAtIndex:
+ */
+- (void) exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2;
 
 /**
  Remove the topmost object on the stack; no effect if the stack is already empty.
@@ -150,6 +185,27 @@
  @see topObject
  */
 - (void) popObject;
+
+/**
+ Add an object to the top of the stack.
+ 
+ @param anObject The object to add to the top of the stack.
+ @throw NSInvalidArgumentException If @a anObject is @c nil.
+ 
+ @see popObject
+ @see topObject
+ */
+- (void) pushObject:(id)anObject;
+
+/**
+ Empty the receiver of all of its members.
+ 
+ @see allObjects
+ @see popObject
+ @see removeObject:
+ @see removeObjectIdenticalTo:
+ */
+- (void) removeAllObjects;
 
 /**
  Remove @b all occurrences of @a anObject, matched using @c isEqual:.
@@ -164,6 +220,19 @@
 - (void) removeObject:(id)anObject;
 
 /**
+ Remove the object at a given index from the receiver.
+ 
+ @param index The index of the object to remove.
+ 
+ @throw NSRangeException If @a index exceeds the bounds of the receiver.
+ 
+ @see indexOfObject:
+ @see indexOfObjectIdenticalTo:
+ @see objectAtIndex:
+ */
+- (void) removeObjectAtIndex:(NSUInteger)index;
+
+/**
  Remove @b all occurrences of @a anObject, matched using the == operator.
  
  @param anObject The object to be removed from the stack.
@@ -176,14 +245,15 @@
 - (void) removeObjectIdenticalTo:(id)anObject;
 
 /**
- Empty the receiver of all of its members.
+ Replaces the object at a given index with a given object.
  
- @see allObjects
- @see popObject
- @see removeObject:
- @see removeObjectIdenticalTo:
+ @param index The index of the object to be replaced.
+ @param anObject The object with which to replace the object at @a index in the receiver.
+ 
+ @throw NSRangeException If @a index exceeds the bounds of the receiver.
+ @throw NSInvalidArgumentException If @a anObject is @c nil.
  */
-- (void) removeAllObjects;
+- (void) replaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject;
 
 // @}
 #pragma mark <NSCoding>
