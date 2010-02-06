@@ -592,19 +592,19 @@ int main (int argc, const char * argv[]) {
 	}
 	
 	CHQuietLog(@"\n<CHDeque> Implemenations");
+	benchmarkDeque([CHCircularBufferDeque class]);
 	benchmarkDeque([CHMutableArrayDeque class]);
 	benchmarkDeque([CHListDeque class]);
-	benchmarkDeque([CHCircularBufferDeque class]);
 	
 	CHQuietLog(@"\n<CHQueue> Implemenations");
+	benchmarkQueue([CHCircularBufferQueue class]);
 	benchmarkQueue([CHMutableArrayQueue class]);
 	benchmarkQueue([CHListQueue class]);
-	benchmarkQueue([CHCircularBufferQueue class]);
 	
 	CHQuietLog(@"\n<CHStack> Implemenations");
+	benchmarkStack([CHCircularBufferStack class]);
 	benchmarkStack([CHMutableArrayStack class]);
 	benchmarkStack([CHListStack class]);
-	benchmarkStack([CHCircularBufferStack class]);
 	
 	[objects release];
 	
