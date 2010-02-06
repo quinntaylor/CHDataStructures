@@ -70,27 +70,27 @@
  - CHSortedSet
  - CHStack
  
- The concrete subclasses of NSMutableDictionary include:
+ The concrete child classes of NSMutableDictionary include:
  - CHLockableDictionary
  - CHOrderedDictionary
  - CHSortedDictionary
  
- The concrete subclasses of NSMutableSet include:
+ The concrete child classes of NSMutableSet include:
  - CHLockableSet
  - CHOrderedSet
  
- The concrete subclasses of CHLockableObject (which don't have a protocol) include:
+ The concrete child classes of CHLockableObject include:
  - CHMultiDictionary
  
- The code is written for <a href="http://www.apple.com/macosx/">Mac OS X</a> and does use some features of <a href="http://developer.apple.com/documentation/Cocoa/Conceptual/ObjectiveC/">Objective-C 2.0</a> which shipped with Mac OS X 10.5 "Leopard". Most of the code could be ported to other Objective-C environments (such as <a href="http://www.gnustep.org">GNUStep</a>) without too much trouble. However, such efforts would probably be better accomplished by forking this project rather than integrating with it, for several main reasons:
+ The code is written for Cocoa applications and does use some features of <a href="http://developer.apple.com/documentation/Cocoa/Conceptual/ObjectiveC/">Objective-C 2.0</a> which shipped with Mac OS X "Leopard" and iPhone OS. Most of the code could be ported to other Objective-C environments (such as <a href="http://www.gnustep.org">GNUStep</a>) without too much trouble. However, such efforts would probably be better accomplished by forking this project rather than integrating with it, for several main reasons:
  
  <ol>
  <li>Supporting multiple environments increases code complexity, and consequently the effort required to test, maintain, and improve it.</li>
  <li>Libraries that have bigger and slower binaries to accommodate all possible platforms don't help the mainstream developer.</li>
- <li>Mac OS X is by far the biggest "client" of Objective-C today, a trend which isn't likely to change soon.</li>
+ <li>Apple is the de facto custodian and strongest proponent of Objective-C, a trend which isn't likely to change soon.</li>
  </ol>
  
- While certain implementations utilize straight C for their internals, this framework is fairly high-level, and uses composition rather than inheritance in most cases. The framework was originally written as an exercise in writing Objective-C code and consisted mainly of ported Java code. In later revisions, performance has gained greater emphasis, but the primary motivation is to provide friendly, intuitive Objective-C interfaces for data structures, not to maximize speed at any cost, which sometimes happens with C++ and the STL. The algorithms should all be sound (i.e., you won't get O(n) performance where it should be O(log n) or O(1), etc.) and perform quite well in general. If your choice of data structure type and implementation are dependent on performance or memory usage, it would be wise to run the benchmarks from Xcode and choose based on the time and memory complexity for specific implementations.
+ While certain implementations utilize straight C for their internals, this framework exposes fairly high-level APIs, and uses composition rather than inheritance wherever it makes sense. The framework was originally created as an exercise in writing Objective-C code and consisted mainly of ported Java code. In later revisions, performance has gained greater emphasis, but the primary motivation is to provide friendly, intuitive Objective-C interfaces for data structures, not to maximize speed at any cost, which sometimes happens with C++ and the STL. The algorithms should all be sound (i.e., you won't get O(n) performance where it should be O(log n) or O(1), etc.) and perform quite well in general. If your choice of data structure type and implementation are dependent on performance or memory usage, it would be wise to run the benchmarks from Xcode and choose based on the time and memory complexity for specific implementations.
  
  This framework is is licensed under a variant of the <a href="http://www.isc.org/software/license">ISC license</a>, an extremely simple and permissive free software license approved by the <a href="http://www.fsf.org/licensing/licenses#ISC">Free Software Foundation (FSF)</a> and <a href="http://opensource.org/licenses/isc-license.txt">Open Source Initiative (OSI)</a>. The license for this framework is included in every source file, and is repoduced in its entirety here:
  
