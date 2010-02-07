@@ -20,7 +20,9 @@
 /**
  A <a href="http://en.wikipedia.org/wiki/Heap_(data_structure)">heap</a> protocol, suitable for use with many variations of the heap structure.
  
- Objects are "heapified" according to their sorted order, so they must respond to the @c -compare: selector, which accepts another object and returns @c NSOrderedAscending, @c NSOrderedSame, or @c NSOrderedDescending (constants in <a href="http://tinyurl.com/NSComparisonResult">NSComparisonResult</a>) as the receiver is less than, equal to, or greater than the argument, respectively. (Several Cocoa classes already implement the @c -compare: method, including NSString, NSDate, NSNumber, NSDecimalNumber, and NSCell.) 
+ Objects are "heapified" according to their sorted order, so they must respond to the @c -compare: selector, which accepts another object and returns @c NSOrderedAscending, @c NSOrderedSame, or @c NSOrderedDescending (constants in <a href="http://tinyurl.com/NSComparisonResult">NSComparisonResult</a>) as the receiver is less than, equal to, or greater than the argument, respectively. (Several Cocoa classes already implement the @c -compare: method, including NSString, NSDate, NSNumber, NSDecimalNumber, and NSCell.)
+
+ @attention Due to the nature of a heap and how objects are stored internally, using NSFastEnumeration is not guaranteed to provide the objects in the order in which objects would be removed from the heap. If you want the objects to be sorted without removing them from the heap, use \link #allObjectsInSortedOrder allObjectsInSortedOrder\endlink instead.
  */
 @protocol CHHeap
 #if OBJC_API_2
@@ -62,30 +64,6 @@
  */
 - (id) initWithOrdering:(NSComparisonResult)order array:(NSArray*)anArray;
 
-#pragma mark Adding Objects
-/** @name Adding Objects */
-// @{
-
-/**
- Insert a given object into the heap.
- 
- @param anObject The object to add to the heap.
- @throw NSInvalidArgumentException If @a anObject is @c nil.
- 
- @see addObjectsFromArray:
- */
-- (void) addObject:(id)anObject;
-
-/**
- Adds the objects in a given array to the receiver, then re-establish the heap property. After all the objects have been inserted, objects are "heapified" as necessary, proceeding backwards from index @c count/2 down to @c 0.
- 
- @param anArray An array of objects to add to the receiver.
- 
- @see addObject:
- */
-- (void) addObjectsFromArray:(NSArray*)anArray;
-
-// @}
 #pragma mark Querying Contents
 /** @name Querying Contents */
 // @{
@@ -108,7 +86,7 @@
  
  @return An array containing the objects in this heap in sorted order. If the heap is empty, the array is also empty.
  
- @attention Since only the first object in a heap is guaranteed to be in sorted order, this method incurs extra costs of (a) time for sorting the contents and (b) memory for storing an extra array. However, it does not affect the order of elements in the heap itself.
+ @attention Since only the first object in a heap is guaranteed to be in sorted order, this method incurs extra costs of (1) time for sorting the contents and (2) memory for storing an extra array. However, it does not affect the order of elements in the heap itself.
  
  @see allObjects
  @see count
@@ -181,9 +159,28 @@
 - (BOOL) isEqualToHeap:(id<CHHeap>)otherHeap;
 
 // @}
-#pragma mark Removing Objects
-/** @name Removing Objects */
+#pragma mark Modifying Contents
+/** @name Modifying Contents */
 // @{
+
+/**
+ Insert a given object into the heap.
+ 
+ @param anObject The object to add to the heap.
+ @throw NSInvalidArgumentException If @a anObject is @c nil.
+ 
+ @see addObjectsFromArray:
+ */
+- (void) addObject:(id)anObject;
+
+/**
+ Adds the objects in a given array to the receiver, then re-establish the heap property. After all the objects have been inserted, objects are "heapified" as necessary, proceeding backwards from index @c count/2 down to @c 0.
+ 
+ @param anArray An array of objects to add to the receiver.
+ 
+ @see addObject:
+ */
+- (void) addObjectsFromArray:(NSArray*)anArray;
 
 /**
  Remove the front object in the heap; if it is already empty, there is no effect.
@@ -277,8 +274,6 @@
  @param stackbuf Pointer to a C array into which the receiver may copy objects for the sender to iterate over.
  @param len The maximum number of objects that may be stored in @a stackbuf.
  @return The number of objects in @c state->itemsPtr that may be iterated over, or @c 0 when the iteration is finished.
- 
- @attention Due to the nature of a heap, this method is not guaranteed to provide the objects in sorted order. If you want the objects to be sorted without removing them from the heap, use #allObjectsInSortedOrder instead.
  
  @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
  

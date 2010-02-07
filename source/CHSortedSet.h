@@ -72,35 +72,6 @@ typedef enum {
  */
 - (id) initWithArray:(NSArray*)anArray;
 
-#pragma mark Adding Objects
-/** @name Adding Objects */
-// @{
-
-/**
- Adds a given object to the receiver, if the object is not already a member.
- 
- Ordering is based on an object's response to the @c -compare: message. Since no duplicates are allowed, if the receiver already contains an object for which a @c -compare: message returns @c NSOrderedSame, that object is released and replaced by @a anObject.
- 
- @param anObject The object to add to the receiver.
- @throw NSInvalidArgumentException If @a anObject is @c nil.
- 
- @see addObjectsFromArray:
- */
-- (void) addObject:(id)anObject;
-
-/**
- Adds to the receiver each object in a given array, if the object is not already a member.
- 
- Ordering is based on an object's response to the @c -compare: message. Since no duplicates are allowed, if the receiver already contains an object for which a @c -compare: message returns @c NSOrderedSame, that object is released and replaced by the matching object from @a anArray.
- 
- @param anArray An array of objects to add to the receiver.
- 
- @see addObject:
- @see lastObject
- */
-- (void) addObjectsFromArray:(NSArray*)anArray;
-
-// @}
 #pragma mark Querying Contents
 /** @name Querying Contents */
 // @{
@@ -250,9 +221,33 @@ typedef enum {
 							 options:(CHSubsetConstructionOptions)options;
 
 // @}
-#pragma mark Removing Objects
-/** @name Removing Objects */
+#pragma mark Modifying Contents
+/** @name Modifying Contents */
 // @{
+
+/**
+ Adds a given object to the receiver, if the object is not already a member.
+ 
+ Ordering is based on an object's response to the @c -compare: message. Since no duplicates are allowed, if the receiver already contains an object for which a @c -compare: message returns @c NSOrderedSame, that object is released and replaced by @a anObject.
+ 
+ @param anObject The object to add to the receiver.
+ @throw NSInvalidArgumentException If @a anObject is @c nil.
+ 
+ @see addObjectsFromArray:
+ */
+- (void) addObject:(id)anObject;
+
+/**
+ Adds to the receiver each object in a given array, if the object is not already a member.
+ 
+ Ordering is based on an object's response to the @c -compare: message. Since no duplicates are allowed, if the receiver already contains an object for which a @c -compare: message returns @c NSOrderedSame, that object is released and replaced by the matching object from @a anArray.
+ 
+ @param anArray An array of objects to add to the receiver.
+ 
+ @see addObject:
+ @see lastObject
+ */
+- (void) addObjectsFromArray:(NSArray*)anArray;
 
 /**
  Remove all objects from the receiver; if the receiver is already empty, there is no effect.
