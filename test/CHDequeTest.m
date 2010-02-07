@@ -11,16 +11,14 @@
 #import <SenTestingKit/SenTestingKit.h>
 #import "CHCircularBufferDeque.h"
 #import "CHListDeque.h"
-#import "CHMutableArrayDeque.h"
 
 @interface CHDequeTest : SenTestCase {
-	CHListDeque *deque;
+	id<CHDeque> deque;
 	NSArray *objects, *dequeClasses;
 	NSEnumerator *e;
 	id anObject;
 }
 @end
-
 
 @implementation CHDequeTest
 
@@ -28,7 +26,6 @@
 	objects = [NSArray arrayWithObjects:@"A", @"B", @"C", nil];
 	dequeClasses = [NSArray arrayWithObjects:
 					[CHListDeque class],
-					[CHMutableArrayDeque class],
 					[CHCircularBufferDeque class],
 					nil];
 }

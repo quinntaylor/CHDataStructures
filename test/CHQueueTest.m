@@ -1,5 +1,5 @@
 /*
- CHDataStructures.framework -- CHMutableArrayQueueTest.m
+ CHDataStructures.framework -- CHQueueTest.m
  
  Copyright (c) 2008-2009, Quinn Taylor <http://homepage.mac.com/quinntaylor>
  
@@ -11,10 +11,9 @@
 #import <SenTestingKit/SenTestingKit.h>
 #import "CHCircularBufferQueue.h"
 #import "CHListQueue.h"
-#import "CHMutableArrayQueue.h"
 
 @interface CHQueueTest : SenTestCase {
-	CHMutableArrayQueue *queue;
+	id<CHQueue> queue;
 	NSArray *objects, *queueClasses;
 	NSEnumerator *e;
 	id anObject;
@@ -26,7 +25,6 @@
 - (void) setUp {
 	queueClasses = [NSArray arrayWithObjects:
 					[CHListQueue class],
-					[CHMutableArrayQueue class],
 					[CHCircularBufferQueue class],
 					nil];
 	objects = [NSArray arrayWithObjects:@"A", @"B", @"C", nil];
@@ -36,7 +34,7 @@
 	NSEnumerator *classes = [queueClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
-		queue = [[CHMutableArrayQueue alloc] initWithArray:objects];
+		queue = [[aClass alloc] initWithArray:objects];
 		STAssertEquals([queue count], [objects count], @"Incorrect count.");
 		STAssertEqualObjects([queue allObjects], objects,
 							 @"Bad ordering on -initWithArray:");

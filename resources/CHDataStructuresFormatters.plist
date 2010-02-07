@@ -99,22 +99,7 @@
 		<key>SummaryString</key>
 		<string>{(int)[$VAR count]} keys, {(int)[$VAR countForAllKeys]} values</string>
 	</dict>
-	<key>CHMutableArrayDeque *</key>
-	<dict>
-		<key>SummaryString</key>
-		<string>{(int)[$VAR count]} objects</string>
-	</dict>
 	<key>CHMutableArrayHeap *</key>
-	<dict>
-		<key>SummaryString</key>
-		<string>{(int)[$VAR count]} objects</string>
-	</dict>
-	<key>CHMutableArrayQueue *</key>
-	<dict>
-		<key>SummaryString</key>
-		<string>{(int)[$VAR count]} objects</string>
-	</dict>
-	<key>CHMutableArrayStack *</key>
 	<dict>
 		<key>SummaryString</key>
 		<string>{(int)[$VAR count]} objects</string>

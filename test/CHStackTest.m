@@ -11,7 +11,6 @@
 #import <SenTestingKit/SenTestingKit.h>
 #import "CHStack.h"
 #import "CHListStack.h"
-#import "CHMutableArrayStack.h"
 #import "CHCircularBufferStack.h"
 
 @interface CHStackTest : SenTestCase {
@@ -27,7 +26,6 @@
 - (void) setUp {
 	stackClasses = [NSArray arrayWithObjects:
 					[CHListStack class],
-					[CHMutableArrayStack class],
 					[CHCircularBufferStack class],
 					nil];
 	objects = [NSArray arrayWithObjects:@"A", @"B", @"C", nil];
@@ -151,106 +149,5 @@
 		STAssertEquals([stack count], expected, @"Incorrect count.");
 	}
 }
-
-@end
-
-#pragma mark -
-
-@interface CHMutableArrayStackTest : SenTestCase {
-	CHMutableArrayStack *stack;
-	NSArray *objects, *stackOrder;
-	NSEnumerator *e;
-	id anObject;
-}
-@end
-
-@implementation CHMutableArrayStackTest
-
-- (void) setUp {
-	stack = [[CHMutableArrayStack alloc] init];
-	objects = [NSArray arrayWithObjects:@"A", @"B", @"C", nil];
-	stackOrder = [NSArray arrayWithObjects:@"C", @"B", @"A", nil];
-}
-
-- (void) tearDown {
-	[stack release];
-}
-
-/*
- NOTE: These methods are tested because they're different only for this subclass
- */
-
-- (void) testAllObjects {
-	e = [objects objectEnumerator];
-	while (anObject = [e nextObject])
-		[stack pushObject:anObject];
-	
-	NSArray *allObjects = [stack allObjects];
-	STAssertEquals([allObjects count], [objects count], @"Incorrect count.");
-	STAssertEqualObjects(allObjects, stackOrder,
-						 @"Bad ordering from -allObjects.");
-}
-
-- (void) testObjectEnumerator {
-	e = [objects objectEnumerator];
-	while (anObject = [e nextObject])
-		[stack pushObject:anObject];
-	
-	STAssertEqualObjects([[stack objectEnumerator] allObjects], stackOrder,
-						 @"Bad ordering from -objectEnumerator.");
-	NSUInteger count = 0;
-	e = [stack objectEnumerator];
-	while ([e nextObject])
-		count++;
-	STAssertEquals(count, [objects count], @"-objectEnumerator had wrong count.");
-}
-
-- (void) testReverseObjectEnumerator {
-	e = [objects objectEnumerator];
-	while (anObject = [e nextObject])
-		[stack pushObject:anObject];
-	
-	STAssertEqualObjects([[stack reverseObjectEnumerator] allObjects], objects,
-						 @"Bad ordering from -reverseObjectEnumerator.");
-	NSUInteger count = 0;
-	e = [stack reverseObjectEnumerator];
-	while ([e nextObject])
-		count++;
-	STAssertEquals(count, [objects count], @"-reverseObjectEnumerator had wrong count.");
-}
-
-- (void) testDescription {
-	e = [objects objectEnumerator];
-	while (anObject = [e nextObject])
-		[stack pushObject:anObject];
-	
-	STAssertEqualObjects([stack description], [stackOrder description],
-						 @"-description uses bad ordering.");
-}
-
-#if OBJC_API_2
-- (void) testNSFastEnumeration {
-	NSUInteger limit = 32;
-	for (NSUInteger number = 1; number <= limit; number++)
-		[stack pushObject:[NSNumber numberWithUnsignedInteger:number]];
-	NSUInteger expected = limit, count = 0;
-	for (NSNumber *object in stack) {
-		STAssertEquals([object unsignedIntegerValue], expected--,
-		               @"Objects should be enumerated in descending order.");
-		++count;
-	}
-	STAssertEquals(count, limit, @"Count of enumerated items is incorrect.");
-	
-	BOOL raisedException = NO;
-	@try {
-		for (id object in stack)
-			[stack pushObject:@"123"];
-	}
-	@catch (NSException *exception) {
-		raisedException = YES;
-	}
-	STAssertTrue(raisedException, @"Should raise mutation exception.");	
-}
-#endif
 
 @end

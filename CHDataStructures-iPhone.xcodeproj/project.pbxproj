@@ -73,14 +73,8 @@
 		E4399A9E10A33D8400209906 /* CHOrderedSet.h in Headers */ = {isa = PBXBuildFile; fileRef = E49BE2810FB21058002904AB /* CHOrderedSet.h */; };
 		E4399A9F10A33D8400209906 /* CHOrderedDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = E4558DAF0FE7598700CC5860 /* CHOrderedDictionary.m */; };
 		E4399AA010A33D8500209906 /* CHOrderedDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = E4558DAE0FE7598700CC5860 /* CHOrderedDictionary.h */; };
-		E4399AA110A33D8500209906 /* CHMutableArrayStack.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB0B0E88174200B570BC /* CHMutableArrayStack.m */; };
-		E4399AA210A33D8600209906 /* CHMutableArrayStack.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB0A0E88174200B570BC /* CHMutableArrayStack.h */; };
-		E4399AA310A33D8700209906 /* CHMutableArrayQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB090E88174200B570BC /* CHMutableArrayQueue.m */; };
-		E4399AA410A33D8700209906 /* CHMutableArrayQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB080E88174200B570BC /* CHMutableArrayQueue.h */; };
 		E4399AA510A33D8800209906 /* CHMutableArrayHeap.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB070E88174200B570BC /* CHMutableArrayHeap.m */; };
 		E4399AA610A33D8900209906 /* CHMutableArrayHeap.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB060E88174200B570BC /* CHMutableArrayHeap.h */; };
-		E4399AA710A33D8900209906 /* CHMutableArrayDeque.m in Sources */ = {isa = PBXBuildFile; fileRef = E44771F30E912491000889F7 /* CHMutableArrayDeque.m */; };
-		E4399AA810A33D8A00209906 /* CHMutableArrayDeque.h in Headers */ = {isa = PBXBuildFile; fileRef = E44771F20E912491000889F7 /* CHMutableArrayDeque.h */; };
 		E4399AA910A33D8B00209906 /* CHMultiDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = E48BF9720EE7A2010004D5E6 /* CHMultiDictionary.m */; };
 		E4399AAA10A33D8B00209906 /* CHMultiDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = E48BF92E0EE79AAE0004D5E6 /* CHMultiDictionary.h */; };
 		E4399AAB10A33D8C00209906 /* CHLockableSet.m in Sources */ = {isa = PBXBuildFile; fileRef = E40C4D01108D7A6A00A63A23 /* CHLockableSet.m */; };
@@ -162,8 +156,6 @@
 		E442DFB70E8F1E6D00BD62F6 /* CHAnderssonTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHAnderssonTree.m; path = source/CHAnderssonTree.m; sourceTree = "<group>"; };
 		E44558090EBCB70A00D9C482 /* CHAVLTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHAVLTree.h; path = source/CHAVLTree.h; sourceTree = "<group>"; };
 		E445580A0EBCB70A00D9C482 /* CHAVLTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHAVLTree.m; path = source/CHAVLTree.m; sourceTree = "<group>"; };
-		E44771F20E912491000889F7 /* CHMutableArrayDeque.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHMutableArrayDeque.h; path = source/CHMutableArrayDeque.h; sourceTree = "<group>"; };
-		E44771F30E912491000889F7 /* CHMutableArrayDeque.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHMutableArrayDeque.m; path = source/CHMutableArrayDeque.m; sourceTree = "<group>"; };
 		E44773A10E913C89000889F7 /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Util.h; path = source/Util.h; sourceTree = "<group>"; };
 		E44EB0F10ECB83230071F93A /* UtilTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UtilTest.m; path = test/UtilTest.m; sourceTree = "<group>"; };
 		E4558CF60FE749FC00CC5860 /* CHLockableObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHLockableObject.h; path = source/CHLockableObject.h; sourceTree = "<group>"; };
@@ -193,10 +185,6 @@
 		E4A720CA0EA78DFB00E0AC21 /* CHAbstractMutableArrayCollectionTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHAbstractMutableArrayCollectionTest.m; path = test/CHAbstractMutableArrayCollectionTest.m; sourceTree = "<group>"; };
 		E4ADBB060E88174200B570BC /* CHMutableArrayHeap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHMutableArrayHeap.h; path = source/CHMutableArrayHeap.h; sourceTree = "<group>"; };
 		E4ADBB070E88174200B570BC /* CHMutableArrayHeap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHMutableArrayHeap.m; path = source/CHMutableArrayHeap.m; sourceTree = "<group>"; };
-		E4ADBB080E88174200B570BC /* CHMutableArrayQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHMutableArrayQueue.h; path = source/CHMutableArrayQueue.h; sourceTree = "<group>"; };
-		E4ADBB090E88174200B570BC /* CHMutableArrayQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHMutableArrayQueue.m; path = source/CHMutableArrayQueue.m; sourceTree = "<group>"; };
-		E4ADBB0A0E88174200B570BC /* CHMutableArrayStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHMutableArrayStack.h; path = source/CHMutableArrayStack.h; sourceTree = "<group>"; };
-		E4ADBB0B0E88174200B570BC /* CHMutableArrayStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHMutableArrayStack.m; path = source/CHMutableArrayStack.m; sourceTree = "<group>"; };
 		E4ADBB120E88174200B570BC /* CHHeap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHHeap.h; path = source/CHHeap.h; sourceTree = "<group>"; };
 		E4ADBB130E88174200B570BC /* CHListQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHListQueue.h; path = source/CHListQueue.h; sourceTree = "<group>"; };
 		E4ADBB140E88174200B570BC /* CHListQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHListQueue.m; path = source/CHListQueue.m; sourceTree = "<group>"; };
@@ -335,14 +323,8 @@
 				E4EF44D70F86C52200C59C52 /* CHLockableObject.m */,
 				E48BF92E0EE79AAE0004D5E6 /* CHMultiDictionary.h */,
 				E48BF9720EE7A2010004D5E6 /* CHMultiDictionary.m */,
-				E44771F20E912491000889F7 /* CHMutableArrayDeque.h */,
-				E44771F30E912491000889F7 /* CHMutableArrayDeque.m */,
 				E4ADBB060E88174200B570BC /* CHMutableArrayHeap.h */,
 				E4ADBB070E88174200B570BC /* CHMutableArrayHeap.m */,
-				E4ADBB080E88174200B570BC /* CHMutableArrayQueue.h */,
-				E4ADBB090E88174200B570BC /* CHMutableArrayQueue.m */,
-				E4ADBB0A0E88174200B570BC /* CHMutableArrayStack.h */,
-				E4ADBB0B0E88174200B570BC /* CHMutableArrayStack.m */,
 				E4558DAE0FE7598700CC5860 /* CHOrderedDictionary.h */,
 				E4558DAF0FE7598700CC5860 /* CHOrderedDictionary.m */,
 				E49BE2810FB21058002904AB /* CHOrderedSet.h */,
@@ -457,10 +439,7 @@
 				E4399A9C10A33D8300209906 /* CHQueue.h in Headers */,
 				E4399A9E10A33D8400209906 /* CHOrderedSet.h in Headers */,
 				E4399AA010A33D8500209906 /* CHOrderedDictionary.h in Headers */,
-				E4399AA210A33D8600209906 /* CHMutableArrayStack.h in Headers */,
-				E4399AA410A33D8700209906 /* CHMutableArrayQueue.h in Headers */,
 				E4399AA610A33D8900209906 /* CHMutableArrayHeap.h in Headers */,
-				E4399AA810A33D8A00209906 /* CHMutableArrayDeque.h in Headers */,
 				E4399AAA10A33D8B00209906 /* CHMultiDictionary.h in Headers */,
 				E4399AAC10A33D8C00209906 /* CHLockableSet.h in Headers */,
 				E4399AAE10A33D8E00209906 /* CHLockableObject.h in Headers */,
@@ -630,10 +609,7 @@
 				E4399A9A10A33D8200209906 /* CHRedBlackTree.m in Sources */,
 				E4399A9D10A33D8300209906 /* CHOrderedSet.m in Sources */,
 				E4399A9F10A33D8400209906 /* CHOrderedDictionary.m in Sources */,
-				E4399AA110A33D8500209906 /* CHMutableArrayStack.m in Sources */,
-				E4399AA310A33D8700209906 /* CHMutableArrayQueue.m in Sources */,
 				E4399AA510A33D8800209906 /* CHMutableArrayHeap.m in Sources */,
-				E4399AA710A33D8900209906 /* CHMutableArrayDeque.m in Sources */,
 				E4399AA910A33D8B00209906 /* CHMultiDictionary.m in Sources */,
 				E4399AAB10A33D8C00209906 /* CHLockableSet.m in Sources */,
 				E4399AAD10A33D8D00209906 /* CHLockableObject.m in Sources */,
