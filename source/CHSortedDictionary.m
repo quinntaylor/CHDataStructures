@@ -91,11 +91,9 @@
 }
 
 - (void) setObject:(id)anObject forKey:(id)aKey {
-	[self willChangeValueForKey:aKey];
 	id clonedKey = [[aKey copy] autorelease];
 	[sortedKeys addObject:clonedKey];
 	CFDictionarySetValue(dictionary, clonedKey, anObject);
-	[self didChangeValueForKey:aKey];
 }
 
 @end

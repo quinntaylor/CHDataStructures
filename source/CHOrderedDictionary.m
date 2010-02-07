@@ -109,13 +109,11 @@
 	if (anObject == nil || aKey == nil)
 		CHNilArgumentException([self class], _cmd);
 	
-	[self willChangeValueForKey:aKey];
 	id clonedKey = [[aKey copy] autorelease];
 	if (!CFDictionaryContainsKey(dictionary, clonedKey)) {
 		[keyOrdering insertObject:clonedKey atIndex:index];
 	}
 	CFDictionarySetValue(dictionary, clonedKey, anObject);
-	[self didChangeValueForKey:aKey];
 }
 
 - (void) removeAllObjects {
