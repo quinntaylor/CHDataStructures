@@ -317,6 +317,25 @@
 	STAssertEquals([collection count], (NSUInteger)0, @"Incorrect count.");
 }
 
+- (void) testReplaceObjectAtIndexWithObject {
+	STAssertThrows([collection replaceObjectAtIndex:0 withObject:nil],
+	               @"Should raise index exception.");
+	STAssertThrows([collection replaceObjectAtIndex:1 withObject:nil],
+	               @"Should raise index exception.");
+	
+	e = [objects objectEnumerator];
+	while (anObject = [e nextObject])
+		[collection addObject:anObject];
+	
+	for (NSUInteger i = 0; i < [objects count]; i++) {
+		STAssertEqualObjects([collection objectAtIndex:i], [objects objectAtIndex:i],
+		                     @"Incorrect object.");
+		[collection replaceObjectAtIndex:i withObject:@"Z"];
+		STAssertEqualObjects([collection objectAtIndex:i], @"Z",
+		                     @"Incorrect object.");
+	}
+}
+
 - (void) testObjectEnumerator {
 	NSEnumerator *enumerator;
 	enumerator = [collection objectEnumerator];
