@@ -260,6 +260,10 @@ hr {
 	color: #606060;
 }
 
+div.groupText {
+	display: none;
+}
+
 /* @end */
 
 /* @group Member Details */
