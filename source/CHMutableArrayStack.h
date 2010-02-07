@@ -19,6 +19,8 @@
 
 /**
  A simple CHStack implemented using an NSMutableArray. This stack is modeled with the top being the last element in the array, since insertion and removal in an array are much faster at the back than the front. Most operations are just as fast as those in the parent class, although NSFastEnumeration (for-in loop) is abysmally slow. Most users will likely prefer the overall performance improvements in CHCircularBufferStack.
+
+ @attention NSFastEnumeration is fairly slow for this particular class. Since the bottom of the stack is anchored at the front of the array, rather than passing the call to <code>-countByEnumeratingWithState:objects:count:</code> straight through to the underlying array, we must obtain an NSEnumerator from @c -reverseObjectEnumerator and store it in the fast enumeration @c state struct. Unfortunately for this particular scenario, NSEnumerator objects only return one object per call from the NSFastEnumeration boilerplate, so it's actually slower than using an NSEnumerator directly. (CHCircularBufferStack is significantly more performant.)
  */
 @interface CHMutableArrayStack : CHAbstractMutableArrayCollection <CHStack>
 

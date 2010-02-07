@@ -28,65 +28,6 @@
 	id ordering; /**< A structure for maintaining ordering of the objects. */
 }
 
-#pragma mark <NSFastEnumeration>
-/** @name <NSFastEnumeration> */
-// @{
-
-#if OBJC_API_2
-/**
- Called within <code>@b for (type variable @b in collection)</code> constructs. Returns by reference a C array of objects over which the sender should iterate, and as the return value the number of objects in the array.
- 
- For this class, the objects are enumerated in the order in which they were inserted.
- 
- @param state Context information used to track progress of an enumeration.
- @param stackbuf Pointer to a C array into which the receiver may copy objects for the sender to iterate over.
- @param len The maximum number of objects that may be stored in @a stackbuf.
- @return The number of objects in @c state->itemsPtr that may be iterated over, or @c 0 when the iteration is finished.
- 
- @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
- 
- @since Mac OS X v10.5 and later.
- 
- @see NSFastEnumeration protocol
- @see objectEnumerator
- */
-- (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
-                                   objects:(id*)stackbuf
-                                     count:(NSUInteger)len;
-#endif
-
-// @}
-#pragma mark Adding Objects
-/** @name Adding Objects */
-// @{
-
-/**
- Adds a given object to the receiver at a given index. If the receiver already contains an equivalent object, it is replaced with @a anObject.
- 
- @param anObject The object to add to the receiver.
- @param index The index at which @a anObject should be inserted.
- 
- @see addObject:
- @see indexOfObject:
- @see objectAtIndex:
- */
-- (void) insertObject:(id)anObject atIndex:(NSUInteger)index;
-
-/**
- Exchange the objects in the receiver at given indexes.
- 
- @param idx1 The index of the object to replace with the object at @a idx2.
- @param idx2 The index of the object to replace with the object at @a idx1.
- 
- @throw NSRangeException If @a idx1 or @a idx2 exceeds the bounds of the receiver.
- 
- @see indexOfObject:
- @see insertObject:atIndex:
- @see objectAtIndex:
- */
-- (void) exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2;
-
-// @}
 #pragma mark Querying Contents
 /** @name Querying Contents */
 // @{
@@ -160,6 +101,20 @@
 - (id) objectAtIndex:(NSUInteger)index;
 
 /**
+ Returns an enumerator object that lets you access each object in the receiver by insertion order.
+ 
+ @return An enumerator object that lets you access each object in the receiver by insertion order.
+ 
+ @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
+ 
+ If you need to modify the entries concurrently, you can enumerate over a "snapshot" of the set's values obtained from #allObjects.
+ 
+ @see allObjects
+ @see countByEnumeratingWithState:objects:count:
+ */
+- (NSEnumerator*) objectEnumerator;
+
+/**
  Returns an array containing the objects in the receiver at the indexes specified by a given index set.
  
  @param indexes A set of positions corresponding to objects to retrieve from the receiver.
@@ -175,20 +130,6 @@
 - (NSArray*) objectsAtIndexes:(NSIndexSet*)indexes;
 
 /**
- Returns an enumerator object that lets you access each object in the receiver in order.
- 
- @return An enumerator object that lets you access each object in the receiver in order.
- 
- @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
- 
- If you need to modify the entries concurrently, you can enumerate over a "snapshot" of the set's values obtained from #allObjects.
- 
- @see allObjects
- @see countByEnumeratingWithState:objects:count:
- */
-- (NSEnumerator*) objectEnumerator;
-
-/**
  Returns an ordered dictionary containing the objects in the receiver at the indexes specified by a given index set.
  
  @param indexes A set of indexes for keys to retrieve from the receiver.
@@ -201,9 +142,35 @@
 - (CHOrderedSet*) orderedSetWithObjectsAtIndexes:(NSIndexSet*)indexes;
 
 // @}
-#pragma mark Removing Objects
-/** @name Removing Objects */
+#pragma mark Modifying Contents
+/** @name Modifying Contents */
 // @{
+
+/**
+ Adds a given object to the receiver at a given index. If the receiver already contains an equivalent object, it is replaced with @a anObject.
+ 
+ @param anObject The object to add to the receiver.
+ @param index The index at which @a anObject should be inserted.
+ 
+ @see addObject:
+ @see indexOfObject:
+ @see objectAtIndex:
+ */
+- (void) insertObject:(id)anObject atIndex:(NSUInteger)index;
+
+/**
+ Exchange the objects in the receiver at given indexes.
+ 
+ @param idx1 The index of the object to replace with the object at @a idx2.
+ @param idx2 The index of the object to replace with the object at @a idx1.
+ 
+ @throw NSRangeException If @a idx1 or @a idx2 exceeds the bounds of the receiver.
+ 
+ @see indexOfObject:
+ @see insertObject:atIndex:
+ @see objectAtIndex:
+ */
+- (void) exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2;
 
 /**
  Remove the "oldest" member of the receiver.

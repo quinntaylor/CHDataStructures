@@ -40,63 +40,6 @@
 	id keyOrdering;
 }
 
-#pragma mark Adding Objects
-/** @name Adding Objects */
-// @{
-
-/**
- Adds a given key-value pair to the receiver, with the key added at the end of the ordering.
- 
- @copydetails CHLockableDictionary::setObject:forKey:
- 
- @see insertObject:forKey:atIndex:
- @see setObject:forKeyAtIndex:
- */
-- (void) setObject:(id)anObject forKey:(id)aKey;
-
-/**
- Sets the value for the key at the specified index in the receiver.
- 
- @param anObject The new value to be set for the key at @a index. The object receives a @c -retain message before being added to the receiver. Must not be @c nil.
- @param index The index of the key for which to set the value.
- 
- @throw NSInvalidArgumentException If @a anObject is @c nil. If you need to represent a @c nil value in the dictionary, use NSNull.
- @throw NSRangeException If @a index exceeds the bounds of the receiver.
- 
- @see insertObject:forKey:atIndex:
- @see setObject:forKey:
- */
-- (void) setObject:(id)anObject forKeyAtIndex:(NSUInteger)index;
-
-/**
- Adds a given key-value pair to the receiver, with the key at a given index in the ordering.
- 
- @param anObject The value for @a aKey. The object receives a @c -retain message before being added to the receiver. Must not be @c nil.
- @param aKey The key for @a anObject. The key is copied using @c -copyWithZone: so keys must conform to the NSCopying protocol. Must not be @c nil.
- @param index The index in the receiver's key ordering at which to insert @a anObject.
- 
- @throw NSRangeException If @a index exceeds the bounds of the receiver.
- @throw NSInvalidArgumentException If @a aKey or @a anObject is @c nil.  If you need to represent a @c nil value in the dictionary, use NSNull.
- 
- @see indexOfKey:
- @see keyAtIndex:
- @see setObject:forKey:
- */
-- (void) insertObject:(id)anObject forKey:(id)aKey atIndex:(NSUInteger)index;
-
-/**
- Exchange the keys in the receiver at given indexes.
- 
- @param idx1 The index of the key to replace with the key at @a idx2.
- @param idx2 The index of the key to replace with the key at @a idx1.
- 
- @throw NSRangeException If @a idx1 or @a idx2 exceeds the bounds of the receiver.
- 
- @see indexOfKey:
- @see keyAtIndex:
- */
-- (void) exchangeKeyAtIndex:(NSUInteger)idx1 withKeyAtIndex:(NSUInteger)idx2;
-
 #pragma mark Querying Contents
 /** @name Querying Contents */
 // @{
@@ -220,9 +163,38 @@
 - (NSEnumerator*) reverseKeyEnumerator;
 
 // @}
-#pragma mark Removing Objects
-/** @name Removing Objects */
+#pragma mark Modifying Contents
+/** @name Modifying Contents */
 // @{
+
+/**
+ Exchange the keys in the receiver at given indexes.
+ 
+ @param idx1 The index of the key to replace with the key at @a idx2.
+ @param idx2 The index of the key to replace with the key at @a idx1.
+ 
+ @throw NSRangeException If @a idx1 or @a idx2 exceeds the bounds of the receiver.
+ 
+ @see indexOfKey:
+ @see keyAtIndex:
+ */
+- (void) exchangeKeyAtIndex:(NSUInteger)idx1 withKeyAtIndex:(NSUInteger)idx2;
+
+/**
+ Adds a given key-value pair to the receiver, with the key at a given index in the ordering.
+ 
+ @param anObject The value for @a aKey. The object receives a @c -retain message before being added to the receiver. Must not be @c nil.
+ @param aKey The key for @a anObject. The key is copied using @c -copyWithZone: so keys must conform to the NSCopying protocol. Must not be @c nil.
+ @param index The index in the receiver's key ordering at which to insert @a anObject.
+ 
+ @throw NSRangeException If @a index exceeds the bounds of the receiver.
+ @throw NSInvalidArgumentException If @a aKey or @a anObject is @c nil.  If you need to represent a @c nil value in the dictionary, use NSNull.
+ 
+ @see indexOfKey:
+ @see keyAtIndex:
+ @see setObject:forKey:
+ */
+- (void) insertObject:(id)anObject forKey:(id)aKey atIndex:(NSUInteger)index;
 
 /**
  Removes the key at a given index from the receiver. Elements on the non-wrapped end of the buffer are shifted one spot to fill the gap.
@@ -249,6 +221,30 @@
  @see removeObjectForKeyAtIndex:
  */
 - (void) removeObjectsForKeysAtIndexes:(NSIndexSet*)indexes;
+
+/**
+ Adds a given key-value pair to the receiver, with the key added at the end of the ordering.
+ 
+ @copydetails CHLockableDictionary::setObject:forKey:
+ 
+ @see insertObject:forKey:atIndex:
+ @see setObject:forKeyAtIndex:
+ */
+- (void) setObject:(id)anObject forKey:(id)aKey;
+
+/**
+ Sets the value for the key at the specified index in the receiver.
+ 
+ @param anObject The new value to be set for the key at @a index. The object receives a @c -retain message before being added to the receiver. Must not be @c nil.
+ @param index The index of the key for which to set the value.
+ 
+ @throw NSInvalidArgumentException If @a anObject is @c nil. If you need to represent a @c nil value in the dictionary, use NSNull.
+ @throw NSRangeException If @a index exceeds the bounds of the receiver.
+ 
+ @see insertObject:forKey:atIndex:
+ @see setObject:forKey:
+ */
+- (void) setObject:(id)anObject forKeyAtIndex:(NSUInteger)index;
 
 // @}
 @end

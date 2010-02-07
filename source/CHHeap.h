@@ -136,6 +136,14 @@
 - (id) firstObject;
 
 /**
+ Compares the receiving heap to another heap. Two heaps have equal contents if they each hold the same number of objects and (when fully sorted) objects at a given position in each heap satisfy the \link NSObject#isEqual: -isEqual:\endlink test.
+ 
+ @param otherHeap A heap.
+ @return @c YES if the contents of @a otherHeap are equal to the contents of the receiver, otherwise @c NO.
+ */
+- (BOOL) isEqualToHeap:(id<CHHeap>)otherHeap;
+
+/**
  Returns an enumerator that accesses each object in the heap.
  
  @return An enumerator that accesses each object in the heap. The enumerator returned is never @c nil; if the heap is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
@@ -149,14 +157,6 @@
  @see countByEnumeratingWithState:objects:count:
  */
 - (NSEnumerator*) objectEnumerator;
-
-/**
- Compares the receiving heap to another heap. Two heaps have equal contents if they each hold the same number of objects and (when fully sorted) objects at a given position in each heap satisfy the \link NSObject#isEqual: -isEqual:\endlink test.
- 
- @param otherHeap A heap.
- @return @c YES if the contents of @a otherHeap are equal to the contents of the receiver, otherwise @c NO.
- */
-- (BOOL) isEqualToHeap:(id<CHHeap>)otherHeap;
 
 // @}
 #pragma mark Modifying Contents
@@ -181,6 +181,14 @@
  @see addObject:
  */
 - (void) addObjectsFromArray:(NSArray*)anArray;
+
+/**
+ Empty the receiver of all of its members.
+ 
+ @see allObjects
+ @see removeFirstObject
+ */
+- (void) removeAllObjects;
 
 /**
  Remove the front object in the heap; if it is already empty, there is no effect.
@@ -213,81 +221,6 @@
  @see removeObject:
  */
 - (void) removeObjectIdenticalTo:(id)anObject;
-
-/**
- Empty the receiver of all of its members.
- 
- @see allObjects
- @see removeFirstObject
- */
-- (void) removeAllObjects;
-
-// @}
-#pragma mark <NSCoding>
-/** @name <NSCoding> */
-// @{
-
-/**
- Initialize the receiver using data from a given keyed unarchiver.
- 
- @param decoder A keyed unarchiver object.
- 
- @see NSCoding protocol
- */
-- (id) initWithCoder:(NSCoder*)decoder;
-
-/**
- Encodes data from the receiver using a given keyed archiver.
- 
- @param encoder A keyed archiver object.
- 
- @see NSCoding protocol
- */
-- (void) encodeWithCoder:(NSCoder*)encoder;
-
-// @}
-#pragma mark <NSCopying>
-/** @name <NSCopying> */
-// @{
-
-/**
- Returns a new instance that is a mutable copy of the receiver. If garbage collection is @b not enabled, the copy is retained before being returned, but the sender is responsible for releasing it.
- 
- @param zone An area of memory from which to allocate the new instance. If zone is @c nil, the default zone is used. 
- 
- @note The default \link NSObject#copy -copy\endlink method invokes this method with a @c nil argument.
- 
- @see NSCopying protocol
- */
-- (id) copyWithZone:(NSZone*)zone;
-
-// @}
-#pragma mark <NSFastEnumeration>
-/** @name <NSFastEnumeration> */
-// @{
-
-#if OBJC_API_2
-/**
- Called within <code>@b for (type variable @b in collection)</code> constructs. Returns by reference a C array of objects over which the sender should iterate, and as the return value the number of objects in the array.
- 
- @param state Context information used to track progress of an enumeration.
- @param stackbuf Pointer to a C array into which the receiver may copy objects for the sender to iterate over.
- @param len The maximum number of objects that may be stored in @a stackbuf.
- @return The number of objects in @c state->itemsPtr that may be iterated over, or @c 0 when the iteration is finished.
- 
- @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
- 
- @since Mac OS X v10.5 and later.
- 
- @see NSFastEnumeration protocol
- @see allObjects
- @see allObjectsInSortedOrder
- @see objectEnumerator
- */
-- (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
-                                   objects:(id*)stackbuf
-                                     count:(NSUInteger)len;
-#endif
 
 // @}
 @end

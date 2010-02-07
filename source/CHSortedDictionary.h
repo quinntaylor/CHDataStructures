@@ -33,23 +33,6 @@
 	id<CHSortedSet> sortedKeys;
 }
 
-#pragma mark Adding Objects
-/** @name Adding Objects */
-// @{
-
-/**
- Adds a given key-value pair to the receiver.
- 
- @param anObject The value for @a key. The object receives a @c -retain message before being added to the receiver. This value must not be @c nil.
- @param aKey The key for @a value. The key is copied using @c -copyWithZone: so keys must conform to the NSCopying protocol. The key must not be @c nil.
- @throw NSInvalidArgumentException If @a aKey or @a anObject is @c nil. If you need to represent a @c nil value in the dictionary, use NSNull.
- 
- @see objectForKey:
- @see removeObjectForKey:
- */
-- (void) setObject:(id)anObject forKey:(id)aKey;
-
-// @}
 #pragma mark Querying Contents
 /** @name Querying Contents */
 // @{
@@ -88,6 +71,23 @@
 - (NSMutableDictionary*) subsetFromKey:(id)start
                                  toKey:(id)end
                                options:(CHSubsetConstructionOptions)options;
+
+// @}
+#pragma mark Modifying Contents
+/** @name Modifying Contents */
+// @{
+
+/**
+ Adds a given key-value pair to the receiver.
+ 
+ @param anObject The value for @a key. The object receives a @c -retain message before being added to the receiver. This value must not be @c nil.
+ @param aKey The key for @a value. The key is copied using @c -copyWithZone: so keys must conform to the NSCopying protocol. The key must not be @c nil.
+ @throw NSInvalidArgumentException If @a aKey or @a anObject is @c nil. If you need to represent a @c nil value in the dictionary, use NSNull.
+ 
+ @see objectForKey:
+ @see removeObjectForKey:
+ */
+- (void) setObject:(id)anObject forKey:(id)aKey;
 
 // @}
 @end

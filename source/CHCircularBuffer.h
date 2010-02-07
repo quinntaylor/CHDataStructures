@@ -56,17 +56,11 @@
 - (void) replaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject;
 - (NSEnumerator*) reverseObjectEnumerator;
 
-#pragma mark <NSCoding>
+#pragma mark Adopted Protocols
 
-- (id) initWithCoder:(NSCoder*)decoder;
 - (void) encodeWithCoder:(NSCoder*)encoder;
-
-#pragma mark <NSCopying>
-
+- (id) initWithCoder:(NSCoder*)decoder;
 - (id) copyWithZone:(NSZone*)zone;
-
-#pragma mark <NSFastEnumeration>
-
 #if OBJC_API_2
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf

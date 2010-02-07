@@ -77,132 +77,6 @@
  */
 - (id) initWithObjects:(NSArray*)objectsArray forKeys:(NSArray*)keyArray;
 
-#pragma mark <NSCoding>
-/** @name <NSCoding> */
-// @{
-
-/**
- Initialize the receiver using data from a given keyed unarchiver.
- 
- @param decoder A keyed unarchiver object.
- 
- @see NSCoding protocol
- */
-- (id) initWithCoder:(NSCoder*)decoder;
-
-/**
- Encodes data from the receiver using a given keyed archiver.
- 
- @param encoder A keyed archiver object.
- 
- @see NSCoding protocol
- */
-- (void) encodeWithCoder:(NSCoder*)encoder;
-
-// @}
-#pragma mark <NSCopying>
-/** @name <NSCopying> */
-// @{
-
-/**
- Returns a new instance that is a mutable copy of the receiver. If garbage collection is @b not enabled, the copy is retained before being returned, but the sender is responsible for releasing it.
- 
- @param zone An area of memory from which to allocate the new instance. If zone is @c nil, the default zone is used. 
- 
- @note The default \link NSObject#copy -copy\endlink method invokes this method with a @c nil argument.
- 
- @see NSCopying protocol
- */
-- (id) copyWithZone:(NSZone*)zone;
-
-// @}
-#pragma mark <NSFastEnumeration>
-#if OBJC_API_2
-/** @name <NSFastEnumeration> */
-// @{
-
-/**
- Called within <code>@b for (type variable @b in collection)</code> constructs. Returns by reference a C array of objects over which the sender should iterate, and as the return value the number of objects in the array.
- 
- For this class, as is the case with NSDictionary, this method enumerates only the keys. The value(s) for each key may be found using the \link #objectsForKey: -objectsForKey:\endlink method, which returns an NSSet with 1 or more objects associated with a given key, provided the key is in the multimap.
- 
- @param state Context information used to track progress of an enumeration.
- @param stackbuf Pointer to a C array into which the receiver may copy objects for the sender to iterate over.
- @param len The maximum number of objects that may be stored in @a stackbuf.
- @return The number of objects in @c state->itemsPtr that may be iterated over, or @c 0 when the iteration is finished.
- 
- @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
- 
- @since Mac OS X v10.5 and later.
- 
- @see NSFastEnumeration protocol
- @see allKeys
- @see keyEnumerator
- */
-- (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
-                                   objects:(id*)stackbuf
-                                     count:(NSUInteger)len;
-
-// @}
-#endif
-#pragma mark Adding Objects
-/** @name Adding Objects */
-// @{
-
-/**
- Adds to the receiver the entries from another CHMultiDictionary.
- 
- @param otherMultiDictionary The CHMultiDictionary from which to add entries.
- 
- Each value from @a otherMultiDictionary is sent a @c -retain message before being added to the receiver. Each key object is copied using @c -copyWithZone: and must conform to the NSCopying protocol.
- 
- If a key from @a otherMultiDictionary already exists in the receiver, the objects associated with the key are combined using -[NSMutableSet unionSet:]. If the key does not yet exist in the receiver, an entry is created with the associated set of objects in @a otherMultiDictionary.
- */
-- (void) addEntriesFromMultiDictionary:(CHMultiDictionary*)otherMultiDictionary;
-
-/**
- Adds a given object to an entry for a given key in the receiver.
- 
- @param aKey The key with which to associate @a anObject.
- @param anObject An object to add to an entry for @a aKey in the receiver. If an entry for @a aKey already exists in the receiver, @a anObject is added using \link NSMutableSet#addObject: -[NSMutableSet addObject:]\endlink, otherwise a new entry is created.
- @throw NSInvalidArgumentException If @a aKey or @a anObject is @c nil.
- 
- @see addObjects:forKey:
- @see objectsForKey:
- @see removeObjectsForKey:
- @see setObjects:forKey:
- */
-- (void) addObject:(id)anObject forKey:(id)aKey;
-
-/**
- Adds the given object(s) to a key entry in the receiver.
- 
- @param aKey The key with which to associate @a anObject.
- @param objectSet A set of objects to add to an entry for @a aKey in the receiver. If an entry for @a aKey already exists in the receiver, @a anObject is added using \link NSMutableSet#unionSet: -[NSMutableSet unionSet:]\endlink, otherwise a new entry is created.
- @throw NSInvalidArgumentException If @a aKey or @a objectSet is @c nil.
- 
- @see addObject:forKey:
- @see objectsForKey:
- @see removeObjectsForKey:
- @see setObjects:forKey:
- */
-- (void) addObjects:(NSSet*)objectSet forKey:(id)aKey;
-
-/**
- Sets the object(s) associated with a key entry in the receiver.
- 
- @param aKey The key with which to associate the objects in @a objectSet.
- @param objectSet A set of objects to associate with @a key. If @a objectSet is empty, the contents of the receiver are not modified. If an entry for @a key already exists in the receiver, @a objectSet is added using \link NSMutableSet#setSet: -[NSMutableSet setSet:]\endlink, otherwise a new entry is created.
- @throw NSInvalidArgumentException If @a aKey or @a objectSet is @c nil.
- 
- @see addObject:forKey:
- @see addObjects:forKey:
- @see objectsForKey:
- @see removeObjectsForKey:
- */
-- (void) setObjects:(NSSet*)objectSet forKey:(id)aKey;
-
-// @}
 #pragma mark Querying Contents
 /** @name Querying Contents */
 // @{
@@ -281,6 +155,15 @@
 - (BOOL) containsObject:(id)anObject;
 
 /**
+ Returns a property list representation of the receiver's contents.
+ 
+ @return A property list representation of the receiver's contents.
+ 
+ If each key in the receiver is an NSString, the entries are listed in ascending order by key, otherwise the order in which the entries are listed is undefined. This method is intended to produce readable output for debugging purposes, not for serializing data. To store a multi-dictionary for later retrieval, see the <a href="http://developer.apple.com/DOCUMENTATION/Cocoa/Conceptual/Archiving/"> Archives and Serializations Programming Guide for Cocoa</a>.
+ */
+- (NSString*) description;
+
+/**
  Returns an enumerator that lets you access each key in the receiver.
  
  @return An enumerator that lets you access each key in the receiver. The enumerator returned is never @c nil; if the receiver is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
@@ -320,19 +203,49 @@
  */
 - (NSSet*) objectsForKey:(id)aKey;
 
-/**
- Returns a property list representation of the receiver's contents.
- 
- @return A property list representation of the receiver's contents.
- 
- If each key in the receiver is an NSString, the entries are listed in ascending order by key, otherwise the order in which the entries are listed is undefined. This method is intended to produce readable output for debugging purposes, not for serializing data. To store a multi-dictionary for later retrieval, see the <a href="http://developer.apple.com/DOCUMENTATION/Cocoa/Conceptual/Archiving/"> Archives and Serializations Programming Guide for Cocoa</a>.
- */
-- (NSString*) description;
-
 // @}
-#pragma mark Removing Objects
-/** @name Removing Objects */
+#pragma mark Modifying Contents
+/** @name Modifying Contents */
 // @{
+
+/**
+ Adds to the receiver the entries from another CHMultiDictionary.
+ 
+ @param otherMultiDictionary The CHMultiDictionary from which to add entries.
+ 
+ Each value from @a otherMultiDictionary is sent a @c -retain message before being added to the receiver. Each key object is copied using @c -copyWithZone: and must conform to the NSCopying protocol.
+ 
+ If a key from @a otherMultiDictionary already exists in the receiver, the objects associated with the key are combined using -[NSMutableSet unionSet:]. If the key does not yet exist in the receiver, an entry is created with the associated set of objects in @a otherMultiDictionary.
+ */
+- (void) addEntriesFromMultiDictionary:(CHMultiDictionary*)otherMultiDictionary;
+
+/**
+ Adds a given object to an entry for a given key in the receiver.
+ 
+ @param aKey The key with which to associate @a anObject.
+ @param anObject An object to add to an entry for @a aKey in the receiver. If an entry for @a aKey already exists in the receiver, @a anObject is added using \link NSMutableSet#addObject: -[NSMutableSet addObject:]\endlink, otherwise a new entry is created.
+ @throw NSInvalidArgumentException If @a aKey or @a anObject is @c nil.
+ 
+ @see addObjects:forKey:
+ @see objectsForKey:
+ @see removeObjectsForKey:
+ @see setObjects:forKey:
+ */
+- (void) addObject:(id)anObject forKey:(id)aKey;
+
+/**
+ Adds the given object(s) to a key entry in the receiver.
+ 
+ @param aKey The key with which to associate @a anObject.
+ @param objectSet A set of objects to add to an entry for @a aKey in the receiver. If an entry for @a aKey already exists in the receiver, @a anObject is added using \link NSMutableSet#unionSet: -[NSMutableSet unionSet:]\endlink, otherwise a new entry is created.
+ @throw NSInvalidArgumentException If @a aKey or @a objectSet is @c nil.
+ 
+ @see addObject:forKey:
+ @see objectsForKey:
+ @see removeObjectsForKey:
+ @see setObjects:forKey:
+ */
+- (void) addObjects:(NSSet*)objectSet forKey:(id)aKey;
 
 /**
  Empties the receiver of all of its entries.
@@ -369,6 +282,20 @@
  @see removeObject:forKey:
  */
 - (void) removeObjectsForKey:(id)aKey;
+
+/**
+ Sets the object(s) associated with a key entry in the receiver.
+ 
+ @param aKey The key with which to associate the objects in @a objectSet.
+ @param objectSet A set of objects to associate with @a key. If @a objectSet is empty, the contents of the receiver are not modified. If an entry for @a key already exists in the receiver, @a objectSet is added using \link NSMutableSet#setSet: -[NSMutableSet setSet:]\endlink, otherwise a new entry is created.
+ @throw NSInvalidArgumentException If @a aKey or @a objectSet is @c nil.
+ 
+ @see addObject:forKey:
+ @see addObjects:forKey:
+ @see objectsForKey:
+ @see removeObjectsForKey:
+ */
+- (void) setObjects:(NSSet*)objectSet forKey:(id)aKey;
 
 // @}
 @end
