@@ -152,14 +152,6 @@ static const CFDictionaryValueCallBacks kCHLockableDictionaryValueCallBacks = {
 }
 #endif
 
-#pragma mark Adding Objects
-
-- (void) setObject:(id)anObject forKey:(id)aKey {
-	[self willChangeValueForKey:aKey];
-	CFDictionarySetValue(dictionary, [[aKey copy] autorelease], anObject);
-	[self didChangeValueForKey:aKey];
-}
-
 #pragma mark Querying Contents
 
 - (NSUInteger) count {
@@ -180,21 +172,18 @@ static const CFDictionaryValueCallBacks kCHLockableDictionaryValueCallBacks = {
 	return (id)CFDictionaryGetValue(dictionary, aKey);
 }
 
-#pragma mark Removing Objects
+#pragma mark Modifying Contents
 
 - (void) removeAllObjects {
-	NSArray *keys = [(id)dictionary allKeys];
-	for (id key in keys)
-		[self willChangeValueForKey:key];
 	CFDictionaryRemoveAllValues(dictionary);
-	for (id key in keys)
-		[self didChangeValueForKey:key];
 }
 
 - (void) removeObjectForKey:(id)aKey {
-	[self willChangeValueForKey:aKey];
 	CFDictionaryRemoveValue(dictionary, aKey);
-	[self didChangeValueForKey:aKey];
+}
+
+- (void) setObject:(id)anObject forKey:(id)aKey {
+	CFDictionarySetValue(dictionary, [[aKey copy] autorelease], anObject);
 }
 
 @end

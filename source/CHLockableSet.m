@@ -118,31 +118,6 @@ static const CFSetCallBacks kCHLockableSetCallbacks = {
 	return [self class];
 }
 
-#pragma mark <NSCopying>
-
-- (id) copyWithZone:(NSZone*)zone {
-	CHLockableSet *copy = [[[self class] allocWithZone:zone] init];
-	[copy addObjectsFromArray:[self allObjects]];
-	return copy;
-}
-
-#pragma mark <NSFastEnumeration>
-
-#if OBJC_API_2
-- (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
-                                   objects:(id*)stackbuf
-                                     count:(NSUInteger)len
-{
-	return [super countByEnumeratingWithState:state objects:stackbuf count:len];
-}
-#endif
-
-#pragma mark Adding Objects
-
-- (void) addObject:(id)anObject {
-	CFSetSetValue(set, anObject);
-}
-
 #pragma mark Querying Contents
 
 - (id) anyObject {
@@ -175,7 +150,11 @@ static const CFSetCallBacks kCHLockableSetCallbacks = {
 	return [(id)set objectEnumerator];
 }
 
-#pragma mark Removing Objects
+#pragma mark Modifying Contents
+
+- (void) addObject:(id)anObject {
+	CFSetSetValue(set, anObject);
+}
 
 - (void) removeAllObjects {
 	CFSetRemoveAllValues(set);
@@ -183,6 +162,14 @@ static const CFSetCallBacks kCHLockableSetCallbacks = {
 
 - (void) removeObject:(id)anObject {
 	CFSetRemoveValue(set, anObject);
+}
+
+#pragma mark <NSCopying>
+
+- (id) copyWithZone:(NSZone*)zone {
+	CHLockableSet *copy = [[[self class] allocWithZone:zone] init];
+	[copy addObjectsFromArray:[self allObjects]];
+	return copy;
 }
 
 @end

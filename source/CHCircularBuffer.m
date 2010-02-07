@@ -278,73 +278,6 @@ static BOOL objectsAreIdentical(id o1, id o2) {
 }
 #endif
 
-#pragma mark Adding Objects
-
-// NSMutableArray primitive method
-- (void) addObject:(id)anObject {
-	[self insertObject:anObject atIndex:count];
-}
-
-// NSMutableArray primitive method
-- (void) insertObject:(id)anObject atIndex:(NSUInteger)index {
-	if (index > count)
-		CHIndexOutOfRangeException([self class], _cmd, index, count);
-	if (anObject == nil)
-		CHNilArgumentException([self class], _cmd);
-	[anObject retain];
-	if (index == count || count == 0) {
-		// To append, just move the tail forward one slot (wrapping if needed)
-		array[tailIndex] = anObject;
-		incrementIndex(tailIndex);
-	} else if (index == 0) {
-		// To prepend, just move the head backward one slot (wrapping if needed)
-		decrementIndex(headIndex);
-		array[headIndex] = anObject;
-	} else {
-		NSUInteger actualIndex = transformIndex(index);
-		if (actualIndex > tailIndex) {
-			// If the buffer wraps and index is between head and end, shift left.
-			memmove(&array[headIndex-1], &array[headIndex],
-					kCHPointerSize * index);
-			decrementIndex(headIndex);
-			decrementIndex(actualIndex); // Head moved back, so does destination
-		}
-		else {
-			// Otherwise, shift everything from given index onward to the right.
-			memmove(&array[actualIndex+1], &array[actualIndex],
-					kCHPointerSize * (tailIndex - actualIndex));
-			incrementIndex(tailIndex);
-		}
-		array[actualIndex] = anObject;
-	}
-	++count;
-	++mutations;	
-	// If this insertion filled the array to capacity, double its size and copy.
-	if (headIndex == tailIndex) {
-		array = NSReallocateCollectable(array, kCHPointerSize * arrayCapacity * 2, NSScannedOption);
-		// Copy wrapped-around portion to end of queue and move tail index
-		memcpy(array + arrayCapacity, array, kCHPointerSize * tailIndex);
-		bzero(array, kCHPointerSize * tailIndex); // Zero the source of the copy
-		tailIndex += arrayCapacity;
-		arrayCapacity *= 2;
-	}
-}
-
-- (void) exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2 {
-	if (idx1 > count)
-		CHIndexOutOfRangeException([self class], _cmd, idx1, count);
-	if (idx2 > count)
-		CHIndexOutOfRangeException([self class], _cmd, idx2, count);
-	if (idx1 != idx2) {
-		NSUInteger realIdx1 = transformIndex(idx1);
-		NSUInteger realIdx2 = transformIndex(idx2);
-		id tempObject = array[realIdx1];
-		array[realIdx1] = array[realIdx2];
-		array[realIdx2] = tempObject;
-		++mutations;
-	}
-}
-
 #pragma mark Querying Contents
 
 - (NSArray*) allObjects {
@@ -480,7 +413,72 @@ static BOOL objectsAreIdentical(id o1, id o2) {
 	       mutationPointer:&mutations] autorelease];
 }
 
-#pragma mark Removing Objects
+#pragma mark Modifying Contents
+
+// NSMutableArray primitive method
+- (void) addObject:(id)anObject {
+	[self insertObject:anObject atIndex:count];
+}
+
+// NSMutableArray primitive method
+- (void) insertObject:(id)anObject atIndex:(NSUInteger)index {
+	if (index > count)
+		CHIndexOutOfRangeException([self class], _cmd, index, count);
+	if (anObject == nil)
+		CHNilArgumentException([self class], _cmd);
+	[anObject retain];
+	if (index == count || count == 0) {
+		// To append, just move the tail forward one slot (wrapping if needed)
+		array[tailIndex] = anObject;
+		incrementIndex(tailIndex);
+	} else if (index == 0) {
+		// To prepend, just move the head backward one slot (wrapping if needed)
+		decrementIndex(headIndex);
+		array[headIndex] = anObject;
+	} else {
+		NSUInteger actualIndex = transformIndex(index);
+		if (actualIndex > tailIndex) {
+			// If the buffer wraps and index is between head and end, shift left.
+			memmove(&array[headIndex-1], &array[headIndex],
+					kCHPointerSize * index);
+			decrementIndex(headIndex);
+			decrementIndex(actualIndex); // Head moved back, so does destination
+		}
+		else {
+			// Otherwise, shift everything from given index onward to the right.
+			memmove(&array[actualIndex+1], &array[actualIndex],
+					kCHPointerSize * (tailIndex - actualIndex));
+			incrementIndex(tailIndex);
+		}
+		array[actualIndex] = anObject;
+	}
+	++count;
+	++mutations;	
+	// If this insertion filled the array to capacity, double its size and copy.
+	if (headIndex == tailIndex) {
+		array = NSReallocateCollectable(array, kCHPointerSize * arrayCapacity * 2, NSScannedOption);
+		// Copy wrapped-around portion to end of queue and move tail index
+		memcpy(array + arrayCapacity, array, kCHPointerSize * tailIndex);
+		bzero(array, kCHPointerSize * tailIndex); // Zero the source of the copy
+		tailIndex += arrayCapacity;
+		arrayCapacity *= 2;
+	}
+}
+
+- (void) exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2 {
+	if (idx1 > count)
+		CHIndexOutOfRangeException([self class], _cmd, idx1, count);
+	if (idx2 > count)
+		CHIndexOutOfRangeException([self class], _cmd, idx2, count);
+	if (idx1 != idx2) {
+		NSUInteger realIdx1 = transformIndex(idx1);
+		NSUInteger realIdx2 = transformIndex(idx2);
+		id tempObject = array[realIdx1];
+		array[realIdx1] = array[realIdx2];
+		array[realIdx2] = tempObject;
+		++mutations;
+	}
+}
 
 - (void) removeFirstObject {
 	if (count == 0)

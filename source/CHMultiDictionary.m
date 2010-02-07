@@ -143,50 +143,6 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 }
 #endif
 
-#pragma mark Adding Objects
-
-- (void) addEntriesFromMultiDictionary:(CHMultiDictionary*)otherMultiMap; {
-#if OBJC_API_2
-	for (id key in [otherMultiMap allKeys])
-#else
-	NSEnumerator *e = [otherMultiMap keyEnumerator];
-	id key;
-	while (key = [e nextObject])
-#endif
-	{
-		[self addObjects:[otherMultiMap objectsForKey:key] forKey:key];
-	}
-	++mutations;
-}
-
-- (void) addObject:(id)anObject forKey:(id)aKey {
-	NSMutableSet *objects = [dictionary objectForKey:aKey];
-	if (objects == nil)
-		[dictionary setObject:(objects = [NSMutableSet set]) forKey:aKey];
-	else
-		objectCount -= [objects count];
-	[objects addObject:anObject];
-	objectCount += [objects count];
-	++mutations;
-}
-
-- (void) addObjects:(NSSet*)objectSet forKey:(id)aKey {
-	NSMutableSet *objects = [dictionary objectForKey:aKey];
-	if (objects == nil)
-		[dictionary setObject:(objects = [NSMutableSet set]) forKey:aKey];
-	else
-		objectCount -= [objects count];
-	[objects unionSet:objectSet];
-	objectCount += [objects count];
-	++mutations;
-}
-
-- (void) setObjects:(NSSet*)objectSet forKey:(id)aKey {	
-	objectCount += ([objectSet count] - [[dictionary objectForKey:aKey] count]);
-	[dictionary setObject:[NSMutableSet setWithSet:objectSet] forKey:aKey];
-	++mutations;
-}
-
 #pragma mark Querying Contents
 
 - (NSArray*) allKeys {
@@ -265,7 +221,43 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 	return [dictionary description];
 }
 
-#pragma mark Removing Objects
+#pragma mark Modifying Contents
+
+- (void) addEntriesFromMultiDictionary:(CHMultiDictionary*)otherMultiMap; {
+#if OBJC_API_2
+	for (id key in [otherMultiMap allKeys])
+#else
+	NSEnumerator *e = [otherMultiMap keyEnumerator];
+	id key;
+	while (key = [e nextObject])
+#endif
+	{
+		[self addObjects:[otherMultiMap objectsForKey:key] forKey:key];
+	}
+	++mutations;
+}
+
+- (void) addObject:(id)anObject forKey:(id)aKey {
+	NSMutableSet *objects = [dictionary objectForKey:aKey];
+	if (objects == nil)
+		[dictionary setObject:(objects = [NSMutableSet set]) forKey:aKey];
+	else
+		objectCount -= [objects count];
+	[objects addObject:anObject];
+	objectCount += [objects count];
+	++mutations;
+}
+
+- (void) addObjects:(NSSet*)objectSet forKey:(id)aKey {
+	NSMutableSet *objects = [dictionary objectForKey:aKey];
+	if (objects == nil)
+		[dictionary setObject:(objects = [NSMutableSet set]) forKey:aKey];
+	else
+		objectCount -= [objects count];
+	[objects unionSet:objectSet];
+	objectCount += [objects count];
+	++mutations;
+}
 
 - (void) removeAllObjects {
 	objectCount = 0;
@@ -287,6 +279,12 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 - (void) removeObjectsForKey:(id)aKey {
 	objectCount -= [[dictionary objectForKey:aKey] count];
 	[dictionary removeObjectForKey:aKey];
+	++mutations;
+}
+
+- (void) setObjects:(NSSet*)objectSet forKey:(id)aKey {	
+	objectCount += ([objectSet count] - [[dictionary objectForKey:aKey] count]);
+	[dictionary setObject:[NSMutableSet setWithSet:objectSet] forKey:aKey];
 	++mutations;
 }
 

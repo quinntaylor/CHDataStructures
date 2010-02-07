@@ -36,35 +36,6 @@
 	[encoder encodeObject:keyOrdering forKey:@"keyOrdering"];
 }
 
-#pragma mark Adding Objects
-
-- (void) insertObject:(id)anObject forKey:(id)aKey atIndex:(NSUInteger)index {
-	if (index > [self count])
-		CHIndexOutOfRangeException([self class], _cmd, index, [self count]);
-	if (anObject == nil || aKey == nil)
-		CHNilArgumentException([self class], _cmd);
-	
-	[self willChangeValueForKey:aKey];
-	id clonedKey = [[aKey copy] autorelease];
-	if (!CFDictionaryContainsKey(dictionary, clonedKey)) {
-		[keyOrdering insertObject:clonedKey atIndex:index];
-	}
-	CFDictionarySetValue(dictionary, clonedKey, anObject);
-	[self didChangeValueForKey:aKey];
-}
-
-- (void) setObject:(id)anObject forKey:(id)aKey {
-	[self insertObject:anObject forKey:aKey atIndex:[self count]];
-}
-
-- (void) setObject:(id)anObject forKeyAtIndex:(NSUInteger)index {
-	[self insertObject:anObject forKey:[self keyAtIndex:index] atIndex:index];
-}
-
-- (void) exchangeKeyAtIndex:(NSUInteger)idx1 withKeyAtIndex:(NSUInteger)idx2 {
-	[keyOrdering exchangeObjectAtIndex:idx1 withObjectAtIndex:idx2];
-}
-
 #pragma mark Querying Contents
 
 - (id) firstKey {
@@ -126,7 +97,26 @@
 	return [keyOrdering reverseObjectEnumerator];
 }
 
-#pragma mark Removing Objects
+#pragma mark Modifying Contents
+
+- (void) exchangeKeyAtIndex:(NSUInteger)idx1 withKeyAtIndex:(NSUInteger)idx2 {
+	[keyOrdering exchangeObjectAtIndex:idx1 withObjectAtIndex:idx2];
+}
+
+- (void) insertObject:(id)anObject forKey:(id)aKey atIndex:(NSUInteger)index {
+	if (index > [self count])
+		CHIndexOutOfRangeException([self class], _cmd, index, [self count]);
+	if (anObject == nil || aKey == nil)
+		CHNilArgumentException([self class], _cmd);
+	
+	[self willChangeValueForKey:aKey];
+	id clonedKey = [[aKey copy] autorelease];
+	if (!CFDictionaryContainsKey(dictionary, clonedKey)) {
+		[keyOrdering insertObject:clonedKey atIndex:index];
+	}
+	CFDictionarySetValue(dictionary, clonedKey, anObject);
+	[self didChangeValueForKey:aKey];
+}
 
 - (void) removeAllObjects {
 	[super removeAllObjects]; // Sends KVO notifications
@@ -150,6 +140,14 @@
 	NSArray* keysToRemove = [keyOrdering objectsAtIndexes:indexes];
 	[keyOrdering removeObjectsAtIndexes:indexes];
 	[(NSMutableDictionary*)dictionary removeObjectsForKeys:keysToRemove];
+}
+
+- (void) setObject:(id)anObject forKey:(id)aKey {
+	[self insertObject:anObject forKey:aKey atIndex:[self count]];
+}
+
+- (void) setObject:(id)anObject forKeyAtIndex:(NSUInteger)index {
+	[self insertObject:anObject forKey:[self keyAtIndex:index] atIndex:index];
 }
 
 @end

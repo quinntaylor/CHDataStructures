@@ -26,16 +26,6 @@
 
 // The NSCoding methods inherited from CHLockableDictionary work fine here.
 
-#pragma mark Adding Objects
-
-- (void) setObject:(id)anObject forKey:(id)aKey {
-	[self willChangeValueForKey:aKey];
-	id clonedKey = [[aKey copy] autorelease];
-	[sortedKeys addObject:clonedKey];
-	CFDictionarySetValue(dictionary, clonedKey, anObject);
-	[self didChangeValueForKey:aKey];
-}
-
 #pragma mark Querying Contents
 
 /**
@@ -86,7 +76,7 @@
 	return subset;
 }
 
-#pragma mark Removing Objects
+#pragma mark Modifying Contents
 
 - (void) removeAllObjects {
 	[super removeAllObjects]; // Sends KVO notifications
@@ -98,6 +88,14 @@
 		[super removeObjectForKey:aKey]; // Sends KVO notifications
 		[sortedKeys removeObject:aKey];
 	}
+}
+
+- (void) setObject:(id)anObject forKey:(id)aKey {
+	[self willChangeValueForKey:aKey];
+	id clonedKey = [[aKey copy] autorelease];
+	[sortedKeys addObject:clonedKey];
+	CFDictionarySetValue(dictionary, clonedKey, anObject);
+	[self didChangeValueForKey:aKey];
 }
 
 @end

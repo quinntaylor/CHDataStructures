@@ -23,40 +23,6 @@
 	return self;
 }
 
-#pragma mark <NSFastEnumeration>
-
-#if OBJC_API_2
-- (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
-                                   objects:(id*)stackbuf
-                                     count:(NSUInteger)len
-{
-	return [ordering countByEnumeratingWithState:state objects:stackbuf count:len];
-}
-#endif
-
-#pragma mark Adding Objects
-
-- (void) addObject:(id)anObject {
-	if (anObject == nil)
-		CHNilArgumentException([self class], _cmd);
-	if (![self containsObject:anObject])
-		[ordering addObject:anObject];
-	[super addObject:anObject];
-}
-
-- (void) exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2 {
-	[ordering exchangeObjectAtIndex:idx1 withObjectAtIndex:idx2];
-}
-
-- (void) insertObject:(id)anObject atIndex:(NSUInteger)index {
-	if (index > [self count])
-		CHIndexOutOfRangeException([self class], _cmd, index, [self count]);
-	if ([self containsObject:anObject])
-		[ordering removeObject:anObject];
-	[ordering insertObject:anObject atIndex:index];
-	[super addObject:anObject];
-}
-
 #pragma mark Querying Contents
 
 - (NSArray*) allObjects {
@@ -121,7 +87,28 @@
 	return newSet;
 }
 
-#pragma mark Removing Objects
+#pragma mark Modifying Contents
+
+- (void) addObject:(id)anObject {
+	if (anObject == nil)
+		CHNilArgumentException([self class], _cmd);
+	if (![self containsObject:anObject])
+		[ordering addObject:anObject];
+	[super addObject:anObject];
+}
+
+- (void) exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2 {
+	[ordering exchangeObjectAtIndex:idx1 withObjectAtIndex:idx2];
+}
+
+- (void) insertObject:(id)anObject atIndex:(NSUInteger)index {
+	if (index > [self count])
+		CHIndexOutOfRangeException([self class], _cmd, index, [self count]);
+	if ([self containsObject:anObject])
+		[ordering removeObject:anObject];
+	[ordering insertObject:anObject atIndex:index];
+	[super addObject:anObject];
+}
 
 - (void) removeAllObjects {
 	[super removeAllObjects];
@@ -150,5 +137,16 @@
 	[(NSMutableSet*)set minusSet:[NSSet setWithArray:[self objectsAtIndexes:indexes]]];
 	[ordering removeObjectsAtIndexes:indexes];
 }
+
+#pragma mark <NSFastEnumeration>
+
+#if OBJC_API_2
+- (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
+                                   objects:(id*)stackbuf
+                                     count:(NSUInteger)len
+{
+	return [ordering countByEnumeratingWithState:state objects:stackbuf count:len];
+}
+#endif
 
 @end
