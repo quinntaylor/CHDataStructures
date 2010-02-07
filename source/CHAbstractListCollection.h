@@ -36,93 +36,20 @@
 }
 
 - (id) initWithArray:(NSArray*)anArray;
-- (NSUInteger) count;
-- (NSEnumerator*) objectEnumerator;
 - (NSArray*) allObjects;
-- (void) removeAllObjects;
-- (void) removeObject:(id)anObject;
-- (void) removeObjectIdenticalTo:(id)anObject;
-
 - (BOOL) containsObject:(id)anObject;
 - (BOOL) containsObjectIdenticalTo:(id)anObject;
-
-#pragma mark Indexed Operations
-// These operations aren't a part of the stack/queue/deque protocols, but are
-// provided as a convenience for working directly with a circular buffer.
-
-/**
- Exchange the objects in the receiver at given indexes.
- 
- @param idx1 The index of the object to replace with the object at @a idx2.
- @param idx2 The index of the object to replace with the object at @a idx1.
- 
- @throw NSRangeException If @a idx1 or @a idx2 exceeds the bounds of the receiver.
- 
- @attention Indexed operations on linked lists generally require traversing nodes in order, which is significantly slower than similar operations on an array.
- 
- @see indexOfObject:
- @see objectAtIndex:
- */
+- (NSUInteger) count;
 - (void) exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2;
-
-/**
- Returns the lowest index of a given object, matched using @c isEqual:.
- 
- @param anObject The object to be matched and located in the receiver.
- @return The index of the first object which is equal to @a anObject. If none of the objects in the receiver match @a anObject, returns @c NSNotFound.
- 
- @attention Indexed operations on linked lists generally require traversing nodes in order, which is significantly slower than similar operations on an array.
- 
- @see indexOfObjectIdenticalTo:
- @see objectAtIndex:
- @see removeObjectAtIndex:
- */
 - (NSUInteger) indexOfObject:(id)anObject;
-
-/**
- Returns the lowest index of a given object, matched using the == operator.
- 
- @param anObject The object to be matched and located in the receiver.
- @return The index of the first object which is equal to @a anObject. If none of the objects in the receiver match @a anObject, returns @c NSNotFound.
- 
- @attention Indexed operations on linked lists generally require traversing nodes in order, which is significantly slower than similar operations on an array.
- 
- @see indexOfObject:
- @see objectAtIndex:
- @see removeObjectAtIndex:
- */
 - (NSUInteger) indexOfObjectIdenticalTo:(id)anObject;
-
-/**
- Returns the object located at @a index in the receiver.
- 
- @param index An index from which to retrieve an object.
- @return The object located at @a index.
- 
- @throw NSRangeException If @a index exceeds the bounds of the receiver.
- 
- @attention Indexed operations on linked lists generally require traversing nodes in order, which is significantly slower than similar operations on an array.
- 
- @see indexOfObject:
- @see indexOfObjectIdenticalTo:
- @see removeObjectAtIndex:
- */
 - (id) objectAtIndex:(NSUInteger)index;
-
-/**
- Remove the object at a given index from the receiver.
- 
- @param index The index from which to remove the object.
- 
- @throw NSRangeException If @a index exceeds the bounds of the receiver.
- 
- @attention Indexed operations on linked lists generally require traversing nodes in order, which is significantly slower than similar operations on an array.
- 
- @see indexOfObject:
- @see indexOfObjectIdenticalTo:
- @see objectAtIndex:
- */
+- (NSEnumerator*) objectEnumerator;
+- (void) removeAllObjects;
+- (void) removeObject:(id)anObject;
 - (void) removeObjectAtIndex:(NSUInteger)index;
+- (void) removeObjectIdenticalTo:(id)anObject;
+- (void) replaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject;
 
 #pragma mark Adopted Protocols
 

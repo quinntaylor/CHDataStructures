@@ -124,6 +124,10 @@
 	[list removeAllObjects];
 }
 
+- (void) replaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject {
+	[list replaceObjectAtIndex:index withObject:anObject];
+}
+
 - (NSArray*) allObjects {
 	return [list allObjects];
 }

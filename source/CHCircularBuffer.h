@@ -39,23 +39,22 @@
 
 - (id) initWithArray:(NSArray*)anArray;
 
-#pragma mark Querying Contents
-
 - (NSArray*) allObjects;
 - (BOOL) containsObject:(id)anObject;
 - (BOOL) containsObjectIdenticalTo:(id)anObject;
+- (void) exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2;
 - (id) firstObject;
+- (NSUInteger) indexOfObject:(id)anObject;
+- (NSUInteger) indexOfObjectIdenticalTo:(id)anObject;
 - (id) lastObject;
 - (NSEnumerator*) objectEnumerator;
-- (NSEnumerator*) reverseObjectEnumerator;
-
-#pragma mark Removing Objects
-
 - (void) removeAllObjects;
 - (void) removeFirstObject;
 - (void) removeLastObject;
 - (void) removeObject:(id)anObject;
 - (void) removeObjectIdenticalTo:(id)anObject;
+- (void) replaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject;
+- (NSEnumerator*) reverseObjectEnumerator;
 
 #pragma mark <NSCoding>
 

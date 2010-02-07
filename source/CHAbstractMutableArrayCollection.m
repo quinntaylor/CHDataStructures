@@ -111,6 +111,10 @@
 	[array removeAllObjects];
 }
 
+- (void) replaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject {
+	[array replaceObjectAtIndex:index withObject:anObject];
+}
+
 - (NSArray*) allObjects {
 	return [[array copy] autorelease];
 }
