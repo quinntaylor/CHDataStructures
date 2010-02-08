@@ -96,7 +96,7 @@
 		e = [objects objectEnumerator];
 		while (anObject = [e nextObject])
 			[heap addObject:anObject];
-		CHAbstractMutableArrayCollection *heap2 = [heap copyWithZone:nil];
+		id heap2 = [heap copy];
 		STAssertNotNil(heap2, @"-copy should not return nil for valid heap.");
 		STAssertEquals([heap2 count], (NSUInteger)9, @"Incorrect count.");
 		STAssertEquals([heap hash], [heap2 hash], @"Hashes should match.");
@@ -115,9 +115,9 @@
 		heap = [[aClass alloc] init];
 		for (NSUInteger number = 1; number <= limit; number++)
 			[heap addObject:[NSNumber numberWithUnsignedInteger:number]];
-		NSUInteger expected = 1, count = 0;
+		NSUInteger expected = 0, count = 0;
 		for (NSNumber *number in heap) {
-			STAssertEquals([number unsignedIntegerValue], expected++,
+			STAssertEquals([number unsignedIntegerValue], ++expected,
 						   @"Objects should be enumerated in ascending order.");
 			count++;
 		}
@@ -220,13 +220,13 @@
 		                            @"Should raise NSInvalidArgumentException");
 		STAssertFalse([heap1 isEqual:[NSString string]], @"Should not be equal.");
 		STAssertTrue([heap1 isEqual:heap1], @"Should be equal to itself.");
-		heap2 = [equalHeaps objectAtIndex:i+1];
-		STAssertTrue([heap1 isEqualToHeap:heap2], @"Should be equal.");
-		STAssertEquals([heap1 hash], [heap2 hash], @"Hashes should match.");
 		heap2 = [emptyHeaps objectAtIndex:i];
 		STAssertFalse([heap1 isEqualToHeap:heap2], @"Should not be equal.");
 		heap2 = [reversedHeaps objectAtIndex:i];
 		STAssertFalse([heap1 isEqualToHeap:heap2], @"Should not be equal.");
+		heap2 = [equalHeaps objectAtIndex:i+1];
+		STAssertTrue([heap1 isEqualToHeap:heap2], @"Should be equal.");
+		STAssertEquals([heap1 hash], [heap2 hash], @"Hashes should match.");
 	}
 }
 

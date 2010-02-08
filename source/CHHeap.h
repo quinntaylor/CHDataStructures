@@ -69,19 +69,6 @@
 // @{
 
 /**
- Returns an array containing the objects in this heap in their current order. The contents are almost certainly not sorted (since only the heap property need be satisfied) but this is the quickest way to retrieve all the elements in a heap.
- 
- @return An array containing the objects in this heap in their current order. If the heap is empty, the array is also empty.
- 
- @see allObjectsInSortedOrder
- @see count
- @see countByEnumeratingWithState:objects:count:
- @see objectEnumerator
- @see removeAllObjects
- */
-- (NSArray*) allObjects;
-
-/**
  Returns an array containing the objects in this heap in sorted order.
  
  @return An array containing the objects in this heap in sorted order. If the heap is empty, the array is also empty.
@@ -99,23 +86,11 @@
  Determine whether the receiver contains a given object, matched using \link NSObject#isEqual: -isEqual:\endlink.
  
  @param anObject The object to test for membership in the heap.
- @return @c YES if @a anObject is in the heap, @c NO if it is @c nil or not present.
+ @return @c YES if @a anObject appears in the heap at least once, @c NO if @a anObject is @c nil or not present.
  
- @see containsObjectIdenticalTo:
  @see removeObject:
  */
 - (BOOL) containsObject:(id)anObject;
-
-/**
- Determine whether the receiver contains a given object, matched using the == operator.
- 
- @param anObject The object to test for membership in the heap.
- @return @c YES if @a anObject is in the heap, @c NO if it is @c nil or not present.
- 
- @see containsObject:
- @see removeObjectIdenticalTo:
- */
-- (BOOL) containsObjectIdenticalTo:(id)anObject;
 
 /**
  Returns the number of objects currently in the heap.
@@ -197,30 +172,6 @@
  @see removeAllObjects
  */
 - (void) removeFirstObject;
-
-/**
- Remove @b all occurrences of @a anObject, matched using @c isEqual:.
- 
- @param anObject The object to be removed from the heap.
- 
- If the heap is empty, @a anObject is @c nil, or no object matching @a anObject is found, there is no effect, aside from the possible overhead of searching the contents.
- 
- @see containsObject;
- @see removeObjectIdenticalTo:
- */
-- (void) removeObject:(id)anObject;
-
-/**
- Remove @b all occurrences of @a anObject, matched using the == operator.
- 
- @param anObject The object to be removed from the heap.
- 
- If the heap is empty, @a anObject is @c nil, or no object matching @a anObject is found, there is no effect, aside from the possible overhead of searching the contents.
- 
- @see containsObjectIdenticalTo:
- @see removeObject:
- */
-- (void) removeObjectIdenticalTo:(id)anObject;
 
 // @}
 @end

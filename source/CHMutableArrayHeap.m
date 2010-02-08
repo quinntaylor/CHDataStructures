@@ -1,7 +1,7 @@
 /*
  CHDataStructures.framework -- CHMutableArrayHeap.m
  
- Copyright (c) 2008-2009, Quinn Taylor <http://homepage.mac.com/quinntaylor>
+ Copyright (c) 2008-2010, Quinn Taylor <http://homepage.mac.com/quinntaylor>
  
  Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
  
@@ -47,13 +47,24 @@
 
 #pragma mark -
 
+- (void) dealloc {
+	[array release];
+	[super dealloc];
+}
+
 - (id) init {
 	return [self initWithOrdering:NSOrderedAscending array:nil];
 }
 
-// Overrides the designated initializer from CHAbstractMutableArrayCollection
 - (id) initWithArray:(NSArray*)anArray {
 	return [self initWithOrdering:NSOrderedAscending array:anArray];
+}
+
+// This is the designated initializer for NSMutableArray (must be overridden)
+- (id) initWithCapacity:(NSUInteger)capacity {
+	if ((self = [super init]) == nil) return nil;
+	array = [[NSMutableArray alloc] initWithCapacity:capacity];
+	return self;	
 }
 
 - (id) initWithOrdering:(NSComparisonResult)order {
@@ -63,15 +74,20 @@
 // This is the designated initializer for CHMutableArrayHeap
 - (id) initWithOrdering:(NSComparisonResult)order array:(NSArray*)anArray {
 	// Parent initializer allocates empty array; add objects after order is set.
-	if ((self = [super initWithArray:nil]) == nil) return nil;
+	if ((self = [self initWithCapacity:[anArray count]]) == nil) return nil;
 	if (order != NSOrderedAscending && order != NSOrderedDescending)
 		CHInvalidArgumentException([self class], _cmd, @"Invalid sort order.");
 	sortOrder = order;
-	[self addObjectsFromArray:anArray];
+	[self addObjectsFromArray:anArray]; // establishes heap ordering of elements
 	return self;
 }
 
 #pragma mark <NSCoding>
+
+// Overridden from NSMutableArray to encode/decode as the proper class.
+- (Class) classForKeyedArchiver {
+	return [self class];
+}
 
 - (id) initWithCoder:(NSCoder*)decoder {
 	// Ordinarily we'd call -[super initWithCoder:], but we must set order first
@@ -82,6 +98,7 @@
 
 - (void) encodeWithCoder:(NSCoder*)encoder {
 	[super encodeWithCoder:encoder];
+	[encoder encodeObject:array forKey:@"array"];
 	[encoder encodeBool:(sortOrder == NSOrderedAscending) forKey:@"sortAscending"];
 }
 
@@ -113,6 +130,90 @@
 	return count;
 }
 #endif
+
+#pragma mark -
+
+// NOTE: This method is not part of the CHHeap protocol.
+/**
+ Returns an array containing the objects in this heap in their current order. The contents are almost certainly not sorted (since only the heap property need be satisfied) but this is the quickest way to retrieve all the elements in a heap.
+ 
+ @return An array containing the objects in this heap in their current order. If the heap is empty, the array is also empty.
+ 
+ @see allObjectsInSortedOrder
+ @see count
+ @see countByEnumeratingWithState:objects:count:
+ @see objectEnumerator
+ @see removeAllObjects
+ */
+- (NSArray*) allObjects {
+	return [[array copy] autorelease];
+}
+
+- (NSArray*) allObjectsInSortedOrder {
+	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc]
+	                                    initWithKey:nil
+	                                      ascending:(sortOrder == NSOrderedAscending)];
+	return [array sortedArrayUsingDescriptors:[NSArray arrayWithObject:[sortDescriptor autorelease]]];
+}
+
+/**
+ Determine whether the receiver contains a given object, matched using \link NSObject#isEqual: -isEqual:\endlink.
+ 
+ @param anObject The object to test for membership in the heap.
+ @return @c YES if @a anObject appears in the heap at least once, @c NO if @a anObject is @c nil or not present.
+ 
+ @see containsObjectIdenticalTo:
+ @see removeObject:
+ */
+- (BOOL) containsObject:(id)anObject {
+	return [array containsObject:anObject];
+}
+
+// NOTE: This method is not part of the CHHeap protocol.
+/**
+ Determine whether the receiver contains a given object, matched using the == operator.
+ 
+ @param anObject The object to test for membership in the heap.
+ @return @c YES if @a anObject is in the heap, @c NO if it is @c nil or not present.
+ 
+ @see containsObject:
+ @see removeObjectIdenticalTo:
+ */
+- (BOOL) containsObjectIdenticalTo:(id)anObject {
+	return ([array indexOfObjectIdenticalTo:anObject] != NSNotFound);
+}
+
+- (NSUInteger) count {
+	return [array count];
+}
+
+- (id) firstObject {
+	return ([array count] > 0) ? [array objectAtIndex:0] : nil;
+}
+
+- (NSUInteger) hash {
+	id anObject = [self firstObject];
+	return hashOfCountAndObjects([self count], anObject, anObject);
+}
+
+- (BOOL) isEqual:(id)otherObject {
+	if ([otherObject conformsToProtocol:@protocol(CHHeap)])
+		return [self isEqualToHeap:otherObject];
+	else
+		return NO;
+}
+
+- (BOOL) isEqualToHeap:(id<CHHeap>)otherHeap {
+	return collectionsAreEqual(self, otherHeap);
+}
+
+- (id) objectAtIndex:(NSUInteger)index {
+	return [array objectAtIndex:index];
+}
+
+- (NSEnumerator*) objectEnumerator {
+	return [[self allObjectsInSortedOrder] objectEnumerator];
+}
 
 #pragma mark -
 
@@ -148,36 +249,33 @@
 		[self heapifyFromIndex:index];
 }
 
-- (id) firstObject {
-	return ([array count] > 0) ? [array objectAtIndex:0] : nil;
-}
-		
-- (NSUInteger) hash {
-	id anObject = ([array count] > 0) ? [array objectAtIndex:0] : array;
-	return hashOfCountAndObjects([self count], anObject, anObject);
-}
-
-- (BOOL) isEqual:(id)otherObject {
-	if ([otherObject conformsToProtocol:@protocol(CHHeap)])
-		return [self isEqualToHeap:otherObject];
-	else
-		return NO;
-}
-
-- (BOOL) isEqualToHeap:(id<CHHeap>)otherHeap {
-	return collectionsAreEqual(self, otherHeap);
+- (void)insertObject:(id)anObject atIndex:(NSUInteger)index {
+	mutations++;
+	[array insertObject:anObject atIndex:index];
 }
 
 - (void) removeFirstObject {
 	if ([array count] > 0) {
+		++mutations;
 		[array exchangeObjectAtIndex:0 withObjectAtIndex:([array count]-1)];
 		[array removeLastObject];
-		++mutations;
 		// Bubble the swapped node down until the heap property is again satisfied
 		[self heapifyFromIndex:0];
 	}
 }
 
+// NOTE: This method is not part of the CHHeap protocol.
+/**
+ Remove @b all occurrences of @a anObject, matched using @c isEqual:.
+ 
+ @param anObject The object to be removed from the heap.
+ 
+ If the heap is empty, @a anObject is @c nil, or no object matching @a anObject is found, there is no effect, aside from the possible overhead of searching the contents.
+ 
+ @see containsObject;
+ @see removeAllObjects
+ @see removeObjectIdenticalTo:
+ */
 - (void) removeObject:(id)anObject {
 	NSUInteger count = [array count];
 	if (count == 0 || anObject == nil)
@@ -197,6 +295,18 @@
 	}
 }
 
+// NOTE: This method is not part of the CHHeap protocol.
+/**
+ Remove @b all occurrences of @a anObject, matched using the == operator.
+ 
+ @param anObject The object to be removed from the heap.
+ 
+ If the heap is empty, @a anObject is @c nil, or no object matching @a anObject is found, there is no effect, aside from the possible overhead of searching the contents.
+ 
+ @see containsObjectIdenticalTo:
+ @see removeAllObjects
+ @see removeObject:
+ */
 - (void) removeObjectIdenticalTo:(id)anObject {
 	NSUInteger count = [array count];
 	if (count == 0 || anObject == nil)
@@ -219,21 +329,6 @@
 - (void) removeAllObjects {
 	[array removeAllObjects];
 	++mutations;
-}
-
-- (NSArray*) allObjects {
-	return [[array copy] autorelease];
-}
-
-- (NSArray*) allObjectsInSortedOrder {
-	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc]
-										initWithKey:nil
-										ascending:(sortOrder == NSOrderedAscending)];
-	return [array sortedArrayUsingDescriptors:[NSArray arrayWithObject:[sortDescriptor autorelease]]];
-}
-
-- (NSEnumerator*) objectEnumerator {
-	return [[self allObjectsInSortedOrder] objectEnumerator];
 }
 
 @end
