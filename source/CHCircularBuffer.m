@@ -10,7 +10,6 @@
 
 #import "CHCircularBuffer.h"
 
-static size_t kCHPointerSize = sizeof(void*);
 #define transformIndex(index) ((headIndex + index) % arrayCapacity)
 #define incrementIndex(index) (index = (index + 1) % arrayCapacity)
 #define decrementIndex(index) (index = ((index) ? index : arrayCapacity) - 1)

@@ -64,6 +64,9 @@ void* __strong NSReallocateCollectable(void *ptr, NSUInteger size, NSUInteger op
 /** Global variable to simplify checking if garbage collection is enabled. */
 OBJC_EXPORT BOOL kCHGarbageCollectionNotEnabled;
 
+/** Global variable to store the size of a pointer only once. */
+OBJC_EXPORT size_t kCHPointerSize;
+
 /**
  Determines GC status and sets @c kCHGarbageCollectionNotEnabled appropriately.
  Intended to be called from @c +initialize of direct implementors of CHLockable.

@@ -28,6 +28,7 @@ void* __strong NSReallocateCollectable(void *ptr, NSUInteger size, NSUInteger op
 
 static BOOL initialized = NO;
 BOOL kCHGarbageCollectionNotEnabled; // A variable declared extern in Util.h
+size_t kCHPointerSize = sizeof(void*); // A variable declared extern in Util.h
 
 void initializeGCStatus() {
 	if (!initialized) {
