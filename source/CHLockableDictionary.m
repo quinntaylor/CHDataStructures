@@ -10,7 +10,7 @@
 
 #import "CHLockableDictionary.h"
 
-#pragma mark CHDictionary callbacks
+#pragma mark CFDictionary callbacks
 
 const void* CHLockableDictionaryRetain(CFAllocatorRef allocator, const void *value) {
 	return [(id)value retain];
@@ -94,7 +94,8 @@ static const CFDictionaryValueCallBacks kCHLockableDictionaryValueCallBacks = {
 }
 
 - (void) dealloc {
-	CFRelease(dictionary);
+	if (dictionary != NULL)
+		CFRelease(dictionary);
 	[lock release];
 	[super dealloc];
 }

@@ -84,7 +84,8 @@ static const CFSetCallBacks kCHLockableSetCallbacks = {
 }
 
 - (void) dealloc {
-	CFRelease(set);
+	if (set != NULL)
+		CFRelease(set);
 	[lock release];
 	[super dealloc];
 }
