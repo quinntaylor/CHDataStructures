@@ -88,6 +88,8 @@
 		E4558DB10FE7598700CC5860 /* CHOrderedDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = E4558DAF0FE7598700CC5860 /* CHOrderedDictionary.m */; };
 		E4558DB60FE7599500CC5860 /* CHSortedDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = E4558DB40FE7599500CC5860 /* CHSortedDictionary.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4558DB70FE7599500CC5860 /* CHSortedDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = E4558DB50FE7599500CC5860 /* CHSortedDictionary.m */; };
+		E45F4CC4111F6025008E8B5D /* CHBinaryHeap.h in Headers */ = {isa = PBXBuildFile; fileRef = E45F4CC2111F6025008E8B5D /* CHBinaryHeap.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E45F4CC5111F6025008E8B5D /* CHBinaryHeap.m in Sources */ = {isa = PBXBuildFile; fileRef = E45F4CC3111F6025008E8B5D /* CHBinaryHeap.m */; };
 		E46300B20ECBEDAE00E1AF73 /* CHTreapTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E410360E0EC424E600C2CFB9 /* CHTreapTest.m */; };
 		E46300B30ECBEDAF00E1AF73 /* CHLinkedListTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D499690E93CD1300434CBA /* CHLinkedListTest.m */; };
 		E46300B40ECBEDB000E1AF73 /* CHAbstractBinarySearchTreeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4B1AD170EB580BC00B43ADA /* CHAbstractBinarySearchTreeTest.m */; };
@@ -262,6 +264,8 @@
 		E4558DAF0FE7598700CC5860 /* CHOrderedDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHOrderedDictionary.m; path = source/CHOrderedDictionary.m; sourceTree = "<group>"; };
 		E4558DB40FE7599500CC5860 /* CHSortedDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHSortedDictionary.h; path = source/CHSortedDictionary.h; sourceTree = "<group>"; };
 		E4558DB50FE7599500CC5860 /* CHSortedDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHSortedDictionary.m; path = source/CHSortedDictionary.m; sourceTree = "<group>"; };
+		E45F4CC2111F6025008E8B5D /* CHBinaryHeap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHBinaryHeap.h; path = source/CHBinaryHeap.h; sourceTree = "<group>"; };
+		E45F4CC3111F6025008E8B5D /* CHBinaryHeap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHBinaryHeap.m; path = source/CHBinaryHeap.m; sourceTree = "<group>"; };
 		E46D52B11104B62C007C5D9D /* CHCircularBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHCircularBuffer.h; path = source/CHCircularBuffer.h; sourceTree = "<group>"; };
 		E46D52B21104B62C007C5D9D /* CHCircularBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHCircularBuffer.m; path = source/CHCircularBuffer.m; sourceTree = "<group>"; };
 		E4723A710EB91B7A006FE465 /* Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Util.m; path = source/Util.m; sourceTree = "<group>"; };
@@ -442,6 +446,8 @@
 				E41035270EC409B900C2CFB9 /* CHTreap.m */,
 				E4ADBB220E88174200B570BC /* CHUnbalancedTree.h */,
 				E4ADBB230E88174200B570BC /* CHUnbalancedTree.m */,
+				E45F4CC2111F6025008E8B5D /* CHBinaryHeap.h */,
+				E45F4CC3111F6025008E8B5D /* CHBinaryHeap.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -563,6 +569,7 @@
 				E4373E0A111D337F00953B7D /* CHCircularBufferStack.h in Headers */,
 				E4373E0C111D338100953B7D /* CHCircularBufferQueue.h in Headers */,
 				E4373E0E111D338200953B7D /* CHCircularBufferDeque.h in Headers */,
+				E45F4CC4111F6025008E8B5D /* CHBinaryHeap.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -774,6 +781,7 @@
 				E4373E09111D337F00953B7D /* CHCircularBufferStack.m in Sources */,
 				E4373E0B111D338000953B7D /* CHCircularBufferQueue.m in Sources */,
 				E4373E0D111D338100953B7D /* CHCircularBufferDeque.m in Sources */,
+				E45F4CC5111F6025008E8B5D /* CHBinaryHeap.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

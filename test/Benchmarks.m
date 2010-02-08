@@ -603,6 +603,10 @@ int main (int argc, const char * argv[]) {
 	benchmarkStack([CHCircularBufferStack class]);
 	benchmarkStack([CHListStack class]);
 	
+	CHQuietLog(@"\n<CHHeap> Implemenations");
+	benchmarkHeap([CHMutableArrayHeap class]);
+	benchmarkHeap([CHBinaryHeap class]);
+	
 	[objects release];
 	
 	

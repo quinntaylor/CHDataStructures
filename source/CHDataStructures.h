@@ -22,6 +22,7 @@
 
 // Concrete Implementations
 #import "CHAnderssonTree.h"
+#import "CHBinaryHeap.h"
 #import "CHAVLTree.h"
 #import "CHCircularBuffer.h"
 #import "CHCircularBufferDeque.h"

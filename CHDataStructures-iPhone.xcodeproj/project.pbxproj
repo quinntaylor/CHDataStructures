@@ -92,6 +92,8 @@
 		E4399AC110A33DAC00209906 /* CHSearchTree.h in Headers */ = {isa = PBXBuildFile; fileRef = E4FE77C60E8978C300971EE6 /* CHSearchTree.h */; };
 		E4399AC310A33DB100209906 /* CHHeap.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB120E88174200B570BC /* CHHeap.h */; };
 		E4399AC610A33DBB00209906 /* CHDataStructures_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = E4E7C1260EC0CACE009B19D7 /* CHDataStructures_Prefix.pch */; };
+		E43B928E1120CEA200DB590D /* CHBinaryHeap.h in Headers */ = {isa = PBXBuildFile; fileRef = E43B928C1120CEA200DB590D /* CHBinaryHeap.h */; };
+		E43B928F1120CEA200DB590D /* CHBinaryHeap.m in Sources */ = {isa = PBXBuildFile; fileRef = E43B928D1120CEA200DB590D /* CHBinaryHeap.m */; };
 		E45AD4AB111D4BBC00AE0D25 /* CHCircularBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = E45AD4A9111D4BBC00AE0D25 /* CHCircularBuffer.h */; };
 		E45AD4AC111D4BBC00AE0D25 /* CHCircularBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = E45AD4AA111D4BBC00AE0D25 /* CHCircularBuffer.m */; };
 		E45AD4AE111D4BE700AE0D25 /* CHCircularBufferTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E45AD4AD111D4BE700AE0D25 /* CHCircularBufferTest.m */; };
@@ -148,6 +150,8 @@
 		E4290A77100CE7F100C2C968 /* CHSortedSetTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHSortedSetTest.m; path = test/CHSortedSetTest.m; sourceTree = "<group>"; };
 		E42DBAF10E8C3200000E1FBD /* CHDeque.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHDeque.h; path = source/CHDeque.h; sourceTree = "<group>"; };
 		E4399A0D10A33C1200209906 /* libCHDataStructures.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libCHDataStructures.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E43B928C1120CEA200DB590D /* CHBinaryHeap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHBinaryHeap.h; path = source/CHBinaryHeap.h; sourceTree = "<group>"; };
+		E43B928D1120CEA200DB590D /* CHBinaryHeap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHBinaryHeap.m; path = source/CHBinaryHeap.m; sourceTree = "<group>"; };
 		E442DFA70E8F1BDF00BD62F6 /* CHDataStructures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHDataStructures.h; path = source/CHDataStructures.h; sourceTree = "<group>"; };
 		E442DFB60E8F1E6D00BD62F6 /* CHAnderssonTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHAnderssonTree.h; path = source/CHAnderssonTree.h; sourceTree = "<group>"; };
 		E442DFB70E8F1E6D00BD62F6 /* CHAnderssonTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHAnderssonTree.m; path = source/CHAnderssonTree.m; sourceTree = "<group>"; };
@@ -293,6 +297,8 @@
 				E442DFB70E8F1E6D00BD62F6 /* CHAnderssonTree.m */,
 				E44558090EBCB70A00D9C482 /* CHAVLTree.h */,
 				E445580A0EBCB70A00D9C482 /* CHAVLTree.m */,
+				E43B928C1120CEA200DB590D /* CHBinaryHeap.h */,
+				E43B928D1120CEA200DB590D /* CHBinaryHeap.m */,
 				E45AD4A9111D4BBC00AE0D25 /* CHCircularBuffer.h */,
 				E45AD4AA111D4BBC00AE0D25 /* CHCircularBuffer.m */,
 				E400CAC10F791A08003189D3 /* CHCircularBufferDeque.h */,
@@ -446,6 +452,7 @@
 				E4399AC310A33DB100209906 /* CHHeap.h in Headers */,
 				E4399AC610A33DBB00209906 /* CHDataStructures_Prefix.pch in Headers */,
 				E45AD4AB111D4BBC00AE0D25 /* CHCircularBuffer.h in Headers */,
+				E43B928E1120CEA200DB590D /* CHBinaryHeap.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -604,6 +611,7 @@
 				E4399AAF10A33D8E00209906 /* CHLockableDictionary.m in Sources */,
 				E4399AB910A33D9A00209906 /* CHSortedDictionary.m in Sources */,
 				E45AD4AC111D4BBC00AE0D25 /* CHCircularBuffer.m in Sources */,
+				E43B928F1120CEA200DB590D /* CHBinaryHeap.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

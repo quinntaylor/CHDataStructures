@@ -9,6 +9,7 @@
  */
 
 #import <SenTestingKit/SenTestingKit.h>
+#import "CHBinaryHeap.h"
 #import "CHMutableArrayHeap.h"
 
 @interface CHMutableArrayHeap (Test)
@@ -45,6 +46,27 @@
 
 #pragma mark -
 
+@interface CHBinaryHeap (Debug)
+
+- (NSString*) debugDescription; // Declare here to prevent compiler warnings.
+
+@end
+
+@interface CHBinaryHeap (Test)
+
+- (BOOL) isValid;
+
+@end
+
+@implementation CHBinaryHeap (Test)
+
+- (BOOL) isValid {
+	return YES; // We assume that CFBinaryHeap is correct... ;-)
+}
+@end
+
+#pragma mark -
+
 @interface CHHeapTest : SenTestCase {
 	id heap; // Removed protocol type <CHHeap> to prevent warnings for -isValid.
 	NSArray *objects, *heapClasses;
@@ -56,7 +78,9 @@
 @implementation CHHeapTest
 
 - (void) setUp {
-	heapClasses = [NSArray arrayWithObjects:[CHMutableArrayHeap class], nil];
+	heapClasses = [NSArray arrayWithObjects:[CHMutableArrayHeap class],
+	                                        [CHBinaryHeap class],
+	                                        nil];
 	objects = [NSArray arrayWithObjects:
 			   @"I",@"H",@"G",@"F",@"E",@"D",@"C",@"B",@"A",nil];
 }
@@ -187,6 +211,55 @@
 	}
 }
 
+- (void) testContainsObject {
+	NSEnumerator *classes = [heapClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
+		heap = [[aClass alloc] initWithArray:objects];
+		e = [objects objectEnumerator];
+		while (anObject = [e nextObject])
+			STAssertTrue([heap containsObject:anObject], @"Should contain object");
+		STAssertFalse([heap containsObject:@"Z"], @"Should NOT contain object");
+		[heap release];
+	}
+}
+
+- (void) testCount {
+	NSEnumerator *classes = [heapClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
+		heap = [[aClass alloc] init];
+		STAssertEquals([heap count], (NSUInteger)0, @"Incorrect count.");
+		[heap addObject:@"Hello, World!"];
+		STAssertEquals([heap count], (NSUInteger)1, @"Incorrect count.");
+		[heap release];
+	}
+}
+
+- (void) testDebugDescription {
+	NSEnumerator *classes = [heapClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
+		heap = [[aClass alloc] init];
+		STAssertNotNil([heap debugDescription], @"Description was nil.");
+		[heap addObject:@"xyz"];
+		STAssertNotNil([heap debugDescription], @"Description was nil.");
+		[heap release];
+	}
+}
+
+- (void) testDescription {
+	NSEnumerator *classes = [heapClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
+		heap = [[aClass alloc] init];
+		STAssertNotNil([heap description], @"Description was nil");
+		[heap addObject:@"xyz"];
+		STAssertNotNil([heap description], @"Description was nil");
+		[heap release];
+	}
+}
+
 - (void) testFirstObject {
 	NSEnumerator *classes = [heapClasses objectEnumerator];
 	Class aClass;
@@ -260,6 +333,8 @@
 	NSEnumerator *classes = [heapClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
+		if (![aClass instancesRespondToSelector:@selector(removeObject:)])
+			continue;
 		heap = [[aClass alloc] init];
 		// Add objects twice in order
 		[heap addObjectsFromArray:objects];
@@ -283,6 +358,8 @@
 	NSEnumerator *classes = [heapClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
+		if (![aClass instancesRespondToSelector:@selector(removeObjectIdenticalTo:)])
+			continue;
 		heap = [[aClass alloc] init];
 		// Add objects twice in order
 		[heap addObjectsFromArray:objects];
