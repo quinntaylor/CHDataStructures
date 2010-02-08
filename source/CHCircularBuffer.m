@@ -217,7 +217,7 @@ static BOOL objectsAreIdentical(id o1, id o2) {
 	return self;
 }
 
-// This is the designated initializer for CHAbstractCircularBufferCollection.
+// This is the designated initializer for CHCircularBuffer.
 - (id) initWithCapacity:(NSUInteger)capacity {
 	if ((self = [super init]) == nil) return nil;
 	arrayCapacity = capacity ? capacity : DEFAULT_BUFFER_SIZE;
