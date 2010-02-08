@@ -140,47 +140,14 @@ static BOOL objectsAreIdentical(id o1, id o2) {
 	return (o1 == o2);
 }
 
-#pragma mark -
-
 #define DEFAULT_BUFFER_SIZE 16u
 
-@implementation CHCircularBuffer
-
-// Private method used for creating a lock on-demand and naming it uniquely.
-- (void) createLock {
-	@synchronized (self) {
-		if (lock == nil) {
-			lock = [[NSLock alloc] init];
-			if ([lock respondsToSelector:@selector(setName:)])
-				[lock performSelector:@selector(setName:)
-				           withObject:[NSString stringWithFormat:@"NSLock-%@-0x%x", [self class], self]];
-		}
-	}
-}
-
-- (BOOL) tryLock {
-	if (lock == nil)
-		[self createLock];
-	return [lock tryLock];
-}
-
-- (void) lock {
-	if (lock == nil)
-		[self createLock];
-	[lock lock];
-}
-
-- (BOOL) lockBeforeDate:(NSDate*)limit {
-	if (lock == nil)
-		[self createLock];
-	return [lock lockBeforeDate:limit];
-}
-
-- (void) unlock {
-	[lock unlock];
-}
-
 #pragma mark -
+
+/**
+ @todo Reimplement @c removeObjectsAtIndexes: for efficiency with multiple objects.
+ */
+@implementation CHCircularBuffer
 
 + (void) initialize {
 	initializeGCStatus();
@@ -276,6 +243,42 @@ static BOOL objectsAreIdentical(id o1, id o2) {
 	}
 }
 #endif
+
+#pragma mark <CHLockable>
+
+// Private method used for creating a lock on-demand and naming it uniquely.
+- (void) createLock {
+	@synchronized (self) {
+		if (lock == nil) {
+			lock = [[NSLock alloc] init];
+			if ([lock respondsToSelector:@selector(setName:)])
+				[lock performSelector:@selector(setName:)
+				           withObject:[NSString stringWithFormat:@"NSLock-%@-0x%x", [self class], self]];
+		}
+	}
+}
+
+- (BOOL) tryLock {
+	if (lock == nil)
+		[self createLock];
+	return [lock tryLock];
+}
+
+- (void) lock {
+	if (lock == nil)
+		[self createLock];
+	[lock lock];
+}
+
+- (BOOL) lockBeforeDate:(NSDate*)limit {
+	if (lock == nil)
+		[self createLock];
+	return [lock lockBeforeDate:limit];
+}
+
+- (void) unlock {
+	[lock unlock];
+}
 
 #pragma mark Querying Contents
 
@@ -389,7 +392,7 @@ static BOOL objectsAreIdentical(id o1, id o2) {
 		[objects addObject:[self objectAtIndex:index]];
 		index = [indexes indexGreaterThanIndex:index];
 	}
-	return [[objects copy] autorelease];
+	return objects;
 }
 
 - (NSEnumerator*) objectEnumerator {
@@ -587,9 +590,6 @@ static BOOL objectsAreIdentical(id o1, id o2) {
 	++mutations;
 }
 
-/**
- @todo Implement logic for removing multiple objects efficiently.
- */
 - (void) removeObjectsAtIndexes:(NSIndexSet*)indexes {
 	if (indexes == nil)
 		CHNilArgumentException([self class], _cmd);
