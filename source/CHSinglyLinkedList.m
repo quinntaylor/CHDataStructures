@@ -295,9 +295,7 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 - (NSArray*) objectsAtIndexes:(NSIndexSet*)indexes {
 	if (indexes == nil)
 		CHNilArgumentException([self class], _cmd);
-	if ([indexes count] == 0)
-		return [NSArray array];
-	if ([indexes lastIndex] >= count)
+	if ([indexes count] && [indexes lastIndex] >= count)
 		CHIndexOutOfRangeException([self class], _cmd, [indexes lastIndex], count);
 	NSMutableArray *objects = [NSMutableArray arrayWithCapacity:[indexes count]];
 	CHSinglyLinkedListNode *current = head;
