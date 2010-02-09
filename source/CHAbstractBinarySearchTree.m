@@ -464,6 +464,13 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 	return hashOfCountAndObjects(count, [self firstObject], [self lastObject]);
 }
 
+- (BOOL) isEqual:(id)otherObject {
+	if ([otherObject conformsToProtocol:@protocol(CHSortedSet)])
+		return [self isEqualToSortedSet:otherObject];
+	else
+		return NO;
+}
+
 - (BOOL) isEqualToSearchTree:(id<CHSearchTree>)otherTree {
 	return collectionsAreEqual(self, otherTree);
 }
