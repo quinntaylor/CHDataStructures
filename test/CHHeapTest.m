@@ -169,7 +169,8 @@
 	Class aClass;
 	while (aClass = [classes nextObject]) {
 		heap = [[aClass alloc] initWithArray:objects];
-		// TODO: Test count, etc.
+		STAssertEquals([heap count], [objects count], @"Wrong count");
+		STAssertEquals([[heap allObjects] count], [objects count], @"Wrong count");
 		[heap release];
 	}
 }
@@ -224,6 +225,24 @@
 	}
 }
 
+- (void) testContainsObjectIdenticalTo {
+	NSEnumerator *classes = [heapClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
+		if (![aClass instancesRespondToSelector:@selector(containsObjectIdenticalTo:)])
+			continue;
+		heap = [[aClass alloc] initWithArray:objects];
+		e = [objects objectEnumerator];
+		while (anObject = [e nextObject]) {
+			NSString *copy = [NSString stringWithFormat:@"%@", anObject];
+			STAssertTrue([heap containsObjectIdenticalTo:anObject], @"Should contain object");
+			STAssertFalse([heap containsObjectIdenticalTo:copy], @"Should NOT contain object");
+		}
+		STAssertFalse([heap containsObjectIdenticalTo:@"Z"], @"Should NOT contain object");
+		[heap release];
+	}
+}
+
 - (void) testCount {
 	NSEnumerator *classes = [heapClasses objectEnumerator];
 	Class aClass;
@@ -267,6 +286,18 @@
 		heap = [[aClass alloc] init];
 		[heap addObjectsFromArray:objects];
 		STAssertEqualObjects([heap firstObject], @"A", @"-firstObject returned bad value.");
+		[heap release];
+	}
+}
+
+- (void) testInsertObjectAtIndex {
+	NSEnumerator *classes = [heapClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
+		if (![aClass instancesRespondToSelector:@selector(insertObject:atIndex:)])
+			continue;
+		heap = [[aClass alloc] init];
+		STAssertThrows([heap insertObject:nil atIndex:0], @"Should raise an exception.");
 		[heap release];
 	}
 }
@@ -349,6 +380,18 @@
 			STAssertEquals([heap count], expected, @"Incorrect count.");
 			STAssertTrue([heap isValid], @"Violation of heap property.");
 		}
+		[heap release];
+	}
+}
+
+- (void) testRemoveObjectAtIndex {
+	NSEnumerator *classes = [heapClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
+		if (![aClass instancesRespondToSelector:@selector(removeObjectAtIndex:)])
+			continue;
+		heap = [[aClass alloc] init];
+		STAssertThrows([heap removeObjectAtIndex:0], @"Should raise an exception.");
 		[heap release];
 	}
 }
