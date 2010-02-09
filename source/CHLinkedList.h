@@ -56,7 +56,6 @@
  @return An array containing the objects in the receiver. If the receiver is empty, the array is also empty.
  
  @see count
- @see countByEnumeratingWithState:objects:count:
  @see objectEnumerator
  @see removeAllObjects
  */
@@ -159,7 +158,6 @@
  @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
  
  @see allObjects
- @see countByEnumeratingWithState:objects:count:
  */
 - (NSEnumerator*) objectEnumerator;
 

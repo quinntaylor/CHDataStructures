@@ -36,7 +36,6 @@
  @see NSDictionary#allValues
  @see count
  @see keyEnumerator
- @see countByEnumeratingWithState:objects:count:
  */
 - (NSArray*) allKeys {
 	return [super allKeys];

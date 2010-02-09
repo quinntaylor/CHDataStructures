@@ -89,7 +89,6 @@
  @see allObjects
  @see count
  @see keyEnumerator
- @see countByEnumeratingWithState:objects:count:
  */
 - (NSArray*) allKeys;
 
@@ -174,7 +173,6 @@
  @note If you need to modify the entries concurrently, use #allKeys to create a "snapshot" of the dictionary's keys and work from this snapshot to modify the entries.
  
  @see allKeys
- @see countByEnumeratingWithState:objects:count:
  */
 - (NSEnumerator*) keyEnumerator;
 

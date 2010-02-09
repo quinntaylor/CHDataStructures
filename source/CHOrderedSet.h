@@ -38,7 +38,6 @@
  @return An array of the objects in the set, in the order in which they were inserted.
  
  @see anyObject
- @see countByEnumeratingWithState:objects:count:
  @see objectEnumerator
  */
 - (NSArray*) allObjects;
@@ -110,7 +109,6 @@
  If you need to modify the entries concurrently, you can enumerate over a "snapshot" of the set's values obtained from #allObjects.
  
  @see allObjects
- @see countByEnumeratingWithState:objects:count:
  */
 - (NSEnumerator*) objectEnumerator;
 

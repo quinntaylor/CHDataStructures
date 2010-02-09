@@ -50,7 +50,6 @@
  @return An array with the objects in this deque. If the deque is empty, the array is also empty.
  
  @see count
- @see countByEnumeratingWithState:objects:count:
  @see objectEnumerator
  @see removeAllObjects
  @see reverseObjectEnumerator
@@ -161,7 +160,6 @@
  @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
  
  @see allObjects
- @see countByEnumeratingWithState:objects:count:
  @see reverseObjectEnumerator
  */
 - (NSEnumerator*) objectEnumerator;
@@ -190,7 +188,6 @@
  @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
  
  @see allObjects
- @see countByEnumeratingWithState:objects:count:
  @see objectEnumerator
  */
 - (NSEnumerator*) reverseObjectEnumerator;

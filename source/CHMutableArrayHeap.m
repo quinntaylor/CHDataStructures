@@ -141,7 +141,6 @@
  
  @see allObjectsInSortedOrder
  @see count
- @see countByEnumeratingWithState:objects:count:
  @see objectEnumerator
  @see removeAllObjects
  */

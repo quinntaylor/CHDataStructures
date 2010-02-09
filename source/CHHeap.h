@@ -75,9 +75,7 @@
  
  @attention Since only the first object in a heap is guaranteed to be in sorted order, this method incurs extra costs of (1) time for sorting the contents and (2) memory for storing an extra array. However, it does not affect the order of elements in the heap itself.
  
- @see allObjects
  @see count
- @see countByEnumeratingWithState:objects:count:
  @see objectEnumerator
  */
 - (NSArray*) allObjectsInSortedOrder;
@@ -97,7 +95,7 @@
  
  @return The number of objects currently in the heap.
  
- @see allObjects
+ @see allObjectsInSortedOrder
  */
 - (NSUInteger) count;
 
@@ -119,17 +117,17 @@
 - (BOOL) isEqualToHeap:(id<CHHeap>)otherHeap;
 
 /**
- Returns an enumerator that accesses each object in the heap.
+ Returns an enumerator that accesses each object in the heap in sorted order.
  
- @return An enumerator that accesses each object in the heap. The enumerator returned is never @c nil; if the heap is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
+ @return An enumerator that accesses each object in the heap in sorted order. The enumerator returned is never @c nil; if the heap is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
  
- @attention Due to the nature of a heap, this method is not guaranteed to provide the objects in sorted order. If you want the objects to be sorted without removing them from the heap, use #allObjectsInSortedOrder instead.
+ @attention Since only the first object in a heap is guaranteed to be in sorted order, this method incurs extra costs of (1) time for sorting the contents and (2) memory for storing an extra array. However, it does not affect the order of elements in the heap itself.
+ 
+ @note On platforms that support NSFastEnumeration, that construct will also enumerate objects in sorted order.
  
  @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
  
- @see allObjects
  @see allObjectsInSortedOrder
- @see countByEnumeratingWithState:objects:count:
  */
 - (NSEnumerator*) objectEnumerator;
 
@@ -160,7 +158,7 @@
 /**
  Empty the receiver of all of its members.
  
- @see allObjects
+ @see allObjectsInSortedOrder
  @see removeFirstObject
  */
 - (void) removeAllObjects;
