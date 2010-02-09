@@ -1,7 +1,7 @@
 /*
  CHDataStructures.framework -- CHDataStructures.h
  
- Copyright (c) 2008-2009, Quinn Taylor <http://homepage.mac.com/quinntaylor>
+ Copyright (c) 2008-2010, Quinn Taylor <http://homepage.mac.com/quinntaylor>
  
  Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
  
@@ -71,15 +71,13 @@
  
  The concrete child classes of NSMutableDictionary include:
  - CHLockableDictionary
+ - CHMultiDictionary
  - CHOrderedDictionary
  - CHSortedDictionary
  
  The concrete child classes of NSMutableSet include:
  - CHLockableSet
  - CHOrderedSet
- 
- The concrete child classes of CHLockableObject include:
- - CHMultiDictionary
  
  The code is written for Cocoa applications and does use some features of <a href="http://developer.apple.com/documentation/Cocoa/Conceptual/ObjectiveC/">Objective-C 2.0</a> which shipped with Mac OS X "Leopard" and iPhone OS. Most of the code could be ported to other Objective-C environments (such as <a href="http://www.gnustep.org">GNUStep</a>) without too much trouble. However, such efforts would probably be better accomplished by forking this project rather than integrating with it, for several main reasons:
  
