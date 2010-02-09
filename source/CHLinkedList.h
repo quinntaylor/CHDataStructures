@@ -178,7 +178,16 @@
  @see lastObject
  @see prependObject:
  */
-- (void) appendObject:(id)anObject;
+- (void) addObject:(id)anObject;
+
+/**
+ Adds the objects in a given array to the receiver, then re-establish the heap property. After all the objects have been inserted, objects are "heapified" as necessary, proceeding backwards from index @c count/2 down to @c 0.
+ 
+ @param anArray An array of objects to add to the receiver.
+ 
+ @see addObject:
+ */
+- (void) addObjectsFromArray:(NSArray*)anArray;
 
 /**
  Exchange the objects in the receiver at given indexes.
@@ -215,7 +224,7 @@
  
  @throw NSInvalidArgumentException If @a anObject is @c nil.
  
- @see appendObject:
+ @see addObject:
  @see firstObject
  */
 - (void) prependObject:(id)anObject;
@@ -251,6 +260,15 @@
 - (void) removeObject:(id)anObject;
 
 /**
+ Remove the object at @a index. To fill the gap, elements beyond @a index have 1 subtracted from their index.
+ 
+ @param index The index from which to remove the object.
+ 
+ @throw NSRangeException If @a index exceeds the bounds of the receiver.
+ */
+- (void) removeObjectAtIndex:(NSUInteger)index;
+
+/**
  Remove @b all occurrences of @a anObject, matched using the == operator.
  
  @param anObject The object to remove from the receiver.
@@ -263,15 +281,6 @@
  @see removeObject:
  */
 - (void) removeObjectIdenticalTo:(id)anObject;
-
-/**
- Remove the object at @a index. To fill the gap, elements beyond @a index have 1 subtracted from their index.
- 
- @param index The index from which to remove the object.
- 
- @throw NSRangeException If @a index exceeds the bounds of the receiver.
- */
-- (void) removeObjectAtIndex:(NSUInteger)index;
 
 /**
  Empty the receiver of all of its members.

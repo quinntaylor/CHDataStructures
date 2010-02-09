@@ -29,7 +29,7 @@
 	while (anObject = [e nextObject])
 #endif
 	{
-		[list appendObject:anObject];
+		[list addObject:anObject];
 	}
 	return self;
 }

@@ -185,7 +185,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 	while (anObject = [e nextObject])
 #endif
 	{
-		[self appendObject:anObject];
+		[self addObject:anObject];
 	}
 	return self;
 }
@@ -216,7 +216,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 	while (anObject = [e nextObject])
 #endif
 	{
-		[newList appendObject:anObject];
+		[newList addObject:anObject];
 	}
 	return newList;
 }
@@ -348,10 +348,23 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 
 #pragma mark Modifying Contents
 
-- (void) appendObject:(id)anObject {
+- (void) addObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
 	[self insertObject:anObject atIndex:count];
+}
+
+- (void) addObjectsFromArray:(NSArray*)anArray {
+#if OBJC_API_2
+	for (id anObject in anArray)
+#else
+	NSEnumerator *e = [anArray objectEnumerator];
+	id anObject;
+	while (anObject = [e nextObject])
+#endif
+	{
+		[self insertObject:anObject atIndex:count];
+	}
 }
 
 - (void) exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2 {

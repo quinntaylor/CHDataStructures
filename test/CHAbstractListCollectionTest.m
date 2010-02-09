@@ -16,6 +16,7 @@
 @interface CHAbstractListCollection (Test)
 
 - (void) addObject:(id)anObject;
+- (void) addObjectsFromArray:(NSArray*)anArray;
 - (id<CHLinkedList>) list;
 
 @end
@@ -29,7 +30,11 @@
 }
 
 - (void) addObject:(id)anObject {
-	[list appendObject:anObject];
+	[list addObject:anObject];
+}
+
+- (void) addObjectsFromArray:(NSArray*)anArray {
+	[list addObjectsFromArray:anArray];
 }
 
 - (id<CHLinkedList>) list {
@@ -44,8 +49,6 @@
 {
 	CHAbstractListCollection *collection;
 	NSArray *objects;
-	NSEnumerator *e;
-	id anObject;
 }
 
 @end
@@ -64,9 +67,7 @@
 #pragma mark -
 
 - (void) testNSCoding {
-	e = [objects objectEnumerator];
-	while (anObject = [e nextObject])
-		[collection addObject:anObject];
+	[collection addObjectsFromArray:objects];
 	STAssertEquals([collection count], [objects count], @"Incorrect count.");
 	NSArray *order = [collection allObjects];
 	STAssertEqualObjects(order, objects, @"Wrong ordering before archiving.");
@@ -81,9 +82,7 @@
 }
 
 - (void) testNSCopying {
-	e = [objects objectEnumerator];
-	while (anObject = [e nextObject])
-		[collection addObject:anObject];
+	[collection addObjectsFromArray:objects];
 	CHAbstractListCollection *collection2 = [collection copy];
 	STAssertNotNil(collection2, @"-copy should not return nil for valid collection.");
 	STAssertEquals([collection2 count], (NSUInteger)3, @"Incorrect count.");
@@ -137,6 +136,19 @@
 	STAssertNil([enumerator nextObject], @"-nextObject should return Nil");
 }
 
+- (void) testAllObjects {
+	NSArray *allObjects;
+	
+	allObjects = [collection allObjects];
+	STAssertNotNil(allObjects, @"Array should not be nil");
+	STAssertEquals([allObjects count], (NSUInteger)0, @"Incorrect array length.");
+	
+	[collection addObjectsFromArray:objects];
+	allObjects = [collection allObjects];
+	STAssertNotNil(allObjects, @"Array should not be nil");
+	STAssertEquals([allObjects count], (NSUInteger)3, @"Incorrect array length.");
+}
+
 - (void) testCount {
 	STAssertEquals([collection count], (NSUInteger)0, @"Incorrect count.");
 	[collection addObject:@"Hello, World!"];
@@ -144,14 +156,18 @@
 }
 
 - (void) testContainsObject {
-	e = [objects objectEnumerator];
-	while (anObject = [e nextObject])
-		[collection addObject:anObject];
+	[collection addObjectsFromArray:objects];
 	STAssertTrue([collection containsObject:@"A"], @"Should contain object");
 	STAssertTrue([collection containsObject:@"B"], @"Should contain object");
 	STAssertTrue([collection containsObject:@"C"], @"Should contain object");
 	STAssertFalse([collection containsObject:@"a"], @"Should NOT contain object");
 	STAssertFalse([collection containsObject:@"Z"], @"Should NOT contain object");
+}
+
+- (void) testDescription {
+	[collection addObjectsFromArray:objects];
+	STAssertEqualObjects([collection description], [objects description],
+						 @"-description uses bad ordering.");
 }
 
 - (void) testExchangeObjectAtIndexWithObjectAtIndex {
@@ -160,9 +176,7 @@
 	STAssertThrows([collection exchangeObjectAtIndex:1 withObjectAtIndex:0],
 				   @"Should raise exception, collection is empty.");
 	
-	e = [objects objectEnumerator];
-	while (anObject = [e nextObject])
-		[collection addObject:anObject];
+	[collection addObjectsFromArray:objects];
 	
 	[collection exchangeObjectAtIndex:1 withObjectAtIndex:1];
 	STAssertEqualObjects([collection allObjects], objects,
@@ -181,9 +195,7 @@
 }
 
 - (void) testIndexOfObject {
-	e = [objects objectEnumerator];
-	while (anObject = [e nextObject])
-		[collection addObject:anObject];
+	[collection addObjectsFromArray:objects];
 	STAssertEquals([collection indexOfObject:@"A"], (NSUInteger)0, @"Wrong index for object");
 	STAssertEquals([collection indexOfObject:@"B"], (NSUInteger)1, @"Wrong index for object");
 	STAssertEquals([collection indexOfObject:@"C"], (NSUInteger)2, @"Wrong index for object");
@@ -205,9 +217,7 @@
 }
 
 - (void) testObjectAtIndex {
-	e = [objects objectEnumerator];
-	while (anObject = [e nextObject])
-		[collection addObject:anObject];
+	[collection addObjectsFromArray:objects];
 	STAssertThrows([collection objectAtIndex:-1], @"Bad index should raise exception");
 	STAssertEqualObjects([collection objectAtIndex:0], @"A", @"Wrong object at index");
 	STAssertEqualObjects([collection objectAtIndex:1], @"B", @"Wrong object at index");
@@ -215,25 +225,29 @@
 	STAssertThrows([collection objectAtIndex:3], @"Bad index should raise exception");
 }
 
-- (void) testAllObjects {
-	NSArray *allObjects;
+- (void) testObjectEnumerator {
+	NSEnumerator *enumerator;
+	enumerator = [collection objectEnumerator];
+	STAssertNotNil(enumerator, @"-objectEnumerator should NOT return nil.");
+	STAssertNil([enumerator nextObject], @"-nextObject should return nil.");
 	
-	allObjects = [collection allObjects];
-	STAssertNotNil(allObjects, @"Array should not be nil");
-	STAssertEquals([allObjects count], (NSUInteger)0, @"Incorrect array length.");
+	[collection addObject:@"Hello, World!"];
+	enumerator = [collection objectEnumerator];
+	STAssertNotNil(enumerator, @"-objectEnumerator should NOT return nil.");
+	STAssertNotNil([enumerator nextObject], @"-nextObject should NOT return nil.");	
+	STAssertNil([enumerator nextObject], @"-nextObject should return nil.");	
+}
 
-	e = [objects objectEnumerator];
-	while (anObject = [e nextObject])
-		[collection addObject:anObject];
-	allObjects = [collection allObjects];
-	STAssertNotNil(allObjects, @"Array should not be nil");
-	STAssertEquals([allObjects count], (NSUInteger)3, @"Incorrect array length.");
+- (void) testRemoveAllObjects {
+	STAssertEquals([collection count], (NSUInteger)0, @"Incorrect count.");
+	[collection addObjectsFromArray:objects];
+	STAssertEquals([collection count], (NSUInteger)3, @"Incorrect count.");
+	[collection removeAllObjects];
+	STAssertEquals([collection count], (NSUInteger)0, @"Incorrect count.");
 }
 
 - (void) testRemoveObject {
-	e = [objects objectEnumerator];
-	while (anObject = [e nextObject])
-		[collection addObject:anObject];
+	[collection addObjectsFromArray:objects];
 
 	STAssertNoThrow([collection removeObject:nil], @"Should not raise an exception.");
 
@@ -277,9 +291,7 @@
 }
 
 - (void) testRemoveObjectAtIndex {
-	e = [objects objectEnumerator];
-	while (anObject = [e nextObject])
-		[collection addObject:anObject];
+	[collection addObjectsFromArray:objects];
 	
 	STAssertThrows([collection removeObjectAtIndex:3], @"Should raise NSRangeException.");
 	STAssertThrows([collection removeObjectAtIndex:-1], @"Should raise NSRangeException.");
@@ -297,24 +309,12 @@
 	STAssertEquals([collection count], (NSUInteger)0, @"Incorrect count.");
 	
 	// Test removing from an index in the middle
-	e = [objects objectEnumerator];
-	while (anObject = [e nextObject])
-		[collection addObject:anObject];
+	[collection addObjectsFromArray:objects];
 	
 	[collection removeObjectAtIndex:1];
 	STAssertEquals([collection count], (NSUInteger)2, @"Incorrect count.");
 	STAssertEqualObjects([collection objectAtIndex:0], @"A", @"Wrong first object.");
 	STAssertEqualObjects([collection objectAtIndex:1], @"C", @"Wrong last object.");
-}
-
-- (void) testRemoveAllObjects {
-	STAssertEquals([collection count], (NSUInteger)0, @"Incorrect count.");
-	e = [objects objectEnumerator];
-	while (anObject = [e nextObject])
-		[collection addObject:anObject];
-	STAssertEquals([collection count], (NSUInteger)3, @"Incorrect count.");
-	[collection removeAllObjects];
-	STAssertEquals([collection count], (NSUInteger)0, @"Incorrect count.");
 }
 
 - (void) testReplaceObjectAtIndexWithObject {
@@ -323,9 +323,7 @@
 	STAssertThrows([collection replaceObjectAtIndex:1 withObject:nil],
 	               @"Should raise index exception.");
 	
-	e = [objects objectEnumerator];
-	while (anObject = [e nextObject])
-		[collection addObject:anObject];
+	[collection addObjectsFromArray:objects];
 	
 	for (NSUInteger i = 0; i < [objects count]; i++) {
 		STAssertEqualObjects([collection objectAtIndex:i], [objects objectAtIndex:i],
@@ -334,27 +332,6 @@
 		STAssertEqualObjects([collection objectAtIndex:i], @"Z",
 		                     @"Incorrect object.");
 	}
-}
-
-- (void) testObjectEnumerator {
-	NSEnumerator *enumerator;
-	enumerator = [collection objectEnumerator];
-	STAssertNotNil(enumerator, @"-objectEnumerator should NOT return nil.");
-	STAssertNil([enumerator nextObject], @"-nextObject should return nil.");
-	
-	[collection addObject:@"Hello, World!"];
-	enumerator = [collection objectEnumerator];
-	STAssertNotNil(enumerator, @"-objectEnumerator should NOT return nil.");
-	STAssertNotNil([enumerator nextObject], @"-nextObject should NOT return nil.");	
-	STAssertNil([enumerator nextObject], @"-nextObject should return nil.");	
-}
-
-- (void) testDescription {
-	e = [objects objectEnumerator];
-	while (anObject = [e nextObject])
-		[collection addObject:anObject];
-	STAssertEqualObjects([collection description], [objects description],
-						 @"-description uses bad ordering.");
 }
 
 @end

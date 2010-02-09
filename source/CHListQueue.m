@@ -29,7 +29,7 @@
 - (void) addObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
-	[list appendObject:anObject];
+	[list addObject:anObject];
 }
 
 - (id) firstObject {

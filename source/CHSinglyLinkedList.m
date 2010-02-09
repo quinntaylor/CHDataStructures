@@ -139,7 +139,7 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 	while (anObject = [e nextObject])
 #endif
 	{
-		[self appendObject:anObject];
+		[self addObject:anObject];
 	}
 	return self;
 }
@@ -171,7 +171,7 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 	while (anObject = [e nextObject])
 #endif
 	{
-		[newList appendObject:anObject];
+		[newList addObject:anObject];
 	}
 	return newList;
 }
@@ -294,7 +294,7 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 
 #pragma mark Modifying Contents
 
-- (void) appendObject:(id)anObject {
+- (void) addObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
 	CHSinglyLinkedListNode *new;
@@ -305,6 +305,26 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 	tail = tail->next;
 	
 	++count;
+	++mutations;
+}
+
+- (void) addObjectsFromArray:(NSArray*)anArray {
+	CHSinglyLinkedListNode *new;
+#if OBJC_API_2
+	for (id anObject in anArray)
+#else
+	NSEnumerator *e = [anArray objectEnumerator];
+	id anObject;
+	while (anObject = [e nextObject])
+#endif
+	{
+		new = NSAllocateCollectable(kCHSinglyLinkedListNodeSize, NSScannedOption);
+		new->object = [anObject retain];
+		new->next = NULL;
+		tail->next = new;
+		tail = tail->next;
+	}
+	count += [anArray count];
 	++mutations;
 }
 
