@@ -11,8 +11,16 @@
 #import <SenTestingKit/SenTestingKit.h>
 
 #import "CHLockableDictionary.h"
+#import "CHMultiDictionary.h"
 #import "CHOrderedDictionary.h"
 #import "CHSortedDictionary.h"
+
+id replicateWithNSCoding(id dictionary) {
+	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:dictionary];
+	return [NSKeyedUnarchiver unarchiveObjectWithData:data];	
+}
+
+#pragma mark -
 
 @interface CHLockableDictionary (Test)
 
@@ -25,7 +33,6 @@
 @interface CHLockableDictionaryTest : SenTestCase {
 	id dictionary;
 	NSArray *keyArray;
-	NSArray *expectedKeyOrder;
 	NSEnumerator *enumerator;
 }
 @end
@@ -35,7 +42,6 @@
 - (void) setUp {
 	dictionary = [[[CHLockableDictionary alloc] init] autorelease];
 	keyArray = [NSArray arrayWithObjects:@"baz", @"foo", @"bar", @"yoo", @"hoo", nil];
-	expectedKeyOrder = nil;
 }
 
 - (void) populateDictionary {
@@ -46,47 +52,9 @@
 	}
 }
 
-- (void) verifyKeyCountAndOrdering:(NSArray*)allKeys {
-	STAssertEquals([dictionary count], [keyArray count], @"Incorrect key count.");
-
-	if (expectedKeyOrder != nil) {
-		if (allKeys == nil)
-			allKeys = [dictionary allKeys];
-		NSUInteger count = MIN([dictionary count], [expectedKeyOrder count]);
-		for (NSUInteger i = 0; i < count; i++) {
-			STAssertEqualObjects([allKeys objectAtIndex:i],
-								 [expectedKeyOrder objectAtIndex:i],
-								 @"Wrong output ordering of keys.");
-		}
-	}
-}
-
-- (void) verifyKeyCountAndOrdering {
-	[self verifyKeyCountAndOrdering:nil];
-}
-
 - (void) testInitWithObjectsForKeysCount {
 	dictionary = [[[dictionary class] alloc] initWithObjects:keyArray forKeys:keyArray];
 	// Should call down to -initWithObjects:forKeys:count:
-}
-
-- (void) testSetObjectForKey {
-	STAssertNil([dictionary objectForKey:@"foo"], @"Object should be nil.");
-	[dictionary setObject:@"bar" forKey:@"foo"];
-	STAssertEqualObjects([dictionary objectForKey:@"foo"], @"bar",
-						 @"Wrong object for key.");
-
-	// Verify that setting a different value for a key "takes" the new value
-	[dictionary removeAllObjects];
-	[self populateDictionary];
-	id key = [keyArray lastObject];
-	NSString *value = [dictionary objectForKey:key];
-	
-	[dictionary setObject:value forKey:key];
-	STAssertTrue([value isEqual:[dictionary objectForKey:key]], @"Should be equal.");
-	
-	[dictionary setObject:[NSString string] forKey:key];
-	STAssertFalse([value isEqual:[dictionary objectForKey:key]], @"Should not be equal.");
 }
 
 - (void) testDebugDescription {
@@ -97,26 +65,6 @@
 
 - (void) testDescription {
 	STAssertEqualObjects([dictionary description], [[NSDictionary dictionary] description], @"Incorrect description");
-}
-
-- (void) testFirstKey {
-	if (![dictionary respondsToSelector:@selector(firstKey)])
-		return;
-	STAssertNil([dictionary firstKey], @"First key should be nil.");
-	[self populateDictionary];
-	STAssertEqualObjects([dictionary firstKey],
-						 [expectedKeyOrder objectAtIndex:0],
-						 @"Wrong first key.");
-}
-
-- (void) testLastKey {
-	if (![dictionary respondsToSelector:@selector(lastKey)])
-		return;
-	STAssertNil([dictionary lastKey], @"Last key should be nil.");
-	[self populateDictionary];
-	STAssertEqualObjects([dictionary lastKey],
-						 [expectedKeyOrder lastObject],
-						 @"Wrong last key.");
 }
 
 - (void) testKeyEnumerator {
@@ -132,33 +80,6 @@
 	STAssertNotNil(enumerator, @"Key enumerator should be non-nil");
 	allKeys = [enumerator allObjects];
 	STAssertNotNil(allKeys, @"Key enumerator should return non-nil array.");
-	
-	[self verifyKeyCountAndOrdering];
-}
-
-- (void) testReverseKeyEnumerator {
-	if (![dictionary respondsToSelector:@selector(reverseKeyEnumerator)])
-		return;
-	enumerator = [dictionary reverseKeyEnumerator];
-	STAssertNotNil(enumerator, @"Key enumerator should be non-nil");
-	NSArray *allKeys = [enumerator allObjects];
-	STAssertNotNil(allKeys, @"Key enumerator should return non-nil array.");
-	STAssertEquals([allKeys count], (NSUInteger)0, @"Wrong number of keys.");
-	
-	[self populateDictionary];
-
-	enumerator = [dictionary reverseKeyEnumerator];
-	STAssertNotNil(enumerator, @"Key enumerator should be non-nil");
-	allKeys = [enumerator allObjects];
-	STAssertNotNil(allKeys, @"Key enumerator should return non-nil array.");
-	
-	if ([dictionary isMemberOfClass:[CHOrderedDictionary class]]) {
-		expectedKeyOrder = keyArray;
-	} else {
-		expectedKeyOrder = [keyArray sortedArrayUsingSelector:@selector(compare:)];
-	}
-	expectedKeyOrder = [[expectedKeyOrder reverseObjectEnumerator] allObjects];
-	[self verifyKeyCountAndOrdering:[[dictionary reverseKeyEnumerator] allObjects]];
 }
 
 - (void) testRemoveAllObjects {
@@ -179,24 +100,398 @@
 	STAssertNil([dictionary objectForKey:@"foo"], @"Object should not exist.");
 }
 
-#pragma mark -
+- (void) testSetObjectForKey {
+	// Verify that nil key and/or object raises an exception
+	STAssertThrows([dictionary setObject:nil forKey:nil], @"Should raise exception");
+	STAssertThrows([dictionary setObject:@"" forKey:nil], @"Should raise exception");
+	STAssertThrows([dictionary setObject:nil forKey:@""], @"Should raise exception");
+	
+	STAssertNil([dictionary objectForKey:@"foo"], @"Object should be nil.");
+	[dictionary setObject:@"bar" forKey:@"foo"];
+	STAssertEqualObjects([dictionary objectForKey:@"foo"], @"bar",
+						 @"Wrong object for key.");
+	
+	// Verify that setting a different value for a key "takes" the new value
+	[dictionary removeAllObjects];
+	[self populateDictionary];
+	id key = [keyArray lastObject];
+	NSString *value = [dictionary objectForKey:key];
+	
+	[dictionary setObject:value forKey:key];
+	STAssertTrue([value isEqual:[dictionary objectForKey:key]], @"Should be equal.");
+	
+	[dictionary setObject:[NSString string] forKey:key];
+	STAssertFalse([value isEqual:[dictionary objectForKey:key]], @"Should not be equal.");
+}
 
 - (void) testNSCoding {
 	[self populateDictionary];
-	[self verifyKeyCountAndOrdering];
+	id clone = replicateWithNSCoding(dictionary);
+	STAssertEqualObjects([NSSet setWithArray:[clone allKeys]],
+						 [NSSet setWithArray:[dictionary allKeys]],
+						 @"Wrong keys on reconstruction.");
+}
+
+- (void) testNSCopying {
+	id copy = [dictionary copy];
+	STAssertEquals([copy count], [dictionary count], @"Wrong count.");
+	STAssertEquals([copy hash], [dictionary hash], @"Hashes should match.");
+	STAssertEqualObjects([copy class], [dictionary class], @"Wrong class.");
+	[copy release];
 	
-	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:dictionary];
-	id oldDictionary = dictionary;
-	dictionary = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+	[self populateDictionary];
+	copy = [dictionary copy];
+	STAssertEquals([copy count], [dictionary count], @"Wrong count.");
+	STAssertEquals([copy hash], [dictionary hash], @"Hashes should match.");
+	[copy release];
+}
+
+@end
+
+#pragma mark -
+
+@interface CHMultiDictionaryTest : CHLockableDictionaryTest
+@end
+
+@implementation CHMultiDictionaryTest
+
+- (void) setUp {
+	[super setUp];
+	dictionary = [[[CHMultiDictionary alloc] init] autorelease];
+}
+
+- (void) populateDictionary {
+	[dictionary addObjects:[NSSet setWithObjects:@"A",@"B",@"C",nil] forKey:@"foo"];
+	[dictionary addObjects:[NSSet setWithObjects:@"X",@"Y",@"Z",nil] forKey:@"bar"];
+	[dictionary addObjects:[NSSet setWithObjects:@"1",@"2",@"3",nil] forKey:@"baz"];
+}
+
+- (void) testAddObjectForKey {
+	STAssertEquals([dictionary count], (NSUInteger)0, @"Incorrect key count.");
+	STAssertEquals([dictionary countForAllKeys], (NSUInteger)0, @"Incorrect object count.");
 	
-	[self verifyKeyCountAndOrdering];
-	if ([dictionary isMemberOfClass:[CHLockableDictionary class]])
-		STAssertTrue([[NSSet setWithArray:[dictionary allKeys]] isEqualToSet:
-		              [NSSet setWithArray:[oldDictionary allKeys]]],
-		             @"Wrong keys on reconstruction.");
-	else
-		STAssertEqualObjects([dictionary allKeys], [oldDictionary allKeys],
-		                     @"Wrong key ordering on reconstruction.");
+	[dictionary addObject:@"A" forKey:@"foo"];
+	STAssertEquals([dictionary count], (NSUInteger)1, @"Incorrect key count.");
+	STAssertEquals([dictionary countForAllKeys], (NSUInteger)1, @"Incorrect object count.");
+	
+	[dictionary addObject:@"B" forKey:@"bar"];
+	STAssertEquals([dictionary count], (NSUInteger)2, @"Incorrect key count.");
+	STAssertEquals([dictionary countForAllKeys], (NSUInteger)2, @"Incorrect object count.");
+	
+	// Test adding second object for key
+	[dictionary addObject:@"C" forKey:@"bar"];
+	STAssertEquals([dictionary count], (NSUInteger)2, @"Incorrect key count.");
+	STAssertEquals([dictionary countForAllKeys], (NSUInteger)3, @"Incorrect object count.");
+	
+	// Test adding duplicate object for key
+	[dictionary addObject:@"C" forKey:@"bar"];
+	STAssertEquals([dictionary count], (NSUInteger)2, @"Incorrect key count.");
+	STAssertEquals([dictionary countForAllKeys], (NSUInteger)3, @"Incorrect object count.");
+	
+	STAssertEquals([dictionary countForKey:@"foo"], (NSUInteger)1, @"Incorrect object count.");
+	STAssertEquals([dictionary countForKey:@"bar"], (NSUInteger)2, @"Incorrect object count.");
+}
+
+- (void) testAddObjectsForKey {
+	[dictionary addObjects:[NSSet setWithObjects:@"A",@"B",nil] forKey:@"foo"];
+	STAssertEquals([dictionary count], (NSUInteger)1, @"Incorrect key count.");
+	STAssertEquals([dictionary countForKey:@"foo"], (NSUInteger)2, @"Incorrect object count.");
+	STAssertEquals([dictionary countForAllKeys], (NSUInteger)2, @"Incorrect object count.");
+	
+	[dictionary addObjects:[NSSet setWithObjects:@"X",@"Y",@"Z",nil] forKey:@"bar"];
+	STAssertEquals([dictionary count], (NSUInteger)2, @"Incorrect key count.");
+	STAssertEquals([dictionary countForKey:@"bar"], (NSUInteger)3, @"Incorrect object count.");
+	STAssertEquals([dictionary countForAllKeys], (NSUInteger)5, @"Incorrect object count.");
+	
+	// Test adding an overlapping set of objects for an existing key
+	[dictionary addObjects:[NSSet setWithObjects:@"B",@"C",nil] forKey:@"foo"];
+	STAssertEquals([dictionary count], (NSUInteger)2, @"Incorrect key count.");
+	STAssertEquals([dictionary countForKey:@"foo"], (NSUInteger)3, @"Incorrect object count.");
+	STAssertEquals([dictionary countForAllKeys], (NSUInteger)6, @"Incorrect object count.");
+}
+
+- (void) testInitWithObjectsAndKeys {
+	[dictionary release];
+	dictionary = [[CHMultiDictionary alloc] initWithObjectsAndKeys:
+				  [NSSet setWithObjects:@"A",@"B",@"C",nil], @"foo",
+				  [NSArray arrayWithObjects:@"X",@"Y",nil], @"bar",
+				  @"Z", @"baz", nil];
+	STAssertEquals([dictionary count],              (NSUInteger)3, @"Incorrect key count.");
+	STAssertEquals([dictionary countForKey:@"foo"], (NSUInteger)3, @"Incorrect object count.");
+	STAssertEquals([dictionary countForKey:@"bar"], (NSUInteger)2, @"Incorrect object count.");
+	STAssertEquals([dictionary countForKey:@"baz"], (NSUInteger)1, @"Incorrect object count.");
+	
+	STAssertThrows(([[CHMultiDictionary alloc] initWithObjectsAndKeys:
+					 @"A", @"foo", @"Z", nil]),
+				   @"Should raise exception for nil key parameter.");
+	
+	STAssertNoThrow([[CHMultiDictionary alloc] initWithObjectsAndKeys:nil],
+				   @"Should not raise exception for nil first parameter.");
+}
+
+- (void) testInitWithObjectsForKeys {
+	NSMutableArray *keys = [NSMutableArray array];
+	NSMutableArray *objects = [NSMutableArray array];
+	
+	[keys addObject:@"foo"];
+	[objects addObject:[NSSet setWithObjects:@"A",@"B",@"C",nil]];
+	
+	[keys addObject:@"bar"];
+	[objects addObject:[NSNull null]];
+	
+	[dictionary release];
+	dictionary = [[CHMultiDictionary alloc] initWithObjects:objects forKeys:keys];
+	
+	STAssertEquals([dictionary count],              (NSUInteger)2, @"Incorrect key count.");
+	STAssertEquals([dictionary countForKey:@"foo"], (NSUInteger)3, @"Incorrect object count.");
+	STAssertEquals([dictionary countForKey:@"bar"], (NSUInteger)1, @"Incorrect object count.");
+	STAssertEquals([dictionary countForAllKeys],    (NSUInteger)4, @"Incorrect object count.");
+	
+	[keys removeLastObject];
+	STAssertThrows([[CHMultiDictionary alloc] initWithObjects:objects forKeys:keys],
+				   @"Init with arrays of unequal length should raise exception.");
+}
+
+- (void) testObjectEnumerator {
+	[self populateDictionary];
+	
+	enumerator = [dictionary objectEnumerator];
+	STAssertEquals([[enumerator allObjects] count], [dictionary count],
+				   @"Wrong object count.");
+	id anObject;
+	while (anObject = [enumerator nextObject]) {
+		STAssertTrue([anObject isKindOfClass:[NSSet class]], @"Not a set");
+	}
+}
+
+- (void) testObjectsForKey {
+	[self populateDictionary];
+	
+	STAssertTrue(([[dictionary objectsForKey:@"foo"] isEqualToSet:
+				   [NSSet setWithObjects:@"A",@"B",@"C",nil]]),
+				 @"Incorrect objects for key");
+	STAssertTrue(([[dictionary objectsForKey:@"bar"] isEqualToSet:
+				   [NSSet setWithObjects:@"X",@"Y",@"Z",nil]]),
+				 @"Incorrect objects for key");
+	STAssertTrue(([[dictionary objectsForKey:@"baz"] isEqualToSet:
+				   [NSSet setWithObjects:@"1",@"2",@"3",nil]]),
+				 @"Incorrect objects for key");
+	
+	STAssertNil([dictionary objectsForKey:@"bogus"], @"Should be nil for bad key.");
+}
+
+- (void) testRemoveAllObjects {
+	[self populateDictionary];
+	
+	STAssertEquals([dictionary count], (NSUInteger)3, @"Incorrect key count.");
+	STAssertEquals([dictionary countForAllKeys], (NSUInteger)9, @"Incorrect object count.");
+	[dictionary removeAllObjects];
+	STAssertEquals([dictionary count], (NSUInteger)0, @"Incorrect key count.");
+	STAssertEquals([dictionary countForAllKeys], (NSUInteger)0, @"Incorrect object count.");
+}
+
+- (void) testRemoveObjectForKey {
+	[self populateDictionary];
+	
+	STAssertEquals([dictionary count], (NSUInteger)3, @"Incorrect key count.");
+	STAssertEquals([dictionary countForKey:@"foo"], (NSUInteger)3, @"Incorrect object count.");
+	STAssertEquals([dictionary countForAllKeys], (NSUInteger)9, @"Incorrect object count.");
+	
+	[dictionary removeObject:@"A" forKey:@"foo"];
+	STAssertEquals([dictionary count], (NSUInteger)3, @"Incorrect key count.");
+	STAssertEquals([dictionary countForKey:@"foo"], (NSUInteger)2, @"Incorrect object count.");
+	STAssertEquals([dictionary countForAllKeys], (NSUInteger)8, @"Incorrect object count.");
+	
+	[dictionary removeObject:@"B" forKey:@"foo"];
+	STAssertEquals([dictionary count], (NSUInteger)3, @"Incorrect key count.");
+	STAssertEquals([dictionary countForKey:@"foo"], (NSUInteger)1, @"Incorrect object count.");
+	STAssertEquals([dictionary countForAllKeys], (NSUInteger)7, @"Incorrect object count.");
+	
+	[dictionary removeObject:@"C" forKey:@"foo"];
+	// Removing the last object in the set for a key should also remove the key.
+	STAssertEquals([dictionary count], (NSUInteger)2, @"Incorrect key count.");
+	STAssertEquals([dictionary countForKey:@"foo"], (NSUInteger)0, @"Incorrect object count.");
+	STAssertEquals([dictionary countForAllKeys], (NSUInteger)6, @"Incorrect object count.");
+}
+
+- (void) testRemoveObjectsForKey {
+	[self populateDictionary];
+	
+	STAssertEquals([dictionary count], (NSUInteger)3, @"Incorrect key count.");
+	STAssertEquals([dictionary countForAllKeys], (NSUInteger)9, @"Incorrect object count.");
+	[dictionary removeObjectsForKey:@"foo"];
+	STAssertEquals([dictionary count], (NSUInteger)2, @"Incorrect key count.");
+	STAssertEquals([dictionary countForAllKeys], (NSUInteger)6, @"Incorrect object count.");
+	[dictionary removeObjectsForKey:@"foo"];
+	STAssertEquals([dictionary count], (NSUInteger)2, @"Incorrect key count.");
+	STAssertEquals([dictionary countForAllKeys], (NSUInteger)6, @"Incorrect object count.");
+	[dictionary removeObjectsForKey:@"bar"];
+	STAssertEquals([dictionary count], (NSUInteger)1, @"Incorrect key count.");
+	STAssertEquals([dictionary countForAllKeys], (NSUInteger)3, @"Incorrect object count.");
+	[dictionary removeObjectsForKey:@"baz"];
+	STAssertEquals([dictionary count], (NSUInteger)0, @"Incorrect key count.");
+	STAssertEquals([dictionary countForAllKeys], (NSUInteger)0, @"Incorrect object count.");
+}
+
+- (void) testSetObjectForKey {
+	// Verify that nil key and/or object raises an exception
+	STAssertThrows([dictionary setObject:nil forKey:nil], @"Should raise exception");
+	STAssertThrows([dictionary setObject:@"" forKey:nil], @"Should raise exception");
+	STAssertThrows([dictionary setObject:nil forKey:@""], @"Should raise exception");
+
+	STAssertNil([dictionary objectForKey:@"foo"], @"Object should be nil.");
+	[dictionary setObject:@"bar" forKey:@"foo"];
+	STAssertEqualObjects([dictionary objectForKey:@"foo"], [NSSet setWithObject:@"bar"],
+						 @"Wrong object for key.");
+	
+	// Verify that setting a different value for a key "takes" the new value
+	[dictionary removeAllObjects];
+	[self populateDictionary];
+	id key = [[dictionary keyEnumerator] nextObject];
+	NSString *value = [dictionary objectForKey:key];
+	
+	[dictionary setObject:value forKey:key];
+	STAssertEqualObjects(value, [dictionary objectForKey:key], @"Should be equal.");
+	
+	[dictionary setObject:[NSString string] forKey:key];
+	STAssertFalse([value isEqual:[dictionary objectForKey:key]], @"Should not be equal.");
+}
+
+- (void) testSetObjectsForKey {
+	// Verify that nil key and/or object raises an exception
+	STAssertThrows([dictionary setObjects:nil forKey:nil], @"Should raise exception");
+	STAssertThrows([dictionary setObjects:@"" forKey:nil], @"Should raise exception");
+	STAssertThrows([dictionary setObjects:nil forKey:@""], @"Should raise exception");
+
+	NSSet* objectSet;
+	
+	[dictionary addObject:@"XYZ" forKey:@"foo"];
+	STAssertEquals([dictionary count], (NSUInteger)1, @"Incorrect key count.");
+	STAssertEquals([dictionary countForAllKeys], (NSUInteger)1, @"Incorrect object count.");
+	STAssertEqualObjects([dictionary objectsForKey:@"foo"], [NSSet setWithObject:@"XYZ"],
+				 @"Incorrect objects for key");
+	
+	objectSet = [NSSet setWithObjects:@"A",@"B",@"C",nil];
+	[dictionary setObjects:objectSet forKey:@"foo"];
+	STAssertEquals([dictionary count], (NSUInteger)1, @"Incorrect key count.");
+	STAssertEquals([dictionary countForAllKeys], (NSUInteger)3, @"Incorrect object count.");
+	STAssertEqualObjects([dictionary objectsForKey:@"foo"], objectSet,
+				 @"Incorrect objects for key");
+	
+	objectSet = [NSSet setWithObjects:@"X",@"Y",@"Z",nil];
+	[dictionary setObjects:objectSet forKey:@"bar"];
+	STAssertEquals([dictionary count], (NSUInteger)2, @"Incorrect key count.");
+	STAssertEquals([dictionary countForAllKeys], (NSUInteger)6, @"Incorrect object count.");
+	STAssertEqualObjects([dictionary objectsForKey:@"bar"], objectSet,
+				 @"Incorrect objects for key");
+}
+
+@end
+
+#pragma mark -
+
+@interface CHDictionaryWithOrderingTest : CHLockableDictionaryTest
+{
+	NSArray *expectedKeyOrder;
+}
+
+@end
+
+@implementation CHDictionaryWithOrderingTest
+
+- (void) verifyKeyCountAndOrdering:(NSArray*)allKeys forDictionary:(id)aDictionary {
+	STAssertEquals([aDictionary count], [keyArray count], @"Incorrect key count.");
+	
+	if (expectedKeyOrder != nil) {
+		if (allKeys == nil)
+			allKeys = [aDictionary allKeys];
+		NSUInteger count = MIN([aDictionary count], [expectedKeyOrder count]);
+		for (NSUInteger i = 0; i < count; i++) {
+			STAssertEqualObjects([allKeys objectAtIndex:i],
+								 [expectedKeyOrder objectAtIndex:i],
+								 @"Wrong output ordering of keys.");
+		}
+	}
+}
+
+- (void) verifyKeyCountAndOrderingForDictionary:(id)aDictionary {
+	[self verifyKeyCountAndOrdering:nil forDictionary:aDictionary];
+}
+
+- (void) verifyKeyCountAndOrdering:(NSArray*)ordering {
+	[self verifyKeyCountAndOrdering:ordering forDictionary:dictionary];
+}
+
+- (void) testFirstKey {
+	if (![dictionary respondsToSelector:@selector(firstKey)])
+		return;
+	STAssertNil([dictionary firstKey], @"First key should be nil.");
+	[self populateDictionary];
+	STAssertEqualObjects([dictionary firstKey],
+						 [expectedKeyOrder objectAtIndex:0],
+						 @"Wrong first key.");
+}
+
+- (void) testKeyEnumerator {
+	enumerator = [dictionary keyEnumerator];
+	STAssertNotNil(enumerator, @"Key enumerator should be non-nil");
+	NSArray *allKeys = [enumerator allObjects];
+	STAssertNotNil(allKeys, @"Key enumerator should return non-nil array.");
+	STAssertEquals([allKeys count], (NSUInteger)0, @"Wrong number of keys.");
+	
+	[self populateDictionary];
+	
+	enumerator = [dictionary keyEnumerator];
+	STAssertNotNil(enumerator, @"Key enumerator should be non-nil");
+	allKeys = [enumerator allObjects];
+	STAssertNotNil(allKeys, @"Key enumerator should return non-nil array.");
+	
+	[self verifyKeyCountAndOrderingForDictionary:dictionary];
+}
+
+- (void) testLastKey {
+	if (![dictionary respondsToSelector:@selector(lastKey)])
+		return;
+	STAssertNil([dictionary lastKey], @"Last key should be nil.");
+	[self populateDictionary];
+	STAssertEqualObjects([dictionary lastKey],
+						 [expectedKeyOrder lastObject],
+						 @"Wrong last key.");
+}
+
+- (void) testReverseKeyEnumerator {
+	if (![dictionary respondsToSelector:@selector(reverseKeyEnumerator)])
+		return;
+	enumerator = [dictionary reverseKeyEnumerator];
+	STAssertNotNil(enumerator, @"Key enumerator should be non-nil");
+	NSArray *allKeys = [enumerator allObjects];
+	STAssertNotNil(allKeys, @"Key enumerator should return non-nil array.");
+	STAssertEquals([allKeys count], (NSUInteger)0, @"Wrong number of keys.");
+	
+	[self populateDictionary];
+	
+	enumerator = [dictionary reverseKeyEnumerator];
+	STAssertNotNil(enumerator, @"Key enumerator should be non-nil");
+	allKeys = [enumerator allObjects];
+	STAssertNotNil(allKeys, @"Key enumerator should return non-nil array.");
+	
+	if ([dictionary isMemberOfClass:[CHOrderedDictionary class]]) {
+		expectedKeyOrder = keyArray;
+	} else {
+		expectedKeyOrder = [keyArray sortedArrayUsingSelector:@selector(compare:)];
+	}
+	expectedKeyOrder = [[expectedKeyOrder reverseObjectEnumerator] allObjects];
+	[self verifyKeyCountAndOrdering:[[dictionary reverseKeyEnumerator] allObjects]];
+}
+
+- (void) testNSCoding {
+	[self populateDictionary];
+	[self verifyKeyCountAndOrderingForDictionary:dictionary];
+	
+	id clone = replicateWithNSCoding(dictionary);
+	[self verifyKeyCountAndOrderingForDictionary:clone];
+	STAssertEqualObjects([clone allKeys], [dictionary allKeys],
+						 @"Wrong key ordering on reconstruction.");
 }
 
 - (void) testNSCopying {
@@ -205,20 +500,19 @@
 	STAssertEquals([dictionary hash], [copy hash], @"Hashes should match.");
 	STAssertEqualObjects([copy class], [dictionary class], @"Wrong class.");
 	[copy release];
-	copy = dictionary;
 	
 	[self populateDictionary];
-	dictionary = [dictionary copy];
-	[self verifyKeyCountAndOrdering];
-	STAssertEquals([dictionary hash], [copy hash], @"Hashes should match.");
-	[dictionary release];
+	copy = [dictionary copy];
+	[self verifyKeyCountAndOrderingForDictionary:copy];
+	STAssertEquals([copy hash], [dictionary hash], @"Hashes should match.");
+	[copy release];
 }
 
 @end
 
 #pragma mark -
 
-@interface CHSortedDictionaryTest : CHLockableDictionaryTest
+@interface CHSortedDictionaryTest : CHDictionaryWithOrderingTest
 @end
 
 @implementation CHSortedDictionaryTest
@@ -255,7 +549,7 @@
 
 #pragma mark -
 
-@interface CHOrderedDictionaryTest : CHLockableDictionaryTest
+@interface CHOrderedDictionaryTest : CHDictionaryWithOrderingTest
 @end
 
 @implementation CHOrderedDictionaryTest

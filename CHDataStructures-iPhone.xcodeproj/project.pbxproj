@@ -21,7 +21,6 @@
 		5DFBC2C310A7540A007BF56F /* CHHeapTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D18220E9452BB007F39D8 /* CHHeapTest.m */; };
 		5DFBC2C410A7540A007BF56F /* CHLinkedListTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D499690E93CD1300434CBA /* CHLinkedListTest.m */; };
 		5DFBC2C510A7540A007BF56F /* CHLockableTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FBE17F0F8B21860039E4D0 /* CHLockableTest.m */; };
-		5DFBC2C610A7540A007BF56F /* CHMultiDictionaryTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E48BFA840EE842CF0004D5E6 /* CHMultiDictionaryTest.m */; };
 		5DFBC2C710A7540A007BF56F /* CHCustomSetsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E49BE3DB0FB230D4002904AB /* CHCustomSetsTest.m */; };
 		5DFBC2C810A7540A007BF56F /* CHQueueTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FD52F50ECA8A9F006D9FF8 /* CHQueueTest.m */; };
 		5DFBC2C910A7540A007BF56F /* CHRedBlackTreeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D181C0E9452BB007F39D8 /* CHRedBlackTreeTest.m */; };
@@ -176,7 +175,6 @@
 		E48860B90EA66072000F132A /* CHAbstractListCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHAbstractListCollection.m; path = source/CHAbstractListCollection.m; sourceTree = "<group>"; };
 		E48BF92E0EE79AAE0004D5E6 /* CHMultiDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHMultiDictionary.h; path = source/CHMultiDictionary.h; sourceTree = "<group>"; };
 		E48BF9720EE7A2010004D5E6 /* CHMultiDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHMultiDictionary.m; path = source/CHMultiDictionary.m; sourceTree = "<group>"; };
-		E48BFA840EE842CF0004D5E6 /* CHMultiDictionaryTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHMultiDictionaryTest.m; path = test/CHMultiDictionaryTest.m; sourceTree = "<group>"; };
 		E49BE2810FB21058002904AB /* CHOrderedSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHOrderedSet.h; path = source/CHOrderedSet.h; sourceTree = "<group>"; };
 		E49BE2820FB21058002904AB /* CHOrderedSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHOrderedSet.m; path = source/CHOrderedSet.m; sourceTree = "<group>"; };
 		E49BE3DB0FB230D4002904AB /* CHCustomSetsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHCustomSetsTest.m; path = test/CHCustomSetsTest.m; sourceTree = "<group>"; };
@@ -371,7 +369,6 @@
 				E40D18220E9452BB007F39D8 /* CHHeapTest.m */,
 				E4D499690E93CD1300434CBA /* CHLinkedListTest.m */,
 				E4FBE17F0F8B21860039E4D0 /* CHLockableTest.m */,
-				E48BFA840EE842CF0004D5E6 /* CHMultiDictionaryTest.m */,
 				E49BE3DB0FB230D4002904AB /* CHCustomSetsTest.m */,
 				E4FD52F50ECA8A9F006D9FF8 /* CHQueueTest.m */,
 				E40D181C0E9452BB007F39D8 /* CHRedBlackTreeTest.m */,
@@ -569,7 +566,6 @@
 				5DFBC2C310A7540A007BF56F /* CHHeapTest.m in Sources */,
 				5DFBC2C410A7540A007BF56F /* CHLinkedListTest.m in Sources */,
 				5DFBC2C510A7540A007BF56F /* CHLockableTest.m in Sources */,
-				5DFBC2C610A7540A007BF56F /* CHMultiDictionaryTest.m in Sources */,
 				5DFBC2C710A7540A007BF56F /* CHCustomSetsTest.m in Sources */,
 				5DFBC2C810A7540A007BF56F /* CHQueueTest.m in Sources */,
 				5DFBC2C910A7540A007BF56F /* CHRedBlackTreeTest.m in Sources */,

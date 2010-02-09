@@ -1,14 +1,14 @@
 /*
  CHDataStructures.framework -- CHMultiDictionary.h
  
- Copyright (c) 2008-2009, Quinn Taylor <http://homepage.mac.com/quinntaylor>
+ Copyright (c) 2008-2010, Quinn Taylor <http://homepage.mac.com/quinntaylor>
  
  Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
  
  The software is  provided "as is", without warranty of any kind, including all implied warranties of merchantability and fitness. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
  */
 
-#import "CHLockableObject.h"
+#import "CHLockableDictionary.h"
 
 /**
  @file CHMultiDictionary.h
@@ -29,89 +29,11 @@
  
  Unlike NSDictionary and other Cocoa collections, CHMultiDictionary has not been designed with mutable and immutable variants. A multimap is not that much more useful if it is immutable, so any copies made of this class are mutable by definition.
  */
-@interface CHMultiDictionary : CHLockableObject 
-#if OBJC_API_2
-<NSCoding, NSCopying, NSFastEnumeration>
-#else
-<NSCoding, NSCopying>
-#endif
-{
-	NSMutableDictionary *dictionary; /**< Dictionary for key-value entries. */
+@interface CHMultiDictionary : CHLockableDictionary {
 	NSUInteger objectCount; /**< Number of objects currently in the multimap. */
-	unsigned long mutations; /**< Used to track mutations for enumeration. */
 }
 
-/**
- Initialize the receiver with no key-value entries.
- 
- @see initWithObjectsAndKeys:
- @see initWithObjects:forKeys:
- */
-- (id) init;
-
-/**
- Initialize the receiver with entries constructed from pairs of objects and keys.
- 
- @param firstObject The first object or set of objects to add to the receiver.
- @param ... First the key for @a firstObject, then a null-terminated list of alternating values and keys.
- @throw NSInvalidArgumentException If any non-terminating parameter is @c nil.
- 
- Each value parameter may be an object or an NSArray or NSSet of objects to be associated with the corresponding key parameter.
- 
- @see init
- @see initWithObjects:forKeys:
- */
-- (id) initWithObjectsAndKeys:(id)firstObject, ...;
-
-/**
- Initialize the receiver with entries constructed from arrays of objects and keys.
- 
- @param keyArray An array containing the keys for the new dictionary. 
- @param objectsArray An array containing the values for the new dictionary.
- @throw NSInvalidArgumentException If the array counts are not equal.
- 
- Each element in @a objects can be either an object or an NSArray or NSSet of objects to be associated with the corresponding key in @a keys.
- 
- @see init
- @see initWithObjectsAndKeys:
- */
-- (id) initWithObjects:(NSArray*)objectsArray forKeys:(NSArray*)keyArray;
-
 #pragma mark Querying Contents
-/** @name Querying Contents */
-// @{
-
-/**
- Returns an array containing the receiver's keys.
- 
- @return An array containing the receiver's keys. The array is empty if the receiver has no entries. The order of the keys is undefined.
- 
- @see allObjects
- @see count
- @see keyEnumerator
- */
-- (NSArray*) allKeys;
-
-/**
- Returns an array containing the receiver's values. This is effectively a concatenation of the sets of objects associated with the keys in the receiver. (Unlike a set union, objects associated with multiple keys appear once for each key which which they are associated.)
- 
- @return An array containing the receiver's values. The array is empty if the receiver has no entries. The order of the values is undefined.
- 
- @see allKeys
- @see countForAllKeys
- @see objectEnumerator
- @see removeAllObjects
- */
-- (NSArray*) allObjects;
-
-/**
- Returns the number of keys in the receiver.
- 
- @return The number of keys in the receiver, regardless of how many objects are associated with any given key in the dictionary.
- 
- @see allKeys
- */
-- (NSUInteger) count;
 
 /**
  Returns the number of objects in the receiver, associated with any key.
@@ -133,64 +55,6 @@
 - (NSUInteger) countForKey:(id)aKey;
 
 /**
- Determine whether a given key is present in the receiver.
- 
- @param aKey The key to check for membership in the receiver.
- @return @c YES if an entry for @a aKey exists in the receiver.
- 
- @see objectsForKey:
- @see removeObjectsForKey:
- */
-- (BOOL) containsKey:(id)aKey;
-
-/**
- Determine whether a given object is present in the receiver.
- 
- @param anObject The object to check for membership in the receiver.
- @return @c YES if @a anObject is associated with 1 or more keys in the receiver.
- 
- @see allObjects
- */
-- (BOOL) containsObject:(id)anObject;
-
-/**
- Returns a property list representation of the receiver's contents.
- 
- @return A property list representation of the receiver's contents.
- 
- If each key in the receiver is an NSString, the entries are listed in ascending order by key, otherwise the order in which the entries are listed is undefined. This method is intended to produce readable output for debugging purposes, not for serializing data. To store a multi-dictionary for later retrieval, see the <a href="http://developer.apple.com/DOCUMENTATION/Cocoa/Conceptual/Archiving/"> Archives and Serializations Programming Guide for Cocoa</a>.
- */
-- (NSString*) description;
-
-/**
- Returns an enumerator that lets you access each key in the receiver.
- 
- @return An enumerator that lets you access each key in the receiver. The enumerator returned is never @c nil; if the receiver is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
- 
- @attention The enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
- @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
- 
- @note If you need to modify the entries concurrently, use #allKeys to create a "snapshot" of the dictionary's keys and work from this snapshot to modify the entries.
- 
- @see allKeys
- */
-- (NSEnumerator*) keyEnumerator;
-
-/**
- Returns an enumerator that lets you access each value in the receiver.
- 
- @return An enumerator that lets you access each value in the receiver. The enumerator returned is never @c nil; if the receiver is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
- 
- @attention The enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
- @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
- 
- @note If you need to modify the entries concurrently, use #allObjects to create a "snapshot" of the dictionary's values and work from this snapshot to modify the values.
- 
- @see allObjects
- */
-- (NSEnumerator*) objectEnumerator;
-
-/**
  Returns an array of objects associated with a given key.
  
  @param aKey The key for which to return the corresponding objects.
@@ -201,21 +65,7 @@
  */
 - (NSSet*) objectsForKey:(id)aKey;
 
-// @}
 #pragma mark Modifying Contents
-/** @name Modifying Contents */
-// @{
-
-/**
- Adds to the receiver the entries from another CHMultiDictionary.
- 
- @param otherMultiDictionary The CHMultiDictionary from which to add entries.
- 
- Each value from @a otherMultiDictionary is sent a @c -retain message before being added to the receiver. Each key object is copied using @c -copyWithZone: and must conform to the NSCopying protocol.
- 
- If a key from @a otherMultiDictionary already exists in the receiver, the objects associated with the key are combined using -[NSMutableSet unionSet:]. If the key does not yet exist in the receiver, an entry is created with the associated set of objects in @a otherMultiDictionary.
- */
-- (void) addEntriesFromMultiDictionary:(CHMultiDictionary*)otherMultiDictionary;
 
 /**
  Adds a given object to an entry for a given key in the receiver.
@@ -244,15 +94,6 @@
  @see setObjects:forKey:
  */
 - (void) addObjects:(NSSet*)objectSet forKey:(id)aKey;
-
-/**
- Empties the receiver of all of its entries.
- 
- @see allObjects
- @see removeObject:forKey:
- @see removeObjectsForKey:
- */
-- (void) removeAllObjects;
 
 /**
  Remove @b all occurrences of @a anObject associated with a given key.
@@ -295,5 +136,4 @@
  */
 - (void) setObjects:(NSSet*)objectSet forKey:(id)aKey;
 
-// @}
 @end
