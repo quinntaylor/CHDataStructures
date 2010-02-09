@@ -102,7 +102,6 @@ id replicateWithNSCoding(id dictionary) {
 
 - (void) testSetObjectForKey {
 	// Verify that nil key and/or object raises an exception
-	STAssertThrows([dictionary setObject:nil forKey:nil], @"Should raise exception");
 	STAssertThrows([dictionary setObject:@"" forKey:nil], @"Should raise exception");
 	STAssertThrows([dictionary setObject:nil forKey:@""], @"Should raise exception");
 	
@@ -335,7 +334,6 @@ id replicateWithNSCoding(id dictionary) {
 
 - (void) testSetObjectForKey {
 	// Verify that nil key and/or object raises an exception
-	STAssertThrows([dictionary setObject:nil forKey:nil], @"Should raise exception");
 	STAssertThrows([dictionary setObject:@"" forKey:nil], @"Should raise exception");
 	STAssertThrows([dictionary setObject:nil forKey:@""], @"Should raise exception");
 
@@ -359,9 +357,10 @@ id replicateWithNSCoding(id dictionary) {
 
 - (void) testSetObjectsForKey {
 	// Verify that nil key and/or object raises an exception
-	STAssertThrows([dictionary setObjects:nil forKey:nil], @"Should raise exception");
-	STAssertThrows([dictionary setObjects:@"" forKey:nil], @"Should raise exception");
-	STAssertThrows([dictionary setObjects:nil forKey:@""], @"Should raise exception");
+	STAssertThrows([dictionary setObjects:[NSSet set] forKey:nil],
+	               @"Should raise exception for nil key");
+	STAssertThrows([dictionary setObjects:nil forKey:@"some key"],
+	               @"Should raise exception for nil object set");
 
 	NSSet* objectSet;
 	
