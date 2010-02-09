@@ -612,7 +612,7 @@
 	
 	NSMutableArray* expected = [NSMutableArray array];
 	for (NSUInteger location = 0; location < [abc count]; location++) {
-		for (NSUInteger length = 0; length < [abc count] - location; length++) {
+		for (NSUInteger length = 0; length <= [abc count] - location; length++) {
 			indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(location, length)]; 
 			// Repopulate buffer and expected
 			[expected removeAllObjects];
@@ -623,7 +623,8 @@
 			STAssertNoThrow([buffer removeObjectsAtIndexes:indexes],
 							@"Should not raise exception, valid index range.");
 			[expected removeObjectsAtIndexes:indexes];
-			STAssertEqualObjects(expected, [buffer allObjects], @"Array content mismatch.");
+			STAssertEquals([buffer count], [expected count], @"Wrong count");
+			STAssertEqualObjects([buffer allObjects], expected, @"Array content mismatch.");
 		}
 	}	
 }

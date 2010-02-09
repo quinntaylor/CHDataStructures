@@ -330,7 +330,7 @@
 
 #pragma mark Adding Objects
 
-- (void) testAddObjectsAndOrdering {
+- (void) testAddObject {
 	STAssertThrows([set addObject:nil], @"Should raise exception");
 	
 	e = [abc objectEnumerator];
@@ -533,7 +533,7 @@
 	
 	NSMutableArray* expected = [NSMutableArray array];
 	for (NSUInteger location = 0; location < [abc count]; location++) {
-		for (NSUInteger length = 0; length < [abc count] - location; length++) {
+		for (NSUInteger length = 0; length <= [abc count] - location; length++) {
 			indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(location, length)]; 
 			// Repopulate set and expected
 			[expected removeAllObjects];
@@ -543,7 +543,8 @@
 			STAssertNoThrow([set removeObjectsAtIndexes:indexes],
 							@"Should not raise exception, valid index range.");
 			[expected removeObjectsAtIndexes:indexes];
-			STAssertEqualObjects(expected, [set allObjects], @"Array content mismatch.");
+			STAssertEquals([set count], [expected count], @"Wrong count");
+			STAssertEqualObjects([set allObjects], expected, @"Array content mismatch.");
 		}
 	}	
 }
