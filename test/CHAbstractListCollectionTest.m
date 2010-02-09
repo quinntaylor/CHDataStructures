@@ -238,6 +238,26 @@
 	STAssertNil([enumerator nextObject], @"-nextObject should return nil.");	
 }
 
+- (void) testObjectsAtIndexes {
+	[collection addObjectsFromArray:objects];
+	NSUInteger count = [collection count];
+	NSRange range;
+	for (NSUInteger location = 0; location <= count; location++) {
+		range.location = location;
+		for (NSUInteger length = 0; length <= count - location + 1; length++) {
+			range.length = length;
+			NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:range];
+			if (location + length > count) {
+				STAssertThrows([collection objectsAtIndexes:indexes], @"Range exception");
+			} else {
+				STAssertEqualObjects([collection objectsAtIndexes:indexes],
+									 [objects objectsAtIndexes:indexes],
+									 @"Range selections should be equal.");
+			}
+		}
+	}
+}
+
 - (void) testRemoveAllObjects {
 	STAssertEquals([collection count], (NSUInteger)0, @"Incorrect count.");
 	[collection addObjectsFromArray:objects];
@@ -315,6 +335,30 @@
 	STAssertEquals([collection count], (NSUInteger)2, @"Incorrect count.");
 	STAssertEqualObjects([collection objectAtIndex:0], @"A", @"Wrong first object.");
 	STAssertEqualObjects([collection objectAtIndex:1], @"C", @"Wrong last object.");
+}
+
+- (void) testRemoveObjectsAtIndexes {
+	STAssertThrows([collection removeObjectsAtIndexes:nil], @"Index set cannot be nil.");
+	NSIndexSet* indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 1)];
+	STAssertThrows([collection removeObjectsAtIndexes:indexes], @"Nonexistent index.");
+	
+	NSMutableArray* expected = [NSMutableArray array];
+	[collection addObjectsFromArray:objects];
+	for (NSUInteger location = 0; location < [objects count]; location++) {
+		for (NSUInteger length = 0; length <= [objects count] - location; length++) {
+			indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(location, length)]; 
+			// Repopulate list and expected
+			[expected removeAllObjects];
+			[expected addObjectsFromArray:objects];
+			[collection removeAllObjects];
+			[collection addObjectsFromArray:objects];
+			STAssertNoThrow([collection removeObjectsAtIndexes:indexes],
+							@"Should not raise exception, valid index range.");
+			[expected removeObjectsAtIndexes:indexes];
+			STAssertEquals([collection count], [expected count], @"Wrong count");
+			STAssertEqualObjects([collection allObjects], expected, @"Array content mismatch.");
+		}
+	}	
 }
 
 - (void) testReplaceObjectAtIndexWithObject {

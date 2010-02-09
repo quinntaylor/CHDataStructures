@@ -450,7 +450,53 @@
 	}
 }
 
+- (void) testObjectsAtIndexes {
+	NSEnumerator *classes = [linkedListClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
+		list = [[aClass alloc] initWithArray:abc];
+		NSUInteger count = [list count];
+		NSRange range;
+		for (NSUInteger location = 0; location <= count; location++) {
+			range.location = location;
+			for (NSUInteger length = 0; length <= count - location + 1; length++) {
+				range.length = length;
+				NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:range];
+				if (location + length > count) {
+					STAssertThrows([list objectsAtIndexes:indexes], @"Range exception");
+				} else {
+					STAssertEqualObjects([list objectsAtIndexes:indexes],
+										 [abc objectsAtIndexes:indexes],
+										 @"Range selections should be equal.");
+				}
+			}
+		}
+		NSMutableIndexSet *indexes = [NSMutableIndexSet indexSet];
+		[indexes addIndex:0];
+		[indexes addIndex:2];
+		STAssertEqualObjects([list objectsAtIndexes:indexes],
+							 [abc objectsAtIndexes:indexes],
+							 @"Range selections should be equal.");
+		[list release];
+	}
+}
+
 #pragma mark Removal
+
+- (void) testRemoveAllObjects {
+	NSEnumerator *classes = [linkedListClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
+		list = [[aClass alloc] init];
+		e = [abc objectEnumerator];
+		while (anObject = [e nextObject])
+			[list addObject:anObject];
+		STAssertEquals([list count], [abc count], @"Incorrect count.");
+		[list removeAllObjects];
+		STAssertEquals([list count], (NSUInteger)0, @"Incorrect count.");
+		[list release];
+	}
+}
 
 - (void) testRemoveFirstObject {
 	NSEnumerator *classes = [linkedListClasses objectEnumerator];
@@ -634,18 +680,34 @@
 	}
 }
 
-- (void) testRemoveAllObjects {
+- (void) testRemoveObjectsAtIndexes {
+	NSMutableArray* expected = [NSMutableArray array];
+	NSIndexSet* indexes;
+	
 	NSEnumerator *classes = [linkedListClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
 		list = [[aClass alloc] init];
-		e = [abc objectEnumerator];
-		while (anObject = [e nextObject])
-			[list addObject:anObject];
-		STAssertEquals([list count], [abc count], @"Incorrect count.");
-		[list removeAllObjects];
-		STAssertEquals([list count], (NSUInteger)0, @"Incorrect count.");
-		[list release];
+		STAssertThrows([list removeObjectsAtIndexes:nil], @"Index set cannot be nil.");
+		indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 1)];
+		STAssertThrows([list removeObjectsAtIndexes:indexes], @"Nonexistent index.");
+		
+		[list addObjectsFromArray:abc];
+		for (NSUInteger location = 0; location < [abc count]; location++) {
+			for (NSUInteger length = 0; length <= [abc count] - location; length++) {
+				indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(location, length)]; 
+				// Repopulate list and expected
+				[expected removeAllObjects];
+				[expected addObjectsFromArray:abc];
+				[list removeAllObjects];
+				[list addObjectsFromArray:abc];
+				STAssertNoThrow([list removeObjectsAtIndexes:indexes],
+								@"Should not raise exception, valid index range.");
+				[expected removeObjectsAtIndexes:indexes];
+				STAssertEquals([list count], [expected count], @"Wrong count");
+				STAssertEqualObjects([list allObjects], expected, @"Array content mismatch.");
+			}
+		}	
 	}
 }
 

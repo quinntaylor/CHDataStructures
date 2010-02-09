@@ -292,6 +292,26 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
            mutationPointer:&mutations] autorelease];
 }
 
+- (NSArray*) objectsAtIndexes:(NSIndexSet*)indexes {
+	if (indexes == nil)
+		CHNilArgumentException([self class], _cmd);
+	if ([indexes count] == 0)
+		return [NSArray array];
+	if ([indexes lastIndex] >= count)
+		CHIndexOutOfRangeException([self class], _cmd, [indexes lastIndex], count);
+	NSMutableArray *objects = [NSMutableArray arrayWithCapacity:[indexes count]];
+	CHSinglyLinkedListNode *current = head;
+	NSUInteger nextIndex = [indexes firstIndex], index = 0;
+	while (nextIndex != NSNotFound) {
+		do
+			current = current->next;
+		while (index++ < nextIndex);
+		[objects addObject:current->object];
+		nextIndex = [indexes indexGreaterThanIndex:nextIndex];
+	}	
+	return objects;
+}
+
 #pragma mark Modifying Contents
 
 - (void) addObject:(id)anObject {
@@ -465,6 +485,26 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 	} while (node->next != NULL);
 	tail = node;
 	++mutations;
+}
+
+- (void) removeObjectsAtIndexes:(NSIndexSet*)indexes {
+	if (indexes == nil)
+		CHNilArgumentException([self class], _cmd);
+	if ([indexes count]) {
+		if ([indexes lastIndex] >= count)
+			CHIndexOutOfRangeException([self class], _cmd, [indexes lastIndex], count);
+		else
+			count -= [indexes count];
+		NSUInteger nextIndex = [indexes firstIndex], index = 0;
+		CHSinglyLinkedListNode *current = head;
+		while (nextIndex != NSNotFound) {
+			while (index++ < nextIndex)
+				current = current->next;
+			removeNodeAfterNode(current);
+			nextIndex = [indexes indexGreaterThanIndex:nextIndex];
+		}
+		++mutations;
+	}
 }
 
 - (void) replaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject {

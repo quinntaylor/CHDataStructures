@@ -45,10 +45,12 @@
 - (NSUInteger) indexOfObjectIdenticalTo:(id)anObject;
 - (id) objectAtIndex:(NSUInteger)index;
 - (NSEnumerator*) objectEnumerator;
+- (NSArray*) objectsAtIndexes:(NSIndexSet*)indexes;
 - (void) removeAllObjects;
 - (void) removeObject:(id)anObject;
 - (void) removeObjectAtIndex:(NSUInteger)index;
 - (void) removeObjectIdenticalTo:(id)anObject;
+- (void) removeObjectsAtIndexes:(NSIndexSet*)indexes;
 - (void) replaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject;
 
 #pragma mark Adopted Protocols

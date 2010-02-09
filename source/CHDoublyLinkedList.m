@@ -337,6 +337,26 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 	       mutationPointer:&mutations] autorelease];
 }
 
+- (NSArray*) objectsAtIndexes:(NSIndexSet*)indexes {
+	if (indexes == nil)
+		CHNilArgumentException([self class], _cmd);
+	if ([indexes count] == 0)
+		return [NSArray array];
+	if ([indexes lastIndex] >= count)
+		CHIndexOutOfRangeException([self class], _cmd, [indexes lastIndex], count);
+	NSMutableArray *objects = [NSMutableArray arrayWithCapacity:[indexes count]];
+	CHDoublyLinkedListNode *current = head;
+	NSUInteger nextIndex = [indexes firstIndex], index = 0;
+	while (nextIndex != NSNotFound) {
+		do
+			current = current->next;
+		while (index++ < nextIndex);
+		[objects addObject:current->object];
+		nextIndex = [indexes indexGreaterThanIndex:nextIndex];
+	}
+	return objects;
+}
+
 - (NSEnumerator*) reverseObjectEnumerator {
 	return [[[CHDoublyLinkedListEnumerator alloc]
 	          initWithList:self
@@ -467,6 +487,26 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 			node = temp;
 		}
 	} while (node != tail);
+}
+
+- (void) removeObjectsAtIndexes:(NSIndexSet*)indexes {
+	if (indexes == nil)
+		CHNilArgumentException([self class], _cmd);
+	if ([indexes count]) {
+		if ([indexes lastIndex] >= count)
+			CHIndexOutOfRangeException([self class], _cmd, [indexes lastIndex], count);
+		NSUInteger nextIndex = [indexes firstIndex], index = 0;
+		CHDoublyLinkedListNode *current = head->next, *temp;
+		while (nextIndex != NSNotFound) {
+			while (index++ < nextIndex)
+				current = current->next;
+			temp = current->next;
+			[self removeNode:current]; // decrements count
+			current = temp;
+			nextIndex = [indexes indexGreaterThanIndex:nextIndex];
+		}	
+		++mutations;
+	}
 }
 
 - (void) replaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject {

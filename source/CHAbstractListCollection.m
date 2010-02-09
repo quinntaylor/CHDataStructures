@@ -108,6 +108,10 @@
 	return [list objectAtIndex:index];
 }
 
+- (NSArray*) objectsAtIndexes:(NSIndexSet*)indexes {
+	return [list objectsAtIndexes:indexes];
+}
+
 - (void) removeObject:(id)anObject {
 	[list removeObject:anObject];
 }
@@ -118,6 +122,10 @@
 
 - (void) removeObjectAtIndex:(NSUInteger)index {
 	[list removeObjectAtIndex:index];
+}
+
+- (void) removeObjectsAtIndexes:(NSIndexSet*)indexes {
+	[list removeObjectsAtIndexes:indexes];
 }
 
 - (void) removeAllObjects {
