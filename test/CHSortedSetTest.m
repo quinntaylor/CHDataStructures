@@ -364,57 +364,57 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 		
 		// Test including all objects (2 nil params, or match first and last)
 		subset = [[sortedSet subsetFromObject:nil toObject:nil options:0] allObjects];
-		STAssertTrue([subset isEqual:objects], badOrder(@"Subset", subset, objects));
+		STAssertEqualObjects(subset, objects, badOrder(@"Subset", subset, objects));
 		
 		subset = [[sortedSet subsetFromObject:@"A" toObject:@"G" options:0] allObjects];
-		STAssertTrue([subset isEqual:objects], badOrder(@"Subset", subset, objects));
+		STAssertEqualObjects(subset, objects, badOrder(@"Subset", subset, objects));
 		
 		// Test excluding elements at the end
 		subset = [[sortedSet subsetFromObject:nil toObject:@"F" options:0] allObjects];
-		STAssertTrue([subset isEqual:acde], badOrder(@"Subset", subset, acde));
+		STAssertEqualObjects(subset, acde, badOrder(@"Subset", subset, acde));
 		subset = [[sortedSet subsetFromObject:nil toObject:@"E" options:0] allObjects];
-		STAssertTrue([subset isEqual:acde], badOrder(@"Subset", subset, acde));
+		STAssertEqualObjects(subset, acde, badOrder(@"Subset", subset, acde));
 		
 		subset = [[sortedSet subsetFromObject:@"A" toObject:@"F" options:0] allObjects];
-		STAssertTrue([subset isEqual:acde], badOrder(@"Subset", subset, acde));
+		STAssertEqualObjects(subset, acde, badOrder(@"Subset", subset, acde));
 		subset = [[sortedSet subsetFromObject:@"A" toObject:@"E" options:0] allObjects];
-		STAssertTrue([subset isEqual:acde], badOrder(@"Subset", subset, acde));
+		STAssertEqualObjects(subset, acde, badOrder(@"Subset", subset, acde));
 		
 		// Test excluding elements at the start
 		subset = [[sortedSet subsetFromObject:@"B" toObject:nil options:0] allObjects];
-		STAssertTrue([subset isEqual:cdeg], badOrder(@"Subset", subset, cdeg));
+		STAssertEqualObjects(subset, cdeg, badOrder(@"Subset", subset, cdeg));
 		subset = [[sortedSet subsetFromObject:@"C" toObject:nil options:0] allObjects];
-		STAssertTrue([subset isEqual:cdeg], badOrder(@"Subset", subset, cdeg));
+		STAssertEqualObjects(subset, cdeg, badOrder(@"Subset", subset, cdeg));
 		
 		subset = [[sortedSet subsetFromObject:@"B" toObject:@"G" options:0] allObjects];
-		STAssertTrue([subset isEqual:cdeg], badOrder(@"Subset", subset, cdeg));
+		STAssertEqualObjects(subset, cdeg, badOrder(@"Subset", subset, cdeg));
 		subset = [[sortedSet subsetFromObject:@"C" toObject:@"G" options:0] allObjects];
-		STAssertTrue([subset isEqual:cdeg], badOrder(@"Subset", subset, cdeg));
+		STAssertEqualObjects(subset, cdeg, badOrder(@"Subset", subset, cdeg));
 		
 		// Test excluding elements in the middle (parameters in reverse order)
 		subset = [[sortedSet subsetFromObject:@"E" toObject:@"C" options:0] allObjects];
-		STAssertTrue([subset isEqual:aceg], badOrder(@"Subset", subset, aceg));
+		STAssertEqualObjects(subset, aceg, badOrder(@"Subset", subset, aceg));
 		
 		subset = [[sortedSet subsetFromObject:@"F" toObject:@"B" options:0] allObjects];
-		STAssertTrue([subset isEqual:ag], badOrder(@"Subset", subset, ag));
+		STAssertEqualObjects(subset, ag, badOrder(@"Subset", subset, ag));
 		
 		// Test using options to exclude zero, one, or both endpoints.
 		CHSubsetConstructionOptions o;
 		
 		o = CHSubsetExcludeLowEndpoint;
 		subset = [[sortedSet subsetFromObject:@"A" toObject:@"G" options:o] allObjects];
-		STAssertTrue([subset isEqual:cdeg], badOrder(@"Subset", subset, cdeg));
+		STAssertEqualObjects(subset, cdeg, badOrder(@"Subset", subset, cdeg));
 		
 		o = CHSubsetExcludeHighEndpoint;
 		subset = [[sortedSet subsetFromObject:@"A" toObject:@"G" options:o] allObjects];
-		STAssertTrue([subset isEqual:acde], badOrder(@"Subset", subset, acde));
+		STAssertEqualObjects(subset, acde, badOrder(@"Subset", subset, acde));
 		
 		o = CHSubsetExcludeLowEndpoint | CHSubsetExcludeHighEndpoint;
 		subset = [[sortedSet subsetFromObject:@"A" toObject:@"G" options:o] allObjects];
-		STAssertTrue([subset isEqual:cde], badOrder(@"Subset", subset, cde));
+		STAssertEqualObjects(subset, cde, badOrder(@"Subset", subset, cde));
 		
 		subset = [[sortedSet subsetFromObject:nil toObject:nil options:o] allObjects];
-		STAssertTrue([subset isEqual:objects], badOrder(@"Subset", subset, objects));
+		STAssertEqualObjects(subset, objects, badOrder(@"Subset", subset, objects));
 		[sortedSet release];
 	}
 }

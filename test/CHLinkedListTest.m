@@ -424,11 +424,11 @@
 		                            NSException, NSInvalidArgumentException,
 		                            @"Should raise NSInvalidArgumentException");
 		STAssertFalse([list1 isEqual:[NSString string]], @"Should not be equal.");
-		STAssertTrue([list1 isEqual:list1], @"Should be equal to itself.");
+		STAssertEqualObjects(list1, list1, @"Should be equal to itself.");
 		list2 = [emptyLinkedLists objectAtIndex:i];
 		STAssertFalse([list1 isEqual:list2], @"Should not be equal.");
 		list2 = [equalLinkedLists objectAtIndex:i+1];
-		STAssertTrue([list1 isEqual:list2], @"Should be equal.");
+		STAssertEqualObjects(list1, list2, @"Should be equal.");
 		STAssertEquals([list1 hash], [list2 hash], @"Hashes should match.");
 	}
 }

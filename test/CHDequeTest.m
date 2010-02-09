@@ -111,9 +111,9 @@
 		                            NSException, NSInvalidArgumentException,
 		                            @"Should raise NSInvalidArgumentException");
 		STAssertFalse([deque1 isEqual:[NSString string]], @"Should not be equal.");
-		STAssertTrue([deque1 isEqual:deque1], @"Should be equal to itself.");
+		STAssertEqualObjects(deque1, deque1, @"Should be equal to itself.");
 		deque2 = [equalDeques objectAtIndex:i+1];
-		STAssertTrue([deque1 isEqual:deque2], @"Should be equal.");
+		STAssertEqualObjects(deque1, deque2, @"Should be equal.");
 		STAssertEquals([deque1 hash], [deque2 hash], @"Hashes should match.");
 		deque2 = [emptyDeques objectAtIndex:i];
 		STAssertFalse([deque1 isEqual:deque2], @"Should not be equal.");

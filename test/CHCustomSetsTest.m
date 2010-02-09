@@ -143,7 +143,7 @@
 - (void) testIsEqualToSet {
 	NSArray *array = [self randomNumbers];
 	[set addObjectsFromArray:array];
-	STAssertTrue([set isEqualToSet:[NSSet setWithArray:array]], @"Unequal sets.");
+	STAssertEqualObjects(set, [NSSet setWithArray:array], @"Unequal sets.");
 }
 
 - (void) testIntersectSet {
@@ -314,7 +314,7 @@
 }
 
 - (void) checkEqualityWithArray:(NSArray*)anArray {
-	STAssertTrue([anArray isEqualToArray:[set allObjects]], @"Wrong ordering.");
+	STAssertEqualObjects(anArray, [set allObjects], @"Wrong ordering.");
 }
 
 #pragma mark Initialization

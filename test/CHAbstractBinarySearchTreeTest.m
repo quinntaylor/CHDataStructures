@@ -93,8 +93,7 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	id<CHSearchTree> tree;
 	while (tree = [trees nextObject]) {
 		actual = [tree allObjectsWithTraversalOrder:CHTraverseAscending];
-		STAssertTrue([actual isEqualToArray:correct],
-					 badOrder(@"Ascending order", actual, correct));
+		STAssertEqualObjects(actual, correct, badOrder(@"Ascending order", actual, correct));
 	}
 	
 	// Test reverse ordering for all arrays
@@ -102,51 +101,41 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	trees = [nonEmptyTrees objectEnumerator];
 	while (tree = [trees nextObject]) {
 		actual = [tree allObjectsWithTraversalOrder:CHTraverseDescending];
-		STAssertTrue([actual isEqualToArray:correct],
-					 badOrder(@"Descending order", actual, correct));
+		STAssertEqualObjects(actual, correct, badOrder(@"Descending order", actual, correct));
 	}	
 	
 	// Test pre-order by individual tree
 	correct = [NSArray arrayWithObjects:@"C",@"B",@"A",@"D",@"E",nil];
 	actual = [outsideTree allObjectsWithTraversalOrder:CHTraversePreOrder];
-	STAssertTrue([actual isEqualToArray:correct],
-	             badOrder(@"Pre-order", actual, correct));
+	STAssertEqualObjects(actual, correct, badOrder(@"Pre-order", actual, correct));
 	correct = [NSArray arrayWithObjects:@"C",@"A",@"B",@"E",@"D",nil];
 	actual = [insideTree allObjectsWithTraversalOrder:CHTraversePreOrder];
-	STAssertTrue([actual isEqualToArray:correct],
-	             badOrder(@"Pre-order", actual, correct));
+	STAssertEqualObjects(actual, correct, badOrder(@"Pre-order", actual, correct));
 	correct = [NSArray arrayWithObjects:@"A",@"E",@"B",@"D",@"C",nil];
 	actual = [zigzagTree allObjectsWithTraversalOrder:CHTraversePreOrder];
-	STAssertTrue([actual isEqualToArray:correct],
-	             badOrder(@"Pre-order", actual, correct));
+	STAssertEqualObjects(actual, correct, badOrder(@"Pre-order", actual, correct));
 	
 	// Test post-order by individual tree
 	correct = [NSArray arrayWithObjects:@"A",@"B",@"E",@"D",@"C",nil];
 	actual = [outsideTree allObjectsWithTraversalOrder:CHTraversePostOrder];
-	STAssertTrue([actual isEqualToArray:correct],
-	             badOrder(@"Post-order", actual, correct));
+	STAssertEqualObjects(actual, correct, badOrder(@"Post-order", actual, correct));
 	correct = [NSArray arrayWithObjects:@"B",@"A",@"D",@"E",@"C",nil];
 	actual = [insideTree allObjectsWithTraversalOrder:CHTraversePostOrder];
-	STAssertTrue([actual isEqualToArray:correct],
-	             badOrder(@"Post-order", actual, correct));
+	STAssertEqualObjects(actual, correct, badOrder(@"Post-order", actual, correct));
 	correct = [NSArray arrayWithObjects:@"C",@"D",@"B",@"E",@"A",nil];
 	actual = [zigzagTree allObjectsWithTraversalOrder:CHTraversePostOrder];
-	STAssertTrue([actual isEqualToArray:correct],
-	             badOrder(@"Post-order", actual, correct));
+	STAssertEqualObjects(actual, correct, badOrder(@"Post-order", actual, correct));
 	
 	// Test level-order by individual tree
 	correct = [NSArray arrayWithObjects:@"C",@"B",@"D",@"A",@"E",nil];
 	actual = [outsideTree allObjectsWithTraversalOrder:CHTraverseLevelOrder];
-	STAssertTrue([actual isEqualToArray:correct],
-	             badOrder(@"Level-order", actual, correct));
+	STAssertEqualObjects(actual, correct, badOrder(@"Level-order", actual, correct));
 	correct = [NSArray arrayWithObjects:@"C",@"A",@"E",@"B",@"D",nil];
 	actual = [insideTree allObjectsWithTraversalOrder:CHTraverseLevelOrder];
-	STAssertTrue([actual isEqualToArray:correct],
-	             badOrder(@"Level-order", actual, correct));
+	STAssertEqualObjects(actual, correct, badOrder(@"Level-order", actual, correct));
 	correct = [NSArray arrayWithObjects:@"A",@"E",@"B",@"D",@"C",nil];
 	actual = [zigzagTree allObjectsWithTraversalOrder:CHTraverseLevelOrder];
-	STAssertTrue([actual isEqualToArray:correct],
-	             badOrder(@"Level-order", actual, correct));
+	STAssertEqualObjects(actual, correct, badOrder(@"Level-order", actual, correct));
 }
 
 - (void) testContainsObject {
@@ -233,10 +222,10 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 		tree2 = [emptyTrees objectAtIndex:i];
 		STAssertFalse([tree1 isEqualToSearchTree:tree2], @"Should not be equal.");
 		tree2 = [equalTrees objectAtIndex:i+1];
-		STAssertTrue([tree1 isEqualToSearchTree:tree2],       @"Should be equal.");
-		STAssertTrue([tree1 isEqualToSearchTree:insideTree],  @"Should be equal.");
-		STAssertTrue([tree1 isEqualToSearchTree:outsideTree], @"Should be equal.");
-		STAssertTrue([tree1 isEqualToSearchTree:zigzagTree],  @"Should be equal.");
+		STAssertEqualObjects(tree1, tree2,       @"Should be equal.");
+		STAssertEqualObjects(tree1, insideTree,  @"Should be equal.");
+		STAssertEqualObjects(tree1, outsideTree, @"Should be equal.");
+		STAssertEqualObjects(tree1, zigzagTree,  @"Should be equal.");
 		STAssertEquals([tree1 hash], [tree2 hash],       @"Hashes should match.");
 		STAssertEquals([tree1 hash], [insideTree hash],  @"Hashes should match.");
 		STAssertEquals([tree1 hash], [outsideTree hash], @"Hashes should match.");

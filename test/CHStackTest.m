@@ -89,9 +89,9 @@
 		                            NSException, NSInvalidArgumentException,
 		                            @"Should raise NSInvalidArgumentException");
 		STAssertFalse([stack1 isEqual:[NSString string]], @"Should not be equal.");
-		STAssertTrue([stack1 isEqual:stack1], @"Should be equal to itself.");
+		STAssertEqualObjects(stack1, stack1, @"Should be equal to itself.");
 		stack2 = [equalStacks objectAtIndex:i+1];
-		STAssertTrue([stack1 isEqual:stack2], @"Should be equal.");
+		STAssertEqualObjects(stack1, stack2, @"Should be equal.");
 		STAssertEquals([stack1 hash], [stack2 hash], @"Hashes should match.");
 		stack2 = [emptyStacks objectAtIndex:i];
 		STAssertFalse([stack1 isEqual:stack2], @"Should not be equal.");

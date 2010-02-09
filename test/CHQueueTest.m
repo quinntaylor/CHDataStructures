@@ -64,9 +64,9 @@
 		                            NSException, NSInvalidArgumentException,
 		                            @"Should raise NSInvalidArgumentException");
 		STAssertFalse([queue1 isEqual:[NSString string]], @"Should not be equal.");
-		STAssertTrue([queue1 isEqual:queue1], @"Should be equal to itself.");
+		STAssertEqualObjects(queue1, queue1, @"Should be equal to itself.");
 		queue2 = [equalQueues objectAtIndex:i+1];
-		STAssertTrue([queue1 isEqual:queue2], @"Should be equal.");
+		STAssertEqualObjects(queue1, queue2, @"Should be equal.");
 		STAssertEquals([queue1 hash], [queue2 hash], @"Hashes should match.");
 		queue2 = [emptyQueues objectAtIndex:i];
 		STAssertFalse([queue1 isEqual:queue2], @"Should not be equal.");

@@ -323,13 +323,13 @@
 		                            NSException, NSInvalidArgumentException,
 		                            @"Should raise NSInvalidArgumentException");
 		STAssertFalse([heap1 isEqual:[NSString string]], @"Should not be equal.");
-		STAssertTrue([heap1 isEqual:heap1], @"Should be equal to itself.");
+		STAssertEqualObjects(heap1, heap1, @"Should be equal to itself.");
 		heap2 = [emptyHeaps objectAtIndex:i];
 		STAssertFalse([heap1 isEqualToHeap:heap2], @"Should not be equal.");
 		heap2 = [reversedHeaps objectAtIndex:i];
 		STAssertFalse([heap1 isEqualToHeap:heap2], @"Should not be equal.");
 		heap2 = [equalHeaps objectAtIndex:i+1];
-		STAssertTrue([heap1 isEqualToHeap:heap2], @"Should be equal.");
+		STAssertEqualObjects(heap1, heap2, @"Should be equal.");
 		STAssertEquals([heap1 hash], [heap2 hash], @"Hashes should match.");
 	}
 }

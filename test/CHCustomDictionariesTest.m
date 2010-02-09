@@ -117,7 +117,7 @@ id replicateWithNSCoding(id dictionary) {
 	NSString *value = [dictionary objectForKey:key];
 	
 	[dictionary setObject:value forKey:key];
-	STAssertTrue([value isEqual:[dictionary objectForKey:key]], @"Should be equal.");
+	STAssertEqualObjects(value, [dictionary objectForKey:key], @"Should be equal.");
 	
 	[dictionary setObject:[NSString string] forKey:key];
 	STAssertFalse([value isEqual:[dictionary objectForKey:key]], @"Should not be equal.");
@@ -266,16 +266,15 @@ id replicateWithNSCoding(id dictionary) {
 - (void) testObjectsForKey {
 	[self populateDictionary];
 	
-	STAssertTrue(([[dictionary objectsForKey:@"foo"] isEqualToSet:
-				   [NSSet setWithObjects:@"A",@"B",@"C",nil]]),
-				 @"Incorrect objects for key");
-	STAssertTrue(([[dictionary objectsForKey:@"bar"] isEqualToSet:
-				   [NSSet setWithObjects:@"X",@"Y",@"Z",nil]]),
-				 @"Incorrect objects for key");
-	STAssertTrue(([[dictionary objectsForKey:@"baz"] isEqualToSet:
-				   [NSSet setWithObjects:@"1",@"2",@"3",nil]]),
-				 @"Incorrect objects for key");
-	
+	STAssertEqualObjects([dictionary objectsForKey:@"foo"],
+						 ([NSSet setWithObjects:@"A",@"B",@"C",nil]),
+						 @"Incorrect objects for key");
+	STAssertEqualObjects([dictionary objectsForKey:@"bar"],
+	                     ([NSSet setWithObjects:@"X",@"Y",@"Z",nil]),
+	                     @"Incorrect objects for key");
+	STAssertEqualObjects([dictionary objectsForKey:@"baz"],
+	                     ([NSSet setWithObjects:@"1",@"2",@"3",nil]),
+	                     @"Incorrect objects for key");
 	STAssertNil([dictionary objectsForKey:@"bogus"], @"Should be nil for bad key.");
 }
 
@@ -398,29 +397,6 @@ id replicateWithNSCoding(id dictionary) {
 
 @implementation CHDictionaryWithOrderingTest
 
-- (void) verifyKeyCountAndOrdering:(NSArray*)allKeys forDictionary:(id)aDictionary {
-	STAssertEquals([aDictionary count], [keyArray count], @"Incorrect key count.");
-	
-	if (expectedKeyOrder != nil) {
-		if (allKeys == nil)
-			allKeys = [aDictionary allKeys];
-		NSUInteger count = MIN([aDictionary count], [expectedKeyOrder count]);
-		for (NSUInteger i = 0; i < count; i++) {
-			STAssertEqualObjects([allKeys objectAtIndex:i],
-								 [expectedKeyOrder objectAtIndex:i],
-								 @"Wrong output ordering of keys.");
-		}
-	}
-}
-
-- (void) verifyKeyCountAndOrderingForDictionary:(id)aDictionary {
-	[self verifyKeyCountAndOrdering:nil forDictionary:aDictionary];
-}
-
-- (void) verifyKeyCountAndOrdering:(NSArray*)ordering {
-	[self verifyKeyCountAndOrdering:ordering forDictionary:dictionary];
-}
-
 - (void) testFirstKey {
 	if (![dictionary respondsToSelector:@selector(firstKey)])
 		return;
@@ -444,8 +420,7 @@ id replicateWithNSCoding(id dictionary) {
 	STAssertNotNil(enumerator, @"Key enumerator should be non-nil");
 	allKeys = [enumerator allObjects];
 	STAssertNotNil(allKeys, @"Key enumerator should return non-nil array.");
-	
-	[self verifyKeyCountAndOrderingForDictionary:dictionary];
+	STAssertEqualObjects(allKeys, [dictionary allKeys], @"Wrong key ordering");
 }
 
 - (void) testLastKey {
@@ -479,31 +454,30 @@ id replicateWithNSCoding(id dictionary) {
 	} else {
 		expectedKeyOrder = [keyArray sortedArrayUsingSelector:@selector(compare:)];
 	}
-	expectedKeyOrder = [[expectedKeyOrder reverseObjectEnumerator] allObjects];
-	[self verifyKeyCountAndOrdering:[[dictionary reverseKeyEnumerator] allObjects]];
+	STAssertEqualObjects([[dictionary reverseKeyEnumerator] allObjects],
+	                     [[expectedKeyOrder reverseObjectEnumerator] allObjects],
+						 @"Wrong key ordering");
 }
 
 - (void) testNSCoding {
 	[self populateDictionary];
-	[self verifyKeyCountAndOrderingForDictionary:dictionary];
-	
 	id clone = replicateWithNSCoding(dictionary);
-	[self verifyKeyCountAndOrderingForDictionary:clone];
-	STAssertEqualObjects([clone allKeys], [dictionary allKeys],
-						 @"Wrong key ordering on reconstruction.");
+	STAssertEqualObjects(clone, dictionary, @"Unequal after archiving");
 }
 
 - (void) testNSCopying {
 	id copy = [dictionary copy];
-	STAssertEquals([copy count], (NSUInteger)0, @"Copy of dictionary should be empty.");
-	STAssertEquals([dictionary hash], [copy hash], @"Hashes should match.");
 	STAssertEqualObjects([copy class], [dictionary class], @"Wrong class.");
+	STAssertEquals([copy hash], [dictionary hash], @"Hashes should match.");
+	STAssertEquals([copy count], [dictionary count], @"Wrong count.");
 	[copy release];
 	
 	[self populateDictionary];
 	copy = [dictionary copy];
-	[self verifyKeyCountAndOrderingForDictionary:copy];
 	STAssertEquals([copy hash], [dictionary hash], @"Hashes should match.");
+	STAssertEquals([copy count], [dictionary count], @"Wrong count.");
+	STAssertEqualObjects(copy, dictionary, @"Unequal after archiving");
+//	STAssertEqualObjects([copy allKeys], [dictionary allKeys], @"Wrong key ordering");
 	[copy release];
 }
 
