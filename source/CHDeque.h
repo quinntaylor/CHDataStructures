@@ -167,6 +167,21 @@
 - (NSEnumerator*) objectEnumerator;
 
 /**
+ Returns an array containing the objects in the receiver at the indexes specified by a given index set.
+ 
+ @param indexes A set of positions corresponding to objects to retrieve from the receiver.
+ @return A new array containing the objects in the receiver specified by @a indexes.
+ @throw NSRangeException If any location in @a indexes exceeds the bounds of the receiver.
+ 
+ @attention To retrieve objects in a given NSRange, pass <code>[NSIndexSet indexSetWithIndexesInRange:range]</code> as the parameter to this method.
+ 
+ @see allObjects
+ @see objectAtIndex:
+ @see removeObjectsAtIndexes:
+ */
+- (NSArray*) objectsAtIndexes:(NSIndexSet*)indexes;
+
+/**
  Returns an enumerator that accesses each object in the deque from back to front.
  
  @return An enumerator that accesses each object in the deque from back to front. The enumerator returned is never @c nil; if the deque is empty, the enumerator will always return @c nil for \link NSEnumerator#nextObject -nextObject\endlink and an empty array for \link NSEnumerator#allObjects -allObjects\endlink.
@@ -285,6 +300,19 @@
  @see removeObject:
  */
 - (void) removeObjectIdenticalTo:(id)anObject;
+
+/**
+ Remove the objects at the specified indexes from the receiver. Indexes of elements beyond the first specified index will decrease.
+ @param indexes A set of positions corresponding to objects to remove from the receiver.
+ @throw NSRangeException If any location in @a indexes exceeds the bounds of the receiver.
+ 
+ @attention To remove objects in a given @c NSRange, pass <code>[NSIndexSet indexSetWithIndexesInRange:range]</code> as the parameter to this method.
+ 
+ @see objectsAtIndexes:
+ @see removeAllObjects
+ @see removeObjectAtIndex:
+ */
+- (void) removeObjectsAtIndexes:(NSIndexSet*)indexes;
 
 /**
  Replaces the object at a given index with a given object.
