@@ -48,11 +48,13 @@
 - (NSUInteger) indexOfObjectIdenticalTo:(id)anObject;
 - (id) lastObject;
 - (NSEnumerator*) objectEnumerator;
+- (NSArray*) objectsAtIndexes:(NSIndexSet*)indexes;
 - (void) removeAllObjects;
 - (void) removeFirstObject;
 - (void) removeLastObject;
 - (void) removeObject:(id)anObject;
 - (void) removeObjectIdenticalTo:(id)anObject;
+- (void) removeObjectsAtIndexes:(NSIndexSet*)indexes;
 - (void) replaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject;
 - (NSEnumerator*) reverseObjectEnumerator;
 
