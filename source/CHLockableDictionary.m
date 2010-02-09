@@ -184,6 +184,8 @@ static const CFDictionaryValueCallBacks kCHLockableDictionaryValueCallBacks = {
 }
 
 - (void) setObject:(id)anObject forKey:(id)aKey {
+	if (anObject == nil || aKey == nil)
+		CHNilArgumentException([self class], _cmd);
 	CFDictionarySetValue(dictionary, [[aKey copy] autorelease], anObject);
 }
 
