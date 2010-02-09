@@ -9,8 +9,17 @@
  */
 
 #import "CHHeap.h"
+#import "CHLockableObject.h"
 
-@interface CHBinaryHeap : NSObject <CHHeap> {
+/**
+ @file CHBinaryHeap.h
+ A CHHeap implemented using a CFBinaryHeapRef internally.
+ */
+
+/**
+ A CHHeap implemented using a CFBinaryHeapRef internally.
+ */
+@interface CHBinaryHeap : CHLockableObject <CHHeap> {
 	NSComparisonResult sortOrder;
 	__strong CFBinaryHeapRef heap;
 	unsigned long mutations; /**< Used to track mutations for NSFastEnumeration. */
