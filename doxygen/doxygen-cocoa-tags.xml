@@ -1,6 +1,10 @@
 <tagfile>
   <!-- Core Foundation Types -->
   <compound kind="class">
+    <name>CFBinaryHeapRef</name>
+    <filename>http://developer.apple.com/mac/library/documentation/CoreFoundation/Reference/CFBinaryHeapRef/Reference/Reference.html</filename>
+  </compound>
+  <compound kind="class">
     <name>CFMutableDictionaryRef</name>
     <filename>http://developer.apple.com/mac/library/documentation/CoreFoundation/Reference/CFMutableDictionaryRef/Reference/Reference.html</filename>
   </compound>
