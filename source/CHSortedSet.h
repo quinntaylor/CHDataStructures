@@ -230,7 +230,8 @@ typedef enum {
  Ordering is based on an object's response to the @c -compare: message. Since no duplicates are allowed, if the receiver already contains an object for which a @c -compare: message returns @c NSOrderedSame, that object is released and replaced by @a anObject.
  
  @param anObject The object to add to the receiver.
- @throw NSInvalidArgumentException If @a anObject is @c nil.
+ 
+ @throw NSInvalidArgumentException if @a anObject is @c nil.
  
  @see addObjectsFromArray:
  */

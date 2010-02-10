@@ -443,6 +443,7 @@
 			}
 		}
 	}
+	STAssertThrows([set objectsAtIndexes:nil], @"Nil argument.");
 }
 
 - (void) testObjectEnumerator {
@@ -482,6 +483,7 @@
 								 @"Key selection mismatch.");
 		}
 	}	
+	STAssertThrows([set orderedSetWithObjectsAtIndexes:nil], @"Nil argument.");
 }
 
 #pragma mark Removing Objects
@@ -547,6 +549,7 @@
 			STAssertEqualObjects([set allObjects], expected, @"Array content mismatch.");
 		}
 	}	
+	STAssertThrows([set removeObjectsAtIndexes:nil], @"Nil argument.");
 }
 
 #pragma mark <Protocols>

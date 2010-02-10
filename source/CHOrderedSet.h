@@ -93,7 +93,7 @@
  @param index The insertion-order index of the value to retrieve.
  @return The value at the specified index, based on insertion order.
  
- @throw NSRangeException If @a index exceeds the bounds of the receiver.
+ @throw NSRangeException if @a index exceeds the bounds of the receiver.
  
  @see indexOfObject:
  @see objectsAtIndexes:
@@ -119,7 +119,9 @@
  
  @param indexes A set of positions corresponding to objects to retrieve from the receiver.
  @return A new array containing the objects in the receiver specified by @a indexes.
- @throw NSRangeException If any location in @a indexes exceeds the bounds of the receiver.
+ 
+ @throw NSRangeException if any location in @a indexes exceeds the bounds of the receiver.
+ @throw NSInvalidArgumentException if @a indexes is @c nil.
  
  @attention To retrieve objects in a given NSRange, pass <code>[NSIndexSet indexSetWithIndexesInRange:range]</code> as the parameter to this method.
  
@@ -135,7 +137,8 @@
  @param indexes A set of indexes for keys to retrieve from the receiver.
  @return An array containing the objects in the receiver at the indexes specified by @a indexes.
  
- @throw NSRangeException If any location in @a indexes exceeds the bounds of the receiver.
+ @throw NSRangeException if any location in @a indexes exceeds the bounds of the receiver.
+ @throw NSInvalidArgumentException if @a indexes is @c nil.
  
  @attention To retrieve entries in a given NSRange, pass <code>[NSIndexSet indexSetWithIndexesInRange:range]</code> as the parameter.
  */
@@ -164,7 +167,7 @@
  @param idx1 The index of the object to replace with the object at @a idx2.
  @param idx2 The index of the object to replace with the object at @a idx1.
  
- @throw NSRangeException If @a idx1 or @a idx2 exceeds the bounds of the receiver.
+ @throw NSRangeException if @a idx1 or @a idx2 exceeds the bounds of the receiver.
  
  @see indexOfObject:
  @see insertObject:atIndex:
@@ -197,7 +200,7 @@
  
  @param index The index of the object to remove.
  
- @throw NSRangeException If @a index exceeds the bounds of the receiver.
+ @throw NSRangeException if @a index exceeds the bounds of the receiver.
  
  @see minusSet:
  @see objectAtIndex:
@@ -212,7 +215,9 @@
 /**
  Remove the objects at the specified indexes from the receiver.
  @param indexes A set of positions corresponding to objects to remove from the receiver.
- @throw NSRangeException If any location in @a indexes exceeds the bounds of the receiver.
+ 
+ @throw NSRangeException if any location in @a indexes exceeds the bounds of the receiver.
+ @throw NSInvalidArgumentException if @a indexes is @c nil.
  
  @attention To remove objects in a given @c NSRange, pass <code>[NSIndexSet indexSetWithIndexesInRange:range]</code> as the parameter to this method.
  

@@ -142,7 +142,7 @@
  @param index An index from which to retrieve an object.
  @return The object located at index.
  
- @throw NSRangeException If @a index exceeds the bounds of the receiver.
+ @throw NSRangeException if @a index exceeds the bounds of the receiver.
  
  @see indexOfObject:
  @see indexOfObjectIdenticalTo:
@@ -166,7 +166,9 @@
  
  @param indexes A set of positions corresponding to objects to retrieve from the receiver.
  @return A new array containing the objects in the receiver specified by @a indexes.
- @throw NSRangeException If any location in @a indexes exceeds the bounds of the receiver.
+ 
+ @throw NSRangeException if any location in @a indexes exceeds the bounds of the receiver.
+ @throw NSInvalidArgumentException if @a indexes is @c nil.
  
  @attention To retrieve objects in a given NSRange, pass <code>[NSIndexSet indexSetWithIndexesInRange:range]</code> as the parameter to this method.
  
@@ -186,7 +188,7 @@
  
  @param anObject The object to add to the receiver.
  
- @throw NSInvalidArgumentException If @a anObject is @c nil.
+ @throw NSInvalidArgumentException if @a anObject is @c nil.
  
  @see lastObject
  @see prependObject:
@@ -208,7 +210,7 @@
  @param idx1 The index of the object to replace with the object at @a idx2.
  @param idx2 The index of the object to replace with the object at @a idx1.
  
- @throw NSRangeException If @a idx1 or @a idx2 exceeds the bounds of the receiver.
+ @throw NSRangeException if @a idx1 or @a idx2 exceeds the bounds of the receiver.
  
  @attention Index-oriented operations are generally slow in linked lists, which are not optimized for random access. Arrays are much faster for such functionality.
  
@@ -223,8 +225,8 @@
  @param anObject The object to add to the receiver.
  @param index The index at which to insert @a anObject.
  
- @throw NSInvalidArgumentException If @a anObject is @c nil.
- @throw NSRangeException If @a index exceeds the bounds of the receiver.
+ @throw NSInvalidArgumentException if @a anObject is @c nil.
+ @throw NSRangeException if @a index exceeds the bounds of the receiver.
  
  @attention Inserting in the middle of a linked list is a somewhat inefficient operation &mdash; although values aren't shifted by one like in arrays, elements must be traversed one by one to find the specified index.
  */
@@ -235,7 +237,7 @@
  
  @param anObject The object to add to the receiver.
  
- @throw NSInvalidArgumentException If @a anObject is @c nil.
+ @throw NSInvalidArgumentException if @a anObject is @c nil.
  
  @see addObject:
  @see firstObject
@@ -277,7 +279,7 @@
  
  @param index The index from which to remove the object.
  
- @throw NSRangeException If @a index exceeds the bounds of the receiver.
+ @throw NSRangeException if @a index exceeds the bounds of the receiver.
  */
 - (void) removeObjectAtIndex:(NSUInteger)index;
 
@@ -298,7 +300,9 @@
 /**
  Remove the objects at the specified indexes from the receiver. Indexes of elements beyond the first specified index will decrease.
  @param indexes A set of positions corresponding to objects to remove from the receiver.
- @throw NSRangeException If any location in @a indexes exceeds the bounds of the receiver.
+ 
+ @throw NSRangeException if any location in @a indexes exceeds the bounds of the receiver.
+ @throw NSInvalidArgumentException if @a indexes is @c nil.
  
  @attention To remove objects in a given @c NSRange, pass <code>[NSIndexSet indexSetWithIndexesInRange:range]</code> as the parameter to this method.
  
@@ -324,8 +328,8 @@
  @param index The index of the object to be replaced.
  @param anObject The object with which to replace the object at @a index in the receiver.
  
- @throw NSRangeException If @a index exceeds the bounds of the receiver.
- @throw NSInvalidArgumentException If @a anObject is @c nil.
+ @throw NSRangeException if @a index exceeds the bounds of the receiver.
+ @throw NSInvalidArgumentException if @a anObject is @c nil.
  */
 - (void) replaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject;
 

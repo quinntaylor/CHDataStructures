@@ -256,6 +256,7 @@
 			}
 		}
 	}
+	STAssertThrows([collection objectsAtIndexes:nil], @"Nil argument.");
 }
 
 - (void) testRemoveAllObjects {
@@ -359,6 +360,7 @@
 			STAssertEqualObjects([collection allObjects], expected, @"Array content mismatch.");
 		}
 	}	
+	STAssertThrows([collection removeObjectsAtIndexes:nil], @"Nil argument.");
 }
 
 - (void) testReplaceObjectAtIndexWithObject {

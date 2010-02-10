@@ -477,6 +477,7 @@
 		STAssertEqualObjects([list objectsAtIndexes:indexes],
 							 [abc objectsAtIndexes:indexes],
 							 @"Range selections should be equal.");
+		STAssertThrows([list objectsAtIndexes:nil], @"Nil argument.");
 		[list release];
 	}
 }
@@ -708,6 +709,7 @@
 				STAssertEqualObjects([list allObjects], expected, @"Array content mismatch.");
 			}
 		}	
+		STAssertThrows([list removeObjectsAtIndexes:nil], @"Nil argument.");
 	}
 }
 

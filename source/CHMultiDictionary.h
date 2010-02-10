@@ -72,7 +72,8 @@
  
  @param aKey The key with which to associate @a anObject.
  @param anObject An object to add to an entry for @a aKey in the receiver. If an entry for @a aKey already exists in the receiver, @a anObject is added using \link NSMutableSet#addObject: -[NSMutableSet addObject:]\endlink, otherwise a new entry is created.
- @throw NSInvalidArgumentException If @a aKey or @a anObject is @c nil.
+ 
+ @throw NSInvalidArgumentException if @a aKey or @a anObject is @c nil.
  
  @see addObjects:forKey:
  @see objectsForKey:
@@ -86,7 +87,8 @@
  
  @param aKey The key with which to associate @a anObject.
  @param objectSet A set of objects to add to an entry for @a aKey in the receiver. If an entry for @a aKey already exists in the receiver, @a anObject is added using \link NSMutableSet#unionSet: -[NSMutableSet unionSet:]\endlink, otherwise a new entry is created.
- @throw NSInvalidArgumentException If @a aKey or @a objectSet is @c nil.
+ 
+ @throw NSInvalidArgumentException if @a aKey or @a objectSet is @c nil.
  
  @see addObject:forKey:
  @see objectsForKey:
@@ -100,7 +102,8 @@
  
  @param aKey The key for which to remove an entry.
  @param anObject An object (possibly) associated with @a aKey in the receiver. Objects are considered to be equal if -compare: returns NSOrderedSame.
- @throw NSInvalidArgumentException If @a aKey or @a anObject is @c nil.
+ 
+ @throw NSInvalidArgumentException if @a aKey or @a anObject is @c nil.
  
  If @a aKey does not exist in the receiver, or if @a anObject is not associated with @a aKey, the contents of the receiver are not modified.
  
@@ -127,7 +130,8 @@
  
  @param aKey The key with which to associate the objects in @a objectSet.
  @param objectSet A set of objects to associate with @a key. If @a objectSet is empty, the contents of the receiver are not modified. If an entry for @a key already exists in the receiver, @a objectSet is added using \link NSMutableSet#setSet: -[NSMutableSet setSet:]\endlink, otherwise a new entry is created.
- @throw NSInvalidArgumentException If @a aKey or @a objectSet is @c nil.
+ 
+ @throw NSInvalidArgumentException if @a aKey or @a objectSet is @c nil.
  
  @see addObject:forKey:
  @see addObjects:forKey:

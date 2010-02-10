@@ -84,7 +84,7 @@
  @param index The insertion-order index of the key to retrieve.
  @return The key at the specified index, based on insertion order.
  
- @throw NSRangeException If @a index exceeds the bounds of the receiver.
+ @throw NSRangeException if @a index exceeds the bounds of the receiver.
  
  @see \link NSDictionary#containsKey: - containsKey:\endlink
  @see firstKey
@@ -98,7 +98,9 @@
  
  @param indexes A set of positions corresponding to keys to retrieve from the receiver.
  @return A new array containing the keys in the receiver specified by @a indexes.
- @throw NSRangeException If any location in @a indexes exceeds the bounds of the receiver.
+ 
+ @throw NSRangeException if any location in @a indexes exceeds the bounds of the receiver.
+ @throw NSInvalidArgumentException if @a indexes is @c nil.
  
  @see \link NSDictionary#allKeys - allKeys\endlink
  @see orderedDictionaryWithKeysAtIndexes:
@@ -111,7 +113,7 @@
  @param index The insertion-order index of the key for the value to retrieve.
  @return The value for the key at the specified index, based on insertion order.
  
- @throw NSRangeException If @a index exceeds the bounds of the receiver.
+ @throw NSRangeException if @a index exceeds the bounds of the receiver.
  
  @see indexOfKey:
  @see keyAtIndex:
@@ -126,7 +128,8 @@
  @param indexes A set of positions corresponding to objects to retrieve from the receiver.
  @return A new array containing the objects in the receiver for the keys specified by @a indexes.
 
- @throw NSRangeException If any location in @a indexes exceeds the bounds of the receiver.
+ @throw NSRangeException if any location in @a indexes exceeds the bounds of the receiver.
+ @throw NSInvalidArgumentException if @a indexes is @c nil.
  
  @see keysAtIndexes:
  @see \link NSDictionary#objectsForKeys:notFoundMarker: - objectsForKeys:notFoundMarker:\endlink
@@ -140,7 +143,8 @@
  @param indexes A set of indexes for keys to retrieve from the receiver.
  @return An array containing the entries in the receiver at the indexes specified by @a indexes.
  
- @throw NSRangeException If any location in @a indexes exceeds the bounds of the receiver.
+ @throw NSRangeException if any location in @a indexes exceeds the bounds of the receiver.
+ @throw NSInvalidArgumentException if @a indexes is @c nil.
  
  @attention To retrieve entries in a given NSRange, pass <code>[NSIndexSet indexSetWithIndexesInRange:range]</code> as the parameter.
  */
@@ -173,7 +177,7 @@
  @param idx1 The index of the key to replace with the key at @a idx2.
  @param idx2 The index of the key to replace with the key at @a idx1.
  
- @throw NSRangeException If @a idx1 or @a idx2 exceeds the bounds of the receiver.
+ @throw NSRangeException if @a idx1 or @a idx2 exceeds the bounds of the receiver.
  
  @see indexOfKey:
  @see keyAtIndex:
@@ -187,8 +191,8 @@
  @param aKey The key for @a anObject. The key is copied using @c -copyWithZone: so keys must conform to the NSCopying protocol. Must not be @c nil.
  @param index The index in the receiver's key ordering at which to insert @a anObject.
  
- @throw NSRangeException If @a index exceeds the bounds of the receiver.
- @throw NSInvalidArgumentException If @a aKey or @a anObject is @c nil.  If you need to represent a @c nil value in the dictionary, use NSNull.
+ @throw NSRangeException if @a index exceeds the bounds of the receiver.
+ @throw NSInvalidArgumentException if @a aKey or @a anObject is @c nil.  If you need to represent a @c nil value in the dictionary, use NSNull.
  
  @see indexOfKey:
  @see keyAtIndex:
@@ -201,7 +205,7 @@
  
  @param index The index of the key to remove.
  
- @throw NSRangeException If @a index exceeds the bounds of the receiver.
+ @throw NSRangeException if @a index exceeds the bounds of the receiver.
  
  @see indexOfKey:
  @see keyAtIndex:
@@ -215,7 +219,8 @@
  
  @param indexes The indexes of the keys to remove from the receiver.
  
- @throw NSRangeException If any location in @a indexes exceeds the bounds of the receiver.
+ @throw NSRangeException if any location in @a indexes exceeds the bounds of the receiver.
+ @throw NSInvalidArgumentException if @a indexes is @c nil.
  
  @see objectsForKeysAtIndexes:
  @see removeObjectForKeyAtIndex:
@@ -238,8 +243,8 @@
  @param anObject The new value to be set for the key at @a index. The object receives a @c -retain message before being added to the receiver. Must not be @c nil.
  @param index The index of the key for which to set the value.
  
- @throw NSInvalidArgumentException If @a anObject is @c nil. If you need to represent a @c nil value in the dictionary, use NSNull.
- @throw NSRangeException If @a index exceeds the bounds of the receiver.
+ @throw NSInvalidArgumentException if @a anObject is @c nil. If you need to represent a @c nil value in the dictionary, use NSNull.
+ @throw NSRangeException if @a index exceeds the bounds of the receiver.
  
  @see insertObject:forKey:atIndex:
  @see setObject:forKey:

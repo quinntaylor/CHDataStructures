@@ -409,6 +409,7 @@
 			}
 		}
 	}
+	STAssertThrows([buffer objectsAtIndexes:nil], @"Nil argument.");
 }
 
 #pragma mark Removal
@@ -627,6 +628,7 @@
 			STAssertEqualObjects([buffer allObjects], expected, @"Array content mismatch.");
 		}
 	}	
+	STAssertThrows([buffer removeObjectsAtIndexes:nil], @"Nil argument.");
 }
 
 - (void) testReplaceObjectAtIndexWithObject {

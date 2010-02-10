@@ -607,6 +607,7 @@ id replicateWithNSCoding(id dictionary) {
 								 @"Key selection mismatch.");
 		}
 	}
+	STAssertThrows([dictionary keysAtIndexes:nil], @"Nil argument.");
 }
 
 - (void) testObjectForKeyAtIndex {
@@ -634,6 +635,7 @@ id replicateWithNSCoding(id dictionary) {
 			[dictionary objectsForKeysAtIndexes:indexes];
 		}
 	}
+	STAssertThrows([dictionary objectsForKeysAtIndexes:nil], @"Nil argument.");
 }
 
 - (void) testOrderedDictionaryWithKeysAtIndexes {
@@ -658,6 +660,7 @@ id replicateWithNSCoding(id dictionary) {
 								 @"Key selection mismatch.");
 		}
 	}
+	STAssertThrows([dictionary orderedDictionaryWithKeysAtIndexes:nil], @"Nil argument.");
 }
 
 - (void) testRemoveObjectForKeyAtIndex {
@@ -714,6 +717,7 @@ id replicateWithNSCoding(id dictionary) {
 								 @"Key selection mismatch.");
 		}
 	}	
+	STAssertThrows([dictionary removeObjectsForKeysAtIndexes:nil], @"Nil argument.");
 }
 
 @end

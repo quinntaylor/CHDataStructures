@@ -84,6 +84,7 @@ HIDDEN void initializeGCStatus();
  @param method The method selector where the problem originated. Callers should pass @c _cmd for this parameter.
  @param index The offending index passed to the receiver.
  @param elements The number of elements present in the receiver.
+ 
  @throw NSRangeException
  
  @see \link NSException#raise:format: +[NSException raise:format:]\endlink
@@ -99,6 +100,7 @@ OBJC_EXPORT void CHIndexOutOfRangeException(Class aClass, SEL method,
  @param aClass The class object for the originator of the exception. Callers should pass the result of <code>[self class]</code> for this parameter.
  @param method The method selector where the problem originated. Callers should pass @c _cmd for this parameter.
  @param str An NSString describing the offending invalid argument.
+ 
  @throw NSInvalidArgumentException
  
  @see \link NSException#raise:format: +[NSException raise:format:]\endlink
@@ -112,6 +114,7 @@ OBJC_EXPORT void CHInvalidArgumentException(Class aClass, SEL method, NSString *
  
  @param aClass The class object for the originator of the exception. Callers should pass the result of <code>[self class]</code> for this parameter.
  @param method The method selector where the problem originated. Callers should pass @c _cmd for this parameter.
+ 
  @throw NSInvalidArgumentException
  
  @see CHInvalidArgumentException()
@@ -125,6 +128,7 @@ OBJC_EXPORT void CHNilArgumentException(Class aClass, SEL method);
  
  @param aClass The class object for the originator of the exception. Callers should pass the result of <code>[self class]</code> for this parameter.
  @param method The method selector where the problem originated. Callers should pass @c _cmd for this parameter.
+ 
  @throw NSGenericException
  
  @see \link NSException#raise:format: +[NSException raise:format:]\endlink
@@ -138,6 +142,7 @@ OBJC_EXPORT void CHMutatedCollectionException(Class aClass, SEL method);
  
  @param aClass The class object for the originator of the exception. Callers should pass the result of <code>[self class]</code> for this parameter.
  @param method The method selector where the problem originated. Callers should pass @c _cmd for this parameter.
+ 
  @throw NSInternalInconsistencyException
  
  @see \link NSException#raise:format: +[NSException raise:format:]\endlink
@@ -182,7 +187,7 @@ OBJC_EXPORT void CHQuietLog(NSString *format, ...);
  @param collection1 The first collection to be compared.
  @param collection2 The second collection to be compared.
  
- @throw Exception If one of both of the arguments do not respond to the @c -count or @c -objectEnumerator selectors.
+ @throw Exception if one of both of the arguments do not respond to the @c -count or @c -objectEnumerator selectors.
  */
 OBJC_EXPORT BOOL collectionsAreEqual(id collection1, id collection2);
 

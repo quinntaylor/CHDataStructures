@@ -140,7 +140,8 @@
  Insert a given object into the heap.
  
  @param anObject The object to add to the heap.
- @throw NSInvalidArgumentException If @a anObject is @c nil.
+ 
+ @throw NSInvalidArgumentException if @a anObject is @c nil.
  
  @see addObjectsFromArray:
  */
