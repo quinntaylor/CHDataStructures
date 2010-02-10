@@ -17,10 +17,10 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
  An NSEnumerator for traversing a CHSinglyLinkedList from front to back.
  */
 @interface CHSinglyLinkedListEnumerator : NSEnumerator {
-	CHSinglyLinkedList *collection; /**< The source of enumerated objects. */
-	__strong CHSinglyLinkedListNode *current; /**< The next node to be enumerated. */
-	unsigned long mutationCount; /**< Stores the collection's initial mutation. */
-	unsigned long *mutationPtr; /**< Pointer for checking changes in mutation. */
+	CHSinglyLinkedList *collection; // The source of enumerated objects.
+	__strong CHSinglyLinkedListNode *current; // The next node to be enumerated.
+	unsigned long mutationCount; // Stores the collection's initial mutation.
+	unsigned long *mutationPtr; // Pointer for checking changes in mutation.
 }
 
 /**

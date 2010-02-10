@@ -19,9 +19,9 @@
 
 /** A struct for nodes in a CHDoublyLinkedList. */
 typedef struct CHDoublyLinkedListNode {
-	id object; /**< The object associated with this node in the list. */
-	__strong struct CHDoublyLinkedListNode *next; /**< Next node in the list. */
-	__strong struct CHDoublyLinkedListNode *prev; /**< Previous node in the list. */
+	id object; ///< The object associated with this node in the list.
+	__strong struct CHDoublyLinkedListNode *next; ///< Next node in the list.
+	__strong struct CHDoublyLinkedListNode *prev; ///< Previous node in the list.
 } CHDoublyLinkedListNode;
 
 #pragma mark -
@@ -45,10 +45,10 @@ typedef struct CHDoublyLinkedListNode {
  */
 @interface CHDoublyLinkedList : CHLockableObject <CHLinkedList>
 {
-	__strong CHDoublyLinkedListNode *head; /**< Dummy node at the front of the list. */
-	__strong CHDoublyLinkedListNode *tail; /**< Dummy node at the back of the list. */
-	NSUInteger count; /**< The number of objects currently in the list. */
-	unsigned long mutations; /**< Tracks mutations for NSFastEnumeration. */
+	__strong CHDoublyLinkedListNode *head; // Dummy node at the front of the list.
+	__strong CHDoublyLinkedListNode *tail; // Dummy node at the back of the list.
+	NSUInteger count; // The number of objects currently in the list.
+	unsigned long mutations; // Tracks mutations for NSFastEnumeration.
 }
 
 /**

@@ -21,11 +21,11 @@
  A set of constant values denoting the order in which to traverse a tree structure. For details, see: http://en.wikipedia.org/wiki/Tree_traversal#Traversal_methods
  */
 typedef enum {
-	CHTraverseAscending,   /**< Visit left subtree, node, then right subtree. */
-	CHTraverseDescending,  /**< Visit right subtree, node, then left subtree. */
-	CHTraversePreOrder,    /**< Visit node, left subtree, then right subtree. */
-	CHTraversePostOrder,   /**< Visit left subtree, right subtree, then node. */
-	CHTraverseLevelOrder   /**< Visit nodes from left-right, top-bottom. */
+	CHTraverseAscending,   ///< Visit left subtree, node, then right subtree.
+	CHTraverseDescending,  ///< Visit right subtree, node, then left subtree.
+	CHTraversePreOrder,    ///< Visit node, left subtree, then right subtree.
+	CHTraversePostOrder,   ///< Visit left subtree, right subtree, then node.
+	CHTraverseLevelOrder   ///< Visit nodes from left-right, top-bottom.
 } CHTraversalOrder;
 
 #define isValidTraversalOrder(o) (o>=CHTraverseAscending && o<=CHTraverseLevelOrder)

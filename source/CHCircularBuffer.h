@@ -24,14 +24,14 @@
  This class adopts the CHLockable protocol to add simple built-in locking capabilities. An NSLock is used internally to coordinate the operation of multiple threads of execution within the same application, and methods are exposed to allow clients to manipulate the lock in simple ways. Since not all clients will use the lock, it is created lazily the first time a client attempts to acquire the lock.
 */
 @interface CHCircularBuffer : NSMutableArray <CHLockable> {
-	__strong id *array; /**< Primitive C array for storing collection contents. */
-	NSUInteger arrayCapacity; /**< How many pointers @a array can accommodate. */
-	NSUInteger count; /**< The number of objects currently in the buffer. */
-	NSUInteger headIndex; /**< The array index of the first object. */
-	NSUInteger tailIndex; /**< The array index after the last object. */
-	unsigned long mutations; /**< Tracks mutations for NSFastEnumeration. */
+	__strong id *array; // Primitive C array for storing collection contents.
+	NSUInteger arrayCapacity; // How many pointers @a array can accommodate.
+	NSUInteger count; // The number of objects currently in the buffer.
+	NSUInteger headIndex; // The array index of the first object.
+	NSUInteger tailIndex; // The array index after the last object.
+	unsigned long mutations; // Tracks mutations for NSFastEnumeration.
 	
-	NSLock* lock; /**< A lock for synchronizing interaction between threads. */
+	NSLock* lock; // A lock for synchronizing interaction between threads.
 }
 
 // The following methods are undocumented since they are only reimplementations.

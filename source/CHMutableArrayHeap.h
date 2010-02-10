@@ -19,9 +19,9 @@
  A simple CHHeap implemented as a subclass of NSMutableArray.
  */
 @interface CHMutableArrayHeap : NSMutableArray <CHHeap> {
-	NSMutableArray *array;
-	NSComparisonResult sortOrder;
-	unsigned long mutations; /**< Used to track mutations for NSFastEnumeration. */
+	NSMutableArray *array; // An array to use for storing objects in the heap.
+	NSComparisonResult sortOrder; // Whether to sort objects ascending or not.
+	unsigned long mutations; // Used to track mutations for NSFastEnumeration.
 }
 
 /**

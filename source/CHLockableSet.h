@@ -28,8 +28,8 @@
  @note Any method inherited from NSSet or NSMutableSet is supported by this class and its children. Please see the documentation for those classes for details.
  */ 
 @interface CHLockableSet : NSMutableSet <CHLockable> {
-	NSLock* lock; /**< A lock for synchronizing interaction between threads. */
-	__strong CFMutableSetRef set; /**< A Core Foundation mutable set. */
+	NSLock* lock; // A lock for synchronizing interaction between threads.
+	__strong CFMutableSetRef set; // A Core Foundation set.
 }
 
 - (id) initWithCapacity:(NSUInteger)numItems;

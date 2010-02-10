@@ -19,8 +19,8 @@
 
 /** A struct for nodes in a CHSinglyLinkedList. */
 typedef struct CHSinglyLinkedListNode {
-	id object; /**< The object associated with this node in the list. */
-	__strong struct CHSinglyLinkedListNode *next; /**< The next node in the list. */
+	id object; ///< The object associated with this node in the list.
+	__strong struct CHSinglyLinkedListNode *next; ///< The next node in the list.
 } CHSinglyLinkedListNode;
 
 #pragma mark -
@@ -44,10 +44,10 @@ typedef struct CHSinglyLinkedListNode {
  */
 @interface CHSinglyLinkedList : CHLockableObject <CHLinkedList>
 {
-	__strong CHSinglyLinkedListNode *head;  /**< Dummy node at the front of the list. */
-	__strong CHSinglyLinkedListNode *tail;  /**< Pointer to last node in a list. */
-	NSUInteger count; /**< The number of objects currently stored in a list. */
-	unsigned long mutations; /**< Tracks mutations for NSFastEnumeration. */
+	__strong CHSinglyLinkedListNode *head; // Dummy node at the front of the list.
+	__strong CHSinglyLinkedListNode *tail; // Pointer to last node in a list.
+	NSUInteger count; // The number of objects currently stored in a list.
+	unsigned long mutations; // Tracks mutations for NSFastEnumeration.
 }
 
 @end

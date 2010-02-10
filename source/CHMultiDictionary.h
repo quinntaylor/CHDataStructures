@@ -30,7 +30,7 @@
  Unlike NSDictionary and other Cocoa collections, CHMultiDictionary has not been designed with mutable and immutable variants. A multimap is not that much more useful if it is immutable, so any copies made of this class are mutable by definition.
  */
 @interface CHMultiDictionary : CHLockableDictionary {
-	NSUInteger objectCount; /**< Number of objects currently in the multimap. */
+	NSUInteger objectCount; // Number of objects currently in the multimap.
 }
 
 #pragma mark Querying Contents

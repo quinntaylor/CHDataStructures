@@ -45,13 +45,13 @@
  Since CHUnbalancedTree doesn't store any extra data, the second union is essentially 4 bytes of pure overhead per node. However, since unbalanced trees are generally not a good choice for sorting large data sets anyway, this is largely a moot point.
  */
 typedef struct CHBinaryTreeNode {
-	id object;                        /**< The object stored in the node. */
+	id object;                        ///< The object stored in the node.
 	union {
 		struct {
-			__strong struct CHBinaryTreeNode *left;  /**< Link to left child. */
-			__strong struct CHBinaryTreeNode *right; /**< Link to right child. */
+			__strong struct CHBinaryTreeNode *left;  ///< Link to left child.
+			__strong struct CHBinaryTreeNode *right; ///< Link to right child.
 		};
-		__strong struct CHBinaryTreeNode *link[2];   /**< Links to both childen. */
+		__strong struct CHBinaryTreeNode *link[2];   ///< Links to both childen.
 	};
 	union {
 		  int32_t balance;   // Used by CHAVLTree
@@ -70,10 +70,10 @@ typedef struct CHBinaryTreeNode {
  */
 @interface CHAbstractBinarySearchTree : CHLockableObject <CHSearchTree>
 {
-	__strong CHBinaryTreeNode *header; /**< Dummy header; no more checks for root. */
-	__strong CHBinaryTreeNode *sentinel; /**< Dummy leaf; no more checks for NULL. */
-	NSUInteger count; /**< The number of objects currently in the tree. */
-	unsigned long mutations; /**< Tracks mutations for NSFastEnumeration. */
+	__strong CHBinaryTreeNode *header; // Dummy header; no more checks for root.
+	__strong CHBinaryTreeNode *sentinel; // Dummy leaf; no more checks for NULL.
+	NSUInteger count; // The number of objects currently in the tree.
+	unsigned long mutations; // Tracks mutations for NSFastEnumeration.
 }
 
 /**

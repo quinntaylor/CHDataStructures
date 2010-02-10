@@ -32,7 +32,7 @@
 <NSCoding, NSCopying>
 #endif
 {
-	id<CHLinkedList> list; /**< List used for storing contents of collection. */
+	id<CHLinkedList> list; // List used for storing contents of collection.
 }
 
 - (id) initWithArray:(NSArray*)anArray;

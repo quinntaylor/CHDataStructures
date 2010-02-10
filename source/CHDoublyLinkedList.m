@@ -17,12 +17,12 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
  An NSEnumerator for traversing a CHDoublyLinkedList in forward or reverse order.
  */
 @interface CHDoublyLinkedListEnumerator : NSEnumerator {
-	CHDoublyLinkedList *collection; /**< The source of enumerated objects. */
-	__strong CHDoublyLinkedListNode *current; /**< The next node to be enumerated. */
-	__strong CHDoublyLinkedListNode *sentinel; /**< Node that signifies completion. */
-	BOOL reverse; /**< Whether the enumerator is proceeding from back to front. */
-	unsigned long mutationCount; /**< Stores the collection's initial mutation. */
-	unsigned long *mutationPtr; /**< Pointer for checking changes in mutation. */
+	CHDoublyLinkedList *collection; // The source of enumerated objects.
+	__strong CHDoublyLinkedListNode *current; // The next node to be enumerated.
+	__strong CHDoublyLinkedListNode *sentinel; // Node that signifies completion.
+	BOOL reverse; // Whether the enumerator is proceeding from back to front.
+	unsigned long mutationCount; // Stores the collection's initial mutation.
+	unsigned long *mutationPtr; // Pointer for checking changes in mutation.
 }
 
 /**

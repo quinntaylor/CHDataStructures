@@ -27,7 +27,7 @@
  @todo Allow setting a maximum size, and either reject additions or evict the "oldest" item when the limit is reached? (Perhaps this would be better done by the user...)
  */
 @interface CHOrderedSet : CHLockableSet {
-	id ordering; /**< A structure for maintaining ordering of the objects. */
+	id ordering; // A structure for maintaining ordering of the objects.
 }
 
 #pragma mark Querying Contents

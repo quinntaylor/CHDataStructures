@@ -23,14 +23,14 @@
  */
 @interface CHCircularBufferEnumerator : NSEnumerator
 {
-	id *array;                   /**< Underlying circular buffer to be enumerated. */
-	NSUInteger arrayCapacity;    /**< Allocated capacity of @a buffer. */
-	NSUInteger arrayCount;       /**< Number of elements in @a buffer. */
-	NSUInteger enumerationCount; /**< How many objects have been enumerated. */
-	NSUInteger enumerationIndex; /**< Index of the next element to enumerate. */
-	BOOL reverseEnumeration;     /**< Whether to enumerate back-to-front. */
-	unsigned long mutationCount; /**< Stores the collection's initial mutation. */
-	unsigned long *mutationPtr;  /**< Pointer for checking changes in mutation. */	
+	id *array;                   // Underlying circular buffer to be enumerated.
+	NSUInteger arrayCapacity;    // Allocated capacity of @a array.
+	NSUInteger arrayCount;       // Number of elements in @a array.
+	NSUInteger enumerationCount; // How many objects have been enumerated.
+	NSUInteger enumerationIndex; // Index of the next element to enumerate.
+	BOOL reverseEnumeration;     // Whether to enumerate back-to-front.
+	unsigned long mutationCount; // Stores the collection's initial mutation.
+	unsigned long *mutationPtr;  // Pointer for checking changes in mutation.
 }
 
 /**

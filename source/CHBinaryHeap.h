@@ -20,9 +20,9 @@
  A CHHeap implemented using a CFBinaryHeapRef internally.
  */
 @interface CHBinaryHeap : CHLockableObject <CHHeap> {
-	NSComparisonResult sortOrder;
-	__strong CFBinaryHeapRef heap;
-	unsigned long mutations; /**< Used to track mutations for NSFastEnumeration. */
+	__strong CFBinaryHeapRef heap; // Used for storing objects in the heap.
+	NSComparisonResult sortOrder; // Whether to sort objects ascending or not.
+	unsigned long mutations; // Used to track mutations for NSFastEnumeration.
 }
 
 @end

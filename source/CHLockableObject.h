@@ -21,7 +21,7 @@
  */
 @interface CHLockableObject : NSObject <CHLockable>
 {
-	NSLock* lock; /**< A lock for synchronizing interaction between threads. */
+	NSLock* lock; // A lock for synchronizing interaction between threads.
 }
 
 @end
