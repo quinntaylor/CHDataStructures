@@ -129,6 +129,18 @@ static NSString* badOrder(NSString *traversal, NSArray *order, NSArray *correct)
 	}
 }
 
+- (void) testIsEqual {
+	NSEnumerator *classes = [sortedSetClasses objectEnumerator];
+	Class aClass;
+	id object = [[NSObject new] autorelease];
+	while (aClass = [classes nextObject]) {
+		sortedSet = [[aClass alloc] initWithArray:objects];
+		STAssertTrue([sortedSet isEqual:sortedSet], @"Should be equal.");
+		STAssertFalse([sortedSet isEqual:object], @"Should not be equal."); 
+		[sortedSet release];
+	}
+}
+
 - (void) testIsEqualToSortedSet {
 	// TODO: Write this test
 }
