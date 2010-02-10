@@ -78,13 +78,13 @@
 #pragma mark Modifying Contents
 
 - (void) removeAllObjects {
-	[super removeAllObjects]; // Sends KVO notifications
+	[super removeAllObjects];
 	[sortedKeys removeAllObjects];
 }
 
 - (void) removeObjectForKey:(id)aKey {
 	if (CFDictionaryContainsKey(dictionary, aKey)) {
-		[super removeObjectForKey:aKey]; // Sends KVO notifications
+		[super removeObjectForKey:aKey];
 		[sortedKeys removeObject:aKey];
 	}
 }

@@ -117,20 +117,20 @@
 }
 
 - (void) removeAllObjects {
-	[super removeAllObjects]; // Sends KVO notifications
+	[super removeAllObjects];
 	[keyOrdering removeAllObjects];
 }
 
 - (void) removeObjectForKey:(id)aKey {
 	if (CFDictionaryContainsKey(dictionary, aKey)) {
-		[super removeObjectForKey:aKey]; // Sends KVO notifications
+		[super removeObjectForKey:aKey];
 		[keyOrdering removeObject:aKey];
 	}
 }
 
 - (void) removeObjectForKeyAtIndex:(NSUInteger)index {
 	// Note: -keyAtIndex: will raise an exception if the index is invalid.
-	[super removeObjectForKey:[self keyAtIndex:index]]; // Sends KVO notifications
+	[super removeObjectForKey:[self keyAtIndex:index]];
 	[keyOrdering removeObjectAtIndex:index];
 }
 
