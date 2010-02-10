@@ -85,12 +85,20 @@
       <anchor>//apple_ref/occ/instm/NSDictionary/containsKey:</anchor>
     </member>
     <member kind="function">
+      <name>count</name>
+      <anchor>//apple_ref/occ/instm/NSDictionary/count</anchor>
+    </member>
+    <member kind="function">
       <name>keyEnumerator</name>
       <anchor>//apple_ref/occ/instm/NSDictionary/keyEnumerator</anchor>
     </member>
     <member kind="function">
       <name>objectEnumerator</name>
       <anchor>//apple_ref/occ/instm/NSDictionary/objectEnumerator</anchor>
+    </member>
+    <member kind="function">
+      <name>objectForKey:</name>
+      <anchor>//apple_ref/occ/instm/NSDictionary/objectForKey:</anchor>
     </member>
     <member kind="function">
       <name>objectsForKeys:notFoundMarker:</name>
@@ -168,6 +176,14 @@
     <member kind="function">
       <name>initWithCapacity:</name>
       <anchor>//apple_ref/occ/instm/NSMutableDictionary/initWithCapacity:</anchor>
+    </member>
+    <member kind="function">
+      <name>removeObjectForKey:</name>
+      <anchor>//apple_ref/occ/instm/NSMutableDictionary/removeObjectForKey:</anchor>
+    </member>
+    <member kind="function">
+      <name>setObject:forKey:</name>
+      <anchor>//apple_ref/occ/instm/NSMutableDictionary/setObject:forKey:</anchor>
     </member>
   </compound>
   <compound kind="class">
