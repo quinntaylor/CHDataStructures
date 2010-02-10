@@ -33,9 +33,9 @@
  
  @return An array containing the receiver's keys in sorted order. The array is empty if the receiver has no entries.
  
- @see NSDictionary#allValues
- @see count
- @see keyEnumerator
+ @see \link NSDictionary#allValues - allValues\endlink
+ @see \link NSDictionary#count - count\endlink
+ @see \link NSDictionary#keyEnumerator - keyEnumerator\endlink
  */
 - (NSArray*) allKeys {
 	return [super allKeys];

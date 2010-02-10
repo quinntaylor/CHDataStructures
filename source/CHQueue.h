@@ -21,6 +21,9 @@
  A <a href="http://en.wikipedia.org/wiki/Queue_(data_structure)">queue</a> protocol with methods for <a href="http://en.wikipedia.org/wiki/FIFO">FIFO</a> ("First In, First Out") operations.
  
  A queue is commonly compared to waiting in line. When objects are added, they go to the back of the line, and objects are always removed from the front of the line. These actions are accomplished using \link #addObject: -addObject:\endlink and \link #removeFirstObject -removeFirstObject\endlink, respectively. The frontmost object may be examined (not removed) using \link #firstObject -firstObject\endlink.
+ 
+ @see CHDeque
+ @see CHStack
  */
 @protocol CHQueue
 #if OBJC_API_2

@@ -18,10 +18,10 @@
 
 /**
  A dictionary which enumerates keys in the order in which they are inserted. The following additional operations are provided to take advantage of the ordering:
-   - \link #firstKey -firstKey\endlink
-   - \link #lastKey -lastKey\endlink
-   - \link #keyAtIndex: -keyAtIndex:\endlink
-   - \link #reverseKeyEnumerator -reverseKeyEnumerator\endlink
+   - \link #firstKey\endlink
+   - \link #lastKey\endlink
+   - \link #keyAtIndex:\endlink
+   - \link #reverseKeyEnumerator\endlink
  
  Key-value entries are inserted just as in a normal dictionary, including replacement of values for existing keys, as detailed in \link #setObject:forKey: -setObject:forKey:\endlink. However, an additional structure is used in parallel to track insertion order, and keys are enumerated in that order. If a key to be added does not currently exist in the dictionary, it is added to the end of the list, otherwise the insertion order of the key does not change.
 
@@ -35,6 +35,8 @@
  - <a href="http://codeendeavor.com/gsdocs/net/guttershark/util/collections/OrderedDictionary.html">OrderedDictionary</a> in Flash
  
  @note Any method inherited from NSDictionary or NSMutableDictionary is supported, but only overridden methods are listed here.
+ 
+ @see CHOrderedSet
  */
 @interface CHOrderedDictionary : CHLockableDictionary {
 	id keyOrdering;
@@ -51,7 +53,6 @@
  
  @see keyAtIndex:
  @see lastKey
- @see removeObjectForFirstKey
  */
 - (id) firstKey;
 
@@ -62,7 +63,6 @@
  
  @see firstKey
  @see keyAtIndex:
- @see removeObjectForLastKey
  */
 - (id) lastKey;
 
@@ -100,7 +100,7 @@
  @return A new array containing the keys in the receiver specified by @a indexes.
  @throw NSRangeException If any location in @a indexes exceeds the bounds of the receiver.
  
- @see allObjects
+ @see \link NSDictionary#allKeys - allKeys\endlink
  @see orderedDictionaryWithKeysAtIndexes:
  */
 - (NSArray*) keysAtIndexes:(NSIndexSet*)indexes;
@@ -115,7 +115,7 @@
  
  @see indexOfKey:
  @see keyAtIndex:
- @see objectForKey:
+ @see \link NSDictionary#objectForKey: - objectForKey:\endlink
  @see removeObjectForKeyAtIndex:
  */
 - (id) objectForKeyAtIndex:(NSUInteger)index;
@@ -206,7 +206,7 @@
  @see indexOfKey:
  @see keyAtIndex:
  @see objectForKeyAtIndex:
- @see removeObjectForKey:
+ @see \link NSMutableDictionary#removeObjectForKey: - removeObjectForKey:\endlink
  */
 - (void) removeObjectForKeyAtIndex:(NSUInteger)index;
 

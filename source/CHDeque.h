@@ -18,6 +18,9 @@
 
 /**
  A <a href="http://en.wikipedia.org/wiki/Deque">deque</a> protocol with methods for insertion and removal on both ends. This differs from standard stacks (where objects are inserted and removed from the same end, a.k.a. LIFO) and queues (where objects are inserted at one end and removed at the other, a.k.a. FIFO). However, a deque can act as either a stack or a queue (or other possible sub-types) by selectively restricting a subset of its input and output operations.
+ 
+ @see CHQueue
+ @see CHStack
  */
 @protocol CHDeque
 #if OBJC_API_2

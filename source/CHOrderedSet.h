@@ -22,6 +22,8 @@
  
  One of the most common implementations of an insertion-ordered set is Java's <a href="http://java.sun.com/javase/6/docs/api/java/util/LinkedHashSet.html">LinkedHashSet</a>. This implementation wraps an NSMutableSet and a circular buffer to maintain insertion order. The API is designed to be as consistent as possible with that of NSSet and NSMutableSet.
  
+ @see CHOrderedDictionary
+ 
  @todo Allow setting a maximum size, and either reject additions or evict the "oldest" item when the limit is reached? (Perhaps this would be better done by the user...)
  */
 @interface CHOrderedSet : CHLockableSet {

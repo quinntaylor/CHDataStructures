@@ -19,15 +19,17 @@
 
 /**
  A dictionary which enumerates keys according to their natural sorted order. The following additional operations are provided to take advantage of the ordering:
-   - \link #firstKey -firstKey\endlink
-   - \link #lastKey -lastKey\endlink
-   - \link #subsetFromKey:toKey:options: -subsetFromKey:toKey:options:\endlink
+   - \link #firstKey\endlink
+   - \link #lastKey\endlink
+   - \link #subsetFromKey:toKey:options:\endlink
  
- Key-value entries are inserted just as in a normal dictionary, including replacement of values for existing keys, as detailed in \link #setObject:forKey: -setObject:forKey:\endlink. However, an additional CHSortedSet structure is used in parallel to sort the keys, and keys are enumerated in that order.
+ Key-value entries are inserted just as in a normal dictionary, including replacement of values for existing keys, as detailed in \link NSMutableDictionary#setObject:forKey: -[NSMutableDictionary setObject:forKey:]\endlink. However, an additional CHSortedSet structure is used in parallel to sort the keys, and keys are enumerated in that order.
  
- Other implementations of sorted maps include Java's <a href="http://java.sun.com/javase/6/docs/api/java/util/SortedMap.html">SortedMap</a> interface and concrete <a href="http://java.sun.com/javase/6/docs/api/java/util/TreeMap.html">TreeMap</a> class.
+ Similar implementations of sorted maps include Java's <a href="http://java.sun.com/javase/6/docs/api/java/util/SortedMap.html">SortedMap</a> interface and concrete <a href="http://java.sun.com/javase/6/docs/api/java/util/TreeMap.html">TreeMap</a> class.
  
  @note Any method inherited from NSDictionary or NSMutableDictionary is supported, but only overridden methods are listed here.
+ 
+ @see CHSortedSet
  */
 @interface CHSortedDictionary : CHLockableDictionary {
 	id<CHSortedSet> sortedKeys;
@@ -71,23 +73,6 @@
 - (NSMutableDictionary*) subsetFromKey:(id)start
                                  toKey:(id)end
                                options:(CHSubsetConstructionOptions)options;
-
-// @}
-#pragma mark Modifying Contents
-/** @name Modifying Contents */
-// @{
-
-/**
- Adds a given key-value pair to the receiver.
- 
- @param anObject The value for @a key. The object receives a @c -retain message before being added to the receiver. This value must not be @c nil.
- @param aKey The key for @a value. The key is copied using @c -copyWithZone: so keys must conform to the NSCopying protocol. The key must not be @c nil.
- @throw NSInvalidArgumentException If @a aKey or @a anObject is @c nil. If you need to represent a @c nil value in the dictionary, use NSNull.
- 
- @see objectForKey:
- @see removeObjectForKey:
- */
-- (void) setObject:(id)anObject forKey:(id)aKey;
 
 // @}
 @end

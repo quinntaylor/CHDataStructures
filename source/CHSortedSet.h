@@ -37,7 +37,8 @@ typedef enum {
  Java includes a <a href="http://java.sun.com/javase/6/docs/api/java/util/SortedSet.html">SortedSet</a> interface as part of the <a href="http://java.sun.com/javase/6/docs/technotes/guides/collections/">Java Collections Framework</a>. Many other programming languages also have sorted sets, most commonly implemented as <a href="http://en.wikipedia.org/wiki/Binary_search_tree">binary search trees</a>.
  
  @see CHSearchTree
- 
+ @see CHSortedDictionary
+
  @todo Add more operations similar to those supported by NSSet and NSMutableSet, such as:
 	- <code>- (NSArray*) allObjectsFilteredUsingPredicate:</code>
 	- <code>- (void) filterUsingPredicate:</code>
