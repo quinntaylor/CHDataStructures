@@ -10,6 +10,7 @@
 
 #import <SenTestingKit/SenTestingKit.h>
 
+#import "CHBidirectionalDictionary.h"
 #import "CHLockableDictionary.h"
 #import "CHMultiDictionary.h"
 #import "CHOrderedDictionary.h"
@@ -162,6 +163,158 @@ static NSArray* keyArray;
 	STAssertEquals([copy count], [dictionary count], @"Wrong count.");
 	STAssertEquals([copy hash], [dictionary hash], @"Hashes should match.");
 	[copy release];
+}
+
+@end
+
+#pragma mark -
+
+@interface CHBidirectionalDictionaryTest : CHLockableDictionaryTest
+@end
+
+@implementation CHBidirectionalDictionaryTest
+
+- (void) setUp {
+	dictionary = [[[CHBidirectionalDictionary alloc] init] autorelease];
+}
+
+- (void) testInverseDictionary {
+	id inverse = [dictionary inverseDictionary];
+	STAssertNotNil(inverse, @"Inverse dictionary should not be nil.");
+	// Test identity of dictionary and inverse with respect to each other.
+	STAssertEquals(inverse, [dictionary inverseDictionary], @"Should be same object.");
+	STAssertEquals([inverse inverseDictionary], dictionary, @"Should link to inverse.");
+	STAssertEquals([inverse count], [dictionary count], @"Wrong count.");
+	
+	id key = @"A", value = @"B";
+	// Make sure the mappings show up correctly in the dictionary.
+	[dictionary setObject:value forKey:key];
+	STAssertEquals([inverse count], [dictionary count], @"Wrong count.");
+	STAssertEqualObjects([dictionary objectForKey:key], value, @"Wrong value for key.");
+	STAssertEqualObjects([dictionary keyForObject:value], key, @"Wrong key for value.");
+	STAssertNil([dictionary objectForKey:value], @"Should be nil.");
+	// Make sure added mappings appear in the inverse dictionary.
+	STAssertEqualObjects([inverse objectForKey:value], key, @"Wrong value for key.");
+	STAssertEqualObjects([inverse keyForObject:key], value, @"Wrong key for value.");
+	STAssertNil([inverse objectForKey:key], @"Should be nil.");
+	// Make sure removed mappings disappear from the inverse dictionary.
+	[dictionary removeObjectForKey:key];
+	STAssertEquals([inverse count], [dictionary count], @"Wrong count.");
+	STAssertNil([dictionary objectForKey:key], @"Should be nil.");
+	STAssertNil([inverse objectForKey:value], @"Should be nil.");
+}
+
+- (void) testRemoveKeyForObject {
+	STAssertNoThrow([dictionary removeKeyForObject:nil], @"Should be no exception.");
+	
+	[dictionary setObject:@"B" forKey:@"A"];
+	[dictionary setObject:@"D" forKey:@"C"];
+	STAssertEquals([dictionary count], (NSUInteger)2, @"Wrong count.");
+	// Try to remove a non-existent value
+	[dictionary removeKeyForObject:@"A"];
+	STAssertEquals([dictionary count], (NSUInteger)2, @"Wrong count.");
+	[dictionary removeKeyForObject:@"C"];
+	STAssertEquals([dictionary count], (NSUInteger)2, @"Wrong count.");
+	[dictionary removeKeyForObject:@"Z"];
+	STAssertEquals([dictionary count], (NSUInteger)2, @"Wrong count.");
+	// Remove existing objects and associated keys
+	[dictionary removeKeyForObject:@"B"];
+	STAssertEquals([dictionary count], (NSUInteger)1, @"Wrong count.");
+	STAssertNil([dictionary objectForKey:@"A"], @"Should be nil.");
+	STAssertNil([dictionary keyForObject:@"B"], @"Should be nil.");
+	[dictionary removeKeyForObject:@"D"];
+	STAssertEquals([dictionary count], (NSUInteger)0, @"Wrong count.");
+	STAssertNil([dictionary objectForKey:@"C"], @"Should be nil.");
+	STAssertNil([dictionary keyForObject:@"D"], @"Should be nil.");
+}
+
+- (void) testRemoveObjectForKey {
+	STAssertNoThrow([dictionary removeObjectForKey:nil], @"Should be no exception.");
+	
+	[dictionary setObject:@"B" forKey:@"A"];
+	[dictionary setObject:@"D" forKey:@"C"];
+	STAssertEquals([dictionary count], (NSUInteger)2, @"Wrong count.");
+	// Try to remove a non-existent key
+	[dictionary removeObjectForKey:@"B"];
+	STAssertEquals([dictionary count], (NSUInteger)2, @"Wrong count.");
+	[dictionary removeObjectForKey:@"D"];
+	STAssertEquals([dictionary count], (NSUInteger)2, @"Wrong count.");
+	[dictionary removeObjectForKey:@"Z"];
+	STAssertEquals([dictionary count], (NSUInteger)2, @"Wrong count.");
+	// Remove existing objects and associated keys
+	[dictionary removeObjectForKey:@"A"];
+	STAssertEquals([dictionary count], (NSUInteger)1, @"Wrong count.");
+	STAssertNil([dictionary objectForKey:@"A"], @"Should be nil.");
+	STAssertNil([dictionary keyForObject:@"B"], @"Should be nil.");
+	[dictionary removeObjectForKey:@"C"];
+	STAssertEquals([dictionary count], (NSUInteger)0, @"Wrong count.");
+	STAssertNil([dictionary objectForKey:@"C"], @"Should be nil.");
+	STAssertNil([dictionary keyForObject:@"D"], @"Should be nil.");
+}
+
+- (void) testSetAndQueryKeyAndObject {
+	// Verify that nil key and/or object raises an exception
+	STAssertThrows([dictionary setObject:@"" forKey:nil], @"Should raise exception");
+	STAssertThrows([dictionary setObject:nil forKey:@""], @"Should raise exception");
+	
+	// Test basic key/value queries for an empty dictionary
+	STAssertEquals([dictionary count], (NSUInteger)0, @"Wrong count.");
+	STAssertNoThrow([dictionary objectForKey:nil], @"Should be no exception.");
+	STAssertNoThrow([dictionary keyForObject:nil], @"Should be no exception.");
+	STAssertNil([dictionary objectForKey:@"A"], @"Should be nil.");
+	STAssertNil([dictionary keyForObject:@"A"], @"Should be nil.");
+	
+	// Insert an object and test count, key, and value
+	[dictionary setObject:@"B" forKey:@"A"];
+	STAssertEquals([dictionary count], (NSUInteger)1, @"Wrong count.");
+	STAssertEqualObjects([dictionary objectForKey:@"A"], @"B", @"Wrong object for key.");
+	STAssertEqualObjects([dictionary keyForObject:@"B"], @"A", @"Wrong key for object.");
+	
+	// Verify that setting a different value for a key replaces the old value
+	[dictionary setObject:@"C" forKey:@"A"];
+	STAssertEquals([dictionary count], (NSUInteger)1, @"Wrong count.");
+	STAssertNil([dictionary keyForObject:@"B"], @"Should be nil.");
+	STAssertEqualObjects([dictionary objectForKey:@"A"], @"C", @"Wrong object for key.");
+	STAssertEqualObjects([dictionary keyForObject:@"C"], @"A", @"Wrong key for object.");
+	
+	// Verify that setting a different key for a value replaces the old key
+	[dictionary setObject:@"C" forKey:@"B"];
+	STAssertEquals([dictionary count], (NSUInteger)1, @"Wrong count.");
+	STAssertNil([dictionary objectForKey:@"A"], @"Should be nil.");
+	STAssertEqualObjects([dictionary objectForKey:@"B"], @"C", @"Wrong object for key.");
+	STAssertEqualObjects([dictionary keyForObject:@"C"], @"B", @"Wrong key for object.");
+	
+	// Verify that adding a different key and different value increases count
+	[dictionary setObject:@"D" forKey:@"A"];
+	STAssertEquals([dictionary count], (NSUInteger)2, @"Wrong count.");
+	STAssertEqualObjects([dictionary objectForKey:@"A"], @"D", @"Wrong object for key.");
+	STAssertEqualObjects([dictionary objectForKey:@"B"], @"C", @"Wrong object for key.");
+	STAssertEqualObjects([dictionary keyForObject:@"D"], @"A", @"Wrong key for object.");
+	STAssertEqualObjects([dictionary keyForObject:@"C"], @"B", @"Wrong key for object.");
+	
+	// Verify that modifying existing key-value pairs happens correctly
+	[dictionary setObject:@"B" forKey:@"A"];
+	STAssertEquals([dictionary count], (NSUInteger)2, @"Wrong count.");
+	STAssertEqualObjects([dictionary objectForKey:@"A"], @"B", @"Wrong object for key.");
+	STAssertEqualObjects([dictionary objectForKey:@"B"], @"C", @"Wrong object for key.");
+	STAssertEqualObjects([dictionary keyForObject:@"B"], @"A", @"Wrong key for object.");
+	STAssertEqualObjects([dictionary keyForObject:@"C"], @"B", @"Wrong key for object.");
+	
+	[dictionary setObject:@"D" forKey:@"C"];
+	STAssertEquals([dictionary count], (NSUInteger)3, @"Wrong count.");
+	STAssertEqualObjects([dictionary objectForKey:@"A"], @"B", @"Wrong object for key.");
+	STAssertEqualObjects([dictionary objectForKey:@"B"], @"C", @"Wrong object for key.");
+	STAssertEqualObjects([dictionary objectForKey:@"C"], @"D", @"Wrong object for key.");
+	STAssertEqualObjects([dictionary keyForObject:@"B"], @"A", @"Wrong key for object.");
+	STAssertEqualObjects([dictionary keyForObject:@"C"], @"B", @"Wrong key for object.");
+	STAssertEqualObjects([dictionary keyForObject:@"D"], @"C", @"Wrong key for object.");
+
+	[dictionary setObject:@"D" forKey:@"A"];
+	STAssertEquals([dictionary count], (NSUInteger)2, @"Wrong count.");
+	STAssertEqualObjects([dictionary objectForKey:@"A"], @"D", @"Wrong object for key.");
+	STAssertEqualObjects([dictionary objectForKey:@"B"], @"C", @"Wrong object for key.");
+	STAssertEqualObjects([dictionary keyForObject:@"D"], @"A", @"Wrong key for object.");
+	STAssertEqualObjects([dictionary keyForObject:@"C"], @"B", @"Wrong key for object.");
 }
 
 @end
