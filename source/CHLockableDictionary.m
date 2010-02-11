@@ -12,42 +12,52 @@
 
 #pragma mark CFDictionary callbacks
 
-const void* CHLockableDictionaryRetain(CFAllocatorRef allocator, const void *value) {
+const void* CHDictionaryRetain(CFAllocatorRef allocator, const void *value) {
 	return [(id)value retain];
 }
 
-void CHLockableDictionaryRelease(CFAllocatorRef allocator, const void *value) {
+void CHDictionaryRelease(CFAllocatorRef allocator, const void *value) {
 	[(id)value release];
 }
 
-CFStringRef CHLockableDictionaryDescription(const void *value) {
+CFStringRef CHDictionaryDescription(const void *value) {
 	return CFRetain([(id)value description]);
 }
 
-Boolean CHLockableDictionaryEqual(const void *value1, const void *value2) {
+Boolean CHDictionaryEqual(const void *value1, const void *value2) {
 	return [(id)value1 isEqual:(id)value2];
 }
 
-CFHashCode CHLockableDictionaryHash(const void *value) {
+CFHashCode CHDictionaryHash(const void *value) {
 	return (CFHashCode)[(id)value hash];
 }
 
-static const CFDictionaryKeyCallBacks kCHLockableDictionaryKeyCallBacks = {
+static const CFDictionaryKeyCallBacks kCHDictionaryKeyCallBacks = {
 	0, // default version
-	CHLockableDictionaryRetain,
-	CHLockableDictionaryRelease,
-	CHLockableDictionaryDescription,
-	CHLockableDictionaryEqual,
-	CHLockableDictionaryHash
+	CHDictionaryRetain,
+	CHDictionaryRelease,
+	CHDictionaryDescription,
+	CHDictionaryEqual,
+	CHDictionaryHash
 };
 
-static const CFDictionaryValueCallBacks kCHLockableDictionaryValueCallBacks = {
+static const CFDictionaryValueCallBacks kCHDictionaryValueCallBacks = {
 	0, // default version
-	CHLockableDictionaryRetain,
-	CHLockableDictionaryRelease,
-	CHLockableDictionaryDescription,
-	CHLockableDictionaryEqual
+	CHDictionaryRetain,
+	CHDictionaryRelease,
+	CHDictionaryDescription,
+	CHDictionaryEqual
 };
+
+void createCollectableCFMutableDictionary(__strong CFMutableDictionaryRef* dictionary, NSUInteger initialCapacity) {
+	// Create a CFMutableDictionaryRef with callback functions as defined above.
+	*dictionary = CFDictionaryCreateMutable(kCFAllocatorDefault,
+	                                       initialCapacity,
+	                                       &kCHDictionaryKeyCallBacks,
+	                                       &kCHDictionaryValueCallBacks);
+	// Hand the reference off to GC if it's enable, perform a no-op otherwise.
+	CFMakeCollectable(*dictionary);
+}
 
 #pragma mark -
 
@@ -109,11 +119,7 @@ static const CFDictionaryValueCallBacks kCHLockableDictionaryValueCallBacks = {
 // Subclasses may override this as necessary, but must call back here first.
 - (id) initWithCapacity:(NSUInteger)numItems {
 	if ((self = [super init]) == nil) return nil;
-	dictionary = CFDictionaryCreateMutable(kCFAllocatorDefault,
-	                                       numItems,
-	                                       &kCHLockableDictionaryKeyCallBacks,
-	                                       &kCHLockableDictionaryValueCallBacks);
-	CFMakeCollectable(dictionary); // Works under GC, and is a no-op otherwise.
+	createCollectableCFMutableDictionary(&dictionary, numItems);
 	return self;
 }
 
@@ -167,6 +173,10 @@ static const CFDictionaryValueCallBacks kCHLockableDictionaryValueCallBacks = {
 
 - (NSEnumerator*) keyEnumerator {
 	return [(id)dictionary keyEnumerator];
+}
+
+- (NSEnumerator*) objectEnumerator {
+	return [(id)dictionary objectEnumerator];
 }
 
 - (id) objectForKey:(id)aKey {

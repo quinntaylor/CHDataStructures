@@ -10,6 +10,8 @@
 
 #import "CHLockable.h"
 
+HIDDEN OBJC_EXTERN void createCollectableCFMutableDictionary(CFMutableDictionaryRef* dictionary, NSUInteger initialCapacity);
+
 /**
  @file CHLockableDictionary.h
  
