@@ -20,6 +20,8 @@ id replicateWithNSCoding(id dictionary) {
 	return [NSKeyedUnarchiver unarchiveObjectWithData:data];	
 }
 
+static NSArray* keyArray;
+
 #pragma mark -
 
 @interface CHLockableDictionary (Test)
@@ -28,20 +30,20 @@ id replicateWithNSCoding(id dictionary) {
 
 @end
 
-#pragma mark -
-
 @interface CHLockableDictionaryTest : SenTestCase {
 	id dictionary;
-	NSArray *keyArray;
 	NSEnumerator *enumerator;
 }
 @end
 
 @implementation CHLockableDictionaryTest
 
++ (void) initialize {
+	keyArray = [[NSArray arrayWithObjects:@"baz", @"foo", @"bar", @"yoo", @"hoo", nil] retain];
+}
+
 - (void) setUp {
 	dictionary = [[[CHLockableDictionary alloc] init] autorelease];
-	keyArray = [NSArray arrayWithObjects:@"baz", @"foo", @"bar", @"yoo", @"hoo", nil];
 }
 
 - (void) populateDictionary {
@@ -64,7 +66,9 @@ id replicateWithNSCoding(id dictionary) {
 }
 
 - (void) testDescription {
-	STAssertEqualObjects([dictionary description], [[NSDictionary dictionary] description], @"Incorrect description");
+	STAssertNotNil([dictionary description], @"Description was nil.");
+	[dictionary setObject:@"xyz" forKey:@"abc"];
+	STAssertNotNil([dictionary description], @"Description was nil.");
 }
 
 - (void) testKeyEnumerator {
@@ -80,6 +84,21 @@ id replicateWithNSCoding(id dictionary) {
 	STAssertNotNil(enumerator, @"Key enumerator should be non-nil");
 	allKeys = [enumerator allObjects];
 	STAssertNotNil(allKeys, @"Key enumerator should return non-nil array.");
+}
+
+- (void) testObjectEnumerator {
+	enumerator = [dictionary objectEnumerator];
+	STAssertNotNil(enumerator, @"Object enumerator should be non-nil");
+	NSArray *allKeys = [enumerator allObjects];
+	STAssertNotNil(allKeys, @"Object enumerator should return non-nil array.");
+	STAssertEquals([allKeys count], (NSUInteger)0, @"Wrong number of objects.");
+	
+	[self populateDictionary];
+	
+	enumerator = [dictionary objectEnumerator];
+	STAssertNotNil(enumerator, @"Object enumerator should be non-nil");
+	allKeys = [enumerator allObjects];
+	STAssertNotNil(allKeys, @"Object enumerator should return non-nil array.");
 }
 
 - (void) testRemoveAllObjects {
@@ -155,7 +174,6 @@ id replicateWithNSCoding(id dictionary) {
 @implementation CHMultiDictionaryTest
 
 - (void) setUp {
-	[super setUp];
 	dictionary = [[[CHMultiDictionary alloc] init] autorelease];
 }
 
@@ -491,7 +509,6 @@ id replicateWithNSCoding(id dictionary) {
 @implementation CHSortedDictionaryTest
 
 - (void) setUp {
-	[super setUp];
 	dictionary = [[[CHSortedDictionary alloc] init] autorelease];
 	expectedKeyOrder = [keyArray sortedArrayUsingSelector:@selector(compare:)];
 }
@@ -528,7 +545,6 @@ id replicateWithNSCoding(id dictionary) {
 @implementation CHOrderedDictionaryTest
 
 - (void) setUp {
-	[super setUp];
 	dictionary = [[[CHOrderedDictionary alloc] init] autorelease];
 	expectedKeyOrder = keyArray;
 }
