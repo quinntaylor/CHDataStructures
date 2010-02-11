@@ -79,10 +79,10 @@
 	// Remove existing key -> ?  and value -> ? mappings if they currently exist.
 	CFDictionaryRemoveValue(dictionary, CFDictionaryGetValue(reversed, anObject));
 	CFDictionaryRemoveValue(reversed, CFDictionaryGetValue(dictionary, aKey));
-	id key = [[aKey copy] autorelease];
-	id value = [[anObject copy] autorelease];
-	CFDictionarySetValue(dictionary, key, value); // May replace key-value pair
-	CFDictionarySetValue(reversed, value, key); // May replace value-key pair
+	aKey = [[aKey copy] autorelease];
+	anObject = [[anObject copy] autorelease];
+	CFDictionarySetValue(dictionary, aKey, anObject); // May replace key-value pair
+	CFDictionarySetValue(reversed, anObject, aKey); // May replace value-key pair
 }
 
 @end
