@@ -25,7 +25,10 @@
  
  Key-value entries are inserted just as in a normal dictionary, including replacement of values for existing keys, as detailed in \link NSMutableDictionary#setObject:forKey: -[NSMutableDictionary setObject:forKey:]\endlink. However, an additional CHSortedSet structure is used in parallel to sort the keys, and keys are enumerated in that order.
  
- Similar implementations of sorted maps include Java's <a href="http://java.sun.com/javase/6/docs/api/java/util/SortedMap.html">SortedMap</a> interface and concrete <a href="http://java.sun.com/javase/6/docs/api/java/util/TreeMap.html">TreeMap</a> class.
+ Implementations of sorted dictionaries (aka "maps") in other languages include the following:
+
+ - <a href="http://java.sun.com/javase/6/docs/api/java/util/SortedMap.html">SortedMap</a> (Java)
+ - <a href="http://www.cppreference.com/wiki/stl/map/start">map</a> (C++)
  
  @note Any method inherited from NSDictionary or NSMutableDictionary is supported, but only overridden methods are listed here.
  

@@ -27,12 +27,11 @@
 
  Implementations of insertion-ordered dictionaries (aka "maps") in other languages include the following:
  
- - <a href="http://java.sun.com/javase/6/docs/api/java/util/LinkedHashMap.html">LinkedHashMap</a> in Java SE
- - <a href="http://commons.apache.org/collections/apidocs/org/apache/commons/collections/map/LinkedMap.html">LinkedMap</a> in Apache Commons
- - <a href="http://sano.luaforge.net/documentation/LinkedMap.html">LinkedMap</a> in Lua
- - <a href="http://www.python.org/dev/peps/pep-0372/">OrderedDict</a> in Python
- - <a href="http://msdn.microsoft.com/en-us/library/system.collections.specialized.ordereddictionary.aspx">OrderedDictionary</a> in .NET
- - <a href="http://codeendeavor.com/gsdocs/net/guttershark/util/collections/OrderedDictionary.html">OrderedDictionary</a> in Flash
+ - <a href="http://java.sun.com/javase/6/docs/api/java/util/LinkedHashMap.html">LinkedHashMap</a> / <a href="http://commons.apache.org/collections/apidocs/org/apache/commons/collections/map/LinkedMap.html">LinkedMap</a> (Java)
+ - <a href="http://sano.luaforge.net/documentation/LinkedMap.html">LinkedMap</a> (Lua)
+ - <a href="http://www.python.org/dev/peps/pep-0372/">OrderedDict</a> (Python)
+ - <a href="http://msdn.microsoft.com/en-us/library/system.collections.specialized.ordereddictionary.aspx">OrderedDictionary</a> (.NET)
+ - <a href="http://codeendeavor.com/gsdocs/net/guttershark/util/collections/OrderedDictionary.html">OrderedDictionary</a> (Flash)
  
  @note Any method inherited from NSDictionary or NSMutableDictionary is supported, but only overridden methods are listed here.
  
