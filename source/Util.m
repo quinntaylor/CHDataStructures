@@ -42,6 +42,37 @@ void initializeGCStatus() {
 	}
 }
 
+BOOL collectionsAreEqual(id collection1, id collection2) {
+	if ((collection1 && ![collection1 respondsToSelector:@selector(count)]) ||
+		(collection2 && ![collection2 respondsToSelector:@selector(count)]))
+	{
+		[NSException raise:NSInvalidArgumentException
+		            format:@"Parameter does not respond to -count selector."];
+	}
+	if (collection1 == collection2)
+		return YES;
+	if ([collection1 count] != [collection2 count])
+		return NO;
+	NSEnumerator *otherObjects = [collection2 objectEnumerator];
+#if OBJC_API_2
+	for (id anObject in collection1)
+#else
+		NSEnumerator *objects = [collection1 objectEnumerator];
+	id anObject;
+	while (anObject = [objects nextObject])
+#endif
+		if (![anObject isEqual:[otherObjects nextObject]])
+			return NO;
+	return YES;	
+}
+
+NSUInteger hashOfCountAndObjects(NSUInteger count, id object1, id object2) {
+	NSUInteger hash = 17 * count ^ (count << 16);
+	return hash ^ (31*[object1 hash]) ^ ((31*[object2 hash]) << 4);
+}
+
+#pragma mark -
+
 void CHIndexOutOfRangeException(Class aClass, SEL method,
                                 NSUInteger index, NSUInteger count) {
 	[NSException raise:NSRangeException
@@ -89,35 +120,4 @@ void CHQuietLog(NSString *format, ...) {
 	printf("%s\n", [string UTF8String]);
 	[string release];
 	va_end(argList);
-}
-
-#pragma mark -
-
-BOOL collectionsAreEqual(id collection1, id collection2) {
-	if ((collection1 && ![collection1 respondsToSelector:@selector(count)]) ||
-		(collection2 && ![collection2 respondsToSelector:@selector(count)]))
-	{
-		[NSException raise:NSInvalidArgumentException
-		            format:@"Parameter does not respond to -count selector."];
-	}
-	if (collection1 == collection2)
-		return YES;
-	if ([collection1 count] != [collection2 count])
-		return NO;
-	NSEnumerator *otherObjects = [collection2 objectEnumerator];
-#if OBJC_API_2
-	for (id anObject in collection1)
-#else
-	NSEnumerator *objects = [collection1 objectEnumerator];
-	id anObject;
-	while (anObject = [objects nextObject])
-#endif
-		if (![anObject isEqual:[otherObjects nextObject]])
-			return NO;
-	return YES;	
-}
-
-NSUInteger hashOfCountAndObjects(NSUInteger count, id object1, id object2) {
-	NSUInteger hash = 17 * count ^ (count << 16);
-	return hash ^ (31*[object1 hash]) ^ ((31*[object2 hash]) << 4);
 }

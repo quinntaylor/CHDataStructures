@@ -19,7 +19,7 @@
  - Call \link #keyForObject: -keyForObject:\endlink on a bidirectional dictionary.
  - Acquire the inverse dictionary via \link #inverseDictionary -inverseDictionary\endlink, then call \link #setObject:forKey: -objectForKey:\endlink on that.
  
- @attention Since values are used as keys in the inverse dictionary, both keys @i values must conform to the NSCopying protocol. (NSDictionary requires that keys conform to NSCopying, but not values.) If they don't, a crash will result when this collection attempts to copy them.
+ @attention Since values are used as keys in the inverse dictionary, both keys and values must conform to the NSCopying protocol. (NSDictionary requires that keys conform to NSCopying, but not values.) If they don't, a crash will result when this collection attempts to copy them.
  
  Implementations of bidirectional dictionaries (aka "maps") in other languages include the following:
  

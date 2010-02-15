@@ -73,6 +73,26 @@ OBJC_EXPORT size_t kCHPointerSize;
  */
 HIDDEN void initializeGCStatus();
 
+/**
+ Determine whether two collections enumerate the equivalent objects in the same order.
+ 
+ @param collection1 The first collection to be compared.
+ @param collection2 The second collection to be compared.
+ 
+ @throw Exception if one of both of the arguments do not respond to the @c -count or @c -objectEnumerator selectors.
+ */
+OBJC_EXPORT BOOL collectionsAreEqual(id collection1, id collection2);
+
+/**
+ Generate a hash for a collection based on the count and up to two objects. If objects are provided, the result of their -hash method will be used.
+ 
+ @param count The number of objects in the collection.
+ @param o1 The first object to include in the hash.
+ @param o2 The second object to include in the hash.
+ @return An unsigned integer that can be used as a table address in a hash table structure.
+ */
+HIDDEN OBJC_EXPORT NSUInteger hashOfCountAndObjects(NSUInteger count, id o1, id o2);
+
 #pragma mark -
 
 /**
@@ -178,25 +198,3 @@ OBJC_EXPORT void CHQuietLog(NSString *format, ...);
 	CHQuietLog((format),##__VA_ARGS__); \
 }
 #endif
-
-#pragma mark -
-
-/**
- Determine whether two collections enumerate the equivalent objects in the same order.
- 
- @param collection1 The first collection to be compared.
- @param collection2 The second collection to be compared.
- 
- @throw Exception if one of both of the arguments do not respond to the @c -count or @c -objectEnumerator selectors.
- */
-OBJC_EXPORT BOOL collectionsAreEqual(id collection1, id collection2);
-
-/**
- Generate a hash for a collection based on the count and up to two objects. If objects are provided, the result of their -hash method will be used.
- 
- @param count The number of objects in the collection.
- @param o1 The first object to include in the hash.
- @param o2 The second object to include in the hash.
- @return An unsigned integer that can be used as a table address in a hash table structure.
- */
-HIDDEN OBJC_EXPORT NSUInteger hashOfCountAndObjects(NSUInteger count, id o1, id o2);
