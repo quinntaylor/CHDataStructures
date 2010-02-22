@@ -458,7 +458,7 @@ static BOOL objectsAreIdentical(id o1, id o2) {
 	++mutations;	
 	// If this insertion filled the array to capacity, double its size and copy.
 	if (headIndex == tailIndex) {
-		array = NSReallocateCollectable(array, kCHPointerSize * arrayCapacity * 2, NSScannedOption);
+		array = NSReallocateCollectable(array, kCHPointerSize*arrayCapacity*2, NSScannedOption);
 		// Copy wrapped-around portion to end of queue and move tail index
 		memcpy(array + arrayCapacity, array, kCHPointerSize * tailIndex);
 		bzero(array, kCHPointerSize * tailIndex); // Zero the source of the copy
@@ -617,7 +617,7 @@ static BOOL objectsAreIdentical(id o1, id o2) {
 		if (arrayCapacity > DEFAULT_BUFFER_SIZE) {
 			arrayCapacity = DEFAULT_BUFFER_SIZE;
 			// Shrink the size of allocated memory; calls realloc() under non-GC
-			array = NSReallocateCollectable(array, kCHPointerSize * arrayCapacity, NSScannedOption);
+			array = NSReallocateCollectable(array, kCHPointerSize*arrayCapacity, NSScannedOption);
 		}
 	}
 	headIndex = tailIndex = 0;

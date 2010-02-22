@@ -69,16 +69,14 @@
 - (void) testNSCoding {
 	[collection addObjectsFromArray:objects];
 	STAssertEquals([collection count], [objects count], @"Incorrect count.");
-	NSArray *order = [collection allObjects];
-	STAssertEqualObjects(order, objects, @"Wrong ordering before archiving.");
+	STAssertEqualObjects([collection allObjects], objects, @"Wrong ordering before archiving.");
 	
 	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:collection];
 	[collection release];
 	collection = [[NSKeyedUnarchiver unarchiveObjectWithData:data] retain];
 	
 	STAssertEquals([collection count], [objects count], @"Incorrect count.");
-	order = [collection allObjects];
-	STAssertEqualObjects(order, objects, @"Wrong ordering on reconstruction.");
+	STAssertEqualObjects([collection allObjects], objects, @"Wrong ordering on reconstruction.");
 }
 
 - (void) testNSCopying {

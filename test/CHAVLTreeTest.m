@@ -188,8 +188,7 @@ static NSMutableString *balanceErrors;
 	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
 	correct = [NSArray arrayWithObjects:@"J",@"D",@"C",@"A",@"G",@"E",@"F",@"H",
 			   @"I",@"L",@"K",@"N",@"M",@"O",nil];
-	STAssertEqualObjects(order, correct,
-				 badOrder(@"Pre-order", order, correct));
+	STAssertEqualObjects(order, correct, badOrder(@"Pre-order", order, correct));
 	STAssertEquals([order count], expectedCount, @"Incorrect count.");
 	STAssertEquals([tree count],  expectedCount, @"Incorrect count.");
 	STAssertNoThrow([tree verifyBalanceFactors], nil);
@@ -199,8 +198,7 @@ static NSMutableString *balanceErrors;
 	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
 	correct = [NSArray arrayWithObjects:@"J",@"D",@"C",@"A",@"G",@"E",@"F",@"H",
 			   @"I",@"L",@"K",@"O",@"M",nil];
-	STAssertEqualObjects(order, correct,
-				 badOrder(@"Pre-order", order, correct));
+	STAssertEqualObjects(order, correct, badOrder(@"Pre-order", order, correct));
 	STAssertEquals([order count], expectedCount, @"Incorrect count.");
 	STAssertEquals([tree count],  expectedCount, @"Incorrect count.");
 	STAssertNoThrow([tree verifyBalanceFactors], nil);
@@ -210,8 +208,7 @@ static NSMutableString *balanceErrors;
 	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
 	correct = [NSArray arrayWithObjects:@"J",@"G",@"D",@"A",@"E",@"F",@"H",@"I",
 			   @"L",@"K",@"O",@"M",nil];
-	STAssertEqualObjects(order, correct,
-				 badOrder(@"Pre-order", order, correct));
+	STAssertEqualObjects(order, correct, badOrder(@"Pre-order", order, correct));
 	STAssertEquals([order count], expectedCount, @"Incorrect count.");
 	STAssertEquals([tree count],  expectedCount, @"Incorrect count.");
 	STAssertNoThrow([tree verifyBalanceFactors], nil);
@@ -221,8 +218,7 @@ static NSMutableString *balanceErrors;
 	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
 	correct = [NSArray arrayWithObjects:@"G",@"D",@"A",@"E",@"F",@"J",@"H",@"I",
 			   @"M",@"K",@"O",nil];
-	STAssertEqualObjects(order, correct,
-				 badOrder(@"Pre-order", order, correct));
+	STAssertEqualObjects(order, correct, badOrder(@"Pre-order", order, correct));
 	STAssertEquals([order count], expectedCount, @"Incorrect count.");
 	STAssertEquals([tree count],  expectedCount, @"Incorrect count.");
 	STAssertNoThrow([tree verifyBalanceFactors], nil);
@@ -232,8 +228,7 @@ static NSMutableString *balanceErrors;
 	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
 	correct = [NSArray arrayWithObjects:@"G",@"E",@"A",@"F",@"J",@"H",@"I",@"M",
 			   @"K",@"O",nil];
-	STAssertEqualObjects(order, correct,
-				 badOrder(@"Pre-order", order, correct));
+	STAssertEqualObjects(order, correct, badOrder(@"Pre-order", order, correct));
 	STAssertEquals([order count], expectedCount, @"Incorrect count.");
 	STAssertEquals([tree count],  expectedCount, @"Incorrect count.");
 	STAssertNoThrow([tree verifyBalanceFactors], nil);
@@ -243,8 +238,7 @@ static NSMutableString *balanceErrors;
 	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
 	correct = [NSArray arrayWithObjects:@"G",@"E",@"A",@"F",@"K",@"H",@"I",@"M",
 			   @"O",nil];
-	STAssertEqualObjects(order, correct,
-				 badOrder(@"Pre-order", order, correct));
+	STAssertEqualObjects(order, correct, badOrder(@"Pre-order", order, correct));
 	STAssertEquals([order count], expectedCount, @"Incorrect count.");
 	STAssertEquals([tree count],  expectedCount, @"Incorrect count.");
 	STAssertNoThrow([tree verifyBalanceFactors], nil);
@@ -254,8 +248,7 @@ static NSMutableString *balanceErrors;
 	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
 	correct = [NSArray arrayWithObjects:@"G",@"F",@"A",@"K",@"H",@"I",@"M",@"O",
 			   nil];
-	STAssertEqualObjects(order, correct,
-				 badOrder(@"Pre-order", order, correct));
+	STAssertEqualObjects(order, correct, badOrder(@"Pre-order", order, correct));
 	STAssertEquals([order count], expectedCount, @"Incorrect count.");
 	STAssertEquals([tree count],  expectedCount, @"Incorrect count.");
 	STAssertNoThrow([tree verifyBalanceFactors], nil);
@@ -264,8 +257,7 @@ static NSMutableString *balanceErrors;
 	--expectedCount;
 	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
 	correct = [NSArray arrayWithObjects:@"G",@"F",@"A",@"K",@"I",@"M",@"O",nil];
-	STAssertEqualObjects(order, correct,
-				 badOrder(@"Pre-order", order, correct));
+	STAssertEqualObjects(order, correct, badOrder(@"Pre-order", order, correct));
 	STAssertEquals([order count], expectedCount, @"Incorrect count.");
 	STAssertEquals([tree count],  expectedCount, @"Incorrect count.");
 	STAssertNoThrow([tree verifyBalanceFactors], nil);
@@ -274,8 +266,7 @@ static NSMutableString *balanceErrors;
 	--expectedCount;
 	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
 	correct = [NSArray arrayWithObjects:@"G",@"F",@"A",@"M",@"I",@"O",nil];
-	STAssertEqualObjects(order, correct,
-				 badOrder(@"Pre-order", order, correct));
+	STAssertEqualObjects(order, correct, badOrder(@"Pre-order", order, correct));
 	STAssertEquals([order count], expectedCount, @"Incorrect count.");
 	STAssertEquals([tree count],  expectedCount, @"Incorrect count.");
 	STAssertNoThrow([tree verifyBalanceFactors], nil);
@@ -284,8 +275,7 @@ static NSMutableString *balanceErrors;
 	--expectedCount;
 	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
 	correct = [NSArray arrayWithObjects:@"G",@"F",@"A",@"O",@"I",nil];
-	STAssertEqualObjects(order, correct,
-				 badOrder(@"Pre-order", order, correct));
+	STAssertEqualObjects(order, correct, badOrder(@"Pre-order", order, correct));
 	STAssertEquals([order count], expectedCount, @"Incorrect count.");
 	STAssertEquals([tree count],  expectedCount, @"Incorrect count.");
 	STAssertNoThrow([tree verifyBalanceFactors], nil);
@@ -294,8 +284,7 @@ static NSMutableString *balanceErrors;
 	--expectedCount;
 	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
 	correct = [NSArray arrayWithObjects:@"G",@"F",@"A",@"I",nil];
-	STAssertEqualObjects(order, correct,
-				 badOrder(@"Pre-order", order, correct));
+	STAssertEqualObjects(order, correct, badOrder(@"Pre-order", order, correct));
 	STAssertEquals([order count], expectedCount, @"Incorrect count.");
 	STAssertEquals([tree count],  expectedCount, @"Incorrect count.");
 	STAssertNoThrow([tree verifyBalanceFactors], nil);
@@ -304,8 +293,7 @@ static NSMutableString *balanceErrors;
 	--expectedCount;
 	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
 	correct = [NSArray arrayWithObjects:@"F",@"A",@"I",nil];
-	STAssertEqualObjects(order, correct,
-				 badOrder(@"Pre-order", order, correct));
+	STAssertEqualObjects(order, correct, badOrder(@"Pre-order", order, correct));
 	STAssertEquals([order count], expectedCount, @"Incorrect count.");
 	STAssertEquals([tree count],  expectedCount, @"Incorrect count.");
 	STAssertNoThrow([tree verifyBalanceFactors], nil);
@@ -314,8 +302,7 @@ static NSMutableString *balanceErrors;
 	--expectedCount;
 	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
 	correct = [NSArray arrayWithObjects:@"F",@"I",nil];
-	STAssertEqualObjects(order, correct,
-				 badOrder(@"Pre-order", order, correct));
+	STAssertEqualObjects(order, correct, badOrder(@"Pre-order", order, correct));
 	STAssertEquals([order count], expectedCount, @"Incorrect count.");
 	STAssertEquals([tree count],  expectedCount, @"Incorrect count.");
 	STAssertNoThrow([tree verifyBalanceFactors], nil);
@@ -324,8 +311,7 @@ static NSMutableString *balanceErrors;
 	--expectedCount;
 	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
 	correct = [NSArray arrayWithObjects:@"F",nil];
-	STAssertEqualObjects(order, correct,
-				 badOrder(@"Pre-order", order, correct));
+	STAssertEqualObjects(order, correct, badOrder(@"Pre-order", order, correct));
 	STAssertEquals([order count], expectedCount, @"Incorrect count.");
 	STAssertEquals([tree count],  expectedCount, @"Incorrect count.");
 	STAssertNoThrow([tree verifyBalanceFactors], nil);
@@ -344,8 +330,7 @@ static NSMutableString *balanceErrors;
 	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
 	correct = [NSArray arrayWithObjects:@"F",@"C",@"B",@"E",@"J",@"H",@"G",@"I",
 			   @"K",nil];
-	STAssertEqualObjects(order, correct,
-				 badOrder(@"Pre-order", order, correct));
+	STAssertEqualObjects(order, correct, badOrder(@"Pre-order", order, correct));
 }
 
 - (void) testRemoveObjectDoubleRight {
@@ -361,8 +346,7 @@ static NSMutableString *balanceErrors;
 	order = [tree allObjectsWithTraversalOrder:CHTraversePreOrder];
 	correct = [NSArray arrayWithObjects:@"F",@"B",@"A",@"D",@"C",@"E",@"I",@"H",
 			   @"J",nil];
-	STAssertEqualObjects(order, correct,
-				 badOrder(@"Pre-order", order, correct));
+	STAssertEqualObjects(order, correct, badOrder(@"Pre-order", order, correct));
 }
 
 - (void) testDebugDescriptionForNode {
