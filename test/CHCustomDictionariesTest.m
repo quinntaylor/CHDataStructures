@@ -381,11 +381,10 @@ static NSArray* keyArray;
 }
 
 - (void) testInitWithObjectsAndKeys {
-	[dictionary release];
-	dictionary = [[CHMultiDictionary alloc] initWithObjectsAndKeys:
-				  [NSSet setWithObjects:@"A",@"B",@"C",nil], @"foo",
-				  [NSArray arrayWithObjects:@"X",@"Y",nil], @"bar",
-				  @"Z", @"baz", nil];
+	dictionary = [[[CHMultiDictionary alloc] initWithObjectsAndKeys:
+				   [NSSet setWithObjects:@"A",@"B",@"C",nil], @"foo",
+				   [NSArray arrayWithObjects:@"X",@"Y",nil], @"bar",
+				   @"Z", @"baz", nil] autorelease];
 	STAssertEquals([dictionary count],              (NSUInteger)3, @"Incorrect key count.");
 	STAssertEquals([dictionary countForKey:@"foo"], (NSUInteger)3, @"Incorrect object count.");
 	STAssertEquals([dictionary countForKey:@"bar"], (NSUInteger)2, @"Incorrect object count.");
@@ -409,8 +408,7 @@ static NSArray* keyArray;
 	[keys addObject:@"bar"];
 	[objects addObject:[NSNull null]];
 	
-	[dictionary release];
-	dictionary = [[CHMultiDictionary alloc] initWithObjects:objects forKeys:keys];
+	dictionary = [[[CHMultiDictionary alloc] initWithObjects:objects forKeys:keys] autorelease];
 	
 	STAssertEquals([dictionary count],              (NSUInteger)2, @"Incorrect key count.");
 	STAssertEquals([dictionary countForKey:@"foo"], (NSUInteger)3, @"Incorrect object count.");
