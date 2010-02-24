@@ -347,10 +347,11 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 }
 
 - (void) exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2 {
-	NSUInteger firstIndex = MIN(idx1, idx2), secondIndex = MAX(idx1,idx2);
-	if (secondIndex > count)
-		CHIndexOutOfRangeException([self class], _cmd, secondIndex, count);
+	if (MAX(idx1,idx2) >= count)
+		CHIndexOutOfRangeException([self class], _cmd, MAX(idx1,idx2), count);
 	if (idx1 != idx2) {
+		NSUInteger firstIndex = MIN(idx1, idx2);
+		NSUInteger secondIndex = MAX(idx1,idx2);
 		NSUInteger nodeIndex = 0;
 		CHSinglyLinkedListNode *node1 = head->next;
 		while (nodeIndex++ < firstIndex)
