@@ -68,9 +68,9 @@ void createCollectableCFMutableDictionary(__strong CFMutableDictionaryRef* dicti
 	@synchronized (self) {
 		if (lock == nil) {
 			lock = [[NSLock alloc] init];
-			if ([lock respondsToSelector:@selector(setName:)])
-				[lock performSelector:@selector(setName:)
-				           withObject:[NSString stringWithFormat:@"NSLock-%@-0x%x", [self class], self]];
+#if OBJC_API_2
+			[lock setName:[NSString stringWithFormat:@"NSLock-%@-0x%x", [self class], self]];
+#endif
 		}
 	}
 }
