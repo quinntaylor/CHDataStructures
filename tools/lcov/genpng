@@ -35,8 +35,9 @@ use Getopt::Long;
 
 
 # Constants
-our $lcov_version	= "LTP GCOV extension version 1.6";
+our $lcov_version	= 'LCOV version 1.8';
 our $lcov_url		= "http://ltp.sourceforge.net/coverage/lcov.php";
+our $tool_name		= basename($0);
 
 
 # Prototypes
@@ -44,11 +45,16 @@ sub gen_png($$$@);
 sub check_and_load_module($);
 sub genpng_print_usage(*);
 sub genpng_process_file($$$$);
+sub genpng_warn_handler($);
+sub genpng_die_handler($);
 
 
 #
 # Code entry point
 #
+
+# Prettify version string
+$lcov_version =~ s/\$\s*Revision\s*:?\s*(\S+)\s*\$/$1/;
 
 # Check whether required module GD.pm is installed
 if (check_and_load_module("GD"))
@@ -72,6 +78,9 @@ if (!caller)
 	my $help;
 	my $version;
 
+	$SIG{__WARN__} = \&genpng_warn_handler;
+	$SIG{__DIE__} = \&genpng_die_handler;
+
 	# Parse command line options
 	if (!GetOptions("tab-size=i" => \$tab_size,
 			"width=i" => \$width,
@@ -79,7 +88,8 @@ if (!caller)
 			"help" => \$help,
 			"version" => \$version))
 	{
-		genpng_print_usage(*STDERR);
+		print(STDERR "Use $tool_name --help to get usage ".
+		      "information\n");
 		exit(1);
 	}
 
@@ -95,16 +105,14 @@ if (!caller)
 	# Check for version flag
 	if ($version)
 	{
-		print("$lcov_version\n");
+		print("$tool_name: $lcov_version\n");
 		exit(0);
 	}
 
 	# Check options
 	if (!$filename)
 	{
-		print(STDERR "No filename specified\n");
-		genpng_print_usage(*STDOUT);
-		exit(1);
+		die("No filename specified\n");
 	}
 
 	# Check for output filename
@@ -127,7 +135,6 @@ if (!caller)
 sub genpng_print_usage(*)
 {
 	local *HANDLE = $_[0];
-	my $tool_name = basename($0);
 
 	print(HANDLE <<END_OF_USAGE)
 Usage: $tool_name [OPTIONS] SOURCEFILE
@@ -141,7 +148,7 @@ or .gcov file format.
   -w, --width WIDTH                 Set width of output image to WIDTH pixel
   -o, --output-filename FILENAME    Write image to FILENAME
 
-See $lcov_url for more information about this tool.
+For more information see: $lcov_url
 END_OF_USAGE
 	;
 }
@@ -360,4 +367,18 @@ sub gen_png($$$@)
 	binmode(*PNG_HANDLE);
 	print(PNG_HANDLE $overview->png());
 	close(PNG_HANDLE);
+}
+
+sub genpng_warn_handler($)
+{
+	my ($msg) = @_;
+
+	warn("$tool_name: $msg");
+}
+
+sub genpng_die_handler($)
+{
+	my ($msg) = @_;
+
+	die("$tool_name: $msg");
 }

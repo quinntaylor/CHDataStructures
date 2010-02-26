@@ -1,307 +1,271 @@
-/* @group General Styles */
-
-body
-{
-  color:            #000000;
-  background-color: #FFFFFF;
+body {
+	background-color: #FFFFFF;
+	color: #000000;
+	font-family: Helvetica, Lucida Grande, sans-serif;
+	margin: 0;
 }
 
-a:link
-{
-  color:           #284FA8;
-  text-decoration: underline;
+body, table {
+	font-size: 10pt;
 }
 
-a:visited
-{
-  color:           #00CB40;
-  text-decoration: underline;
+h1 {
+	font-size: 1.75em;
+	background-color: #dae7fe;
 }
 
-a:active
-{
-  color:           #FF0040;
-  text-decoration: underline;
+h1, #footer {
+	text-align: center;
+	margin: 0;
+	padding: 5px;
 }
 
-td.title
-{
-  text-align:     center;
-  padding-bottom: 10px;
-  font-family:    sans-serif;
-  font-size:      20pt;
-  font-style:     italic;
-  font-weight:    bold;
+#footer {
+	background-color: #6688d4;
+	color: white;
+	font-weight: bold;
 }
 
-td.headerItem
-{
-  text-align:    right;
-  padding-right: 6px;
-  font-family:   sans-serif;
-  font-weight:   bold;
+#footer a, #footer a:visited {
+	color: white;
 }
 
-td.headerValue
-{
-  text-align:  left;
-  color:       #284FA8;
-  font-family: sans-serif;
-  font-weight: bold;
+a {
+	color: #284FA8;
+	text-decoration: underline;
 }
 
-td.legendItem
-{
-  text-align:      right;
-  padding-right:   6px;
-  padding-top:     10px;
-  padding-bottom:  2px;
-  font-family:     sans-serif;
-  font-weight:     bold;
+a:visited {
+	color: #7f8ba8;
 }
 
-td.legendValue
-{
-  text-align:      left;
-  padding-top:     10px;
-  padding-bottom:  2px;
-  color:           #000000;
-  font-family:     sans-serif;
-  font-weight:     bold;
+a:hover {
+	text-decoration: none;
 }
 
-td.ruler
-{
-  background-color: #6688D4;
+td.headerValue {
+	text-align: left;
+	color: #284FA8;
+	font-weight: bold;
 }
 
-td.versionInfo
-{
-  text-align:   center;
-  padding-top:  2px;
-  font-family:  sans-serif;
-  font-style:   italic;
+table {
+	margin: 15px;
+	border-collapse: collapse;
+	clear: both;
 }
 
-/* @end */
-
-
-/* @group Header Styles */
-
-td.tableHead
-{
-  text-align:       center;
-  color:            #FFFFFF;
-  background-color: #6688D4;
-  font-family:      sans-serif;
-  font-size:        120%;
-  font-weight:      bold;
+th {
+	text-align: center;
+	color: white;
+	background-color: #6688d4;
+	font-weight: bold;
+	white-space: nowrap;
 }
 
-td.coverFile
-{
-  text-align:       left;
-  padding-left:     10px;
-  padding-right:    20px; 
-  color:            #284FA8;
-  background-color: #DAE7FE;
-  font-family:      monospace;
+th, td {
+	padding: 2px 4px;
+	vertical-align: top;
 }
 
-td.coverBar
-{
-  padding-left:     10px;
-  padding-right:    10px;
-  background-color: #DAE7FE;
+td {
+	border: 1px solid white;
 }
 
-td.coverBarOutline
-{
-  background-color: #000000;
+#header {
+	width: 100%;
+	border: solid #6688d4;
+	border-width: 2px 0;
+	margin: 0;
 }
 
-/* @end */
-
-
-/* @group Coverage */
-
-span.coverLegendHi, span.coverLegendMed, span.coverLegendLo
-{
-  text-align:       center;
-  padding-left:     10px;
-  padding-right:    10px;
+#header table {
+//	border-width: 0;
+	margin: 10px 0;
+	clear: none;
 }
 
-td.coverNumHi, td.coverNumMed, td.coverNumLo,
-td.coverPerHi, td.coverPerMed, td.coverPerLo
-{
-  text-align: right;
-  padding-left: 10px;
-  padding-right: 10px;
+#header #overview {
+	width: auto;
+	float: left;
+	margin-left: 10px;
 }
 
-td.coverPerHi, td.coverPerMed, td.coverPerLo
-{
-  font-weight: bold;
+#header #overview td.legend span {
+	padding: 2px 4px;
+	white-space: nowrap;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
 }
 
-td.coverPerHi, td.coverNumHi, span.coverLegendHi
-{
-  background-color: #A7FC9D;
+#header #summary {
+	width: auto;
+	float: right;
+	margin-right: 10px;
 }
 
-td.coverPerMed, td.coverNumMed, span.coverLegendMed
-{
-  background-color: #FFEA20;
+#header #summary td {
+	text-align: right;
 }
 
-td.coverPerLo, td.coverNumLo, span.coverLegendLo
-{
-  background-color: #FF0000;
+#header td.label {
+	text-align: right;
+	padding-right: 5px;
+	font-weight: bold;
+	white-space: nowrap;
 }
 
-/* @end */
-
-
-/* @group Show/Hide Details links */
-
-a.detail:link
-{
-  color: #B8D0FF;
+center table th a {
+	padding-right: 14px;
+	background: url(updown.png) no-repeat right 1px;
 }
 
-a.detail:visited
-{
-  color: #B8D0FF;
+center table th a, center table th a:visited, center table th a:active {
+	color: white;
+	text-decoration: none;
 }
 
-a.detail:active
-{
-  color: #FFFFFF;
+#breakdown td {
+	background-color: #dae7fe;
+	white-space: nowrap;
 }
 
-/* @end */
+#breakdown td.file {
+	text-align: left;
+	color: #284FA8;
+}
 
+#breakdown td.bar {
+	padding: 2px 5px;
+	vertical-align: middle;
+}
+
+#breakdown td.bar table {
+	border: none;
+	margin: 0;
+}
+
+#breakdown td.coverBarOutline {
+	border-color: black;
+	padding: 0;
+}
+
+td.percent {
+	font-weight: bold;
+}
+
+td.percent, td.ratio {
+	text-align: right;
+}
+
+#breakdown tr.total {
+	border-bottom: 5px solid #6688d4;
+	font-weight: bold;
+}
+
+#source td {
+	font-family: monospace;
+	font-size: 90%;
+	padding: 0 3px;
+	text-align: right;
+	white-space: nowrap;
+	border: solid #bbb;
+	border-width: 0 1px;
+}
+
+#source td.line {
+	background-color: #dae7fe;
+}
+
+#source td.branch {
+	white-space: nowrap;
+	padding: 1px 2px;
+}
+
+#source td.branch span {
+	margin: 1px;
+}
+
+#source td.branch, #source td.code {
+	text-align: left;
+}
+
+#source td.code {
+	white-space: pre-wrap;
+}
+
+#source tr:hover {
+	background-color: #ddd;
+}
+
+#source tr:hover .line {
+	background-color: #becade;
+}
+
+#source tr:hover .Cov {
+	background-color: #6ff46f;
+}
+
+#source tr:hover .NoCov {
+	background-color: #ff5457;
+}
+
+.Hi, #breakdown td.Hi, .Cov, ins {
+	background-color: #9bff9b;
+}
+
+.Med, #breakdown td.Med, .DiffCov {
+	background-color: #eff79d;
+}
+
+.Lo, #breakdown td.Lo, .NoCov, del {
+	background-color: #ff7f7f;
+}
+
+ins, del {
+	text-decoration: none;
+	padding: 0 3px;
+}
 
 /* @group File view (detail) */
 
-td.testNameHead
-{
-  text-align:       right;
-  padding-right:    10px;
-  background-color: #DAE7FE;
-  font-family:      sans-serif;
-  font-weight:      bold;
+td.testNameHead {
+	text-align: right;
+	padding-right: 10px;
+	background-color: #dae7fe;
+	font-weight: bold;
 }
 
-td.testLinesHead
-{
-  text-align:       center;
-  background-color: #DAE7FE;
-  font-family:      sans-serif;
-  font-weight:      bold;
+td.testLinesHead {
+	text-align: center;
+	background-color: #dae7fe;
+	font-weight: bold;
 }
 
-td.testName
-{
-  text-align:       right;
-  padding-right:    10px;
-  background-color: #DAE7FE;
+td.testName {
+	text-align: right;
+	padding-right: 10px;
+	background-color: #dae7fe;
 }
 
-td.testPer
-{
-  text-align:       right;
-  padding-left:     10px;
-  padding-right:    10px; 
-  background-color: #DAE7FE;
+td.testPer {
+	text-align: right;
+	padding: auto 10px;
+	background-color: #dae7fe;
 }
 
-td.testNum
-{
-  text-align:       right;
-  padding-left:     10px;
-  padding-right:    10px; 
-  background-color: #DAE7FE;
+td.testNum {
+	text-align: right;
+	padding: auto 10px;
+	background-color: #dae7fe;
 }
 
-dt
-{
-  font-family: sans-serif;
-  font-weight: bold;
-}
-
-td.testDescription
-{
-  padding-top:      10px;
-  padding-left:     30px;
-  padding-bottom:   10px;
-  padding-right:    30px;
-  background-color: #DAE7FE;
+td.testDescription {
+	padding-top: 10px;
+	padding-left: 30px;
+	padding-bottom: 10px;
+	padding-right: 30px;
+	background-color: #dae7fe;
 }
 
 /* @end */
-
-
-/* @group Source Code View */
-
-pre.source
-{
-  font-family: monospace;
-  white-space: pre-wrap;
-}
-
-span.lineNum
-{
-	background-color: #d5d5ff;
-}
-
-/* Lines which were executed */
-
-span.lineCov
-{
-  background-color: #beffbe;
-}
-
-span.LegendCov
-{
-  text-align:       center;
-  padding-left:     10px;
-  padding-right:    10px;
-  margin-right:     2px;
-  background-color: #beffbe;
-}
-
-/* Lines which were NOT executed */
-
-span.lineNoCov
-{
-  background-color: #ff9090
-}
-
-span.LegendNoCov
-{
-  text-align:       center;
-  padding-left:     10px;
-  padding-right:    10px;
-  margin-right:     2px;
-  background-color: #ff9090
-}
-
-/* Lines which were executed only in a previous version */
-
-span.lineDiffCov
-{
-  background-color: #f2f7b8;
-}
-
-span.LegendDiffCov
-{
-  text-align:       center;
-  padding-left:     10px;
-  padding-right:    10px;
-  background-color: #f2f7b8;
-}
-
-/* @end */
-
