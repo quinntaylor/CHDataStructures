@@ -104,8 +104,7 @@ void createCollectableCFMutableDictionary(__strong CFMutableDictionaryRef* dicti
 }
 
 - (void) dealloc {
-	if (dictionary != NULL)
-		CFRelease(dictionary);
+	CFRelease(dictionary); // The dictionary will never be null at this point.
 	[lock release];
 	[super dealloc];
 }

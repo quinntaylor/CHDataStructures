@@ -429,7 +429,7 @@ static BOOL objectsAreIdentical(id o1, id o2) {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
 	[anObject retain];
-	if (index == count || count == 0) {
+	if (count == 0 || index == count) {
 		// To append, just move the tail forward one slot (wrapping if needed)
 		array[tailIndex] = anObject;
 		incrementIndex(tailIndex);

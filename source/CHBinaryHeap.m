@@ -53,8 +53,7 @@ static const CFBinaryHeapCallBacks kCHBinaryHeapCallBacksDescending = {
 @implementation CHBinaryHeap
 
 - (void) dealloc {
-	if (heap != NULL)
-		CFRelease(heap);
+	CFRelease(heap); // The heap will never be null at this point.
 	[super dealloc];
 }
 

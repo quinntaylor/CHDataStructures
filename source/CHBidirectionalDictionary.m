@@ -15,8 +15,7 @@
 - (void) dealloc {
 	if (inverse != nil)
 		inverse->inverse = nil; // Unlink from inverse dictionary if one exists.
-	if (reversed != NULL)
-		CFRelease(reversed);
+	CFRelease(reversed); // The reverse dict will never be null at this point.
 	[super dealloc];
 }
 
@@ -34,11 +33,15 @@
 
 - (CHBidirectionalDictionary*) inverseDictionary {
 	if (inverse == nil) {
+		// Create a new instance of this class to represent the inverse
 		inverse = [[CHBidirectionalDictionary alloc] init];
+		// Release the CFMutableDictionary it creates so we don't leak memory
 		if (kCHGarbageCollectionNotEnabled)
 			CFRelease(inverse->dictionary);
+		// Set its dictionary references to the reverse of what they are here
 		CFRetain(inverse->dictionary = reversed);
 		CFRetain(inverse->reversed = dictionary);
+		// Set this instance as the mutual inverse of the newly-created instance 
 		inverse->inverse = self;
 	}
 	return inverse;
