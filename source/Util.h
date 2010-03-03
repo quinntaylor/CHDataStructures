@@ -59,6 +59,9 @@ void* __strong NSReallocateCollectable(void *ptr, NSUInteger size, NSUInteger op
 
 #endif
 
+// This is declared in <objc/objc-auto.h>, but importing the header is overkill.
+HIDDEN OBJC_EXPORT void* objc_memmove_collectable(void *dst, const void *src, size_t size);
+
 #pragma mark -
 
 /** Global variable to simplify checking if garbage collection is enabled. */

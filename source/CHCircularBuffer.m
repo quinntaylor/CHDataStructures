@@ -441,15 +441,15 @@ static BOOL objectsAreIdentical(id o1, id o2) {
 		NSUInteger actualIndex = transformIndex(index);
 		if (actualIndex > tailIndex) {
 			// If the buffer wraps and index is between head and end, shift left.
-			memmove(&array[headIndex-1], &array[headIndex],
-					kCHPointerSize * index);
+			objc_memmove_collectable(&array[headIndex-1], &array[headIndex],
+			                         kCHPointerSize * index);
 			decrementIndex(headIndex);
 			decrementIndex(actualIndex); // Head moved back, so does destination
 		}
 		else {
 			// Otherwise, shift everything from given index onward to the right.
-			memmove(&array[actualIndex+1], &array[actualIndex],
-					kCHPointerSize * (tailIndex - actualIndex));
+			objc_memmove_collectable(&array[actualIndex+1], &array[actualIndex],
+			                         kCHPointerSize * (tailIndex - actualIndex));
 			incrementIndex(tailIndex);
 		}
 		array[actualIndex] = anObject;
@@ -460,7 +460,8 @@ static BOOL objectsAreIdentical(id o1, id o2) {
 	if (headIndex == tailIndex) {
 		array = NSReallocateCollectable(array, kCHPointerSize*arrayCapacity*2, NSScannedOption);
 		// Copy wrapped-around portion to end of queue and move tail index
-		memcpy(array + arrayCapacity, array, kCHPointerSize * tailIndex);
+		objc_memmove_collectable(array + arrayCapacity, array,
+		                         kCHPointerSize * tailIndex);
 		bzero(array, kCHPointerSize * tailIndex); // Zero the source of the copy
 		tailIndex += arrayCapacity;
 		arrayCapacity *= 2;
@@ -533,10 +534,10 @@ static BOOL objectsAreIdentical(id o1, id o2) {
 	// Under GC, zero the rest of the array to avoid holding unneeded references
 	if (!kCHGarbageCollectionNotEnabled) {
 		if (tailIndex > copyIndex) {
-			memset(&array[copyIndex], 0, kCHPointerSize * (tailIndex - copyIndex));
+			bzero(array + copyIndex, kCHPointerSize * (tailIndex - copyIndex));
 		} else {
-			memset(array + copyIndex, 0, kCHPointerSize * (arrayCapacity - copyIndex));
-			memset(array,             0, kCHPointerSize * tailIndex);
+			bzero(array + copyIndex, kCHPointerSize * (arrayCapacity - copyIndex));
+			bzero(array,             kCHPointerSize * tailIndex);
 		}
 	}
 	// Set the tail pointer to the new end point and recalculate element count.
@@ -572,14 +573,14 @@ static BOOL objectsAreIdentical(id o1, id o2) {
 	} else {
 		if (actualIndex > tailIndex) {
 			// If the buffer wraps and index is in "the right side", shift right.
-			memmove(&array[headIndex+1], &array[headIndex],
-					kCHPointerSize * index);
+			objc_memmove_collectable(&array[headIndex+1], &array[headIndex],
+			                         kCHPointerSize * index);
 			array[headIndex] = nil; // Prevents possible memory leak under GC
 			incrementIndex(headIndex);
 		} else {
 			// Otherwise, shift everything from index to tail one to the left.
-			memmove(&array[actualIndex], &array[actualIndex+1],
-					kCHPointerSize * (tailIndex - actualIndex - 1));
+			objc_memmove_collectable(&array[actualIndex], &array[actualIndex+1],
+			                         kCHPointerSize * (tailIndex-actualIndex-1));
 			decrementIndex(tailIndex);
 			array[tailIndex] = nil; // Prevents possible memory leak under GC
 		}
