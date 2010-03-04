@@ -13,6 +13,11 @@
 
 @implementation CHOrderedSet
 
+- (void) dealloc {
+	[ordering release];
+	[super dealloc];
+}
+
 - (id) init {
 	return [self initWithCapacity:0];
 }
