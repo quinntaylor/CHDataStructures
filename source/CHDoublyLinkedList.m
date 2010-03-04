@@ -385,12 +385,15 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 	}
 }
 
+/** @todo Improve efficiency of locating the corresponding nodes by index. */
 - (void) exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2 {
-	if (MAX(idx1,idx2) >= count)
+	if (idx1 >= count || idx2 >= count)
 		CHIndexOutOfRangeException([self class], _cmd, MAX(idx1,idx2), count);
 	if (idx1 != idx2) {
+		// Find the nodes as the provided indexes
 		CHDoublyLinkedListNode *node1 = [self nodeAtIndex:idx1];
 		CHDoublyLinkedListNode *node2 = [self nodeAtIndex:idx2];
+		// Swap the objects at the provided indexes
 		id tempObject = node1->object;
 		node1->object = node2->object;
 		node2->object = tempObject;

@@ -347,18 +347,20 @@ static inline void removeNodeAfterNode(CHSinglyLinkedListNode *node) {
 }
 
 - (void) exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2 {
-	if (MAX(idx1,idx2) >= count)
+	if (idx1 >= count || idx2 >= count)
 		CHIndexOutOfRangeException([self class], _cmd, MAX(idx1,idx2), count);
 	if (idx1 != idx2) {
-		NSUInteger firstIndex = MIN(idx1, idx2);
+		NSUInteger firstIndex  = MIN(idx1,idx2);
 		NSUInteger secondIndex = MAX(idx1,idx2);
 		NSUInteger nodeIndex = 0;
+		// Find the nodes as the provided indexes
 		CHSinglyLinkedListNode *node1 = head->next;
 		while (nodeIndex++ < firstIndex)
 			node1 = node1->next;
 		CHSinglyLinkedListNode *node2 = node1->next;
 		while (nodeIndex++ < secondIndex)
 			node2 = node2->next;
+		// Swap the objects at the provided indexes
 		id tempObject = node1->object;
 		node1->object = node2->object;
 		node2->object = tempObject;

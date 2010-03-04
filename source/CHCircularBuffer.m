@@ -469,12 +469,14 @@ static BOOL objectsAreIdentical(id o1, id o2) {
 }
 
 - (void) exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2 {
-	if (MAX(idx1,idx2) >= count)
+	if (idx1 >= count || idx2 >= count)
 		CHIndexOutOfRangeException([self class], _cmd, MAX(idx1,idx2), count);
 	if (idx1 != idx2) {
+		// Find the "real" equivalents of the provided indexes
 		NSUInteger realIdx1 = transformIndex(idx1);
 		NSUInteger realIdx2 = transformIndex(idx2);
-		id tempObject = array[realIdx1];
+		// Swap the objects at the provided indexes
+		id tempObject   = array[realIdx1];
 		array[realIdx1] = array[realIdx2];
 		array[realIdx2] = tempObject;
 		++mutations;
