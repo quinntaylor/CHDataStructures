@@ -20,7 +20,7 @@
 
 - (id) initWithCapacity:(NSUInteger)numItems {
 	if ((self = [super initWithCapacity:numItems]) == nil) return nil;
-	keyOrdering = [[CHCircularBuffer alloc] init];
+	keyOrdering = [[CHCircularBuffer alloc] initWithCapacity:numItems];
 	return self;
 }
 

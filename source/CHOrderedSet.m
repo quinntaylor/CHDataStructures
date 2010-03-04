@@ -24,7 +24,7 @@
 
 - (id) initWithCapacity:(NSUInteger)numItems {
 	if ((self = [super initWithCapacity:numItems]) == nil) return nil;
-	ordering = [[CHCircularBuffer alloc] init];
+	ordering = [[CHCircularBuffer alloc] initWithCapacity:numItems];
 	return self;
 }
 
