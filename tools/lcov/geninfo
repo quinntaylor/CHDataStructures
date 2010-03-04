@@ -1162,8 +1162,6 @@ sub process_dafile($$)
 				       "\n");
 
 				# Increase $lines_hit in case of an execution
-				# count>0
-#				print $gcov_content[1]."\n";
 				if ($gcov_content[1] =~ /^\d/ && $gcov_content[1] > 0) { $lines_hit++; }
 			}
 
