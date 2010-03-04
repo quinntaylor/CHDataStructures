@@ -12,7 +12,7 @@
 
 #define transformIndex(index) ((headIndex + index) % arrayCapacity)
 #define incrementIndex(index) (index = (index + 1) % arrayCapacity)
-#define decrementIndex(index) (index = ((index) ? index : arrayCapacity) - 1)
+#define decrementIndex(index) (index = index ? index - 1 : arrayCapacity - 1)
 
 /**
  An NSEnumerator for traversing a CHAbstractCircularBufferCollection subclass.
@@ -146,6 +146,18 @@ static BOOL objectsAreIdentical(id o1, id o2) {
 
 /**
  @todo Reimplement @c removeObjectsAtIndexes: for efficiency with multiple objects.
+
+ @todo Look at refactoring @c insertObject:atIndex: and @c removeObjectAtIndex:
+ to always shift the smaller chunk of elements and deal with wrapping around.
+ The current worst-case is that removing at index N-1 of N when the buffer wraps
+ (or inserting at index 1 of N when it doesn't) causes N-1 objects to be shifted
+ in memory, where it would obviously make more sense to shift only one object.
+ Being able to shift the shorter side would almost always move less total data.
+ - Shifting without wrapping requires only 1 memmove(), <= the current size.
+ - Shifting around the end requires 0-2 memmove()s and an assignment.
+	- 0 if inserting/removing just inside head or tail, causing them to (un)wrap.
+	- 1 if inserting in first/last array slot with 1+ items wrapped on other end.
+	- 2 if inserting/removing further inside with 1+ items on other end.
  */
 @implementation CHCircularBuffer
 
@@ -440,11 +452,12 @@ static BOOL objectsAreIdentical(id o1, id o2) {
 	} else {
 		NSUInteger actualIndex = transformIndex(index);
 		if (actualIndex > tailIndex) {
-			// If the buffer wraps and index is between head and end, shift left.
+			// Buffer wraps and 'index' is between head and end, so shift left.
 			objc_memmove_collectable(&array[headIndex-1], &array[headIndex],
 			                         kCHPointerSize * index);
-			decrementIndex(headIndex);
-			decrementIndex(actualIndex); // Head moved back, so does destination
+			// These can't wrap around (we'll hit tail first) so just decrement.
+			--headIndex;
+			--actualIndex;
 		}
 		else {
 			// Otherwise, shift everything from given index onward to the right.
@@ -504,7 +517,7 @@ static BOOL objectsAreIdentical(id o1, id o2) {
 	++mutations;
 }
 
-// Remove method that accepts a function pointer for testing object equality.
+// Private method that accepts a function pointer for testing object equality.
 - (void) removeObject:(id)anObject withEqualityTest:(BOOL(*)(id,id))objectsMatch {
 	if (count == 0 || anObject == nil)
 		return;
@@ -562,29 +575,27 @@ static BOOL objectsAreIdentical(id o1, id o2) {
 		CHIndexOutOfRangeException([self class], _cmd, index, count);
 	NSUInteger actualIndex = transformIndex(index);
 	[array[actualIndex] release];
-	// This algorithm is from: http://www.javafaq.nu/java-article808.html
-	// It could be optimized so the smaller half is always moved, but that would
-	// require 1-2 memmove()s and usually copying of a single object. Since this
-	// operation is inherently inefficient, I just left it this way.
-	if (actualIndex == headIndex) {
-		array[actualIndex] = nil; // Let GC do its thing
+	// Handle the simple cases of removing the first or last object first.
+	if (index == 0) {
+		array[actualIndex] = nil; // Prevents possible memory leak under GC
 		incrementIndex(headIndex);
-	} else if (actualIndex == tailIndex - 1) {
-		array[actualIndex] = nil; // Let GC do its thing
+	} else if (index == count - 1) {
+		array[actualIndex] = nil; // Prevents possible memory leak under GC
 		decrementIndex(tailIndex);
 	} else {
+		// This logic is derived from http://www.javafaq.nu/java-article808.html
+		// For simplicity, this code doesnt shift elements around the array end.
+		// Consequently headIndex and tailIndex will not wrap past the end here.
 		if (actualIndex > tailIndex) {
 			// If the buffer wraps and index is in "the right side", shift right.
 			objc_memmove_collectable(&array[headIndex+1], &array[headIndex],
 			                         kCHPointerSize * index);
-			array[headIndex] = nil; // Prevents possible memory leak under GC
-			incrementIndex(headIndex);
+			array[headIndex++] = nil; // Prevents possible memory leak under GC
 		} else {
 			// Otherwise, shift everything from index to tail one to the left.
 			objc_memmove_collectable(&array[actualIndex], &array[actualIndex+1],
 			                         kCHPointerSize * (tailIndex-actualIndex-1));
-			decrementIndex(tailIndex);
-			array[tailIndex] = nil; // Prevents possible memory leak under GC
+			array[--tailIndex] = nil; // Prevents possible memory leak under GC
 		}
 	}
 	--count;
