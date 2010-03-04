@@ -62,12 +62,13 @@
 
 #pragma mark -
 
+static NSNumber* number;
+
 @interface CHLockableTest : SenTestCase {
 	id lockable;
 	NSArray* lockableClasses;
 	NSEnumerator *classes;
 	Class aClass;
-	NSNumber* number;
 }
 @end
 
@@ -81,22 +82,46 @@
 											    nil];
 }
 
+- (void) testCreateLock {
+	// Note: This test uses -performSelector: to avoid compilation warnings.
+	// However, the -createLock method actually exists in CHLockable classes.
+	classes = [lockableClasses objectEnumerator];
+	while (aClass = [classes nextObject]) {
+		lockable = [[[aClass alloc] init] autorelease];
+		// Test that the lock is nil after initialization
+		STAssertNil([lockable theLock], nil);
+		// Create the lock and test that it is non-nil
+		[lockable performSelector:@selector(createLock)];
+		STAssertNotNil([lockable theLock], nil);
+		// Tests that the lock isn't created more than once
+		id<NSLocking> theLock = [lockable theLock];
+		[lockable performSelector:@selector(createLock)];
+		STAssertEquals([lockable theLock], theLock, nil);
+	}
+}
+
 - (void) testLockUnlock {
 	classes = [lockableClasses objectEnumerator];
 	while (aClass = [classes nextObject]) {
 		lockable = [[[aClass alloc] init] autorelease];
-		STAssertNil([lockable theLock], @"The NSLock should be nil.");
+		// Lock should be nil, created dynamically by calling -lock
+		STAssertNil([lockable theLock], nil);
 		[lockable lock];
-		STAssertNotNil([lockable theLock], @"The NSLock should no longer be nil.");
+		STAssertNotNil([lockable theLock], nil);
+		// While locked, detach a thread to modify an instance variable
 		number = nil;
 		[NSThread detachNewThreadSelector:@selector(setNumber:)
 								 toTarget:self
 							   withObject:[NSNumber numberWithInt:1]];
-		STAssertNil(number, @"The ivar 'number' should still be nil.");
+		// The variable should be nil, since -setNumber: blocks on the lock
+		STAssertNil(number, nil);
+		// Unlocking and sleeping allows -setNumber: to lock/modify/unlock
 		[lockable unlock];
 		[NSThread sleepUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
+		// The variable should be set after sleeping
 		[lockable lock];
-		STAssertNotNil(number, @"The ivar 'number' should no longer be nil.");
+		STAssertNotNil(number, nil);
+		// Unlock before the instance is deallocated
 		[lockable unlock];
 	}
 }
@@ -105,12 +130,17 @@
 	classes = [lockableClasses objectEnumerator];
 	while (aClass = [classes nextObject]) {
 		lockable = [[[aClass alloc] init] autorelease];
-		STAssertNil([lockable theLock], @"The NSLock should be nil.");
-		STAssertTrue([lockable tryLock], @"Should be able to acquire lock.");
-		STAssertNotNil([lockable theLock], @"The NSLock should be non-nil.");
-		// Try to acquire lock when it's already locked (should fail instantly)
-		STAssertFalse([lockable tryLock], @"Should not be able to acquire lock.");
-		STAssertNotNil([lockable theLock], @"The NSLock should still be non-nil.");
+		// Lock should be nil, created dynamically by calling -tryLock
+		STAssertNil([lockable theLock], nil);
+		STAssertTrue([lockable tryLock], nil);
+		STAssertNotNil([lockable theLock], nil);
+		// Acquiring the lock when it's already locked should fail instantly.
+		STAssertFalse([lockable tryLock], nil);
+		STAssertNotNil([lockable theLock], nil);
+		// Release the lock and reaquire it
+		[lockable unlock];
+		STAssertTrue([lockable tryLock], nil);
+		// Unlock before the instance is deallocated
 		[lockable unlock];
 	}
 }
@@ -119,9 +149,16 @@
 	classes = [lockableClasses objectEnumerator];
 	while (aClass = [classes nextObject]) {
 		lockable = [[[aClass alloc] init] autorelease];
-		STAssertNil([lockable theLock], @"The NSLock should be nil.");
-		[lockable lockBeforeDate:[NSDate date]];
-		STAssertNotNil([lockable theLock], @"The NSLock should no longer be nil.");
+		// Lock should be nil, created dynamically by calling -lockBeforeDate:
+		STAssertNil([lockable theLock], nil);
+		STAssertTrue([lockable lockBeforeDate:[NSDate date]], nil);
+		STAssertNotNil([lockable theLock], nil);
+		// Acquiring the lock when it's already locked should fail instantly.
+		STAssertFalse([lockable tryLock], nil);
+		// Release the lock and reaquire it
+		[lockable unlock];
+		STAssertTrue([lockable lockBeforeDate:[NSDate date]], nil);
+		// Unlock before the instance is deallocated
 		[lockable unlock];
 	}
 }
@@ -129,16 +166,9 @@
 #pragma mark Multi-thread methods
 
 - (void) setNumber:(NSNumber*)aNumber {
-	[lockable lock];
+	[lockable lock]; // Blocks until lock can be acquired.
 	number = aNumber;
 	[lockable unlock];
 }
 	
-- (void) setNumberAndSleep:(NSNumber*)aNumber {
-	[lockable lock];
-	number = aNumber;
-	[NSThread sleepUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.2]];
-	[lockable unlock];
-}
-
 @end

@@ -56,37 +56,30 @@
 @implementation CHAbstractListCollectionTest
 
 - (void) setUp {
-	collection = [[CHAbstractListCollection alloc] init];
-	objects = [NSArray arrayWithObjects:@"A", @"B", @"C", nil];
-}
-
-- (void) tearDown {
-	[collection release];
+	collection = [[[CHAbstractListCollection alloc] init] autorelease];
+	objects = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
 }
 
 #pragma mark -
 
 - (void) testNSCoding {
 	[collection addObjectsFromArray:objects];
-	STAssertEquals([collection count], [objects count], @"Incorrect count.");
-	STAssertEqualObjects([collection allObjects], objects, @"Wrong ordering before archiving.");
+	STAssertEquals([collection count], [objects count], nil);
+	STAssertEqualObjects([collection allObjects], objects, nil);
 	
 	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:collection];
-	[collection release];
 	collection = [[NSKeyedUnarchiver unarchiveObjectWithData:data] retain];
 	
-	STAssertEquals([collection count], [objects count], @"Incorrect count.");
-	STAssertEqualObjects([collection allObjects], objects, @"Wrong ordering on reconstruction.");
+	STAssertEquals([collection count], [objects count], nil);
+	STAssertEqualObjects([collection allObjects], objects, nil);
 }
 
 - (void) testNSCopying {
 	[collection addObjectsFromArray:objects];
-	CHAbstractListCollection *collection2 = [collection copy];
-	STAssertNotNil(collection2, @"-copy should not return nil for valid collection.");
-	STAssertEquals([collection2 count], (NSUInteger)3, @"Incorrect count.");
-	STAssertEqualObjects([collection allObjects], [collection2 allObjects],
-						 @"Unequal collections.");
-	[collection2 release];
+	CHAbstractListCollection *collection2 = [[collection copy] autorelease];
+	STAssertNotNil(collection2, nil);
+	STAssertEquals([collection2 count], (NSUInteger)3, nil);
+	STAssertEqualObjects([collection allObjects], [collection2 allObjects], nil);
 }
 
 #if OBJC_API_2
@@ -96,144 +89,137 @@
 		[collection addObject:[NSNumber numberWithUnsignedInteger:number]];
 	NSUInteger expected = 1, count = 0;
 	for (NSNumber *object in collection) {
-		STAssertEquals([object unsignedIntegerValue], expected++,
-					   @"Objects should be enumerated in ascending order.");
+		STAssertEquals([object unsignedIntegerValue], expected++, nil);
 		++count;
 	}
-	STAssertEquals(count, limit, @"Count of enumerated items is incorrect.");
+	STAssertEquals(count, limit, nil);
 
 	BOOL raisedException = NO;
 	@try {
 		for (id object in collection)
-			[collection addObject:@"123"];
+			[collection addObject:@"bogus"];
 	}
 	@catch (NSException *exception) {
 		raisedException = YES;
 	}
-	STAssertTrue(raisedException, @"Should raise mutation exception.");
+	STAssertTrue(raisedException, nil);
 }
 #endif
 
 #pragma mark -
 
 - (void) testInit {
-	STAssertNotNil(collection, @"collection should not be nil");
+	STAssertNotNil(collection, nil);
 }
 
 - (void) testInitWithArray {
-	[collection release];
 	collection = [[CHAbstractListCollection alloc] initWithArray:objects];
-	STAssertEquals([collection count], (NSUInteger)3, @"Incorrect count.");
-	STAssertEqualObjects([collection allObjects], objects,
-						 @"Bad array ordering on -initWithArray:");
-	
-	NSEnumerator *enumerator = [collection objectEnumerator];
-	STAssertEqualObjects([enumerator nextObject], @"A", @"Wrong -nextObject.");
-	STAssertEqualObjects([enumerator nextObject], @"B", @"Wrong -nextObject.");
-	STAssertEqualObjects([enumerator nextObject], @"C", @"Wrong -nextObject.");
-	STAssertNil([enumerator nextObject], @"-nextObject should return Nil");
+	STAssertEquals([collection count], [objects count], nil);
+	STAssertEqualObjects([collection allObjects], objects, nil);
 }
 
 - (void) testAllObjects {
-	NSArray *allObjects;
-	
-	allObjects = [collection allObjects];
-	STAssertNotNil(allObjects, @"Array should not be nil");
-	STAssertEquals([allObjects count], (NSUInteger)0, @"Incorrect array length.");
-	
+	// An empty collection should return an empty (but non-nil) object array
+	STAssertNotNil([collection allObjects], nil);
+	STAssertEquals([[collection allObjects] count], (NSUInteger)0, nil);
+	// Test that a non-empty collection returns all objects properly
 	[collection addObjectsFromArray:objects];
-	allObjects = [collection allObjects];
-	STAssertNotNil(allObjects, @"Array should not be nil");
-	STAssertEquals([allObjects count], (NSUInteger)3, @"Incorrect array length.");
+	STAssertEqualObjects([collection allObjects], objects, nil);
 }
 
 - (void) testCount {
-	STAssertEquals([collection count], (NSUInteger)0, @"Incorrect count.");
+	STAssertEquals([collection count], (NSUInteger)0, nil);
 	[collection addObject:@"Hello, World!"];
-	STAssertEquals([collection count], (NSUInteger)1, @"Incorrect count.");
+	STAssertEquals([collection count], (NSUInteger)1, nil);
 }
 
 - (void) testContainsObject {
+	// An empty collection should not contain any objects we test for
+	for (NSUInteger i = 0; i < [objects count]; i++)
+		STAssertFalse([collection containsObject:[objects objectAtIndex:i]], nil);
+	STAssertFalse([collection containsObject:@"bogus"], nil);
+	// Add objects and test for inclusion of each, plus non-member object
 	[collection addObjectsFromArray:objects];
-	STAssertTrue([collection containsObject:@"A"], @"Should contain object");
-	STAssertTrue([collection containsObject:@"B"], @"Should contain object");
-	STAssertTrue([collection containsObject:@"C"], @"Should contain object");
-	STAssertFalse([collection containsObject:@"a"], @"Should NOT contain object");
-	STAssertFalse([collection containsObject:@"Z"], @"Should NOT contain object");
+	for (NSUInteger i = 0; i < [objects count]; i++)
+		STAssertTrue([collection containsObject:[objects objectAtIndex:i]], nil);
+	STAssertFalse([collection containsObject:@"bogus"], nil);
 }
 
 - (void) testDescription {
 	[collection addObjectsFromArray:objects];
-	STAssertEqualObjects([collection description], [objects description],
-						 @"-description uses bad ordering.");
+	STAssertEqualObjects([collection description], [objects description], nil);
 }
 
 - (void) testExchangeObjectAtIndexWithObjectAtIndex {
-	STAssertThrows([collection exchangeObjectAtIndex:0 withObjectAtIndex:1],
-				   @"Should raise exception, collection is empty.");
-	STAssertThrows([collection exchangeObjectAtIndex:1 withObjectAtIndex:0],
-				   @"Should raise exception, collection is empty.");
-	
+	// When the list is empty, calls with any index should raise exception
+	STAssertThrows([collection exchangeObjectAtIndex:0 withObjectAtIndex:0], nil);
+	// When either index exceeds the bounds, an exception should be raised
+	STAssertThrows([collection exchangeObjectAtIndex:0 withObjectAtIndex:1], nil);
+	STAssertThrows([collection exchangeObjectAtIndex:1 withObjectAtIndex:0], nil);
 	[collection addObjectsFromArray:objects];
-	
-	[collection exchangeObjectAtIndex:1 withObjectAtIndex:1];
-	STAssertEqualObjects([collection allObjects], objects,
-	                     @"Should have no effect.");
-	[collection exchangeObjectAtIndex:0 withObjectAtIndex:2];
-	STAssertEqualObjects([collection allObjects], [[objects reverseObjectEnumerator] allObjects],
-	                     @"Should swap first and last element.");
+	NSUInteger count = [objects count];
+	STAssertThrows([collection exchangeObjectAtIndex:0 withObjectAtIndex:count], nil);
+	STAssertThrows([collection exchangeObjectAtIndex:count withObjectAtIndex:0], nil);
+	// Attempting to swap an index with itself should have no effect
+	for (NSUInteger i = 0; i < count; i++) {
+		STAssertNoThrow([collection exchangeObjectAtIndex:i withObjectAtIndex:i], nil);
+		STAssertEqualObjects([collection allObjects], objects, nil);
+	}
+	// Swap first and last elements
+	STAssertNoThrow([collection exchangeObjectAtIndex:0 withObjectAtIndex:2], nil);
+	STAssertEqualObjects([collection allObjects], [[objects reverseObjectEnumerator] allObjects], nil);
 }
 
 - (void) testContainsObjectIdenticalTo {
 	NSString *a = [NSString stringWithFormat:@"A"];
 	[collection addObject:a];
-	STAssertTrue([collection containsObjectIdenticalTo:a], @"Should return YES.");
-	STAssertFalse([collection containsObjectIdenticalTo:@"A"], @"Should return NO.");
-	STAssertFalse([collection containsObjectIdenticalTo:@"Z"], @"Should return NO.");
+	STAssertTrue([collection containsObjectIdenticalTo:a], nil);
+	STAssertFalse([collection containsObjectIdenticalTo:@"A"], nil);
+	STAssertFalse([collection containsObjectIdenticalTo:@"bogus"], nil);
 }
 
 - (void) testIndexOfObject {
+	// An empty collection should return NSNotFound any objects we test for
+	for (NSUInteger i = 0; i < [objects count]; i++)
+		STAssertEquals([collection indexOfObject:[objects objectAtIndex:i]],
+					   (NSUInteger)NSNotFound, nil);
+	STAssertEquals([collection indexOfObject:@"Z"], (NSUInteger)NSNotFound, nil);
+	// Add objects and test index of each, plus non-member object
 	[collection addObjectsFromArray:objects];
-	STAssertEquals([collection indexOfObject:@"A"], (NSUInteger)0, @"Wrong index for object");
-	STAssertEquals([collection indexOfObject:@"B"], (NSUInteger)1, @"Wrong index for object");
-	STAssertEquals([collection indexOfObject:@"C"], (NSUInteger)2, @"Wrong index for object");
-	STAssertEquals([collection indexOfObject:@"a"], (NSUInteger)NSNotFound,
-				   @"Wrong index for object");
-	STAssertEquals([collection indexOfObject:@"Z"], (NSUInteger)NSNotFound,
-				   @"Wrong index for object");
+	for (NSUInteger i = 0; i < [objects count]; i++)
+		STAssertEquals([collection indexOfObject:[objects objectAtIndex:i]], i, nil);
+	STAssertEquals([collection indexOfObject:@"Z"], (NSUInteger)NSNotFound, nil);
 }
 
 - (void) testIndexOfObjectIdenticalTo {
 	NSString *a = [NSString stringWithFormat:@"A"];
 	[collection addObject:a];
-	STAssertEquals([collection indexOfObjectIdenticalTo:a],
-				   (NSUInteger)0, @"Wrong index for object");
-	STAssertEquals([collection indexOfObjectIdenticalTo:@"A"], (NSUInteger)NSNotFound,
-				   @"Wrong index for object");
-	STAssertEquals([collection indexOfObjectIdenticalTo:@"Z"], (NSUInteger)NSNotFound,
-				   @"Wrong index for object");
+	STAssertEquals([collection indexOfObjectIdenticalTo:a], (NSUInteger)0, nil);
+	STAssertEquals([collection indexOfObjectIdenticalTo:@"A"], (NSUInteger)NSNotFound, nil);
+	STAssertEquals([collection indexOfObjectIdenticalTo:@"Z"], (NSUInteger)NSNotFound, nil);
 }
 
 - (void) testObjectAtIndex {
 	[collection addObjectsFromArray:objects];
-	STAssertThrows([collection objectAtIndex:-1], @"Bad index should raise exception");
-	STAssertEqualObjects([collection objectAtIndex:0], @"A", @"Wrong object at index");
-	STAssertEqualObjects([collection objectAtIndex:1], @"B", @"Wrong object at index");
-	STAssertEqualObjects([collection objectAtIndex:2], @"C", @"Wrong object at index");
-	STAssertThrows([collection objectAtIndex:3], @"Bad index should raise exception");
+	// Test all three valid indexes and the boundary conditions
+	STAssertThrows([collection objectAtIndex:-1], nil);
+	STAssertEqualObjects([collection objectAtIndex:0], @"A", nil);
+	STAssertEqualObjects([collection objectAtIndex:1], @"B", nil);
+	STAssertEqualObjects([collection objectAtIndex:2], @"C", nil);
+	STAssertThrows([collection objectAtIndex:3], nil);
 }
 
 - (void) testObjectEnumerator {
 	NSEnumerator *enumerator;
 	enumerator = [collection objectEnumerator];
-	STAssertNotNil(enumerator, @"-objectEnumerator should NOT return nil.");
-	STAssertNil([enumerator nextObject], @"-nextObject should return nil.");
+	STAssertNotNil(enumerator, nil);
+	STAssertNil([enumerator nextObject], nil);
 	
 	[collection addObject:@"Hello, World!"];
 	enumerator = [collection objectEnumerator];
-	STAssertNotNil(enumerator, @"-objectEnumerator should NOT return nil.");
-	STAssertNotNil([enumerator nextObject], @"-nextObject should NOT return nil.");	
-	STAssertNil([enumerator nextObject], @"-nextObject should return nil.");	
+	STAssertNotNil(enumerator, nil);
+	STAssertNotNil([enumerator nextObject], nil);	
+	STAssertNil([enumerator nextObject], nil);	
 }
 
 - (void) testObjectsAtIndexes {
@@ -246,50 +232,49 @@
 			range.length = length;
 			NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:range];
 			if (location + length > count) {
-				STAssertThrows([collection objectsAtIndexes:indexes], @"Range exception");
+				STAssertThrows([collection objectsAtIndexes:indexes], nil);
 			} else {
 				STAssertEqualObjects([collection objectsAtIndexes:indexes],
-									 [objects objectsAtIndexes:indexes],
-									 @"Range selections should be equal.");
+									 [objects objectsAtIndexes:indexes], nil);
 			}
 		}
 	}
-	STAssertThrows([collection objectsAtIndexes:nil], @"Nil argument.");
+	STAssertThrows([collection objectsAtIndexes:nil], nil);
 }
 
 - (void) testRemoveAllObjects {
-	STAssertEquals([collection count], (NSUInteger)0, @"Incorrect count.");
+	STAssertEquals([collection count], (NSUInteger)0, nil);
 	[collection addObjectsFromArray:objects];
-	STAssertEquals([collection count], (NSUInteger)3, @"Incorrect count.");
+	STAssertEquals([collection count], (NSUInteger)3, nil);
 	[collection removeAllObjects];
-	STAssertEquals([collection count], (NSUInteger)0, @"Incorrect count.");
+	STAssertEquals([collection count], (NSUInteger)0, nil);
 }
 
 - (void) testRemoveObject {
 	[collection addObjectsFromArray:objects];
 
-	STAssertNoThrow([collection removeObject:nil], @"Should not raise an exception.");
+	STAssertNoThrow([collection removeObject:nil], nil);
 
-	STAssertEquals([collection count], (NSUInteger)3, @"Incorrect count.");
+	STAssertEquals([collection count], (NSUInteger)3, nil);
 	[collection removeObject:@"A"];
-	STAssertEquals([collection count], (NSUInteger)2, @"Incorrect count.");
+	STAssertEquals([collection count], (NSUInteger)2, nil);
 	[collection removeObject:@"A"];
-	STAssertEquals([collection count], (NSUInteger)2, @"Incorrect count.");
+	STAssertEquals([collection count], (NSUInteger)2, nil);
 	[collection removeObject:@"Z"];
-	STAssertEquals([collection count], (NSUInteger)2, @"Incorrect count.");
+	STAssertEquals([collection count], (NSUInteger)2, nil);
 }
 
 - (void) testRemoveObjectIdenticalTo {
 	NSString *a = [NSString stringWithFormat:@"A"];
 	NSString *b = [NSString stringWithFormat:@"B"];
 	[collection addObject:a];
-	STAssertEquals([collection count], (NSUInteger)1, @"Incorrect count.");
+	STAssertEquals([collection count], (NSUInteger)1, nil);
 	[collection removeObjectIdenticalTo:@"A"];
-	STAssertEquals([collection count], (NSUInteger)1, @"Incorrect count.");
+	STAssertEquals([collection count], (NSUInteger)1, nil);
 	[collection removeObjectIdenticalTo:a];
-	STAssertEquals([collection count], (NSUInteger)0, @"Incorrect count.");
+	STAssertEquals([collection count], (NSUInteger)0, nil);
 	[collection removeObjectIdenticalTo:a];
-	STAssertEquals([collection count], (NSUInteger)0, @"Incorrect count.");
+	STAssertEquals([collection count], (NSUInteger)0, nil);
 	
 	// Test removing all instances of an object
 	[collection addObject:a];
@@ -298,48 +283,48 @@
 	[collection addObject:a];
 	[collection addObject:b];
 	
-	STAssertNoThrow([collection removeObjectIdenticalTo:nil], @"Should not raise an exception.");
+	STAssertNoThrow([collection removeObjectIdenticalTo:nil], nil);
 
-	STAssertEquals([collection count], (NSUInteger)5, @"Incorrect count.");
+	STAssertEquals([collection count], (NSUInteger)5, nil);
 	[collection removeObjectIdenticalTo:@"A"];
-	STAssertEquals([collection count], (NSUInteger)5, @"Incorrect count.");
+	STAssertEquals([collection count], (NSUInteger)5, nil);
 	[collection removeObjectIdenticalTo:a];
-	STAssertEquals([collection count], (NSUInteger)3, @"Incorrect count.");
+	STAssertEquals([collection count], (NSUInteger)3, nil);
 	[collection removeObjectIdenticalTo:b];
-	STAssertEquals([collection count], (NSUInteger)1, @"Incorrect count.");
+	STAssertEquals([collection count], (NSUInteger)1, nil);
 }
 
 - (void) testRemoveObjectAtIndex {
+	// Test removing from any index in an empty collection
+	STAssertThrows([collection removeObjectAtIndex:0], nil);
+	STAssertThrows([collection removeObjectAtIndex:NSNotFound], nil);
+	// Add objects and test removing from an index out of the reciever's bounds
 	[collection addObjectsFromArray:objects];
-	
-	STAssertThrows([collection removeObjectAtIndex:3], @"Should raise NSRangeException.");
-	STAssertThrows([collection removeObjectAtIndex:-1], @"Should raise NSRangeException.");
-	
+	STAssertThrows([collection removeObjectAtIndex:3], nil);
+	STAssertThrows([collection removeObjectAtIndex:-1], nil);
+	// Test removing from valid indexes and verify results
 	[collection removeObjectAtIndex:2];
-	STAssertEquals([collection count], (NSUInteger)2, @"Incorrect count.");
-	STAssertEqualObjects([collection objectAtIndex:0], @"A", @"Wrong first object.");
-	STAssertEqualObjects([collection objectAtIndex:1], @"B", @"Wrong last object.");
-	
+	STAssertEquals([collection count], (NSUInteger)2, nil);
+	STAssertEqualObjects([collection objectAtIndex:0], @"A", nil);
+	STAssertEqualObjects([collection objectAtIndex:1], @"B", nil);
 	[collection removeObjectAtIndex:0];
-	STAssertEquals([collection count], (NSUInteger)1, @"Incorrect count.");
-	STAssertEqualObjects([collection objectAtIndex:0], @"B", @"Wrong first object.");
-	
+	STAssertEquals([collection count], (NSUInteger)1, nil);
+	STAssertEqualObjects([collection objectAtIndex:0], @"B", nil);
 	[collection removeObjectAtIndex:0];
-	STAssertEquals([collection count], (NSUInteger)0, @"Incorrect count.");
-	
-	// Test removing from an index in the middle
+	STAssertEquals([collection count], (NSUInteger)0, nil);
+	// Test removing from an index in the middle of the collection
 	[collection addObjectsFromArray:objects];
-	
 	[collection removeObjectAtIndex:1];
-	STAssertEquals([collection count], (NSUInteger)2, @"Incorrect count.");
-	STAssertEqualObjects([collection objectAtIndex:0], @"A", @"Wrong first object.");
-	STAssertEqualObjects([collection objectAtIndex:1], @"C", @"Wrong last object.");
+	STAssertEquals([collection count], (NSUInteger)2, nil);
+	STAssertEqualObjects([collection objectAtIndex:0], @"A", nil);
+	STAssertEqualObjects([collection objectAtIndex:1], @"C", nil);
 }
 
 - (void) testRemoveObjectsAtIndexes {
-	STAssertThrows([collection removeObjectsAtIndexes:nil], @"Index set cannot be nil.");
+	// Test removing with invalid indexes
+	STAssertThrows([collection removeObjectsAtIndexes:nil], nil);
 	NSIndexSet* indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 1)];
-	STAssertThrows([collection removeObjectsAtIndexes:indexes], @"Nonexistent index.");
+	STAssertThrows([collection removeObjectsAtIndexes:indexes], nil);
 	
 	NSMutableArray* expected = [NSMutableArray array];
 	[collection addObjectsFromArray:objects];
@@ -349,32 +334,27 @@
 			// Repopulate list and expected
 			[expected removeAllObjects];
 			[expected addObjectsFromArray:objects];
+			[expected removeObjectsAtIndexes:indexes];
 			[collection removeAllObjects];
 			[collection addObjectsFromArray:objects];
-			STAssertNoThrow([collection removeObjectsAtIndexes:indexes],
-							@"Should not raise exception, valid index range.");
-			[expected removeObjectsAtIndexes:indexes];
-			STAssertEquals([collection count], [expected count], @"Wrong count");
-			STAssertEqualObjects([collection allObjects], expected, @"Array content mismatch.");
+			STAssertNoThrow([collection removeObjectsAtIndexes:indexes], nil);
+			STAssertEquals([collection count], [expected count], nil);
+			STAssertEqualObjects([collection allObjects], expected, nil);
 		}
 	}	
-	STAssertThrows([collection removeObjectsAtIndexes:nil], @"Nil argument.");
+	STAssertThrows([collection removeObjectsAtIndexes:nil], nil);
 }
 
 - (void) testReplaceObjectAtIndexWithObject {
-	STAssertThrows([collection replaceObjectAtIndex:0 withObject:nil],
-	               @"Should raise index exception.");
-	STAssertThrows([collection replaceObjectAtIndex:1 withObject:nil],
-	               @"Should raise index exception.");
-	
+	// Test replacing objects at invalid indexes
+	STAssertThrows([collection replaceObjectAtIndex:0 withObject:nil], nil);
+	STAssertThrows([collection replaceObjectAtIndex:NSNotFound withObject:nil], nil);
+	// Test replacing objects at valid indexes and verify results
 	[collection addObjectsFromArray:objects];
-	
 	for (NSUInteger i = 0; i < [objects count]; i++) {
-		STAssertEqualObjects([collection objectAtIndex:i], [objects objectAtIndex:i],
-		                     @"Incorrect object.");
-		[collection replaceObjectAtIndex:i withObject:@"Z"];
-		STAssertEqualObjects([collection objectAtIndex:i], @"Z",
-		                     @"Incorrect object.");
+		STAssertEqualObjects([collection objectAtIndex:i], [objects objectAtIndex:i], nil);
+		STAssertNoThrow([collection replaceObjectAtIndex:i withObject:@"Z"], nil);
+		STAssertEqualObjects([collection objectAtIndex:i], @"Z", nil);
 	}
 }
 
