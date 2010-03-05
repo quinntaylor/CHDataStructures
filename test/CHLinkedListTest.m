@@ -181,9 +181,9 @@
 		list = [[[aClass alloc] init] autorelease];
 		// When the list is empty, calls with any index should raise exception
 		STAssertThrows([list exchangeObjectAtIndex:0 withObjectAtIndex:0], nil);
-		// When either index exceeds the bounds, an exception should be raised
 		STAssertThrows([list exchangeObjectAtIndex:0 withObjectAtIndex:1], nil);
 		STAssertThrows([list exchangeObjectAtIndex:1 withObjectAtIndex:0], nil);
+		// When either index exceeds the bounds, an exception should be raised
 		[list addObjectsFromArray:abc];
 		STAssertThrows([list exchangeObjectAtIndex:0 withObjectAtIndex:[abc count]], nil);
 		STAssertThrows([list exchangeObjectAtIndex:[abc count] withObjectAtIndex:0], nil);
