@@ -26,20 +26,22 @@ void* __strong NSReallocateCollectable(void *ptr, NSUInteger size, NSUInteger op
 
 #pragma mark -
 
-static BOOL initialized = NO;
 BOOL kCHGarbageCollectionNotEnabled; // A variable declared extern in Util.h
 size_t kCHPointerSize = sizeof(void*); // A variable declared extern in Util.h
 
+/**
+ Determines GC status and sets @c kCHGarbageCollectionNotEnabled appropriately.
+ This function is designated to run when the shared library is first loaded.
+ See http://stackoverflow.com/questions/2053029/ for GCC constructor details.
+ */
+__attribute__((constructor))
 void initializeGCStatus() {
-	if (!initialized) {
-		// Discover whether garbage collection is enabled (if running on 10.5+).
-		// This bit of hackery avoids linking errors via indirect invocation.
-		// If NSGarbageCollector doesn't exist, NSClassFromString() returns nil.
-		// If it does exist, +defaultCollector will be non-nil if GC is enabled.
-		kCHGarbageCollectionNotEnabled = (objc_msgSend(NSClassFromString(@"NSGarbageCollector"),
-													   @selector(defaultCollector)) == nil);
-		initialized = YES;
-	}
+	// Discover whether garbage collection is enabled (if running on 10.5+).
+	// This bit of hackery avoids linking errors via indirect invocation.
+	// If NSGarbageCollector doesn't exist, NSClassFromString() returns nil.
+	// If it does exist, +defaultCollector will be non-nil if GC is enabled.
+	kCHGarbageCollectionNotEnabled = (objc_msgSend(NSClassFromString(@"NSGarbageCollector"),
+	                                               @selector(defaultCollector)) == nil);
 }
 
 BOOL collectionsAreEqual(id collection1, id collection2) {

@@ -48,10 +48,6 @@
 
 #pragma mark -
 
-+ (void) initialize {
-	initializeGCStatus();
-}
-
 - (void) dealloc {
 	[lock release];
 	[super dealloc];

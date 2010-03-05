@@ -161,10 +161,6 @@ static BOOL objectsAreIdentical(id o1, id o2) {
  */
 @implementation CHCircularBuffer
 
-+ (void) initialize {
-	initializeGCStatus();
-}
-
 - (void) dealloc {
 	[self removeAllObjects];
 	free(array);

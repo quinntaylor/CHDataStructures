@@ -71,12 +71,6 @@ OBJC_EXPORT BOOL kCHGarbageCollectionNotEnabled;
 OBJC_EXPORT size_t kCHPointerSize;
 
 /**
- Determines GC status and sets @c kCHGarbageCollectionNotEnabled appropriately.
- Intended to be called from @c +initialize of direct implementors of CHLockable.
- */
-HIDDEN void initializeGCStatus();
-
-/**
  Determine whether two collections enumerate the equivalent objects in the same order.
  
  @param collection1 The first collection to be compared.

@@ -99,10 +99,6 @@ void createCollectableCFMutableDictionary(__strong CFMutableDictionaryRef* dicti
 
 #pragma mark -
 
-+ (void) initialize {
-	initializeGCStatus();
-}
-
 - (void) dealloc {
 	CFRelease(dictionary); // The dictionary will never be null at this point.
 	[lock release];

@@ -79,10 +79,6 @@ static const CFSetCallBacks kCHLockableSetCallbacks = {
 
 #pragma mark -
 
-+ (void) initialize {
-	initializeGCStatus();
-}
-
 - (void) dealloc {
 	CFRelease(set); // The set will never be null at this point.
 	[lock release];
