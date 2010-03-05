@@ -31,7 +31,8 @@ size_t kCHPointerSize = sizeof(void*); // A variable declared extern in Util.h
 
 /**
  Determines GC status and sets @c kCHGarbageCollectionNotEnabled appropriately.
- This function is designated to run when the shared library is first loaded.
+ The 'constructor' attribute causes the function to be called automatically
+ before execution enters main(); in our case, when the shared library is loaded.
  See http://stackoverflow.com/questions/2053029/ for GCC constructor details.
  */
 __attribute__((constructor))
