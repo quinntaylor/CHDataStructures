@@ -57,16 +57,17 @@ static NSArray *abc;
 		[fifteen addObject:[NSNumber numberWithInt:i]];
 }
 
-// This method checks tail-head (accounting for wrapping) against the count.
-// This assumes
-- (void) checkCountMatchesDistanceFromHeadToTail:(NSUInteger) expectedValue {
-	STAssertEquals([buffer count], expectedValue, nil);
-	STAssertEquals([buffer distanceFromHeadToTail], expectedValue, nil);
-}
-
+// This macro checks tail-head (accounting for wrapping) against the count.
+#define checkCountAndDistanceFromHeadToTail(e) \
+do { \
+	NSUInteger expected = e; \
+	STAssertEquals([buffer count], expected, nil); \
+	STAssertEquals([buffer distanceFromHeadToTail], expected, nil); \
+} while(0)
+	
 - (void) testInit {
-	STAssertEquals([buffer capacity], (NSUInteger)16,  nil);
-	[self checkCountMatchesDistanceFromHeadToTail:0];
+	STAssertEquals([buffer capacity], (NSUInteger)16, nil);
+	checkCountAndDistanceFromHeadToTail(0);
 }
 
 - (void) testInitWithArray {
@@ -75,38 +76,40 @@ static NSArray *abc;
 		[array addObject:[NSNumber numberWithInt:i]];
 	buffer = [[[CHCircularBuffer alloc] initWithArray:array] autorelease];
 	STAssertEquals([buffer capacity], (NSUInteger)16, nil);
-	[self checkCountMatchesDistanceFromHeadToTail:15];
+	checkCountAndDistanceFromHeadToTail(15);
 	
 	[array addObject:[NSNumber numberWithInt:16]];
 	buffer = [[[CHCircularBuffer alloc] initWithArray:array] autorelease];
 	STAssertEquals([buffer capacity], (NSUInteger)32, nil);
-	[self checkCountMatchesDistanceFromHeadToTail:16];
+	checkCountAndDistanceFromHeadToTail(16);
 	
 	for (int i = 17; i <= 33; i++)
 		[array addObject:[NSNumber numberWithInt:i]];
 	buffer = [[[CHCircularBuffer alloc] initWithArray:array] autorelease];
 	STAssertEquals([buffer capacity], (NSUInteger)64, nil);
-	[self checkCountMatchesDistanceFromHeadToTail:33];
+	checkCountAndDistanceFromHeadToTail(33);
 }
 
 - (void) testInitWithCapacity {
 	// Test initializing with valid capacity
 	buffer = [[[CHCircularBuffer alloc] initWithCapacity:8] autorelease];
 	STAssertEquals([buffer capacity], (NSUInteger)8, nil);
-	[self checkCountMatchesDistanceFromHeadToTail:0];
+	checkCountAndDistanceFromHeadToTail(0);
 	// Test initializing with invalid capacity
 	buffer = [[[CHCircularBuffer alloc] initWithCapacity:0] autorelease];
 	STAssertTrue([buffer capacity] != 0, nil);
-	[self checkCountMatchesDistanceFromHeadToTail:0];
+	checkCountAndDistanceFromHeadToTail(0);
 }
 
 #pragma mark Insertion
 
 - (void) testAddObject {
 	[buffer addObject:@"A"];
+	checkCountAndDistanceFromHeadToTail(1);
 	[buffer addObject:@"B"];
+	checkCountAndDistanceFromHeadToTail(2);
 	[buffer addObject:@"C"];
-	[self checkCountMatchesDistanceFromHeadToTail:3];
+	checkCountAndDistanceFromHeadToTail(3);
 	
 	// Force expansion of original capacity
 	buffer = [[[CHCircularBuffer alloc] init] autorelease];
@@ -119,46 +122,65 @@ static NSArray *abc;
 }
 
 - (void) testInsertObjectAtIndex {
-	// Test error conditions
-	STAssertThrows([buffer insertObject:nil  atIndex:0],  nil);
-	STAssertThrows([buffer insertObject:@"Z" atIndex:-1], nil);
-	STAssertThrows([buffer insertObject:@"Z" atIndex:1],  nil);
-	
-	// Insert some at the front to force the buffer to "wrap around" the end.
+	// Inserting a nil object should raise an exception
+	STAssertThrows([buffer insertObject:nil  atIndex:0], nil);
+	// Any index on empty array should raise an exception
+	STAssertThrows([buffer insertObject:@"Z" atIndex:1], nil);
+	// Insert in the middle of a non-wrapping buffer; tail should get pushed right
+	[buffer addObject:@"W"];
+	[buffer insertObject:@"Z" atIndex:1];
+	[buffer insertObject:@"Y" atIndex:1];
+	[buffer insertObject:@"X" atIndex:1];
+	STAssertEqualObjects(buffer, ([NSArray arrayWithObjects:@"W",@"X",@"Y",@"Z",nil]), nil);
+	[buffer removeAllObjects];
+	// Insert some at the front to force the buffer to "wrap around" backwards.
+	NSMutableArray *correct = [NSMutableArray arrayWithArray:abc];
+	[correct addObject:@"D"];
 	e = [abc reverseObjectEnumerator];
 	while (anObject = [e nextObject])
 		[buffer insertObject:anObject atIndex:0];
 	[buffer addObject:@"D"];
-	[self checkCountMatchesDistanceFromHeadToTail:[abc count]+1];
-	
-	// Try inserting in the middle within both halves of a wrapped-around buffer
-	[buffer insertObject:@"X" atIndex:1];
-	[self checkCountMatchesDistanceFromHeadToTail:[abc count]+2];
-	[buffer insertObject:@"Y" atIndex:3];
-	[self checkCountMatchesDistanceFromHeadToTail:[abc count]+3];
-	[buffer insertObject:@"Z" atIndex:5];
-	[self checkCountMatchesDistanceFromHeadToTail:[abc count]+4];
-	
-	STAssertEqualObjects([buffer objectAtIndex:0], @"A", nil);
-	STAssertEqualObjects([buffer objectAtIndex:1], @"X", nil);
-	STAssertEqualObjects([buffer objectAtIndex:2], @"B", nil);
-	STAssertEqualObjects([buffer objectAtIndex:3], @"Y", nil);
-	STAssertEqualObjects([buffer objectAtIndex:4], @"C", nil);
-	STAssertEqualObjects([buffer objectAtIndex:5], @"Z", nil);
-	STAssertEqualObjects([buffer objectAtIndex:6], @"D", nil);
+	STAssertEqualObjects(buffer, correct, nil);
+	checkCountAndDistanceFromHeadToTail([correct count]);
+	// Test inserting in the middle of both halves of a wrapped-around buffer
+	[buffer  insertObject:@"X" atIndex:1];
+	[correct insertObject:@"X" atIndex:1];
+	checkCountAndDistanceFromHeadToTail([correct count]);
+	STAssertEqualObjects(buffer, correct, nil);
+	[buffer  insertObject:@"Y" atIndex:3];
+	[correct insertObject:@"Y" atIndex:3];
+	checkCountAndDistanceFromHeadToTail([correct count]);
+	STAssertEqualObjects(buffer, correct, nil);
+	[buffer  insertObject:@"Z" atIndex:5];
+	[correct insertObject:@"Z" atIndex:5];
+	checkCountAndDistanceFromHeadToTail([correct count]);
+	STAssertEqualObjects(buffer, correct, nil);
 }
 
 - (void) testExchangeObjectAtIndexWithObjectAtIndex {
-	// TODO: beef up these tests by copying from CHLinkedList
+	// When the buffer is empty, calls with any index should raise exception
+	STAssertThrows([buffer exchangeObjectAtIndex:0 withObjectAtIndex:0], nil);
 	STAssertThrows([buffer exchangeObjectAtIndex:0 withObjectAtIndex:1], nil);
 	STAssertThrows([buffer exchangeObjectAtIndex:1 withObjectAtIndex:0], nil);
-	
+	// When either index exceeds the bounds, an exception should be raised
 	[buffer addObjectsFromArray:abc];
-	
-	[buffer exchangeObjectAtIndex:1 withObjectAtIndex:1];
-	STAssertEqualObjects([buffer allObjects], abc, nil);
+	STAssertThrows([buffer exchangeObjectAtIndex:0 withObjectAtIndex:[abc count]], nil);
+	STAssertThrows([buffer exchangeObjectAtIndex:[abc count] withObjectAtIndex:0], nil);
+	// Attempting to swap an index with itself should have no effect
+	for (NSUInteger i = 0; i < [abc count]; i++) {
+		[buffer exchangeObjectAtIndex:i withObjectAtIndex:i];
+		STAssertEqualObjects([buffer allObjects], abc, nil);
+	}
+	// Test exchanging objects and verify correctness of swaps
 	[buffer exchangeObjectAtIndex:0 withObjectAtIndex:2];
-	STAssertEqualObjects([buffer allObjects], [[abc reverseObjectEnumerator] allObjects], nil);
+	STAssertEqualObjects([buffer firstObject],     @"C", nil);
+	STAssertEqualObjects([buffer lastObject],      @"A", nil);
+	[buffer exchangeObjectAtIndex:0 withObjectAtIndex:1];
+	STAssertEqualObjects([buffer firstObject],     @"B", nil);
+	STAssertEqualObjects([buffer objectAtIndex:1], @"C", nil);
+	[buffer exchangeObjectAtIndex:2 withObjectAtIndex:1];
+	STAssertEqualObjects([buffer objectAtIndex:1], @"A", nil);
+	STAssertEqualObjects([buffer lastObject],      @"C", nil);	
 }
 		
 #pragma mark Access
@@ -180,7 +202,7 @@ static NSArray *abc;
 	e = [abc objectEnumerator];
 	while (anObject = [e nextObject])
 		[buffer removeFirstObject];
-	[self checkCountMatchesDistanceFromHeadToTail:0];
+	checkCountAndDistanceFromHeadToTail(0);
 	NSMutableArray *objects = [NSMutableArray array];
 	for (int i = 1; i < 16; i++) {
 		[objects addObject:[NSNumber numberWithInt:i]];
@@ -383,21 +405,20 @@ static NSArray *abc;
 #pragma mark Removal
 
 - (void) testRemoveFirstObject {
+	// When empty, removal should have no effect and not raise an exception.
+	STAssertNoThrow([buffer removeFirstObject], nil);
+	// Test correctness when removing the first object one at a time.
 	[buffer addObjectsFromArray:abc];
-	
 	NSUInteger expected = [abc count];
 	STAssertEqualObjects([buffer firstObject], @"A", nil);
-	STAssertEquals([buffer count], expected, nil);
+	STAssertEquals([buffer count], expected--, nil);
 	[buffer removeFirstObject];
-	--expected;
 	STAssertEqualObjects([buffer firstObject], @"B", nil);
-	STAssertEquals([buffer count], expected, nil);
+	STAssertEquals([buffer count], expected--, nil);
 	[buffer removeFirstObject];
-	--expected;
 	STAssertEqualObjects([buffer firstObject], @"C", nil);
-	STAssertEquals([buffer count], expected, nil);
+	STAssertEquals([buffer count], expected--, nil);
 	[buffer removeFirstObject];
-	--expected;
 	STAssertNil([buffer firstObject], nil);
 	STAssertEquals([buffer count], expected, nil);
 	[buffer removeFirstObject];
@@ -409,6 +430,9 @@ static NSArray *abc;
 }
 
 - (void) testRemoveLastObject {
+	// When empty, removal should have no effect and not raise an exception.
+	STAssertNoThrow([buffer removeLastObject], nil);
+	// Test correctness when removing the last object one at a time.
 	[buffer addObjectsFromArray:abc];
 	NSUInteger expected = [abc count];
 	STAssertEqualObjects([buffer lastObject], @"C", nil);
@@ -424,15 +448,22 @@ static NSArray *abc;
 	// Should never raise an exception, even when empty.
 	STAssertNoThrow([buffer removeLastObject], nil);
 	STAssertEquals([buffer count], expected, nil);
+	// Test removing the last object when the tail index is at slot 0
+	// The last object must be in the final slot, with 1+ slots still open.
+	buffer = [[[CHCircularBuffer alloc] initWithCapacity:3] autorelease];
+	[buffer addObject:@"bogus"]; [buffer removeFirstObject];
+	[buffer addObject:@"bogus"]; [buffer removeFirstObject];
+	[buffer addObject:@"A"];
+	STAssertNoThrow([buffer removeLastObject], nil);
+	checkCountAndDistanceFromHeadToTail(0);
 }
 
 - (void) testRemoveAllObjects {
-	STAssertEquals([buffer count], (NSUInteger)0, nil);
+	checkCountAndDistanceFromHeadToTail(0);
 	[buffer addObjectsFromArray:abc];
-	[self checkCountMatchesDistanceFromHeadToTail:3];
-
+	checkCountAndDistanceFromHeadToTail([abc count]);
 	[buffer removeAllObjects];
-	[self checkCountMatchesDistanceFromHeadToTail:0];
+	checkCountAndDistanceFromHeadToTail(0);
 	
 	// Test whether circular buffer contracts when all objects are removed.
 	STAssertEquals([buffer capacity], (NSUInteger)16, nil);
@@ -546,28 +577,67 @@ static NSArray *abc;
 }
 
 - (void) testRemoveObjectAtIndex {
+	// Any index on empty array should raise exception
 	STAssertThrows([buffer removeObjectAtIndex:0], nil);
+	STAssertThrows([buffer removeObjectAtIndex:1], nil);
+	// Any index beyond the bounds of the receiver should raise exception
 	[buffer addObjectsFromArray:abc];
-	[buffer addObject:@"D"];
-	STAssertThrows([buffer removeObjectAtIndex:[abc count]+1], nil);
-	
+	STAssertThrows([buffer removeObjectAtIndex:[abc count]], nil);
+	// Test removing the first object repeatedly
+	for (NSUInteger removed = 1; removed <= [abc count]; removed++) {
+		STAssertNoThrow([buffer removeObjectAtIndex:0], nil);
+		STAssertEquals([buffer count], [abc count]-removed, nil);
+	}
+	[buffer removeAllObjects];
+	// Test removing the last object repeatedly
+	[buffer addObjectsFromArray:abc];
+	for (NSUInteger removed = 1; removed <= [abc count]; removed++) {
+		STAssertNoThrow([buffer removeObjectAtIndex:[abc count]-removed], nil);
+		STAssertEquals([buffer count], [abc count]-removed, nil);
+	}
+	[buffer removeAllObjects];
+	// Test removing objects other than the first and last when the buffer wraps
+	// We force creation of a wrapped buffer and remove the proper indexes
+	buffer = [[[CHCircularBuffer alloc] initWithCapacity:8] autorelease];
+	// Advance head and tail so the gap will fall in the middle of the array
+	for (NSUInteger count = 1; count <= 4; count++) {
+		[buffer addObject:[NSNull null]];
+		[buffer removeFirstObject];
+	}
+	NSMutableArray *objects = [NSMutableArray arrayWithObjects:@"A",@"B",@"C",@"D",@"E",@"F",@"G",nil];
+	[buffer addObjectsFromArray:objects];
+	// The internal array should now look like the following: EFG_ABCD
+	// Remove two objects each from the "left" half, then the "right" half
+	// This is the pattern it should follow: EG__ABCD G___ABCD G____ABC G_____AB
+	for (NSUInteger index = [objects count] - 2; index > 1; index--) {
+		STAssertNoThrow([buffer removeObjectAtIndex:index], nil);
+		[objects removeObjectAtIndex:index];
+		STAssertEqualObjects(buffer, objects, nil);
+		STAssertEquals([buffer count], [buffer distanceFromHeadToTail], nil);
+	}
+	// Remove the last object and cause tail index to wrap
+	// This is the pattern it should follow: ______AB ______A_
 	STAssertNoThrow([buffer removeObjectAtIndex:2], nil);
-	STAssertEquals([buffer count], [abc count], nil);
-
+	[objects removeObjectAtIndex:2];
+	STAssertEqualObjects(buffer, objects, nil);
+	STAssertEquals([buffer count], [buffer distanceFromHeadToTail], nil);
 	STAssertNoThrow([buffer removeObjectAtIndex:1], nil);
-	STAssertEquals([buffer count], [abc count]-1, nil);
-
-	STAssertNoThrow([buffer removeObjectAtIndex:1], nil);
-	STAssertEquals([buffer count], [abc count]-2, nil);
-	
+	[objects removeObjectAtIndex:1];
+	STAssertEqualObjects(buffer, objects, nil);
+	STAssertEquals([buffer count], [buffer distanceFromHeadToTail], nil);
+	// Remove the first object and cause head index to wrap
+	[buffer removeFirstObject];
+	objects = [NSMutableArray arrayWithArray:abc];
+	// This is the pattern it should follow: BC_____A BC______ _C______
+	[buffer addObjectsFromArray:objects];
 	STAssertNoThrow([buffer removeObjectAtIndex:0], nil);
-	STAssertEquals([buffer count], [abc count]-3, nil);
-	
-	[buffer addObjectsFromArray:fifteen];
-	
-	[buffer removeObjectAtIndex:[buffer count] - 1];
-	
-	[buffer removeObjectAtIndex:0];
+	[objects removeObjectAtIndex:0];
+	STAssertEqualObjects(buffer, objects, nil);
+	STAssertEquals([buffer count], [buffer distanceFromHeadToTail], nil);
+	STAssertNoThrow([buffer removeObjectAtIndex:0], nil);
+	[objects removeObjectAtIndex:0];
+	STAssertEqualObjects(buffer, objects, nil);
+	STAssertEquals([buffer count], [buffer distanceFromHeadToTail], nil);
 }
 
 - (void) testRemoveObjectsAtIndexes {
@@ -671,7 +741,7 @@ static NSArray *abc;
 		[buffer addObject:anObject];
 		[buffer removeFirstObject];
 	}
-	[self checkCountMatchesDistanceFromHeadToTail:0];
+	checkCountAndDistanceFromHeadToTail(0);
 	for (number = 1; number < 16; number++)
 		[buffer addObject:[NSNumber numberWithInt:number]];
 	count = 0;
