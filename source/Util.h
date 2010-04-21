@@ -57,10 +57,14 @@ void* __strong NSAllocateCollectable(NSUInteger size, NSUInteger options);
 
 void* __strong NSReallocateCollectable(void *ptr, NSUInteger size, NSUInteger options);
 
-#endif
+#define objc_memmove_collectable memmove
+
+#else
 
 // This is declared in <objc/objc-auto.h>, but importing the header is overkill.
 HIDDEN OBJC_EXPORT void* objc_memmove_collectable(void *dst, const void *src, size_t size);
+
+#endif
 
 #pragma mark -
 
