@@ -518,15 +518,13 @@ do { \
 				}				
 			}
 			[buffer addObjectsFromArray:testArray];
-			STAssertEquals([buffer count], [testArray count], nil);
+			STAssertEqualObjects(buffer, testArray, nil);
 			[buffer removeObject:@"bogus"];
-			STAssertEquals([buffer count], [testArray count], nil);
+			STAssertEqualObjects(buffer, testArray, @"for array %@", [testArray description]);
 			[buffer removeObject:@"X"];
-			STAssertEquals([buffer count], [processedArray count], nil);
-			STAssertEqualObjects(buffer, processedArray, nil);
+			STAssertEqualObjects(buffer, processedArray, @"for array %@", [testArray description]);
 			[buffer removeObject:@"X"];
-			STAssertEquals([buffer count], [processedArray count], nil);
-			STAssertEqualObjects(buffer, processedArray, nil);
+			STAssertEqualObjects(buffer, processedArray, @"for array %@", [testArray description]);
 			[buffer removeAllObjects];
 		}
 	}
@@ -573,15 +571,13 @@ do { \
 				}				
 			}
 			[buffer addObjectsFromArray:testArray];
-			STAssertEquals([buffer count], [testArray count], nil);
+			STAssertEqualObjects(buffer, testArray, nil);
 			[buffer removeObjectIdenticalTo:x];
-			STAssertEquals([buffer count], [testArray count], nil);
+			STAssertEqualObjects(buffer, testArray, @"for array %@", [testArray description]);
 			[buffer removeObjectIdenticalTo:@"X"];
-			STAssertEquals([buffer count], [processedArray count], nil);
-			STAssertEqualObjects(buffer, processedArray, nil);
+			STAssertEqualObjects(buffer, processedArray, @"for array %@", [testArray description]);
 			[buffer removeObjectIdenticalTo:@"X"];
-			STAssertEquals([buffer count], [processedArray count], nil);
-			STAssertEqualObjects(buffer, processedArray, nil);
+			STAssertEqualObjects(buffer, processedArray, @"for array %@", [testArray description]);
 			[buffer removeAllObjects];
 		}
 	}
