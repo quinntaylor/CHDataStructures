@@ -485,10 +485,13 @@ do { \
 }
 
 - (NSArray*) removeObjectTestArrays {
-	NSArray *prefix  = [NSArray arrayWithObjects:@"X",@"A",@"X",@"B",@"X",@"C",nil];
-	NSArray *postfix = [NSArray arrayWithObjects:@"A",@"X",@"B",@"X",@"C",@"X",nil];
-	NSArray *bothfix = [NSArray arrayWithObjects:@"X",@"A",@"X",@"B",@"X",@"C",@"X",nil];
-	return [NSArray arrayWithObjects:prefix, postfix, bothfix, nil];
+	return [NSArray arrayWithObjects:[NSArray arrayWithObjects:@"X",@"A",@"X",@"B",@"X",@"C",nil],
+	                                 [NSArray arrayWithObjects:@"A",@"X",@"B",@"X",@"C",@"X",nil],
+	                                 [NSArray arrayWithObjects:@"A",@"X",@"X",@"X",@"B",@"C",nil],
+	                                 [NSArray arrayWithObjects:@"A",@"X",@"X",@"B",@"C",@"D",nil],
+	                                 [NSArray arrayWithObjects:@"A",@"B",@"X",@"X",@"C",@"D",nil],
+	                                 [NSArray arrayWithObjects:@"X",@"A",@"X",@"B",@"X",@"C",@"X",nil],
+	                                 nil];
 }
 
 - (void) testRemoveObject {
@@ -503,6 +506,8 @@ do { \
 	NSEnumerator *testArrays = [[self removeObjectTestArrays] objectEnumerator];
 	NSArray *testArray;
 	while (testArray = [testArrays nextObject]) {
+		NSMutableArray *processedArray = [testArray mutableCopy];
+		[processedArray removeObject:@"X"];
 		for (int i = 0; i <= 1; i++) {
 			// Offset the head pointer by 3 to force wrapping
 			if (i == 1) {
@@ -517,9 +522,11 @@ do { \
 			[buffer removeObject:@"bogus"];
 			STAssertEquals([buffer count], [testArray count], nil);
 			[buffer removeObject:@"X"];
-			STAssertEquals([buffer count], [abc count], nil);
+			STAssertEquals([buffer count], [processedArray count], nil);
+			STAssertEqualObjects(buffer, processedArray, nil);
 			[buffer removeObject:@"X"];
-			STAssertEquals([buffer count], [abc count], nil);
+			STAssertEquals([buffer count], [processedArray count], nil);
+			STAssertEqualObjects(buffer, processedArray, nil);
 			[buffer removeAllObjects];
 		}
 	}
@@ -554,6 +561,8 @@ do { \
 	NSEnumerator *testArrays = [[self removeObjectTestArrays] objectEnumerator];
 	NSArray *testArray;
 	while (testArray = [testArrays nextObject]) {
+		NSMutableArray *processedArray = [testArray mutableCopy];
+		[processedArray removeObject:@"X"];
 		for (int i = 0; i <= 1; i++) {
 			// Offset the head pointer by 3 to force wrapping
 			if (i == 1) {
@@ -568,9 +577,11 @@ do { \
 			[buffer removeObjectIdenticalTo:x];
 			STAssertEquals([buffer count], [testArray count], nil);
 			[buffer removeObjectIdenticalTo:@"X"];
-			STAssertEquals([buffer count], [abc count], nil);
+			STAssertEquals([buffer count], [processedArray count], nil);
+			STAssertEqualObjects(buffer, processedArray, nil);
 			[buffer removeObjectIdenticalTo:@"X"];
-			STAssertEquals([buffer count], [abc count], nil);
+			STAssertEquals([buffer count], [processedArray count], nil);
+			STAssertEqualObjects(buffer, processedArray, nil);
 			[buffer removeAllObjects];
 		}
 	}
