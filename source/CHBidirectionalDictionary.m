@@ -25,10 +25,6 @@
 	return self;
 }
 
-- (id) initWithDictionary:(NSDictionary*)otherDictionary {
-	return (self = [super initWithDictionary:otherDictionary]);
-}
-
 #pragma mark Querying Contents
 
 - (CHBidirectionalDictionary*) inverseDictionary {

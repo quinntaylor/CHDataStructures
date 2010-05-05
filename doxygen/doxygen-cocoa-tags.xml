@@ -89,6 +89,10 @@
       <anchor>//apple_ref/occ/instm/NSDictionary/count</anchor>
     </member>
     <member kind="function">
+      <name>initWithDictionary:</name>
+      <anchor>//apple_ref/occ/instm/NSDictionary/initWithDictionary:</anchor>
+    </member>
+    <member kind="function">
       <name>keyEnumerator</name>
       <anchor>//apple_ref/occ/instm/NSDictionary/keyEnumerator</anchor>
     </member>

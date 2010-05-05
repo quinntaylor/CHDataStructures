@@ -21,6 +21,8 @@
  
  @attention Since values are used as keys in the inverse dictionary, both keys and values must conform to the NSCopying protocol. (NSDictionary requires that keys conform to NSCopying, but not values.) If they don't, a crash will result when this collection attempts to copy them.
  
+ @warning If a dictionary is passed to \link NSDictionary#initWithDictionary: -initWithDictionary:\endlink which maps the same value to multiple keys, the value will be mapped to whichever key mapped to that value is enumerated last. Depending on the specifics of the dictionary, this ordering may be arbitrary.
+ 
  Implementations of bidirectional dictionaries (aka "maps") in other languages include the following:
  
  - <a href="http://google-collections.googlecode.com/svn/trunk/javadoc/index.html?com/google/common/collect/BiMap.html">BiMap</a> / <a href="http://commons.apache.org/collections/api-release/org/apache/commons/collections/BidiMap.html">BidiMap</a> (Java)
@@ -31,17 +33,6 @@
 	__strong CFMutableDictionaryRef reversed; // Used to map values to keys.
 	CHBidirectionalDictionary* inverse; // Points to inverse instance if created.
 }
-
-/**
- Initializes a newly-allocated dictionary by placing in it the keys and values contained in another given dictionary. Keys and values are copied as described in #setObject:forKey: below.
- 
- @param otherDictionary The dictionary from which to add entries. All its keys @b and values must conform to the NSCopying protocol.
- 
- @attention If @a otherDictionary maps the same value to multiple keys, the value can only appear once in the receiver, and will be mapped to the key that is enumerated @b last, which may be arbitrary. However, if @a otherDictionary is also a CHBidirectionalDictionary, the results will always be deterministic.
- 
- @see addEntriesFromDictionary:
- */
-- (id) initWithDictionary:(NSDictionary *)otherDictionary;
 
 #pragma mark Querying Contents
 /** @name Querying Contents */
