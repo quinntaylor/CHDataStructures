@@ -14,6 +14,20 @@
 #define incrementIndex(index) (index = (index + 1) % arrayCapacity)
 #define decrementIndex(index) (index = index ? index - 1 : arrayCapacity - 1)
 
+// Shift a group of elements within the underlying array; used to close up gaps.
+// Guarantees that 'number' is in the correct range for the array capacity.
+#define blockMove(dst, src, scan) \
+do { \
+	NSUInteger itemsLeftToCopy = (scan - src + arrayCapacity) % arrayCapacity; \
+	while (itemsLeftToCopy) { \
+		NSUInteger size = MIN(itemsLeftToCopy, arrayCapacity - MAX(dst, src)); \
+		objc_memmove_collectable(&array[dst], &array[src], kCHPointerSize * size); \
+		src = (src + size) % arrayCapacity; \
+		dst = (dst + size) % arrayCapacity; \
+		itemsLeftToCopy -= size; \
+	} \
+} while(0)
+
 /**
  An NSEnumerator for traversing a CHAbstractCircularBufferCollection subclass.
  
@@ -518,41 +532,42 @@ static BOOL objectsAreIdentical(id o1, id o2) {
 	if (count == 0 || anObject == nil)
 		return;
 	// Strip off leading matches if any exist in the buffer.
-	while (count > 0 && objectsMatch(array[headIndex], anObject)) {
+	while (headIndex != tailIndex && objectsMatch(array[headIndex], anObject)) {
 		[array[headIndex] release];
 		array[headIndex] = nil; // Let GC do its thing
 		incrementIndex(headIndex);
-		--count; // Necessary in case the only matches are at the beginning.
 	}
-	// Scan to find the first match, if one exists
+	// Scan ahead to find the next matching object to remove, if one exists.
 	NSUInteger scanIndex = headIndex;
 	while (scanIndex != tailIndex && !objectsMatch(array[scanIndex], anObject))
 		incrementIndex(scanIndex);
-	// Bail out here if no objects need to be removed internally (none found)
-	if (scanIndex == tailIndex)
-		return;
-	// Copy individual elements, excluding objects to be removed
-	NSUInteger copyIndex = scanIndex;
-	incrementIndex(scanIndex);
+	// Scan other objects; release and skip matches, block copy objects to keep.
+	NSUInteger copySrcIndex = scanIndex; // index to copy FROM when closing gaps
+	NSUInteger copyDstIndex = scanIndex; // index to copy TO when closing gaps
 	while (scanIndex != tailIndex) {
-		if (!objectsMatch(array[scanIndex], anObject)) {
-			[array[copyIndex] release];
-			array[copyIndex] = array[scanIndex];
-			incrementIndex(copyIndex);
+		if (objectsMatch(array[scanIndex], anObject)) {
+			[array[scanIndex] release];
+			// If the object is preceded by 1+ not to remove, close the gap now.
+			// NOTE: blockMove advances src/dst indexes by the count of objects.
+			if (copySrcIndex != scanIndex)
+				blockMove(copyDstIndex, copySrcIndex, scanIndex);
+			incrementIndex(copySrcIndex); // Advance to where scanIndex will be.
 		}
 		incrementIndex(scanIndex);
 	}
-	// Under GC, zero the rest of the array to avoid holding unneeded references
-	if (!kCHGarbageCollectionNotEnabled) {
-		if (tailIndex > copyIndex) {
-			bzero(array + copyIndex, kCHPointerSize * (tailIndex - copyIndex));
+	blockMove(copyDstIndex, copySrcIndex, tailIndex); // fixes any trailing gaps
+	if (tailIndex != copyDstIndex) {
+		// Zero any now-unoccupied array elements if tail pointer moved left.
+		// Under GC, this prevents holding onto removed objects unnecessarily.
+		// Under retain-release, it promotes fail-fast behavior to reveal bugs.
+		if (tailIndex > copyDstIndex) {
+			bzero(array + copyDstIndex, kCHPointerSize * (tailIndex - copyDstIndex));
 		} else {
-			bzero(array + copyIndex, kCHPointerSize * (arrayCapacity - copyIndex));
-			bzero(array,             kCHPointerSize * tailIndex);
+			bzero(array + copyDstIndex, kCHPointerSize * (arrayCapacity - copyDstIndex));
+			bzero(array,                kCHPointerSize * tailIndex);
 		}
+		tailIndex = copyDstIndex;
 	}
-	// Set the tail pointer to the new end point and recalculate element count.
-	tailIndex = copyIndex;
 	count = (tailIndex + arrayCapacity - headIndex) % arrayCapacity;
 	++mutations;
 }
