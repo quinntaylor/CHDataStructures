@@ -116,11 +116,11 @@ void CHQuietLog(NSString *format, ...) {
 	// Do format string argument substitution, reinstate %% escapes, then print
 	NSMutableString *string = [[NSMutableString alloc] initWithFormat:format
 	                                                        arguments:argList];
+	va_end(argList);
 	NSRange range;
 	range.location = 0;
 	range.length = [string length];
 	[string replaceOccurrencesOfString:@"%%" withString:@"%%%%" options:0 range:range];
 	printf("%s\n", [string UTF8String]);
 	[string release];
-	va_end(argList);
 }
