@@ -46,6 +46,8 @@ typedef struct CHSinglyLinkedListNode {
 {
 	__strong CHSinglyLinkedListNode *head; // Dummy node at the front of the list.
 	__strong CHSinglyLinkedListNode *tail; // Pointer to last node in a list.
+	__strong CHSinglyLinkedListNode *cachedNode; // Pointer to last accessed node.
+	NSUInteger cachedIndex; // Index of last accessed node.
 	NSUInteger count; // The number of objects currently stored in a list.
 	unsigned long mutations; // Tracks mutations for NSFastEnumeration.
 }
