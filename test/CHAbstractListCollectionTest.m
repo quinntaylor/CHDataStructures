@@ -323,7 +323,7 @@
 - (void) testRemoveObjectsAtIndexes {
 	// Test removing with invalid indexes
 	STAssertThrows([collection removeObjectsAtIndexes:nil], nil);
-	NSIndexSet* indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 1)];
+	NSMutableIndexSet* indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 1)];
 	STAssertThrows([collection removeObjectsAtIndexes:indexes], nil);
 	
 	NSMutableArray* expected = [NSMutableArray array];
@@ -343,6 +343,18 @@
 		}
 	}	
 	STAssertThrows([collection removeObjectsAtIndexes:nil], nil);
+	// Try removing first and last elements, leaving middle element
+	indexes = [NSMutableIndexSet indexSet];
+	[indexes addIndex:0];
+	[indexes addIndex:2];
+	[expected removeAllObjects];
+	[expected addObjectsFromArray:objects];
+	[expected removeObjectsAtIndexes:indexes];
+	[collection removeAllObjects];
+	[collection addObjectsFromArray:objects];
+	STAssertNoThrow([collection removeObjectsAtIndexes:indexes], nil);
+	STAssertEquals([collection count], [expected count], nil);
+	STAssertEqualObjects([collection allObjects], expected, nil);
 }
 
 - (void) testReplaceObjectAtIndexWithObject {
