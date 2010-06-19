@@ -387,6 +387,25 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 	++mutations;
 }
 
+- (void) insertObjects:(NSArray *)objects atIndexes:(NSIndexSet *)indexes {
+	if (objects == nil || indexes == nil)
+		CHNilArgumentException([self class], _cmd);
+	if ([objects count] != [indexes count])
+		CHInvalidArgumentException([self class], _cmd, @"Unequal object and index counts.");
+	NSUInteger index = [indexes firstIndex];
+#if OBJC_API_2
+	for (id anObject in objects)
+#else
+	NSEnumerator *e = [objects objectEnumerator];
+	id anObject;
+	while (anObject = [e nextObject])
+#endif
+	{
+		[self insertObject:anObject atIndex:index];
+		index = [indexes indexGreaterThanIndex:index];
+	}
+}
+
 - (void) prependObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);

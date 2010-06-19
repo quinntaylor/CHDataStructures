@@ -244,6 +244,55 @@
 	}
 }
 
+- (void) testInsertObjectsAtIndexes {
+	NSEnumerator *classes = [linkedListClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
+		list = [[[aClass alloc] init] autorelease];
+		// Test inserting using invalid objects and invalid indexes
+		STAssertThrows([list insertObjects:nil
+								 atIndexes:nil], nil);
+		STAssertThrows([list insertObjects:[NSArray array]
+								 atIndexes:nil], nil);
+		STAssertThrows([list insertObjects:[NSArray array]
+								 atIndexes:[NSIndexSet indexSetWithIndex:0]], nil);
+		STAssertThrows([list insertObjects:[NSArray arrayWithObject:[NSNull null]]
+								 atIndexes:[NSIndexSet indexSet]], nil);
+		// Test inserting beyond the allowed index range
+		STAssertThrows([list insertObjects:[NSArray arrayWithObject:[NSNull null]]
+								 atIndexes:[NSIndexSet indexSetWithIndex:1]], nil);
+		// Test inserting a single object into an empty list
+		STAssertNoThrow([list insertObjects:[NSArray arrayWithObject:@"A"]
+								  atIndexes:[NSIndexSet indexSetWithIndex:0]], nil);
+		STAssertEquals([list count], (NSUInteger)1, nil);
+		STAssertEqualObjects([list objectAtIndex:0], @"A", nil);
+		// Test inserting multiple objects into an empty list
+		[list removeAllObjects];
+		NSIndexSet *firstIndexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [abc count])];
+		STAssertNoThrow([list insertObjects:abc
+								  atIndexes:firstIndexes], nil);
+		STAssertEquals([list count], [abc count], nil);
+		// Test inserting objects on both sides of existing objects
+		NSMutableArray *objects = [NSMutableArray array];
+		NSMutableIndexSet *indexes = [NSMutableIndexSet indexSet];
+		for (NSUInteger i = 0; i <= [abc count]; i++) {
+			[objects addObject:[NSNumber numberWithUnsignedInteger:i+1]];
+			[indexes addIndex:i*2];
+		}
+		CHQuietLog(@"%@\n%@", indexes, objects);
+		NSMutableArray *expected = [NSMutableArray arrayWithArray:abc];
+		[expected insertObjects:objects atIndexes:indexes];
+		[list insertObjects:objects atIndexes:indexes];
+		STAssertEquals([list count], [expected count], nil);
+		STAssertEqualObjects([list allObjects], expected, nil);
+		// Test inserting objects at the front of the list
+		[expected insertObjects:abc atIndexes:firstIndexes];
+		[list insertObjects:abc atIndexes:firstIndexes];
+		STAssertEquals([list count], [expected count], nil);
+		STAssertEqualObjects([list allObjects], expected, nil);
+	}		
+}
+
 // Shortcut macro for determining whether garbage collection is not enabled
 #define if_rr if(kCHGarbageCollectionNotEnabled)
 

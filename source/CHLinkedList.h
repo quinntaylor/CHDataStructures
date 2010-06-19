@@ -140,7 +140,7 @@
  Returns the object located at @a index.
  
  @param index An index from which to retrieve an object.
- @return The object located at index.
+ @return The object located at @a index.
  
  @throw NSRangeException if @a index exceeds the bounds of the receiver.
  
@@ -220,7 +220,7 @@
 - (void) exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2;
 
 /**
- Insert a given object at a given index. If @a index is already occupied, then objects at @a index and beyond are shifted one spot toward the end.
+ Insert a given object at a given index. If @a index is already occupied, then objects at @a index and beyond are (conceptually) shifted one spot toward the end.
  
  @param anObject The object to add to the receiver.
  @param index The index at which to insert @a anObject.
@@ -228,9 +228,22 @@
  @throw NSInvalidArgumentException if @a anObject is @c nil.
  @throw NSRangeException if @a index exceeds the bounds of the receiver.
  
- @attention Inserting in the middle of a linked list is a somewhat inefficient operation &mdash; although values aren't shifted by one like in arrays, elements must be traversed one by one to find the specified index.
+ @see insertObjects:atIndexes:
  */
 - (void) insertObject:(id)anObject atIndex:(NSUInteger)index;
+
+/**
+ Insert the objects in in a given array at the specified indexes in the receiver. Each object in @a objects is inserted into the receiver in turn at the corresponding location specified in @a indexes after earlier insertions have been made. The resulting behavior is the same as that exhibited by the same method in NSMutableArray.
+ 
+ @param objects An array of objects to insert into the receiver at locations from @a indexes.
+ @param indexes The indexes at which the objects in @a objects should be inserted.
+ 
+ @throw NSInvalidArgumentException if @a objects or @a indexes is @c nil, or if <code>[objects count] != [indexes count]</code>.
+ @throw NSRangeException if any index in @a indexes exceeds the bounds of the receiver.
+
+ @see insertObject:atIndex:
+ */
+- (void) insertObjects:(NSArray *)objects atIndexes:(NSIndexSet *)indexes;
 
 /**
  Add an object to the receiver, inserted at the front.
