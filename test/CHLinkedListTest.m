@@ -279,7 +279,6 @@
 			[objects addObject:[NSNumber numberWithUnsignedInteger:i+1]];
 			[indexes addIndex:i*2];
 		}
-		CHQuietLog(@"%@\n%@", indexes, objects);
 		NSMutableArray *expected = [NSMutableArray arrayWithArray:abc];
 		[expected insertObjects:objects atIndexes:indexes];
 		[list insertObjects:objects atIndexes:indexes];
