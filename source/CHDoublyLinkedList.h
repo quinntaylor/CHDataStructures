@@ -39,7 +39,7 @@ typedef struct CHDoublyLinkedListNode {
  
  Just as with sentinel nodes used in binary search trees, the object pointer in the head and tail nodes can be nil or set to the value being searched for. This means there is no need to check whether the next node is null before moving on; just stop at the node whose object matches, then check after the match is found whether the node containing it was the head/tail or a valid internal node.
  
- The operations \link #insertObject:atIndex:\endlink and \link #removeObjectAtIndex:\endlink take advantage of the bi-directional links, and begin searching for the given index from the closer end of the list. To reduce code duplication, all methods that append or prepend objects call \link #insertObject:atIndex:\endlink, and the methods to remove the first or last objects use \link #removeObjectAtIndex:\endlink underneath.
+ The operations \link #insertObject:atIndex:\endlink and \link #removeObjectAtIndex:\endlink take advantage of the bi-directional links, and search from the closest possible point. To reduce code duplication, all methods that append or prepend objects call \link #insertObject:atIndex:\endlink, and the methods to remove the first or last objects use \link #removeObjectAtIndex:\endlink underneath.
  
  Doubly-linked lists are well-suited as an underlying collection for other data structures, such as a deque (double-ended queue) like the one declared in CHListDeque. The same functionality can be achieved using a circular buffer and an array, and many libraries choose to do so when objects are only added to or removed from the ends, but the dynamic structure of a linked list is much more flexible when inserting and deleting in the middle of a list.
  */
@@ -47,6 +47,8 @@ typedef struct CHDoublyLinkedListNode {
 {
 	__strong CHDoublyLinkedListNode *head; // Dummy node at the front of the list.
 	__strong CHDoublyLinkedListNode *tail; // Dummy node at the back of the list.
+	__strong CHDoublyLinkedListNode *cachedNode; // Pointer to last accessed node.
+	NSUInteger cachedIndex; // Index of last accessed node.
 	NSUInteger count; // The number of objects currently in the list.
 	unsigned long mutations; // Tracks mutations for NSFastEnumeration.
 }

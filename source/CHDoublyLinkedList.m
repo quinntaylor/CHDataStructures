@@ -117,24 +117,38 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 
 #pragma mark -
 
+/** A macro for easily finding the absolute difference between two values. */
+#define ABS_DIF(A,B) \
+({ __typeof__(A) a = (A); __typeof__(B) b = (B); (a > b) ? (a - b) : (b - a); })
+
 @implementation CHDoublyLinkedList
 
 // An internal method for locating a node at a specific position in the list.
 // If the index is invalid, an NSRangeException is raised.
 - (CHDoublyLinkedListNode*) nodeAtIndex:(NSUInteger)index {
-	if (index > count) // If it's equal to count, return dummy tail node.
+	if (index > count) // If it's equal to count, we return the dummy tail node
 		CHIndexOutOfRangeException([self class], _cmd, index, count);
-	CHDoublyLinkedListNode *node;
-	if (index < count/2) {
-		node = head->next;
-		NSUInteger nodeIndex = 0;
+	// Start with the end of the linked list (head or tail) closest to the index
+	BOOL closerToHead = (index < count/2);
+	CHDoublyLinkedListNode *node = closerToHead ? head->next : tail;
+	NSUInteger nodeIndex = closerToHead ? 0 : count;
+	// If a node is cached and it's closer to the index, start there instead
+	if (cachedNode != NULL && ABS_DIF(index,cachedIndex) < ABS_DIF(index,nodeIndex)) {
+		node = cachedNode;
+		nodeIndex = cachedIndex;
+	}
+	// Iterate through the list elements until we find the requested node index
+	if (index > nodeIndex) {
 		while (index > nodeIndex++)
 			node = node->next;
 	} else {
-		node = tail;
-		NSUInteger nodeIndex = count;
 		while (index < nodeIndex--)
 			node = node->prev;
+	}
+	// Update cached node and corresponding index
+	if (node != NULL) {
+		cachedNode = node;
+		cachedIndex = index;
 	}
 	return node;
 }
@@ -144,10 +158,11 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 - (void) removeNode:(CHDoublyLinkedListNode*)node {
 	node->prev->next = node->next;
 	node->next->prev = node->prev;
-	if (kCHGarbageCollectionNotEnabled && node != NULL) {
+	if (kCHGarbageCollectionNotEnabled) {
 		[node->object release];
 		free(node);
 	}
+	cachedNode = NULL;
 	--count;
 	++mutations;
 }
@@ -385,7 +400,6 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 	}
 }
 
-/** @todo Improve efficiency of locating the corresponding nodes by index. */
 - (void) exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2 {
 	if (idx1 >= count || idx2 >= count)
 		CHIndexOutOfRangeException([self class], _cmd, MAX(idx1,idx2), count);
@@ -404,7 +418,6 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 - (void) insertObject:(id)anObject atIndex:(NSUInteger)index {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
-	
 	CHDoublyLinkedListNode *node = [self nodeAtIndex:index];
 	CHDoublyLinkedListNode *newNode;
 	newNode = NSAllocateCollectable(kCHDoublyLinkedListNodeSize, NSScannedOption);
@@ -413,6 +426,8 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 	newNode->prev = node->prev;    // point backward to preceding node
 	newNode->prev->next = newNode; // point preceding node forward to new node
 	node->prev = newNode;          // point displaced node backward to new node
+	cachedNode = newNode;
+	cachedIndex = index;
 	++count;
 	++mutations;
 }
@@ -455,6 +470,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 	}
 	head->next = tail;
 	tail->prev = head;
+	cachedNode = NULL;
 	count = 0;
 	++mutations;
 }
@@ -521,11 +537,10 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 			while (index++ < nextIndex)
 				current = current->next;
 			temp = current->next;
-			[self removeNode:current]; // decrements count
+			[self removeNode:current];
 			current = temp;
 			nextIndex = [indexes indexGreaterThanIndex:nextIndex];
 		}	
-		++mutations;
 	}
 }
 
