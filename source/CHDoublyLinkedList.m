@@ -487,13 +487,14 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 	[self removeNode:tail->prev];
 }
 
-- (void) removeObject:(id)anObject {
+// Private method that accepts a function pointer for testing object equality.
+- (void) removeObject:(id)anObject withEqualityTest:(BOOL(*)(id,id))objectsMatch {
 	if (count == 0 || anObject == nil)
 		return;
 	tail->object = anObject;
 	CHDoublyLinkedListNode *node = head->next, *temp;
 	do {
-		while (![node->object isEqual:anObject])
+		while (!objectsMatch(node->object, anObject))
 			node = node->next;
 		if (node != tail) {
 			temp = node->next;
@@ -501,6 +502,10 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 			node = temp;
 		}
 	} while (node != tail);
+}
+
+- (void) removeObject:(id)anObject {
+	[self removeObject:anObject withEqualityTest:&objectsAreEqual];
 }
 
 - (void) removeObjectAtIndex:(NSUInteger)index {
@@ -510,19 +515,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 }
 
 - (void) removeObjectIdenticalTo:(id)anObject {
-	if (count == 0 || anObject == nil)
-		return;
-	tail->object = anObject;
-	CHDoublyLinkedListNode *node = head->next, *temp;
-	do {
-		while (node->object != anObject)
-			node = node->next;
-		if (node != tail) {
-			temp = node->next;
-			[self removeNode:node];
-			node = temp;
-		}
-	} while (node != tail);
+	[self removeObject:anObject withEqualityTest:&objectsAreIdentical];
 }
 
 - (void) removeObjectsAtIndexes:(NSIndexSet*)indexes {

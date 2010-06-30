@@ -468,12 +468,13 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 	cachedNode = NULL;
 }
 
-- (void) removeObject:(id)anObject {
+// Private method that accepts a function pointer for testing object equality.
+- (void) removeObject:(id)anObject withEqualityTest:(BOOL(*)(id,id))objectsMatch {
 	if (count == 0 || anObject == nil)
 		return;
 	CHSinglyLinkedListNode *node = head;
 	do {
-		while (node->next != NULL && ![node->next->object isEqual:anObject])
+		while (node->next != NULL && !objectsMatch(node->next->object, anObject))
 			node = node->next;
 		if (node->next != NULL) {
 			[self removeNodeAfterNode:node];
@@ -482,6 +483,10 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 	} while (node->next != NULL);
 	tail = node;
 	++mutations;
+}
+
+- (void) removeObject:(id)anObject {
+	[self removeObject:anObject withEqualityTest:&objectsAreEqual];
 }
 
 - (void) removeObjectAtIndex:(NSUInteger)index {
@@ -501,19 +506,7 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 }
 
 - (void) removeObjectIdenticalTo:(id)anObject {
-	if (count == 0 || anObject == nil)
-		return;
-	CHSinglyLinkedListNode *node = head;
-	do {
-		while (node->next != NULL && node->next->object != anObject)
-			node = node->next;
-		if (node->next != NULL) {
-			[self removeNodeAfterNode:node];
-			--count;
-		}
-	} while (node->next != NULL);
-	tail = node;
-	++mutations;
+	[self removeObject:anObject withEqualityTest:&objectsAreIdentical];
 }
 
 - (void) removeObjectsAtIndexes:(NSIndexSet*)indexes {
@@ -523,7 +516,8 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 		if ([indexes lastIndex] >= count)
 			CHIndexOutOfRangeException([self class], _cmd, [indexes lastIndex], count);
 		// Indexes point to element one beyond the current element
-		NSUInteger nextIndex = [indexes firstIndex], index = nextIndex;
+		NSUInteger nextIndex = [indexes firstIndex];
+		NSUInteger index = nextIndex;
 		CHSinglyLinkedListNode *node = nextIndex ? [self nodeAtIndex:nextIndex-1] : head;
 		while (nextIndex != NSNotFound) {
 			while (index++ < nextIndex)
@@ -531,6 +525,8 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 			[self removeNodeAfterNode:node];
 			nextIndex = [indexes indexGreaterThanIndex:nextIndex];
 		}
+		if (node->next == NULL)
+			tail = node;
 		count -= [indexes count];
 		++mutations;
 	}

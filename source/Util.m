@@ -45,6 +45,14 @@ void initializeGCStatus() {
 	                                               @selector(defaultCollector)) == nil);
 }
 
+BOOL objectsAreEqual(id o1, id o2) {
+	return [o1 isEqual:o2];
+}
+
+BOOL objectsAreIdentical(id o1, id o2) {
+	return (o1 == o2);
+}
+
 BOOL collectionsAreEqual(id collection1, id collection2) {
 	if ((collection1 && ![collection1 respondsToSelector:@selector(count)]) ||
 		(collection2 && ![collection2 respondsToSelector:@selector(count)]))

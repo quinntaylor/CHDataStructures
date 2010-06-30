@@ -72,7 +72,25 @@ HIDDEN OBJC_EXPORT void* objc_memmove_collectable(void *dst, const void *src, si
 OBJC_EXPORT BOOL kCHGarbageCollectionNotEnabled;
 
 /** Global variable to store the size of a pointer only once. */
-OBJC_EXPORT size_t kCHPointerSize;
+HIDDEN OBJC_EXPORT size_t kCHPointerSize;
+
+/**
+ Simple function for checking object equality, to be used as a function pointer.
+ 
+ @param o1 The first object to be compared.
+ @param o1 The second object to be compared.
+ @return <code>[o1 isEqual:o2]</code>
+ */
+HIDDEN OBJC_EXPORT BOOL objectsAreEqual(id o1, id o2);
+
+/**
+ Simple function for checking object identity, to be used as a function pointer.
+ 
+ @param o1 The first object to be compared.
+ @param o1 The second object to be compared.
+ @return <code>o1 == o2</code>
+ */
+HIDDEN OBJC_EXPORT BOOL objectsAreIdentical(id o1, id o2);
 
 /**
  Determine whether two collections enumerate the equivalent objects in the same order.

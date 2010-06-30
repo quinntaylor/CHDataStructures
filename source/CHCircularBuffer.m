@@ -10,6 +10,8 @@
 
 #import "CHCircularBuffer.h"
 
+#define DEFAULT_BUFFER_SIZE 16u
+
 #define transformIndex(index) ((headIndex + index) % arrayCapacity)
 #define incrementIndex(index) (index = (index + 1) % arrayCapacity)
 #define decrementIndex(index) (index = index ? index - 1 : arrayCapacity - 1)
@@ -143,18 +145,6 @@ do { \
 }
 
 @end
-
-#pragma mark -
-
-static BOOL objectsAreEqual(id o1, id o2) {
-	return [o1 isEqual:o2];
-}
-
-static BOOL objectsAreIdentical(id o1, id o2) {
-	return (o1 == o2);
-}
-
-#define DEFAULT_BUFFER_SIZE 16u
 
 #pragma mark -
 
@@ -576,10 +566,6 @@ static BOOL objectsAreIdentical(id o1, id o2) {
 	[self removeObject:anObject withEqualityTest:&objectsAreEqual];
 }
 
-- (void) removeObjectIdenticalTo:(id)anObject {
-	[self removeObject:anObject withEqualityTest:&objectsAreIdentical];
-}
-
 // NSMutableArray primitive method
 - (void) removeObjectAtIndex:(NSUInteger)index {
 	if (index >= count)
@@ -611,6 +597,10 @@ static BOOL objectsAreIdentical(id o1, id o2) {
 	}
 	--count;
 	++mutations;
+}
+
+- (void) removeObjectIdenticalTo:(id)anObject {
+	[self removeObject:anObject withEqualityTest:&objectsAreIdentical];
 }
 
 - (void) removeObjectsAtIndexes:(NSIndexSet*)indexes {
