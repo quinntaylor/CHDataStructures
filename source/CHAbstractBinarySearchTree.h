@@ -60,6 +60,7 @@ typedef struct CHBinaryTreeNode {
 		u_int32_t priority;  // Used by CHTreap
 	};
 } CHBinaryTreeNode;
+// NOTE: If the compiler issues "Declaration does not declare anthing" warnings for this struct, change the C Language Dialect in your Xcode build settings to GNU99; anonymous structs and unions are not properly supported by the C99 standard.
 
 /**
  An abstract CHSearchTree with many default method implementations. Methods for search, size, and enumeration are implemented in this class, as are methods for NSCoding, NSCopying, and NSFastEnumeration. (This works since all child classes use the CHBinaryTreeNode struct.) Any subclass @b must implement \link #addObject: -addObject:\endlink and \link #removeObject: -removeObject:\endlink according to the inner workings of that specific tree, and @b should also override \link #dotGraphStringForNode: -dotGraphStringForNode:\endlink and \link #debugDescriptionForNode: -debugDescriptionForNode:\endlink to display any algorithm-specific information in generated DOT graphs and debugging output, respectively.
