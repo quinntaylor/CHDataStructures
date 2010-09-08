@@ -18,7 +18,7 @@
 /** Macro for reducing visibility of symbol names not indended to be exported. */
 #define HIDDEN __attribute__((visibility("hidden")))
 
-/** Macro for designating symbols as being unused to supress compile warnings. */
+/** Macro for designating symbols as being unused to suppress compile warnings. */
 #define UNUSED __attribute__((unused))
 
 /** Macro for screening out functionality that requires Objective-C 2.0 APIs. */
