@@ -69,7 +69,14 @@
 {
 	id<CHSortedSet> keySubset = [sortedKeys subsetFromObject:start toObject:end options:options];
 	NSMutableDictionary* subset = [[[[self class] alloc] init] autorelease];
-	for (id aKey in keySubset) {
+#if OBJC_API_2
+	for (id aKey in keySubset)
+#else
+	id aKey;
+	NSEnumerator *keyEnumerator = [keySubset objectEnumerator];
+	while (aKey = [keyEnumerator nextObject])
+#endif
+	{
 		[subset setObject:[self objectForKey:aKey] forKey:aKey];
 	}
 	return subset;
