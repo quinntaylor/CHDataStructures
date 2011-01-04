@@ -25,12 +25,12 @@
  
  Since NSDictionary and NSSet conform to the NSCoding protocol, any internal data can be serialized. However, NSSet cannot automatically be written to or read from a property list, since it has no specified order. Thus, instances of CHMultiDictionary must be encoded as an NSData object before saving to disk.
  
- Currently, this multimap implementation does not support key-value coding, observing, or binding like NSDictionary does. Consequently, the distinction between "object" and "value" is blurrier, although hopefully consistent with the Cocoa APIs in general....
+ Currently, this implementation does not support key-value coding, observing, or binding like NSDictionary does. Consequently, the distinction between "object" and "value" is blurrier, although hopefully consistent with the Cocoa APIs in general....
  
  Unlike NSDictionary and other Cocoa collections, CHMultiDictionary has not been designed with mutable and immutable variants. A multimap is not that much more useful if it is immutable, so any copies made of this class are mutable by definition.
  */
 @interface CHMultiDictionary : CHLockableDictionary {
-	NSUInteger objectCount; // Number of objects currently in the multimap.
+	NSUInteger objectCount; // Number of objects currently in the dictionary.
 }
 
 #pragma mark Querying Contents
