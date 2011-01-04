@@ -78,7 +78,7 @@ HIDDEN OBJC_EXPORT size_t kCHPointerSize;
  Simple function for checking object equality, to be used as a function pointer.
  
  @param o1 The first object to be compared.
- @param o1 The second object to be compared.
+ @param o2 The second object to be compared.
  @return <code>[o1 isEqual:o2]</code>
  */
 HIDDEN OBJC_EXPORT BOOL objectsAreEqual(id o1, id o2);
@@ -87,7 +87,7 @@ HIDDEN OBJC_EXPORT BOOL objectsAreEqual(id o1, id o2);
  Simple function for checking object identity, to be used as a function pointer.
  
  @param o1 The first object to be compared.
- @param o1 The second object to be compared.
+ @param o2 The second object to be compared.
  @return <code>o1 == o2</code>
  */
 HIDDEN OBJC_EXPORT BOOL objectsAreIdentical(id o1, id o2);
@@ -97,8 +97,9 @@ HIDDEN OBJC_EXPORT BOOL objectsAreIdentical(id o1, id o2);
  
  @param collection1 The first collection to be compared.
  @param collection2 The second collection to be compared.
+ @return Whether the collections are equivalent.
  
- @throw Exception if one of both of the arguments do not respond to the @c -count or @c -objectEnumerator selectors.
+ @throw NSInvalidArgumentException if one of both of the arguments do not respond to the @c -count or @c -objectEnumerator selectors.
  */
 OBJC_EXPORT BOOL collectionsAreEqual(id collection1, id collection2);
 
