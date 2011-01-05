@@ -31,7 +31,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
  @param list The linked list collection being enumerated. This collection is to be retained while the enumerator has not exhausted all its objects.
  @param startNode The node at which to begin the enumeration.
  @param endNode The node which signifies that enumerations should terminate.
- @param direction The direction in which to enumerate. If greater than zero, uses @c NSOrderedDescending, else @c NSOrderedAscending.
+ @param direction The direction in which to enumerate. (@c NSOrderedDescending is back-to-front).
  @param mutations A pointer to the collection's mutation count, for invalidation.
  @return An initialized CHDoublyLinkedListEnumerator which will enumerate objects in @a list in the order specified by @a direction.
  
@@ -77,7 +77,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 	collection = ([list count] > 0) ? [list retain] : nil;
 	current = startNode;
 	sentinel = endNode;
-	reverse = (direction > 0) ? YES : NO;
+	reverse = (direction == NSOrderedDescending);
 	mutationCount = *mutations;
 	mutationPtr = mutations;
 	return self;
