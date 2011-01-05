@@ -84,6 +84,8 @@ typedef struct CHBinaryTreeNode {
  
  Calls #debugDescriptionForNode: to get the representation for each node in the tree. Sentinel leaf nodes are represented as nil children.
  
+ @return A string representation of the receiver, intended for debugging purposes.
+ 
  @note Using @c print-object or @c po within GDB automatically calls the @c -debugDescription method of the specified object.
  
  @see debugDescriptionForNode:

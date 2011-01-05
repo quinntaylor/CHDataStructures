@@ -29,6 +29,7 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
  @param list The linked list collection being enumerated. This collection is to be retained while the enumerator has not exhausted all its objects.
  @param startNode The node at which to begin the enumeration.
  @param mutations A pointer to the collection's mutation count, for invalidation.
+ @return An initialized CHSinglyLinkedListEnumerator which will enumerate objects in @a list.
  */
 - (id) initWithList:(CHSinglyLinkedList*)list
           startNode:(CHSinglyLinkedListNode*)startNode

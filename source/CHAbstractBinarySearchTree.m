@@ -115,6 +115,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
  @param sentinel The sentinel value used at the leaves of the specified @a tree.
  @param order The traversal order to use for enumerating the given @a tree.
  @param mutations A pointer to the collection's mutation count for invalidation.
+ @return An initialized CHBinarySearchTreeEnumerator which will enumerate objects in @a tree in the order specified by @a order.
  */
 - (id) initWithTree:(id<CHSearchTree>)tree
                root:(CHBinaryTreeNode*)root

@@ -79,6 +79,8 @@
 
 /**
  Returns the "youngest" member of the receiver.
+ 
+ @return The object in the array with the highest index value. If the array is empty, returns nil.
 
  @see addObject:
  @see anyObject

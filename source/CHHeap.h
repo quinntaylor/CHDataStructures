@@ -28,6 +28,7 @@
 
 /**
  Initialize a heap with ascending ordering and no objects.
+ @return An initialized CHHeap that contains no objects and will sort in ascending order.
  
  @see initWithOrdering:array:
  */
@@ -37,6 +38,7 @@
  Initialize a heap with ascending ordering and objects from a given array. Objects are added to the heap as they occur in the array, then "heapified" with an ordering of @c NSOrderedAscending.
  
  @param anArray An array containing objects with which to populate a new heap.
+ @return An initialized CHHeap that contains the objects in @a anArray, to be sorted in ascending order.
  
  @see initWithOrdering:array:
  */
@@ -46,6 +48,7 @@
  Initialize a heap with a given sort ordering and no objects.
  
  @param order The sort order to use, either @c NSOrderedAscending or @c NSOrderedDescending. The root element of the heap will be the smallest or largest (according to the @c -compare: method), respectively. For any other value, an @c NSInvalidArgumentException is raised.
+ @return An initialized CHHeap that contains no objects and will sort in the specified order.
  
  @see initWithOrdering:array:
  */
@@ -56,6 +59,7 @@
  
  @param order The sort order to use, either @c NSOrderedAscending or @c NSOrderedDescending. The root element of the heap will be the smallest or largest (according to the @c -compare: method), respectively. For any other value, an @c NSInvalidArgumentException is raised.
  @param anArray An array containing objects with which to populate a new heap.
+ @return An initialized CHHeap that contains the objects in @a anArray, to be sorted in the specified order.
  */
 - (id) initWithOrdering:(NSComparisonResult)order array:(NSArray*)anArray;
 

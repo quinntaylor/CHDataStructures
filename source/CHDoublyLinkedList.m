@@ -33,6 +33,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
  @param endNode The node which signifies that enumerations should terminate.
  @param direction The direction in which to enumerate. If greater than zero, uses @c NSOrderedDescending, else @c NSOrderedAscending.
  @param mutations A pointer to the collection's mutation count, for invalidation.
+ @return An initialized CHDoublyLinkedListEnumerator which will enumerate objects in @a list in the order specified by @a direction.
  
  The enumeration direction is inferred from the state of the provided start node. If @c startNode->next is @c NULL, enumeration proceeds from back to front; otherwise, enumeration proceeds from front to back. This works since the head and tail nodes always have @c NULL for their @c prev and @c next links, respectively. When there is only one node, order won't matter anyway.
  

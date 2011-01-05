@@ -30,6 +30,8 @@
 /**
  Initialize a linked list with no objects.
  
+ @return An initialized linked list that contains no objects.
+ 
  @see initWithArray:
  */
 - (id) init;
@@ -38,6 +40,7 @@
  Initialize a linked list with the contents of an array. Objects are appended in the order they occur in the array.
  
  @param anArray An array containing objects with which to populate a new linked list.
+ @return An initialized linked list that contains the objects in @a anArray.
  */
 - (id) initWithArray:(NSArray*)anArray;
 
