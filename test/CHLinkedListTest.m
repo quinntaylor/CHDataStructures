@@ -342,6 +342,28 @@
 		[pool drain];
 		if_rr STAssertEquals([list retainCount], (NSUInteger)1, nil);	
 		
+		// For doubly-linked list, test reverse enumeration order as well
+		if (aClass == [CHDoublyLinkedList class]) {
+			e = [(CHDoublyLinkedList*)list reverseObjectEnumerator];
+			STAssertEqualObjects([e nextObject], @"C", nil);
+			STAssertEqualObjects([e nextObject], @"B", nil);
+			STAssertEqualObjects([e nextObject], @"A", nil);
+			
+			if_rr STAssertEquals([list retainCount], (NSUInteger)2, nil);
+			STAssertNil([e nextObject], nil);
+			if_rr STAssertEquals([list retainCount], (NSUInteger)1, nil);
+			
+			e = [(CHDoublyLinkedList*)list reverseObjectEnumerator];
+			if_rr STAssertEquals([list retainCount], (NSUInteger)2, nil);
+			allObjects = [e allObjects];
+			if_rr STAssertEquals([list retainCount], (NSUInteger)1, nil);
+			STAssertNotNil(allObjects, nil);
+			NSArray *cba = [NSArray arrayWithObjects:@"C",@"B",@"A",nil];
+			STAssertEqualObjects(allObjects, cba, nil);
+			STAssertEqualObjects([allObjects objectAtIndex:0], @"C", nil);
+			STAssertEqualObjects([allObjects lastObject],      @"A", nil);			
+		}
+		
 		// Test for mutation exception in the middle of enumeration
 		e = [list objectEnumerator];
 		STAssertNoThrow([e nextObject], nil);
