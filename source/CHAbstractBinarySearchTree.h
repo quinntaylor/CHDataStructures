@@ -63,11 +63,11 @@ typedef struct CHBinaryTreeNode {
 // NOTE: If the compiler issues "Declaration does not declare anthing" warnings for this struct, change the C Language Dialect in your Xcode build settings to GNU99; anonymous structs and unions are not properly supported by the C99 standard.
 
 /**
- An abstract CHSearchTree with many default method implementations. Methods for search, size, and enumeration are implemented in this class, as are methods for NSCoding, NSCopying, and NSFastEnumeration. (This works since all child classes use the CHBinaryTreeNode struct.) Any subclass @b must implement \link #addObject: -addObject:\endlink and \link #removeObject: -removeObject:\endlink according to the inner workings of that specific tree, and @b should also override \link #dotGraphStringForNode: -dotGraphStringForNode:\endlink and \link #debugDescriptionForNode: -debugDescriptionForNode:\endlink to display any algorithm-specific information in generated DOT graphs and debugging output, respectively.
+ An abstract CHSearchTree with many default method implementations. Methods for search, size, and enumeration are implemented in this class, as are methods for NSCoding, NSCopying, and NSFastEnumeration. (This works since all child classes use the CHBinaryTreeNode struct.) Any subclass @b must implement \link #addObject: -addObject:\endlink and \link #removeObject: -removeObject:\endlink according to the inner workings of that specific tree.
  
  Rather than enforcing that this class be abstract, the contract is implied. If this class were actually instantiated, it would be of little use since there is attempts to insert or remove will result in runtime exceptions being raised.
  
- Much of the code and algorithms for trees was distilled from information in the <a href="http://eternallyconfuzzled.com/tuts/datastructures/jsw_tut_bst1.aspx">Binary Search Trees tutorial</a>, which is in the public domain, courtesy of <a href="http://eternallyconfuzzled.com/">Julienne Walker</a>. Method names have been changed to match the APIs of existing Cocoa collections provided by Apple.
+ Much of the code and algorithms was distilled from information in the <a href="http://eternallyconfuzzled.com/tuts/datastructures/jsw_tut_bst1.aspx">Binary Search Trees tutorial</a>, which is in the public domain courtesy of <a href="http://eternallyconfuzzled.com/">Julienne Walker</a>. Method names have been changed to match the APIs of existing Cocoa collections provided by Apple.
  */
 @interface CHAbstractBinarySearchTree : CHLockableObject <CHSearchTree>
 {
@@ -80,53 +80,25 @@ typedef struct CHBinaryTreeNode {
 /**
  Produces a representation of the receiver that can be useful for debugging.
  
- Whereas @c -description outputs only the contents of the tree in ascending order, this method outputs the internal structure of the tree (showing the objects in each node and its children) using a pre-order traversal.
- 
- Calls #debugDescriptionForNode: to get the representation for each node in the tree. Sentinel leaf nodes are represented as nil children.
+ Whereas @c -description outputs only the contents of the tree in ascending order, this method outputs the internal structure of the tree (showing the objects in each node and its children) using a pre-order traversal. Sentinel leaf nodes are represented as @c nil children.
  
  @return A string representation of the receiver, intended for debugging purposes.
  
  @note Using @c print-object or @c po within GDB automatically calls the @c -debugDescription method of the specified object.
  
- @see debugDescriptionForNode:
+ @see dotGraphString
  */
 - (NSString*) debugDescription;
 
 /**
- Produces a debugging description for a given tree node.
- 
- This method determines the appearance of nodes in the graph produced by #debugDescription, and may be overriden by subclasses to display any additional relevant information, such as the extra field used by self-balancing trees. The default implementation returns the @c -description for the object in the node, surrounded by quote marks.
- 
- @param node The tree node for which to create a debugging representation.
- @return A representation of a tree node intended for debugging purposes.
- 
- @see debugDescription
- */
-- (NSString*) debugDescriptionForNode:(CHBinaryTreeNode*)node;
-
-/**
  Produces a <a href="http://en.wikipedia.org/wiki/DOT_language">DOT language</a> graph description for the receiver tree.
  
- A DOT graph can be rendered with <a href="http://www.graphviz.org/">GraphViz</a>, <a href="http://www.omnigroup.com/applications/OmniGraffle/">OmniGraffle</a>, or other similar tools.
- 
- Calls #dotGraphStringForNode: to get the representation for each node in the tree. Sentinel leaf nodes are represented by a small black dot.
+ A DOT graph can be rendered with <a href="http://www.graphviz.org/">GraphViz</a>, <a href="http://www.omnigroup.com/applications/OmniGraffle/">OmniGraffle</a>, or other similar tools. Sentinel leaf nodes are represented by a small black dot.
  
  @return A graph description for the receiver tree in the DOT language.
  
- @see dotGraphStringForNode:
+ @see debugDescription
  */
 - (NSString*) dotGraphString;
-
-/**
- Produces a <a href="http://en.wikipedia.org/wiki/DOT_language">DOT language</a> description for a given tree node.
- 
- This method determines the appearance of nodes in the graph produced by #dotGraphString, and may be overriden by subclasses to display any additional relevant information, such as the extra field used by self-balancing trees. The default implementation creates an oval containing the value returned by @c -description for the object in the node.
- 
- @param node The tree node for which to create a DOT representation.
- @return A representation of a tree node in the DOT language.
- 
- @see dotGraphString
- */
-- (NSString*) dotGraphStringForNode:(CHBinaryTreeNode*)node;
 
 @end

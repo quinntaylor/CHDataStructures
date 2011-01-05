@@ -11,6 +11,7 @@
 #import <SenTestingKit/SenTestingKit.h>
 #import "CHSortedSet.h"
 
+#import "CHAbstractBinarySearchTree_Internal.h"
 #import "CHAnderssonTree.h"
 #import "CHAVLTree.h"
 #import "CHRedBlackTree.h"
