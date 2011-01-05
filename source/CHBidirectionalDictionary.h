@@ -44,8 +44,8 @@
  @param anObject The value for which to return the corresponding key.
  @return The key associated with @a value, or @c nil if no such key exists.
  
- @see \link NSDictionary#allKeys - allKeys\endlink
- @see \link NSDictionary#objectForKey: - objectForKey:\endlink
+ @see \link NSDictionary#allKeys -allKeys\endlink
+ @see \link NSDictionary#objectForKey: -objectForKey:\endlink
  @see removeKeyForObject:
  */
 - (id) keyForObject:(id)anObject;
@@ -71,7 +71,7 @@
  
  @attention If @a otherDictionary maps the same value to multiple keys, the value can only appear once in the receiver, and will be mapped to the key that is enumerated @b last, which may be arbitrary. However, if @a otherDictionary is also a CHBidirectionalDictionary, the results will always be deterministic.
  
- @see \link NSDictionary#initWithDictionary: - initWithDictionary:\endlink
+ @see \link NSDictionary#initWithDictionary: -initWithDictionary:\endlink
  @see setObject:forKey:
  */
 - (void) addEntriesFromDictionary:(NSDictionary*)otherDictionary;
@@ -95,7 +95,7 @@
  
  @throw NSInvalidArgumentException if @a aKey is @c nil.
  
- @see \link NSDictionary#objectForKey: - objectForKey:\endlink
+ @see \link NSDictionary#objectForKey: -objectForKey:\endlink
  @see removeKeyForObject:
  */
 - (void) removeObjectForKey:(id)aKey;
@@ -121,7 +121,7 @@
  @endcode
  
  @see keyForObject:
- @see \link NSDictionary#objectForKey: - objectForKey:\endlink
+ @see \link NSDictionary#objectForKey: -objectForKey:\endlink
  */
 - (void) setObject:(id)anObject forKey:(id)aKey;
 

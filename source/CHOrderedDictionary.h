@@ -85,7 +85,7 @@
  
  @throw NSRangeException if @a index exceeds the bounds of the receiver.
  
- @see \link NSDictionary#containsKey: - containsKey:\endlink
+ @see \link NSDictionary#containsKey: -containsKey:\endlink
  @see firstKey
  @see indexOfKey:
  @see lastKey
@@ -101,7 +101,7 @@
  @throw NSRangeException if any location in @a indexes exceeds the bounds of the receiver.
  @throw NSInvalidArgumentException if @a indexes is @c nil.
  
- @see \link NSDictionary#allKeys - allKeys\endlink
+ @see \link NSDictionary#allKeys -allKeys\endlink
  @see orderedDictionaryWithKeysAtIndexes:
  */
 - (NSArray*) keysAtIndexes:(NSIndexSet*)indexes;
@@ -116,7 +116,7 @@
  
  @see indexOfKey:
  @see keyAtIndex:
- @see \link NSDictionary#objectForKey: - objectForKey:\endlink
+ @see \link NSDictionary#objectForKey: -objectForKey:\endlink
  @see removeObjectForKeyAtIndex:
  */
 - (id) objectForKeyAtIndex:(NSUInteger)index;
@@ -131,7 +131,7 @@
  @throw NSInvalidArgumentException if @a indexes is @c nil.
  
  @see keysAtIndexes:
- @see \link NSDictionary#objectsForKeys:notFoundMarker: - objectsForKeys:notFoundMarker:\endlink
+ @see \link NSDictionary#objectsForKeys:notFoundMarker: -objectsForKeys:notFoundMarker:\endlink
  @see removeObjectsForKeysAtIndexes:
  */
 - (NSArray*) objectsForKeysAtIndexes:(NSIndexSet*)indexes;
@@ -159,8 +159,8 @@
  
  @note If you need to modify the entries concurrently, use \link NSDictionary#allKeys -allKeys\endlink to create a "snapshot" of the dictionary's keys and work from this snapshot to modify the entries.
  
- @see \link NSDictionary#allKeys - allKeys\endlink
- @see \link NSDictionary#allKeysForObject: - allKeysForObject:\endlink
+ @see \link NSDictionary#allKeys -allKeys\endlink
+ @see \link NSDictionary#allKeysForObject: -allKeysForObject:\endlink
  @see NSFastEnumeration protocol
  */
 - (NSEnumerator*) reverseKeyEnumerator;
@@ -209,7 +209,7 @@
  @see indexOfKey:
  @see keyAtIndex:
  @see objectForKeyAtIndex:
- @see \link NSMutableDictionary#removeObjectForKey: - removeObjectForKey:\endlink
+ @see \link NSMutableDictionary#removeObjectForKey: -removeObjectForKey:\endlink
  */
 - (void) removeObjectForKeyAtIndex:(NSUInteger)index;
 
