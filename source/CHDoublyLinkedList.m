@@ -145,11 +145,9 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 		while (index < nodeIndex--)
 			node = node->prev;
 	}
-	// Update cached node and corresponding index
-	if (node != NULL) {
-		cachedNode = node;
-		cachedIndex = index;
-	}
+	// Update cached node and corresponding index (it can never be null here)
+	cachedNode = node;
+	cachedIndex = index;
 	return node;
 }
 
