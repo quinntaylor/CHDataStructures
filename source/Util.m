@@ -65,15 +65,10 @@ BOOL collectionsAreEqual(id collection1, id collection2) {
 	if ([collection1 count] != [collection2 count])
 		return NO;
 	NSEnumerator *otherObjects = [collection2 objectEnumerator];
-#if OBJC_API_2
-	for (id anObject in collection1)
-#else
-		NSEnumerator *objects = [collection1 objectEnumerator];
-	id anObject;
-	while (anObject = [objects nextObject])
-#endif
+	for (id anObject in collection1) {
 		if (![anObject isEqual:[otherObjects nextObject]])
 			return NO;
+	}
 	return YES;	
 }
 

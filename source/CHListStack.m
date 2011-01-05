@@ -25,14 +25,7 @@
 
 - (id) initWithArray:(NSArray*)anArray {
 	if ([self init] == nil) return nil;
-#if OBJC_API_2
-	for (id anObject in anArray)
-#else
-	NSEnumerator *e = [anArray objectEnumerator];
-	id anObject;
-	while (anObject = [e nextObject])
-#endif
-	{
+	for (id anObject in anArray) {
 		[list prependObject:anObject];
 	}
 	return self;

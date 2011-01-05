@@ -283,7 +283,6 @@ static NSArray *abc;
 	[self checkEqualityWithArray:[copy allObjects]];
 }
 
-#if OBJC_API_2
 - (void) testNSFastEnumeration {
 	NSArray *array = [self randomNumbers];
 	[set addObjectsFromArray:array];
@@ -303,7 +302,6 @@ static NSArray *abc;
 	// Test that the enumerator is exhausted after fast enumeration
 	STAssertNil([enumerator nextObject], nil);
 }
-#endif
 
 @end
 

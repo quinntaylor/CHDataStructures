@@ -68,9 +68,7 @@ void createCollectableCFMutableDictionary(__strong CFMutableDictionaryRef* dicti
 	@synchronized (self) {
 		if (lock == nil) {
 			lock = [[NSLock alloc] init];
-#if OBJC_API_2
 			[lock setName:[NSString stringWithFormat:@"NSLock-%@-0x%x", [self class], self]];
-#endif
 		}
 	}
 }
@@ -145,14 +143,12 @@ void createCollectableCFMutableDictionary(__strong CFMutableDictionaryRef* dicti
 
 #pragma mark <NSFastEnumeration>
 
-#if OBJC_API_2
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len
 {
 	return [super countByEnumeratingWithState:state objects:stackbuf count:len];
 }
-#endif
 
 #pragma mark Querying Contents
 

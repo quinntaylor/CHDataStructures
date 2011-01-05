@@ -82,7 +82,6 @@
 	STAssertEqualObjects([collection allObjects], [collection2 allObjects], nil);
 }
 
-#if OBJC_API_2
 - (void) testNSFastEnumeration {
 	NSUInteger limit = 32;
 	for (NSUInteger number = 1; number <= limit; number++)
@@ -104,7 +103,6 @@
 	}
 	STAssertTrue(raisedException, nil);
 }
-#endif
 
 #pragma mark -
 

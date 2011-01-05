@@ -412,7 +412,6 @@ static NSArray *abcde;
 	}
 }
 
-#if OBJC_API_2
 - (void) testNSFastEnumeration {
 	if (NonConcreteClass())
 		return;
@@ -436,7 +435,6 @@ static NSArray *abcde;
 	}
 	STAssertTrue(raisedException, nil);
 }
-#endif
 
 @end
 

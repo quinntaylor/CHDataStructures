@@ -154,14 +154,7 @@ static const CFBinaryHeapCallBacks kCHBinaryHeapCallBacksDescending = {
 - (void) addObjectsFromArray:(NSArray*)anArray {
 	if ([anArray count] == 0) // includes implicit check for nil array
 		return;
-#if OBJC_API_2
-	for (id anObject in anArray)
-#else
-	NSEnumerator *e = [anArray objectEnumerator];
-	id anObject;
-	while (anObject = [e nextObject])
-#endif
-	{
+	for (id anObject in anArray) {
 		CFBinaryHeapAddValue(heap, anObject);
 	}
 	++mutations;
@@ -198,7 +191,6 @@ static const CFBinaryHeapCallBacks kCHBinaryHeapCallBacksDescending = {
 
 #pragma mark <NSFastEnumeration>
 
-#if OBJC_API_2
 // This overridden method returns the heap contents in fully-sorted order.
 // Just as -objectEnumerator above, the first call incurs a hidden sorting cost.
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
@@ -217,6 +209,5 @@ static const CFBinaryHeapCallBacks kCHBinaryHeapCallBacksDescending = {
 	state->mutationsPtr = &mutations; // point state to mutations for heap array
 	return count;
 }
-#endif
 
 @end

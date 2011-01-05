@@ -33,14 +33,7 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 		CHInvalidArgumentException([self class], _cmd, @"Unequal array counts.");
 	if (self = [super initWithCapacity:[objectsArray count]]) {
 		NSEnumerator *objects = [objectsArray objectEnumerator];
-#if OBJC_API_2
-		for (id key in keyArray)
-#else
-		NSEnumerator *e = [keyArray objectEnumerator];
-		id key;
-		while (key = [e nextObject])
-#endif
-		{
+		for (id key in keyArray) {
 			[self setObject:[objects nextObject] forKey:key];
 		}
 	}

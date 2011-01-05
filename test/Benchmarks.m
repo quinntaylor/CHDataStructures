@@ -66,12 +66,7 @@ void benchmarkDeque(Class testClass) {
 	while (array = [arrayEnumerator nextObject]) {
 		deque = [[testClass alloc] init];
 		startTime = timestamp();
-#if OBJC_API_2
 		for (id anObject in array)
-#else
-		objectEnumerator = [array objectEnumerator];
-		while (anObject = [objectEnumerator nextObject])
-#endif
 			[deque prependObject:anObject];
 		printf("\t%f", timestamp() - startTime);
 		[deque release];
@@ -82,12 +77,7 @@ void benchmarkDeque(Class testClass) {
 	while (array = [arrayEnumerator nextObject]) {
 		deque = [[testClass alloc] init];
 		startTime = timestamp();
-#if OBJC_API_2
 		for (id anObject in array)
-#else
-		objectEnumerator = [array objectEnumerator];
-		while (anObject = [objectEnumerator nextObject])
-#endif
 			[deque appendObject:anObject];
 		printf("\t%f", timestamp() - startTime);
 		[deque release];
@@ -97,12 +87,7 @@ void benchmarkDeque(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		deque = [[testClass alloc] init];
-#if OBJC_API_2
 		for (id anObject in array)
-#else
-		objectEnumerator = [array objectEnumerator];
-		while (anObject = [objectEnumerator nextObject])
-#endif
 			[deque appendObject:anObject];
 		startTime = timestamp();
 		for (NSUInteger item = 1; item <= [array count]; item++)
@@ -115,12 +100,7 @@ void benchmarkDeque(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		deque = [[testClass alloc] init];
-#if OBJC_API_2
 		for (id anObject in array)
-#else
-		objectEnumerator = [array objectEnumerator];
-		while (anObject = [objectEnumerator nextObject])
-#endif
 			[deque appendObject:anObject];
 		startTime = timestamp();
 		for (NSUInteger item = 1; item <= [array count]; item++)
@@ -133,12 +113,7 @@ void benchmarkDeque(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		deque = [[testClass alloc] init];
-#if OBJC_API_2
 		for (id anObject in array)
-#else
-		objectEnumerator = [array objectEnumerator];
-		while (anObject = [objectEnumerator nextObject])
-#endif
 			[deque appendObject:anObject];
 		startTime = timestamp();
 		[deque removeAllObjects];
@@ -150,12 +125,7 @@ void benchmarkDeque(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		deque = [[testClass alloc] init];
-#if OBJC_API_2
 		for (id anObject in array)
-#else
-		objectEnumerator = [array objectEnumerator];
-		while (anObject = [objectEnumerator nextObject])
-#endif
 			[deque appendObject:anObject];
 		startTime = timestamp();
 		objectEnumerator = [deque objectEnumerator];
@@ -165,7 +135,6 @@ void benchmarkDeque(Class testClass) {
 		[deque release];
 	}
 	
-#if OBJC_API_2
 	printf("\nNSFastEnumeration  ");
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
@@ -178,7 +147,6 @@ void benchmarkDeque(Class testClass) {
 		printf("\t%f", timestamp() - startTime);
 		[deque release];
 	}
-#endif
 	
 	CHQuietLog(@"");
 	[pool drain];
@@ -200,12 +168,7 @@ void benchmarkQueue(Class testClass) {
 	while (array = [arrayEnumerator nextObject]) {
 		queue = [[testClass alloc] init];
 		startTime = timestamp();
-#if OBJC_API_2
 		for (id anObject in array)
-#else
-		objectEnumerator = [array objectEnumerator];
-		while (anObject = [objectEnumerator nextObject])
-#endif
 			[queue addObject:anObject];
 		printf("\t%f", timestamp() - startTime);
 		[queue release];
@@ -215,12 +178,7 @@ void benchmarkQueue(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		queue = [[testClass alloc] init];
-#if OBJC_API_2
 		for (id anObject in array)
-#else
-		objectEnumerator = [array objectEnumerator];
-		while (anObject = [objectEnumerator nextObject])
-#endif
 			[queue addObject:anObject];
 		startTime = timestamp();
 		for (NSUInteger item = 1; item <= [array count]; item++)
@@ -233,12 +191,7 @@ void benchmarkQueue(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		queue = [[testClass alloc] init];
-#if OBJC_API_2
 		for (id anObject in array)
-#else
-		objectEnumerator = [array objectEnumerator];
-		while (anObject = [objectEnumerator nextObject])
-#endif
 			[queue addObject:anObject];
 		startTime = timestamp();
 		[queue removeAllObjects];
@@ -250,12 +203,7 @@ void benchmarkQueue(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		queue = [[testClass alloc] init];
-#if OBJC_API_2
 		for (id anObject in array)
-#else
-		objectEnumerator = [array objectEnumerator];
-		while (anObject = [objectEnumerator nextObject])
-#endif
 			[queue addObject:anObject];
 		startTime = timestamp();
 		NSEnumerator *e = [queue objectEnumerator];
@@ -265,7 +213,6 @@ void benchmarkQueue(Class testClass) {
 		[queue release];
 	}
 	
-#if OBJC_API_2
 	printf("\nNSFastEnumeration  ");
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
@@ -278,7 +225,6 @@ void benchmarkQueue(Class testClass) {
 		printf("\t%f", timestamp() - startTime);
 		[queue release];
 	}
-#endif
 	
 	CHQuietLog(@"");
 	[pool drain];
@@ -300,12 +246,7 @@ void benchmarkStack(Class testClass) {
 	while (array = [arrayEnumerator nextObject]) {
 		stack = [[testClass alloc] init];
 		startTime = timestamp();
-#if OBJC_API_2
 		for (id anObject in array)
-#else
-		objectEnumerator = [array objectEnumerator];
-		while (anObject = [objectEnumerator nextObject])
-#endif
 			[stack pushObject:anObject];
 		printf("\t%f", timestamp() - startTime);
 		[stack release];
@@ -315,12 +256,7 @@ void benchmarkStack(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		stack = [[testClass alloc] init];
-#if OBJC_API_2
 		for (id anObject in array)
-#else
-		objectEnumerator = [array objectEnumerator];
-		while (anObject = [objectEnumerator nextObject])
-#endif
 			[stack pushObject:anObject];
 		startTime = timestamp();
 		for (NSUInteger item = 1; item <= [array count]; item++)
@@ -333,12 +269,7 @@ void benchmarkStack(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		stack = [[testClass alloc] init];
-#if OBJC_API_2
 		for (id anObject in array)
-#else
-		objectEnumerator = [array objectEnumerator];
-		while (anObject = [objectEnumerator nextObject])
-#endif
 			[stack pushObject:anObject];
 		startTime = timestamp();
 		[stack removeAllObjects];
@@ -350,12 +281,7 @@ void benchmarkStack(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		stack = [[testClass alloc] init];
-#if OBJC_API_2
 		for (id anObject in array)
-#else
-		objectEnumerator = [array objectEnumerator];
-		while (anObject = [objectEnumerator nextObject])
-#endif
 			[stack pushObject:anObject];
 		startTime = timestamp();
 		NSEnumerator *e = [stack objectEnumerator];
@@ -365,7 +291,6 @@ void benchmarkStack(Class testClass) {
 		[stack release];
 	}
 	
-#if OBJC_API_2
 	printf("\nNSFastEnumeration  ");
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
@@ -378,7 +303,6 @@ void benchmarkStack(Class testClass) {
 		printf("\t%f", timestamp() - startTime);
 		[stack release];
 	}
-#endif
 	
 	CHQuietLog(@"");
 	[pool drain];
@@ -400,12 +324,7 @@ void benchmarkHeap(Class testClass) {
 	while (array = [arrayEnumerator nextObject]) {
 		heap = [[testClass alloc] init];
 		startTime = timestamp();
-#if OBJC_API_2
 		for (id anObject in array)
-#else
-		objectEnumerator = [array objectEnumerator];
-		while (anObject = [objectEnumerator nextObject])
-#endif
 			[heap addObject:anObject];
 		printf("\t%f", timestamp() - startTime);
 		[heap release];
@@ -415,12 +334,7 @@ void benchmarkHeap(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		heap = [[testClass alloc] init];
-#if OBJC_API_2
 		for (id anObject in array)
-#else
-		objectEnumerator = [array objectEnumerator];
-		while (anObject = [objectEnumerator nextObject])
-#endif
 			[heap addObject:anObject];
 		startTime = timestamp();
 		for (NSUInteger item = 1; item <= [array count]; item++)
@@ -433,12 +347,7 @@ void benchmarkHeap(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		heap = [[testClass alloc] init];
-#if OBJC_API_2
 		for (id anObject in array)
-#else
-		objectEnumerator = [array objectEnumerator];
-		while (anObject = [objectEnumerator nextObject])
-#endif
 			[heap addObject:anObject];
 		startTime = timestamp();
 		[heap removeAllObjects];
@@ -449,12 +358,7 @@ void benchmarkHeap(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		heap = [[testClass alloc] init];
-#if OBJC_API_2
 		for (id anObject in array)
-#else
-		objectEnumerator = [array objectEnumerator];
-		while (anObject = [objectEnumerator nextObject])
-#endif
 			[heap addObject:anObject];
 		startTime = timestamp();
 		NSEnumerator *e = [heap objectEnumerator];
@@ -464,7 +368,6 @@ void benchmarkHeap(Class testClass) {
 		[heap release];
 	}
 	
-#if OBJC_API_2
 	printf("\nNSFastEnumeration  ");
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
@@ -477,7 +380,6 @@ void benchmarkHeap(Class testClass) {
 		printf("\t%f", timestamp() - startTime);
 		[heap release];
 	}
-#endif
 	
 	CHQuietLog(@"");
 	[pool drain];
@@ -500,13 +402,7 @@ void benchmarkTree(Class testClass) {
 	while (array = [arrayEnumerator nextObject]) {
 		tree = [[testClass alloc] init];
 		startTime = timestamp();
-#if OBJC_API_2
 		for (id anObject in array)
-#else
-		objectEnumerator = [array objectEnumerator];
-		id anObject;
-		while (anObject = [objectEnumerator nextObject])
-#endif
 			[tree addObject:anObject];
 		printf("\t%f", timestamp() - startTime);
 		[tree release];
@@ -517,12 +413,7 @@ void benchmarkTree(Class testClass) {
 	while (array = [arrayEnumerator nextObject]) {
 		tree = [[testClass alloc] initWithArray:array];
 		startTime = timestamp();
-#if OBJC_API_2
 		for (id anObject in array)
-#else
-		objectEnumerator = [array objectEnumerator];
-		while (anObject = [objectEnumerator nextObject])
-#endif
 			[tree member:anObject];
 		printf("\t%f", timestamp() - startTime);
 		[tree release];
@@ -533,13 +424,7 @@ void benchmarkTree(Class testClass) {
 	while (array = [arrayEnumerator nextObject]) {
 		tree = [[testClass alloc] initWithArray:array];
 		startTime = timestamp();
-#if OBJC_API_2
 		for (id anObject in array)
-#else
-		objectEnumerator = [array objectEnumerator];
-		id anObject;
-		while (anObject = [objectEnumerator nextObject])
-#endif
 			[tree removeObject:anObject];
 		printf("\t%f", timestamp() - startTime);
 		[tree release];
@@ -549,12 +434,7 @@ void benchmarkTree(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		tree = [[testClass alloc] init];
-#if OBJC_API_2
 		for (id anObject in array)
-#else
-		objectEnumerator = [array objectEnumerator];
-		while (anObject = [objectEnumerator nextObject])
-#endif
 			[tree addObject:anObject];
 		startTime = timestamp();
 		NSEnumerator *e = [tree objectEnumerator];
@@ -664,12 +544,7 @@ int main (int argc, const char * argv[]) {
 				// addObject:
 				nanosleep(&sleepDelay, &sleepRemain);
 				startTime = timestamp();
-#if OBJC_API_2
 				for (id anObject in randomNumbers)
-#else
-				objectEnumerator = [randomNumbers objectEnumerator];
-				while (anObject = [objectEnumerator nextObject])
-#endif
 					[tree addObject:anObject];
 				duration = timestamp() - startTime;
 				[[dictionary objectForKey:@"addObject"] addObject:
@@ -680,13 +555,7 @@ int main (int argc, const char * argv[]) {
 				nanosleep(&sleepDelay, &sleepRemain);
 				NSUInteger index = 0;
 				startTime = timestamp();
-#if OBJC_API_2
-				for (id anObject in randomNumbers)
-#else
-				objectEnumerator = [randomNumbers objectEnumerator];
-				while (anObject = [objectEnumerator nextObject])
-#endif
-				{
+				for (id anObject in randomNumbers) {
 					if (index++ % 4 != 0)
 						continue;
 					[tree containsObject:anObject];
@@ -705,12 +574,7 @@ int main (int argc, const char * argv[]) {
 				// removeObject:
 				nanosleep(&sleepDelay, &sleepRemain);
 				startTime = timestamp();
-#if OBJC_API_2
 				for (id anObject in randomNumbers)
-#else
-				objectEnumerator = [randomNumbers objectEnumerator];
-				while (anObject = [objectEnumerator nextObject])
-#endif
 					[tree removeObject:anObject];
 				duration = timestamp() - startTime;
 				[[dictionary objectForKey:@"removeObject"] addObject:
@@ -724,16 +588,12 @@ int main (int argc, const char * argv[]) {
 	
 	NSString *path = @"../../benchmark_data/";
 	NSFileManager *fileManager = [NSFileManager defaultManager];
-	if (![fileManager fileExistsAtPath:path])
-#if OBJC_API_2
+	if (![fileManager fileExistsAtPath:path]) {
 		[fileManager createDirectoryAtPath:path
 			   withIntermediateDirectories:YES
 								attributes:nil
 									 error:NULL];
-#else
-		[fileManager createDirectoryAtPath:path
-								attributes:nil];
-#endif
+	}
 	NSArray *results;
 	NSEnumerator *classNames = [[treeResults allKeys] objectEnumerator], *operations;
 	NSString *className, *operation;

@@ -17,9 +17,7 @@
 	@synchronized (self) {
 		if (lock == nil) {
 			lock = [[NSLock alloc] init];
-#if OBJC_API_2
 			[lock setName:[NSString stringWithFormat:@"NSLock-%@-0x%x", [self class], self]];
-#endif
 		}
 	}
 }

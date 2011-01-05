@@ -63,10 +63,8 @@
 - (void) encodeWithCoder:(NSCoder*)encoder;
 - (id) initWithCoder:(NSCoder*)decoder;
 - (id) copyWithZone:(NSZone*)zone;
-#if OBJC_API_2
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len;
-#endif
 
 @end

@@ -25,12 +25,7 @@
  
  Index-based operations are included in this protocol, but users should be aware that unless a subclass chooses to use a special indexing scheme, all index-based methods in a linked list are O(n). If indexed operations are used frequently, it is likely that a better alternative is to use an NSMutableArray.
  */ 
-@protocol CHLinkedList
-#if OBJC_API_2
-<NSObject, NSCoding, NSCopying, NSFastEnumeration>
-#else
-<NSObject, NSCoding, NSCopying>
-#endif
+@protocol CHLinkedList <NSObject, NSCoding, NSCopying, NSFastEnumeration>
 
 /**
  Initialize a linked list with no objects.

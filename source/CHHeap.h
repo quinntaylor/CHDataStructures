@@ -24,12 +24,7 @@
 
  @attention Due to the nature of a heap and how objects are stored internally, using NSFastEnumeration is not guaranteed to provide the objects in the order in which objects would be removed from the heap. If you want the objects to be sorted without removing them from the heap, use \link #allObjectsInSortedOrder allObjectsInSortedOrder\endlink instead.
  */
-@protocol CHHeap
-#if OBJC_API_2
-<NSObject, NSCoding, NSCopying, NSFastEnumeration>
-#else
-<NSObject, NSCoding, NSCopying>
-#endif
+@protocol CHHeap <NSObject, NSCoding, NSCopying, NSFastEnumeration>
 
 /**
  Initialize a heap with ascending ordering and no objects.

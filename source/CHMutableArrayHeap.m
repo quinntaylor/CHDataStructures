@@ -110,7 +110,6 @@
 
 #pragma mark <NSFastEnumeration>
 
-#if OBJC_API_2
 // This overridden method returns the heap contents in fully-sorted order.
 // Just as -objectEnumerator above, the first call incurs a hidden sorting cost.
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
@@ -129,7 +128,6 @@
 	state->mutationsPtr = &mutations; // point state to mutations for heap array
 	return count;
 }
-#endif
 
 #pragma mark -
 

@@ -357,7 +357,6 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 
 #pragma mark <NSFastEnumeration>
 
-#if OBJC_API_2
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len
@@ -409,19 +408,11 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 	}
 	return batchCount;
 }
-#endif
 
 #pragma mark Concrete Implementations
 
 - (void) addObjectsFromArray:(NSArray*)anArray {
-#if OBJC_API_2
-	for (id anObject in anArray)
-#else
-	NSEnumerator *e = [anArray objectEnumerator];
-	id anObject;
-	while (anObject = [e nextObject])
-#endif
-	{
+	for (id anObject in anArray) {
 		[self addObject:anObject];
 	}
 }

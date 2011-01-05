@@ -715,7 +715,6 @@ do { \
 	STAssertEqualObjects([buffer2 allObjects], objects, nil);
 }
 
-#if OBJC_API_2
 - (void) testNSFastEnumeration {
 	int number, expected, count;
 	for (number = 1; number <= 32; number++)
@@ -760,6 +759,5 @@ do { \
 	}
 	STAssertEquals(count, 15, nil);
 }
-#endif
 
 @end

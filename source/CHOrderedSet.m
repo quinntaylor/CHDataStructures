@@ -145,13 +145,11 @@
 
 #pragma mark <NSFastEnumeration>
 
-#if OBJC_API_2
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len
 {
 	return [ordering countByEnumeratingWithState:state objects:stackbuf count:len];
 }
-#endif
 
 @end

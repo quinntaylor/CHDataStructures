@@ -22,12 +22,7 @@
  @see CHQueue
  @see CHStack
  */
-@protocol CHDeque
-#if OBJC_API_2
-<NSObject, NSCoding, NSCopying, NSFastEnumeration>
-#else
-<NSObject, NSCoding, NSCopying>
-#endif
+@protocol CHDeque <NSObject, NSCoding, NSCopying, NSFastEnumeration>
 
 /**
  Initialize a deque with no objects.

@@ -121,14 +121,7 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 	tail = head;
 	count = 0;
 	mutations = 0;
-#if OBJC_API_2
-	for (id anObject in anArray)
-#else
-	NSEnumerator *e = [anArray objectEnumerator];
-	id anObject;
-	while (anObject = [e nextObject])
-#endif
-	{
+	for (id anObject in anArray) {
 		[self addObject:anObject];
 	}
 	return self;
@@ -153,14 +146,7 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 
 - (id) copyWithZone:(NSZone*)zone {
 	CHSinglyLinkedList *newList = [[CHSinglyLinkedList allocWithZone:zone] init];
-#if OBJC_API_2
-	for (id anObject in self)
-#else
-	NSEnumerator *e = [self objectEnumerator];
-	id anObject;
-	while (anObject = [e nextObject])
-#endif
-	{
+	for (id anObject in self) {
 		[newList addObject:anObject];
 	}
 	return newList;
@@ -168,7 +154,6 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 
 #pragma mark <NSFastEnumeration>
 
-#if OBJC_API_2
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len
@@ -199,7 +184,6 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 		state->state = (unsigned long)currentNode;
 	return batchCount;
 }
-#endif
 
 #pragma mark Querying Contents
 
@@ -333,14 +317,7 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 
 - (void) addObjectsFromArray:(NSArray*)anArray {
 	CHSinglyLinkedListNode *new;
-#if OBJC_API_2
-	for (id anObject in anArray)
-#else
-	NSEnumerator *e = [anArray objectEnumerator];
-	id anObject;
-	while (anObject = [e nextObject])
-#endif
-	{
+	for (id anObject in anArray) {
 		new = NSAllocateCollectable(kCHSinglyLinkedListNodeSize, NSScannedOption);
 		new->object = [anObject retain];
 		new->next = NULL;
@@ -393,14 +370,7 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 	if ([objects count] != [indexes count])
 		CHInvalidArgumentException([self class], _cmd, @"Unequal object and index counts.");
 	NSUInteger index = [indexes firstIndex];
-#if OBJC_API_2
-	for (id anObject in objects)
-#else
-	NSEnumerator *e = [objects objectEnumerator];
-	id anObject;
-	while (anObject = [e nextObject])
-#endif
-	{
+	for (id anObject in objects) {
 		[self insertObject:anObject atIndex:index];
 		index = [indexes indexGreaterThanIndex:index];
 	}

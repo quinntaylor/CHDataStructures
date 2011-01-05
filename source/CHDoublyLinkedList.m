@@ -190,14 +190,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 	tail->prev = head;
 	count = 0;
 	mutations = 0;
-#if OBJC_API_2
-	for (id anObject in anArray)
-#else
-	NSEnumerator *e = [anArray objectEnumerator];
-	id anObject;
-	while (anObject = [e nextObject])
-#endif
-	{
+	for (id anObject in anArray) {
 		[self addObject:anObject];
 	}
 	return self;
@@ -221,14 +214,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 
 - (id) copyWithZone:(NSZone*)zone {
 	CHDoublyLinkedList *newList = [[CHDoublyLinkedList allocWithZone:zone] init];
-#if OBJC_API_2
-	for (id anObject in self)
-#else
-	NSEnumerator *e = [self objectEnumerator];
-	id anObject;
-	while (anObject = [e nextObject])
-#endif
-	{
+	for (id anObject in self) {
 		[newList addObject:anObject];
 	}
 	return newList;
@@ -236,7 +222,6 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 
 #pragma mark <NSFastEnumeration>
 
-#if OBJC_API_2
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len
@@ -268,7 +253,6 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 		state->state = (unsigned long)currentNode;
     return batchCount;
 }
-#endif
 
 #pragma mark Querying Contents
 
@@ -386,14 +370,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 }
 
 - (void) addObjectsFromArray:(NSArray*)anArray {
-#if OBJC_API_2
-	for (id anObject in anArray)
-#else
-	NSEnumerator *e = [anArray objectEnumerator];
-	id anObject;
-	while (anObject = [e nextObject])
-#endif
-	{
+	for (id anObject in anArray) {
 		[self insertObject:anObject atIndex:count];
 	}
 }
@@ -436,14 +413,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 	if ([objects count] != [indexes count])
 		CHInvalidArgumentException([self class], _cmd, @"Unequal object and index counts.");
 	NSUInteger index = [indexes firstIndex];
-#if OBJC_API_2
-	for (id anObject in objects)
-#else
-	NSEnumerator *e = [objects objectEnumerator];
-	id anObject;
-	while (anObject = [e nextObject])
-#endif
-	{
+	for (id anObject in objects) {
 		[self insertObject:anObject atIndex:index];
 		index = [indexes indexGreaterThanIndex:index];
 	}

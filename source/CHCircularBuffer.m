@@ -182,14 +182,7 @@ do { \
 	while (capacity <= [anArray count])
 		capacity *= 2;
 	if ([self initWithCapacity:capacity] == nil) return nil;
-#if OBJC_API_2
-	for (id anObject in anArray)
-#else
-	NSEnumerator *e = [anArray objectEnumerator];
-	id anObject;
-	while (anObject = [e nextObject])
-#endif
-	{
+	for (id anObject in anArray) {
 		array[tailIndex++] = [anObject retain];
 	}
 	count = [anArray count];
@@ -230,7 +223,6 @@ do { \
 /*
  Since this class uses a C array for storage, we can return a pointer to any spot in the array and a count greater than "len". This approach avoids copy overhead, and is also more efficient since this method will be called only 2 or 3 times, depending on whether the buffer wraps around the end of the array. (The last call always returns 0 and requires no extra processing.)
  */
-#if OBJC_API_2
 - (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
                                    objects:(id*)stackbuf
                                      count:(NSUInteger)len
@@ -254,7 +246,6 @@ do { \
 		return 0;
 	}
 }
-#endif
 
 #pragma mark <CHLockable>
 
@@ -263,9 +254,7 @@ do { \
 	@synchronized (self) {
 		if (lock == nil) {
 			lock = [[NSLock alloc] init];
-#if OBJC_API_2
 			[lock setName:[NSString stringWithFormat:@"NSLock-%@-0x%x", [self class], self]];
-#endif
 		}
 	}
 }
@@ -297,14 +286,7 @@ do { \
 - (NSArray*) allObjects {
 	NSMutableArray *allObjects = [[NSMutableArray alloc] init];
 	if (count > 0) {
-#if OBJC_API_2
-		for (id anObject in self)
-#else
-		NSEnumerator *e = [self objectEnumerator];
-		id anObject;
-		while (anObject = [e nextObject])
-#endif
-		{
+		for (id anObject in self) {
 			[allObjects addObject:anObject];
 		}
 	}

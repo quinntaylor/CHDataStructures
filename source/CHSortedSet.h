@@ -52,12 +52,7 @@ typedef enum {
  @todo Consider adding other possible sorted set implementations, such as <a href="http://en.wikipedia.org/wiki/Skip_list">skip lists</a>, <a href="http://www.concentric.net/~Ttwang/tech/sorthash.htm">sorted linear hash sets</a>, and <a href="http://code.activestate.com/recipes/230113/">sorted lists</a>.
 
  */
-@protocol CHSortedSet
-#if OBJC_API_2
-<NSObject, NSCoding, NSCopying, NSFastEnumeration>
-#else
-<NSObject, NSCoding, NSCopying>
-#endif
+@protocol CHSortedSet <NSObject, NSCoding, NSCopying, NSFastEnumeration>
 
 /**
  Initialize a sorted set with no objects.

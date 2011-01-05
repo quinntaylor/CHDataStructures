@@ -61,7 +61,6 @@
 	}
 }
 
-#if OBJC_API_2
 - (void) testNSFastEnumeration {
 	NSEnumerator *classes = [linkedListClasses objectEnumerator];
 	Class aClass;
@@ -88,7 +87,6 @@
 		STAssertTrue(raisedException, nil);
 	}
 }
-#endif
 
 #pragma mark -
 

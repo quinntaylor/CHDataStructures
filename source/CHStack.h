@@ -25,12 +25,7 @@
  @see CHDeque
  @see CHQueue
  */
-@protocol CHStack
-#if OBJC_API_2
-<NSObject, NSCoding, NSCopying, NSFastEnumeration>
-#else
-<NSObject, NSCoding, NSCopying>
-#endif
+@protocol CHStack <NSObject, NSCoding, NSCopying, NSFastEnumeration>
 
 /**
  Initialize a stack with no objects.

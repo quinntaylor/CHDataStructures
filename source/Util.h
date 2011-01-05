@@ -21,9 +21,6 @@
 /** Macro for designating symbols as being unused to suppress compile warnings. */
 #define UNUSED __attribute__((unused))
 
-/** Macro for screening out functionality that requires Objective-C 2.0 APIs. */
-#define OBJC_API_2 OBJC_API_VERSION >= 2
-
 #pragma mark -
 
 // NSInteger/NSUInteger are new in Leopard; define if on an earlier OS version.
