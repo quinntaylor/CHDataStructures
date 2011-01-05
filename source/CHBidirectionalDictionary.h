@@ -30,8 +30,8 @@
  - <a href="http://www.go4expert.com/forums/showthread.php?t=1466">BiDirHashtable</a> (C#)
  */
 @interface CHBidirectionalDictionary : CHLockableDictionary {
-	__strong CFMutableDictionaryRef reversed; // Used to map values to keys.
-	CHBidirectionalDictionary* inverse; // Points to inverse instance if created.
+	__strong CFMutableDictionaryRef objectsToKeys; // Used for reverse mapping.
+	CHBidirectionalDictionary* inverse; // Pointer to inverse dictionary.
 }
 
 #pragma mark Querying Contents
@@ -45,6 +45,7 @@
  @return The key associated with @a value, or @c nil if no such key exists.
  
  @see \link NSDictionary#allKeys - allKeys\endlink
+ @see \link NSDictionary#objectForKey: - objectForKey:\endlink
  @see removeKeyForObject:
  */
 - (id) keyForObject:(id)anObject;
@@ -70,7 +71,7 @@
  
  @attention If @a otherDictionary maps the same value to multiple keys, the value can only appear once in the receiver, and will be mapped to the key that is enumerated @b last, which may be arbitrary. However, if @a otherDictionary is also a CHBidirectionalDictionary, the results will always be deterministic.
  
- @see initWithDictionary:
+ @see \link NSDictionary#initWithDictionary: - initWithDictionary:\endlink
  @see setObject:forKey:
  */
 - (void) addEntriesFromDictionary:(NSDictionary*)otherDictionary;
@@ -120,6 +121,7 @@
  @endcode
  
  @see keyForObject:
+ @see \link NSDictionary#objectForKey: - objectForKey:\endlink
  */
 - (void) setObject:(id)anObject forKey:(id)aKey;
 

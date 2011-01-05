@@ -12,31 +12,36 @@
 
 @implementation CHBidirectionalDictionary
 
+// This macro is used as an alias for the 'dictionary' ivar in the parent class.
+#define keysToObjects dictionary
+
 - (void) dealloc {
 	if (inverse != nil)
 		inverse->inverse = nil; // Unlink from inverse dictionary if one exists.
-	CFRelease(reversed); // The reverse dict will never be null at this point.
+	CFRelease(objectsToKeys); // The dictionary can never be null at this point.
 	[super dealloc];
 }
 
 - (id) initWithCapacity:(NSUInteger)numItems {
 	if ((self = [super initWithCapacity:numItems]) == nil) return nil;
-	createCollectableCFMutableDictionary(&reversed, numItems);
+	createCollectableCFMutableDictionary(&objectsToKeys, numItems);
 	return self;
 }
 
 #pragma mark Querying Contents
 
+/** @todo Determine the proper ownership/lifetime of the inverse dictionary. */
 - (CHBidirectionalDictionary*) inverseDictionary {
 	if (inverse == nil) {
-		// Create a new instance of this class to represent the inverse
+		// Create a new instance of this class to represent the inverse mapping
 		inverse = [[CHBidirectionalDictionary alloc] init];
-		// Release the CFMutableDictionary it creates so we don't leak memory
+		// Release the CFMutableDictionary -init creates so we don't leak memory
 		if (kCHGarbageCollectionNotEnabled)
 			CFRelease(inverse->dictionary);
 		// Set its dictionary references to the reverse of what they are here
-		CFRetain(inverse->dictionary = reversed);
-		CFRetain(inverse->reversed = dictionary);
+		// (NOTE: CFMakeCollectable() works under GC, and is a no-op otherwise.)
+		CFMakeCollectable(CFRetain(inverse->keysToObjects = objectsToKeys));
+		CFMakeCollectable(CFRetain(inverse->objectsToKeys = keysToObjects));
 		// Set this instance as the mutual inverse of the newly-created instance 
 		inverse->inverse = self;
 	}
@@ -44,11 +49,11 @@
 }
 
 - (id) keyForObject:(id)anObject {
-	return (id)CFDictionaryGetValue(reversed, anObject);
+	return (id)CFDictionaryGetValue(objectsToKeys, anObject);
 }
 
 - (NSEnumerator*) objectEnumerator {
-	return [(id)reversed keyEnumerator];
+	return [(id)objectsToKeys keyEnumerator];
 }
 
 #pragma mark Modifying Contents
@@ -59,29 +64,29 @@
 
 - (void) removeAllObjects {
 	[super removeAllObjects];
-	CFDictionaryRemoveAllValues(reversed);
+	CFDictionaryRemoveAllValues(objectsToKeys);
 }
 
 - (void) removeKeyForObject:(id)anObject {
 	[super removeObjectForKey:[self keyForObject:anObject]];
-	CFDictionaryRemoveValue(reversed, anObject);
+	CFDictionaryRemoveValue(objectsToKeys, anObject);
 }
 
 - (void) removeObjectForKey:(id)aKey {
-	CFDictionaryRemoveValue(reversed, [self objectForKey:aKey]);
+	CFDictionaryRemoveValue(objectsToKeys, [self objectForKey:aKey]);
 	[super removeObjectForKey:aKey];
 }
 
 - (void) setObject:(id)anObject forKey:(id)aKey {
 	if (anObject == nil || aKey == nil)
 		CHNilArgumentException([self class], _cmd);
-	// Remove existing key -> ?  and value -> ? mappings if they currently exist.
-	CFDictionaryRemoveValue(dictionary, CFDictionaryGetValue(reversed, anObject));
-	CFDictionaryRemoveValue(reversed, CFDictionaryGetValue(dictionary, aKey));
+	// Remove existing mappings for aKey and anObject if they currently exist.
+	CFDictionaryRemoveValue(keysToObjects, CFDictionaryGetValue(objectsToKeys, anObject));
+	CFDictionaryRemoveValue(objectsToKeys, CFDictionaryGetValue(keysToObjects, aKey));
 	aKey = [[aKey copy] autorelease];
 	anObject = [[anObject copy] autorelease];
-	CFDictionarySetValue(dictionary, aKey, anObject); // May replace key-value pair
-	CFDictionarySetValue(reversed, anObject, aKey); // May replace value-key pair
+	CFDictionarySetValue(keysToObjects, aKey, anObject); // May replace key-value pair
+	CFDictionarySetValue(objectsToKeys, anObject, aKey); // May replace value-key pair
 }
 
 @end
