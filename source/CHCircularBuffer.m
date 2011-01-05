@@ -52,18 +52,19 @@ do { \
 /**
  Create an enumerator which traverses a circular buffer in the specified order.
  
- @param anArray The circular array that is being enumerated.
+ @param anArray The C pointer array of the circular buffer being enumerated.
  @param capacity The total capacity of the circular buffer being enumerated.
- @param count The number of items currently in the circular buffer
+ @param count The number of items currently in the circular buffer.
  @param startIndex The index at which to begin enumerating (forward or reverse).
- @param isReversed @c YES if enumerating back-to-front, @c NO if natural ordering.
+ @param direction The direction in which to enumerate. (@c NSOrderedDescending is back-to-front).
  @param mutations A pointer to the collection's mutation count for invalidation.
+ @return An initialized CHCircularBufferEnumerator which will enumerate objects in @a anArray in the order specified by @a direction.
  */
 - (id) initWithArray:(id*)anArray
             capacity:(NSUInteger)capacity
                count:(NSUInteger)count
           startIndex:(NSUInteger)startIndex
-             reverse:(BOOL)isReversed
+           direction:(NSComparisonResult)direction
      mutationPointer:(unsigned long*)mutations;
 
 /**
@@ -92,7 +93,7 @@ do { \
             capacity:(NSUInteger)capacity
                count:(NSUInteger)count
           startIndex:(NSUInteger)startIndex
-             reverse:(BOOL)isReversed
+           direction:(NSComparisonResult)direction
      mutationPointer:(unsigned long*)mutations
 {
 	if ((self = [super init]) == nil) return nil;
@@ -101,9 +102,9 @@ do { \
 	arrayCount = count;
 	enumerationCount = 0;
 	enumerationIndex = startIndex;
-	if (isReversed)
+	reverseEnumeration = (direction == NSOrderedDescending);
+	if (reverseEnumeration)
 		decrementIndex(enumerationIndex);
-	reverseEnumeration = isReversed;
 	mutationCount = *mutations;
 	mutationPtr = mutations;
 	return self;
@@ -395,7 +396,7 @@ do { \
 	              capacity:arrayCapacity
 	                 count:count
 	            startIndex:headIndex
-	               reverse:NO
+	             direction:NSOrderedAscending
 	       mutationPointer:&mutations] autorelease];
 }
 
@@ -405,7 +406,7 @@ do { \
 	              capacity:arrayCapacity
 	                 count:count
 	            startIndex:tailIndex
-	               reverse:YES
+	             direction:NSOrderedDescending
 	       mutationPointer:&mutations] autorelease];
 }
 
