@@ -229,7 +229,8 @@
 /**
  Adds a given key-value pair to the receiver, with the key added at the end of the ordering.
  
- @copydetails CHLockableDictionary::setObject:forKey:
+ @param anObject The value for @a aKey. The object receives a @c -retain message before being added to the receiver. Must not be @c nil.
+ @param aKey The key for @a anObject. The key is copied using @c -copyWithZone: so keys must conform to the NSCopying protocol. Must not be @c nil.
  
  @see insertObject:forKey:atIndex:
  @see setObject:forKeyAtIndex:
