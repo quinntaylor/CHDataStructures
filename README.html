@@ -40,7 +40,7 @@
 	<a href="http://en.wikipedia.org/wiki/Queue_(data_structure)">queue</a>,
 	<a href="http://en.wikipedia.org/wiki/Stack_(data_structure)">stack</a>, and
 	<a href="http://en.wikipedia.org/wiki/Tree_(data_structure)">tree</a>.</p>
-<p>The code is written against Apple's <a href="http://developer.apple.com/mac/library/documentation/cocoa/Reference/Foundation/ObjC_classic/Intro/IntroFoundation.html">Foundation framework</a> and uses some features of <a href="http://developer.apple.com/leopard/overview/objectivec2.html">Objective-C 2.0</a> (available in OS X 10.5+ and iPhone OS) when possible. Most of the code could be easily ported to other Objective-C environments (such as <a href="http://www.gnustep.org">GNUStep</a>) but such efforts would be better accomplished by forking this project rather than integrating with it, for several main reasons:</p>
+<p>The code is written against Apple's <a href="http://developer.apple.com/mac/library/documentation/cocoa/Reference/Foundation/ObjC_classic/Intro/IntroFoundation.html">Foundation framework</a> and uses some features of <a href="http://developer.apple.com/leopard/overview/objectivec2.html">Objective-C 2.0</a> (present in OS X 10.5+ and iOS) when possible. Most of the code could be easily ported to other Objective-C environments (such as <a href="http://www.gnustep.org">GNUStep</a>) but such efforts would be better accomplished by forking this project rather than integrating with it, for several main reasons:</p>
 <ol>
 	<li>Supporting multiple environments increases code complexity, and consequently the effort required to test, maintain, and improve it.</li>
 	<li>Libraries that have bigger and slower binaries to accommodate all possible platforms don't help the mainstream developer.</li>
@@ -54,8 +54,8 @@
 <p>The original page for the framework when it was maintained by Phillip Morelock (back when its name was "Cocoa Data Structures Framework") is <a href="http://www.phillipmorelock.com/examples/cocoadata/"> here.</a></p>
 
 <h2>Using the Library</h2>
-<p>CHDataStructures now builds for both OS X (as a framework) and iPhone OS (as a static library, since third-party frameworks are not supported). The following directions assume that you have either built the appropriate library form (framework or static library) from source, or are using a binary distribution. (When building from source, compile the All target in the Release configuration, which produces a disk image containing the binaries.)</p>
-<p>When using this library, if you get a "Declaration does not declare anything" compiler warning, set the "C Language Dialect" (<code>GCC_C_LANGUAGE_STANDARD</code>) setting in your target's build settings to <code>GNU99 [-std=gnu99]</code>.</p>
+<p>CHDataStructures builds for both OS X (as a framework) and iOS (as a static library, since third-party frameworks are not permitted). The following directions assume that you have either built the appropriate library form (framework or static library) from source, or are using a binary distribution. (When building from source, compile the All target in the Release configuration, which produces a disk image containing the binaries.)</p>
+<p>NOTE: When using this library, if you get a "Declaration does not declare anything" compiler warning, set the "C Language Dialect" (<code>GCC_C_LANGUAGE_STANDARD</code>) setting in your target's build settings to <code>GNU99 [-std=gnu99]</code>.</p>
 
 <h3>Using the framework in a Mac application</h3>
 <ol>
@@ -66,14 +66,14 @@
 </ol>
 <p>For details or clarification about frameworks, consult the <a href="http://developer.apple.com/documentation/MacOSX/Conceptual/BPFrameworks/">Framework Programming Guide</a>.</p>
 
-<h3>Using the static library in an iPhone app</h3>
+<h3>Using the static library in an iOS app</h3>
 <ol>
-  <li>Open the Xcode project for your iPhone app.</li>
+  <li>Open the Xcode project for your iOS app.</li>
   <li>Add <code>libCHDataStructures.a</code> and the library header files to your project by dragging them to the "Groups &amp; Files" pane. (You can organize the headers in their own physical directory and sidebar group to prevent clutter.)</li>
   <li>Expand the appropriate target and drag <code>libCHDataStructures.a</code> into the "Link Binary With Libraries" build phase.</li>
   <li>Add <code>#import "CHDataStructures.h"</code> where necessary in your code.</li>
 </ol>
-<p>If you have any issues with this approach, you can opt to drag <code>CHDataStructures-iPhone.xcodeproj</code> into the "Groups &amp; Files" pane and use the <code>libCHDataStructures.a</code> product from that project. In this case, you must also include <code>PATH_TO_CHDATASTRUCTURES/source</code> in Header Search Paths (<code>HEADER_SEARCH_PATHS</code>) for your target.</p>
+<p>If you have any issues with this approach, you can opt to drag <code>CHDataStructures-iOS.xcodeproj</code> into the "Groups &amp; Files" pane and use the <code>libCHDataStructures.a</code> product from that project. In this case, you must also include <code>PATH_TO_CHDATASTRUCTURES/source</code> in Header Search Paths (<code>HEADER_SEARCH_PATHS</code>) for your target.</p>
 
 <h2>Documentation</h2>
 <p>Documentation is auto-generated after each Subversion commit, and is <a href="http://dysart.cs.byu.edu/CHDataStructures/">available online</a>. You can also generate it yourself from the main Xcode project by building the "Documentation" target (if <a href="http://doxygen.org">Doxygen</a> is installed and its executable is in your Unix <code>$PATH</code> variable).</p>
@@ -99,7 +99,7 @@ The software is provided "as is", without warranty of any kind, including all im
 <ul>
   <li><strong>Ole Begemann</strong> (<a href="mailto:ole@oleb.net">Email</a>, <a href="http://oleb.net">Website</a>)
     <ul>
-      <li>Assistance with adapting framework to work on iPhone; contribution of a unit test iPhone app.</li>
+      <li>Assistance with adapting framework to work on iOS; contribution of a unit test iOS app.</li>
     </ul>
   </li>
   <li><strong>Max Horn</strong> (<a href="mailto:max@quendi.de">Email</a>, <a href="http://www.quendi.de/">Website</a>)

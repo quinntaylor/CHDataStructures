@@ -13,7 +13,7 @@
 #import "Util.h"
 #import <objc/message.h>
 
-// For iPhone OS, define enum and dummy functions used for Garbage Collection.
+// For iOS, define enum and dummy functions used for Garbage Collection.
 #if (TARGET_OS_IPHONE || TARGET_OS_EMBEDDED || !TARGET_OS_MAC)
 
 void* __strong NSAllocateCollectable(NSUInteger size, NSUInteger options) {
