@@ -1,5 +1,5 @@
 /*
- CHDataStructures.framework -- iPhoneUnitTestingAppDelegate.m
+ CHDataStructures.framework -- iOSUnitTestingAppDelegate.h
  
  Copyright (c) 2009, Ole Begemann <http://oleb.net>
  
@@ -10,20 +10,13 @@
  The software is  provided "as is", without warranty of any kind, including all implied warranties of merchantability and fitness. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
  */
 
-#import "iPhoneUnitTestingAppDelegate.h"
+#import <UIKit/UIKit.h>
 
-@implementation iPhoneUnitTestingAppDelegate
-
-@synthesize window;
-
-- (void) applicationDidFinishLaunching:(UIApplication*)application {
-	// Override point for customization after application launch
-	[window makeKeyAndVisible];
+@interface iOSUnitTestingAppDelegate : NSObject <UIApplicationDelegate> {
+	UIWindow *window;
 }
 
-- (void) dealloc {
-	[window release];
-	[super dealloc];
-}
+@property (nonatomic, retain) IBOutlet UIWindow* window;
 
 @end
+

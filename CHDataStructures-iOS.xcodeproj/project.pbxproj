@@ -9,9 +9,9 @@
 /* Begin PBXBuildFile section */
 		5DFBC1F510A749CA007BF56F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DFBC1F410A749CA007BF56F /* Foundation.framework */; };
 		5DFBC1F710A749CA007BF56F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DFBC1F610A749CA007BF56F /* UIKit.framework */; };
-		5DFBC1FE10A74A1B007BF56F /* iPhoneUnitTestingApp.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5DFBC1DA10A748D8007BF56F /* iPhoneUnitTestingApp.xib */; };
-		5DFBC1FF10A74A1F007BF56F /* iPhoneUnitTestingAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DFBC1D710A748CC007BF56F /* iPhoneUnitTestingAppDelegate.m */; };
-		5DFBC20010A74A1F007BF56F /* iPhoneUnitTestingApp.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DFBC1D910A748CC007BF56F /* iPhoneUnitTestingApp.m */; };
+		5DFBC1FE10A74A1B007BF56F /* iOSUnitTestingApp.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5DFBC1DA10A748D8007BF56F /* iOSUnitTestingApp.xib */; };
+		5DFBC1FF10A74A1F007BF56F /* iOSUnitTestingAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DFBC1D710A748CC007BF56F /* iOSUnitTestingAppDelegate.m */; };
+		5DFBC20010A74A1F007BF56F /* iOSUnitTestingApp.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DFBC1D910A748CC007BF56F /* iOSUnitTestingApp.m */; };
 		5DFBC2BD10A7540A007BF56F /* CHAbstractListCollectionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A720C50EA78DCE00E0AC21 /* CHAbstractListCollectionTest.m */; };
 		5DFBC2C110A7540A007BF56F /* CHCustomDictionariesTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D48E960FE9510B009BA8BC /* CHCustomDictionariesTest.m */; };
 		5DFBC2C210A7540A007BF56F /* CHDequeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FD52CC0ECA8589006D9FF8 /* CHDequeTest.m */; };
@@ -25,7 +25,7 @@
 		5DFBC2CE10A7540A007BF56F /* UtilTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E44EB0F10ECB83230071F93A /* UtilTest.m */; };
 		5DFBC2E910A754AD007BF56F /* libCHDataStructures.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4399A0D10A33C1200209906 /* libCHDataStructures.a */; };
 		5DFBC30C10A7564E007BF56F /* libCHDataStructures.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4399A0D10A33C1200209906 /* libCHDataStructures.a */; };
-		5DFBC3B010A765AE007BF56F /* CHDataStructuresiPhone.octest in Resources */ = {isa = PBXBuildFile; fileRef = 5DFBC2D710A7540A007BF56F /* CHDataStructuresiPhone.octest */; };
+		5DFBC3B010A765AE007BF56F /* CHDataStructures-iOS.octest in Resources */ = {isa = PBXBuildFile; fileRef = 5DFBC2D710A7540A007BF56F /* CHDataStructures-iOS.octest */; };
 		E4399A1F10A33C7A00209906 /* CHAbstractBinarySearchTree.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBC990E88412C00B570BC /* CHAbstractBinarySearchTree.m */; };
 		E4399A2410A33C7A00209906 /* CHAbstractListCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = E48860B90EA66072000F132A /* CHAbstractListCollection.m */; };
 		E4399A3510A33C7A00209906 /* CHDoublyLinkedList.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB1F0E88174200B570BC /* CHDoublyLinkedList.m */; };
@@ -100,28 +100,28 @@
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = E4399A0C10A33C1200209906;
-			remoteInfo = "iPhone Library";
+			remoteInfo = "iOS Library";
 		};
 		5DFBC3B610A765E5007BF56F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 5DFBC2B610A7540A007BF56F;
-			remoteInfo = "iPhone Unit Testing";
+			remoteInfo = "iOS Unit Testing";
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = resources/English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		5DFBC1D610A748CC007BF56F /* iPhoneUnitTestingAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = iPhoneUnitTestingAppDelegate.h; path = iPhone/iPhoneUnitTestingAppDelegate.h; sourceTree = "<group>"; };
-		5DFBC1D710A748CC007BF56F /* iPhoneUnitTestingAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = iPhoneUnitTestingAppDelegate.m; path = iPhone/iPhoneUnitTestingAppDelegate.m; sourceTree = "<group>"; };
-		5DFBC1D910A748CC007BF56F /* iPhoneUnitTestingApp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = iPhoneUnitTestingApp.m; path = iPhone/iPhoneUnitTestingApp.m; sourceTree = "<group>"; };
-		5DFBC1DA10A748D8007BF56F /* iPhoneUnitTestingApp.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = iPhoneUnitTestingApp.xib; path = iPhone/iPhoneUnitTestingApp.xib; sourceTree = "<group>"; };
+		5DFBC1D610A748CC007BF56F /* iOSUnitTestingAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = iOSUnitTestingAppDelegate.h; path = test/iOSUnitTestingAppDelegate.h; sourceTree = "<group>"; };
+		5DFBC1D710A748CC007BF56F /* iOSUnitTestingAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = iOSUnitTestingAppDelegate.m; path = test/iOSUnitTestingAppDelegate.m; sourceTree = "<group>"; };
+		5DFBC1D910A748CC007BF56F /* iOSUnitTestingApp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = iOSUnitTestingApp.m; path = test/iOSUnitTestingApp.m; sourceTree = "<group>"; };
+		5DFBC1DA10A748D8007BF56F /* iOSUnitTestingApp.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = iOSUnitTestingApp.xib; path = test/iOSUnitTestingApp.xib; sourceTree = "<group>"; };
 		5DFBC1ED10A74964007BF56F /* CHDataStructures.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CHDataStructures.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		5DFBC1EF10A74964007BF56F /* iPhoneUnitTestingApp.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = iPhoneUnitTestingApp.plist; path = iPhone/iPhoneUnitTestingApp.plist; sourceTree = "<group>"; };
+		5DFBC1EF10A74964007BF56F /* iOSUnitTestingApp.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = iOSUnitTestingApp.plist; path = test/iOSUnitTestingApp.plist; sourceTree = "<group>"; };
 		5DFBC1F410A749CA007BF56F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		5DFBC1F610A749CA007BF56F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		5DFBC2D710A7540A007BF56F /* CHDataStructuresiPhone.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CHDataStructuresiPhone.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5DFBC2D710A7540A007BF56F /* CHDataStructures-iOS.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CHDataStructures-iOS.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E400CAAA0F7919B7003189D3 /* CHCircularBufferQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHCircularBufferQueue.h; path = source/CHCircularBufferQueue.h; sourceTree = "<group>"; };
 		E400CAAB0F7919B7003189D3 /* CHCircularBufferQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHCircularBufferQueue.m; path = source/CHCircularBufferQueue.m; sourceTree = "<group>"; };
 		E400CAC10F791A08003189D3 /* CHCircularBufferDeque.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHCircularBufferDeque.h; path = source/CHCircularBufferDeque.h; sourceTree = "<group>"; };
@@ -237,7 +237,7 @@
 			isa = PBXGroup;
 			children = (
 				E4399A0D10A33C1200209906 /* libCHDataStructures.a */,
-				5DFBC2D710A7540A007BF56F /* CHDataStructuresiPhone.octest */,
+				5DFBC2D710A7540A007BF56F /* CHDataStructures-iOS.octest */,
 				5DFBC1ED10A74964007BF56F /* CHDataStructures.app */,
 			);
 			name = Products;
@@ -248,7 +248,7 @@
 			children = (
 				E4BD316A0FEEE79C00A084B2 /* Framework Code */,
 				E473C9A70E933350005CA997 /* Unit Test Code */,
-				E4B0A7F710D0725B006653B9 /* iPhone Unit Test App */,
+				E4B0A7F710D0725B006653B9 /* iOS Unit Test App */,
 				089C1665FE841158C02AAC07 /* Resources */,
 				0867D69AFE84028FC02AAC07 /* Linked Frameworks */,
 				034768DFFF38A50411DB9C8B /* Products */,
@@ -369,16 +369,16 @@
 			name = "Unit Test Code";
 			sourceTree = "<group>";
 		};
-		E4B0A7F710D0725B006653B9 /* iPhone Unit Test App */ = {
+		E4B0A7F710D0725B006653B9 /* iOS Unit Test App */ = {
 			isa = PBXGroup;
 			children = (
-				5DFBC1D910A748CC007BF56F /* iPhoneUnitTestingApp.m */,
-				5DFBC1EF10A74964007BF56F /* iPhoneUnitTestingApp.plist */,
-				5DFBC1DA10A748D8007BF56F /* iPhoneUnitTestingApp.xib */,
-				5DFBC1D610A748CC007BF56F /* iPhoneUnitTestingAppDelegate.h */,
-				5DFBC1D710A748CC007BF56F /* iPhoneUnitTestingAppDelegate.m */,
+				5DFBC1D910A748CC007BF56F /* iOSUnitTestingApp.m */,
+				5DFBC1EF10A74964007BF56F /* iOSUnitTestingApp.plist */,
+				5DFBC1DA10A748D8007BF56F /* iOSUnitTestingApp.xib */,
+				5DFBC1D610A748CC007BF56F /* iOSUnitTestingAppDelegate.h */,
+				5DFBC1D710A748CC007BF56F /* iOSUnitTestingAppDelegate.m */,
 			);
-			name = "iPhone Unit Test App";
+			name = "iOS Unit Test App";
 			sourceTree = "<group>";
 		};
 		E4BD316A0FEEE79C00A084B2 /* Framework Code */ = {
@@ -445,9 +445,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		5DFBC1EC10A74964007BF56F /* iPhone Unit Testing App */ = {
+		5DFBC1EC10A74964007BF56F /* iOS Unit Testing App */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5DFBC1F310A74966007BF56F /* Build configuration list for PBXNativeTarget "iPhone Unit Testing App" */;
+			buildConfigurationList = 5DFBC1F310A74966007BF56F /* Build configuration list for PBXNativeTarget "iOS Unit Testing App" */;
 			buildPhases = (
 				5DFBC1E910A74964007BF56F /* Resources */,
 				5DFBC1EA10A74964007BF56F /* Sources */,
@@ -458,14 +458,14 @@
 			dependencies = (
 				5DFBC3B710A765E5007BF56F /* PBXTargetDependency */,
 			);
-			name = "iPhone Unit Testing App";
-			productName = "iPhone Unit Testing App";
+			name = "iOS Unit Testing App";
+			productName = "iOS Unit Testing App";
 			productReference = 5DFBC1ED10A74964007BF56F /* CHDataStructures.app */;
 			productType = "com.apple.product-type.application";
 		};
-		5DFBC2B610A7540A007BF56F /* iPhone Unit Testing */ = {
+		5DFBC2B610A7540A007BF56F /* iOS Unit Testing */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5DFBC2D310A7540A007BF56F /* Build configuration list for PBXNativeTarget "iPhone Unit Testing" */;
+			buildConfigurationList = 5DFBC2D310A7540A007BF56F /* Build configuration list for PBXNativeTarget "iOS Unit Testing" */;
 			buildPhases = (
 				5DFBC2BA10A7540A007BF56F /* Sources */,
 				5DFBC2CF10A7540A007BF56F /* Frameworks */,
@@ -475,14 +475,14 @@
 			dependencies = (
 				5DFBC3A610A76580007BF56F /* PBXTargetDependency */,
 			);
-			name = "iPhone Unit Testing";
+			name = "iOS Unit Testing";
 			productName = "Unit Testing";
-			productReference = 5DFBC2D710A7540A007BF56F /* CHDataStructuresiPhone.octest */;
+			productReference = 5DFBC2D710A7540A007BF56F /* CHDataStructures-iOS.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
-		E4399A0C10A33C1200209906 /* iPhone Static Library */ = {
+		E4399A0C10A33C1200209906 /* iOS Static Library */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E4399A6510A33C9800209906 /* Build configuration list for PBXNativeTarget "iPhone Static Library" */;
+			buildConfigurationList = E4399A6510A33C9800209906 /* Build configuration list for PBXNativeTarget "iOS Static Library" */;
 			buildPhases = (
 				E4399A0910A33C1200209906 /* Headers */,
 				E4399A0A10A33C1200209906 /* Sources */,
@@ -492,7 +492,7 @@
 			);
 			dependencies = (
 			);
-			name = "iPhone Static Library";
+			name = "iOS Static Library";
 			productName = CHDataStructures;
 			productReference = E4399A0D10A33C1200209906 /* libCHDataStructures.a */;
 			productType = "com.apple.product-type.library.static";
@@ -505,7 +505,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 			};
-			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "CHDataStructures-iPhone" */;
+			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "CHDataStructures-iOS" */;
 			compatibilityVersion = "Xcode 3.1";
 			hasScannedForEncodings = 1;
 			mainGroup = 0867D691FE84028FC02AAC07 /* CHDataStructures */;
@@ -513,9 +513,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				E4399A0C10A33C1200209906 /* iPhone Static Library */,
-				5DFBC2B610A7540A007BF56F /* iPhone Unit Testing */,
-				5DFBC1EC10A74964007BF56F /* iPhone Unit Testing App */,
+				E4399A0C10A33C1200209906 /* iOS Static Library */,
+				5DFBC2B610A7540A007BF56F /* iOS Unit Testing */,
+				5DFBC1EC10A74964007BF56F /* iOS Unit Testing App */,
 			);
 		};
 /* End PBXProject section */
@@ -525,8 +525,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5DFBC3B010A765AE007BF56F /* CHDataStructuresiPhone.octest in Resources */,
-				5DFBC1FE10A74A1B007BF56F /* iPhoneUnitTestingApp.xib in Resources */,
+				5DFBC3B010A765AE007BF56F /* CHDataStructures-iOS.octest in Resources */,
+				5DFBC1FE10A74A1B007BF56F /* iOSUnitTestingApp.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -537,8 +537,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5DFBC20010A74A1F007BF56F /* iPhoneUnitTestingApp.m in Sources */,
-				5DFBC1FF10A74A1F007BF56F /* iPhoneUnitTestingAppDelegate.m in Sources */,
+				5DFBC20010A74A1F007BF56F /* iOSUnitTestingApp.m in Sources */,
+				5DFBC1FF10A74A1F007BF56F /* iOSUnitTestingAppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -600,12 +600,12 @@
 /* Begin PBXTargetDependency section */
 		5DFBC3A610A76580007BF56F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = E4399A0C10A33C1200209906 /* iPhone Static Library */;
+			target = E4399A0C10A33C1200209906 /* iOS Static Library */;
 			targetProxy = 5DFBC3A510A76580007BF56F /* PBXContainerItemProxy */;
 		};
 		5DFBC3B710A765E5007BF56F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 5DFBC2B610A7540A007BF56F /* iPhone Unit Testing */;
+			target = 5DFBC2B610A7540A007BF56F /* iOS Unit Testing */;
 			targetProxy = 5DFBC3B610A765E5007BF56F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -629,7 +629,7 @@
 				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.1.sdk/Developer/Library/Frameworks;
+				FRAMEWORK_SEARCH_PATHS = /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.0.sdk/Developer/Library/Frameworks;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -647,7 +647,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
-				SDKROOT = iphoneos3.1;
+				SDKROOT = iphoneos4.0;
 			};
 			name = Debug;
 		};
@@ -658,7 +658,7 @@
 				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.1.sdk/Developer/Library/Frameworks;
+				FRAMEWORK_SEARCH_PATHS = /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.0.sdk/Developer/Library/Frameworks;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
@@ -675,14 +675,14 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
-				SDKROOT = iphoneos3.1;
+				SDKROOT = iphoneos4.0;
 			};
 			name = Release;
 		};
 		5DFBC1F010A74965007BF56F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				INFOPLIST_FILE = iPhone/iPhoneUnitTestingApp.plist;
+				INFOPLIST_FILE = test/iOSUnitTestingApp.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				OTHER_LDFLAGS = (
 					"-framework",
@@ -700,7 +700,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				INFOPLIST_FILE = iPhone/iPhoneUnitTestingApp.plist;
+				INFOPLIST_FILE = test/iOSUnitTestingApp.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				OTHER_LDFLAGS = (
 					"-framework",
@@ -726,7 +726,7 @@
 					"-framework",
 					SenTestingKit,
 				);
-				PRODUCT_NAME = CHDataStructuresiPhone;
+				PRODUCT_NAME = "CHDataStructures-iOS";
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Debug;
@@ -743,7 +743,7 @@
 					"-framework",
 					SenTestingKit,
 				);
-				PRODUCT_NAME = CHDataStructuresiPhone;
+				PRODUCT_NAME = "CHDataStructures-iOS";
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
@@ -767,7 +767,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "CHDataStructures-iPhone" */ = {
+		1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "CHDataStructures-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1DEB91B208733DA50010E9CD /* Debug */,
@@ -776,7 +776,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		5DFBC1F310A74966007BF56F /* Build configuration list for PBXNativeTarget "iPhone Unit Testing App" */ = {
+		5DFBC1F310A74966007BF56F /* Build configuration list for PBXNativeTarget "iOS Unit Testing App" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5DFBC1F010A74965007BF56F /* Debug */,
@@ -785,7 +785,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		5DFBC2D310A7540A007BF56F /* Build configuration list for PBXNativeTarget "iPhone Unit Testing" */ = {
+		5DFBC2D310A7540A007BF56F /* Build configuration list for PBXNativeTarget "iOS Unit Testing" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5DFBC2D410A7540A007BF56F /* Debug */,
@@ -794,7 +794,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		E4399A6510A33C9800209906 /* Build configuration list for PBXNativeTarget "iPhone Static Library" */ = {
+		E4399A6510A33C9800209906 /* Build configuration list for PBXNativeTarget "iOS Static Library" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E4399A0E10A33C1300209906 /* Debug */,

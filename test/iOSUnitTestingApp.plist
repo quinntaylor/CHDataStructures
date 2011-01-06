@@ -17,6 +17,6 @@
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>NSMainNibFile</key>
-	<string>iPhoneUnitTestingApp</string>
+	<string>iOSUnitTestingApp</string>
 </dict>
 </plist>

@@ -1,5 +1,5 @@
 /*
- CHDataStructures.framework -- iPhoneUnitTestingApp.m
+ CHDataStructures.framework -- iOSUnitTestingApp.m
  
  Copyright (c) 2009, Ole Begemann <http://oleb.net>
  
