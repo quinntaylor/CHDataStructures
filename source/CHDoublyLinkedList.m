@@ -447,15 +447,13 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 }
 
 - (void) removeFirstObject {
-	if (count == 0)
-		return;
-	[self removeNode:head->next];
+	if (count > 0)
+		[self removeNode:head->next];
 }
 
 - (void) removeLastObject {
-	if (count == 0)
-		return;
-	[self removeNode:tail->prev];
+	if (count > 0)
+		[self removeNode:tail->prev];
 }
 
 // Private method that accepts a function pointer for testing object equality.
