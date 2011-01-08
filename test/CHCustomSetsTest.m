@@ -11,12 +11,12 @@
  */
 
 #import <SenTestingKit/SenTestingKit.h>
-#import "CHLockableSet.h"
+#import "CHMutableSet.h"
 #import "CHOrderedSet.h"
 
 static NSArray *abc;
 
-@interface CHLockableSet (Test)
+@interface CHMutableSet (Test)
 
 - (NSString*) debugDescription; // Declare here to prevent compiler warnings.
 
@@ -24,7 +24,7 @@ static NSArray *abc;
 
 #pragma mark -
 
-@interface CHLockableSetTest : SenTestCase {
+@interface CHMutableSetTest : SenTestCase {
 	id set;
 	NSEnumerator *e;
 	id anObject;
@@ -37,14 +37,14 @@ static NSArray *abc;
 @end
 
 
-@implementation CHLockableSetTest
+@implementation CHMutableSetTest
 
 + (void) initialize {
 	abc = [[NSArray arrayWithObjects:@"A",@"B",@"C",nil] retain];
 }
 
 - (void) setUp {
-	set = [[[CHLockableSet alloc] init] autorelease];
+	set = [[[CHMutableSet alloc] init] autorelease];
 }
 
 - (void) checkEqualityWithArray:(NSArray*)anArray {
@@ -291,7 +291,7 @@ static NSArray *abc;
 	// Test fast enumeration on the set and compare with 
 	NSUInteger count = 0;
 	NSEnumerator *enumerator = [array objectEnumerator];
-	BOOL unorderedSet = [set isMemberOfClass:[CHLockableSet class]];
+	BOOL unorderedSet = [set isMemberOfClass:[CHMutableSet class]];
 	for (NSNumber *number in set) {
 		STAssertNotNil(number, nil);
 		if (unorderedSet)
@@ -309,7 +309,7 @@ static NSArray *abc;
 
 #pragma mark -
 
-@interface CHOrderedSetTest : CHLockableSetTest
+@interface CHOrderedSetTest : CHMutableSetTest
 
 @end
 

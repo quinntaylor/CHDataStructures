@@ -13,7 +13,7 @@
 #import <SenTestingKit/SenTestingKit.h>
 
 #import "CHBidirectionalDictionary.h"
-#import "CHLockableDictionary.h"
+#import "CHMutableDictionary.h"
 #import "CHMultiDictionary.h"
 #import "CHOrderedDictionary.h"
 #import "CHSortedDictionary.h"
@@ -27,26 +27,26 @@ static NSArray* keyArray;
 
 #pragma mark -
 
-@interface CHLockableDictionary (Test)
+@interface CHMutableDictionary (Test)
 
 - (NSString*) debugDescription; // Declare here to prevent compiler warnings.
 
 @end
 
-@interface CHLockableDictionaryTest : SenTestCase {
+@interface CHMutableDictionaryTest : SenTestCase {
 	id dictionary;
 	NSEnumerator *enumerator;
 }
 @end
 
-@implementation CHLockableDictionaryTest
+@implementation CHMutableDictionaryTest
 
 + (void) initialize {
 	keyArray = [[NSArray arrayWithObjects:@"baz", @"foo", @"bar", @"yoo", @"hoo", nil] retain];
 }
 
 - (void) setUp {
-	dictionary = [[[CHLockableDictionary alloc] init] autorelease];
+	dictionary = [[[CHMutableDictionary alloc] init] autorelease];
 }
 
 - (void) populateDictionary {
@@ -171,7 +171,7 @@ static NSArray* keyArray;
 
 #pragma mark -
 
-@interface CHBidirectionalDictionaryTest : CHLockableDictionaryTest
+@interface CHBidirectionalDictionaryTest : CHMutableDictionaryTest
 @end
 
 @implementation CHBidirectionalDictionaryTest
@@ -318,7 +318,7 @@ static NSArray* keyArray;
 
 #pragma mark -
 
-@interface CHMultiDictionaryTest : CHLockableDictionaryTest
+@interface CHMultiDictionaryTest : CHMutableDictionaryTest
 @end
 
 @implementation CHMultiDictionaryTest
@@ -545,7 +545,7 @@ static NSArray* keyArray;
 
 #pragma mark -
 
-@interface CHDictionaryWithOrderingTest : CHLockableDictionaryTest
+@interface CHDictionaryWithOrderingTest : CHMutableDictionaryTest
 {
 	NSArray *expectedKeyOrder;
 }

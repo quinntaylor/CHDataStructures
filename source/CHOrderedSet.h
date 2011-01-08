@@ -10,7 +10,7 @@
  The software is  provided "as is", without warranty of any kind, including all implied warranties of merchantability and fitness. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
  */
 
-#import "CHLockableSet.h"
+#import "CHMutableSet.h"
 
 /**
  @file CHOrderedSet.h
@@ -28,7 +28,7 @@
  
  @todo Allow setting a maximum size, and either reject additions or evict the "oldest" item when the limit is reached? (Perhaps this would be better done by the user...)
  */
-@interface CHOrderedSet : CHLockableSet {
+@interface CHOrderedSet : CHMutableSet {
 	id ordering; // A structure for maintaining ordering of the objects.
 }
 

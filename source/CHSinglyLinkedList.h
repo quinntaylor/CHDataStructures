@@ -11,7 +11,6 @@
  The software is provided "as is", without warranty of any kind, including all implied warranties of merchantability and fitness. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
  */
 
-#import "CHLockableObject.h"
 #import "CHLinkedList.h"
 
 /**
@@ -44,7 +43,7 @@ typedef struct CHSinglyLinkedListNode {
  
  The primary weakness of singly-linked lists is the absence of a previous link. Since insertion and deletion involve changing the @c next link of the preceding node, and there is no way to step backwards through the list, traversal must always begin at the head, even if searching for an index that is very close to the tail. This does not mean that singly-linked lists are inherently bad, only that they are not well-suited for all possible applications. As usual, all data access attributes should be considered before choosing a data strcuture.
  */
-@interface CHSinglyLinkedList : CHLockableObject <CHLinkedList>
+@interface CHSinglyLinkedList : NSObject <CHLinkedList>
 {
 	__strong CHSinglyLinkedListNode *head; // Dummy node at the front of the list.
 	__strong CHSinglyLinkedListNode *tail; // Pointer to last node in a list.

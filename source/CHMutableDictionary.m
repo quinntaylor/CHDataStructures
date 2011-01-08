@@ -1,5 +1,5 @@
 /*
- CHDataStructures.framework -- CHLockableDictionary.m
+ CHDataStructures.framework -- CHMutableDictionary.m
  
  Copyright (c) 2009-2010, Quinn Taylor <http://homepage.mac.com/quinntaylor>
  
@@ -10,7 +10,7 @@
  The software is  provided "as is", without warranty of any kind, including all implied warranties of merchantability and fitness. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
  */
 
-#import "CHLockableDictionary.h"
+#import "CHMutableDictionary.h"
 
 #pragma mark CFDictionary callbacks
 
@@ -57,51 +57,16 @@ void createCollectableCFMutableDictionary(__strong CFMutableDictionaryRef* dicti
 	                                       initialCapacity,
 	                                       &kCHDictionaryKeyCallBacks,
 	                                       &kCHDictionaryValueCallBacks);
-	// Hand the reference off to GC if it's enable, perform a no-op otherwise.
+	// Hand the reference off to GC if it's enabled, perform a no-op otherwise.
 	CFMakeCollectable(*dictionary);
 }
 
 #pragma mark -
 
-@implementation CHLockableDictionary
-
-// Private method used for creating a lock on-demand and naming it uniquely.
-- (void) createLock {
-	@synchronized (self) {
-		if (lock == nil) {
-			lock = [[NSLock alloc] init];
-			[lock setName:[NSString stringWithFormat:@"NSLock-%@-0x%x", [self class], self]];
-		}
-	}
-}
-
-- (BOOL) tryLock {
-	if (lock == nil)
-		[self createLock];
-	return [lock tryLock];
-}
-
-- (void) lock {
-	if (lock == nil)
-		[self createLock];
-	[lock lock];
-}
-
-- (BOOL) lockBeforeDate:(NSDate*)limit {
-	if (lock == nil)
-		[self createLock];
-	return [lock lockBeforeDate:limit];
-}
-
-- (void) unlock {
-	[lock unlock];
-}
-
-#pragma mark -
+@implementation CHMutableDictionary
 
 - (void) dealloc {
 	CFRelease(dictionary); // The dictionary will never be null at this point.
-	[lock release];
 	[super dealloc];
 }
 
@@ -138,7 +103,7 @@ void createCollectableCFMutableDictionary(__strong CFMutableDictionaryRef* dicti
 - (id) copyWithZone:(NSZone*) zone {
 	// We could use -initWithDictionary: here, but it would just use more memory.
 	// (It marshals key-value pairs into two id* arrays, then inits from those.)
-	CHLockableDictionary *copy = [[[self class] allocWithZone:zone] init];
+	CHMutableDictionary *copy = [[[self class] allocWithZone:zone] init];
 	[copy addEntriesFromDictionary:self];
 	return copy;
 }

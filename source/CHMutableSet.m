@@ -1,5 +1,5 @@
 /*
- CHDataStructures.framework -- CHLockableSet.m
+ CHDataStructures.framework -- CHMutableSet.m
  
  Copyright (c) 2009-2010, Quinn Taylor <http://homepage.mac.com/quinntaylor>
  
@@ -10,78 +10,43 @@
  The software is  provided "as is", without warranty of any kind, including all implied warranties of merchantability and fitness. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
  */
 
-#import "CHLockableSet.h"
+#import "CHMutableSet.h"
 
-const void* CHLockableSetRetain(CFAllocatorRef allocator, const void *value) {
+const void* CHMutableSetRetain(CFAllocatorRef allocator, const void *value) {
 	return [(id)value retain];
 }
 
-void CHLockableSetRelease(CFAllocatorRef allocator, const void *value) {
+void CHMutableSetRelease(CFAllocatorRef allocator, const void *value) {
 	[(id)value release];
 }
 
-CFStringRef CHLockableSetCopyDescription(const void *value) {
+CFStringRef CHMutableSetCopyDescription(const void *value) {
 	return CFRetain([(id)value description]);
 }
 
-Boolean CHLockableSetEqual(const void *value1, const void *value2) {
+Boolean CHMutableSetEqual(const void *value1, const void *value2) {
 	return [(id)value1 isEqual:(id)value2];
 }
 
-CFHashCode CHLockableSetHash(const void *value) {
+CFHashCode CHMutableSetHash(const void *value) {
 	return (CFHashCode)[(id)value hash];
 }
 
-static const CFSetCallBacks kCHLockableSetCallbacks = {
+static const CFSetCallBacks kCHMutableSetCallbacks = {
 	0, // default version
-	CHLockableSetRetain,
-	CHLockableSetRelease,
-	CHLockableSetCopyDescription,
-	CHLockableSetEqual,
-	CHLockableSetHash
+	CHMutableSetRetain,
+	CHMutableSetRelease,
+	CHMutableSetCopyDescription,
+	CHMutableSetEqual,
+	CHMutableSetHash
 };
 
 #pragma mark -
 
-@implementation CHLockableSet
-
-// Private method used for creating a lock on-demand and naming it uniquely.
-- (void) createLock {
-	@synchronized (self) {
-		if (lock == nil) {
-			lock = [[NSLock alloc] init];
-			[lock setName:[NSString stringWithFormat:@"NSLock-%@-0x%x", [self class], self]];
-		}
-	}
-}
-
-- (BOOL) tryLock {
-	if (lock == nil)
-		[self createLock];
-	return [lock tryLock];
-}
-
-- (void) lock {
-	if (lock == nil)
-		[self createLock];
-	[lock lock];
-}
-
-- (BOOL) lockBeforeDate:(NSDate*)limit {
-	if (lock == nil)
-		[self createLock];
-	return [lock lockBeforeDate:limit];
-}
-
-- (void) unlock {
-	[lock unlock];
-}
-
-#pragma mark -
+@implementation CHMutableSet
 
 - (void) dealloc {
 	CFRelease(set); // The set will never be null at this point.
-	[lock release];
 	[super dealloc];
 }
 
@@ -96,7 +61,7 @@ static const CFSetCallBacks kCHLockableSetCallbacks = {
 	if ((self = [super init]) == nil) return nil;
 	set = CFSetCreateMutable(kCFAllocatorDefault,
 	                         numItems,
-	                         &kCHLockableSetCallbacks);
+	                         &kCHMutableSetCallbacks);
 	CFMakeCollectable(set); // Works under GC, and is a no-op otherwise.
 	return self;
 }
@@ -163,7 +128,7 @@ static const CFSetCallBacks kCHLockableSetCallbacks = {
 #pragma mark <NSCopying>
 
 - (id) copyWithZone:(NSZone*)zone {
-	CHLockableSet *copy = [[[self class] allocWithZone:zone] init];
+	CHMutableSet *copy = [[[self class] allocWithZone:zone] init];
 	[copy addObjectsFromArray:[self allObjects]];
 	return copy;
 }

@@ -26,7 +26,7 @@
 	return self;
 }
 
-// The NSCoding methods inherited from CHLockableDictionary work fine here.
+// The NSCoding methods inherited from CHMutableDictionary work fine here.
 
 #pragma mark Querying Contents
 

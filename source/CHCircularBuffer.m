@@ -171,7 +171,6 @@ do { \
 - (void) dealloc {
 	[self removeAllObjects];
 	free(array);
-	[lock release];
 	[super dealloc];
 }
 
@@ -248,40 +247,6 @@ do { \
 	else {
 		return 0;
 	}
-}
-
-#pragma mark <CHLockable>
-
-// Private method used for creating a lock on-demand and naming it uniquely.
-- (void) createLock {
-	@synchronized (self) {
-		if (lock == nil) {
-			lock = [[NSLock alloc] init];
-			[lock setName:[NSString stringWithFormat:@"NSLock-%@-0x%x", [self class], self]];
-		}
-	}
-}
-
-- (BOOL) tryLock {
-	if (lock == nil)
-		[self createLock];
-	return [lock tryLock];
-}
-
-- (void) lock {
-	if (lock == nil)
-		[self createLock];
-	[lock lock];
-}
-
-- (BOOL) lockBeforeDate:(NSDate*)limit {
-	if (lock == nil)
-		[self createLock];
-	return [lock lockBeforeDate:limit];
-}
-
-- (void) unlock {
-	[lock unlock];
 }
 
 #pragma mark Querying Contents

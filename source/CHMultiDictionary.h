@@ -10,7 +10,7 @@
  The software is  provided "as is", without warranty of any kind, including all implied warranties of merchantability and fitness. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
  */
 
-#import "CHLockableDictionary.h"
+#import "CHMutableDictionary.h"
 
 /**
  @file CHMultiDictionary.h
@@ -31,7 +31,7 @@
  
  Unlike NSDictionary and other Cocoa collections, CHMultiDictionary has not been designed with mutable and immutable variants. A multimap is not that much more useful if it is immutable, so any copies made of this class are mutable by definition.
  */
-@interface CHMultiDictionary : CHLockableDictionary {
+@interface CHMultiDictionary : CHMutableDictionary {
 	NSUInteger objectCount; // Number of objects currently in the dictionary.
 }
 

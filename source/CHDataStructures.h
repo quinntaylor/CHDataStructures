@@ -16,7 +16,6 @@
 #import "CHDeque.h"
 #import "CHHeap.h"
 #import "CHLinkedList.h"
-#import "CHLockable.h"
 #import "CHQueue.h"
 #import "CHSearchTree.h"
 #import "CHSortedSet.h"
@@ -35,8 +34,6 @@
 #import "CHListDeque.h"
 #import "CHListQueue.h"
 #import "CHListStack.h"
-#import "CHLockableDictionary.h"
-#import "CHLockableObject.h"
 #import "CHMultiDictionary.h"
 #import "CHMutableArrayHeap.h"
 #import "CHOrderedDictionary.h"
@@ -72,15 +69,22 @@
  - CHSortedSet
  - CHStack
  
+ The concrete child classes of NSMutableArray include:
+ - CHCircularBuffer
+	 - CHCircularBufferDeque
+	 - CHCircularBufferQueue
+	 - CHCircularBufferStack
+ - CHMutableArrayHeap
+ 
  The concrete child classes of NSMutableDictionary include:
- - CHLockableDictionary
+ - CHMutableDictionary
 	 - CHBidirectionalDictionary
 	 - CHMultiDictionary
 	 - CHOrderedDictionary
 	 - CHSortedDictionary
  
  The concrete child classes of NSMutableSet include:
- - CHLockableSet
+ - CHMutableSet
 	 - CHOrderedSet
  
  The code is written for Cocoa applications and does use some features of <a href="http://developer.apple.com/documentation/Cocoa/Conceptual/ObjectiveC/">Objective-C 2.0</a>, which is present in Mac OS X 10.5+ and all versions of iOS. Most of the code could be ported to other Objective-C environments (such as <a href="http://www.gnustep.org">GNUStep</a>) without too much trouble. However, such efforts would probably be better accomplished by forking this project rather than integrating with it, for several main reasons:

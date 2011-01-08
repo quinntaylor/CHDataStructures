@@ -10,7 +10,6 @@
  The software is  provided "as is", without warranty of any kind, including all implied warranties of merchantability and fitness. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
  */
 
-#import "CHLockableObject.h"
 #import "CHSearchTree.h"
 
 /**
@@ -71,7 +70,7 @@ typedef struct CHBinaryTreeNode {
  
  Much of the code and algorithms was distilled from information in the <a href="http://eternallyconfuzzled.com/tuts/datastructures/jsw_tut_bst1.aspx">Binary Search Trees tutorial</a>, which is in the public domain courtesy of <a href="http://eternallyconfuzzled.com/">Julienne Walker</a>. Method names have been changed to match the APIs of existing Cocoa collections provided by Apple.
  */
-@interface CHAbstractBinarySearchTree : CHLockableObject <CHSearchTree>
+@interface CHAbstractBinarySearchTree : NSObject <CHSearchTree>
 {
 	__strong CHBinaryTreeNode *header; // Dummy header; no more checks for root.
 	__strong CHBinaryTreeNode *sentinel; // Dummy leaf; no more checks for NULL.

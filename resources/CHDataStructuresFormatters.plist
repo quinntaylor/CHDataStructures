@@ -69,12 +69,7 @@
 		<key>SummaryString</key>
 		<string>object={(*$VAR).object}, prev={(*$VAR).prev}, next={(*$VAR).next}</string>
 	</dict>
-	<key>CHLockableObject *</key>
-	<dict>
-		<key>SummaryString</key>
-		<string>{(int)[$VAR count]} objects</string>
-	</dict>
-	<key>CHLockableDictionary *</key>
+	<key>CHMutableDictionary *</key>
 	<dict>
 		<key>SummaryString</key>
 		<string>{(int)[$VAR count]} key/value pairs</string>

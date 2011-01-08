@@ -11,7 +11,6 @@
  The software is  provided "as is", without warranty of any kind, including all implied warranties of merchantability and fitness. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
  */
 
-#import "CHLockableObject.h"
 #import "CHLinkedList.h"
 
 /**
@@ -45,7 +44,7 @@ typedef struct CHDoublyLinkedListNode {
  
  Doubly-linked lists are well-suited as an underlying collection for other data structures, such as a deque (double-ended queue) like the one declared in CHListDeque. The same functionality can be achieved using a circular buffer and an array, and many libraries choose to do so when objects are only added to or removed from the ends, but the dynamic structure of a linked list is much more flexible when inserting and deleting in the middle of a list.
  */
-@interface CHDoublyLinkedList : CHLockableObject <CHLinkedList>
+@interface CHDoublyLinkedList : NSObject <CHLinkedList>
 {
 	__strong CHDoublyLinkedListNode *head; // Dummy node at the front of the list.
 	__strong CHDoublyLinkedListNode *tail; // Dummy node at the back of the list.
