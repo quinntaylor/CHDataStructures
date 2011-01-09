@@ -82,7 +82,7 @@
 - (NSArray*) allObjectsInSortedOrder;
 
 /**
- Determine whether the receiver contains a given object, matched using \link NSObject#isEqual: -isEqual:\endlink.
+ Determine whether the receiver contains a given object, matched using \link NSObject-p#isEqual: -isEqual:\endlink.
  
  @param anObject The object to test for membership in the heap.
  @return @c YES if @a anObject appears in the heap at least once, @c NO if @a anObject is @c nil or not present.
@@ -110,7 +110,7 @@
 - (id) firstObject;
 
 /**
- Compares the receiving heap to another heap. Two heaps have equal contents if they each hold the same number of objects and (when fully sorted) objects at a given position in each heap satisfy the \link NSObject#isEqual: -isEqual:\endlink test.
+ Compares the receiving heap to another heap. Two heaps have equal contents if they each hold the same number of objects and (when fully sorted) objects at a given position in each heap satisfy the \link NSObject-p#isEqual: -isEqual:\endlink test.
  
  @param otherHeap A heap.
  @return @c YES if the contents of @a otherHeap are equal to the contents of the receiver, otherwise @c NO.

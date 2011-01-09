@@ -72,7 +72,7 @@
 - (NSUInteger) indexOfObject:(id)anObject;
 
 /**
- Compares the receiving ordered set to another ordered set. Two ordered sets have equal contents if they each hold the same number of objects and objects at a given position in each ordered set satisfy the \link NSObject#isEqual: -isEqual:\endlink test.
+ Compares the receiving ordered set to another ordered set. Two ordered sets have equal contents if they each hold the same number of objects and objects at a given position in each ordered set satisfy the \link NSObject-p#isEqual: -isEqual:\endlink test.
  
  @param otherOrderedSet A ordered set.
  @return @c YES if the contents of @a otherOrderedSet are equal to the contents of the receiver, otherwise @c NO.

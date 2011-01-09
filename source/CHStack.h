@@ -62,10 +62,10 @@
 - (NSArray*) allObjects;
 
 /**
- Determine whether the receiver contains a given object, matched using \link NSObject#isEqual: -isEqual:\endlink.
+ Determine whether the receiver contains a given object, matched using \link NSObject-p#isEqual: -isEqual:\endlink.
  
  @param anObject The object to test for membership in the receiver.
- @return @c YES if the receiver contains @a anObject (as determined by \link NSObject#isEqual: -isEqual:\endlink), @c NO if @a anObject is @c nil or not present.
+ @return @c YES if the receiver contains @a anObject (as determined by \link NSObject-p#isEqual: -isEqual:\endlink), @c NO if @a anObject is @c nil or not present.
  
  @see containsObjectIdenticalTo:
  @see removeObject:
@@ -117,7 +117,7 @@
 - (NSUInteger) indexOfObjectIdenticalTo:(id)anObject;
 
 /**
- Compares the receiving stack to another stack. Two stacks have equal contents if they each hold the same number of objects and objects at a given position in each stack satisfy the \link NSObject#isEqual: -isEqual:\endlink test.
+ Compares the receiving stack to another stack. Two stacks have equal contents if they each hold the same number of objects and objects at a given position in each stack satisfy the \link NSObject-p#isEqual: -isEqual:\endlink test.
  
  @param otherStack A stack.
  @return @c YES if the contents of @a otherStack are equal to the contents of the receiver, otherwise @c NO.

@@ -114,7 +114,7 @@ typedef enum {
  Determine whether a given object is present in the receiver.
  
  @param anObject The object to test for membership in the receiver.
- @return @c YES if the receiver contains @a anObject (as determined by \link NSObject#isEqual: -isEqual:\endlink), @c NO if @a anObject is @c nil or not present.
+ @return @c YES if the receiver contains @a anObject (as determined by \link NSObject-p#isEqual: -isEqual:\endlink), @c NO if @a anObject is @c nil or not present.
  
  @attention To test whether the matching object is identical to @a anObject, compare @a anObject with the value returned from #member: using the == operator.
  
@@ -135,7 +135,7 @@ typedef enum {
 - (id) firstObject;
 
 /**
- Compares the receiving sorted set to another sorted set. Two sorted sets have equal contents if they each hold the same number of objects and objects at a given position in each sorted set satisfy the \link NSObject#isEqual: -isEqual:\endlink test.
+ Compares the receiving sorted set to another sorted set. Two sorted sets have equal contents if they each hold the same number of objects and objects at a given position in each sorted set satisfy the \link NSObject-p#isEqual: -isEqual:\endlink test.
  
  @param otherSortedSet A sorted set.
  @return @c YES if the contents of @a otherSortedSet are equal to the contents of the receiver, otherwise @c NO.
@@ -158,9 +158,9 @@ typedef enum {
  Determine whether the receiver contains a given object, and returns the object if present.
  
  @param anObject The object to test for membership in the receiver.
- @return If the receiver contains an object equal to @a anObject (as determined by \link NSObject#isEqual: -isEqual:\endlink) then that object (typically this will be @a anObject) is returned, otherwise @c nil.
+ @return If the receiver contains an object equal to @a anObject (as determined by \link NSObject-p#isEqual: -isEqual:\endlink) then that object (typically this will be @a anObject) is returned, otherwise @c nil.
  
- @attention If you override \link NSObject#isEqual: -isEqual:\endlink for a custom class, you must also override \link NSObject#hash -hash\endlink for #member: to work correctly on objects of your class.
+ @attention If you override \link NSObject-p#isEqual: -isEqual:\endlink for a custom class, you must also override \link NSObject-p#hash -hash\endlink for #member: to work correctly on objects of your class.
 
  @see containsObject:
  @see set

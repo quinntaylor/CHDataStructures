@@ -156,7 +156,7 @@
 }
 
 /**
- Determine whether the receiver contains a given object, matched using \link NSObject#isEqual: -isEqual:\endlink.
+ Determine whether the receiver contains a given object, matched using \link NSObject-p#isEqual: -isEqual:\endlink.
  
  @param anObject The object to test for membership in the heap.
  @return @c YES if @a anObject appears in the heap at least once, @c NO if @a anObject is @c nil or not present.

@@ -246,8 +246,9 @@
       <anchor>//apple_ref/occ/instm/NSObject/init</anchor>
     </member>
   </compound>
+  <!-- This naming is a workaround: https://bugzilla.gnome.org/show_bug.cgi?id=581781 -->
   <compound kind="protocol">
-    <name>NSObject</name>
+    <name>NSObject-p</name>
     <filename>http://developer.apple.com/mac/library/documentation/Cocoa/Reference/Foundation/Protocols/NSObject_Protocol/Reference/NSObject.html</filename>
     <member kind="function">
       <name>isEqual:</name>

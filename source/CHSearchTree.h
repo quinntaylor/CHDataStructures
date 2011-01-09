@@ -96,7 +96,7 @@ typedef enum {
 - (NSArray*) allObjectsWithTraversalOrder:(CHTraversalOrder)order;
 
 /**
- Compares the receiving search tree to another search tree. Two search trees have equal contents if they each hold the same number of objects and objects at a given position in each search tree satisfy the \link NSObject#isEqual: -isEqual:\endlink test.
+ Compares the receiving search tree to another search tree. Two search trees have equal contents if they each hold the same number of objects and objects at a given position in each search tree satisfy the \link NSObject-p#isEqual: -isEqual:\endlink test.
  
  @param otherTree A search tree.
  @return @c YES if the contents of @a otherTree are equal to the contents of the receiver, otherwise @c NO.
