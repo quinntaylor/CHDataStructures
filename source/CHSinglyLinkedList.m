@@ -312,8 +312,7 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 	new->object = [anObject retain];
 	new->next = NULL;
 	tail->next = new;
-	tail = tail->next;
-	
+	tail = new;
 	++count;
 	++mutations;
 }
@@ -325,7 +324,7 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 		new->object = [anObject retain];
 		new->next = NULL;
 		tail->next = new;
-		tail = tail->next;
+		tail = new;
 	}
 	count += [anArray count];
 	++mutations;
@@ -353,7 +352,7 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 	if (index == count) {
 		new->next = NULL;
 		tail->next = new;
-		tail = tail->next;
+		tail = new;
 	}
 	else {
 		// Find the node prior to the specified index adnd insert after it
