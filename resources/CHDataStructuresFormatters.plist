@@ -9,17 +9,7 @@
 		<key>SummaryString</key>
 		<string>{(int)[$VAR count]} objects</string>
 	</dict>
-	<key>CHAbstractCircularBufferCollection *</key>
-	<dict>
-		<key>SummaryString</key>
-		<string>{(int)[$VAR count]} objects</string>
-	</dict>
 	<key>CHAbstractListCollection *</key>
-	<dict>
-		<key>SummaryString</key>
-		<string>{(int)[$VAR count]} objects</string>
-	</dict>
-	<key>CHAbstractMutableArrayCollection *</key>
 	<dict>
 		<key>SummaryString</key>
 		<string>{(int)[$VAR count]} objects</string>
@@ -34,15 +24,20 @@
 		<key>SummaryString</key>
 		<string>{(int)[$VAR count]} objects</string>
 	</dict>
+	<key>CHBidirectionalDictionary *</key>
+	<dict>
+		<key>SummaryString</key>
+		<string>{(int)[$VAR count]} objects</string>
+	</dict>
 	<key>CHBinaryTreeNode *</key>
 	<dict>
 		<key>SummaryString</key>
-		<string>{(*$VAR).object} (left={(*$VAR).left}, right={(*$VAR).right}) [{(long)(*$VAR).balance}]</string>
+		<string>%object% (left={(*$VAR).left}, right={(*$VAR).right}) [{(long)(*$VAR).balance}]</string>
 	</dict>
-	<key>struct CHBinaryTreeNode *</key>
+	<key>CHCircularBuffer *</key>
 	<dict>
 		<key>SummaryString</key>
-		<string>{(*$VAR).object} (left={(*$VAR).left}, right={(*$VAR).right}) [{(long)(*$VAR).balance}]</string>
+		<string>{(int)[$VAR count]} objects</string>
 	</dict>
 	<key>CHCircularBufferDeque *</key>
 	<dict>
@@ -67,12 +62,7 @@
 	<key>CHDoublyLinkedListNode *</key>
 	<dict>
 		<key>SummaryString</key>
-		<string>object={(*$VAR).object}, prev={(*$VAR).prev}, next={(*$VAR).next}</string>
-	</dict>
-	<key>CHMutableDictionary *</key>
-	<dict>
-		<key>SummaryString</key>
-		<string>{(int)[$VAR count]} key/value pairs</string>
+		<string>%object% (prev=%prev%, next=%next%)</string>
 	</dict>
 	<key>CHListDeque *</key>
 	<dict>
@@ -95,6 +85,16 @@
 		<string>{(int)[$VAR count]} keys, {(int)[$VAR countForAllKeys]} values</string>
 	</dict>
 	<key>CHMutableArrayHeap *</key>
+	<dict>
+		<key>SummaryString</key>
+		<string>{(int)[$VAR count]} objects</string>
+	</dict>
+	<key>CHMutableDictionary *</key>
+	<dict>
+		<key>SummaryString</key>
+		<string>{(int)[$VAR count]} key/value pairs</string>
+	</dict>
+	<key>CHMutableSet *</key>
 	<dict>
 		<key>SummaryString</key>
 		<string>{(int)[$VAR count]} objects</string>
@@ -127,7 +127,7 @@
 	<key>CHSinglyLinkedListNode *</key>
 	<dict>
 		<key>SummaryString</key>
-		<string>object={(*$VAR).object}, next={(*$VAR).next}</string>
+		<string>%object% (next=%next%)</string>
 	</dict>
 	<key>CHSortedDictionary *</key>
 	<dict>
