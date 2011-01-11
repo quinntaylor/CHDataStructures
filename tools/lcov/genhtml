@@ -651,14 +651,14 @@ sub gen_html()
 	local *HTML_HANDLE;
 	my %overview;
 	my %base_data;
-	my $lines_found;
-	my $lines_hit;
+	my $ln_found;
+	my $ln_hit;
 	my $fn_found;
 	my $fn_hit;
 	my $br_found;
 	my $br_hit;
-	my $total_lines_found = 0;
-	my $total_lines_hit = 0;
+	my $total_ln_found = 0;
+	my $total_ln_hit = 0;
 	my $total_fn_found = 0;
 	my $total_fn_hit = 0;
 	my $total_br_found = 0;
@@ -757,8 +757,7 @@ sub gen_html()
 	# Process each subdirectory and collect overview information
 	foreach $dir_name (@dir_list)
 	{
-		($lines_found, $lines_hit, $fn_found, $fn_hit,
-		 $br_found, $br_hit)
+		($ln_found, $ln_hit, $fn_found, $fn_hit, $br_found, $br_hit)
 			= process_dir($dir_name);
 
 		# Remove prefix if applicable
@@ -778,13 +777,13 @@ sub gen_html()
 			$link_name = $dir_name."/index.$html_ext";
 		}
 
-		$overview{$dir_name} = [$lines_found, $lines_hit, $fn_found,
+		$overview{$dir_name} = [$ln_found, $ln_hit, $fn_found,
 					$fn_hit, $br_found, $br_hit, $link_name,
-					get_rate($lines_found, $lines_hit),
+					get_rate($ln_found, $ln_hit),
 					get_rate($fn_found, $fn_hit),
 					get_rate($br_found, $br_hit)];
-		$total_lines_found	+= $lines_found;
-		$total_lines_hit	+= $lines_hit;
+		$total_ln_found	+= $ln_found;
+		$total_ln_hit	+= $ln_hit;
 		$total_fn_found	+= $fn_found;
 		$total_fn_hit	+= $fn_hit;
 		$total_br_found	+= $br_found;
@@ -797,7 +796,7 @@ sub gen_html()
 	# Create sorted pages
 	foreach (@fileview_sortlist) {
 		write_dir_page($fileview_sortname[$_], ".", "", $test_title,
-			       undef, $total_lines_found, $total_lines_hit,
+			       undef, $total_ln_found, $total_ln_hit,
 			       $total_fn_found, $total_fn_hit, $total_br_found,
 			       $total_br_hit, \%overview, {}, {}, {}, 0, $_);
 	}
@@ -807,12 +806,12 @@ sub gen_html()
 	{
 		info("Writing test case description file.\n");
 		write_description_file( \%test_description,
-					$total_lines_found, $total_lines_hit,
+					$total_ln_found, $total_ln_hit,
 					$total_fn_found, $total_fn_hit,
 					$total_br_found, $total_br_hit);
 	}
 
-	print_overall_rate(1, $total_lines_found, $total_lines_hit,
+	print_overall_rate(1, $total_ln_found, $total_ln_hit,
 			   $func_coverage, $total_fn_found, $total_fn_hit,
 			   $br_coverage, $total_br_found, $total_br_hit);
 
@@ -843,8 +842,8 @@ sub html_create($$)
 
 sub write_dir_page($$$$$$$$$$$$$$$$$)
 {
-	my ($name, $rel_dir, $base_dir, $title, $trunc_dir, $total_lines_found,
-	    $total_lines_hit, $total_fn_found, $total_fn_hit, $total_br_found,
+	my ($name, $rel_dir, $base_dir, $title, $trunc_dir, $total_ln_found,
+	    $total_ln_hit, $total_fn_found, $total_fn_hit, $total_br_found,
 	    $total_br_hit, $overview, $testhash, $testfnchash, $testbrhash,
 	    $view_type, $sort_type) = @_;
 
@@ -855,11 +854,11 @@ sub write_dir_page($$$$$$$$$$$$$$$$$)
 	}
 	write_html_prolog(*HTML_HANDLE, $base_dir, "LCOV - $title$trunc_dir");
 	write_header(*HTML_HANDLE, $view_type, $trunc_dir, $rel_dir,
-		     $total_lines_found, $total_lines_hit, $total_fn_found,
+		     $total_ln_found, $total_ln_hit, $total_fn_found,
 		     $total_fn_hit, $total_br_found, $total_br_hit, $sort_type);
 	write_file_table(*HTML_HANDLE, $base_dir, $overview, $testhash,
 			 $testfnchash, $testbrhash, $view_type, $sort_type,
-			 $total_lines_found, $total_lines_hit, $total_fn_found,
+			 $total_ln_found, $total_ln_hit, $total_fn_found,
 		     $total_fn_hit, $total_br_found, $total_br_hit);
 	write_html_epilog(*HTML_HANDLE, $base_dir);
 	close(*HTML_HANDLE);
@@ -878,16 +877,16 @@ sub process_dir($)
 	my $base_dir;
 	my $filename;
 	my %overview;
-	my $lines_found;
-	my $lines_hit;
+	my $ln_found;
+	my $ln_hit;
 	my $fn_found;
 	my $fn_hit;
 	my $br_found;
 	my $br_hit;
-	my $total_lines_found=0;
-	my $total_lines_hit=0;
-	my $total_fn_found=0;
-	my $total_fn_hit=0;
+	my $total_ln_found = 0;
+	my $total_ln_hit = 0;
+	my $total_fn_found = 0;
+	my $total_fn_hit = 0;
 	my $total_br_found = 0;
 	my $total_br_hit = 0;
 	my $base_name;
@@ -927,7 +926,7 @@ sub process_dir($)
 		my $page_link;
 		my $func_link;
 
-		($lines_found, $lines_hit, $fn_found, $fn_hit, $br_found,
+		($ln_found, $ln_hit, $fn_found, $fn_hit, $br_found,
 		 $br_hit, $testdata, $testfncdata, $testbrdata) =
 			process_file($trunc_dir, $rel_dir, $filename);
 
@@ -942,10 +941,10 @@ sub process_dir($)
 			# Link directory to source code view page
 			$page_link = "$base_name.gcov.$html_ext";
 		}
-		$overview{$base_name} = [$lines_found, $lines_hit, $fn_found,
+		$overview{$base_name} = [$ln_found, $ln_hit, $fn_found,
 					 $fn_hit, $br_found, $br_hit,
 					 $page_link,
-					 get_rate($lines_found, $lines_hit),
+					 get_rate($ln_found, $ln_hit),
 					 get_rate($fn_found, $fn_hit),
 					 get_rate($br_found, $br_hit)];
 
@@ -953,8 +952,8 @@ sub process_dir($)
 		$testfnchash{$base_name} = $testfncdata;
 		$testbrhash{$base_name} = $testbrdata;
 
-		$total_lines_found	+= $lines_found;
-		$total_lines_hit	+= $lines_hit;
+		$total_ln_found	+= $ln_found;
+		$total_ln_hit	+= $ln_hit;
 
 		$total_fn_found += $fn_found;
 		$total_fn_hit   += $fn_hit;
@@ -967,8 +966,8 @@ sub process_dir($)
 	foreach (@fileview_sortlist) {
 		# Generate directory overview page (without details)	
 		write_dir_page($fileview_sortname[$_], $rel_dir, $base_dir,
-			       $test_title, $trunc_dir, $total_lines_found,
-			       $total_lines_hit, $total_fn_found, $total_fn_hit,
+			       $test_title, $trunc_dir, $total_ln_found,
+			       $total_ln_hit, $total_fn_found, $total_fn_hit,
 			       $total_br_found, $total_br_hit, \%overview, {},
 			       {}, {}, 1, $_);
 		if (!$show_details) {
@@ -977,14 +976,14 @@ sub process_dir($)
 		# Generate directory overview page including details
 		write_dir_page("-detail".$fileview_sortname[$_], $rel_dir,
 			       $base_dir, $test_title, $trunc_dir,
-			       $total_lines_found, $total_lines_hit, $total_fn_found,
+			       $total_ln_found, $total_ln_hit, $total_fn_found,
 			       $total_fn_hit, $total_br_found, $total_br_hit,
 			       \%overview, \%testhash, \%testfnchash,
 			       \%testbrhash, 1, $_);
 	}
 
 	# Calculate resulting line counts
-	return ($total_lines_found, $total_lines_hit, $total_fn_found, $total_fn_hit,
+	return ($total_ln_found, $total_ln_hit, $total_fn_found, $total_fn_hit,
 		$total_br_found, $total_br_hit);
 }
 
@@ -1049,7 +1048,7 @@ sub get_converted_lines($)
 sub write_function_page($$$$$$$$$$$$$$$$$$)
 {
 	my ($base_dir, $rel_dir, $trunc_dir, $base_name, $title,
-	    $lines_found, $lines_hit, $fn_found, $fn_hit, $br_found, $br_hit,
+	    $ln_found, $ln_hit, $fn_found, $fn_hit, $br_found, $br_hit,
 	    $sumcount, $funcdata, $sumfnccount, $testfncdata, $sumbrcount,
 	    $testbrdata, $sort_type) = @_;
 	my $pagetitle;
@@ -1065,7 +1064,7 @@ sub write_function_page($$$$$$$$$$$$$$$$$$)
 	$pagetitle = "LCOV - $title - $trunc_dir/$base_name - functions";
 	write_html_prolog(*HTML_HANDLE, $base_dir, $pagetitle);
 	write_header(*HTML_HANDLE, 4, "$trunc_dir/$base_name",
-		     "$rel_dir/$base_name", $lines_found, $lines_hit,
+		     "$rel_dir/$base_name", $ln_found, $ln_hit,
 		     $fn_found, $fn_hit, $br_found, $br_hit, $sort_type);
 	write_function_table(*HTML_HANDLE, "$base_name.gcov.$html_ext",
 			     $sumcount, $funcdata,
@@ -1099,8 +1098,8 @@ sub process_file($$$)
 	my $sumfnccount;
 	my $testbrdata;
 	my $sumbrcount;
-	my $lines_found;
-	my $lines_hit;
+	my $ln_found;
+	my $ln_hit;
 	my $fn_found;
 	my $fn_hit;
 	my $br_found;
@@ -1111,7 +1110,7 @@ sub process_file($$$)
 	local *HTML_HANDLE;
 
 	($testdata, $sumcount, $funcdata, $checkdata, $testfncdata,
-	 $sumfnccount, $testbrdata, $sumbrcount, $lines_found, $lines_hit,
+	 $sumfnccount, $testbrdata, $sumbrcount, $ln_found, $ln_hit,
 	 $fn_found, $fn_hit, $br_found, $br_hit)
 		= get_info_entry($info_data{$filename});
 
@@ -1119,7 +1118,7 @@ sub process_file($$$)
 	# source code view
 	if ($no_sourceview)
 	{
-		return ($lines_found, $lines_hit, $fn_found, $fn_hit,
+		return ($ln_found, $ln_hit, $fn_found, $fn_hit,
 			$br_found, $br_hit, $testdata, $testfncdata,
 			$testbrdata);
 	}
@@ -1130,7 +1129,7 @@ sub process_file($$$)
 	$pagetitle = "LCOV - $test_title - $trunc_dir/$base_name";
 	write_html_prolog(*HTML_HANDLE, $base_dir, $pagetitle);
 	write_header(*HTML_HANDLE, 2, "$trunc_dir/$base_name",
-		     "$rel_dir/$base_name", $lines_found, $lines_hit,
+		     "$rel_dir/$base_name", $ln_found, $ln_hit,
 		     $fn_found, $fn_hit, $br_found, $br_hit, 0);
 	@source = write_source(*HTML_HANDLE, $filename, $sumcount, $checkdata,
 			       $converted, $funcdata, $sumbrcount);
@@ -1143,7 +1142,7 @@ sub process_file($$$)
 		foreach (@funcview_sortlist) {
 			write_function_page($base_dir, $rel_dir, $trunc_dir,
 					    $base_name, $test_title,
-					    $lines_found, $lines_hit,
+					    $ln_found, $ln_hit,
 					    $fn_found, $fn_hit, $br_found,
 					    $br_hit, $sumcount,
 					    $funcdata, $sumfnccount,
@@ -1155,7 +1154,7 @@ sub process_file($$$)
 	# Additional files are needed in case of frame output
 	if (!$frames)
 	{
-		return ($lines_found, $lines_hit, $fn_found, $fn_hit,
+		return ($ln_found, $ln_hit, $fn_found, $fn_hit,
 			$br_found, $br_hit, $testdata, $testfncdata,
 			$testbrdata);
 	}
@@ -1177,7 +1176,7 @@ sub process_file($$$)
 		       scalar(@source));
 	close(*HTML_HANDLE);
 
-	return ($lines_found, $lines_hit, $fn_found, $fn_hit, $br_found,
+	return ($ln_found, $ln_hit, $fn_found, $fn_hit, $br_found,
 		$br_hit, $testdata, $testfncdata, $testbrdata);
 }
 
@@ -1194,7 +1193,7 @@ sub process_file($$$)
 #        "sum"   -> \%sumcount
 #        "func"  -> \%funcdata
 #        "found" -> $lines_found (number of instrumented lines found in file)
-#	 "hit"   -> $lines_hit (number of executed lines in file)
+#	     "hit"   -> $lines_hit (number of executed lines in file)
 #        "check" -> \%checkdata
 #        "testfnc" -> \%testfncdata
 #        "sumfnc"  -> \%sumfnccount
@@ -1555,8 +1554,8 @@ sub get_info_entry($)
 	my $sumfnccount = $_[0]->{"sumfnc"};
 	my $testbrdata = $_[0]->{"testbr"};
 	my $sumbrcount = $_[0]->{"sumbr"};
-	my $lines_found = $_[0]->{"found"};
-	my $lines_hit = $_[0]->{"hit"};
+	my $ln_found = $_[0]->{"found"};
+	my $ln_hit = $_[0]->{"hit"};
 	my $fn_found = $_[0]->{"f_found"};
 	my $fn_hit = $_[0]->{"f_hit"};
 	my $br_found = $_[0]->{"b_found"};
@@ -1564,7 +1563,7 @@ sub get_info_entry($)
 
 	return ($testdata_ref, $sumcount_ref, $funcdata_ref, $checkdata_ref,
 		$testfncdata, $sumfnccount, $testbrdata, $sumbrcount,
-		$lines_found, $lines_hit, $fn_found, $fn_hit,
+		$ln_found, $ln_hit, $fn_found, $fn_hit,
 		$br_found, $br_hit);
 }
 
@@ -1992,8 +1991,8 @@ sub combine_info_entries($$$)
 	my $result_sumfnccount;
 	my $result_testbrdata;
 	my $result_sumbrcount;
-	my $lines_found;
-	my $lines_hit;
+	my $ln_found;
+	my $ln_hit;
 	my $fn_found;
 	my $fn_hit;
 	my $br_found;
@@ -2042,7 +2041,7 @@ sub combine_info_entries($$$)
 		}
 
 		# update sum count hash
-		($result_sumcount, $lines_found, $lines_hit) =
+		($result_sumcount, $ln_found, $ln_hit) =
 			add_counts($result_sumcount,
 				   $result_testdata{$testname});
 	}
@@ -2056,7 +2055,7 @@ sub combine_info_entries($$$)
 		$result_testdata{$testname} = $testdata2->{$testname};
 
 		# update sum count hash
-		($result_sumcount, $lines_found, $lines_hit) =
+		($result_sumcount, $ln_found, $ln_hit) =
 			add_counts($result_sumcount,
 				   $result_testdata{$testname});
 	}
@@ -2067,7 +2066,7 @@ sub combine_info_entries($$$)
 	set_info_entry(\%result, \%result_testdata, $result_sumcount,
 		       $result_funcdata, $checkdata1, $result_testfncdata,
 		       $result_sumfnccount, $result_testbrdata,
-		       $result_sumbrcount, $lines_found, $lines_hit,
+		       $result_sumbrcount, $ln_found, $ln_hit,
 		       $fn_found, $fn_hit, $br_found, $br_hit);
 
 	return(\%result);
@@ -2374,7 +2373,7 @@ sub create_sub_dir($)
 
 
 #
-# write_description_file(descriptions, overall_found, overall_hit,
+# write_description_file(descriptions, total_ln_found, total_ln_hit,
 #                        total_fn_found, total_fn_hit, total_br_found,
 #                        total_br_hit)
 #
@@ -3017,26 +3016,6 @@ sub write_css_file()
 	  background-color: #B5F7AF;
 	}
 	
-	/* Source code view: format for branches which were executed
-	 * and taken */
-	span.branchCov
-	{
-	  background-color: #CAD7FE;
-	}
-
-	/* Source code view: format for branches which were executed
-	 * but not taken */
-	span.branchNoCov
-	{
-	  background-color: #FF6230;
-	}
-
-	/* Source code view: format for branches which were not executed */
-	span.branchNoExec
-	{
-	  background-color: #FF6230;
-	}
-
 	/* Source code view: format for the source code heading line */
 	pre.sourceHeading
 	{
@@ -4041,7 +4020,7 @@ sub max($$)
 
 #
 # write_header(filehandle, type, trunc_file_name, rel_file_name, lines_found,
-# lines_hit, funcs_found, funcs_hit, sort_type)
+# lines_hit, funcs_found, funcs_hit, branches_found, branches_hit, sort_type)
 #
 # Write a complete standard page header. TYPE may be (0, 1, 2, 3, 4)
 # corresponding to (directory view header, file view header, source view
@@ -4054,8 +4033,8 @@ sub write_header(*$$$$$$$$$$)
 	my $type = $_[1];
 	my $trunc_name = $_[2];
 	my $rel_filename = $_[3];
-	my $lines_found = $_[4];
-	my $lines_hit = $_[5];
+	my $ln_found = $_[4];
+	my $ln_hit = $_[5];
 	my $fn_found = $_[6];
 	my $fn_hit = $_[7];
 	my $br_found = $_[8];
@@ -4199,8 +4178,8 @@ END_OF_HTML
 
 	# Create summary table with line (and possibly function and/or branch) coverage
 	if ($type == $HDR_SOURCE) {
-		my $percent = format_rate($lines_found, $lines_hit);
-		my $category = $rate_name[classify_rate($lines_found, $lines_hit, $med_limit, $hi_limit)];
+		my $percent = format_rate($ln_found, $ln_hit);
+		my $category = $rate_name[classify_rate($ln_found, $ln_hit, $med_limit, $hi_limit)];
 		write_html(*HTML_HANDLE, <<END_OF_HTML)
 	    <table id="summary">
 		  <tr>
@@ -4210,7 +4189,7 @@ END_OF_HTML
 		  <tr>
 		    <td class="label">Lines:</td>
 		    <td class="percent $category">$percent</td>
-		    <td class="ratio $category">$lines_hit / $lines_found</td>
+		    <td class="ratio $category">$ln_hit / $ln_found</td>
 		  </tr>
 END_OF_HTML
 ;
@@ -4366,7 +4345,8 @@ sub get_branches_code($$$$)
 
 #
 # write_file_table(filehandle, base_dir, overview, testhash, testfnchash,
-#                  testbrhash, fileview, sort_type)
+#                  testbrhash, fileview, sort_type, lines_found, lines_hit,
+#                  funcs_found, funcs_hit, branches_found, branches_hit)
 #
 # Write a complete file table. OVERVIEW is a reference to a hash containing
 # the following mapping:
@@ -4394,8 +4374,8 @@ sub write_file_table(*$$$$$$$$$$$$$)
 	my $testbrhash = $_[5];
 	my $fileview = $_[6];
 	my $sort_type = $_[7];
-	my $total_lines_found = $_[8];
-	my $total_lines_hit = $_[9];
+	my $total_ln_found = $_[8];
+	my $total_ln_hit = $_[9];
 	my $total_fn_found = $_[10];
 	my $total_fn_hit = $_[11];
 	my $total_br_found = $_[12],
@@ -4470,15 +4450,15 @@ sub write_file_table(*$$$$$$$$$$$$$)
 	write_html(*HTML_HANDLE, "    <tr class=\"total\">\n");
 	write_html(*HTML_HANDLE, "      <td>Total for all files:</td>\n");
 	# Create bar to represent totals
-	$bar_graph = get_bar_graph_code($base_dir, $total_lines_found, $total_lines_hit);
-	my $rate = format_rate($total_lines_found, $total_lines_hit);
-	my $class = $rate_name[classify_rate($total_lines_found, $total_lines_hit, $med_limit, $hi_limit)];
+	$bar_graph = get_bar_graph_code($base_dir, $total_ln_found, $total_ln_hit);
+	my $rate = format_rate($total_ln_found, $total_ln_hit);
+	my $class = $rate_name[classify_rate($total_ln_found, $total_ln_hit, $med_limit, $hi_limit)];
 	write_html(*HTML_HANDLE, <<END_OF_HTML);
 	  <td class="bar">
 		$bar_graph
 	  </td>
 	  <td class="percent $class">$rate</td>
-	  <td class="ratio $class">$total_lines_hit / $total_lines_found</td>
+	  <td class="ratio $class">$total_ln_hit / $total_ln_found</td>
 END_OF_HTML
 	if ($func_coverage) {
 		$rate = format_rate($total_fn_found, $total_fn_hit);
