@@ -72,7 +72,7 @@ use Digest::MD5 qw(md5_base64);
 
 # Global constants
 our $title		= "LCOV - Code Coverage Report";
-our $lcov_version	= 'LCOV version 1.8';
+our $lcov_version	= 'LCOV version 1.9';
 our $lcov_url		= "http://ltp.sourceforge.net/coverage/lcov.php";
 our $tool_name		= basename($0);
 
@@ -3683,7 +3683,7 @@ sub get_branch_html($)
 		}
 		# Split the block into several lines
 		foreach $branch (@{$block}) {
-			if ($line_len + $branch->[$BR_LEN] > $br_field_width) {
+			if ($line_len + $branch->[$BR_LEN] >= $br_field_width) {
 				# Start a new line
 				if (($line_len + 1 <= $br_field_width) &&
 				    scalar(@{$line}) > 0 &&
@@ -3721,16 +3721,12 @@ sub get_branch_html($)
 
 			$current .= "<span>" if ($open);
 			if ($taken eq '-' || $taken == 0) {
-				$class	= "NoCov";
-				$text	= "-";
 				$title	= "Branch $br_num was never taken";
-				$current .= "<del title=\"$title\">$text</del>";
+				$current .= "<del title=\"$title\">-</del>";
 			} else {
-				$class	= "Cov";
-				$text	= "+";
 				$title	= "Branch $br_num was taken $taken time";
 				$title .= "s" if ($taken > 1);
-				$current .= "<ins title=\"$title\">$text</ins>";
+				$current .= "<ins title=\"$title\">+</ins>";
 			}
 			$current .= "</span>" if ($close);
 			$current_len += $len;
@@ -3760,7 +3756,7 @@ sub format_count($$)
 	my $result;
 	my $exp;
 
-	$result = sprintf("%*d", $width, $count);
+	$result = sprintf("%*.0f", $width, $count);
 	while (length($result) > $width) {
 		last if ($count < 10);
 		$exp++;
@@ -4559,7 +4555,7 @@ END_OF_HTML
 				@results);
 		}
 	}
-	
+
 	write_file_table_epilog(*HTML_HANDLE);
 }
 

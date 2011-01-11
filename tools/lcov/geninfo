@@ -52,13 +52,13 @@
 use strict;
 use File::Basename; 
 use File::Spec::Functions qw /abs2rel catdir file_name_is_absolute splitdir
-			      splitpath rel2abs/;
+			      splitpath/;
 use Getopt::Long;
 use Digest::MD5 qw(md5_base64);
 
 
 # Constants
-our $lcov_version	= 'LCOV version 1.8';
+our $lcov_version	= 'LCOV version 1.9';
 our $lcov_url		= "http://ltp.sourceforge.net/coverage/lcov.php";
 our $gcov_tool		= "gcov";
 our $tool_name		= basename($0);
@@ -87,6 +87,8 @@ our $BR_TAKEN		= 3;
 our $BR_VEC_ENTRIES	= 4;
 our $BR_VEC_WIDTH	= 32;
 
+our $UNNAMED_BLOCK	= 9999;
+
 # Prototypes
 sub print_usage(*);
 sub gen_info($);
@@ -102,6 +104,8 @@ sub get_gcov_version();
 sub system_no_output($@);
 sub read_config($);
 sub apply_config($);
+sub get_exclusion_data($);
+sub apply_exclusion_data($$);
 sub process_graphfile($$);
 sub filter_fn_name($);
 sub warn_handler($);
@@ -111,6 +115,7 @@ sub graph_expect($);
 sub graph_read(*$;$);
 sub graph_skip(*$;$);
 sub sort_uniq(@);
+sub sort_uniq_lex(@);
 sub graph_cleanup($);
 sub graph_find_base($);
 sub graph_from_bb($$$);
@@ -431,39 +436,15 @@ if (defined($output_filename) && ($output_filename ne "-"))
 }
 
 # Do something
-{
-	my $total_ln_found	= 0;
-	my $total_ln_hit	= 0;
-	my $total_fn_found	= 0;
-	my $total_fn_hit	= 0;
-	my $total_br_found	= 0;
-	my $total_br_hit	= 0;
-	my $entry;
-
-	foreach $entry (@data_directory) {
-		my $ln_found;
-		my $ln_hit;
-		my $fn_found;
-		my $fn_hit;
-		my $br_found;
-		my $br_hit;
-
-		# Process files
-		($ln_found, $ln_hit, $fn_found, $fn_hit, $br_found, $br_hit) =
-			gen_info($entry);
-		# Add data
-		$total_ln_found	+= $ln_found;
-		$total_ln_hit	+= $ln_hit;
-		$total_fn_found	+= $fn_found;
-		$total_fn_hit	+= $fn_hit;
-		$total_br_found	+= $br_found;
-		$total_br_hit	+= $br_hit;
-	}
-	info("Finished .info file creation\n");
-	print_overall_rate(1, $total_ln_found, $total_ln_hit,
-			   1, $total_fn_found, $total_fn_hit,
-			   1, $total_br_found, $total_br_hit);
+foreach my $entry (@data_directory) {
+	gen_info($entry);
 }
+
+if ($initial) {
+	warn("Note: --initial does not generate branch coverage ".
+	     "data\n");
+}
+info("Finished .info-file creation\n");
 
 exit(0);
 
@@ -582,12 +563,6 @@ sub gen_info($)
 	my @file_list;
 	my $file;
 	my $prefix;
-	my $total_ln_found	= 0;
-	my $total_ln_hit	= 0;
-	my $total_fn_found	= 0;
-	my $total_fn_hit	= 0;
-	my $total_br_found	= 0;
-	my $total_br_hit	= 0;
 	my $type;
 	my $ext;
 
@@ -620,40 +595,13 @@ sub gen_info($)
 
 	# Process all files in list
 	foreach $file (@file_list) {
-		my $ln_found;
-		my $ln_hit;
-		my $fn_found;
-		my $fn_hit;
-		my $br_found;
-		my $br_hit;
-
 		# Process file
 		if ($initial) {
-			($ln_found, $ln_hit, $fn_found, $fn_hit,
-			 $br_found, $br_hit) =
-				process_graphfile($file, $prefix);
+			process_graphfile($file, $prefix);
 		} else {
-			($ln_found, $ln_hit, $fn_found, $fn_hit,
-			 $br_found, $br_hit) =
-				process_dafile($file, $prefix);
+			process_dafile($file, $prefix);
 		}
-
-		# Add data
-		$total_ln_found	+= $ln_found;
-		$total_ln_hit	+= $ln_hit;
-		$total_fn_found	+= $fn_found;
-		$total_fn_hit	+= $fn_hit;
-		$total_br_found	+= $br_found;
-		$total_br_hit	+= $br_hit;
 	}
-
-	if ($initial) {
-		warn("Note: --initial does not generate branch coverage ".
-		     "data\n");
-	}
-
-	return ($total_ln_found, $total_ln_hit, $total_fn_found, $total_fn_hit,
-		$total_br_found, $total_br_hit);
 }
 
 
@@ -724,6 +672,32 @@ sub derive_data($$$)
 }
 
 #
+# get_filenames(directory, pattern)
+#
+# Return a list of filenames found in directory which match the specified
+# pattern.
+#
+# Die on error.
+#
+
+sub get_filenames($$)
+{
+	my ($dirname, $pattern) = @_;
+	my @result;
+	my $directory;
+	local *DIR;
+
+	opendir(DIR, $dirname) or
+		die("ERROR: cannot read directory $dirname\n");
+	while ($directory = readdir(DIR)) {
+		push(@result, $directory) if ($directory =~ /$pattern/);
+	}
+	closedir(DIR);
+
+	return @result;
+}
+
+#
 # process_dafile(da_filename, dir)
 #
 # Create a .info file for a single data file.
@@ -753,16 +727,10 @@ sub process_dafile($$)
 	my $line_number;	# Line number count
 	my $lines_hit;		# Number of instrumented lines hit
 	my $lines_found;	# Number of instrumented lines found
-	my $total_ln_found = 0;
-	my $total_ln_hit = 0;
 	my $funcs_hit;		# Number of instrumented functions hit
 	my $funcs_found;	# Number of instrumented functions found
-	my $total_fn_found = 0;
-	my $total_fn_hit = 0;
 	my $br_hit;
 	my $br_found;
-	my $total_br_found = 0;
-	my $total_br_hit = 0;
 	my $source;		# gcov source header information
 	my $object;		# gcov object header information
 	my @matches;		# List of absolute paths matching filename
@@ -919,7 +887,7 @@ sub process_dafile($$)
 	}
 
 	# Collect data from resulting .gcov files and create .info file
-	@gcov_list = glob("*.gcov");
+	@gcov_list = get_filenames('.', '\.gcov$');
 
 	# Check for files
 	if (!@gcov_list)
@@ -1109,10 +1077,6 @@ sub process_dafile($$)
 			printf(INFO_HANDLE "FNH:%s\n", $funcs_hit);
 		}
 
-		# Add to totals
-		$total_fn_found += $funcs_found;
-		$total_fn_hit += $funcs_hit;
-
 		# Write coverage information for each instrumented branch:
 		#
 		#   BRDA:<line number>,<block number>,<branch number>,<taken>
@@ -1135,10 +1099,6 @@ sub process_dafile($$)
 			printf(INFO_HANDLE "BRF:%s\n", $br_found);
 			printf(INFO_HANDLE "BRH:%s\n", $br_hit);
 		}
-
-		# Add to totals
-		$total_br_found += $br_found;
-		$total_br_hit += $br_hit;
 
 		# Reset line counters
 		$line_number = 0;
@@ -1174,10 +1134,6 @@ sub process_dafile($$)
 		printf(INFO_HANDLE "LH:%s\n", $lines_hit);
 		print(INFO_HANDLE "end_of_record\n");
 
-		# Add to totals
-		$total_ln_found += $lines_found;
-		$total_ln_hit += $lines_hit;
-
 		# Remove .gcov file after processing
 		unlink($gcov_file);
 	}
@@ -1199,9 +1155,6 @@ sub process_dafile($$)
 
 	# Change back to initial directory
 	chdir($cwd);
-
-	return ($total_ln_found, $total_ln_hit, $total_fn_found, $total_fn_hit,
-		$total_br_found, $total_br_hit);
 }
 
 
@@ -1531,7 +1484,7 @@ sub read_gcov_file($)
 	my $number;
 	my $exclude_flag = 0;
 	my $exclude_line = 0;
-	my $last_block = 0;
+	my $last_block = $UNNAMED_BLOCK;
 	my $last_line = 0;
 	local *INPUT;
 
@@ -1650,7 +1603,7 @@ sub read_gcov_file($)
 				my ($count, $line, $code) = ($1, $2, $3);
 
 				$last_line = $line;
-				$last_block = 0;
+				$last_block = $UNNAMED_BLOCK;
 				# Check for exclusion markers
 				if (!$no_markers) {
 					if (/$EXCL_STOP/) {
@@ -1897,6 +1850,157 @@ sub apply_config($)
 }
 
 
+#
+# get_exclusion_data(filename)
+#
+# Scan specified source code file for exclusion markers and return
+#   linenumber -> 1
+# for all lines which should be excluded.
+#
+
+sub get_exclusion_data($)
+{
+	my ($filename) = @_;
+	my %list;
+	my $flag = 0;
+	local *HANDLE;
+
+	if (!open(HANDLE, "<$filename")) {
+		warn("WARNING: could not open $filename\n");
+		return undef;
+	}
+	while (<HANDLE>) {
+		if (/$EXCL_STOP/) {
+			$flag = 0;
+		} elsif (/$EXCL_START/) {
+			$flag = 1;
+		}
+		if (/$EXCL_LINE/ || $flag) {
+			$list{$.} = 1;
+		}
+	}
+	close(HANDLE);
+
+	if ($flag) {
+		warn("WARNING: unterminated exclusion section in $filename\n");
+	}
+
+	return \%list;
+}
+
+
+#
+# apply_exclusion_data(instr, graph)
+#
+# Remove lines from instr and graph data structures which are marked
+# for exclusion in the source code file.
+#
+# Return adjusted (instr, graph).
+#
+# graph         : file name -> function data
+# function data : function name -> line data
+# line data     : [ line1, line2, ... ]
+#
+# instr     : filename -> line data
+# line data : [ line1, line2, ... ]
+#
+
+sub apply_exclusion_data($$)
+{
+	my ($instr, $graph) = @_;
+	my $filename;
+	my %excl_data;
+	my $excl_read_failed = 0;
+
+	# Collect exclusion marker data
+	foreach $filename (sort_uniq_lex(keys(%{$graph}), keys(%{$instr}))) {
+		my $excl = get_exclusion_data($filename);
+
+		# Skip and note if file could not be read
+		if (!defined($excl)) {
+			$excl_read_failed = 1;
+			next;
+		}
+
+		# Add to collection if there are markers
+		$excl_data{$filename} = $excl if (keys(%{$excl}) > 0);
+	}
+
+	# Warn if not all source files could be read
+	if ($excl_read_failed) {
+		warn("WARNING: some exclusion markers may be ignored\n");
+	}
+
+	# Skip if no markers were found
+	return ($instr, $graph) if (keys(%excl_data) == 0);
+
+	# Apply exclusion marker data to graph
+	foreach $filename (keys(%excl_data)) {
+		my $function_data = $graph->{$filename};
+		my $excl = $excl_data{$filename};
+		my $function;
+
+		next if (!defined($function_data));
+
+		foreach $function (keys(%{$function_data})) {
+			my $line_data = $function_data->{$function};
+			my $line;
+			my @new_data;
+
+			# To be consistent with exclusion parser in non-initial
+			# case we need to remove a function if the first line
+			# was excluded
+			if ($excl->{$line_data->[0]}) {
+				delete($function_data->{$function});
+				next;
+			}
+			# Copy only lines which are not excluded
+			foreach $line (@{$line_data}) {
+				push(@new_data, $line) if (!$excl->{$line});
+			}
+
+			# Store modified list
+			if (scalar(@new_data) > 0) {
+				$function_data->{$function} = \@new_data;
+			} else {
+				# All of this function was excluded
+				delete($function_data->{$function});
+			}
+		}
+
+		# Check if all functions of this file were excluded
+		if (keys(%{$function_data}) == 0) {
+			delete($graph->{$filename});
+		}
+	}
+
+	# Apply exclusion marker data to instr
+	foreach $filename (keys(%excl_data)) {
+		my $line_data = $instr->{$filename};
+		my $excl = $excl_data{$filename};
+		my $line;
+		my @new_data;
+
+		next if (!defined($line_data));
+
+		# Copy only lines which are not excluded
+		foreach $line (@{$line_data}) {
+			push(@new_data, $line) if (!$excl->{$line});
+		}
+
+		# Store modified list
+		if (scalar(@new_data) > 0) {
+			$instr->{$filename} = \@new_data;
+		} else {
+			# All of this file was excluded
+			delete($instr->{$filename});
+		}
+	}
+
+	return ($instr, $graph);
+}
+
+
 sub process_graphfile($$)
 {
 	my ($file, $dir) = @_;
@@ -1908,10 +2012,6 @@ sub process_graphfile($$)
 	my $graph;
 	my $instr;
 	my $filename;
-	my $ln_found;
-	my $total_ln_found = 0;
-	my $fn_found;
-	my $total_fn_found = 0;
 	local *INFO_HANDLE;
 
 	info("Processing: %s\n", abs2rel($file, $dir));
@@ -1954,6 +2054,11 @@ sub process_graphfile($$)
 	else
 	{
 		($instr, $graph) = read_gcno($graph_filename, $base_dir);
+	}
+
+	if (!$no_markers) {
+		# Apply exclusion marker data to graph file data
+		($instr, $graph) = apply_exclusion_data($instr, $graph);
 	}
 
 	# Check whether we're writing to a single file
@@ -2008,33 +2113,23 @@ sub process_graphfile($$)
 				      filter_fn_name($func)."\n");
 			}
 			# Print function summary
-			$fn_found = scalar(@functions);
-			print(INFO_HANDLE "FNF:$fn_found\n");
+			print(INFO_HANDLE "FNF:".scalar(@functions)."\n");
 			print(INFO_HANDLE "FNH:0\n");
-
-			# Add to totals
-			$total_fn_found += $fn_found;
 		}
 		# Print zero line coverage data
 		foreach $line (@{$instr->{$filename}}) {
 			print(INFO_HANDLE "DA:$line,0\n");
 		}
 		# Print line summary
-		$ln_found = scalar(@{$instr->{$filename}});
-		print(INFO_HANDLE "LF:$ln_found\n");
+		print(INFO_HANDLE "LF:".scalar(@{$instr->{$filename}})."\n");
 		print(INFO_HANDLE "LH:0\n");
 
 		print(INFO_HANDLE "end_of_record\n");
-
-		# Add to totals
-		$total_ln_found += $ln_found;
 	}
 	if (!($output_filename && ($output_filename eq "-")))
 	{
 		close(INFO_HANDLE);
 	}
-
-	return ($ln_found, 0, $fn_found, 0, 0, 0);
 }
 
 sub filter_fn_name($)
@@ -2171,6 +2266,23 @@ sub sort_uniq(@)
 		$hash{$_} = 1;
 	}
 	return sort { $a <=> $b } keys(%hash);
+}
+
+#
+# sort_uniq_lex(list)
+#
+# Return list in lexically ascending order and without duplicate entries.
+#
+
+sub sort_uniq_lex(@)
+{
+	my (@list) = @_;
+	my %hash;
+
+	foreach (@list) {
+		$hash{$_} = 1;
+	}
+	return sort keys(%hash);
 }
 
 #
@@ -2442,7 +2554,8 @@ sub read_bb($$)
 			$filename = read_bb_string(*HANDLE, $minus_one);
 			goto incomplete if (!defined($filename));
 			if ($filename ne "") {
-				$filename = rel2abs($filename, $base);
+				$filename = solve_relative_path($base,
+								$filename);
 			}
 		} elsif ($value == $minus_two) {
 			# Function name
@@ -2563,7 +2676,7 @@ sub read_bbg_lines_record(*$$$$$$)
 			if ($string eq "") {
 				return $filename;
 			}
-			$filename = rel2abs($string, $base);
+			$filename = solve_relative_path($base, $string);
 			next;
 		}
 		# Got an actual line number
@@ -2757,7 +2870,7 @@ sub read_gcno_lines_record(*$$$$$$$)
 			if ($string eq "") {
 				return $filename;
 			}
-			$filename = rel2abs($string, $base);
+			$filename = solve_relative_path($base, $string);
 			next;
 		}
 		# Got an actual line number
@@ -2798,7 +2911,7 @@ sub read_gcno_function_record(*$$$$)
 	graph_expect("filename");
 	$filename = read_gcno_string($handle, $big_endian);
 	return undef if (!defined($filename));
-	$filename = rel2abs($filename, $base);
+	$filename = solve_relative_path($base, $filename);
 	# Read first line number
 	$lineno = read_gcno_value($handle, $big_endian, "initial line number");
 	return undef if (!defined($lineno));
@@ -2857,6 +2970,9 @@ sub read_gcno($$)
 	# Skip version and stamp
 	graph_skip(*HANDLE, 8, "version and stamp") or goto incomplete;
 	while (!eof(HANDLE)) {
+		my $next_pos;
+		my $curr_pos;
+
 		# Read record tag
 		$tag = read_gcno_value(*HANDLE, $big_endian, "record tag");
 		goto incomplete if (!defined($tag));
@@ -2866,6 +2982,11 @@ sub read_gcno($$)
 		goto incomplete if (!defined($length));
 		# Convert length to bytes
 		$length *= 4;
+		# Calculate start of next record
+		$next_pos = tell(HANDLE);
+		goto tell_error if ($next_pos == -1);
+		$next_pos += $length;
+		# Process record
 		if ($tag == $tag_function) {
 			($filename, $function) = read_gcno_function_record(
 				*HANDLE, $bb, $fileorder, $base, $big_endian);
@@ -2882,6 +3003,14 @@ sub read_gcno($$)
 			graph_skip(*HANDLE, $length, "unhandled record")
 				or goto incomplete;
 		}
+		# Ensure that we are at the start of the next record
+		$curr_pos = tell(HANDLE);
+		goto tell_error if ($curr_pos == -1);
+		next if ($curr_pos == $next_pos);
+		goto record_error if ($curr_pos > $next_pos);
+		graph_skip(*HANDLE, $next_pos - $curr_pos,
+			   "unhandled record content")
+			or goto incomplete;
 	}
 	close(HANDLE);
 	($instr, $graph) = graph_from_bb($bb, $fileorder, $gcno_filename);
@@ -2898,6 +3027,12 @@ incomplete:
 magic_error:
 	graph_error($gcno_filename, "found unrecognized gcno file magic");
 	return undef;
+tell_error:
+	graph_error($gcno_filename, "could not determine file position");
+	return undef;
+record_error:
+	graph_error($gcno_filename, "found unrecognized record format");
+	return undef;
 }
 
 sub debug($)
@@ -2905,7 +3040,7 @@ sub debug($)
 	my ($msg) = @_;
 
 	return if (!$debug);
-	print("DEBUG: $msg");
+	print(STDERR "DEBUG: $msg");
 }
 
 #
@@ -2930,48 +3065,4 @@ sub get_gcov_capabilities()
 	}
 
 	return \%capabilities;
-}
-
-
-#
-# get_overall_line(found, hit, name_singular, name_plural)
-#
-# Return a string containing overall information for the specified
-# found/hit data.
-#
-
-sub get_overall_line($$$$)
-{
-	my ($found, $hit, $name_sn, $name_pl) = @_;
-	my $name;
-
-	return "no data found" if (!defined($found) || $found == 0);
-	$name = ($found == 1) ? $name_sn : $name_pl;
-	return sprintf("%.1f%% (%d of %d %s)", $hit * 100 / $found, $hit,
-		       $found, $name);
-}
-
-
-#
-# print_overall_rate(ln_do, ln_found, ln_hit, fn_do, fn_found, fn_hit, br_do
-#                    br_found, br_hit)
-#
-# Print overall coverage rates for the specified coverage types.
-#
-
-sub print_overall_rate($$$$$$$$$)
-{
-	my ($ln_do, $ln_found, $ln_hit, $fn_do, $fn_found, $fn_hit,
-	    $br_do, $br_found, $br_hit) = @_;
-
-	info("Overall coverage rate:\n");
-	info("  lines......: %s\n",
-	     get_overall_line($ln_found, $ln_hit, "line", "lines"))
-		if ($ln_do);
-	info("  functions..: %s\n",
-	     get_overall_line($fn_found, $fn_hit, "function", "functions"))
-		if ($fn_do);
-	info("  branches...: %s\n",
-	     get_overall_line($br_found, $br_hit, "branch", "branches"))
-		if ($br_do);
 }
