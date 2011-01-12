@@ -229,7 +229,7 @@ sub write_test_table_epilog(*);
 
 sub write_source($$$$$$$);
 sub write_source_prolog(*);
-sub write_source_line(*$$$$$$);
+sub write_source_line(*$$$$$);
 sub write_source_epilog(*);
 
 sub write_frameset(*$$$);
@@ -3259,8 +3259,7 @@ sub write_header_line(*@)
 			$colspan = "";
 		}
 		$text = "" if (!defined($text));
-		write_html($handle,
-			   "            <td$width$class$colspan>$text</td>\n");
+		write_html($handle, "            <td$width$class$colspan>$text</td>\n");
 	}
 	write_html($handle, "          </tr>\n");
 }
@@ -3358,8 +3357,7 @@ END_OF_HTML
 			$class = "Hi";
 		} else {
 			$rate = sprintf("%.1f&nbsp;%%", $hit * 100 / $found);
-			$class = $rate_name[classify_rate($found, $hit,
-					    $med, $hi)];
+			$class = $rate_name[classify_rate($found, $hit, $med, $hi)];
 		}
 		write_html($handle, <<END_OF_HTML);
 	      <td class="percent $class">$rate</td>
@@ -3746,22 +3744,18 @@ sub format_count($$)
 }
 
 #
-# write_source_line(filehandle, line_num, source, hit_count, converted,
-#                   brdata, add_anchor)
+# write_source_line(filehandle, line_num, source, hit_count, converted, brdata)
 #
 # Write formatted source code line. Return a line in a format as needed
 # by gen_png()
 #
 
-sub write_source_line(*$$$$$$)
+sub write_source_line(*$$$$$)
 {
-	my ($handle, $line, $source, $count, $converted, $brdata,
-	    $add_anchor) = @_;
+	my ($handle, $line, $source, $count, $converted, $brdata) = @_;
 	my $source_format;
 	my $count_format;
 	my $result;
-	my $anchor_start = "";
-	my $anchor_end = "";
 	my $count_field_width = $line_field_width - 1;
 	my @br_html;
 	my $html;
@@ -3788,18 +3782,9 @@ sub write_source_line(*$$$$$$)
 	}
 	$result .= ":".$source;
 
-	# Write out a line number navigation anchor every $nav_resolution
-	# lines if necessary
-	if ($add_anchor)
-	{
-		$anchor_start	= "<a name=\"$_[1]\">";
-		$anchor_end	= "</a>";
-	}
-
-
 	# *************************************************************
 
-	$html = "<td class='line'>$anchor_start$anchor_end$line</td>";
+	$html  = "<td class='line'>$line<a name=\"$line\" /></td>";
 	$html .= "<td class='branch'>".shift(@br_html)."</td>" if ($br_coverage);
 	$html .= "<td class='count $source_format'>$count</td>";
 	$html .= "<td class='code $source_format'>".escape_html($source)."</td>";
@@ -4151,9 +4136,9 @@ END_OF_HTML
 			push(@row_left, [[undef, "label", "Legend:"], [undef, "legend", $text]]);
 		} elsif ($type != $HDR_TESTDESC) {
 			my $text = <<END_OF_HTML;
-            <span class="Hi"  title="Coverage rates of $hi_limit % and more are classified as high">High &ge; $hi_limit%</span>
-            <span class="Med" title="Coverage rates between $med_limit % and $hi_limit % are classified as medium">Medium &ge; $med_limit%</span>
-            <span class="Lo"  title="Coverage rates below $med_limit % are classified as low">Low &lt; $med_limit%</span>
+            <span class="Hi"  title="Coverage rates of $hi_limit% and more are classified as high.">High &ge; $hi_limit%</span>
+            <span class="Med" title="Coverage rates between $med_limit% and $hi_limit% are classified as medium.">Medium &ge; $med_limit%</span>
+            <span class="Lo"  title="Coverage rates below $med_limit% are classified as low.">Low &lt; $med_limit%</span>
 END_OF_HTML
 			push(@row_left, [[undef, "label", "Legend:"], [undef, "legend", $text]]);
 		}
@@ -4170,9 +4155,7 @@ END_OF_HTML
 		if (!defined($right)) {
 			$right = [];
 		}
-		write_header_line(*HTML_HANDLE, @{$left},
-				  [ $i == 0 ? "5%" : undef, undef, undef],
-				  @{$right});
+		write_header_line(*HTML_HANDLE, @{$left}, @{$right});
 	}
 	write_html(*HTML_HANDLE, "	    </table>\n");
 
@@ -4853,7 +4836,6 @@ sub write_source($$$$$$$)
 	my $funcdata  = $_[5];
 	my $sumbrcount = $_[6];
 	my $datafunc = get_hash_reverse($funcdata);
-	my $add_anchor;
 
 	if ($_[2])
 	{
@@ -4880,25 +4862,11 @@ sub write_source($$$$$$$)
 			    "$line_number\n");
 		}
 
-		$add_anchor = 0;
-		if ($frames) {
-			if (($line_number - 1) % $nav_resolution == 0) {
-				$add_anchor = 1;
-			}
-		}
-		if ($func_coverage) {
-			if ($line_number == 1) {
-				$add_anchor = 1;
-			} elsif (defined($datafunc->{$line_number +
-						     $func_offset})) {
-				$add_anchor = 1;
-			}
-		}
 		push (@result,
 		      write_source_line(HTML_HANDLE, $line_number,
 					$_, $count_data{$line_number},
 					$converted->{$line_number},
-					$sumbrcount->{$line_number}, $add_anchor));
+					$sumbrcount->{$line_number}));
 	}
 
 	close(SOURCE_HANDLE);
