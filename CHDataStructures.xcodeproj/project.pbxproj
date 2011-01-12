@@ -669,7 +669,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Run gcov on the framework getting tested, generate HTML report\nif [ \"${CONFIGURATION}\" = 'Coverage' ]; then\n\tFRAMEWORK_NAME=CHDataStructures\n\tFRAMEWORK_TARGET=Framework\n\tFRAMEWORK_OBJ_DIR=${OBJROOT}/${FRAMEWORK_NAME}.build/${CONFIGURATION}/${FRAMEWORK_TARGET}.build/Objects-normal/${CURRENT_ARCH}\n\t\n\t#rm -rf coverage \n\tmkdir -p coverage\n\tcd coverage\n\t../tools/lcov/geninfo \"${FRAMEWORK_OBJ_DIR}\" --gcov-tool /usr/bin/gcov-4.0\n\t../tools/lcov/genhtml \"${FRAMEWORK_OBJ_DIR}\"/*.info \\\n\t\t--title CHDataStructures --num-spaces 4 --css-file ../tools/lcov/styles.css --prefix \"${PROJECT_DIR}\" --legend --no-function\nfi";
+			shellScript = "# Run gcov on the framework getting tested, generate HTML report\nif [ \"${CONFIGURATION}\" = 'Coverage' ]; then\n\tFRAMEWORK_NAME=CHDataStructures\n\tFRAMEWORK_TARGET=Framework\n\tFRAMEWORK_OBJ_DIR=${OBJROOT}/${FRAMEWORK_NAME}.build/${CONFIGURATION}/${FRAMEWORK_TARGET}.build/Objects-normal/${CURRENT_ARCH}\n\t\n\t#rm -rf coverage \n\tmkdir -p coverage\n\tcd coverage\n\t../tools/lcov/geninfo \"${FRAMEWORK_OBJ_DIR}\" --gcov-tool /usr/bin/gcov-4.0\n\t../tools/lcov/genhtml \"${FRAMEWORK_OBJ_DIR}\"/*.info \\\n\t\t--title CHDataStructures --num-spaces 4 --css-file ../tools/lcov/styles.css --prefix \"${PROJECT_DIR}\" --legend\nfi";
 			showEnvVarsInLog = 0;
 		};
 		E41E579A0F6AF8E500FDA687 /* ShellScript */ = {
