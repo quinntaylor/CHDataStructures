@@ -646,6 +646,42 @@ static NSArray* keyArray;
 	expectedKeyOrder = [keyArray sortedArrayUsingSelector:@selector(compare:)];
 }
 
+- (void) testAllKeys {
+	NSMutableArray *keys = [NSMutableArray array];
+	NSNumber *key;
+	for (NSUInteger i = 0; i <= 20; i++) {
+		key = [NSNumber numberWithUnsignedInt:arc4random()];
+		[keys addObject:key];
+		[dictionary setObject:[NSNull null] forKey:key];
+	}
+	[keys sortUsingSelector:@selector(compare:)];
+	STAssertEqualObjects([dictionary allKeys], keys, nil);
+}
+
+- (void) testNSFastEnumeration {
+	NSUInteger limit = 32; // NSFastEnumeration asks for 16 objects at a time
+	// Insert keys in reverse sorted order
+	for (NSUInteger number = limit; number >= 1; number--)
+		[dictionary setObject:[NSNull null] forKey:[NSNumber numberWithUnsignedInteger:number]];
+	// Verify that keys are enumerated in sorted order
+	NSUInteger expected = 1, count = 0;
+	for (NSNumber *object in dictionary) {
+		STAssertEquals([object unsignedIntegerValue], expected++, nil);
+		count++;
+	}
+	STAssertEquals(count, limit, nil);
+	
+	BOOL raisedException = NO;
+	@try {
+		for (id key in dictionary)
+			[dictionary setObject:[NSNull null] forKey:[NSNumber numberWithInteger:-1]];
+	}
+	@catch (NSException *exception) {
+		raisedException = YES;
+	}
+	STAssertTrue(raisedException, nil);	
+}
+
 - (void) testSubsetFromKeyToKeyOptions {
 	STAssertNoThrow([dictionary subsetFromKey:nil toKey:nil options:0],
 					nil);
@@ -678,6 +714,17 @@ static NSArray* keyArray;
 - (void) setUp {
 	dictionary = [[[CHOrderedDictionary alloc] init] autorelease];
 	expectedKeyOrder = keyArray;
+}
+
+- (void) testAllKeys {
+	NSMutableArray *keys = [NSMutableArray array];
+	NSNumber *key;
+	for (NSUInteger i = 0; i <= 20; i++) {
+		key = [NSNumber numberWithUnsignedInt:arc4random()];
+		[keys addObject:key];
+		[dictionary setObject:[NSNull null] forKey:key];
+	}
+	STAssertEqualObjects([dictionary allKeys], keys, nil);
 }
 
 - (void) testExchangeKeyAtIndexWithKeyAtIndex {
@@ -747,6 +794,30 @@ static NSArray* keyArray;
 		}
 	}
 	STAssertThrows([dictionary keysAtIndexes:nil], nil);
+}
+
+- (void) testNSFastEnumeration {
+	NSUInteger limit = 32; // NSFastEnumeration asks for 16 objects at a time
+	// Insert keys in reverse sorted order
+	for (NSUInteger number = limit; number >= 1; number--)
+		[dictionary setObject:[NSNull null] forKey:[NSNumber numberWithUnsignedInteger:number]];
+	// Verify that keys are enumerated in sorted order
+	NSUInteger expected = 32, count = 0;
+	for (NSNumber *object in dictionary) {
+		STAssertEquals([object unsignedIntegerValue], expected--, nil);
+		count++;
+	}
+	STAssertEquals(count, limit, nil);
+	
+	BOOL raisedException = NO;
+	@try {
+		for (id key in dictionary)
+			[dictionary setObject:[NSNull null] forKey:[NSNumber numberWithInteger:-1]];
+	}
+	@catch (NSException *exception) {
+		raisedException = YES;
+	}
+	STAssertTrue(raisedException, nil);	
 }
 
 - (void) testObjectForKeyAtIndex {

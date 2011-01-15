@@ -28,20 +28,17 @@
 
 // The NSCoding methods inherited from CHMutableDictionary work fine here.
 
-#pragma mark Querying Contents
+#pragma mark <NSFastEnumeration>
 
-/**
- Returns an array containing the receiver's keys in sorted order.
- 
- @return An array containing the receiver's keys in sorted order. The array is empty if the receiver has no entries.
- 
- @see \link NSDictionary#allValues -allValues\endlink
- @see \link NSDictionary#count -count\endlink
- @see \link NSDictionary#keyEnumerator -keyEnumerator\endlink
- */
-- (NSArray*) allKeys {
-	return [super allKeys];
+/** @test Add unit test. */
+- (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
+                                   objects:(id*)stackbuf
+                                     count:(NSUInteger)len
+{
+	return [sortedKeys countByEnumeratingWithState:state objects:stackbuf count:len];
 }
+
+#pragma mark Querying Contents
 
 - (id) firstKey {
 	return [sortedKeys firstObject];

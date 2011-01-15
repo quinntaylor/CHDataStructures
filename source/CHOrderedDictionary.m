@@ -38,6 +38,16 @@
 	[encoder encodeObject:keyOrdering forKey:@"keyOrdering"];
 }
 
+#pragma mark <NSFastEnumeration>
+
+/** @test Add unit test. */
+- (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
+                                   objects:(id*)stackbuf
+                                     count:(NSUInteger)len
+{
+	return [keyOrdering countByEnumeratingWithState:state objects:stackbuf count:len];
+}
+
 #pragma mark Querying Contents
 
 - (id) firstKey {
