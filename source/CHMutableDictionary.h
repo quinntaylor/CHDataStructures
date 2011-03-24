@@ -12,7 +12,7 @@
 
 #import "Util.h"
 
-HIDDEN OBJC_EXPORT void createCollectableCFMutableDictionary(CFMutableDictionaryRef* dictionary, NSUInteger initialCapacity);
+HIDDEN void createCollectableCFMutableDictionary(CFMutableDictionaryRef* dictionary, NSUInteger initialCapacity);
 
 /**
  @file CHMutableDictionary.h

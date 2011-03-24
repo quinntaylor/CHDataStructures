@@ -61,7 +61,7 @@ void* __strong NSReallocateCollectable(void *ptr, NSUInteger size, NSUInteger op
 #else
 
 // This is declared in <objc/objc-auto.h>, but importing the header is overkill.
-HIDDEN OBJC_EXPORT void* objc_memmove_collectable(void *dst, const void *src, size_t size);
+HIDDEN void* objc_memmove_collectable(void *dst, const void *src, size_t size);
 
 #endif
 
@@ -71,7 +71,7 @@ HIDDEN OBJC_EXPORT void* objc_memmove_collectable(void *dst, const void *src, si
 OBJC_EXPORT BOOL kCHGarbageCollectionNotEnabled;
 
 /** Global variable to store the size of a pointer only once. */
-HIDDEN OBJC_EXPORT size_t kCHPointerSize;
+HIDDEN size_t kCHPointerSize;
 
 /**
  Simple function for checking object equality, to be used as a function pointer.
@@ -80,7 +80,7 @@ HIDDEN OBJC_EXPORT size_t kCHPointerSize;
  @param o2 The second object to be compared.
  @return <code>[o1 isEqual:o2]</code>
  */
-HIDDEN OBJC_EXPORT BOOL objectsAreEqual(id o1, id o2);
+HIDDEN BOOL objectsAreEqual(id o1, id o2);
 
 /**
  Simple function for checking object identity, to be used as a function pointer.
@@ -89,7 +89,7 @@ HIDDEN OBJC_EXPORT BOOL objectsAreEqual(id o1, id o2);
  @param o2 The second object to be compared.
  @return <code>o1 == o2</code>
  */
-HIDDEN OBJC_EXPORT BOOL objectsAreIdentical(id o1, id o2);
+HIDDEN BOOL objectsAreIdentical(id o1, id o2);
 
 /**
  Determine whether two collections enumerate the equivalent objects in the same order.
@@ -110,7 +110,7 @@ OBJC_EXPORT BOOL collectionsAreEqual(id collection1, id collection2);
  @param o2 The second object to include in the hash.
  @return An unsigned integer that can be used as a table address in a hash table structure.
  */
-HIDDEN OBJC_EXPORT NSUInteger hashOfCountAndObjects(NSUInteger count, id o1, id o2);
+HIDDEN NSUInteger hashOfCountAndObjects(NSUInteger count, id o1, id o2);
 
 #pragma mark -
 
