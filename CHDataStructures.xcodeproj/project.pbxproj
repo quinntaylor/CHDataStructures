@@ -68,7 +68,7 @@
 		E4373E0C111D338100953B7D /* CHCircularBufferQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = E400CAAA0F7919B7003189D3 /* CHCircularBufferQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4373E0D111D338100953B7D /* CHCircularBufferDeque.m in Sources */ = {isa = PBXBuildFile; fileRef = E400CAC20F791A08003189D3 /* CHCircularBufferDeque.m */; };
 		E4373E0E111D338200953B7D /* CHCircularBufferDeque.h in Headers */ = {isa = PBXBuildFile; fileRef = E400CAC10F791A08003189D3 /* CHCircularBufferDeque.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E4386EF01123A69C00DC6CAC /* CHBidirectionalDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = E4386EEE1123A69C00DC6CAC /* CHBidirectionalDictionary.h */; };
+		E4386EF01123A69C00DC6CAC /* CHBidirectionalDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = E4386EEE1123A69C00DC6CAC /* CHBidirectionalDictionary.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4386EF11123A69C00DC6CAC /* CHBidirectionalDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = E4386EEF1123A69C00DC6CAC /* CHBidirectionalDictionary.m */; };
 		E442DFA80E8F1BDF00BD62F6 /* CHDataStructures.h in Headers */ = {isa = PBXBuildFile; fileRef = E442DFA70E8F1BDF00BD62F6 /* CHDataStructures.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E442DFB80E8F1E6D00BD62F6 /* CHAnderssonTree.h in Headers */ = {isa = PBXBuildFile; fileRef = E442DFB60E8F1E6D00BD62F6 /* CHAnderssonTree.h */; settings = {ATTRIBUTES = (Public, ); }; };
