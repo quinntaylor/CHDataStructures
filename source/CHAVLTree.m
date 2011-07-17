@@ -23,15 +23,15 @@ static inline CHBinaryTreeNode* singleRotation(CHBinaryTreeNode *node, u_int32_t
 
 // Two-way double rotation
 static inline CHBinaryTreeNode* doubleRotation(CHBinaryTreeNode *node, u_int32_t dir) {
-    CHBinaryTreeNode *save = node->link[!dir]->link[dir];
+    CHBinaryTreeNode *save = (node->link[!dir]->link[dir]);
     node->link[!dir]->link[dir] = save->link[!dir];
     save->link[!dir] = node->link[!dir];
     node->link[!dir] = save;
 	
-    save = node->link[!dir];
-    node->link[!dir] = save->link[dir];
+    CHBinaryTreeNode *save2 = node->link[!dir];
+    node->link[!dir] = save2->link[dir];
     save->link[dir] = node;
-    return save;
+    return save2;
 }
 
 static inline void adjustBalance(CHBinaryTreeNode *root, u_int32_t dir, int32_t bal) {

@@ -258,8 +258,10 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 					// TODO: How to not push a null pad for leaf nodes?
 				}
 				else {
-					(void)CHBinaryTreeStack_POP(); // ignore the null pad
-					return CHBinaryTreeStack_POP()->object;
+					CHBinaryTreeStack_POP(); // ignore the null pad
+                    __strong CHBinaryTreeNode* ret = CHBinaryTreeStack_POP();
+                    if(ret == NULL) return nil;
+					return ret->object;
 				}				
 			}
 		}
@@ -328,8 +330,10 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 // Calling [self init] allows child classes to initialize their specific state.
 // (The -init method in any subclass must always call to -[super init] first.)
 - (id) initWithArray:(NSArray*)anArray {
-	if ([self init] == nil) return nil;
-	[self addObjectsFromArray:anArray];
+    self = [self init];
+    if(self) {
+        [self addObjectsFromArray:anArray];
+    }
 	return self;
 }
 

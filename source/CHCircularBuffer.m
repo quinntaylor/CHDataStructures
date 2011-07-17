@@ -183,11 +183,13 @@ do { \
 	NSUInteger capacity = DEFAULT_BUFFER_SIZE;
 	while (capacity <= [anArray count])
 		capacity *= 2;
-	if ([self initWithCapacity:capacity] == nil) return nil;
-	for (id anObject in anArray) {
-		array[tailIndex++] = [anObject retain];
-	}
-	count = [anArray count];
+	self = [self initWithCapacity:capacity];
+    if(self) {
+        for (id anObject in anArray) {
+            array[tailIndex++] = [anObject retain];
+        }
+        count = [anArray count];
+    }
 	return self;
 }
 

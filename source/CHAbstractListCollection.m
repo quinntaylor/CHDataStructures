@@ -22,10 +22,12 @@
 // Child classes must implement -init to initialize the "list" instance variable
 
 - (id) initWithArray:(NSArray*)anArray {
-	if ([self init] == nil) return nil;
-	for (id anObject in anArray) {
-		[list addObject:anObject];
-	}
+    self = [self init];
+	if(self) {
+        for (id anObject in anArray) {
+            [list addObject:anObject];
+        }
+    }
 	return self;
 }
 
