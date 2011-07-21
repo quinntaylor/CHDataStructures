@@ -750,6 +750,7 @@
 			buildSettings = {
 				GCC_PREFIX_HEADER = source/CHDataStructures_Prefix.pch;
 				PRODUCT_NAME = CHDataStructures;
+				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
@@ -758,6 +759,7 @@
 			buildSettings = {
 				GCC_PREFIX_HEADER = source/CHDataStructures_Prefix.pch;
 				PRODUCT_NAME = CHDataStructures;
+				SKIP_INSTALL = YES;
 			};
 			name = Release;
 		};
