@@ -12,7 +12,7 @@
 
 #import "Util.h"
 
-HIDDEN void createCollectableCFMutableDictionary(CFMutableDictionaryRef* dictionary, NSUInteger initialCapacity);
+HIDDEN void createCollectableCFMutableDictionary(__strong CFMutableDictionaryRef* dictionary, NSUInteger initialCapacity);
 
 /**
  @file CHMutableDictionary.h
