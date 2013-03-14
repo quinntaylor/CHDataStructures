@@ -20,7 +20,7 @@
 
 /** A struct for nodes in a CHSinglyLinkedList. */
 typedef struct CHSinglyLinkedListNode {
-	id object; ///< The object associated with this node in the list.
+	__unsafe_unretained id object; ///< The object associated with this node in the list.
 	__strong struct CHSinglyLinkedListNode *next; ///< The next node in the list.
 } CHSinglyLinkedListNode;
 
