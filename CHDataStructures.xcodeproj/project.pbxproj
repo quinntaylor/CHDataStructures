@@ -980,6 +980,8 @@
 		E40C05AF0FB4D3FB004351C9 /* Coverage */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_ENABLE_OBJC_GC = NO;
+				PATH = "$PATH:/usr/local/bin";
 				PRODUCT_NAME = Documentation;
 			};
 			name = Coverage;
@@ -1123,6 +1125,8 @@
 		E4FE76D90E89556A00971EE6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_ENABLE_OBJC_GC = NO;
+				PATH = "$PATH:/usr/local/bin";
 				PRODUCT_NAME = Documentation;
 			};
 			name = Debug;
@@ -1130,6 +1134,8 @@
 		E4FE76DA0E89556A00971EE6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_ENABLE_OBJC_GC = NO;
+				PATH = "$PATH:/usr/local/bin";
 				PRODUCT_NAME = Documentation;
 			};
 			name = Release;
