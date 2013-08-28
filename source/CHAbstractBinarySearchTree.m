@@ -606,10 +606,12 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 			while ((anObject = [e nextObject]) &&
 				   [anObject compare:start] == NSOrderedAscending)
 				;
-			do {
-				[subset addObject:anObject];
-			} while ((anObject = [e nextObject]) &&
-					 [anObject compare:end] != NSOrderedDescending);
+            if (anObject) {
+                do {
+                    [subset addObject:anObject];
+                } while ((anObject = [e nextObject]) &&
+                         [anObject compare:end] != NSOrderedDescending);
+            }
 		}
 		else {
 			// Include subset of objects NOT between the range parameters.
