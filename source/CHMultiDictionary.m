@@ -102,6 +102,8 @@ static inline NSMutableSet* createMutableSetFromObject(id object) {
 	NSSet *objectSet = createMutableSetFromObject(anObject);
 	if (aKey != nil)
 		objectCount += ([objectSet count] - [[self objectForKey:aKey] count]);
+	else
+		return;
 	[super setObject:objectSet forKey:aKey];
 }
 

@@ -22,6 +22,7 @@ void CHDictionaryRelease(CFAllocatorRef allocator, const void *value) {
 	[(id)value release];
 }
 
+CFStringRef CHDictionaryDescription(const void *value) CF_RETURNS_RETAINED;
 CFStringRef CHDictionaryDescription(const void *value) {
 	return CFRetain([(id)value description]);
 }
