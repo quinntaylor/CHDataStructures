@@ -604,14 +604,15 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 			// Include subset of objects between the range parameters.
 			e = [self objectEnumeratorWithTraversalOrder:CHTraverseAscending];
 			while ((anObject = [e nextObject]) &&
-				   [anObject compare:start] == NSOrderedAscending)
-				;
-            if (anObject) {
-                do {
-                    [subset addObject:anObject];
-                } while ((anObject = [e nextObject]) &&
-                         [anObject compare:end] != NSOrderedDescending);
-            }
+				   [anObject compare:start] == NSOrderedAscending) {
+			}
+			if (anObject) {
+				do {
+					[subset addObject:anObject];
+				}
+				while ((anObject = [e nextObject]) &&
+					   [anObject compare:end] != NSOrderedDescending);
+			}
 		}
 		else {
 			// Include subset of objects NOT between the range parameters.
