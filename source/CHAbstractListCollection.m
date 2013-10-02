@@ -23,11 +23,11 @@
 
 - (id) initWithArray:(NSArray*)anArray {
     self = [self init];
-	if(self) {
+	if (self) {
         for (id anObject in anArray) {
             [list addObject:anObject];
-        }
-    }
+    	}
+	}
 	return self;
 }
 

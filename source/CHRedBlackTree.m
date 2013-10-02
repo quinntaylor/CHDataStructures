@@ -214,7 +214,7 @@ static inline CHBinaryTreeNode* doubleRotation(CHBinaryTreeNode *node, BOOL goin
 		if (kCHGarbageCollectionNotEnabled)
 			free(current);
 		--count;
-    }
+	}
 	header->right->color = kBLACK; // Make the root black for simplified logic
 }
 

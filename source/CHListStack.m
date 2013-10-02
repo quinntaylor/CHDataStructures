@@ -27,11 +27,11 @@
 
 - (id) initWithArray:(NSArray*)anArray {
 	self = [self init];
-    if(self) {
+	if (self) {
         for (id anObject in anArray) {
             [list prependObject:anObject];
-        }
-    }
+    	}
+	}
 	return self;
 }
 

@@ -259,10 +259,14 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 				}
 				else {
 					CHBinaryTreeStack_POP(); // ignore the null pad
-                    __strong CHBinaryTreeNode* ret = CHBinaryTreeStack_POP();
-                    if(ret == NULL) return nil;
-					return ret->object;
-				}				
+					__strong CHBinaryTreeNode *ret = CHBinaryTreeStack_POP();
+					if (ret == NULL) {
+						return nil;
+					}
+					else {
+						return ret->object;
+					}
+				}
 			}
 		}
 			
@@ -331,10 +335,10 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 // (The -init method in any subclass must always call to -[super init] first.)
 - (id) initWithArray:(NSArray*)anArray {
     self = [self init];
-    if(self) {
-        [self addObjectsFromArray:anArray];
-    }
-	return self;
+    if (self) {
+	    [self addObjectsFromArray:anArray];
+	}
+    return self;
 }
 
 #pragma mark <NSCoding>

@@ -45,7 +45,7 @@ static inline void adjustBalance(CHBinaryTreeNode *root, u_int32_t dir, int32_t 
     } else { // nn->balance == -bal
         root->balance = 0;
         n->balance = bal;
-    }
+	}
     nn->balance = 0;
 }
 

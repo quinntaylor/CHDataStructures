@@ -184,12 +184,12 @@ do { \
 	while (capacity <= [anArray count])
 		capacity *= 2;
 	self = [self initWithCapacity:capacity];
-    if(self) {
+	if (self) {
         for (id anObject in anArray) {
             array[tailIndex++] = [anObject retain];
-        }
+    	}
         count = [anArray count];
-    }
+	}
 	return self;
 }
 

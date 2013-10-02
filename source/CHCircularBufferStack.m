@@ -28,16 +28,16 @@
 	while (capacity <= [anArray count])
 		capacity *= 2;
 	self = [self initWithCapacity:capacity];
-    if(self) {
+	if (self) {
         if ([anArray count] > 0) {
             headIndex = capacity; // Puts the bottom of the stack at the last slot.
             tailIndex = 0;
             count = [anArray count];
             for (id anObject in anArray) {
                 array[--headIndex] = [anObject retain];
-            }
-        }
-    }
+        	}
+    	}
+	}
 	return self;
 }
 
