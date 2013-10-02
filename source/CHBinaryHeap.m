@@ -22,6 +22,7 @@ void CHBinaryHeapRelease (CFAllocatorRef allocator, const void *value) {
 	[(id)value release];
 }
 
+CFStringRef CHBinaryHeapDescription (const void *value) CF_RETURNS_RETAINED;
 CFStringRef CHBinaryHeapDescription (const void *value) {
 	return CFRetain([(id)value description]);
 }

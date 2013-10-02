@@ -80,8 +80,8 @@ static inline CHBinaryTreeNode* doubleRotation(CHBinaryTreeNode *node, BOOL goin
 	++mutations;
 
 	CHBinaryTreeNode *current, *parent, *grandparent, *greatgrandparent;
-	grandparent = parent = current = header;
-	
+	greatgrandparent = grandparent = parent = current = header;
+    
 	sentinel->object = anObject;
 	NSComparisonResult comparison;
 	while (comparison = [current->object compare:anObject]) {
@@ -214,7 +214,7 @@ static inline CHBinaryTreeNode* doubleRotation(CHBinaryTreeNode *node, BOOL goin
 		if (kCHGarbageCollectionNotEnabled)
 			free(current);
 		--count;
-    }
+	}
 	header->right->color = kBLACK; // Make the root black for simplified logic
 }
 
