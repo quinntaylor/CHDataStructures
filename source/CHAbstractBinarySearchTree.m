@@ -258,7 +258,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 					// TODO: How to not push a null pad for leaf nodes?
 				}
 				else {
-					CHBinaryTreeStack_POP(); // ignore the null pad
+					(void)CHBinaryTreeStack_POP(); // ignore the null pad
 					return CHBinaryTreeStack_POP()->object;
 				}				
 			}
@@ -606,10 +606,12 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 			while ((anObject = [e nextObject]) &&
 				   [anObject compare:start] == NSOrderedAscending)
 				;
-			do {
-				[subset addObject:anObject];
-			} while ((anObject = [e nextObject]) &&
-					 [anObject compare:end] != NSOrderedDescending);
+            if (anObject) {
+                do {
+                    [subset addObject:anObject];
+                } while ((anObject = [e nextObject]) &&
+                         [anObject compare:end] != NSOrderedDescending);
+            }
 		}
 		else {
 			// Include subset of objects NOT between the range parameters.
@@ -634,7 +636,7 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 
 - (NSString*) debugDescription {
 	NSMutableString *description = [NSMutableString stringWithFormat:
-	                                @"<%@: 0x%x> = {\n", [self class], self];
+	                                @"<%@: 0x%p> = {\n", [self class], self];
 	CHBinaryTreeNode *current;
 	CHBinaryTreeStack_DECLARE();
 	CHBinaryTreeStack_INIT();
