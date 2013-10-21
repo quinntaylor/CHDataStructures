@@ -20,7 +20,7 @@
 
 /** A struct for nodes in a CHDoublyLinkedList. */
 typedef struct CHDoublyLinkedListNode {
-	id object; ///< The object associated with this node in the list.
+	__unsafe_unretained id object; ///< The object associated with this node in the list.
 	__strong struct CHDoublyLinkedListNode *next; ///< Next node in the list.
 	__strong struct CHDoublyLinkedListNode *prev; ///< Previous node in the list.
 } CHDoublyLinkedListNode;
