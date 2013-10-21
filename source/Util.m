@@ -85,7 +85,7 @@ void CHIndexOutOfRangeException(Class aClass, SEL method,
                                 NSUInteger index, NSUInteger count) {
 	[NSException raise:NSRangeException
 	            format:@"[%@ %s] -- Index (%lu) beyond bounds for count (%lu)",
-	                   aClass, sel_getName(method), index, count];
+	                   aClass, sel_getName(method), (unsigned long)index, (unsigned long)count];
 }
 
 void CHInvalidArgumentException(Class aClass, SEL method, NSString *string) {
