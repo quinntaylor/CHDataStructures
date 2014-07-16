@@ -52,9 +52,9 @@ enum {
     NSCollectorDisabledOption = (1UL << 1),
 };
 
-void* __strong NSAllocateCollectable(NSUInteger size, NSUInteger options);
+void* NSAllocateCollectable(NSUInteger size, NSUInteger options);
 
-void* __strong NSReallocateCollectable(void *ptr, NSUInteger size, NSUInteger options);
+void* NSReallocateCollectable(void *ptr, NSUInteger size, NSUInteger options);
 
 #define objc_memmove_collectable memmove
 

@@ -49,10 +49,10 @@ typedef struct CHBinaryTreeNode {
 	__unsafe_unretained id object;                        ///< The object stored in the node.
 	union {
 		struct {
-			__strong struct CHBinaryTreeNode *left;  ///< Link to left child.
-			__strong struct CHBinaryTreeNode *right; ///< Link to right child.
+			struct CHBinaryTreeNode *left;  ///< Link to left child.
+			struct CHBinaryTreeNode *right; ///< Link to right child.
 		};
-		__strong struct CHBinaryTreeNode *link[2];   ///< Links to both childen.
+		struct CHBinaryTreeNode *link[2];   ///< Links to both childen.
 	};
 	union {
 		  int32_t balance;   // Used by CHAVLTree
@@ -72,8 +72,8 @@ typedef struct CHBinaryTreeNode {
  */
 @interface CHAbstractBinarySearchTree : NSObject <CHSearchTree>
 {
-	__strong CHBinaryTreeNode *header; // Dummy header; no more checks for root.
-	__strong CHBinaryTreeNode *sentinel; // Dummy leaf; no more checks for NULL.
+	CHBinaryTreeNode *header; // Dummy header; no more checks for root.
+	CHBinaryTreeNode *sentinel; // Dummy leaf; no more checks for NULL.
 	NSUInteger count; // The number of objects currently in the tree.
 	unsigned long mutations; // Tracks mutations for NSFastEnumeration.
 }
