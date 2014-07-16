@@ -1377,12 +1377,12 @@ static NSArray *abcde;
 
 - (void) testDebugDescription {
 	CHBinaryTreeNode *node = malloc(sizeof(CHBinaryTreeNode));
-	node->object = [NSString stringWithString:@"A B C"];
+	node->object = @"A B C";
 	STAssertEqualObjects([set debugDescriptionForNode:node], @"\"A B C\"", nil);
 	free(node);
 
 	NSMutableString *expected = [NSMutableString string];
-	[expected appendFormat:@"<CHUnbalancedTree: 0x%x> = {\n", zigzagTree];
+	[expected appendFormat:@"<CHUnbalancedTree: 0x%p> = {\n", zigzagTree];
 	[expected appendString:@"\t\"A\" -> \"(null)\" and \"E\"\n"
 	                       @"\t\"E\" -> \"B\" and \"(null)\"\n"
 	                       @"\t\"B\" -> \"(null)\" and \"D\"\n"
