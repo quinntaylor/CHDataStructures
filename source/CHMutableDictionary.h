@@ -12,7 +12,7 @@
 
 #import "Util.h"
 
-HIDDEN void createCollectableCFMutableDictionary(__strong CFMutableDictionaryRef* dictionary, NSUInteger initialCapacity);
+HIDDEN void createCollectableCFMutableDictionary(CFMutableDictionaryRef* dictionary, NSUInteger initialCapacity);
 
 /**
  @file CHMutableDictionary.h
@@ -30,7 +30,7 @@ HIDDEN void createCollectableCFMutableDictionary(__strong CFMutableDictionaryRef
  @todo Implement @c -copy and @c -mutableCopy differently (so users can actually obtain an immutable copy) and make mutation methods aware of immutability?
  */
 @interface CHMutableDictionary : NSMutableDictionary {
-	__strong CFMutableDictionaryRef dictionary; // A Core Foundation dictionary.
+	CFMutableDictionaryRef dictionary; // A Core Foundation dictionary.
 }
 
 - (id) initWithCapacity:(NSUInteger)numItems;
