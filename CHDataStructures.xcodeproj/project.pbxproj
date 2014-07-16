@@ -614,7 +614,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0510;
 			};
 			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "CHDataStructures" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -866,7 +866,7 @@
 					Foundation,
 				);
 				PRODUCT_NAME = CHDataStructures;
-				SDKROOT = macosx10.7;
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Debug;
@@ -884,7 +884,7 @@
 				INFOPLIST_FILE = "resources/Info-Framework.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
 				PRODUCT_NAME = CHDataStructures;
-				SDKROOT = macosx10.7;
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Release;
@@ -978,7 +978,7 @@
 				INSTALL_PATH = "@executable_path/../Frameworks";
 				OTHER_LDFLAGS = "-lgcov";
 				PRODUCT_NAME = CHDataStructures;
-				SDKROOT = macosx10.7;
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Coverage;
@@ -1024,7 +1024,7 @@
 					Foundation,
 				);
 				PRODUCT_NAME = Benchmarks;
-				SDKROOT = macosx10.7;
+				SDKROOT = macosx;
 			};
 			name = Coverage;
 		};
@@ -1071,7 +1071,7 @@
 					Foundation,
 				);
 				PRODUCT_NAME = Benchmarks;
-				SDKROOT = macosx10.7;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -1087,7 +1087,7 @@
 					Foundation,
 				);
 				PRODUCT_NAME = Benchmarks;
-				SDKROOT = macosx10.7;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
