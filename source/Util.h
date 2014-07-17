@@ -52,9 +52,9 @@ enum {
     NSCollectorDisabledOption = (1UL << 1),
 };
 
-void* __strong NSAllocateCollectable(NSUInteger size, NSUInteger options);
+void* NSAllocateCollectable(NSUInteger size, NSUInteger options);
 
-void* __strong NSReallocateCollectable(void *ptr, NSUInteger size, NSUInteger options);
+void* NSReallocateCollectable(void *ptr, NSUInteger size, NSUInteger options);
 
 #define objc_memmove_collectable memmove
 
@@ -71,7 +71,7 @@ HIDDEN void* objc_memmove_collectable(void *dst, const void *src, size_t size);
 OBJC_EXPORT BOOL kCHGarbageCollectionNotEnabled;
 
 /** Global variable to store the size of a pointer only once. */
-HIDDEN size_t kCHPointerSize;
+OBJC_EXPORT size_t kCHPointerSize;
 
 /**
  Simple function for checking object equality, to be used as a function pointer.

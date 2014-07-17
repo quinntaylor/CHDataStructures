@@ -26,9 +26,11 @@
 }
 
 - (id) initWithArray:(NSArray*)anArray {
-	if ([self init] == nil) return nil;
-	for (id anObject in anArray) {
-		[list prependObject:anObject];
+	self = [self init];
+	if (self) {
+        for (id anObject in anArray) {
+            [list prependObject:anObject];
+    	}
 	}
 	return self;
 }

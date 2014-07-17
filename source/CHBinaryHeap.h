@@ -21,7 +21,7 @@
  A CHHeap implemented using a CFBinaryHeapRef internally.
  */
 @interface CHBinaryHeap : NSObject <CHHeap> {
-	__strong CFBinaryHeapRef heap; // Used for storing objects in the heap.
+	CFBinaryHeapRef heap; // Used for storing objects in the heap.
 	NSComparisonResult sortOrder; // Whether to sort objects ascending or not.
 	unsigned long mutations; // Used to track mutations for NSFastEnumeration.
 }

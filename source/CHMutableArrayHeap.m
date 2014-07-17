@@ -208,8 +208,10 @@
 #pragma mark -
 
 - (void) addObject:(id)anObject {
-	if (anObject == nil)
+	if (anObject == nil) {
 		CHNilArgumentException([self class], _cmd);
+		return;
+	}
 	++mutations;
 	[array addObject:anObject];
 	// Bubble the new object (at the end of the array) up the heap as necessary.

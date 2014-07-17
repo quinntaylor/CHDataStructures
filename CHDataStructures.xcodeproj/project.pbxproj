@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 45;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -76,7 +76,7 @@
 		E445580B0EBCB70A00D9C482 /* CHAVLTree.h in Headers */ = {isa = PBXBuildFile; fileRef = E44558090EBCB70A00D9C482 /* CHAVLTree.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E445580C0EBCB70A00D9C482 /* CHAVLTree.m in Sources */ = {isa = PBXBuildFile; fileRef = E445580A0EBCB70A00D9C482 /* CHAVLTree.m */; };
 		E44773A20E913C89000889F7 /* Util.h in Headers */ = {isa = PBXBuildFile; fileRef = E44773A10E913C89000889F7 /* Util.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E44B57660E95538600F9DD1A /* CHDataStructures.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* CHDataStructures.framework */; };
+		E44B57660E95538600F9DD1A /* CHDataStructures.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* CHDataStructures.framework */; };
 		E44B59C70E95852400F9DD1A /* Benchmarks.m in Sources */ = {isa = PBXBuildFile; fileRef = E44B58C40E95820400F9DD1A /* Benchmarks.m */; };
 		E44EB0F20ECB83230071F93A /* UtilTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E44EB0F10ECB83230071F93A /* UtilTest.m */; };
 		E4558D910FE758C300CC5860 /* CHMutableDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = E4558D8F0FE758C300CC5860 /* CHMutableDictionary.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -191,25 +191,26 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		E44B57800E9553A700F9DD1A /* CopyFiles */ = {
+		E44B57800E9553A700F9DD1A /* Copy Files */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 12;
-			dstPath = "~/Library/Frameworks";
-			dstSubfolderSpec = 0;
+			buildActionMask = 8;
+			dstPath = "";
+			dstSubfolderSpec = 10;
 			files = (
-				E44B57660E95538600F9DD1A /* CHDataStructures.framework in CopyFiles */,
+				E44B57660E95538600F9DD1A /* CHDataStructures.framework in Copy Files */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			name = "Copy Files";
+			runOnlyForDeploymentPostprocessing = 1;
 		};
 		E4677860100462F600E7A565 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "~/Library/Application Support/Developer/Shared/Xcode/CustomDataViews/";
-			dstSubfolderSpec = 0;
+			buildActionMask = 8;
+			dstPath = "";
+			dstSubfolderSpec = 16;
 			files = (
 				E46778671004633A00E7A565 /* CHDataStructuresFormatters.plist in CopyFiles */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -556,7 +557,7 @@
 				8DC2EF520486A6940098B216 /* Resources */,
 				8DC2EF540486A6940098B216 /* Sources */,
 				8DC2EF560486A6940098B216 /* Frameworks */,
-				E44B57800E9553A700F9DD1A /* CopyFiles */,
+				E44B57800E9553A700F9DD1A /* Copy Files */,
 				E4677860100462F600E7A565 /* CopyFiles */,
 			);
 			buildRules = (
@@ -613,9 +614,10 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 0510;
 			};
 			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "CHDataStructures" */;
-			compatibilityVersion = "Xcode 3.1";
+			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
@@ -850,14 +852,21 @@
 		1DEB91AE08733DA50010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_VERSION = A;
+				GCC_ENABLE_OBJC_GC = no;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = source/CHDataStructures_Prefix.pch;
 				INFOPLIST_FILE = "resources/Info-Framework.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+				);
 				PRODUCT_NAME = CHDataStructures;
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Debug;
@@ -865,14 +874,17 @@
 		1DEB91AF08733DA50010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_VERSION = A;
+				GCC_ENABLE_OBJC_GC = no;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = source/CHDataStructures_Prefix.pch;
 				INFOPLIST_FILE = "resources/Info-Framework.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
 				PRODUCT_NAME = CHDataStructures;
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Release;
@@ -881,11 +893,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_ENABLE_OBJC_GC = supported;
 				GCC_ENABLE_SYMBOL_SEPARATION = NO;
@@ -906,12 +917,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_ENABLE_OBJC_GC = supported;
 				GCC_ENABLE_SYMBOL_SEPARATION = NO;
@@ -931,17 +940,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_ENABLE_OBJC_GC = supported;
 				GCC_ENABLE_SYMBOL_SEPARATION = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_USE_GCC3_PFE_SUPPORT = YES;
-				GCC_VERSION = 4.0;
+				GCC_VERSION = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_MISSING_PARENTHESES = NO;
@@ -956,17 +964,21 @@
 		E40C05AE0FB4D3FB004351C9 /* Coverage */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_VERSION = A;
+				GCC_ENABLE_OBJC_GC = no;
 				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = source/CHDataStructures_Prefix.pch;
+				GCC_VERSION = "";
 				INFOPLIST_FILE = "resources/Info-Framework.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
 				OTHER_LDFLAGS = "-lgcov";
 				PRODUCT_NAME = CHDataStructures;
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Coverage;
@@ -974,6 +986,9 @@
 		E40C05AF0FB4D3FB004351C9 /* Coverage */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_ENABLE_OBJC_GC = unsupported;
+				PATH = "$PATH:/usr/local/bin";
 				PRODUCT_NAME = Documentation;
 			};
 			name = Coverage;
@@ -981,7 +996,9 @@
 		E40C05B00FB4D3FB004351C9 /* Coverage */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_ENABLE_OBJC_GC = unsupported;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Foundation.framework/Headers/Foundation.h";
 				INFOPLIST_FILE = "resources/Info-Unit-Testing.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
@@ -1001,17 +1018,20 @@
 			buildSettings = {
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Foundation.framework/Headers/Foundation.h";
 				INSTALL_PATH = /usr/local/bin;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-framework",
 					Foundation,
 				);
 				PRODUCT_NAME = Benchmarks;
+				SDKROOT = macosx;
 			};
 			name = Coverage;
 		};
 		E40C05B30FB4D3FB004351C9 /* Coverage */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				PRODUCT_NAME = CHDataStructures;
 			};
 			name = Coverage;
@@ -1019,6 +1039,7 @@
 		E40C05B40FB4D3FB004351C9 /* Coverage */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				PRODUCT_NAME = All;
 			};
 			name = Coverage;
@@ -1026,6 +1047,7 @@
 		E43C87690EA3D35500B3B31E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				PRODUCT_NAME = CHDataStructures;
 			};
 			name = Debug;
@@ -1033,6 +1055,7 @@
 		E43C876A0EA3D35500B3B31E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				PRODUCT_NAME = CHDataStructures;
 			};
 			name = Release;
@@ -1042,11 +1065,13 @@
 			buildSettings = {
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Foundation.framework/Headers/Foundation.h";
 				INSTALL_PATH = /usr/local/bin;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-framework",
 					Foundation,
 				);
 				PRODUCT_NAME = Benchmarks;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -1056,18 +1081,22 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Foundation.framework/Headers/Foundation.h";
 				INSTALL_PATH = /usr/local/bin;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-framework",
 					Foundation,
 				);
 				PRODUCT_NAME = Benchmarks;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
 		E473CB580E9346CB005CA997 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_ENABLE_OBJC_GC = unsupported;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Foundation.framework/Headers/Foundation.h";
 				INFOPLIST_FILE = "resources/Info-Unit-Testing.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
@@ -1085,7 +1114,9 @@
 		E473CB590E9346CB005CA997 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_ENABLE_OBJC_GC = unsupported;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Foundation.framework/Headers/Foundation.h";
 				INFOPLIST_FILE = "resources/Info-Unit-Testing.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
@@ -1103,6 +1134,7 @@
 		E4FAE15C0E968F1B007BB1F9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				PRODUCT_NAME = All;
 			};
 			name = Debug;
@@ -1110,6 +1142,7 @@
 		E4FAE15D0E968F1B007BB1F9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				PRODUCT_NAME = All;
 			};
 			name = Release;
@@ -1117,6 +1150,9 @@
 		E4FE76D90E89556A00971EE6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_ENABLE_OBJC_GC = unsupported;
+				PATH = "$PATH:/usr/local/bin";
 				PRODUCT_NAME = Documentation;
 			};
 			name = Debug;
@@ -1124,6 +1160,9 @@
 		E4FE76DA0E89556A00971EE6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_ENABLE_OBJC_GC = unsupported;
+				PATH = "$PATH:/usr/local/bin";
 				PRODUCT_NAME = Documentation;
 			};
 			name = Release;

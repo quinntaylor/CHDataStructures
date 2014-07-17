@@ -26,7 +26,7 @@
  @note Any method inherited from NSSet or NSMutableSet is supported by this class and its children. Please see the documentation for those classes for details.
  */ 
 @interface CHMutableSet : NSMutableSet {
-	__strong CFMutableSetRef set; // A Core Foundation set.
+	CFMutableSetRef set; // A Core Foundation set.
 }
 
 - (id) initWithCapacity:(NSUInteger)numItems;

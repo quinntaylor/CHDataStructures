@@ -22,6 +22,7 @@ void CHDictionaryRelease(CFAllocatorRef allocator, const void *value) {
 	[(id)value release];
 }
 
+CFStringRef CHDictionaryDescription(const void *value) CF_RETURNS_RETAINED;
 CFStringRef CHDictionaryDescription(const void *value) {
 	return CFRetain([(id)value description]);
 }
@@ -51,7 +52,8 @@ static const CFDictionaryValueCallBacks kCHDictionaryValueCallBacks = {
 	CHDictionaryEqual
 };
 
-void createCollectableCFMutableDictionary(__strong CFMutableDictionaryRef* dictionary, NSUInteger initialCapacity) {
+HIDDEN void createCollectableCFMutableDictionary(CFMutableDictionaryRef* dictionary, NSUInteger initialCapacity)
+{
 	// Create a CFMutableDictionaryRef with callback functions as defined above.
 	*dictionary = CFDictionaryCreateMutable(kCFAllocatorDefault,
 	                                       initialCapacity,

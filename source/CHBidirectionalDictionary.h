@@ -32,7 +32,7 @@
  - <a href="http://www.go4expert.com/forums/showthread.php?t=1466">BiDirHashtable</a> (C#)
  */
 @interface CHBidirectionalDictionary : CHMutableDictionary {
-	__strong CFMutableDictionaryRef objectsToKeys; // Used for reverse mapping.
+	CFMutableDictionaryRef objectsToKeys; // Used for reverse mapping.
 	CHBidirectionalDictionary* inverse; // Pointer to inverse dictionary.
 }
 

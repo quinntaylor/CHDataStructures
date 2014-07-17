@@ -259,8 +259,14 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 				}
 				else {
 					CHBinaryTreeStack_POP(); // ignore the null pad
-					return CHBinaryTreeStack_POP()->object;
-				}				
+					__strong CHBinaryTreeNode *ret = CHBinaryTreeStack_POP();
+					if (ret == NULL) {
+						return nil;
+					}
+					else {
+						return ret->object;
+					}
+				}
 			}
 		}
 			
@@ -328,9 +334,11 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 // Calling [self init] allows child classes to initialize their specific state.
 // (The -init method in any subclass must always call to -[super init] first.)
 - (id) initWithArray:(NSArray*)anArray {
-	if ([self init] == nil) return nil;
-	[self addObjectsFromArray:anArray];
-	return self;
+    self = [self init];
+    if (self) {
+	    [self addObjectsFromArray:anArray];
+	}
+    return self;
 }
 
 #pragma mark <NSCoding>
@@ -604,12 +612,15 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 			// Include subset of objects between the range parameters.
 			e = [self objectEnumeratorWithTraversalOrder:CHTraverseAscending];
 			while ((anObject = [e nextObject]) &&
-				   [anObject compare:start] == NSOrderedAscending)
-				;
-			do {
-				[subset addObject:anObject];
-			} while ((anObject = [e nextObject]) &&
-					 [anObject compare:end] != NSOrderedDescending);
+				   [anObject compare:start] == NSOrderedAscending) {
+			}
+			if (anObject) {
+				do {
+					[subset addObject:anObject];
+				}
+				while ((anObject = [e nextObject]) &&
+					   [anObject compare:end] != NSOrderedDescending);
+			}
 		}
 		else {
 			// Include subset of objects NOT between the range parameters.
@@ -634,7 +645,7 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 
 - (NSString*) debugDescription {
 	NSMutableString *description = [NSMutableString stringWithFormat:
-	                                @"<%@: 0x%x> = {\n", [self class], self];
+	                                @"<%@: 0x%p> = {\n", [self class], self];
 	CHBinaryTreeNode *current;
 	CHBinaryTreeStack_DECLARE();
 	CHBinaryTreeStack_INIT();
@@ -687,10 +698,10 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 			[graph appendString:[self dotGraphStringForNode:current]];
 			// Append entry for edges from current node to both its children.
 			leftChild = (current->left->object == nil)
-				? [NSString stringWithFormat:@"nil%lu", ++sentinelCount]
+				? [NSString stringWithFormat:@"nil%lu", (unsigned long)++sentinelCount]
 				: [NSString stringWithFormat:@"\"%@\"", current->left->object];
 			rightChild = (current->right->object == nil)
-				? [NSString stringWithFormat:@"nil%lu", ++sentinelCount]
+				? [NSString stringWithFormat:@"nil%lu", (unsigned long)++sentinelCount]
 				: [NSString stringWithFormat:@"\"%@\"", current->right->object];
 			[graph appendFormat:@"  \"%@\" -> {%@;%@};\n",
 			                    current->object, leftChild, rightChild];
@@ -699,7 +710,7 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 		
 		// Create entry for each null leaf node (each nil is modeled separately)
 		for (NSUInteger i = 1; i <= sentinelCount; i++)
-			[graph appendFormat:@"  nil%lu [shape=point,fillcolor=black];\n", i];
+			[graph appendFormat:@"  nil%lu [shape=point,fillcolor=black];\n", (unsigned long)i];
 	}
 	// Terminate the graph string, then return it
 	[graph appendString:@"}\n"];

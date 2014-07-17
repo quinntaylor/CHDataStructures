@@ -322,6 +322,17 @@ static NSArray *abcde;
 	subset = [[set subsetFromObject:@"A" toObject:@"G" options:0] allObjects];
 	STAssertEqualObjects(subset, acdeg, nil);
 	
+	// Test including no objects
+	subset = [[set subsetFromObject:@"H" toObject:@"I" options:0] allObjects];
+	STAssertEquals([subset count], 0ul, nil);
+	subset = [[set subsetFromObject:@"A" toObject:@"B"
+							options:CHSubsetExcludeHighEndpoint | CHSubsetExcludeLowEndpoint] allObjects];
+	STAssertEquals([subset count], 0ul, nil);
+	subset = [[set subsetFromObject:@"H" toObject:@"A" options:CHSubsetExcludeHighEndpoint] allObjects];
+	STAssertEquals([subset count], 0ul, nil);
+	subset = [[set subsetFromObject:@"H" toObject:@"" options:0] allObjects];
+	STAssertEquals([subset count], 0ul, nil);
+    
 	// Test excluding elements at the end
 	subset = [[set subsetFromObject:nil toObject:@"F" options:0] allObjects];
 	STAssertEqualObjects(subset, acde, nil);
@@ -1366,12 +1377,12 @@ static NSArray *abcde;
 
 - (void) testDebugDescription {
 	CHBinaryTreeNode *node = malloc(sizeof(CHBinaryTreeNode));
-	node->object = [NSString stringWithString:@"A B C"];
+	node->object = @"A B C";
 	STAssertEqualObjects([set debugDescriptionForNode:node], @"\"A B C\"", nil);
 	free(node);
 
 	NSMutableString *expected = [NSMutableString string];
-	[expected appendFormat:@"<CHUnbalancedTree: 0x%x> = {\n", zigzagTree];
+	[expected appendFormat:@"<CHUnbalancedTree: 0x%p> = {\n", zigzagTree];
 	[expected appendString:@"\t\"A\" -> \"(null)\" and \"E\"\n"
 	                       @"\t\"E\" -> \"B\" and \"(null)\"\n"
 	                       @"\t\"B\" -> \"(null)\" and \"D\"\n"
