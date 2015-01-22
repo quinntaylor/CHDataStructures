@@ -119,7 +119,7 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 // This is the designated initializer for CHSinglyLinkedList
 - (id) initWithArray:(NSArray*)anArray {
 	if ((self = [super init]) == nil) return nil;
-	head = NSAllocateCollectable(kCHSinglyLinkedListNodeSize, NSScannedOption);
+	head = malloc(kCHSinglyLinkedListNodeSize);
 	head->next = NULL;
 	tail = head;
 	count = 0;
@@ -308,7 +308,7 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
 	CHSinglyLinkedListNode *new;
-	new = NSAllocateCollectable(kCHSinglyLinkedListNodeSize, NSScannedOption);
+	new = malloc(kCHSinglyLinkedListNodeSize);
 	new->object = [anObject retain];
 	new->next = NULL;
 	tail->next = new;
@@ -320,7 +320,7 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 - (void) addObjectsFromArray:(NSArray*)anArray {
 	CHSinglyLinkedListNode *new;
 	for (id anObject in anArray) {
-		new = NSAllocateCollectable(kCHSinglyLinkedListNodeSize, NSScannedOption);
+		new = malloc(kCHSinglyLinkedListNodeSize);
 		new->object = [anObject retain];
 		new->next = NULL;
 		tail->next = new;
@@ -347,7 +347,7 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 - (void) insertObject:(id)anObject atIndex:(NSUInteger)index {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
-	CHSinglyLinkedListNode *new = NSAllocateCollectable(kCHSinglyLinkedListNodeSize, NSScannedOption);
+	CHSinglyLinkedListNode *new = malloc(kCHSinglyLinkedListNodeSize);
 	new->object = [anObject retain];
 	if (index == count) {
 		new->next = NULL;
@@ -382,7 +382,7 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
 	CHSinglyLinkedListNode *new;
-	new = NSAllocateCollectable(kCHSinglyLinkedListNodeSize, NSScannedOption);
+	new = malloc(kCHSinglyLinkedListNodeSize);
 	new->object = [anObject retain];
 	new->next = head->next;
 	head->next = new;
@@ -393,7 +393,7 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 }
 
 - (void) removeAllObjects {
-	if (kCHGarbageCollectionNotEnabled && count > 0) {
+	if (count > 0) {
 		CHSinglyLinkedListNode *node;
 		// Use tail pointer to iterate through all nodes, then reset it to head
 		tail = head->next;
@@ -433,10 +433,8 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 - (void) removeNodeAfterNode:(CHSinglyLinkedListNode*)node {
 	CHSinglyLinkedListNode *old = node->next;
 	node->next = old->next;
-	if (kCHGarbageCollectionNotEnabled) {
-		[old->object release];
-		free(old);
-	}
+	[old->object release];
+	free(old);
 	cachedNode = NULL;
 }
 

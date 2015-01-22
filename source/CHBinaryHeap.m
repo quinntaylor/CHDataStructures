@@ -94,11 +94,10 @@ static const CFBinaryHeapCallBacks kCHBinaryHeapCallBacksDescending = {
 
 - (NSArray*) allObjectsInSortedOrder {
 	NSUInteger count = [self count];
-	void *values = NSAllocateCollectable(kCHPointerSize*count, 0);
+	void *values = malloc(kCHPointerSize * count);
 	CFBinaryHeapGetValues(heap, values);
 	NSArray *objects = [NSArray arrayWithObjects:values count:count];
-	if (kCHGarbageCollectionNotEnabled)
-		free(values);
+	free(values);
 	return objects;
 }
 

@@ -39,7 +39,7 @@
  Convenience function for allocating a new CHBinaryTreeNode. This centralizes the allocation so all subclasses can be sure they're allocating nodes correctly. Explicitly sets the "extra" field used by self-balancing trees to zero.
  
  @param anObject The object to be stored in the @a object field of the struct; may be @c nil.
- @return An struct allocated with @c NSAllocateCollectable() and @c NSScannedOption  so the garbage collector (if enabled) will scan the object stored in the node, as well as the node's children (if any).
+ @return An struct allocated with @c malloc().
  */
 HIDDEN CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject);
 
@@ -54,12 +54,12 @@ HIDDEN size_t kCHBinaryTreeNodeSize;
 
 #define CHBinaryTreeStack_INIT() { \
 	stackCapacity = 32; \
-	stack = NSAllocateCollectable(kCHBinaryTreeNodeSize*stackCapacity, NSScannedOption); \
+	stack = malloc(kCHBinaryTreeNodeSize * stackCapacity); \
 	stackSize = 0; \
 }
 
 #define CHBinaryTreeStack_FREE(stack) { \
-	if (stack != NULL && kCHGarbageCollectionNotEnabled) \
+	if (stack != NULL) \
 		free(stack); \
 	stack = NULL; \
 }
@@ -69,7 +69,7 @@ HIDDEN size_t kCHBinaryTreeNodeSize;
 	stack[stackSize++] = node; \
 	if (stackSize >= stackCapacity) { \
 		stackCapacity *= 2; \
-		stack = NSReallocateCollectable(stack, kCHPointerSize*stackCapacity, NSScannedOption); \
+		stack = realloc(stack, kCHPointerSize * stackCapacity); \
 	} \
 }
 
@@ -88,12 +88,12 @@ HIDDEN size_t kCHBinaryTreeNodeSize;
 
 #define CHBinaryTreeQueue_INIT() { \
 	queueCapacity = 128; \
-	queue = NSAllocateCollectable(kCHPointerSize*queueCapacity, NSScannedOption); \
+	queue = malloc(kCHPointerSize * queueCapacity); \
 	queueHead = queueTail = 0; \
 }
 
 #define CHBinaryTreeQueue_FREE(queue) { \
-	if (queue != NULL && kCHGarbageCollectionNotEnabled) \
+	if (queue != NULL) \
 		free(queue); \
 	queue = NULL; \
 }
@@ -103,9 +103,9 @@ HIDDEN size_t kCHBinaryTreeNodeSize;
 	queue[queueTail++] = node; \
 	queueTail %= queueCapacity; \
 	if (queueHead == queueTail) { \
-		queue = NSReallocateCollectable(queue, kCHPointerSize*queueCapacity*2, NSScannedOption); \
+		queue = realloc(queue, kCHPointerSize*queueCapacity * 2); \
 		/* Copy wrapped-around portion to end of queue and move tail index */ \
-		objc_memmove_collectable(queue+queueCapacity, queue, kCHPointerSize*queueTail); \
+		memmove(queue + queueCapacity, queue, kCHPointerSize * queueTail); \
 		/* Zeroing out shifted memory can simplify debugging queue problems */ \
 		/*bzero(queue, kCHPointerSize*queueTail);*/ \
 		queueTail += queueCapacity; \

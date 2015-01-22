@@ -292,41 +292,38 @@
 	}		
 }
 
-// Shortcut macro for determining whether garbage collection is not enabled
-#define if_rr if(kCHGarbageCollectionNotEnabled)
-
 - (void) testObjectEnumerator {
 	NSEnumerator *classes = [linkedListClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
 		list = [[[aClass alloc] init] autorelease];
 		// Enumerator shouldn't retain collection if there are no objects
-		if_rr STAssertEquals([list retainCount], (NSUInteger)1, nil);
+		STAssertEquals([list retainCount], (NSUInteger)1, nil);
 		e = [list objectEnumerator];
 		STAssertNotNil(e, nil);
-		if_rr STAssertEquals([list retainCount], (NSUInteger)1, nil);
+		STAssertEquals([list retainCount], (NSUInteger)1, nil);
 		STAssertNil([e nextObject], nil);
 		
 		// Enumerator should retain collection when it has 1+ objects
 		[list addObjectsFromArray:abc];
-		if_rr STAssertEquals([list retainCount], (NSUInteger)1, nil);
+		STAssertEquals([list retainCount], (NSUInteger)1, nil);
 		e = [list objectEnumerator];
 		STAssertNotNil(e, nil);
-		if_rr STAssertEquals([list retainCount], (NSUInteger)2, nil);
+		STAssertEquals([list retainCount], (NSUInteger)2, nil);
 		
 		// Enumerator should release collection when all objects are exhausted
 		STAssertEqualObjects([e nextObject], @"A", nil);
 		STAssertEqualObjects([e nextObject], @"B", nil);
 		STAssertEqualObjects([e nextObject], @"C", nil);
 		
-		if_rr STAssertEquals([list retainCount], (NSUInteger)2, nil);
+		STAssertEquals([list retainCount], (NSUInteger)2, nil);
 		STAssertNil([e nextObject], nil);
-		if_rr STAssertEquals([list retainCount], (NSUInteger)1, nil);
+		STAssertEquals([list retainCount], (NSUInteger)1, nil);
 		
 		e = [list objectEnumerator];
-		if_rr STAssertEquals([list retainCount], (NSUInteger)2, nil);
+		STAssertEquals([list retainCount], (NSUInteger)2, nil);
 		NSArray *allObjects = [e allObjects];
-		if_rr STAssertEquals([list retainCount], (NSUInteger)1, nil);
+		STAssertEquals([list retainCount], (NSUInteger)1, nil);
 		STAssertNotNil(allObjects, nil);
 		STAssertEqualObjects(allObjects, abc, nil);
 		STAssertEqualObjects([allObjects objectAtIndex:0], @"A", nil);
@@ -334,13 +331,13 @@
 		
 		// Enumerator should release collection on -dealloc
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		if_rr STAssertEquals([list retainCount], (NSUInteger)1, nil);
+		STAssertEquals([list retainCount], (NSUInteger)1, nil);
 		e = [list objectEnumerator];
 		STAssertNotNil(e, nil);
-		if_rr STAssertEquals([list retainCount], (NSUInteger)2, nil);
+		STAssertEquals([list retainCount], (NSUInteger)2, nil);
 		// Force deallocation of enumerator by draining autorelease pool
 		[pool drain];
-		if_rr STAssertEquals([list retainCount], (NSUInteger)1, nil);	
+		STAssertEquals([list retainCount], (NSUInteger)1, nil);	
 		
 		// For doubly-linked list, test reverse enumeration order as well
 		if (aClass == [CHDoublyLinkedList class]) {
@@ -349,14 +346,14 @@
 			STAssertEqualObjects([e nextObject], @"B", nil);
 			STAssertEqualObjects([e nextObject], @"A", nil);
 			
-			if_rr STAssertEquals([list retainCount], (NSUInteger)2, nil);
+			STAssertEquals([list retainCount], (NSUInteger)2, nil);
 			STAssertNil([e nextObject], nil);
-			if_rr STAssertEquals([list retainCount], (NSUInteger)1, nil);
+			STAssertEquals([list retainCount], (NSUInteger)1, nil);
 			
 			e = [(CHDoublyLinkedList*)list reverseObjectEnumerator];
-			if_rr STAssertEquals([list retainCount], (NSUInteger)2, nil);
+			STAssertEquals([list retainCount], (NSUInteger)2, nil);
 			allObjects = [e allObjects];
-			if_rr STAssertEquals([list retainCount], (NSUInteger)1, nil);
+			STAssertEquals([list retainCount], (NSUInteger)1, nil);
 			STAssertNotNil(allObjects, nil);
 			NSArray *cba = [NSArray arrayWithObjects:@"C",@"B",@"A",nil];
 			STAssertEqualObjects(allObjects, cba, nil);

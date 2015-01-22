@@ -25,51 +25,6 @@
 
 #pragma mark -
 
-// NSInteger/NSUInteger are new in Leopard; define if on an earlier OS version.
-#ifndef NSINTEGER_DEFINED
-	#if __LP64__ || NS_BUILD_32_LIKE_64
-		typedef long NSInteger;
-		typedef unsigned long NSUInteger;
-	#else
-		typedef int NSInteger;
-		typedef unsigned int NSUInteger;
-	#endif
-
-	#define NSIntegerMax    LONG_MAX
-	#define NSIntegerMin    LONG_MIN
-	#define NSUIntegerMax   ULONG_MAX
-
-	#define NSINTEGER_DEFINED 1
-#endif
-
-#pragma mark -
-
-// For iOS, define enum and dummy functions used for Garbage Collection.
-#if (TARGET_OS_IPHONE || TARGET_OS_EMBEDDED || !TARGET_OS_MAC)
-
-enum {
-    NSScannedOption = (1UL << 0), 
-    NSCollectorDisabledOption = (1UL << 1),
-};
-
-void* NSAllocateCollectable(NSUInteger size, NSUInteger options);
-
-void* NSReallocateCollectable(void *ptr, NSUInteger size, NSUInteger options);
-
-#define objc_memmove_collectable memmove
-
-#else
-
-// This is declared in <objc/objc-auto.h>, but importing the header is overkill.
-HIDDEN void* objc_memmove_collectable(void *dst, const void *src, size_t size);
-
-#endif
-
-#pragma mark -
-
-/** Global variable to simplify checking if garbage collection is enabled. */
-OBJC_EXPORT BOOL kCHGarbageCollectionNotEnabled;
-
 /** Global variable to store the size of a pointer only once. */
 OBJC_EXPORT size_t kCHPointerSize;
 

@@ -73,8 +73,7 @@
 		// One or both of the child pointers are null, so removal is simpler
 		parent->link[parent->right == current]
 			= current->link[current->left == sentinel];
-		if (kCHGarbageCollectionNotEnabled)
-			free(current);
+		free(current);
 	} else {
 		// The most complex case: removing a node with 2 non-null children
 		// (Replace object with the leftmost object in the right subtree.)
@@ -86,8 +85,7 @@
 		}
 		current->object = replacement->object;
 		parent->link[parent->right == replacement] = replacement->right;
-		if (kCHGarbageCollectionNotEnabled)
-			free(replacement);
+		free(replacement);
 	}
 }
 

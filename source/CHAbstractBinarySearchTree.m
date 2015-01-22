@@ -295,7 +295,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 	CHBinaryTreeNode *node;
 	// NSScannedOption tells the garbage collector to scan object and children.
-	node = NSAllocateCollectable(kCHBinaryTreeNodeSize, NSScannedOption);
+	node = malloc(kCHBinaryTreeNodeSize);
 	node->object = anObject;
 	node->balance = 0; // Affects balancing info for any subclass (anon. union)
 	return node;
@@ -512,25 +512,22 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 	++mutations;
 	count = 0;
 	
-	if (kCHGarbageCollectionNotEnabled) {
-		// Only deal with memory management if garbage collection is NOT enabled.
-		// Remove each node from the tree and release the object it points to.
-		// Use pre-order (depth-first) traversal for simplicity and performance.
-		CHBinaryTreeStack_DECLARE();
-		CHBinaryTreeStack_INIT();
-		CHBinaryTreeStack_PUSH(header->right);
-
-		CHBinaryTreeNode *current;
-		while (current = CHBinaryTreeStack_POP()) {
-			if (current->right != sentinel)
-				CHBinaryTreeStack_PUSH(current->right);
-			if (current->left != sentinel)
-				CHBinaryTreeStack_PUSH(current->left);
-			[current->object release];
-			free(current);
-		}
-		free(stack); // declared in CHBinaryTreeStack_DECLARE() macro
+	// Remove each node from the tree and release the object it points to.
+	// Use pre-order (depth-first) traversal for simplicity and performance.
+	CHBinaryTreeStack_DECLARE();
+	CHBinaryTreeStack_INIT();
+	CHBinaryTreeStack_PUSH(header->right);
+	
+	CHBinaryTreeNode *current;
+	while (current = CHBinaryTreeStack_POP()) {
+		if (current->right != sentinel)
+			CHBinaryTreeStack_PUSH(current->right);
+		if (current->left != sentinel)
+			CHBinaryTreeStack_PUSH(current->left);
+		[current->object release];
+		free(current);
 	}
+	free(stack); // declared in CHBinaryTreeStack_DECLARE() macro
 	header->right = sentinel; // With GC, this is sufficient to unroot the tree.
 	sentinel->object = nil; // Make sure we don't accidentally retain an object.
 }

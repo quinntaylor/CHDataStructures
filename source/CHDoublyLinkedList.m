@@ -159,10 +159,8 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 - (void) removeNode:(CHDoublyLinkedListNode*)node {
 	node->prev->next = node->next;
 	node->next->prev = node->prev;
-	if (kCHGarbageCollectionNotEnabled) {
-		[node->object release];
-		free(node);
-	}
+	[node->object release];
+	free(node);
 	cachedNode = NULL;
 	--count;
 	++mutations;
@@ -184,8 +182,8 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 // This is the designated initializer for CHDoublyLinkedList
 - (id) initWithArray:(NSArray*)anArray {
 	if ((self = [super init]) == nil) return nil;
-	head = NSAllocateCollectable(kCHDoublyLinkedListNodeSize, NSScannedOption);
-	tail = NSAllocateCollectable(kCHDoublyLinkedListNodeSize, NSScannedOption);
+	head = malloc(kCHDoublyLinkedListNodeSize);
+	tail = malloc(kCHDoublyLinkedListNodeSize);
 	head->object = tail->object = nil;
 	head->next = tail;
 	head->prev = NULL;
@@ -398,7 +396,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 		CHNilArgumentException([self class], _cmd);
 	CHDoublyLinkedListNode *node = [self nodeAtIndex:index];
 	CHDoublyLinkedListNode *newNode;
-	newNode = NSAllocateCollectable(kCHDoublyLinkedListNodeSize, NSScannedOption);
+	newNode = malloc(kCHDoublyLinkedListNodeSize);
 	newNode->object = [anObject retain];
 	newNode->next = node;          // point forward to displaced node
 	newNode->prev = node->prev;    // point backward to preceding node
@@ -429,15 +427,12 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 }
 
 - (void) removeAllObjects {
-	if (kCHGarbageCollectionNotEnabled && count > 0) {
-		// Only bother with free() calls if garbage collection is NOT enabled.
-		CHDoublyLinkedListNode *node = head->next, *temp;
-		while (node != tail) {
-			temp = node->next;
-			[node->object release];
-			free(node);
-			node = temp;
-		}
+	CHDoublyLinkedListNode *node = head->next, *temp;
+	while (node != tail) {
+		temp = node->next;
+		[node->object release];
+		free(node);
+		node = temp;
 	}
 	head->next = tail;
 	tail->prev = head;

@@ -184,40 +184,37 @@ static NSArray *abcde;
 	STAssertNil([set member:@"bogus"], nil);
 }
 
-// Shortcut macro for determining whether garbage collection is not enabled
-#define if_rr if(kCHGarbageCollectionNotEnabled)
-
 - (void) testObjectEnumerator {
 	if (NonConcreteClass())
 		return;
 	
 	// Enumerator shouldn't retain collection if there are no objects
-	if_rr STAssertEquals([set retainCount], (NSUInteger)1, nil);
+	STAssertEquals([set retainCount], (NSUInteger)1, nil);
 	e = [set objectEnumerator];
 	STAssertNotNil(e, nil);
-	if_rr STAssertEquals([set retainCount], (NSUInteger)1, nil);
+	STAssertEquals([set retainCount], (NSUInteger)1, nil);
 	STAssertNil([e nextObject], nil);
 
 	// Enumerator should retain collection when it has 1+ objects, release on 0
 	[set addObjectsFromArray:abcde];
 	e = [set objectEnumerator];
 	STAssertNotNil(e, nil);
-	if_rr STAssertEquals([set retainCount], (NSUInteger)2, nil);
+	STAssertEquals([set retainCount], (NSUInteger)2, nil);
 	// Grab one object from the enumerator
 	[e nextObject];
-	if_rr STAssertEquals([set retainCount], (NSUInteger)2, nil);
+	STAssertEquals([set retainCount], (NSUInteger)2, nil);
 	// Empty the enumerator of all objects
 	[e allObjects];
-	if_rr STAssertEquals([set retainCount], (NSUInteger)1, nil);
+	STAssertEquals([set retainCount], (NSUInteger)1, nil);
 	
 	// Enumerator should release collection on -dealloc
 	NSAutoreleasePool *pool  = [[NSAutoreleasePool alloc] init];
-	if_rr STAssertEquals([set retainCount], (NSUInteger)1, nil);
+	STAssertEquals([set retainCount], (NSUInteger)1, nil);
 	e = [set objectEnumerator];
 	STAssertNotNil(e, nil);
-	if_rr STAssertEquals([set retainCount], (NSUInteger)2, nil);
+	STAssertEquals([set retainCount], (NSUInteger)2, nil);
 	[pool drain]; // Force deallocation of autoreleased enumerator
-	if_rr STAssertEquals([set retainCount], (NSUInteger)1, nil);
+	STAssertEquals([set retainCount], (NSUInteger)1, nil);
 	
 	// Test mutation in the middle of enumeration
 	e = [set objectEnumerator];
@@ -500,11 +497,9 @@ static NSArray *abcde;
 - (void) testHeaderObject {
 	id headerObject = [set headerObject];
 	STAssertNotNil(headerObject, nil);
-	if (kCHGarbageCollectionNotEnabled) {
-		STAssertThrows([headerObject retain],      nil);
-		STAssertThrows([headerObject release],     nil);
-		STAssertThrows([headerObject autorelease], nil);
-	}
+	STAssertThrows([headerObject retain],      nil);
+	STAssertThrows([headerObject release],     nil);
+	STAssertThrows([headerObject autorelease], nil);
 }
 
 - (void) testIsEqualToSearchTree {

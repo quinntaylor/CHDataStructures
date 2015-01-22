@@ -25,7 +25,7 @@ do { \
 	NSUInteger itemsLeftToCopy = (scan - src + arrayCapacity) % arrayCapacity; \
 	while (itemsLeftToCopy) { \
 		NSUInteger size = MIN(itemsLeftToCopy, arrayCapacity - MAX(dst, src)); \
-		objc_memmove_collectable(&array[dst], &array[src], kCHPointerSize * size); \
+		memmove(&array[dst], &array[src], kCHPointerSize * size); \
 		src = (src + size) % arrayCapacity; \
 		dst = (dst + size) % arrayCapacity; \
 		itemsLeftToCopy -= size; \
@@ -195,7 +195,7 @@ do { \
 - (id) initWithCapacity:(NSUInteger)capacity {
 	if ((self = [super init]) == nil) return nil;
 	arrayCapacity = capacity ? capacity : DEFAULT_BUFFER_SIZE;
-	array = NSAllocateCollectable(kCHPointerSize*arrayCapacity, NSScannedOption);
+	array = malloc(kCHPointerSize * arrayCapacity);
 	return self;	
 }
 
@@ -403,16 +403,14 @@ do { \
 		NSUInteger actualIndex = transformIndex(index);
 		if (actualIndex > tailIndex) {
 			// Buffer wraps and 'index' is between head and end, so shift left.
-			objc_memmove_collectable(&array[headIndex-1], &array[headIndex],
-			                         kCHPointerSize * index);
+			memmove(&array[headIndex - 1], &array[headIndex], kCHPointerSize * index);
 			// These can't wrap around (we'll hit tail first) so just decrement.
 			--headIndex;
 			--actualIndex;
 		}
 		else {
 			// Otherwise, shift everything from given index onward to the right.
-			objc_memmove_collectable(&array[actualIndex+1], &array[actualIndex],
-			                         kCHPointerSize * (tailIndex - actualIndex));
+			memmove(&array[actualIndex + 1], &array[actualIndex], kCHPointerSize * (tailIndex - actualIndex));
 			incrementIndex(tailIndex);
 		}
 		array[actualIndex] = anObject;
@@ -421,10 +419,9 @@ do { \
 	++mutations;	
 	// If this insertion filled the array to capacity, double its size and copy.
 	if (headIndex == tailIndex) {
-		array = NSReallocateCollectable(array, kCHPointerSize*arrayCapacity*2, NSScannedOption);
+		array = realloc(array, kCHPointerSize * arrayCapacity * 2);
 		// Copy wrapped-around portion to end of queue and move tail index
-		objc_memmove_collectable(array + arrayCapacity, array,
-		                         kCHPointerSize * tailIndex);
+		memmove(array + arrayCapacity, array, kCHPointerSize * tailIndex);
 		bzero(array, kCHPointerSize * tailIndex); // Zero the source of the copy
 		tailIndex += arrayCapacity;
 		arrayCapacity *= 2;
@@ -535,13 +532,11 @@ do { \
 		// Consequently headIndex and tailIndex will not wrap past the end here.
 		if (actualIndex > tailIndex) {
 			// If the buffer wraps and index is in "the right side", shift right.
-			objc_memmove_collectable(&array[headIndex+1], &array[headIndex],
-			                         kCHPointerSize * index);
+			memmove(&array[headIndex+1], &array[headIndex], kCHPointerSize * index);
 			array[headIndex++] = nil; // Prevents possible memory leak under GC
 		} else {
 			// Otherwise, shift everything from index to tail one to the left.
-			objc_memmove_collectable(&array[actualIndex], &array[actualIndex+1],
-			                         kCHPointerSize * (tailIndex-actualIndex-1));
+			memmove(&array[actualIndex], &array[actualIndex + 1], kCHPointerSize * (tailIndex - actualIndex - 1));
 			array[--tailIndex] = nil; // Prevents possible memory leak under GC
 		}
 	}
@@ -567,20 +562,14 @@ do { \
 
 - (void) removeAllObjects {
 	if (count > 0) {
-		if (kCHGarbageCollectionNotEnabled) {
-			while (headIndex != tailIndex) {
-				[array[headIndex] release];
-				incrementIndex(headIndex);
-			}
-		}
-		else {
-			// Only zero out pointers that will remain when the buffer shrinks.
-			bzero(array, kCHPointerSize * MIN(arrayCapacity, DEFAULT_BUFFER_SIZE));
+		while (headIndex != tailIndex) {
+			[array[headIndex] release];
+			incrementIndex(headIndex);
 		}
 		if (arrayCapacity > DEFAULT_BUFFER_SIZE) {
 			arrayCapacity = DEFAULT_BUFFER_SIZE;
 			// Shrink the size of allocated memory; calls realloc() under non-GC
-			array = NSReallocateCollectable(array, kCHPointerSize*arrayCapacity, NSScannedOption);
+			array = realloc(array, kCHPointerSize * arrayCapacity);
 		}
 	}
 	headIndex = tailIndex = 0;

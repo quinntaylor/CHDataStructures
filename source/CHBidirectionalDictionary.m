@@ -38,8 +38,7 @@
 		// Create a new instance of this class to represent the inverse mapping
 		inverse = [[CHBidirectionalDictionary alloc] init];
 		// Release the CFMutableDictionary -init creates so we don't leak memory
-		if (kCHGarbageCollectionNotEnabled)
-			CFRelease(inverse->dictionary);
+		CFRelease(inverse->dictionary);
 		// Set its dictionary references to the reverse of what they are here
 		// (NOTE: CFMakeCollectable() works under GC, and is a no-op otherwise.)
 		CFMakeCollectable(CFRetain(inverse->keysToObjects = objectsToKeys));

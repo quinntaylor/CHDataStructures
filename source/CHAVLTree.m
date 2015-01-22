@@ -164,8 +164,7 @@ done:
 		NSAssert(parent != nil, @"Illegal state, parent should never be nil!");
 		isRightChild = (parent->right == current);
 		parent->link[isRightChild] = replacement;
-		if (kCHGarbageCollectionNotEnabled)
-			free(current);
+		free(current);
 	} else {
 		// Two child case -- replace with minimum object in right subtree
 		CHBinaryTreeStack_PUSH(current); // Need to start here when rebalancing
@@ -179,8 +178,7 @@ done:
 		parent = CHBinaryTreeStack_POP();
 		isRightChild = (parent->right == replacement);
 		parent->link[isRightChild] = replacement->right;
-		if (kCHGarbageCollectionNotEnabled)
-			free(replacement);
+		free(replacement);
 	}
 	
 	// Trace back up the search path, rebalancing as we go until we're done

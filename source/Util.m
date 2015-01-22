@@ -11,41 +11,8 @@
  */
 
 #import "Util.h"
-#import <objc/message.h>
 
-// For iOS, define enum and dummy functions used for Garbage Collection.
-#if (TARGET_OS_IPHONE || TARGET_OS_EMBEDDED || !TARGET_OS_MAC)
-
-void* __strong NSAllocateCollectable(NSUInteger size, NSUInteger options) {
-	return malloc(size);
-}
-
-void* __strong NSReallocateCollectable(void *ptr, NSUInteger size, NSUInteger options) {
-	return realloc(ptr, size);
-}
-
-#endif
-
-#pragma mark -
-
-BOOL kCHGarbageCollectionNotEnabled; // A variable declared extern in Util.h
 size_t kCHPointerSize = sizeof(void*); // A variable declared extern in Util.h
-
-/**
- Determines GC status and sets @c kCHGarbageCollectionNotEnabled appropriately.
- The 'constructor' attribute causes the function to be called automatically
- before execution enters main(); in our case, when the shared library is loaded.
- See http://stackoverflow.com/questions/2053029/ for GCC constructor details.
- */
-__attribute__((constructor))
-void initializeGCStatus() {
-	// Discover whether garbage collection is enabled (if running on 10.5+).
-	// This bit of hackery avoids linking errors via indirect invocation.
-	// If NSGarbageCollector doesn't exist, NSClassFromString() returns nil.
-	// If it does exist, +defaultCollector will be non-nil if GC is enabled.
-	kCHGarbageCollectionNotEnabled = (objc_msgSend(NSClassFromString(@"NSGarbageCollector"),
-	                                               @selector(defaultCollector)) == nil);
-}
 
 BOOL objectsAreEqual(id o1, id o2) {
 	return [o1 isEqual:o2];
