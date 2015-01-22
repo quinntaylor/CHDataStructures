@@ -10,7 +10,7 @@
  The software is  provided "as is", without warranty of any kind, including all implied warranties of merchantability and fitness. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
  */
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 #import "CHBinaryHeap.h"
 #import "CHMutableArrayHeap.h"
 
@@ -69,7 +69,7 @@
 
 #pragma mark -
 
-@interface CHHeapTest : SenTestCase {
+@interface CHHeapTest : XCTestCase {
 	id heap; // Removed protocol type <CHHeap> to prevent warnings for -isValid.
 	NSArray *objects, *heapClasses;
 	NSEnumerator *e;
@@ -101,14 +101,14 @@
 			e = [objects objectEnumerator];
 			while (anObject = [e nextObject])
 				[heap addObject:anObject];
-			STAssertEquals([heap count], (NSUInteger)9, nil);
-			STAssertTrue([heap isValid], nil);
+			XCTAssertEqual([heap count], (NSUInteger)9);
+			XCTAssertTrue([heap isValid]);
 			
 			NSData *data = [NSKeyedArchiver archivedDataWithRootObject:heap];
 			heap = [NSKeyedUnarchiver unarchiveObjectWithData:data];
 			
-			STAssertEquals([heap count], (NSUInteger)9, nil);
-			STAssertTrue([heap isValid], nil);
+			XCTAssertEqual([heap count], (NSUInteger)9);
+			XCTAssertTrue([heap isValid]);
 		}
 	} while (sortOrder != NSOrderedDescending);
 }
@@ -122,10 +122,10 @@
 		while (anObject = [e nextObject])
 			[heap addObject:anObject];
 		id heap2 = [[heap copy] autorelease];
-		STAssertNotNil(heap2, nil);
-		STAssertEquals([heap2 count], (NSUInteger)9, nil);
-		STAssertEquals([heap hash], [heap2 hash], nil);
-		STAssertEqualObjects([heap allObjects], [heap2 allObjects], nil);
+		XCTAssertNotNil(heap2);
+		XCTAssertEqual([heap2 count], (NSUInteger)9);
+		XCTAssertEqual([heap hash], [heap2 hash]);
+		XCTAssertEqualObjects([heap allObjects], [heap2 allObjects]);
 	}
 }
 
@@ -139,10 +139,10 @@
 			[heap addObject:[NSNumber numberWithUnsignedInteger:number]];
 		NSUInteger expected = 0, count = 0;
 		for (NSNumber *number in heap) {
-			STAssertEquals([number unsignedIntegerValue], ++expected, nil);
+			XCTAssertEqual([number unsignedIntegerValue], ++expected);
 			count++;
 		}
-		STAssertEquals(count, limit, nil);
+		XCTAssertEqual(count, limit);
 		
 		// Check that a mutation exception is raised if the heap is modified
 		BOOL raisedException = NO;
@@ -153,7 +153,7 @@
 		@catch (NSException * e) {
 			raisedException = YES;
 		}
-		STAssertTrue(raisedException, nil);
+		XCTAssertTrue(raisedException);
 	}
 }
 
@@ -164,8 +164,8 @@
 	Class aClass;
 	while (aClass = [classes nextObject]) {
 		heap = [[[aClass alloc] initWithArray:objects] autorelease];
-		STAssertEquals([heap count], [objects count], nil);
-		STAssertEquals([[heap allObjects] count], [objects count], nil);
+		XCTAssertEqual([heap count], [objects count]);
+		XCTAssertEqual([[heap allObjects] count], [objects count]);
 	}
 }
 
@@ -174,7 +174,7 @@
 	Class aClass;
 	while (aClass = [classes nextObject]) {
 		// Test for invalid ordering
-		STAssertThrows([[aClass alloc] initWithOrdering:0], nil);
+		XCTAssertThrows([[aClass alloc] initWithOrdering:0]);
 	}
 }
 
@@ -183,14 +183,14 @@
 	Class aClass;
 	while (aClass = [classes nextObject]) {
 		heap = [[[aClass alloc] init] autorelease];
-		STAssertThrows([heap addObject:nil], nil);
-		STAssertEquals([heap count], (NSUInteger)0, nil);
+		XCTAssertThrows([heap addObject:nil]);
+		XCTAssertEqual([heap count], (NSUInteger)0);
 		e = [objects objectEnumerator];
 		while (anObject = [e nextObject]) {
 			[heap addObject:anObject];
-			STAssertTrue([heap isValid], nil);
+			XCTAssertTrue([heap isValid]);
 		}
-		STAssertEquals([heap count], [objects count], nil);
+		XCTAssertEqual([heap count], [objects count]);
 	}
 }
 
@@ -199,11 +199,11 @@
 	Class aClass;
 	while (aClass = [classes nextObject]) {
 		heap = [[[aClass alloc] init] autorelease];
-		STAssertNoThrow([heap addObjectsFromArray:nil], nil);
-		STAssertEquals([heap count], (NSUInteger)0, nil);
+		XCTAssertNoThrow([heap addObjectsFromArray:nil]);
+		XCTAssertEqual([heap count], (NSUInteger)0);
 		[heap addObjectsFromArray:objects];
-		STAssertTrue([heap isValid], nil);
-		STAssertEquals([heap count], [objects count], nil);
+		XCTAssertTrue([heap isValid]);
+		XCTAssertEqual([heap count], [objects count]);
 	}
 }
 
@@ -214,12 +214,12 @@
 		heap = [[[aClass alloc] init] autorelease];
 		e = [objects objectEnumerator];
 		while (anObject = [e nextObject])
-			STAssertFalse([heap containsObject:anObject], nil);
+			XCTAssertFalse([heap containsObject:anObject]);
 		[heap addObjectsFromArray:objects];
 		e = [objects objectEnumerator];
 		while (anObject = [e nextObject])
-			STAssertTrue([heap containsObject:anObject], nil);
-		STAssertFalse([heap containsObject:@"bogus"], nil);
+			XCTAssertTrue([heap containsObject:anObject]);
+		XCTAssertFalse([heap containsObject:@"bogus"]);
 	}
 }
 
@@ -233,10 +233,10 @@
 		e = [objects objectEnumerator];
 		while (anObject = [e nextObject]) {
 			NSString *clone = [NSString stringWithFormat:@"%@", anObject];
-			STAssertTrue([heap containsObjectIdenticalTo:anObject], nil);
-			STAssertFalse([heap containsObjectIdenticalTo:clone], nil);
+			XCTAssertTrue([heap containsObjectIdenticalTo:anObject]);
+			XCTAssertFalse([heap containsObjectIdenticalTo:clone]);
 		}
-		STAssertFalse([heap containsObjectIdenticalTo:@"bogus"], nil);
+		XCTAssertFalse([heap containsObjectIdenticalTo:@"bogus"]);
 	}
 }
 
@@ -245,9 +245,9 @@
 	Class aClass;
 	while (aClass = [classes nextObject]) {
 		heap = [[[aClass alloc] init] autorelease];
-		STAssertEquals([heap count], (NSUInteger)0, nil);
+		XCTAssertEqual([heap count], (NSUInteger)0);
 		[heap addObject:@"A"];
-		STAssertEquals([heap count], (NSUInteger)1, nil);
+		XCTAssertEqual([heap count], (NSUInteger)1);
 	}
 }
 
@@ -256,9 +256,9 @@
 	Class aClass;
 	while (aClass = [classes nextObject]) {
 		heap = [[[aClass alloc] init] autorelease];
-		STAssertNotNil([heap debugDescription], nil);
+		XCTAssertNotNil([heap debugDescription]);
 		[heap addObject:@"A"];
-		STAssertNotNil([heap debugDescription], nil);
+		XCTAssertNotNil([heap debugDescription]);
 	}
 }
 
@@ -267,9 +267,9 @@
 	Class aClass;
 	while (aClass = [classes nextObject]) {
 		heap = [[[aClass alloc] init] autorelease];
-		STAssertNotNil([heap description], nil);
+		XCTAssertNotNil([heap description]);
 		[heap addObject:@"A"];
-		STAssertNotNil([heap description], nil);
+		XCTAssertNotNil([heap description]);
 	}
 }
 
@@ -279,7 +279,7 @@
 	while (aClass = [classes nextObject]) {
 		heap = [[[aClass alloc] init] autorelease];
 		[heap addObjectsFromArray:objects];
-		STAssertEqualObjects([heap firstObject], @"A", nil);
+		XCTAssertEqualObjects([heap firstObject], @"A");
 	}
 }
 
@@ -290,7 +290,7 @@
 		if (![aClass instancesRespondToSelector:@selector(insertObject:atIndex:)])
 			continue;
 		heap = [[[aClass alloc] init] autorelease];
-		STAssertThrows([heap insertObject:nil atIndex:0], nil);
+		XCTAssertThrows([heap insertObject:nil atIndex:0]);
 	}
 }
 
@@ -311,17 +311,16 @@
 	id<CHHeap> heap1, heap2;
 	for (NSUInteger i = 0; i < [heapClasses count]; i++) {
 		heap1 = [equalHeaps objectAtIndex:i];
-		STAssertThrowsSpecificNamed([heap1 isEqualToHeap:[NSString string]],
-		                            NSException, NSInvalidArgumentException, nil);
-		STAssertFalse([heap1 isEqual:[NSString string]], nil);
-		STAssertEqualObjects(heap1, heap1, nil);
+		XCTAssertThrowsSpecificNamed([heap1 isEqualToHeap:[NSString string]], NSException, NSInvalidArgumentException);
+		XCTAssertFalse([heap1 isEqual:[NSString string]]);
+		XCTAssertEqualObjects(heap1, heap1);
 		heap2 = [emptyHeaps objectAtIndex:i];
-		STAssertFalse([heap1 isEqualToHeap:heap2], nil);
+		XCTAssertFalse([heap1 isEqualToHeap:heap2]);
 		heap2 = [reversedHeaps objectAtIndex:i];
-		STAssertFalse([heap1 isEqualToHeap:heap2], nil);
+		XCTAssertFalse([heap1 isEqualToHeap:heap2]);
 		heap2 = [equalHeaps objectAtIndex:i+1];
-		STAssertEqualObjects(heap1, heap2, nil);
-		STAssertEquals([heap1 hash], [heap2 hash], nil);
+		XCTAssertEqualObjects(heap1, heap2);
+		XCTAssertEqual([heap1 hash], [heap2 hash]);
 	}
 }
 
@@ -336,15 +335,15 @@
 		NSUInteger count = [heap count];
 		while (anObject = [heap firstObject]) {
 			if (lastObject)
-				STAssertEquals([lastObject compare:anObject],
-							   (NSComparisonResult)NSOrderedAscending, nil);
+				XCTAssertEqual([lastObject compare:anObject],
+							   (NSComparisonResult)NSOrderedAscending);
 			lastObject = anObject;
 			[heap removeFirstObject];
-			STAssertEquals([heap count], --count, nil);	
-			STAssertTrue([heap isValid], nil);
+			XCTAssertEqual([heap count], --count);	
+			XCTAssertTrue([heap isValid]);
 		}
 		
-		STAssertNoThrow([heap removeFirstObject], nil);
+		XCTAssertNoThrow([heap removeFirstObject]);
 	}
 }
 
@@ -362,11 +361,11 @@
 		NSUInteger expected = [objects count] * 2;
 		e = [objects objectEnumerator];
 		while (anObject = [e nextObject]) {
-			STAssertEquals([heap count], expected, nil);
+			XCTAssertEqual([heap count], expected);
 			[heap removeObject:anObject];
 			expected -= 2;
-			STAssertEquals([heap count], expected, nil);
-			STAssertTrue([heap isValid], nil);
+			XCTAssertEqual([heap count], expected);
+			XCTAssertTrue([heap isValid]);
 		}
 	}
 }
@@ -378,7 +377,7 @@
 		if (![aClass instancesRespondToSelector:@selector(removeObjectAtIndex:)])
 			continue;
 		heap = [[[aClass alloc] init] autorelease];
-		STAssertThrows([heap removeObjectAtIndex:0], nil);
+		XCTAssertThrows([heap removeObjectAtIndex:0]);
 	}
 }
 
@@ -395,16 +394,16 @@
 		[heap addObjectsFromArray:objects];
 		
 		NSUInteger expected = [objects count] * 2;
-		STAssertEquals([heap count], expected, nil);
+		XCTAssertEqual([heap count], expected);
 		[heap removeObjectIdenticalTo:a];
-		STAssertEquals([heap count], expected, nil);
+		XCTAssertEqual([heap count], expected);
 		e = [objects objectEnumerator];
 		while (anObject = [e nextObject]) {
-			STAssertEquals([heap count], expected, nil);
+			XCTAssertEqual([heap count], expected);
 			[heap removeObjectIdenticalTo:anObject];
 			expected -= 2;
-			STAssertEquals([heap count], expected, nil);
-			STAssertTrue([heap isValid], nil);
+			XCTAssertEqual([heap count], expected);
+			XCTAssertTrue([heap isValid]);
 		}
 	}
 }
@@ -415,9 +414,9 @@
 	while (aClass = [classes nextObject]) {
 		heap = [[[aClass alloc] init] autorelease];
 		[heap addObjectsFromArray:objects];
-		STAssertEquals([heap count], (NSUInteger)9, nil);
+		XCTAssertEqual([heap count], (NSUInteger)9);
 		[heap removeAllObjects];
-		STAssertEquals([heap count], (NSUInteger)0, nil);
+		XCTAssertEqual([heap count], (NSUInteger)0);
 	}
 }
 
@@ -429,21 +428,21 @@
 	while (aClass = [classes nextObject]) {
 		heap = [[[aClass alloc] init] autorelease];
 		e = [heap objectEnumerator];
-		STAssertNotNil(e, nil);
-		STAssertNil([e nextObject], nil);
+		XCTAssertNotNil(e);
+		XCTAssertNil([e nextObject]);
 		e = [heap objectEnumerator];
 		allObjects = [e allObjects];
-		STAssertNotNil(allObjects, nil);
-		STAssertEquals([allObjects count], (NSUInteger)0, nil);
+		XCTAssertNotNil(allObjects);
+		XCTAssertEqual([allObjects count], (NSUInteger)0);
 		
 		[heap addObjectsFromArray:objects];
 		e = [heap objectEnumerator];
-		STAssertNotNil(e, nil);
-		STAssertNotNil([e nextObject], nil);
+		XCTAssertNotNil(e);
+		XCTAssertNotNil([e nextObject]);
 		e = [heap objectEnumerator];
 		allObjects = [e allObjects];
-		STAssertNotNil(allObjects, nil);
-		STAssertEquals([allObjects count], [objects count], nil);
+		XCTAssertNotNil(allObjects);
+		XCTAssertEqual([allObjects count], [objects count]);
 	}
 }
 

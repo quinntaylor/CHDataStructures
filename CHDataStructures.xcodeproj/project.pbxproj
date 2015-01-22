@@ -28,6 +28,8 @@
 			dependencies = (
 				E4FAE15F0E968F20007BB1F9 /* PBXTargetDependency */,
 				E4FAE1610E968F20007BB1F9 /* PBXTargetDependency */,
+				963818E91A7105EB0067CF59 /* PBXTargetDependency */,
+				963818EB1A7105EB0067CF59 /* PBXTargetDependency */,
 				E4FAE1630E968F20007BB1F9 /* PBXTargetDependency */,
 				E4FAE1650E968F20007BB1F9 /* PBXTargetDependency */,
 				E43C87A50EA3E19500B3B31E /* PBXTargetDependency */,
@@ -50,6 +52,79 @@
 
 /* Begin PBXBuildFile section */
 		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
+		969123AC1A7100120073C75A /* Util.m in Sources */ = {isa = PBXBuildFile; fileRef = E4723A710EB91B7A006FE465 /* Util.m */; };
+		969123AD1A7100120073C75A /* CHAbstractBinarySearchTree.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBC990E88412C00B570BC /* CHAbstractBinarySearchTree.m */; };
+		969123AE1A7100120073C75A /* CHAbstractListCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = E48860B90EA66072000F132A /* CHAbstractListCollection.m */; };
+		969123AF1A7100120073C75A /* CHAnderssonTree.m in Sources */ = {isa = PBXBuildFile; fileRef = E442DFB70E8F1E6D00BD62F6 /* CHAnderssonTree.m */; };
+		969123B01A7100120073C75A /* CHAVLTree.m in Sources */ = {isa = PBXBuildFile; fileRef = E445580A0EBCB70A00D9C482 /* CHAVLTree.m */; };
+		969123B11A7100120073C75A /* CHBidirectionalDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = E4386EEF1123A69C00DC6CAC /* CHBidirectionalDictionary.m */; };
+		969123B21A7100120073C75A /* CHBinaryHeap.m in Sources */ = {isa = PBXBuildFile; fileRef = E45F4CC3111F6025008E8B5D /* CHBinaryHeap.m */; };
+		969123B31A7100120073C75A /* CHCircularBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = E46D52B21104B62C007C5D9D /* CHCircularBuffer.m */; };
+		969123B41A7100120073C75A /* CHCircularBufferDeque.m in Sources */ = {isa = PBXBuildFile; fileRef = E400CAC20F791A08003189D3 /* CHCircularBufferDeque.m */; };
+		969123B51A7100120073C75A /* CHCircularBufferQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = E400CAAB0F7919B7003189D3 /* CHCircularBufferQueue.m */; };
+		969123B61A7100120073C75A /* CHCircularBufferStack.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D9413F0F93C147001BAE05 /* CHCircularBufferStack.m */; };
+		969123B71A7100120073C75A /* CHDoublyLinkedList.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB1F0E88174200B570BC /* CHDoublyLinkedList.m */; };
+		969123B81A7100120073C75A /* CHListDeque.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D184B0E945580007F39D8 /* CHListDeque.m */; };
+		969123B91A7100120073C75A /* CHListQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB140E88174200B570BC /* CHListQueue.m */; };
+		969123BA1A7100120073C75A /* CHListStack.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB160E88174200B570BC /* CHListStack.m */; };
+		969123BB1A7100120073C75A /* CHMultiDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = E48BF9720EE7A2010004D5E6 /* CHMultiDictionary.m */; };
+		969123BC1A7100120073C75A /* CHMutableArrayHeap.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB070E88174200B570BC /* CHMutableArrayHeap.m */; };
+		969123BD1A7100120073C75A /* CHMutableDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = E4558D900FE758C300CC5860 /* CHMutableDictionary.m */; };
+		969123BE1A7100120073C75A /* CHMutableSet.m in Sources */ = {isa = PBXBuildFile; fileRef = E40C4D01108D7A6A00A63A23 /* CHMutableSet.m */; };
+		969123BF1A7100120073C75A /* CHOrderedDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = E4558DAF0FE7598700CC5860 /* CHOrderedDictionary.m */; };
+		969123C01A7100120073C75A /* CHOrderedSet.m in Sources */ = {isa = PBXBuildFile; fileRef = E49BE2820FB21058002904AB /* CHOrderedSet.m */; };
+		969123C11A7100120073C75A /* CHRedBlackTree.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB1C0E88174200B570BC /* CHRedBlackTree.m */; };
+		969123C21A7100120073C75A /* CHSinglyLinkedList.m in Sources */ = {isa = PBXBuildFile; fileRef = E41180260E91E7E700E66053 /* CHSinglyLinkedList.m */; };
+		969123C31A7100120073C75A /* CHSortedDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = E4558DB50FE7599500CC5860 /* CHSortedDictionary.m */; };
+		969123C41A7100120073C75A /* CHTreap.m in Sources */ = {isa = PBXBuildFile; fileRef = E41035270EC409B900C2CFB9 /* CHTreap.m */; };
+		969123C51A7100120073C75A /* CHUnbalancedTree.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBB230E88174200B570BC /* CHUnbalancedTree.m */; };
+		969123C61A7100470073C75A /* CHDataStructures.h in Headers */ = {isa = PBXBuildFile; fileRef = E442DFA70E8F1BDF00BD62F6 /* CHDataStructures.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		969123C71A7100470073C75A /* Util.h in Headers */ = {isa = PBXBuildFile; fileRef = E44773A10E913C89000889F7 /* Util.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		969123C81A7100470073C75A /* CHDeque.h in Headers */ = {isa = PBXBuildFile; fileRef = E42DBAF10E8C3200000E1FBD /* CHDeque.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		969123C91A7100470073C75A /* CHHeap.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB120E88174200B570BC /* CHHeap.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		969123CA1A7100470073C75A /* CHLinkedList.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB170E88174200B570BC /* CHLinkedList.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		969123CB1A7100470073C75A /* CHQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB180E88174200B570BC /* CHQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		969123CC1A7100470073C75A /* CHSearchTree.h in Headers */ = {isa = PBXBuildFile; fileRef = E4FE77C60E8978C300971EE6 /* CHSearchTree.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		969123CD1A7100470073C75A /* CHSortedSet.h in Headers */ = {isa = PBXBuildFile; fileRef = E4128A950FB27E4F00CC187D /* CHSortedSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		969123CE1A7100470073C75A /* CHStack.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB1D0E88174200B570BC /* CHStack.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		969123CF1A7100470073C75A /* CHAbstractBinarySearchTree.h in Headers */ = {isa = PBXBuildFile; fileRef = E4FE77C90E8978DD00971EE6 /* CHAbstractBinarySearchTree.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		969123D01A7100470073C75A /* CHAbstractBinarySearchTree_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = E41D293D0F6CC44900AF80C4 /* CHAbstractBinarySearchTree_Internal.h */; };
+		969123D11A7100470073C75A /* CHAbstractListCollection.h in Headers */ = {isa = PBXBuildFile; fileRef = E48860B80EA66072000F132A /* CHAbstractListCollection.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		969123D21A7100470073C75A /* CHAnderssonTree.h in Headers */ = {isa = PBXBuildFile; fileRef = E442DFB60E8F1E6D00BD62F6 /* CHAnderssonTree.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		969123D31A7100470073C75A /* CHAVLTree.h in Headers */ = {isa = PBXBuildFile; fileRef = E44558090EBCB70A00D9C482 /* CHAVLTree.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		969123D41A7100470073C75A /* CHBidirectionalDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = E4386EEE1123A69C00DC6CAC /* CHBidirectionalDictionary.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		969123D51A7100470073C75A /* CHBinaryHeap.h in Headers */ = {isa = PBXBuildFile; fileRef = E45F4CC2111F6025008E8B5D /* CHBinaryHeap.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		969123D61A7100470073C75A /* CHCircularBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = E46D52B11104B62C007C5D9D /* CHCircularBuffer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		969123D71A7100470073C75A /* CHCircularBufferDeque.h in Headers */ = {isa = PBXBuildFile; fileRef = E400CAC10F791A08003189D3 /* CHCircularBufferDeque.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		969123D81A7100470073C75A /* CHCircularBufferQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = E400CAAA0F7919B7003189D3 /* CHCircularBufferQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		969123D91A7100470073C75A /* CHCircularBufferStack.h in Headers */ = {isa = PBXBuildFile; fileRef = E4D9413E0F93C147001BAE05 /* CHCircularBufferStack.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		969123DA1A7100470073C75A /* CHDoublyLinkedList.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB1E0E88174200B570BC /* CHDoublyLinkedList.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		969123DB1A7100470073C75A /* CHListDeque.h in Headers */ = {isa = PBXBuildFile; fileRef = E40D184A0E945580007F39D8 /* CHListDeque.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		969123DC1A7100480073C75A /* CHListQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB130E88174200B570BC /* CHListQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		969123DD1A7100480073C75A /* CHListStack.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB150E88174200B570BC /* CHListStack.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		969123DE1A7100480073C75A /* CHMultiDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = E48BF92E0EE79AAE0004D5E6 /* CHMultiDictionary.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		969123DF1A7100480073C75A /* CHMutableArrayHeap.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB060E88174200B570BC /* CHMutableArrayHeap.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		969123E01A7100480073C75A /* CHMutableDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = E4558D8F0FE758C300CC5860 /* CHMutableDictionary.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		969123E11A7100480073C75A /* CHMutableSet.h in Headers */ = {isa = PBXBuildFile; fileRef = E40C4D00108D7A6A00A63A23 /* CHMutableSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		969123E21A7100480073C75A /* CHOrderedDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = E4558DAE0FE7598700CC5860 /* CHOrderedDictionary.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		969123E31A7100480073C75A /* CHOrderedSet.h in Headers */ = {isa = PBXBuildFile; fileRef = E49BE2810FB21058002904AB /* CHOrderedSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		969123E41A7100480073C75A /* CHRedBlackTree.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB1B0E88174200B570BC /* CHRedBlackTree.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		969123E51A7100480073C75A /* CHSinglyLinkedList.h in Headers */ = {isa = PBXBuildFile; fileRef = E41180250E91E7E700E66053 /* CHSinglyLinkedList.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		969123E61A7100480073C75A /* CHSortedDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = E4558DB40FE7599500CC5860 /* CHSortedDictionary.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		969123E71A7100480073C75A /* CHTreap.h in Headers */ = {isa = PBXBuildFile; fileRef = E41035260EC409B900C2CFB9 /* CHTreap.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		969123E81A7100480073C75A /* CHUnbalancedTree.h in Headers */ = {isa = PBXBuildFile; fileRef = E4ADBB220E88174200B570BC /* CHUnbalancedTree.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		96E5B2B11A70FCB50074B77B /* CHDataStructures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96E5B2A61A70FCB40074B77B /* CHDataStructures.framework */; };
+		96E5B2C11A70FDAE0074B77B /* CHAbstractListCollectionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A720C50EA78DCE00E0AC21 /* CHAbstractListCollectionTest.m */; };
+		96E5B2C21A70FDAE0074B77B /* CHCircularBufferTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D3A4C60F789FF500E21CF8 /* CHCircularBufferTest.m */; };
+		96E5B2C31A70FDAE0074B77B /* CHCustomDictionariesTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D48E960FE9510B009BA8BC /* CHCustomDictionariesTest.m */; };
+		96E5B2C41A70FDAE0074B77B /* CHDequeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FD52CC0ECA8589006D9FF8 /* CHDequeTest.m */; };
+		96E5B2C51A70FDAE0074B77B /* CHHeapTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E40D18220E9452BB007F39D8 /* CHHeapTest.m */; };
+		96E5B2C61A70FDAE0074B77B /* CHLinkedListTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D499690E93CD1300434CBA /* CHLinkedListTest.m */; };
+		96E5B2C71A70FDAE0074B77B /* CHCustomSetsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E49BE3DB0FB230D4002904AB /* CHCustomSetsTest.m */; };
+		96E5B2C81A70FDAE0074B77B /* CHQueueTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FD52F50ECA8A9F006D9FF8 /* CHQueueTest.m */; };
+		96E5B2C91A70FDAE0074B77B /* CHSortedSetTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4290A77100CE7F100C2C968 /* CHSortedSetTest.m */; };
+		96E5B2CA1A70FDAE0074B77B /* CHStackTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FD53020ECA9212006D9FF8 /* CHStackTest.m */; };
+		96E5B2CB1A70FDAE0074B77B /* UtilTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E44EB0F10ECB83230071F93A /* UtilTest.m */; };
 		E40C4D02108D7A6A00A63A23 /* CHMutableSet.h in Headers */ = {isa = PBXBuildFile; fileRef = E40C4D00108D7A6A00A63A23 /* CHMutableSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E40C4D03108D7A6A00A63A23 /* CHMutableSet.m in Sources */ = {isa = PBXBuildFile; fileRef = E40C4D01108D7A6A00A63A23 /* CHMutableSet.m */; };
 		E40D184D0E945580007F39D8 /* CHListDeque.h in Headers */ = {isa = PBXBuildFile; fileRef = E40D184A0E945580007F39D8 /* CHListDeque.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -123,7 +198,6 @@
 		E4D3A4C70F789FF500E21CF8 /* CHCircularBufferTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D3A4C60F789FF500E21CF8 /* CHCircularBufferTest.m */; };
 		E4D48E970FE9510B009BA8BC /* CHCustomDictionariesTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4D48E960FE9510B009BA8BC /* CHCustomDictionariesTest.m */; };
 		E4DCD17A0EA7B0DF006383FC /* CHDataStructures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* CHDataStructures.framework */; };
-		E4E7C1270EC0CACE009B19D7 /* CHDataStructures_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = E4E7C1260EC0CACE009B19D7 /* CHDataStructures_Prefix.pch */; };
 		E4FD52CD0ECA8589006D9FF8 /* CHDequeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FD52CC0ECA8589006D9FF8 /* CHDequeTest.m */; };
 		E4FD52F60ECA8A9F006D9FF8 /* CHQueueTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FD52F50ECA8A9F006D9FF8 /* CHQueueTest.m */; };
 		E4FD53030ECA9212006D9FF8 /* CHStackTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4FD53020ECA9212006D9FF8 /* CHStackTest.m */; };
@@ -132,6 +206,27 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		963818E81A7105EB0067CF59 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 96E5B2A51A70FCB40074B77B;
+			remoteInfo = iOS;
+		};
+		963818EA1A7105EB0067CF59 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 96E5B2AF1A70FCB50074B77B;
+			remoteInfo = iOSTests;
+		};
+		96E5B2B21A70FCB50074B77B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 96E5B2A51A70FCB40074B77B;
+			remoteInfo = iOS;
+		};
 		E428B52E0EA537D9007CB324 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
@@ -218,6 +313,8 @@
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = resources/English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* CHDataStructures.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CHDataStructures.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		96E5B2A61A70FCB40074B77B /* CHDataStructures.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CHDataStructures.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		96E5B2B01A70FCB50074B77B /* CHDataStructures.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CHDataStructures.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E400CAAA0F7919B7003189D3 /* CHCircularBufferQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHCircularBufferQueue.h; path = source/CHCircularBufferQueue.h; sourceTree = "<group>"; };
 		E400CAAB0F7919B7003189D3 /* CHCircularBufferQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHCircularBufferQueue.m; path = source/CHCircularBufferQueue.m; sourceTree = "<group>"; };
 		E400CAC10F791A08003189D3 /* CHCircularBufferDeque.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHCircularBufferDeque.h; path = source/CHCircularBufferDeque.h; sourceTree = "<group>"; };
@@ -257,9 +354,8 @@
 		E46D52B11104B62C007C5D9D /* CHCircularBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHCircularBuffer.h; path = source/CHCircularBuffer.h; sourceTree = "<group>"; };
 		E46D52B21104B62C007C5D9D /* CHCircularBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHCircularBuffer.m; path = source/CHCircularBuffer.m; sourceTree = "<group>"; };
 		E4723A710EB91B7A006FE465 /* Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Util.m; path = source/Util.m; sourceTree = "<group>"; };
-		E473C9890E9331FA005CA997 /* Info-Unit-Testing.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Info-Unit-Testing.plist"; path = "resources/Info-Unit-Testing.plist"; sourceTree = "<group>"; };
-		E473C99E0E93333C005CA997 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		E473CB550E9346CB005CA997 /* CHDataStructures.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CHDataStructures.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E473C9890E9331FA005CA997 /* Info-Tests.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Info-Tests.plist"; path = "resources/Info-Tests.plist"; sourceTree = "<group>"; };
+		E473CB550E9346CB005CA997 /* CHDataStructures.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CHDataStructures.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E48860B80EA66072000F132A /* CHAbstractListCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHAbstractListCollection.h; path = source/CHAbstractListCollection.h; sourceTree = "<group>"; };
 		E48860B90EA66072000F132A /* CHAbstractListCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHAbstractListCollection.m; path = source/CHAbstractListCollection.m; sourceTree = "<group>"; };
 		E48BF92E0EE79AAE0004D5E6 /* CHMultiDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHMultiDictionary.h; path = source/CHMultiDictionary.h; sourceTree = "<group>"; };
@@ -314,6 +410,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		96E5B2A21A70FCB40074B77B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		96E5B2AD1A70FCB50074B77B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				96E5B2B11A70FCB50074B77B /* CHDataStructures.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E44B59B20E95850F00F9DD1A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -337,8 +448,10 @@
 			isa = PBXGroup;
 			children = (
 				8DC2EF5B0486A6940098B216 /* CHDataStructures.framework */,
-				E473CB550E9346CB005CA997 /* CHDataStructures.octest */,
+				E473CB550E9346CB005CA997 /* CHDataStructures.xctest */,
 				E44B59B40E95850F00F9DD1A /* Benchmarks */,
+				96E5B2A61A70FCB40074B77B /* CHDataStructures.framework */,
+				96E5B2B01A70FCB50074B77B /* CHDataStructures.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -361,7 +474,6 @@
 			isa = PBXGroup;
 			children = (
 				0867D69BFE84028FC02AAC07 /* Foundation.framework */,
-				E473C99E0E93333C005CA997 /* SenTestingKit.framework */,
 			);
 			name = "Linked Frameworks";
 			sourceTree = "<group>";
@@ -372,7 +484,7 @@
 				E49923740FEB7B2600923859 /* CHDataStructuresFormatters.plist */,
 				089C1666FE841158C02AAC07 /* InfoPlist.strings */,
 				E4FE17F70FA6765D00C34601 /* Info-Framework.plist */,
-				E473C9890E9331FA005CA997 /* Info-Unit-Testing.plist */,
+				E473C9890E9331FA005CA997 /* Info-Tests.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -507,51 +619,92 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E48860BA0EA66072000F132A /* CHAbstractListCollection.h in Headers */,
 				E4FE77CA0E8978DD00971EE6 /* CHAbstractBinarySearchTree.h in Headers */,
+				E48860BA0EA66072000F132A /* CHAbstractListCollection.h in Headers */,
 				E442DFB80E8F1E6D00BD62F6 /* CHAnderssonTree.h in Headers */,
+				E445580B0EBCB70A00D9C482 /* CHAVLTree.h in Headers */,
+				E4386EF01123A69C00DC6CAC /* CHBidirectionalDictionary.h in Headers */,
+				E45F4CC4111F6025008E8B5D /* CHBinaryHeap.h in Headers */,
+				E46D52B31104B62C007C5D9D /* CHCircularBuffer.h in Headers */,
+				E4373E0E111D338200953B7D /* CHCircularBufferDeque.h in Headers */,
+				E4373E0C111D338100953B7D /* CHCircularBufferQueue.h in Headers */,
+				E4373E0A111D337F00953B7D /* CHCircularBufferStack.h in Headers */,
 				E442DFA80E8F1BDF00BD62F6 /* CHDataStructures.h in Headers */,
 				E42DBAF20E8C3200000E1FBD /* CHDeque.h in Headers */,
 				E4ADBB3C0E88174200B570BC /* CHDoublyLinkedList.h in Headers */,
 				E4ADBB300E88174200B570BC /* CHHeap.h in Headers */,
+				E4ADBB350E88174200B570BC /* CHLinkedList.h in Headers */,
 				E40D184D0E945580007F39D8 /* CHListDeque.h in Headers */,
 				E4ADBB310E88174200B570BC /* CHListQueue.h in Headers */,
 				E4ADBB330E88174200B570BC /* CHListStack.h in Headers */,
-				E4ADBB350E88174200B570BC /* CHLinkedList.h in Headers */,
+				E48BF92F0EE79AAE0004D5E6 /* CHMultiDictionary.h in Headers */,
 				E4ADBB240E88174200B570BC /* CHMutableArrayHeap.h in Headers */,
-				E4ADBB360E88174200B570BC /* CHQueue.h in Headers */,
+				E4558D910FE758C300CC5860 /* CHMutableDictionary.h in Headers */,
+				E40C4D02108D7A6A00A63A23 /* CHMutableSet.h in Headers */,
+				E49BE2830FB21058002904AB /* CHOrderedSet.h in Headers */,
+				E41D293E0F6CC44900AF80C4 /* CHAbstractBinarySearchTree_Internal.h in Headers */,
 				E4ADBB390E88174200B570BC /* CHRedBlackTree.h in Headers */,
-				E41180270E91E7E700E66053 /* CHSinglyLinkedList.h in Headers */,
-				E4ADBB3B0E88174200B570BC /* CHStack.h in Headers */,
 				E4FE77C70E8978C300971EE6 /* CHSearchTree.h in Headers */,
+				E4ADBB360E88174200B570BC /* CHQueue.h in Headers */,
+				E41180270E91E7E700E66053 /* CHSinglyLinkedList.h in Headers */,
+				E4558DB60FE7599500CC5860 /* CHSortedDictionary.h in Headers */,
+				E4128A970FB27E4F00CC187D /* CHSortedSet.h in Headers */,
+				E4ADBB3B0E88174200B570BC /* CHStack.h in Headers */,
+				E4558DB00FE7598700CC5860 /* CHOrderedDictionary.h in Headers */,
+				E41035280EC409B900C2CFB9 /* CHTreap.h in Headers */,
 				E4ADBB400E88174200B570BC /* CHUnbalancedTree.h in Headers */,
 				E44773A20E913C89000889F7 /* Util.h in Headers */,
-				E445580B0EBCB70A00D9C482 /* CHAVLTree.h in Headers */,
-				E4E7C1270EC0CACE009B19D7 /* CHDataStructures_Prefix.pch in Headers */,
-				E41035280EC409B900C2CFB9 /* CHTreap.h in Headers */,
-				E48BF92F0EE79AAE0004D5E6 /* CHMultiDictionary.h in Headers */,
-				E41D293E0F6CC44900AF80C4 /* CHAbstractBinarySearchTree_Internal.h in Headers */,
-				E49BE2830FB21058002904AB /* CHOrderedSet.h in Headers */,
-				E4128A970FB27E4F00CC187D /* CHSortedSet.h in Headers */,
-				E4558D910FE758C300CC5860 /* CHMutableDictionary.h in Headers */,
-				E4558DB00FE7598700CC5860 /* CHOrderedDictionary.h in Headers */,
-				E4558DB60FE7599500CC5860 /* CHSortedDictionary.h in Headers */,
-				E40C4D02108D7A6A00A63A23 /* CHMutableSet.h in Headers */,
-				E46D52B31104B62C007C5D9D /* CHCircularBuffer.h in Headers */,
-				E4373E0A111D337F00953B7D /* CHCircularBufferStack.h in Headers */,
-				E4373E0C111D338100953B7D /* CHCircularBufferQueue.h in Headers */,
-				E4373E0E111D338200953B7D /* CHCircularBufferDeque.h in Headers */,
-				E45F4CC4111F6025008E8B5D /* CHBinaryHeap.h in Headers */,
-				E4386EF01123A69C00DC6CAC /* CHBidirectionalDictionary.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		96E5B2A31A70FCB40074B77B /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				969123C61A7100470073C75A /* CHDataStructures.h in Headers */,
+				969123CF1A7100470073C75A /* CHAbstractBinarySearchTree.h in Headers */,
+				969123D01A7100470073C75A /* CHAbstractBinarySearchTree_Internal.h in Headers */,
+				969123D11A7100470073C75A /* CHAbstractListCollection.h in Headers */,
+				969123D21A7100470073C75A /* CHAnderssonTree.h in Headers */,
+				969123D31A7100470073C75A /* CHAVLTree.h in Headers */,
+				969123D41A7100470073C75A /* CHBidirectionalDictionary.h in Headers */,
+				969123D51A7100470073C75A /* CHBinaryHeap.h in Headers */,
+				969123D61A7100470073C75A /* CHCircularBuffer.h in Headers */,
+				969123D71A7100470073C75A /* CHCircularBufferDeque.h in Headers */,
+				969123D81A7100470073C75A /* CHCircularBufferQueue.h in Headers */,
+				969123D91A7100470073C75A /* CHCircularBufferStack.h in Headers */,
+				969123C81A7100470073C75A /* CHDeque.h in Headers */,
+				969123DA1A7100470073C75A /* CHDoublyLinkedList.h in Headers */,
+				969123C91A7100470073C75A /* CHHeap.h in Headers */,
+				969123CA1A7100470073C75A /* CHLinkedList.h in Headers */,
+				969123DB1A7100470073C75A /* CHListDeque.h in Headers */,
+				969123DC1A7100480073C75A /* CHListQueue.h in Headers */,
+				969123DD1A7100480073C75A /* CHListStack.h in Headers */,
+				969123DE1A7100480073C75A /* CHMultiDictionary.h in Headers */,
+				969123DF1A7100480073C75A /* CHMutableArrayHeap.h in Headers */,
+				969123E01A7100480073C75A /* CHMutableDictionary.h in Headers */,
+				969123E11A7100480073C75A /* CHMutableSet.h in Headers */,
+				969123E21A7100480073C75A /* CHOrderedDictionary.h in Headers */,
+				969123E31A7100480073C75A /* CHOrderedSet.h in Headers */,
+				969123CB1A7100470073C75A /* CHQueue.h in Headers */,
+				969123E41A7100480073C75A /* CHRedBlackTree.h in Headers */,
+				969123CC1A7100470073C75A /* CHSearchTree.h in Headers */,
+				969123E51A7100480073C75A /* CHSinglyLinkedList.h in Headers */,
+				969123E61A7100480073C75A /* CHSortedDictionary.h in Headers */,
+				969123CD1A7100470073C75A /* CHSortedSet.h in Headers */,
+				969123CE1A7100470073C75A /* CHStack.h in Headers */,
+				969123E71A7100480073C75A /* CHTreap.h in Headers */,
+				969123E81A7100480073C75A /* CHUnbalancedTree.h in Headers */,
+				969123C71A7100470073C75A /* Util.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		8DC2EF4F0486A6940098B216 /* Framework */ = {
+		8DC2EF4F0486A6940098B216 /* Mac */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "Framework" */;
+			buildConfigurationList = 1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "Mac" */;
 			buildPhases = (
 				8DC2EF500486A6940098B216 /* Headers */,
 				8DC2EF520486A6940098B216 /* Resources */,
@@ -564,11 +717,47 @@
 			);
 			dependencies = (
 			);
-			name = Framework;
+			name = Mac;
 			productInstallPath = "$(HOME)/Library/Frameworks";
 			productName = CHDataStructures;
 			productReference = 8DC2EF5B0486A6940098B216 /* CHDataStructures.framework */;
 			productType = "com.apple.product-type.framework";
+		};
+		96E5B2A51A70FCB40074B77B /* iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 96E5B2BF1A70FCB50074B77B /* Build configuration list for PBXNativeTarget "iOS" */;
+			buildPhases = (
+				96E5B2A31A70FCB40074B77B /* Headers */,
+				96E5B2A11A70FCB40074B77B /* Sources */,
+				96E5B2A21A70FCB40074B77B /* Frameworks */,
+				96E5B2A41A70FCB40074B77B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = iOS;
+			productName = iOS;
+			productReference = 96E5B2A61A70FCB40074B77B /* CHDataStructures.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		96E5B2AF1A70FCB50074B77B /* iOSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 96E5B2C01A70FCB50074B77B /* Build configuration list for PBXNativeTarget "iOSTests" */;
+			buildPhases = (
+				96E5B2AC1A70FCB50074B77B /* Sources */,
+				96E5B2AD1A70FCB50074B77B /* Frameworks */,
+				96E5B2AE1A70FCB50074B77B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				96E5B2B31A70FCB50074B77B /* PBXTargetDependency */,
+			);
+			name = iOSTests;
+			productName = iOSTests;
+			productReference = 96E5B2B01A70FCB50074B77B /* CHDataStructures.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		E44B59B30E95850F00F9DD1A /* Benchmarks */ = {
 			isa = PBXNativeTarget;
@@ -587,25 +776,23 @@
 			productReference = E44B59B40E95850F00F9DD1A /* Benchmarks */;
 			productType = "com.apple.product-type.tool";
 		};
-		E473CB540E9346CB005CA997 /* Unit Testing */ = {
+		E473CB540E9346CB005CA997 /* MacTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E473CB690E9346F3005CA997 /* Build configuration list for PBXNativeTarget "Unit Testing" */;
+			buildConfigurationList = E473CB690E9346F3005CA997 /* Build configuration list for PBXNativeTarget "MacTests" */;
 			buildPhases = (
 				E473CB500E9346CB005CA997 /* Resources */,
 				E473CB510E9346CB005CA997 /* Sources */,
 				E473CB520E9346CB005CA997 /* Frameworks */,
-				E473CB530E9346CB005CA997 /* ShellScript */,
-				E40C069C0FB4DD52004351C9 /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				E4A721AA0EA7AEFB00E0AC21 /* PBXTargetDependency */,
 			);
-			name = "Unit Testing";
+			name = MacTests;
 			productName = "Unit Testing";
-			productReference = E473CB550E9346CB005CA997 /* CHDataStructures.octest */;
-			productType = "com.apple.product-type.bundle";
+			productReference = E473CB550E9346CB005CA997 /* CHDataStructures.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -615,6 +802,14 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 0460;
+				TargetAttributes = {
+					96E5B2A51A70FCB40074B77B = {
+						CreatedOnToolsVersion = 6.2;
+					};
+					96E5B2AF1A70FCB50074B77B = {
+						CreatedOnToolsVersion = 6.2;
+					};
+				};
 			};
 			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "CHDataStructures" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -631,8 +826,10 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8DC2EF4F0486A6940098B216 /* Framework */,
-				E473CB540E9346CB005CA997 /* Unit Testing */,
+				8DC2EF4F0486A6940098B216 /* Mac */,
+				E473CB540E9346CB005CA997 /* MacTests */,
+				96E5B2A51A70FCB40074B77B /* iOS */,
+				96E5B2AF1A70FCB50074B77B /* iOSTests */,
 				E4FE76D80E89556A00971EE6 /* Documentation */,
 				E44B59B30E95850F00F9DD1A /* Benchmarks */,
 				E43C87680EA3D35500B3B31E /* Deployment */,
@@ -650,6 +847,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		96E5B2A41A70FCB40074B77B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		96E5B2AE1A70FCB50074B77B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E473CB500E9346CB005CA997 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -660,20 +871,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		E40C069C0FB4DD52004351C9 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Run gcov on the framework getting tested, generate HTML report\nif [ \"${CONFIGURATION}\" = 'Coverage' ]; then\n\tFRAMEWORK_NAME=CHDataStructures\n\tFRAMEWORK_TARGET=Framework\n\tFRAMEWORK_OBJ_DIR=${OBJROOT}/${FRAMEWORK_NAME}.build/${CONFIGURATION}/${FRAMEWORK_TARGET}.build/Objects-normal/${CURRENT_ARCH}\n\t\n\t#rm -rf coverage \n\tmkdir -p coverage\n\tcd coverage\n\t../tools/lcov/geninfo \"${FRAMEWORK_OBJ_DIR}\" --gcov-tool /usr/bin/gcov-4.0\n\t../tools/lcov/genhtml \"${FRAMEWORK_OBJ_DIR}\"/*.info \\\n\t\t--title CHDataStructures --num-spaces 4 --css-file ../tools/lcov/styles.css --prefix \"${PROJECT_DIR}\" --legend\nfi";
-			showEnvVarsInLog = 0;
-		};
 		E41E579A0F6AF8E500FDA687 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -700,20 +897,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [ ${CONFIGURATION} = 'Release' ]\nthen\n\t# http://www.red-sweater.com/blog/23/automatic-build-sub-versioning-in-xcode\n\tSVN_REVISION=`svnversion | perl -p -e 's/(\\d+:)(\\d+M?S?)/\\$2/'`\n\n\tif [ $SVN_REVISION = 'exported' ]\n\tthen\n\t\tDATE=`date '+%Y-%m-%d'`\n\t\tDISK_IMAGE_NAME=${PRODUCT_NAME}\\ \\(${DATE}\\)\n\t\tDISK_IMAGE_FILE=${PRODUCT_NAME}-${DATE}.dmg\n\telse\n\t\tDISK_IMAGE_NAME=${PRODUCT_NAME}\\ \\(r${SVN_REVISION}\\)\n\t\tDISK_IMAGE_FILE=${PRODUCT_NAME}-r${SVN_REVISION}.dmg\n\tfi\n\t\n\tSOURCE_DIRECTORY=${TEMP_FILES_DIR}/temp\t\n\trm -rf   \"${SOURCE_DIRECTORY}\"\n\tmkdir -p \"${SOURCE_DIRECTORY}\"/CHDataStructures.framework/\n\n\tcp -R build/Release/CHDataStructures.framework/ \"${SOURCE_DIRECTORY}\"/CHDataStructures.framework/\n\tcp README.html \"${SOURCE_DIRECTORY}\"\n\n\t# Remove all invisible .DS_Store files before creating disk image\n\tfor file in `find \"${SOURCE_DIRECTORY}\"/CHDataStructures.framework -name .DS_Store`\n\tdo\n\t\trm $file\n\tdone\n\n\trm -f \"${DISK_IMAGE_FILE}\"\n\thdiutil create -fs HFS+ -volname \"${DISK_IMAGE_NAME}\" -srcfolder \"${SOURCE_DIRECTORY}\" \"${DISK_IMAGE_FILE}\"\n\thdiutil internet-enable -yes \"${DISK_IMAGE_FILE}\"\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		E473CB530E9346CB005CA997 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"";
 			showEnvVarsInLog = 0;
 		};
 		E4FE76D70E89556A00971EE6 /* ShellScript */ = {
@@ -766,6 +949,57 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		96E5B2A11A70FCB40074B77B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				969123AD1A7100120073C75A /* CHAbstractBinarySearchTree.m in Sources */,
+				969123AE1A7100120073C75A /* CHAbstractListCollection.m in Sources */,
+				969123AF1A7100120073C75A /* CHAnderssonTree.m in Sources */,
+				969123B01A7100120073C75A /* CHAVLTree.m in Sources */,
+				969123B11A7100120073C75A /* CHBidirectionalDictionary.m in Sources */,
+				969123B21A7100120073C75A /* CHBinaryHeap.m in Sources */,
+				969123B31A7100120073C75A /* CHCircularBuffer.m in Sources */,
+				969123B41A7100120073C75A /* CHCircularBufferDeque.m in Sources */,
+				969123B51A7100120073C75A /* CHCircularBufferQueue.m in Sources */,
+				969123B61A7100120073C75A /* CHCircularBufferStack.m in Sources */,
+				969123B71A7100120073C75A /* CHDoublyLinkedList.m in Sources */,
+				969123B81A7100120073C75A /* CHListDeque.m in Sources */,
+				969123B91A7100120073C75A /* CHListQueue.m in Sources */,
+				969123BA1A7100120073C75A /* CHListStack.m in Sources */,
+				969123BB1A7100120073C75A /* CHMultiDictionary.m in Sources */,
+				969123BC1A7100120073C75A /* CHMutableArrayHeap.m in Sources */,
+				969123BD1A7100120073C75A /* CHMutableDictionary.m in Sources */,
+				969123BE1A7100120073C75A /* CHMutableSet.m in Sources */,
+				969123BF1A7100120073C75A /* CHOrderedDictionary.m in Sources */,
+				969123C01A7100120073C75A /* CHOrderedSet.m in Sources */,
+				969123C11A7100120073C75A /* CHRedBlackTree.m in Sources */,
+				969123C21A7100120073C75A /* CHSinglyLinkedList.m in Sources */,
+				969123C31A7100120073C75A /* CHSortedDictionary.m in Sources */,
+				969123C41A7100120073C75A /* CHTreap.m in Sources */,
+				969123C51A7100120073C75A /* CHUnbalancedTree.m in Sources */,
+				969123AC1A7100120073C75A /* Util.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		96E5B2AC1A70FCB50074B77B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				96E5B2C11A70FDAE0074B77B /* CHAbstractListCollectionTest.m in Sources */,
+				96E5B2C21A70FDAE0074B77B /* CHCircularBufferTest.m in Sources */,
+				96E5B2C31A70FDAE0074B77B /* CHCustomDictionariesTest.m in Sources */,
+				96E5B2C71A70FDAE0074B77B /* CHCustomSetsTest.m in Sources */,
+				96E5B2C41A70FDAE0074B77B /* CHDequeTest.m in Sources */,
+				96E5B2C51A70FDAE0074B77B /* CHHeapTest.m in Sources */,
+				96E5B2C61A70FDAE0074B77B /* CHLinkedListTest.m in Sources */,
+				96E5B2C81A70FDAE0074B77B /* CHQueueTest.m in Sources */,
+				96E5B2C91A70FDAE0074B77B /* CHSortedSetTest.m in Sources */,
+				96E5B2CA1A70FDAE0074B77B /* CHStackTest.m in Sources */,
+				96E5B2CB1A70FDAE0074B77B /* UtilTest.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E44B59B10E95850F00F9DD1A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -779,30 +1013,45 @@
 			buildActionMask = 2147483647;
 			files = (
 				E4A720C60EA78DCE00E0AC21 /* CHAbstractListCollectionTest.m in Sources */,
+				E4D3A4C70F789FF500E21CF8 /* CHCircularBufferTest.m in Sources */,
+				E4D48E970FE9510B009BA8BC /* CHCustomDictionariesTest.m in Sources */,
+				E49BE3DC0FB230D4002904AB /* CHCustomSetsTest.m in Sources */,
 				E4FD52CD0ECA8589006D9FF8 /* CHDequeTest.m in Sources */,
+				E48BFBB00EE858F40004D5E6 /* CHHeapTest.m in Sources */,
+				E46300B30ECBEDAF00E1AF73 /* CHLinkedListTest.m in Sources */,
 				E4FD52F60ECA8A9F006D9FF8 /* CHQueueTest.m in Sources */,
+				E4290A78100CE7F100C2C968 /* CHSortedSetTest.m in Sources */,
 				E4FD53030ECA9212006D9FF8 /* CHStackTest.m in Sources */,
 				E44EB0F20ECB83230071F93A /* UtilTest.m in Sources */,
-				E46300B30ECBEDAF00E1AF73 /* CHLinkedListTest.m in Sources */,
-				E48BFBB00EE858F40004D5E6 /* CHHeapTest.m in Sources */,
-				E4D3A4C70F789FF500E21CF8 /* CHCircularBufferTest.m in Sources */,
-				E49BE3DC0FB230D4002904AB /* CHCustomSetsTest.m in Sources */,
-				E4D48E970FE9510B009BA8BC /* CHCustomDictionariesTest.m in Sources */,
-				E4290A78100CE7F100C2C968 /* CHSortedSetTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		963818E91A7105EB0067CF59 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 96E5B2A51A70FCB40074B77B /* iOS */;
+			targetProxy = 963818E81A7105EB0067CF59 /* PBXContainerItemProxy */;
+		};
+		963818EB1A7105EB0067CF59 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 96E5B2AF1A70FCB50074B77B /* iOSTests */;
+			targetProxy = 963818EA1A7105EB0067CF59 /* PBXContainerItemProxy */;
+		};
+		96E5B2B31A70FCB50074B77B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 96E5B2A51A70FCB40074B77B /* iOS */;
+			targetProxy = 96E5B2B21A70FCB50074B77B /* PBXContainerItemProxy */;
+		};
 		E428B52F0EA537D9007CB324 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 8DC2EF4F0486A6940098B216 /* Framework */;
+			target = 8DC2EF4F0486A6940098B216 /* Mac */;
 			targetProxy = E428B52E0EA537D9007CB324 /* PBXContainerItemProxy */;
 		};
 		E43C876C0EA3D35C00B3B31E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 8DC2EF4F0486A6940098B216 /* Framework */;
+			target = 8DC2EF4F0486A6940098B216 /* Mac */;
 			targetProxy = E43C876B0EA3D35C00B3B31E /* PBXContainerItemProxy */;
 		};
 		E43C87A50EA3E19500B3B31E /* PBXTargetDependency */ = {
@@ -812,17 +1061,17 @@
 		};
 		E4A721AA0EA7AEFB00E0AC21 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 8DC2EF4F0486A6940098B216 /* Framework */;
+			target = 8DC2EF4F0486A6940098B216 /* Mac */;
 			targetProxy = E4A721A90EA7AEFB00E0AC21 /* PBXContainerItemProxy */;
 		};
 		E4FAE15F0E968F20007BB1F9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 8DC2EF4F0486A6940098B216 /* Framework */;
+			target = 8DC2EF4F0486A6940098B216 /* Mac */;
 			targetProxy = E4FAE15E0E968F20007BB1F9 /* PBXContainerItemProxy */;
 		};
 		E4FAE1610E968F20007BB1F9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = E473CB540E9346CB005CA997 /* Unit Testing */;
+			target = E473CB540E9346CB005CA997 /* MacTests */;
 			targetProxy = E4FAE1600E968F20007BB1F9 /* PBXContainerItemProxy */;
 		};
 		E4FAE1630E968F20007BB1F9 /* PBXTargetDependency */ = {
@@ -861,7 +1110,6 @@
 				GCC_PREFIX_HEADER = source/CHDataStructures_Prefix.pch;
 				INFOPLIST_FILE = "resources/Info-Framework.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
-				PRODUCT_NAME = CHDataStructures;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Debug;
@@ -878,7 +1126,6 @@
 				GCC_PREFIX_HEADER = source/CHDataStructures_Prefix.pch;
 				INFOPLIST_FILE = "resources/Info-Framework.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
-				PRODUCT_NAME = CHDataStructures;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Release;
@@ -904,6 +1151,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
+				PRODUCT_NAME = CHDataStructures;
 			};
 			name = Debug;
 		};
@@ -927,112 +1175,161 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = NO;
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
+				PRODUCT_NAME = CHDataStructures;
 			};
 			name = Release;
 		};
-		E40C05AD0FB4D3FB004351C9 /* Coverage */ = {
+		96E5B2B91A70FCB50074B77B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_ENABLE_SYMBOL_SEPARATION = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_USE_GCC3_PFE_SUPPORT = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_MISSING_PARENTHESES = NO;
-				GCC_WARN_SIGN_COMPARE = YES;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
-			};
-			name = Coverage;
-		};
-		E40C05AE0FB4D3FB004351C9 /* Coverage */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_VERSION = A;
-				GCC_ENABLE_OBJC_GC = no;
-				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
-				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_PREFIX_HEADER = source/CHDataStructures_Prefix.pch;
-				GCC_VERSION = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "resources/Info-Framework.plist";
-				INSTALL_PATH = "@executable_path/../Frameworks";
-				OTHER_LDFLAGS = "-lgcov";
-				PRODUCT_NAME = CHDataStructures;
-				WRAPPER_EXTENSION = framework;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
-			name = Coverage;
+			name = Debug;
 		};
-		E40C05AF0FB4D3FB004351C9 /* Coverage */ = {
+		96E5B2BB1A70FCB50074B77B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				GCC_ENABLE_OBJC_GC = unsupported;
-				PATH = "$PATH:/usr/local/bin";
-				PRODUCT_NAME = Documentation;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = source/CHDataStructures_Prefix.pch;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "resources/Info-Framework.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
-			name = Coverage;
+			name = Release;
 		};
-		E40C05B00FB4D3FB004351C9 /* Coverage */ = {
+		96E5B2BC1A70FCB50074B77B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
-				GCC_ENABLE_OBJC_GC = unsupported;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Foundation.framework/Headers/Foundation.h";
-				INFOPLIST_FILE = "resources/Info-Unit-Testing.plist";
-				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					SenTestingKit,
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
 				);
-				PRODUCT_NAME = CHDataStructures;
-				WRAPPER_EXTENSION = octest;
-			};
-			name = Coverage;
-		};
-		E40C05B20FB4D3FB004351C9 /* Coverage */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Foundation.framework/Headers/Foundation.h";
-				INSTALL_PATH = /usr/local/bin;
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
 				);
-				PRODUCT_NAME = Benchmarks;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "resources/Info-Tests.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				SDKROOT = iphoneos;
 			};
-			name = Coverage;
+			name = Debug;
 		};
-		E40C05B30FB4D3FB004351C9 /* Coverage */ = {
+		96E5B2BE1A70FCB50074B77B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				PRODUCT_NAME = CHDataStructures;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = "resources/Info-Tests.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
 			};
-			name = Coverage;
-		};
-		E40C05B40FB4D3FB004351C9 /* Coverage */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				PRODUCT_NAME = All;
-			};
-			name = Coverage;
+			name = Release;
 		};
 		E43C87690EA3D35500B3B31E /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1081,19 +1378,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_ENABLE_OBJC_GC = unsupported;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Foundation.framework/Headers/Foundation.h";
-				INFOPLIST_FILE = "resources/Info-Unit-Testing.plist";
+				INFOPLIST_FILE = "resources/Info-Tests.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
 				OTHER_LDFLAGS = (
 					"-framework",
 					Foundation,
-					"-framework",
-					SenTestingKit,
 				);
-				PRODUCT_NAME = CHDataStructures;
-				WRAPPER_EXTENSION = octest;
 			};
 			name = Debug;
 		};
@@ -1101,19 +1394,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_ENABLE_OBJC_GC = unsupported;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Foundation.framework/Headers/Foundation.h";
-				INFOPLIST_FILE = "resources/Info-Unit-Testing.plist";
+				INFOPLIST_FILE = "resources/Info-Tests.plist";
 				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
 				OTHER_LDFLAGS = (
 					"-framework",
 					Foundation,
-					"-framework",
-					SenTestingKit,
 				);
-				PRODUCT_NAME = CHDataStructures;
-				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
 		};
@@ -1156,11 +1445,10 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "Framework" */ = {
+		1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "Mac" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1DEB91AE08733DA50010E9CD /* Debug */,
-				E40C05AE0FB4D3FB004351C9 /* Coverage */,
 				1DEB91AF08733DA50010E9CD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1170,8 +1458,25 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1DEB91B208733DA50010E9CD /* Debug */,
-				E40C05AD0FB4D3FB004351C9 /* Coverage */,
 				1DEB91B308733DA50010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		96E5B2BF1A70FCB50074B77B /* Build configuration list for PBXNativeTarget "iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				96E5B2B91A70FCB50074B77B /* Debug */,
+				96E5B2BB1A70FCB50074B77B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		96E5B2C01A70FCB50074B77B /* Build configuration list for PBXNativeTarget "iOSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				96E5B2BC1A70FCB50074B77B /* Debug */,
+				96E5B2BE1A70FCB50074B77B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
@@ -1180,7 +1485,6 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E43C87690EA3D35500B3B31E /* Debug */,
-				E40C05B30FB4D3FB004351C9 /* Coverage */,
 				E43C876A0EA3D35500B3B31E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1190,17 +1494,15 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E44B59B80E95851000F9DD1A /* Debug */,
-				E40C05B20FB4D3FB004351C9 /* Coverage */,
 				E44B59B90E95851000F9DD1A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		E473CB690E9346F3005CA997 /* Build configuration list for PBXNativeTarget "Unit Testing" */ = {
+		E473CB690E9346F3005CA997 /* Build configuration list for PBXNativeTarget "MacTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E473CB580E9346CB005CA997 /* Debug */,
-				E40C05B00FB4D3FB004351C9 /* Coverage */,
 				E473CB590E9346CB005CA997 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1210,7 +1512,6 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E4FAE15C0E968F1B007BB1F9 /* Debug */,
-				E40C05B40FB4D3FB004351C9 /* Coverage */,
 				E4FAE15D0E968F1B007BB1F9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1220,7 +1521,6 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E4FE76D90E89556A00971EE6 /* Debug */,
-				E40C05AF0FB4D3FB004351C9 /* Coverage */,
 				E4FE76DA0E89556A00971EE6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;

@@ -10,12 +10,12 @@
  The software is  provided "as is", without warranty of any kind, including all implied warranties of merchantability and fitness. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
  */
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 #import "CHLinkedList.h"
 #import "CHDoublyLinkedList.h"
 #import "CHSinglyLinkedList.h"
 
-@interface CHLinkedListTest : SenTestCase {
+@interface CHLinkedListTest : XCTestCase {
 	id<CHLinkedList> list;
 	NSArray* linkedListClasses;
 	NSArray* abc;
@@ -41,13 +41,13 @@
 	Class aClass;
 	while (aClass = [classes nextObject]) {
 		list = [[[aClass alloc] initWithArray:abc] autorelease];
-		STAssertEquals([list count], [abc count], nil);
+		XCTAssertEqual([list count], [abc count]);
 		
 		NSData *data = [NSKeyedArchiver archivedDataWithRootObject:list];
 		list = [NSKeyedUnarchiver unarchiveObjectWithData:data];
 		
-		STAssertEquals([list count], [abc count], nil);
-		STAssertEqualObjects([list allObjects], abc, nil);
+		XCTAssertEqual([list count], [abc count]);
+		XCTAssertEqualObjects([list allObjects], abc);
 	}
 }
 
@@ -57,9 +57,9 @@
 	while (aClass = [classes nextObject]) {
 		list = [[[aClass alloc] initWithArray:abc] autorelease];
 		id<CHLinkedList> list2 = [[list copyWithZone:nil] autorelease];
-		STAssertNotNil(list2, nil);
-		STAssertEquals([list2 count], [abc count], nil);
-		STAssertEqualObjects([list allObjects], [list2 allObjects], nil);
+		XCTAssertNotNil(list2);
+		XCTAssertEqual([list2 count], [abc count]);
+		XCTAssertEqualObjects([list allObjects], [list2 allObjects]);
 	}
 }
 
@@ -72,10 +72,10 @@
 		for (number = 1; number <= 32; number++)
 			[list addObject:[NSNumber numberWithUnsignedInteger:number]];
 		for (NSNumber *object in list) {
-			STAssertEquals([object unsignedIntegerValue], expected++, nil);
+			XCTAssertEqual([object unsignedIntegerValue], expected++);
 			count++;
 		}
-		STAssertEquals(count, (NSUInteger)32, nil);
+		XCTAssertEqual(count, (NSUInteger)32);
 		
 		BOOL raisedException = NO;
 		@try {
@@ -86,7 +86,7 @@
 			raisedException = YES;
 		}
 		// Test that a mutation exception was raised
-		STAssertTrue(raisedException, nil);
+		XCTAssertTrue(raisedException);
 	}
 }
 
@@ -97,10 +97,10 @@
 	Class aClass;
 	while (aClass = [classes nextObject]) {
 		list = [[[aClass alloc] init] autorelease];
-		STAssertNotNil(list, nil);
-		STAssertEquals([list count], (NSUInteger)0, nil);
-		STAssertEqualObjects([list firstObject], nil, nil);	
-		STAssertEqualObjects([list lastObject], nil, nil);
+		XCTAssertNotNil(list);
+		XCTAssertEqual([list count], (NSUInteger)0);
+		XCTAssertEqualObjects([list firstObject], nil);	
+		XCTAssertEqualObjects([list lastObject], nil);
 	}
 }
 
@@ -109,8 +109,8 @@
 	Class aClass;
 	while (aClass = [classes nextObject]) {
 		list = [[[aClass alloc] initWithArray:abc] autorelease];
-		STAssertEquals([list count], [abc count], nil);
-		STAssertEqualObjects([list allObjects], abc, nil);
+		XCTAssertEqual([list count], [abc count]);
+		XCTAssertEqualObjects([list allObjects], abc);
 	}
 }
 
@@ -119,7 +119,7 @@
 	Class aClass;
 	while (aClass = [classes nextObject]) {
 		list = [[[aClass alloc] initWithArray:abc] autorelease];
-		STAssertEqualObjects([list description], [abc description], nil);
+		XCTAssertEqualObjects([list description], [abc description]);
 	}
 }
 
@@ -131,15 +131,15 @@
 	while (aClass = [classes nextObject]) {
 		list = [[[aClass alloc] init] autorelease];
 		// Prepending a nil object should raise an exception
-		STAssertThrows([list prependObject:nil], nil);
+		XCTAssertThrows([list prependObject:nil]);
 		// Test prepending valid objects
 		e = [abc objectEnumerator];
 		while (anObject = [e nextObject])
 			[list prependObject:anObject];
 		// Verify first and last object
-		STAssertEquals([list count], [abc count], nil);
-		STAssertEqualObjects([list firstObject], @"C", nil);
-		STAssertEqualObjects([list lastObject],  @"A", nil);
+		XCTAssertEqual([list count], [abc count]);
+		XCTAssertEqualObjects([list firstObject], @"C");
+		XCTAssertEqualObjects([list lastObject],  @"A");
 	}
 }
 
@@ -149,15 +149,15 @@
 	while (aClass = [classes nextObject]) {
 		list = [[[aClass alloc] init] autorelease];
 		// Appending a nil object should raise an exception
-		STAssertThrows([list addObject:nil], nil);
+		XCTAssertThrows([list addObject:nil]);
 		// Test appending valid objects
 		e = [abc objectEnumerator];
 		while (anObject = [e nextObject])
 			[list addObject:anObject];
 		// Verify first and last object
-		STAssertEquals([list count], [abc count], nil);
-		STAssertEqualObjects([list firstObject], @"A", nil);
-		STAssertEqualObjects([list lastObject],  @"C", nil);
+		XCTAssertEqual([list count], [abc count]);
+		XCTAssertEqualObjects([list firstObject], @"A");
+		XCTAssertEqualObjects([list lastObject],  @"C");
 	}
 }
 
@@ -167,10 +167,10 @@
 	while (aClass = [classes nextObject]) {
 		list = [[[aClass alloc] init] autorelease];
 		// Passing a nil argument for the array should have no effect
-		STAssertNoThrow([list addObjectsFromArray:nil], nil);
+		XCTAssertNoThrow([list addObjectsFromArray:nil]);
 		// Test whether items are added to the list properly
-		STAssertNoThrow([list addObjectsFromArray:abc], nil);
-		STAssertEqualObjects([list allObjects], abc, nil);
+		XCTAssertNoThrow([list addObjectsFromArray:abc]);
+		XCTAssertEqualObjects([list allObjects], abc);
 	}
 }
 
@@ -180,28 +180,28 @@
 	while (aClass = [classes nextObject]) {
 		list = [[[aClass alloc] init] autorelease];
 		// When the list is empty, calls with any index should raise exception
-		STAssertThrows([list exchangeObjectAtIndex:0 withObjectAtIndex:0], nil);
-		STAssertThrows([list exchangeObjectAtIndex:0 withObjectAtIndex:1], nil);
-		STAssertThrows([list exchangeObjectAtIndex:1 withObjectAtIndex:0], nil);
+		XCTAssertThrows([list exchangeObjectAtIndex:0 withObjectAtIndex:0]);
+		XCTAssertThrows([list exchangeObjectAtIndex:0 withObjectAtIndex:1]);
+		XCTAssertThrows([list exchangeObjectAtIndex:1 withObjectAtIndex:0]);
 		// When either index exceeds the bounds, an exception should be raised
 		[list addObjectsFromArray:abc];
-		STAssertThrows([list exchangeObjectAtIndex:0 withObjectAtIndex:[abc count]], nil);
-		STAssertThrows([list exchangeObjectAtIndex:[abc count] withObjectAtIndex:0], nil);
+		XCTAssertThrows([list exchangeObjectAtIndex:0 withObjectAtIndex:[abc count]]);
+		XCTAssertThrows([list exchangeObjectAtIndex:[abc count] withObjectAtIndex:0]);
 		// Attempting to swap an index with itself should have no effect
 		for (NSUInteger i = 0; i < [abc count]; i++) {
 			[list exchangeObjectAtIndex:i withObjectAtIndex:i];
-			STAssertEqualObjects([list allObjects], abc, nil);
+			XCTAssertEqualObjects([list allObjects], abc);
 		}
 		// Test exchanging objects and verify correctness of swaps
 		[list exchangeObjectAtIndex:0 withObjectAtIndex:2];
-		STAssertEqualObjects([list firstObject],     @"C", nil);
-		STAssertEqualObjects([list lastObject],      @"A", nil);
+		XCTAssertEqualObjects([list firstObject],     @"C");
+		XCTAssertEqualObjects([list lastObject],      @"A");
 		[list exchangeObjectAtIndex:0 withObjectAtIndex:1];
-		STAssertEqualObjects([list firstObject],     @"B", nil);
-		STAssertEqualObjects([list objectAtIndex:1], @"C", nil);
+		XCTAssertEqualObjects([list firstObject],     @"B");
+		XCTAssertEqualObjects([list objectAtIndex:1], @"C");
 		[list exchangeObjectAtIndex:2 withObjectAtIndex:1];
-		STAssertEqualObjects([list objectAtIndex:1], @"A", nil);
-		STAssertEqualObjects([list lastObject],      @"C", nil);
+		XCTAssertEqualObjects([list objectAtIndex:1], @"A");
+		XCTAssertEqualObjects([list lastObject],      @"C");
 	}
 }
 
@@ -211,36 +211,36 @@
 	while (aClass = [classes nextObject]) {
 		list = [[[aClass alloc] init] autorelease];
 		// Test inserting using invalid object and invalid indexes
-		STAssertThrows([list insertObject:nil  atIndex:0],  nil);
-		STAssertThrows([list insertObject:nil  atIndex:-1], nil);
-		STAssertThrows([list insertObject:@"A" atIndex:-1], nil);
-		STAssertThrows([list insertObject:@"A" atIndex:1],  nil);
+		XCTAssertThrows([list insertObject:nil  atIndex:0]);
+		XCTAssertThrows([list insertObject:nil  atIndex:-1]);
+		XCTAssertThrows([list insertObject:@"A" atIndex:-1]);
+		XCTAssertThrows([list insertObject:@"A" atIndex:1]);
 		
 		[list addObjectsFromArray:abc];
-		STAssertEquals([list count], [abc count], nil);
-		STAssertThrows([list insertObject:@"A" atIndex:[abc count]+1], nil);
-		STAssertNoThrow([list insertObject:@"A" atIndex:[abc count]], nil);
+		XCTAssertEqual([list count], [abc count]);
+		XCTAssertThrows([list insertObject:@"A" atIndex:[abc count]+1]);
+		XCTAssertNoThrow([list insertObject:@"A" atIndex:[abc count]]);
 		[list removeLastObject];
 		
 		// Try inserting in the middle
 		[list insertObject:@"D" atIndex:1];
-		STAssertEquals([list count], [abc count]+1, nil);
-		STAssertEqualObjects([list objectAtIndex:0], @"A", nil);
-		STAssertEqualObjects([list objectAtIndex:1], @"D", nil);
-		STAssertEqualObjects([list objectAtIndex:2], @"B", nil);
-		STAssertEqualObjects([list objectAtIndex:3], @"C", nil);
+		XCTAssertEqual([list count], [abc count]+1);
+		XCTAssertEqualObjects([list objectAtIndex:0], @"A");
+		XCTAssertEqualObjects([list objectAtIndex:1], @"D");
+		XCTAssertEqualObjects([list objectAtIndex:2], @"B");
+		XCTAssertEqualObjects([list objectAtIndex:3], @"C");
 		// Try inserting at the beginning
 		[list insertObject:@"E" atIndex:0];
-		STAssertEquals([list count], [abc count]+2, nil);
-		STAssertEqualObjects([list objectAtIndex:0], @"E", nil);
-		STAssertEqualObjects([list objectAtIndex:1], @"A", nil);
-		STAssertEqualObjects([list objectAtIndex:2], @"D", nil);
-		STAssertEqualObjects([list objectAtIndex:3], @"B", nil);
-		STAssertEqualObjects([list objectAtIndex:4], @"C", nil);
+		XCTAssertEqual([list count], [abc count]+2);
+		XCTAssertEqualObjects([list objectAtIndex:0], @"E");
+		XCTAssertEqualObjects([list objectAtIndex:1], @"A");
+		XCTAssertEqualObjects([list objectAtIndex:2], @"D");
+		XCTAssertEqualObjects([list objectAtIndex:3], @"B");
+		XCTAssertEqualObjects([list objectAtIndex:4], @"C");
 		// Try inserting at the end
 		[list insertObject:@"F" atIndex:5];
-		STAssertEquals([list count], [abc count]+3, nil);
-		STAssertEqualObjects([list objectAtIndex:5], @"F", nil);
+		XCTAssertEqual([list count], [abc count]+3);
+		XCTAssertEqualObjects([list objectAtIndex:5], @"F");
 	}
 }
 
@@ -250,28 +250,28 @@
 	while (aClass = [classes nextObject]) {
 		list = [[[aClass alloc] init] autorelease];
 		// Test inserting using invalid objects and invalid indexes
-		STAssertThrows([list insertObjects:nil
-								 atIndexes:nil], nil);
-		STAssertThrows([list insertObjects:[NSArray array]
-								 atIndexes:nil], nil);
-		STAssertThrows([list insertObjects:[NSArray array]
-								 atIndexes:[NSIndexSet indexSetWithIndex:0]], nil);
-		STAssertThrows([list insertObjects:[NSArray arrayWithObject:[NSNull null]]
-								 atIndexes:[NSIndexSet indexSet]], nil);
+		XCTAssertThrows([list insertObjects:nil
+								 atIndexes:nil]);
+		XCTAssertThrows([list insertObjects:[NSArray array]
+								 atIndexes:nil]);
+		XCTAssertThrows([list insertObjects:[NSArray array]
+								 atIndexes:[NSIndexSet indexSetWithIndex:0]]);
+		XCTAssertThrows([list insertObjects:[NSArray arrayWithObject:[NSNull null]]
+								 atIndexes:[NSIndexSet indexSet]]);
 		// Test inserting beyond the allowed index range
-		STAssertThrows([list insertObjects:[NSArray arrayWithObject:[NSNull null]]
-								 atIndexes:[NSIndexSet indexSetWithIndex:1]], nil);
+		XCTAssertThrows([list insertObjects:[NSArray arrayWithObject:[NSNull null]]
+								 atIndexes:[NSIndexSet indexSetWithIndex:1]]);
 		// Test inserting a single object into an empty list
-		STAssertNoThrow([list insertObjects:[NSArray arrayWithObject:@"A"]
-								  atIndexes:[NSIndexSet indexSetWithIndex:0]], nil);
-		STAssertEquals([list count], (NSUInteger)1, nil);
-		STAssertEqualObjects([list objectAtIndex:0], @"A", nil);
+		XCTAssertNoThrow([list insertObjects:[NSArray arrayWithObject:@"A"]
+								  atIndexes:[NSIndexSet indexSetWithIndex:0]]);
+		XCTAssertEqual([list count], (NSUInteger)1);
+		XCTAssertEqualObjects([list objectAtIndex:0], @"A");
 		// Test inserting multiple objects into an empty list
 		[list removeAllObjects];
 		NSIndexSet *firstIndexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [abc count])];
-		STAssertNoThrow([list insertObjects:abc
-								  atIndexes:firstIndexes], nil);
-		STAssertEquals([list count], [abc count], nil);
+		XCTAssertNoThrow([list insertObjects:abc
+								  atIndexes:firstIndexes]);
+		XCTAssertEqual([list count], [abc count]);
 		// Test inserting objects on both sides of existing objects
 		NSMutableArray *objects = [NSMutableArray array];
 		NSMutableIndexSet *indexes = [NSMutableIndexSet indexSet];
@@ -282,13 +282,13 @@
 		NSMutableArray *expected = [NSMutableArray arrayWithArray:abc];
 		[expected insertObjects:objects atIndexes:indexes];
 		[list insertObjects:objects atIndexes:indexes];
-		STAssertEquals([list count], [expected count], nil);
-		STAssertEqualObjects([list allObjects], expected, nil);
+		XCTAssertEqual([list count], [expected count]);
+		XCTAssertEqualObjects([list allObjects], expected);
 		// Test inserting objects at the front of the list
 		[expected insertObjects:abc atIndexes:firstIndexes];
 		[list insertObjects:abc atIndexes:firstIndexes];
-		STAssertEquals([list count], [expected count], nil);
-		STAssertEqualObjects([list allObjects], expected, nil);
+		XCTAssertEqual([list count], [expected count]);
+		XCTAssertEqualObjects([list allObjects], expected);
 	}		
 }
 
@@ -298,75 +298,75 @@
 	while (aClass = [classes nextObject]) {
 		list = [[[aClass alloc] init] autorelease];
 		// Enumerator shouldn't retain collection if there are no objects
-		STAssertEquals([list retainCount], (NSUInteger)1, nil);
+		XCTAssertEqual([list retainCount], (NSUInteger)1);
 		e = [list objectEnumerator];
-		STAssertNotNil(e, nil);
-		STAssertEquals([list retainCount], (NSUInteger)1, nil);
-		STAssertNil([e nextObject], nil);
+		XCTAssertNotNil(e);
+		XCTAssertEqual([list retainCount], (NSUInteger)1);
+		XCTAssertNil([e nextObject]);
 		
 		// Enumerator should retain collection when it has 1+ objects
 		[list addObjectsFromArray:abc];
-		STAssertEquals([list retainCount], (NSUInteger)1, nil);
+		XCTAssertEqual([list retainCount], (NSUInteger)1);
 		e = [list objectEnumerator];
-		STAssertNotNil(e, nil);
-		STAssertEquals([list retainCount], (NSUInteger)2, nil);
+		XCTAssertNotNil(e);
+		XCTAssertEqual([list retainCount], (NSUInteger)2);
 		
 		// Enumerator should release collection when all objects are exhausted
-		STAssertEqualObjects([e nextObject], @"A", nil);
-		STAssertEqualObjects([e nextObject], @"B", nil);
-		STAssertEqualObjects([e nextObject], @"C", nil);
+		XCTAssertEqualObjects([e nextObject], @"A");
+		XCTAssertEqualObjects([e nextObject], @"B");
+		XCTAssertEqualObjects([e nextObject], @"C");
 		
-		STAssertEquals([list retainCount], (NSUInteger)2, nil);
-		STAssertNil([e nextObject], nil);
-		STAssertEquals([list retainCount], (NSUInteger)1, nil);
+		XCTAssertEqual([list retainCount], (NSUInteger)2);
+		XCTAssertNil([e nextObject]);
+		XCTAssertEqual([list retainCount], (NSUInteger)1);
 		
 		e = [list objectEnumerator];
-		STAssertEquals([list retainCount], (NSUInteger)2, nil);
+		XCTAssertEqual([list retainCount], (NSUInteger)2);
 		NSArray *allObjects = [e allObjects];
-		STAssertEquals([list retainCount], (NSUInteger)1, nil);
-		STAssertNotNil(allObjects, nil);
-		STAssertEqualObjects(allObjects, abc, nil);
-		STAssertEqualObjects([allObjects objectAtIndex:0], @"A", nil);
-		STAssertEqualObjects([allObjects lastObject],      @"C", nil);
+		XCTAssertEqual([list retainCount], (NSUInteger)1);
+		XCTAssertNotNil(allObjects);
+		XCTAssertEqualObjects(allObjects, abc);
+		XCTAssertEqualObjects([allObjects objectAtIndex:0], @"A");
+		XCTAssertEqualObjects([allObjects lastObject],      @"C");
 		
 		// Enumerator should release collection on -dealloc
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		STAssertEquals([list retainCount], (NSUInteger)1, nil);
+		XCTAssertEqual([list retainCount], (NSUInteger)1);
 		e = [list objectEnumerator];
-		STAssertNotNil(e, nil);
-		STAssertEquals([list retainCount], (NSUInteger)2, nil);
+		XCTAssertNotNil(e);
+		XCTAssertEqual([list retainCount], (NSUInteger)2);
 		// Force deallocation of enumerator by draining autorelease pool
 		[pool drain];
-		STAssertEquals([list retainCount], (NSUInteger)1, nil);	
+		XCTAssertEqual([list retainCount], (NSUInteger)1);	
 		
 		// For doubly-linked list, test reverse enumeration order as well
 		if (aClass == [CHDoublyLinkedList class]) {
 			e = [(CHDoublyLinkedList*)list reverseObjectEnumerator];
-			STAssertEqualObjects([e nextObject], @"C", nil);
-			STAssertEqualObjects([e nextObject], @"B", nil);
-			STAssertEqualObjects([e nextObject], @"A", nil);
+			XCTAssertEqualObjects([e nextObject], @"C");
+			XCTAssertEqualObjects([e nextObject], @"B");
+			XCTAssertEqualObjects([e nextObject], @"A");
 			
-			STAssertEquals([list retainCount], (NSUInteger)2, nil);
-			STAssertNil([e nextObject], nil);
-			STAssertEquals([list retainCount], (NSUInteger)1, nil);
+			XCTAssertEqual([list retainCount], (NSUInteger)2);
+			XCTAssertNil([e nextObject]);
+			XCTAssertEqual([list retainCount], (NSUInteger)1);
 			
 			e = [(CHDoublyLinkedList*)list reverseObjectEnumerator];
-			STAssertEquals([list retainCount], (NSUInteger)2, nil);
+			XCTAssertEqual([list retainCount], (NSUInteger)2);
 			allObjects = [e allObjects];
-			STAssertEquals([list retainCount], (NSUInteger)1, nil);
-			STAssertNotNil(allObjects, nil);
+			XCTAssertEqual([list retainCount], (NSUInteger)1);
+			XCTAssertNotNil(allObjects);
 			NSArray *cba = [NSArray arrayWithObjects:@"C",@"B",@"A",nil];
-			STAssertEqualObjects(allObjects, cba, nil);
-			STAssertEqualObjects([allObjects objectAtIndex:0], @"C", nil);
-			STAssertEqualObjects([allObjects lastObject],      @"A", nil);			
+			XCTAssertEqualObjects(allObjects, cba);
+			XCTAssertEqualObjects([allObjects objectAtIndex:0], @"C");
+			XCTAssertEqualObjects([allObjects lastObject],      @"A");			
 		}
 		
 		// Test for mutation exception in the middle of enumeration
 		e = [list objectEnumerator];
-		STAssertNoThrow([e nextObject], nil);
+		XCTAssertNoThrow([e nextObject]);
 		[list addObject:@"bogus"];
-		STAssertThrows([e nextObject], nil);
-		STAssertThrows([e allObjects], nil);
+		XCTAssertThrows([e nextObject]);
+		XCTAssertThrows([e allObjects]);
 	}
 }
 
@@ -378,11 +378,11 @@
 	while (aClass = [classes nextObject]) {
 		list = [[[aClass alloc] init] autorelease];
 		NSString *a = [NSString stringWithFormat:@"A"];
-		STAssertFalse([list containsObject:@"A"], nil);
+		XCTAssertFalse([list containsObject:@"A"]);
 		[list addObject:@"A"];
-		STAssertTrue([list containsObject:@"A"], nil);
-		STAssertTrue([list containsObject:a], nil);
-		STAssertFalse([list containsObject:@"bogus"], nil);
+		XCTAssertTrue([list containsObject:@"A"]);
+		XCTAssertTrue([list containsObject:a]);
+		XCTAssertFalse([list containsObject:@"bogus"]);
 	}
 }
 
@@ -392,10 +392,10 @@
 	while (aClass = [classes nextObject]) {
 		list = [[[aClass alloc] init] autorelease];
 		NSString *a = [NSString stringWithFormat:@"A"];
-		STAssertFalse([list containsObjectIdenticalTo:a], nil);
+		XCTAssertFalse([list containsObjectIdenticalTo:a]);
 		[list addObject:a];
-		STAssertTrue([list containsObjectIdenticalTo:a], nil);
-		STAssertFalse([list containsObjectIdenticalTo:@"A"], nil);
+		XCTAssertTrue([list containsObjectIdenticalTo:a]);
+		XCTAssertFalse([list containsObjectIdenticalTo:@"A"]);
 	}
 }
 
@@ -404,12 +404,12 @@
 	Class aClass;
 	while (aClass = [classes nextObject]) {
 		list = [[[aClass alloc] init] autorelease];
-		STAssertEquals([list indexOfObject:@"A"], (NSUInteger)NSNotFound, nil);
+		XCTAssertEqual([list indexOfObject:@"A"], (NSUInteger)NSNotFound);
 		[list addObjectsFromArray:abc];
 		for (NSUInteger i = 0; i < [abc count]; i++) {
-			STAssertEquals([list indexOfObject:[abc objectAtIndex:i]], i, nil);
+			XCTAssertEqual([list indexOfObject:[abc objectAtIndex:i]], i);
 		}
-		STAssertEquals([list indexOfObject:@"Z"], (NSUInteger)NSNotFound, nil);
+		XCTAssertEqual([list indexOfObject:@"Z"], (NSUInteger)NSNotFound);
 	}
 }
 
@@ -418,14 +418,14 @@
 	Class aClass;
 	while (aClass = [classes nextObject]) {
 		list = [[[aClass alloc] init] autorelease];
-		STAssertEquals([list indexOfObjectIdenticalTo:@"A"], (NSUInteger)NSNotFound, nil);
+		XCTAssertEqual([list indexOfObjectIdenticalTo:@"A"], (NSUInteger)NSNotFound);
 		[list addObjectsFromArray:abc];
 		// Test with the actual string, then a copy made from the string.
 		for (NSUInteger i = 0; i < [abc count]; i++) {
 			NSString *string = [abc objectAtIndex:i];
-			STAssertEquals([list indexOfObjectIdenticalTo:string], (NSUInteger)i, nil);
+			XCTAssertEqual([list indexOfObjectIdenticalTo:string], (NSUInteger)i);
 			string = [NSString stringWithFormat:@"%@", string];
-			STAssertEquals([list indexOfObjectIdenticalTo:string], (NSUInteger)NSNotFound, nil);
+			XCTAssertEqual([list indexOfObjectIdenticalTo:string], (NSUInteger)NSNotFound);
 		}
 	}
 }
@@ -445,15 +445,14 @@
 	id<CHLinkedList> list1, list2;
 	for (NSUInteger i = 0; i < [linkedListClasses count]; i++) {
 		list1 = [equalLinkedLists objectAtIndex:i];
-		STAssertThrowsSpecificNamed([list1 isEqualToLinkedList:[NSString string]],
-		                            NSException, NSInvalidArgumentException, nil);
-		STAssertFalse([list1 isEqual:[NSString string]], nil);
-		STAssertEqualObjects(list1, list1, nil);
+		XCTAssertThrowsSpecificNamed([list1 isEqualToLinkedList:[NSString string]], NSException, NSInvalidArgumentException);
+		XCTAssertFalse([list1 isEqual:[NSString string]]);
+		XCTAssertEqualObjects(list1, list1);
 		list2 = [emptyLinkedLists objectAtIndex:i];
-		STAssertFalse([list1 isEqual:list2], nil);
+		XCTAssertFalse([list1 isEqual:list2]);
 		list2 = [equalLinkedLists objectAtIndex:i+1];
-		STAssertEqualObjects(list1, list2, nil);
-		STAssertEquals([list1 hash], [list2 hash], nil);
+		XCTAssertEqualObjects(list1, list2);
+		XCTAssertEqual([list1 hash], [list2 hash]);
 	}
 }
 
@@ -465,11 +464,11 @@
 		e = [abc objectEnumerator];
 		while (anObject = [e nextObject])
 			[list addObject:anObject];
-		STAssertThrows([list objectAtIndex:-1], nil);
-		STAssertEqualObjects([list objectAtIndex:0], @"A", nil);
-		STAssertEqualObjects([list objectAtIndex:1], @"B", nil);
-		STAssertEqualObjects([list objectAtIndex:2], @"C", nil);
-		STAssertThrows([list objectAtIndex:3], nil);
+		XCTAssertThrows([list objectAtIndex:-1]);
+		XCTAssertEqualObjects([list objectAtIndex:0], @"A");
+		XCTAssertEqualObjects([list objectAtIndex:1], @"B");
+		XCTAssertEqualObjects([list objectAtIndex:2], @"C");
+		XCTAssertThrows([list objectAtIndex:3]);
 	}
 }
 
@@ -486,19 +485,19 @@
 				range.length = length;
 				NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:range];
 				if (location + length > count) {
-					STAssertThrows([list objectsAtIndexes:indexes], nil);
+					XCTAssertThrows([list objectsAtIndexes:indexes]);
 				} else {
-					STAssertEqualObjects([list objectsAtIndexes:indexes],
-										 [abc objectsAtIndexes:indexes], nil);
+					XCTAssertEqualObjects([list objectsAtIndexes:indexes],
+										 [abc objectsAtIndexes:indexes]);
 				}
 			}
 		}
 		NSMutableIndexSet *indexes = [NSMutableIndexSet indexSet];
 		[indexes addIndex:0];
 		[indexes addIndex:2];
-		STAssertEqualObjects([list objectsAtIndexes:indexes],
-							 [abc objectsAtIndexes:indexes], nil);
-		STAssertThrows([list objectsAtIndexes:nil], nil);
+		XCTAssertEqualObjects([list objectsAtIndexes:indexes],
+							 [abc objectsAtIndexes:indexes]);
+		XCTAssertThrows([list objectsAtIndexes:nil]);
 	}
 }
 
@@ -512,9 +511,9 @@
 		e = [abc objectEnumerator];
 		while (anObject = [e nextObject])
 			[list addObject:anObject];
-		STAssertEquals([list count], [abc count], nil);
+		XCTAssertEqual([list count], [abc count]);
 		[list removeAllObjects];
-		STAssertEquals([list count], (NSUInteger)0, nil);
+		XCTAssertEqual([list count], (NSUInteger)0);
 	}
 }
 
@@ -524,25 +523,25 @@
 	while (aClass = [classes nextObject]) {
 		list = [[[aClass alloc] init] autorelease];
 		
-		STAssertNoThrow([list removeFirstObject], nil);
+		XCTAssertNoThrow([list removeFirstObject]);
 		[list addObjectsFromArray:abc];
 		
-		STAssertNoThrow([list removeFirstObject], nil);
-		STAssertEquals([list count], (NSUInteger)2, nil);
-		STAssertEqualObjects([list firstObject], @"B", nil);
-		STAssertEqualObjects([list lastObject],  @"C", nil);
+		XCTAssertNoThrow([list removeFirstObject]);
+		XCTAssertEqual([list count], (NSUInteger)2);
+		XCTAssertEqualObjects([list firstObject], @"B");
+		XCTAssertEqualObjects([list lastObject],  @"C");
 		
 		[list removeFirstObject];
-		STAssertEquals([list count], (NSUInteger)1, nil);
-		STAssertEqualObjects([list firstObject], @"C", nil);
-		STAssertEqualObjects([list lastObject],  @"C", nil);
+		XCTAssertEqual([list count], (NSUInteger)1);
+		XCTAssertEqualObjects([list firstObject], @"C");
+		XCTAssertEqualObjects([list lastObject],  @"C");
 		// Doubly-linked list:  head->next === tail->prev
 		// Singly-linked list:  head->next === tail
 		
 		[list removeFirstObject];
-		STAssertEquals([list count], (NSUInteger)0, nil);
-		STAssertNil([list firstObject], nil);
-		STAssertNil([list lastObject],  nil);
+		XCTAssertEqual([list count], (NSUInteger)0);
+		XCTAssertNil([list firstObject]);
+		XCTAssertNil([list lastObject]);
 		// Doubly-linked list:  head->next === tail && tail->prev === head
 		// Singly-linked list:  head === tail
 	}
@@ -558,17 +557,17 @@
 		[list addObjectsFromArray:abc];
 		
 		[list removeLastObject];
-		STAssertEquals([list count], (NSUInteger)2, nil);
-		STAssertEqualObjects([list firstObject], @"A", nil);
-		STAssertEqualObjects([list lastObject],  @"B", nil);
+		XCTAssertEqual([list count], (NSUInteger)2);
+		XCTAssertEqualObjects([list firstObject], @"A");
+		XCTAssertEqualObjects([list lastObject],  @"B");
 		
 		[list removeLastObject];
-		STAssertEquals([list count], (NSUInteger)1, nil);
+		XCTAssertEqual([list count], (NSUInteger)1);
 		// Doubly-linked list:  head->next === tail->prev
 		// Singly-linked list:  head->next === tail
 		
 		[list removeLastObject];
-		STAssertEquals([list count], (NSUInteger)0, nil);
+		XCTAssertEqual([list count], (NSUInteger)0);
 		// Doubly-linked list:  head->next === tail && tail->prev === head
 		// Singly-linked list:  head === tail
 	}
@@ -580,25 +579,25 @@
 	while (aClass = [classes nextObject]) {
 		list = [[[aClass alloc] init] autorelease];
 		[list removeObject:@"bogus"]; // Should have no effect
-		STAssertNoThrow([list removeObject:nil], nil);
+		XCTAssertNoThrow([list removeObject:nil]);
 		
 		[list addObjectsFromArray:abc];
-		STAssertNoThrow([list removeObject:nil], nil);
+		XCTAssertNoThrow([list removeObject:nil]);
 		
 		[list removeObject:@"B"];
-		STAssertEquals([list count], (NSUInteger)2, nil);
-		STAssertEqualObjects([list firstObject], @"A", nil);
-		STAssertEqualObjects([list lastObject],  @"C", nil);
+		XCTAssertEqual([list count], (NSUInteger)2);
+		XCTAssertEqualObjects([list firstObject], @"A");
+		XCTAssertEqualObjects([list lastObject],  @"C");
 		
 		[list removeObject:@"A"];
-		STAssertEquals([list count], (NSUInteger)1, nil);
-		STAssertEqualObjects([list firstObject], @"C", nil);
-		STAssertEqualObjects([list lastObject],  @"C", nil);
+		XCTAssertEqual([list count], (NSUInteger)1);
+		XCTAssertEqualObjects([list firstObject], @"C");
+		XCTAssertEqualObjects([list lastObject],  @"C");
 		
 		[list removeObject:@"C"];
-		STAssertEquals([list count], (NSUInteger)0, nil);
-		STAssertNil([list firstObject], nil);
-		STAssertNil([list lastObject], nil);
+		XCTAssertEqual([list count], (NSUInteger)0);
+		XCTAssertNil([list firstObject]);
+		XCTAssertNil([list lastObject]);
 		
 		// Test removing all instances of an object	
 		[list addObject:@"A"];
@@ -608,12 +607,12 @@
 		[list addObject:@"Z"];
 		[list addObject:@"C"];
 		
-		STAssertEquals([list count], (NSUInteger)6, nil);
+		XCTAssertEqual([list count], (NSUInteger)6);
 		[list removeObject:@"Z"];
-		STAssertEquals([list count], (NSUInteger)3, nil);
-		STAssertEqualObjects([list objectAtIndex:0], @"A", nil);
-		STAssertEqualObjects([list objectAtIndex:1], @"B", nil);
-		STAssertEqualObjects([list objectAtIndex:2], @"C", nil);	
+		XCTAssertEqual([list count], (NSUInteger)3);
+		XCTAssertEqualObjects([list objectAtIndex:0], @"A");
+		XCTAssertEqualObjects([list objectAtIndex:1], @"B");
+		XCTAssertEqualObjects([list objectAtIndex:2], @"C");	
 	}
 }
 
@@ -622,15 +621,15 @@
 	Class aClass;
 	while (aClass = [classes nextObject]) {
 		list = [[[aClass alloc] init] autorelease];
-		STAssertNoThrow([list removeObjectIdenticalTo:nil], nil);
+		XCTAssertNoThrow([list removeObjectIdenticalTo:nil]);
 		
 		NSString *a = [NSString stringWithFormat:@"A"];
 		[list addObject:a];
-		STAssertEquals([list count], (NSUInteger)1, nil);
+		XCTAssertEqual([list count], (NSUInteger)1);
 		[list removeObjectIdenticalTo:@"A"];
-		STAssertEquals([list count], (NSUInteger)1, nil);
+		XCTAssertEqual([list count], (NSUInteger)1);
 		[list removeObjectIdenticalTo:a];
-		STAssertEquals([list count], (NSUInteger)0, nil);
+		XCTAssertEqual([list count], (NSUInteger)0);
 		
 		// Test removing all instances of an object
 		[list addObject:@"A"];
@@ -640,15 +639,15 @@
 		[list addObject:@"C"];
 		[list addObject:[NSString stringWithFormat:@"Z"]];
 
-		STAssertNoThrow([list removeObjectIdenticalTo:nil], nil);
+		XCTAssertNoThrow([list removeObjectIdenticalTo:nil]);
 
-		STAssertEquals([list count], (NSUInteger)6, nil);
+		XCTAssertEqual([list count], (NSUInteger)6);
 		[list removeObjectIdenticalTo:@"Z"];
-		STAssertEquals([list count], (NSUInteger)4, nil);
-		STAssertEqualObjects([list objectAtIndex:0], @"A", nil);
-		STAssertEqualObjects([list objectAtIndex:1], @"B", nil);
-		STAssertEqualObjects([list objectAtIndex:2], @"C", nil);	
-		STAssertEqualObjects([list objectAtIndex:3], @"Z", nil);
+		XCTAssertEqual([list count], (NSUInteger)4);
+		XCTAssertEqualObjects([list objectAtIndex:0], @"A");
+		XCTAssertEqualObjects([list objectAtIndex:1], @"B");
+		XCTAssertEqualObjects([list objectAtIndex:2], @"C");	
+		XCTAssertEqualObjects([list objectAtIndex:3], @"Z");
 	}
 }
 
@@ -658,28 +657,28 @@
 	while (aClass = [classes nextObject]) {
 		list = [[[aClass alloc] initWithArray:abc] autorelease];
 		
-		STAssertThrows([list removeObjectAtIndex:3], nil);
-		STAssertThrows([list removeObjectAtIndex:-1], nil);
+		XCTAssertThrows([list removeObjectAtIndex:3]);
+		XCTAssertThrows([list removeObjectAtIndex:-1]);
 		
 		[list removeObjectAtIndex:2];
-		STAssertEquals([list count], (NSUInteger)2, nil);
-		STAssertEqualObjects([list firstObject], @"A", nil);
-		STAssertEqualObjects([list lastObject],  @"B", nil);
+		XCTAssertEqual([list count], (NSUInteger)2);
+		XCTAssertEqualObjects([list firstObject], @"A");
+		XCTAssertEqualObjects([list lastObject],  @"B");
 		
 		[list removeObjectAtIndex:0];
-		STAssertEquals([list count], (NSUInteger)1, nil);
-		STAssertEqualObjects([list firstObject], @"B", nil);
-		STAssertEqualObjects([list lastObject],  @"B", nil);
+		XCTAssertEqual([list count], (NSUInteger)1);
+		XCTAssertEqualObjects([list firstObject], @"B");
+		XCTAssertEqualObjects([list lastObject],  @"B");
 		
 		[list removeObjectAtIndex:0];
-		STAssertEquals([list count], (NSUInteger)0, nil);
+		XCTAssertEqual([list count], (NSUInteger)0);
 		
 		[list addObjectsFromArray:abc];
 		// Test removing from an index in the middle
 		[list removeObjectAtIndex:1];
-		STAssertEquals([list count], (NSUInteger)2, nil);
-		STAssertEqualObjects([list firstObject], @"A", nil);
-		STAssertEqualObjects([list lastObject],  @"C", nil);
+		XCTAssertEqual([list count], (NSUInteger)2);
+		XCTAssertEqualObjects([list firstObject], @"A");
+		XCTAssertEqualObjects([list lastObject],  @"C");
 	}
 }
 
@@ -692,9 +691,9 @@
 	while (aClass = [classes nextObject]) {
 		list = [[aClass alloc] init];
 		// Test removing with invalid indexes
-		STAssertThrows([list removeObjectsAtIndexes:nil], nil);
+		XCTAssertThrows([list removeObjectsAtIndexes:nil]);
 		indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 1)];
-		STAssertThrows([list removeObjectsAtIndexes:indexes], nil);
+		XCTAssertThrows([list removeObjectsAtIndexes:indexes]);
 		
 		[list addObjectsFromArray:abc];
 		for (NSUInteger location = 0; location < [abc count]; location++) {
@@ -705,13 +704,13 @@
 				[expected addObjectsFromArray:abc];
 				[list removeAllObjects];
 				[list addObjectsFromArray:abc];
-				STAssertNoThrow([list removeObjectsAtIndexes:indexes], nil);
+				XCTAssertNoThrow([list removeObjectsAtIndexes:indexes]);
 				[expected removeObjectsAtIndexes:indexes];
-				STAssertEquals([list count], [expected count], nil);
-				STAssertEqualObjects([list allObjects], expected, nil);
+				XCTAssertEqual([list count], [expected count]);
+				XCTAssertEqualObjects([list allObjects], expected);
 			}
 		}	
-		STAssertThrows([list removeObjectsAtIndexes:nil], nil);
+		XCTAssertThrows([list removeObjectsAtIndexes:nil]);
 	}
 }
 
@@ -721,13 +720,13 @@
 	while (aClass = [classes nextObject]) {
 		list = [[[aClass alloc] initWithArray:abc] autorelease];
 		for (NSUInteger i = 0; i < [abc count]; i++) {
-			STAssertEqualObjects([list objectAtIndex:i], [abc objectAtIndex:i], nil);
+			XCTAssertEqualObjects([list objectAtIndex:i], [abc objectAtIndex:i]);
 			[list replaceObjectAtIndex:i withObject:@"Z"];
-			STAssertEqualObjects([list objectAtIndex:i], @"Z", nil);
+			XCTAssertEqualObjects([list objectAtIndex:i], @"Z");
 		}
 		[list removeAllObjects];
-		STAssertThrows([list replaceObjectAtIndex:0 withObject:nil], nil);
-		STAssertThrows([list replaceObjectAtIndex:1 withObject:nil], nil);
+		XCTAssertThrows([list replaceObjectAtIndex:0 withObject:nil]);
+		XCTAssertThrows([list replaceObjectAtIndex:1 withObject:nil]);
 	}
 }
 

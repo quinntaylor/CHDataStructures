@@ -10,11 +10,11 @@
  The software is  provided "as is", without warranty of any kind, including all implied warranties of merchantability and fitness. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
  */
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 #import "CHCircularBufferQueue.h"
 #import "CHListQueue.h"
 
-@interface CHQueueTest : SenTestCase {
+@interface CHQueueTest : XCTestCase {
 	id<CHQueue> queue;
 	NSArray *objects, *queueClasses;
 	NSEnumerator *e;
@@ -42,17 +42,17 @@
 	while (aClass = [classes nextObject]) {
 		// Test initializing with nil and empty array parameters
 		queue = [[[aClass alloc] initWithArray:nil] autorelease];
-		STAssertEquals([queue count], (NSUInteger)0, nil);
+		XCTAssertEqual([queue count], (NSUInteger)0);
 		queue = [[[aClass alloc] initWithArray:[NSArray array]] autorelease];
-		STAssertEquals([queue count], (NSUInteger)0, nil);
+		XCTAssertEqual([queue count], (NSUInteger)0);
 		// Test initializing with a valid, non-empty array
 		queue = [[[aClass alloc] initWithArray:objects] autorelease];
-		STAssertEquals([queue count], [objects count], nil);
-		STAssertEqualObjects([queue allObjects], objects, nil);
+		XCTAssertEqual([queue count], [objects count]);
+		XCTAssertEqualObjects([queue allObjects], objects);
 		// Test initializing with an array larger than the default capacity
 		queue = [[[aClass alloc] initWithArray:moreObjects] autorelease];
-		STAssertEquals([queue count], [moreObjects count], nil);
-		STAssertEqualObjects([queue allObjects], moreObjects, nil);
+		XCTAssertEqual([queue count], [moreObjects count]);
+		XCTAssertEqualObjects([queue allObjects], moreObjects);
 	}
 }
 
@@ -74,17 +74,16 @@
 	id<CHQueue> queue1, queue2;
 	for (NSUInteger i = 0; i < [queueClasses count]; i++) {
 		queue1 = [equalQueues objectAtIndex:i];
-		STAssertThrowsSpecificNamed([queue1 isEqualToQueue:[NSString string]],
-		                            NSException, NSInvalidArgumentException, nil);
-		STAssertFalse([queue1 isEqual:[NSString string]], nil);
-		STAssertEqualObjects(queue1, queue1, nil);
+		XCTAssertThrowsSpecificNamed([queue1 isEqualToQueue:[NSString string]], NSException, NSInvalidArgumentException);
+		XCTAssertFalse([queue1 isEqual:[NSString string]]);
+		XCTAssertEqualObjects(queue1, queue1);
 		queue2 = [equalQueues objectAtIndex:i+1];
-		STAssertEqualObjects(queue1, queue2, nil);
-		STAssertEquals([queue1 hash], [queue2 hash], nil);
+		XCTAssertEqualObjects(queue1, queue2);
+		XCTAssertEqual([queue1 hash], [queue2 hash]);
 		queue2 = [emptyQueues objectAtIndex:i];
-		STAssertFalse([queue1 isEqual:queue2], nil);
+		XCTAssertFalse([queue1 isEqual:queue2]);
 		queue2 = [reversedQueues objectAtIndex:i];
-		STAssertFalse([queue1 isEqual:queue2], nil);
+		XCTAssertFalse([queue1 isEqual:queue2]);
 	}
 }
 
@@ -94,14 +93,14 @@
 	while (aClass = [classes nextObject]) {
 		queue = [[[aClass alloc] init] autorelease];
 		// Test that adding a nil parameter raises an exception
-		STAssertThrows([queue addObject:nil], nil);
-		STAssertEquals([queue count], (NSUInteger)0, nil);
+		XCTAssertThrows([queue addObject:nil]);
+		XCTAssertEqual([queue count], (NSUInteger)0);
 		// Test adding objects one by one and verify count and ordering
 		e = [objects objectEnumerator];
 		while (anObject = [e nextObject])
 			[queue addObject:anObject];
-		STAssertEquals([queue count], [objects count], nil);
-		STAssertEqualObjects([queue allObjects], objects, nil);
+		XCTAssertEqual([queue count], [objects count]);
+		XCTAssertEqualObjects([queue allObjects], objects);
 	}
 }
 
@@ -113,31 +112,31 @@
 		e = [objects objectEnumerator];
 		while (anObject = [e nextObject]) {
 			[queue addObject:anObject];
-			STAssertEqualObjects([queue lastObject], anObject, nil);
+			XCTAssertEqualObjects([queue lastObject], anObject);
 		}
 		NSUInteger expected = [objects count];
-		STAssertEquals([queue count], expected, nil);
-		STAssertEqualObjects([queue firstObject], @"A", nil);
-		STAssertEqualObjects([queue lastObject],  @"C", nil);
+		XCTAssertEqual([queue count], expected);
+		XCTAssertEqualObjects([queue firstObject], @"A");
+		XCTAssertEqualObjects([queue lastObject],  @"C");
 		[queue removeFirstObject];
 		--expected;
-		STAssertEquals([queue count], expected, nil);
-		STAssertEqualObjects([queue firstObject], @"B", nil);
-		STAssertEqualObjects([queue lastObject],  @"C", nil);
+		XCTAssertEqual([queue count], expected);
+		XCTAssertEqualObjects([queue firstObject], @"B");
+		XCTAssertEqualObjects([queue lastObject],  @"C");
 		[queue removeFirstObject];
 		--expected;
-		STAssertEquals([queue count], expected, nil);
-		STAssertEqualObjects([queue firstObject], @"C", nil);
-		STAssertEqualObjects([queue lastObject],  @"C", nil);
+		XCTAssertEqual([queue count], expected);
+		XCTAssertEqualObjects([queue firstObject], @"C");
+		XCTAssertEqualObjects([queue lastObject],  @"C");
 		[queue removeFirstObject];
 		--expected;
-		STAssertEquals([queue count], expected, nil);
-		STAssertNil([queue firstObject], nil);
-		STAssertNil([queue lastObject], nil);
-		STAssertNoThrow([queue removeFirstObject], nil);
-		STAssertEquals([queue count], expected, nil);
-		STAssertNil([queue firstObject], nil);
-		STAssertNil([queue lastObject], nil);
+		XCTAssertEqual([queue count], expected);
+		XCTAssertNil([queue firstObject]);
+		XCTAssertNil([queue lastObject]);
+		XCTAssertNoThrow([queue removeFirstObject]);
+		XCTAssertEqual([queue count], expected);
+		XCTAssertNil([queue firstObject]);
+		XCTAssertNil([queue lastObject]);
 	}
 }
 

@@ -10,7 +10,7 @@
  The software is  provided "as is", without warranty of any kind, including all implied warranties of merchantability and fitness. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
  */
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 #import "CHMutableSet.h"
 #import "CHOrderedSet.h"
 
@@ -24,7 +24,7 @@ static NSArray *abc;
 
 #pragma mark -
 
-@interface CHMutableSetTest : SenTestCase {
+@interface CHMutableSetTest : XCTestCase {
 	id set;
 	NSEnumerator *e;
 	id anObject;
@@ -48,7 +48,7 @@ static NSArray *abc;
 }
 
 - (void) checkEqualityWithArray:(NSArray*)anArray {
-	STAssertTrue([set isEqualToSet:[NSSet setWithArray:anArray]], nil);
+	XCTAssertTrue([set isEqualToSet:[NSSet setWithArray:anArray]]);
 }
 
 // Provides an array of N unique NSNumber objects.
@@ -67,9 +67,9 @@ static NSArray *abc;
 
 - (void) testAddObjectsFromArray {
 	// Test that adding a nil or empty parameter has no effect
-	STAssertNoThrow([set addObjectsFromArray:nil], nil);
-	STAssertNoThrow([set addObjectsFromArray:[NSArray array]], nil);
-	STAssertEquals([set count], (NSUInteger)0, nil);
+	XCTAssertNoThrow([set addObjectsFromArray:nil]);
+	XCTAssertNoThrow([set addObjectsFromArray:[NSArray array]]);
+	XCTAssertEqual([set count], (NSUInteger)0);
 	// Test adding objects
 	[set addObjectsFromArray:abc];
 	[self checkEqualityWithArray:abc];
@@ -97,34 +97,34 @@ static NSArray *abc;
 }
 
 - (void) testAnyObject {
-	STAssertNil([set anyObject], nil);
+	XCTAssertNil([set anyObject]);
 	[set addObjectsFromArray:[self randomNumbers]];
-	STAssertNotNil([set anyObject], nil);
+	XCTAssertNotNil([set anyObject]);
 }
 
 - (void) testCount {
-	STAssertEquals([set count], (NSUInteger)0, nil);
+	XCTAssertEqual([set count], (NSUInteger)0);
 	NSArray *array = [self randomNumbers];
 	[set addObjectsFromArray:array];
-	STAssertEquals([set count], [array count], nil);
+	XCTAssertEqual([set count], [array count]);
 }
 
 - (void) testContainsObject {
-	STAssertFalse([set containsObject:@"A"], nil);
+	XCTAssertFalse([set containsObject:@"A"]);
 	[set addObject:@"A"];
-	STAssertTrue([set containsObject:@"A"], nil);
+	XCTAssertTrue([set containsObject:@"A"]);
 }
 
 - (void) testDebugDescription {
-	STAssertNotNil([set debugDescription], nil);
+	XCTAssertNotNil([set debugDescription]);
 	[set addObjectsFromArray:[self randomNumbers]];
-	STAssertNotNil([set debugDescription], nil);
+	XCTAssertNotNil([set debugDescription]);
 }
 
 - (void) testHash {
 	[set addObjectsFromArray:abc];
 	id set2 = [[[[set class] alloc] initWithArray:abc] autorelease];
-	STAssertEquals([set hash], [set2 hash], nil);
+	XCTAssertEqual([set hash], [set2 hash]);
 }
 
 - (void) testIntersectsSet {
@@ -132,21 +132,21 @@ static NSArray *abc;
 	NSSet *cde = [NSSet setWithObjects:@"C",@"D",@"E",nil];
 	NSSet *xyz = [NSSet setWithObjects:@"X",@"Y",@"Z",nil];
 	
-	STAssertFalse([set intersectsSet:abcSet], nil);
+	XCTAssertFalse([set intersectsSet:abcSet]);
 	[set addObjectsFromArray:[NSArray arrayWithObjects:@"A",@"B",@"C",nil]];
 	
-	STAssertTrue([set intersectsSet:abcSet], nil);
-	STAssertTrue([set intersectsSet:cde], nil);
-	STAssertFalse([set intersectsSet:xyz], nil);
+	XCTAssertTrue([set intersectsSet:abcSet]);
+	XCTAssertTrue([set intersectsSet:cde]);
+	XCTAssertFalse([set intersectsSet:xyz]);
 	
-	STAssertFalse([set intersectsSet:nil], nil);
-	STAssertFalse([set intersectsSet:[NSSet set]], nil);
+	XCTAssertFalse([set intersectsSet:nil]);
+	XCTAssertFalse([set intersectsSet:[NSSet set]]);
 }
 
 - (void) testIsEqualToSet {
 	NSArray *array = [self randomNumbers];
 	[set addObjectsFromArray:array];
-	STAssertEqualObjects(set, [NSSet setWithArray:array], nil);
+	XCTAssertEqualObjects(set, [NSSet setWithArray:array]);
 }
 
 - (void) testIntersectSet {
@@ -155,7 +155,7 @@ static NSArray *abc;
 	NSArray *c = [NSArray arrayWithObjects:@"C",nil];
 	NSArray *empty = [NSArray array];
 	
-	STAssertNoThrow([set intersectSet:nil], nil);
+	XCTAssertNoThrow([set intersectSet:nil]);
 	
 	// Test intersecting identical sets
 	[set addObjectsFromArray:abc];
@@ -185,7 +185,7 @@ static NSArray *abc;
 	NSArray *empty = [NSArray array];
 	NSSet *xyz = [NSSet setWithObjects:@"X",@"Y",@"Z",nil];
 	
-	STAssertNoThrow([set minusSet:nil], nil);
+	XCTAssertNoThrow([set minusSet:nil]);
 	[self checkEqualityWithArray:empty];
 	
 	[set minusSet:[NSSet set]];
@@ -196,7 +196,7 @@ static NSArray *abc;
 	
 	[set addObjectsFromArray:axbycz];
 	
-	STAssertNoThrow([set minusSet:nil], nil);
+	XCTAssertNoThrow([set minusSet:nil]);
 	[self checkEqualityWithArray:axbycz];
 	
 	[set minusSet:[NSSet set]];
@@ -204,13 +204,13 @@ static NSArray *abc;
 	
 	// Test removing even elements
 	[set addObjectsFromArray:axbycz];
-	STAssertNoThrow([set minusSet:xyz], nil);
+	XCTAssertNoThrow([set minusSet:xyz]);
 	[self checkEqualityWithArray:abc];
 	[set removeAllObjects];
 	
 	// Test removing odd elements
 	[set addObjectsFromArray:xaybzc];	
-	STAssertNoThrow([set minusSet:xyz], nil);
+	XCTAssertNoThrow([set minusSet:xyz]);
 	[self checkEqualityWithArray:abc];
 	[set removeAllObjects];
 	
@@ -228,38 +228,38 @@ static NSArray *abc;
 - (void) testIsSubsetOfSet {
 	NSSet *abcSet = [NSSet setWithObjects:@"A",@"B",@"C",nil];
 	[set addObject:@"A"];
-	STAssertTrue([set isSubsetOfSet:abcSet], nil);
+	XCTAssertTrue([set isSubsetOfSet:abcSet]);
 	[set addObject:@"B"];
-	STAssertTrue([set isSubsetOfSet:abcSet], nil);
+	XCTAssertTrue([set isSubsetOfSet:abcSet]);
 	[set addObject:@"C"];
-	STAssertTrue([set isSubsetOfSet:abcSet], nil);
+	XCTAssertTrue([set isSubsetOfSet:abcSet]);
 	[set addObject:@"D"];
-	STAssertFalse([set isSubsetOfSet:abcSet], nil);
+	XCTAssertFalse([set isSubsetOfSet:abcSet]);
 }
 
 - (void) testRemoveAllObjects {
 	[set addObjectsFromArray:[self randomNumbers]];
-	STAssertTrue([set count] != 0, nil);
+	XCTAssertTrue([set count] != 0);
 	[set removeAllObjects];
-	STAssertTrue([set count] == 0, nil);
+	XCTAssertTrue([set count] == 0);
 }
 
 - (void) testMember {
-	STAssertNil([set member:@"A"], nil);
+	XCTAssertNil([set member:@"A"]);
 	[set addObject:@"A"];
-	STAssertEqualObjects([set member:@"A"], @"A", nil);
-	STAssertNil([set member:@"bogus"], nil);
+	XCTAssertEqualObjects([set member:@"A"], @"A");
+	XCTAssertNil([set member:@"bogus"]);
 	[set removeAllObjects];
-	STAssertNil([set member:@"A"], nil);
+	XCTAssertNil([set member:@"A"]);
 }
 
 - (void) testRemoveObject {
-	STAssertNoThrow([set removeObject:nil], nil);
+	XCTAssertNoThrow([set removeObject:nil]);
 	
 	[set addObjectsFromArray:abc];
-	STAssertTrue([set containsObject:@"A"], nil);
+	XCTAssertTrue([set containsObject:@"A"]);
 	[set removeObject:@"A"];
-	STAssertFalse([set containsObject:@"A"], nil);
+	XCTAssertFalse([set containsObject:@"A"]);
 }
 
 #pragma mark <Protocols>
@@ -267,21 +267,21 @@ static NSArray *abc;
 - (void) testNSCoding {
 	NSArray *array = [self randomNumbers];
 	[set addObjectsFromArray:array];
-	STAssertEquals([set count], [array count], nil);
+	XCTAssertEqual([set count], [array count]);
 	[self checkEqualityWithArray:array];
 	
 	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:set];
 	CHOrderedSet *set2 = [NSKeyedUnarchiver unarchiveObjectWithData:data];
 	
-	STAssertEquals([set2 count], [set count], nil);
+	XCTAssertEqual([set2 count], [set count]);
 	[self checkEqualityWithArray:[set2 allObjects]];
 }
 
 - (void) testNSCopying {
 	[set addObjectsFromArray:[self randomNumbers]];
 	CHOrderedSet *copy = [set copy];
-	STAssertEqualObjects([set class], [copy class], nil);
-	STAssertEquals([set count], [copy count], nil);
+	XCTAssertEqualObjects([set class], [copy class]);
+	XCTAssertEqual([set count], [copy count]);
 	[self checkEqualityWithArray:[copy allObjects]];
 }
 
@@ -293,16 +293,16 @@ static NSArray *abc;
 	NSEnumerator *enumerator = [array objectEnumerator];
 	BOOL unorderedSet = [set isMemberOfClass:[CHMutableSet class]];
 	for (NSNumber *number in set) {
-		STAssertNotNil(number, nil);
+		XCTAssertNotNil(number);
 		if (unorderedSet)
-			STAssertNotNil([enumerator nextObject], nil);
+			XCTAssertNotNil([enumerator nextObject]);
 		else
-			STAssertEqualObjects(number, [enumerator nextObject], nil);
+			XCTAssertEqualObjects(number, [enumerator nextObject]);
 		count++;
 	}
-	STAssertEquals(count, [array count], nil);
+	XCTAssertEqual(count, [array count]);
 	// Test that the enumerator is exhausted after fast enumeration
-	STAssertNil([enumerator nextObject], nil);
+	XCTAssertNil([enumerator nextObject]);
 }
 
 @end
@@ -320,7 +320,7 @@ static NSArray *abc;
 }
 
 - (void) checkEqualityWithArray:(NSArray*)anArray {
-	STAssertEqualObjects(anArray, [set allObjects], nil);
+	XCTAssertEqualObjects(anArray, [set allObjects]);
 }
 
 #pragma mark Initialization
@@ -335,7 +335,7 @@ static NSArray *abc;
 #pragma mark Adding Objects
 
 - (void) testAddObject {
-	STAssertThrows([set addObject:nil], nil);
+	XCTAssertThrows([set addObject:nil]);
 	
 	e = [abc objectEnumerator];
 	while (anObject = [e nextObject])
@@ -349,28 +349,28 @@ static NSArray *abc;
 }
 
 - (void) testExchangeObjectAtIndexWithObjectAtIndex {
-	STAssertThrows([set exchangeObjectAtIndex:0 withObjectAtIndex:1], nil);
+	XCTAssertThrows([set exchangeObjectAtIndex:0 withObjectAtIndex:1]);
 	
 	[set addObjectsFromArray:abc];
 	// Just sanity-check the code, since the implementation is tested elsewhere.
 	[set exchangeObjectAtIndex:0 withObjectAtIndex:2];
-	STAssertEqualObjects([set objectAtIndex:2], [abc objectAtIndex:0], nil);
-	STAssertEqualObjects([set objectAtIndex:0], [abc objectAtIndex:2], nil);
+	XCTAssertEqualObjects([set objectAtIndex:2], [abc objectAtIndex:0]);
+	XCTAssertEqualObjects([set objectAtIndex:0], [abc objectAtIndex:2]);
 }
 
 - (void) testInsertObjectAtIndex {
 	NSArray *acb  = [NSArray arrayWithObjects:@"A",@"C",@"B",nil];
 	NSArray *dacb  = [NSArray arrayWithObjects:@"D",@"A",@"C",@"B",nil];
 	
-	STAssertThrows([set insertObject:@"X" atIndex:1], nil);
+	XCTAssertThrows([set insertObject:@"X" atIndex:1]);
 	
 	[set addObjectsFromArray:abc];
 	
 	[set insertObject:@"C" atIndex:1];
-	STAssertEqualObjects([set allObjects], acb, nil);
+	XCTAssertEqualObjects([set allObjects], acb);
 	
 	[set insertObject:@"D" atIndex:0];
-	STAssertEqualObjects([set allObjects], dacb, nil);
+	XCTAssertEqualObjects([set allObjects], dacb);
 }
 
 - (void) testUnionSet {
@@ -390,17 +390,17 @@ static NSArray *abc;
 #pragma mark Querying Contents
 
 - (void) testDescription {
-	STAssertEqualObjects([set description], [[NSArray array] description], nil);
+	XCTAssertEqualObjects([set description], [[NSArray array] description]);
 
 	NSArray *array = [self randomNumbers];
 	[set addObjectsFromArray:array];
-	STAssertEqualObjects([set description], [array description], nil);
+	XCTAssertEqualObjects([set description], [array description]);
 }
 
 - (void) testIndexOfObject {
 	[set addObjectsFromArray:abc];
 	for (NSUInteger i = 0; i < [abc count]; i++) {
-		STAssertEquals([set indexOfObject:[abc objectAtIndex:i]], i, nil);
+		XCTAssertEqual([set indexOfObject:[abc objectAtIndex:i]], i);
 	}
 }
 
@@ -410,17 +410,17 @@ static NSArray *abc;
 	CHOrderedSet* set2;
 	[set addObjectsFromArray:abc];
 	set2 = [[[CHOrderedSet alloc] initWithArray:abc] autorelease];
-	STAssertTrue([set isEqualToOrderedSet:set2], nil);
+	XCTAssertTrue([set isEqualToOrderedSet:set2]);
 	set2 = [[[CHOrderedSet alloc] initWithArray:cba] autorelease];
-	STAssertFalse([set isEqualToOrderedSet:set2], nil);
+	XCTAssertFalse([set isEqualToOrderedSet:set2]);
 	set2 = [[[CHOrderedSet alloc] initWithArray:xyz] autorelease];
-	STAssertFalse([set isEqualToOrderedSet:set2], nil);
+	XCTAssertFalse([set isEqualToOrderedSet:set2]);
 }
 
 - (void) testObjectAtIndex {
 	[set addObjectsFromArray:abc];
 	for (NSUInteger i = 0; i < [abc count]; i++) {
-		STAssertEqualObjects([set objectAtIndex:i], [abc objectAtIndex:i],
+		XCTAssertEqualObjects([set objectAtIndex:i], [abc objectAtIndex:i],
 					   @"Wrong object at index %d.", i);
 	}
 }
@@ -435,14 +435,14 @@ static NSArray *abc;
 			range.length = length;
 			NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:range];
 			if (location + length > count) {
-				STAssertThrows([set objectsAtIndexes:indexes], nil);
+				XCTAssertThrows([set objectsAtIndexes:indexes]);
 			} else {
-				STAssertEqualObjects([set objectsAtIndexes:indexes],
-									 [abc objectsAtIndexes:indexes], nil);
+				XCTAssertEqualObjects([set objectsAtIndexes:indexes],
+									 [abc objectsAtIndexes:indexes]);
 			}
 		}
 	}
-	STAssertThrows([set objectsAtIndexes:nil], nil);
+	XCTAssertThrows([set objectsAtIndexes:nil]);
 }
 
 - (void) testObjectEnumerator {
@@ -454,67 +454,67 @@ static NSArray *abc;
 	do {
 		arrayObject = [arrayEnumerator nextObject];
 		setObject   = [setEnumerator nextObject];
-		STAssertEqualObjects(arrayObject, setObject, nil);
+		XCTAssertEqualObjects(arrayObject, setObject);
 	} while (arrayObject && setObject);
 }
 
 - (void) testOrderedSetWithObjectsAtIndexes {
-	STAssertThrows([set orderedSetWithObjectsAtIndexes:nil], nil);
+	XCTAssertThrows([set orderedSetWithObjectsAtIndexes:nil]);
 	NSArray* abcde = [NSArray arrayWithObjects:@"A",@"B",@"C",@"D",@"E",nil];
 	[set addObjectsFromArray:abcde];
-	STAssertThrows([set orderedSetWithObjectsAtIndexes:nil], nil);
+	XCTAssertThrows([set orderedSetWithObjectsAtIndexes:nil]);
 	
 	CHOrderedSet* newSet;
-	STAssertNoThrow(newSet = [set orderedSetWithObjectsAtIndexes:[NSIndexSet indexSet]], nil);
-	STAssertNotNil(newSet, nil);
-	STAssertEquals([newSet count], (NSUInteger)0, nil);
+	XCTAssertNoThrow(newSet = [set orderedSetWithObjectsAtIndexes:[NSIndexSet indexSet]]);
+	XCTAssertNotNil(newSet);
+	XCTAssertEqual([newSet count], (NSUInteger)0);
 	
 	// Select ranges of indexes and test that they line up with what we expect.
 	NSIndexSet* indexes;
 	for (NSUInteger location = 0; location < [set count]; location++) {
 		for (NSUInteger length = 0; length < [set count] - location; length++) {
 			indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(location, length)]; 
-			STAssertNoThrow(newSet = [set orderedSetWithObjectsAtIndexes:indexes], nil);
-			STAssertEqualObjects([newSet allObjects],
-			                     [abcde objectsAtIndexes:indexes], nil);
+			XCTAssertNoThrow(newSet = [set orderedSetWithObjectsAtIndexes:indexes]);
+			XCTAssertEqualObjects([newSet allObjects],
+			                     [abcde objectsAtIndexes:indexes]);
 		}
 	}	
-	STAssertThrows([set orderedSetWithObjectsAtIndexes:nil], nil);
+	XCTAssertThrows([set orderedSetWithObjectsAtIndexes:nil]);
 }
 
 #pragma mark Removing Objects
 
 - (void) testRemoveFirstObject {
 	[set addObjectsFromArray:abc];
-	STAssertEqualObjects([set firstObject], @"A", nil);
+	XCTAssertEqualObjects([set firstObject], @"A");
 	[set removeFirstObject];
-	STAssertEqualObjects([set firstObject], @"B", nil);
+	XCTAssertEqualObjects([set firstObject], @"B");
 	[set removeFirstObject];
-	STAssertEqualObjects([set firstObject], @"C", nil);
+	XCTAssertEqualObjects([set firstObject], @"C");
 	[set removeFirstObject];
-	STAssertNil([set firstObject], nil);
+	XCTAssertNil([set firstObject]);
 }
 
 - (void) testRemoveLastObject {
 	[set addObjectsFromArray:abc];
-	STAssertEqualObjects([set lastObject], @"C", nil);
+	XCTAssertEqualObjects([set lastObject], @"C");
 	[set removeLastObject];
-	STAssertEqualObjects([set lastObject], @"B", nil);
+	XCTAssertEqualObjects([set lastObject], @"B");
 	[set removeLastObject];
-	STAssertEqualObjects([set lastObject], @"A", nil);
+	XCTAssertEqualObjects([set lastObject], @"A");
 	[set removeLastObject];
-	STAssertNil([set lastObject], nil);
+	XCTAssertNil([set lastObject]);
 }
 
 - (void) testRemoveObjectAtIndex {
 	// Test that removing from an invalid index raises an exception
-	STAssertThrows([set removeObjectAtIndex:0], nil);
-	STAssertThrows([set removeObjectAtIndex:1], nil);
+	XCTAssertThrows([set removeObjectAtIndex:0]);
+	XCTAssertThrows([set removeObjectAtIndex:1]);
 	// Test removing from valid indexes; should not raise any exceptions
 	[set addObjectsFromArray:abc];
-	STAssertThrows([set removeObjectAtIndex:[abc count]], nil);
+	XCTAssertThrows([set removeObjectAtIndex:[abc count]]);
 	for (NSInteger i = [abc count]-1; i >= 0; i--) {
-		STAssertEqualObjects([set lastObject], [abc objectAtIndex:i],
+		XCTAssertEqualObjects([set lastObject], [abc objectAtIndex:i],
 							 @"Wrong object at index %d before remove.", i);
 		[set removeObjectAtIndex:i];
 	}
@@ -522,9 +522,9 @@ static NSArray *abc;
 
 - (void) testRemoveObjectsAtIndexes {
 	// Test removing with invalid indexes
-	STAssertThrows([set removeObjectsAtIndexes:nil], nil);
+	XCTAssertThrows([set removeObjectsAtIndexes:nil]);
 	NSIndexSet* indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 1)];
-	STAssertThrows([set removeObjectsAtIndexes:indexes], nil);
+	XCTAssertThrows([set removeObjectsAtIndexes:indexes]);
 	// Test removing using valid index sets
 	NSMutableArray* expected = [NSMutableArray array];
 	for (NSUInteger location = 0; location < [abc count]; location++) {
@@ -535,13 +535,13 @@ static NSArray *abc;
 			[expected addObjectsFromArray:abc];
 			[set removeAllObjects];
 			[set addObjectsFromArray:expected];
-			STAssertNoThrow([set removeObjectsAtIndexes:indexes], nil);
+			XCTAssertNoThrow([set removeObjectsAtIndexes:indexes]);
 			[expected removeObjectsAtIndexes:indexes];
-			STAssertEquals([set count], [expected count], nil);
-			STAssertEqualObjects([set allObjects], expected, nil);
+			XCTAssertEqual([set count], [expected count]);
+			XCTAssertEqualObjects([set allObjects], expected);
 		}
 	}	
-	STAssertThrows([set removeObjectsAtIndexes:nil], nil);
+	XCTAssertThrows([set removeObjectsAtIndexes:nil]);
 }
 
 @end

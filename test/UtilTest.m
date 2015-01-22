@@ -10,10 +10,10 @@
  The software is  provided "as is", without warranty of any kind, including all implied warranties of merchantability and fitness. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
  */
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 #import "Util.h"
 
-@interface UtilTest : SenTestCase {
+@interface UtilTest : XCTestCase {
 	Class aClass;
 	SEL aMethod;
 	NSMutableString *reason;
@@ -36,27 +36,24 @@
 	NSDictionary *dict = [NSDictionary dictionaryWithObjects:array forKeys:array];
 	NSSet *set = [NSSet setWithObjects:@"A",@"B",@"C",nil];
 	
-	STAssertTrue(collectionsAreEqual(nil, nil), nil);
+	XCTAssertTrue(collectionsAreEqual(nil, nil));
 	
-	STAssertTrue(collectionsAreEqual(array, array), nil);
-	STAssertTrue(collectionsAreEqual(dict, dict), nil);
-	STAssertTrue(collectionsAreEqual(set, set), nil);
+	XCTAssertTrue(collectionsAreEqual(array, array));
+	XCTAssertTrue(collectionsAreEqual(dict, dict));
+	XCTAssertTrue(collectionsAreEqual(set, set));
 
-	STAssertTrue(collectionsAreEqual(array, [array copy]), nil);
-	STAssertTrue(collectionsAreEqual(dict, [dict copy]), nil);
-	STAssertTrue(collectionsAreEqual(set, [set copy]), nil);
+	XCTAssertTrue(collectionsAreEqual(array, [array copy]));
+	XCTAssertTrue(collectionsAreEqual(dict, [dict copy]));
+	XCTAssertTrue(collectionsAreEqual(set, [set copy]));
 	
-	STAssertFalse(collectionsAreEqual(array, nil), nil);
-	STAssertFalse(collectionsAreEqual(dict, nil), nil);
-	STAssertFalse(collectionsAreEqual(set, nil), nil);
+	XCTAssertFalse(collectionsAreEqual(array, nil));
+	XCTAssertFalse(collectionsAreEqual(dict, nil));
+	XCTAssertFalse(collectionsAreEqual(set, nil));
 
 	id obj = [NSString string];
-	STAssertThrowsSpecificNamed(collectionsAreEqual(array, obj),
-	                            NSException, NSInvalidArgumentException, nil);
-	STAssertThrowsSpecificNamed(collectionsAreEqual(dict, obj),
-	                            NSException, NSInvalidArgumentException, nil);
-	STAssertThrowsSpecificNamed(collectionsAreEqual(set, obj),
-	                            NSException, NSInvalidArgumentException, nil);
+	XCTAssertThrowsSpecificNamed(collectionsAreEqual(array, obj), NSException, NSInvalidArgumentException);
+	XCTAssertThrowsSpecificNamed(collectionsAreEqual(dict, obj), NSException, NSInvalidArgumentException);
+	XCTAssertThrowsSpecificNamed(collectionsAreEqual(set, obj), NSException, NSInvalidArgumentException);
 }
 
 - (void) testIndexOutOfRangeException {
@@ -65,11 +62,11 @@
 	}
 	@catch (NSException * e) {
 		raisedException = YES;
-		STAssertEqualObjects([e name], NSRangeException, nil);
+		XCTAssertEqualObjects([e name], NSRangeException);
 		[reason appendString:@"Index (4) beyond bounds for count (4)"];
-		STAssertEqualObjects([e reason], reason,  nil);
+		XCTAssertEqualObjects([e reason], reason);
 	}
-	STAssertTrue(raisedException, nil);
+	XCTAssertTrue(raisedException);
 }
 
 - (void) testInvalidArgumentException {
@@ -78,11 +75,11 @@
 	}
 	@catch (NSException * e) {
 		raisedException = YES;
-		STAssertEqualObjects([e name], NSInvalidArgumentException, nil);
+		XCTAssertEqualObjects([e name], NSInvalidArgumentException);
 		[reason appendString:@"Some silly reason."];
-		STAssertEqualObjects([e reason], reason, nil);
+		XCTAssertEqualObjects([e reason], reason);
 	}
-	STAssertTrue(raisedException, nil);
+	XCTAssertTrue(raisedException);
 }
 
 - (void) testNilArgumentException {
@@ -91,11 +88,11 @@
 	}
 	@catch (NSException * e) {
 		raisedException = YES;
-		STAssertEqualObjects([e name], NSInvalidArgumentException, nil);
+		XCTAssertEqualObjects([e name], NSInvalidArgumentException);
 		[reason appendString:@"Invalid nil argument"];
-		STAssertEqualObjects([e reason], reason, nil);
+		XCTAssertEqualObjects([e reason], reason);
 	}
-	STAssertTrue(raisedException, nil);
+	XCTAssertTrue(raisedException);
 }
 
 - (void) testMutatedCollectionException {
@@ -104,11 +101,11 @@
 	}
 	@catch (NSException * e) {
 		raisedException = YES;
-		STAssertEqualObjects([e name], NSGenericException, nil);
+		XCTAssertEqualObjects([e name], NSGenericException);
 		[reason appendString:@"Collection was mutated during enumeration"];
-		STAssertEqualObjects([e reason], reason, nil);
+		XCTAssertEqualObjects([e reason], reason);
 	}
-	STAssertTrue(raisedException, nil);
+	XCTAssertTrue(raisedException);
 }
 
 - (void) testUnsupportedOperationException {
@@ -117,11 +114,11 @@
 	}
 	@catch (NSException * e) {
 		raisedException = YES;
-		STAssertEqualObjects([e name], NSInternalInconsistencyException, nil);
+		XCTAssertEqualObjects([e name], NSInternalInconsistencyException);
 		[reason appendString:@"Unsupported operation"];
-		STAssertEqualObjects([e reason], reason, nil);
+		XCTAssertEqualObjects([e reason], reason);
 	}
-	STAssertTrue(raisedException, nil);
+	XCTAssertTrue(raisedException);
 }
 
 - (void) testCHQuietLog {

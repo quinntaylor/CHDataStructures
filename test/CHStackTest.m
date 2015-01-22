@@ -10,12 +10,12 @@
  The software is  provided "as is", without warranty of any kind, including all implied warranties of merchantability and fitness. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
  */
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 #import "CHStack.h"
 #import "CHListStack.h"
 #import "CHCircularBufferStack.h"
 
-@interface CHStackTest : SenTestCase {
+@interface CHStackTest : XCTestCase {
 	id<CHStack> stack;
 	NSArray *objects, *stackOrder, *stackClasses;
 	NSEnumerator *e;
@@ -56,16 +56,16 @@
 	while (aClass = [classes nextObject]) {
 		// Test initializing with nil and empty array parameters
 		stack = [[[aClass alloc] initWithArray:nil] autorelease];
-		STAssertEquals([stack count], (NSUInteger)0, nil);
+		XCTAssertEqual([stack count], (NSUInteger)0);
 		stack = [[[aClass alloc] initWithArray:[NSArray array]] autorelease];
-		STAssertEquals([stack count], (NSUInteger)0, nil);
+		XCTAssertEqual([stack count], (NSUInteger)0);
 		// Test initializing with a valid, non-empty array
 		stack = [[[aClass alloc] initWithArray:objects] autorelease];
-		STAssertEquals([stack count], [objects count], nil);
-		STAssertEqualObjects([stack allObjects], stackOrder, nil);
+		XCTAssertEqual([stack count], [objects count]);
+		XCTAssertEqualObjects([stack allObjects], stackOrder);
 		// Test initializing with an array larger than the default capacity
 		stack = [[[aClass alloc] initWithArray:moreObjects] autorelease];
-		STAssertEquals([stack count], [moreObjects count], nil);
+		XCTAssertEqual([stack count], [moreObjects count]);
 	}
 }
 
@@ -87,17 +87,17 @@
 	id<CHStack> stack1, stack2;
 	for (NSUInteger i = 0; i < [stackClasses count]; i++) {
 		stack1 = [equalStacks objectAtIndex:i];
-		STAssertThrowsSpecificNamed([stack1 isEqualToStack:[NSString string]],
-		                            NSException, NSInvalidArgumentException, nil);
-		STAssertFalse([stack1 isEqual:[NSString string]], nil);
-		STAssertEqualObjects(stack1, stack1, nil);
+		XCTAssertThrowsSpecificNamed([stack1 isEqualToStack:[NSString string]],
+		                            NSException, NSInvalidArgumentException);
+		XCTAssertFalse([stack1 isEqual:[NSString string]]);
+		XCTAssertEqualObjects(stack1, stack1);
 		stack2 = [equalStacks objectAtIndex:i+1];
-		STAssertEqualObjects(stack1, stack2, nil);
-		STAssertEquals([stack1 hash], [stack2 hash], nil);
+		XCTAssertEqualObjects(stack1, stack2);
+		XCTAssertEqual([stack1 hash], [stack2 hash]);
 		stack2 = [emptyStacks objectAtIndex:i];
-		STAssertFalse([stack1 isEqual:stack2], nil);
+		XCTAssertFalse([stack1 isEqual:stack2]);
 		stack2 = [reversedStacks objectAtIndex:i];
-		STAssertFalse([stack1 isEqual:stack2], nil);
+		XCTAssertFalse([stack1 isEqual:stack2]);
 	}
 }
 
@@ -106,13 +106,13 @@
 	Class aClass;
 	while (aClass = [classes nextObject]) {
 		stack = [[[aClass alloc] init] autorelease];
-		STAssertThrows([stack pushObject:nil], nil);
+		XCTAssertThrows([stack pushObject:nil]);
 		
-		STAssertEquals([stack count], (NSUInteger)0, nil);
+		XCTAssertEqual([stack count], (NSUInteger)0);
 		e = [objects objectEnumerator];
 		while (anObject = [e nextObject])
 			[stack pushObject:anObject];
-		STAssertEquals([stack count], [objects count], nil);
+		XCTAssertEqual([stack count], [objects count]);
 	}
 }
 
@@ -122,32 +122,32 @@
 	while (aClass = [classes nextObject]) {
 		stack = [[[aClass alloc] init] autorelease];
 		// Test that the top object starts out as nil
-		STAssertNil([stack topObject], nil);
+		XCTAssertNil([stack topObject]);
 		// Test that the top object is correct as objects are pushed
 		e = [objects objectEnumerator];
 		while (anObject = [e nextObject]) {
 			[stack pushObject:anObject];
-			STAssertEqualObjects([stack topObject], anObject, nil);
+			XCTAssertEqualObjects([stack topObject], anObject);
 		}
 		// Test that objects are popped in the correct order and count is right.
 		NSUInteger expected = [objects count];
-		STAssertEqualObjects([stack topObject], @"C", nil);
-		STAssertEquals([stack count], expected, nil);
+		XCTAssertEqualObjects([stack topObject], @"C");
+		XCTAssertEqual([stack count], expected);
 		[stack popObject];
 		--expected;
-		STAssertEqualObjects([stack topObject], @"B", nil);
-		STAssertEquals([stack count], expected, nil);
+		XCTAssertEqualObjects([stack topObject], @"B");
+		XCTAssertEqual([stack count], expected);
 		[stack popObject];
 		--expected;
-		STAssertEqualObjects([stack topObject], @"A", nil);
-		STAssertEquals([stack count], expected, nil);
+		XCTAssertEqualObjects([stack topObject], @"A");
+		XCTAssertEqual([stack count], expected);
 		[stack popObject];
 		--expected;
-		STAssertNil([stack topObject], nil);
-		STAssertEquals([stack count], expected, nil);
+		XCTAssertNil([stack topObject]);
+		XCTAssertEqual([stack count], expected);
 		// Test that popping an empty stack has no effect
 		[stack popObject];
-		STAssertEquals([stack count], expected, nil);
+		XCTAssertEqual([stack count], expected);
 	}
 }
 

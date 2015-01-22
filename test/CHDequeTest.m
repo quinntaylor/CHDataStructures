@@ -10,11 +10,11 @@
  The software is  provided "as is", without warranty of any kind, including all implied warranties of merchantability and fitness. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
  */
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 #import "CHCircularBufferDeque.h"
 #import "CHListDeque.h"
 
-@interface CHDequeTest : SenTestCase {
+@interface CHDequeTest : XCTestCase {
 	id<CHDeque> deque;
 	NSArray *objects, *dequeClasses;
 	NSEnumerator *e;
@@ -42,17 +42,17 @@
 	while (aClass = [classes nextObject]) {
 		// Test initializing with nil and empty array parameters
 		deque = [[[aClass alloc] initWithArray:nil] autorelease];
-		STAssertEquals([deque count], (NSUInteger)0, nil);
+		XCTAssertEqual([deque count], (NSUInteger)0);
 		deque = [[[aClass alloc] initWithArray:[NSArray array]] autorelease];
-		STAssertEquals([deque count], (NSUInteger)0, nil);
+		XCTAssertEqual([deque count], (NSUInteger)0);
 		// Test initializing with a valid, non-empty array
 		deque = [[[aClass alloc] initWithArray:objects] autorelease];
-		STAssertEquals([deque count], [objects count], nil);
-		STAssertEqualObjects([deque allObjects], objects, nil);
+		XCTAssertEqual([deque count], [objects count]);
+		XCTAssertEqualObjects([deque allObjects], objects);
 		// Test initializing with an array larger than the default capacity
 		deque = [[[aClass alloc] initWithArray:moreObjects] autorelease];
-		STAssertEquals([deque count], [moreObjects count], nil);
-		STAssertEqualObjects([deque allObjects], moreObjects, nil);
+		XCTAssertEqual([deque count], [moreObjects count]);
+		XCTAssertEqualObjects([deque allObjects], moreObjects);
 	}
 }
 
@@ -61,17 +61,17 @@
 	Class aClass;
 	while (aClass = [classes nextObject]) {
 		deque = [[[aClass alloc] init] autorelease];
-		STAssertThrows([deque prependObject:nil], nil);
+		XCTAssertThrows([deque prependObject:nil]);
 		
-		STAssertEquals([deque count], (NSUInteger)0, nil);
+		XCTAssertEqual([deque count], (NSUInteger)0);
 		e = [objects objectEnumerator];
 		while (anObject = [e nextObject])
 			[deque prependObject:anObject];
-		STAssertEquals([deque count], (NSUInteger)3, nil);
+		XCTAssertEqual([deque count], (NSUInteger)3);
 		e = [deque objectEnumerator];
-		STAssertEqualObjects([e nextObject], @"C", nil);
-		STAssertEqualObjects([e nextObject], @"B", nil);
-		STAssertEqualObjects([e nextObject], @"A", nil);
+		XCTAssertEqualObjects([e nextObject], @"C");
+		XCTAssertEqualObjects([e nextObject], @"B");
+		XCTAssertEqualObjects([e nextObject], @"A");
 	}
 }
 
@@ -80,17 +80,17 @@
 	Class aClass;
 	while (aClass = [classes nextObject]) {
 		deque = [[[aClass alloc] init] autorelease];
-		STAssertThrows([deque appendObject:nil], nil);
+		XCTAssertThrows([deque appendObject:nil]);
 		
-		STAssertEquals([deque count], (NSUInteger)0, nil);
+		XCTAssertEqual([deque count], (NSUInteger)0);
 		e = [objects objectEnumerator];
 		while (anObject = [e nextObject])
 			[deque appendObject:anObject];
-		STAssertEquals([deque count], (NSUInteger)3, nil);
+		XCTAssertEqual([deque count], (NSUInteger)3);
 		e = [deque objectEnumerator];
-		STAssertEqualObjects([e nextObject], @"A", nil);
-		STAssertEqualObjects([e nextObject], @"B", nil);
-		STAssertEqualObjects([e nextObject], @"C", nil);
+		XCTAssertEqualObjects([e nextObject], @"A");
+		XCTAssertEqualObjects([e nextObject], @"B");
+		XCTAssertEqualObjects([e nextObject], @"C");
 	}
 }
 
@@ -99,11 +99,11 @@
 	Class aClass;
 	while (aClass = [classes nextObject]) {
 		deque = [[[aClass alloc] init] autorelease];
-		STAssertEqualObjects([deque firstObject], nil, nil);
+		XCTAssertEqualObjects([deque firstObject], nil);
 		e = [objects objectEnumerator];
 		while (anObject = [e nextObject]) {
 			[deque prependObject:anObject];
-			STAssertEqualObjects([deque firstObject], anObject, nil);
+			XCTAssertEqualObjects([deque firstObject], anObject);
 		}
 	}
 }
@@ -126,17 +126,16 @@
 	id<CHDeque> deque1, deque2;
 	for (NSUInteger i = 0; i < [dequeClasses count]; i++) {
 		deque1 = [equalDeques objectAtIndex:i];
-		STAssertThrowsSpecificNamed([deque1 isEqualToDeque:[NSString string]],
-		                            NSException, NSInvalidArgumentException, nil);
-		STAssertFalse([deque1 isEqual:[NSString string]], nil);
-		STAssertEqualObjects(deque1, deque1, nil);
+		XCTAssertThrowsSpecificNamed([deque1 isEqualToDeque:[NSString string]], NSException, NSInvalidArgumentException);
+		XCTAssertFalse([deque1 isEqual:[NSString string]]);
+		XCTAssertEqualObjects(deque1, deque1);
 		deque2 = [equalDeques objectAtIndex:i+1];
-		STAssertEqualObjects(deque1, deque2, nil);
-		STAssertEquals([deque1 hash], [deque2 hash], nil);
+		XCTAssertEqualObjects(deque1, deque2);
+		XCTAssertEqual([deque1 hash], [deque2 hash]);
 		deque2 = [emptyDeques objectAtIndex:i];
-		STAssertFalse([deque1 isEqual:deque2], nil);
+		XCTAssertFalse([deque1 isEqual:deque2]);
 		deque2 = [reversedDeques objectAtIndex:i];
-		STAssertFalse([deque1 isEqual:deque2], nil);
+		XCTAssertFalse([deque1 isEqual:deque2]);
 	}
 }
 
@@ -145,11 +144,11 @@
 	Class aClass;
 	while (aClass = [classes nextObject]) {
 		deque = [[[aClass alloc] init] autorelease];
-		STAssertEqualObjects([deque lastObject], nil, nil);
+		XCTAssertEqualObjects([deque lastObject], nil);
 		e = [objects objectEnumerator];
 		while (anObject = [e nextObject]) {
 			[deque appendObject:anObject];
-			STAssertEqualObjects([deque lastObject], anObject, nil);
+			XCTAssertEqualObjects([deque lastObject], anObject);
 		}	
 	}
 }
@@ -162,30 +161,30 @@
 		e = [objects objectEnumerator];
 		while (anObject = [e nextObject]) {
 			[deque appendObject:anObject];
-			STAssertEqualObjects([deque lastObject], anObject, nil);
+			XCTAssertEqualObjects([deque lastObject], anObject);
 		}
 		NSUInteger expected = [objects count];
-		STAssertEquals([deque count], expected, nil);
-		STAssertEqualObjects([deque firstObject], @"A", nil);
-		STAssertEqualObjects([deque lastObject],  @"C", nil);
+		XCTAssertEqual([deque count], expected);
+		XCTAssertEqualObjects([deque firstObject], @"A");
+		XCTAssertEqualObjects([deque lastObject],  @"C");
 		[deque removeFirstObject];
 		--expected;
-		STAssertEquals([deque count], expected, nil);
-		STAssertEqualObjects([deque firstObject], @"B", nil);
-		STAssertEqualObjects([deque lastObject],  @"C", nil);
+		XCTAssertEqual([deque count], expected);
+		XCTAssertEqualObjects([deque firstObject], @"B");
+		XCTAssertEqualObjects([deque lastObject],  @"C");
 		[deque removeFirstObject];
 		--expected;
-		STAssertEquals([deque count], expected, nil);
-		STAssertEqualObjects([deque firstObject], @"C", nil);
-		STAssertEqualObjects([deque lastObject],  @"C", nil);
+		XCTAssertEqual([deque count], expected);
+		XCTAssertEqualObjects([deque firstObject], @"C");
+		XCTAssertEqualObjects([deque lastObject],  @"C");
 		[deque removeFirstObject];
 		--expected;
-		STAssertEquals([deque count], expected, nil);
-		STAssertNil([deque firstObject], nil);
-		STAssertNil([deque lastObject], nil);
+		XCTAssertEqual([deque count], expected);
+		XCTAssertNil([deque firstObject]);
+		XCTAssertNil([deque lastObject]);
 		// Test that removal works even with an empty deque
-		STAssertNoThrow([deque removeFirstObject], nil);
-		STAssertEquals([deque count], expected, nil);
+		XCTAssertNoThrow([deque removeFirstObject]);
+		XCTAssertEqual([deque count], expected);
 	}
 }
 
@@ -197,16 +196,16 @@
 		e = [objects objectEnumerator];
 		while (anObject = [e nextObject])
 			[deque appendObject:anObject];
-		STAssertEqualObjects([deque lastObject], @"C", nil);
+		XCTAssertEqualObjects([deque lastObject], @"C");
 		[deque removeLastObject];
-		STAssertEqualObjects([deque lastObject], @"B", nil);
+		XCTAssertEqualObjects([deque lastObject], @"B");
 		[deque removeLastObject];
-		STAssertEqualObjects([deque lastObject], @"A", nil);
+		XCTAssertEqualObjects([deque lastObject], @"A");
 		[deque removeLastObject];
-		STAssertNil([deque lastObject], nil);
+		XCTAssertNil([deque lastObject]);
 		// Test that removal works even with an empty deque
-		STAssertNoThrow([deque removeLastObject], nil);
-		STAssertEquals([deque count], (NSUInteger)0, nil);
+		XCTAssertNoThrow([deque removeLastObject]);
+		XCTAssertEqual([deque count], (NSUInteger)0);
 	}
 }
 
@@ -219,10 +218,10 @@
 		while (anObject = [e nextObject])
 			[deque appendObject:anObject];
 		e = [deque reverseObjectEnumerator];
-		STAssertEqualObjects([e nextObject], @"C", nil);
-		STAssertEqualObjects([e nextObject], @"B", nil);
-		STAssertEqualObjects([e nextObject], @"A", nil);
-		STAssertEqualObjects([e nextObject], nil,  nil);
+		XCTAssertEqualObjects([e nextObject], @"C");
+		XCTAssertEqualObjects([e nextObject], @"B");
+		XCTAssertEqualObjects([e nextObject], @"A");
+		XCTAssertEqualObjects([e nextObject], nil);
 	}
 }
 
