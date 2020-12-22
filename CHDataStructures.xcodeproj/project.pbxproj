@@ -381,7 +381,7 @@
 		E4ADBB1F0E88174200B570BC /* CHDoublyLinkedList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHDoublyLinkedList.m; path = source/CHDoublyLinkedList.m; sourceTree = "<group>"; };
 		E4ADBB220E88174200B570BC /* CHUnbalancedTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHUnbalancedTree.h; path = source/CHUnbalancedTree.h; sourceTree = "<group>"; };
 		E4ADBB230E88174200B570BC /* CHUnbalancedTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHUnbalancedTree.m; path = source/CHUnbalancedTree.m; sourceTree = "<group>"; };
-		E4ADBB7E0E8828C500B570BC /* README.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = README.html; sourceTree = "<group>"; };
+		E4ADBB7E0E8828C500B570BC /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E4ADBC990E88412C00B570BC /* CHAbstractBinarySearchTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHAbstractBinarySearchTree.m; path = source/CHAbstractBinarySearchTree.m; sourceTree = "<group>"; };
 		E4CFCDB00E8FD18300B0253A /* docs.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = docs.html; sourceTree = "<group>"; };
 		E4CFCDB10E8FD18300B0253A /* Doxyfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Doxyfile; path = doxygen/Doxyfile; sourceTree = "<group>"; };
@@ -459,6 +459,7 @@
 		0867D691FE84028FC02AAC07 /* CHDataStructures */ = {
 			isa = PBXGroup;
 			children = (
+				E4ADBB7E0E8828C500B570BC /* README.md */,
 				E4BD316A0FEEE79C00A084B2 /* Framework Code */,
 				E473C9A70E933350005CA997 /* Unit Test Code */,
 				E4CFCDAD0E8FD16400B0253A /* Documentation */,
@@ -599,7 +600,6 @@
 				E4CFCDB10E8FD18300B0253A /* Doxyfile */,
 				E4CFCDB20E8FD18300B0253A /* doxygen-cocoa-tags.xml */,
 				E4CFCDB30E8FD18300B0253A /* doxygen.css */,
-				E4ADBB7E0E8828C500B570BC /* README.html */,
 			);
 			name = Documentation;
 			sourceTree = "<group>";
