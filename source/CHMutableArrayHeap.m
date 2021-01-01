@@ -75,10 +75,10 @@
 
 // This is the designated initializer for CHMutableArrayHeap
 - (instancetype)initWithOrdering:(NSComparisonResult)order array:(NSArray *)anArray {
-	// Parent initializer allocates empty array; add objects after order is set.
-	if ((self = [self initWithCapacity:[anArray count]]) == nil) return nil;
 	if (order != NSOrderedAscending && order != NSOrderedDescending)
 		CHInvalidArgumentException([self class], _cmd, @"Invalid sort order.");
+	if ((self = [super init]) == nil) return nil;
+	array = [[NSMutableArray alloc] initWithCapacity:[anArray count]];
 	sortOrder = order;
 	[self addObjectsFromArray:anArray]; // establishes heap ordering of elements
 	return self;

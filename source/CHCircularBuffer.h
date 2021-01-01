@@ -32,6 +32,8 @@
 	unsigned long mutations; // Tracks mutations for NSFastEnumeration.
 }
 
+- (instancetype)initWithCapacity:(NSUInteger)capacity NS_DESIGNATED_INITIALIZER;
+
 // The following methods are undocumented since they are only reimplementations.
 // Users should consult the API documentation for NSArray and NSMutableArray.
 

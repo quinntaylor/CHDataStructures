@@ -54,6 +54,8 @@ typedef struct CHDoublyLinkedListNode {
 	unsigned long mutations; // Tracks mutations for NSFastEnumeration.
 }
 
+- (instancetype)initWithArray:(NSArray *)array NS_DESIGNATED_INITIALIZER;
+
 /**
  Returns an enumerator that accesses each object in the receiver from back to front.
  

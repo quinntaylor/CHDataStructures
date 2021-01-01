@@ -26,4 +26,6 @@
 	unsigned long mutations; // Used to track mutations for NSFastEnumeration.
 }
 
+- (instancetype)initWithOrdering:(NSComparisonResult)order array:(NSArray *)array NS_DESIGNATED_INITIALIZER;
+
 @end

@@ -53,4 +53,6 @@ typedef struct CHSinglyLinkedListNode {
 	unsigned long mutations; // Tracks mutations for NSFastEnumeration.
 }
 
+- (instancetype)initWithArray:(NSArray *)array NS_DESIGNATED_INITIALIZER;
+
 @end

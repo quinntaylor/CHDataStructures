@@ -26,6 +26,9 @@
 	unsigned long mutations; // Used to track mutations for NSFastEnumeration.
 }
 
+- (instancetype)initWithCapacity:(NSUInteger)capacity NS_DESIGNATED_INITIALIZER; // Inherited from NSMutableArray
+- (instancetype)initWithOrdering:(NSComparisonResult)order array:(NSArray *)array NS_DESIGNATED_INITIALIZER;
+
 /**
  Determine whether the receiver contains a given object, matched using the == operator.
  
