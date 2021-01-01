@@ -28,7 +28,7 @@ size_t kCHBinaryTreeNodeSize = sizeof(CHBinaryTreeNode);
  
  @return The singleton instance of this class.
  */
-+ (id) object;
++ (id)object;
 
 /**
  Always indicate that another given object should appear to the right side.
@@ -38,7 +38,7 @@ size_t kCHBinaryTreeNodeSize = sizeof(CHBinaryTreeNode);
  
  @warning The header object @b must be the receiver of the message (e.g. <code>[headerObject compare:anObject]</code>) in order to work correctly. Calling <code>[anObject compare:headerObject]</code> instead will almost certainly result in a crash.
  */
-- (NSComparisonResult) compare:(id)otherObject;
+- (NSComparisonResult)compare:(id)otherObject;
 
 @end
 
@@ -47,7 +47,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 
 @implementation CHSearchTreeHeaderObject
 
-+ (id) object {
++ (id)object {
 	// Protecting the @synchronized block prevents unnecessary lock contention.
 	if (headerObject == nil) {
 		@synchronized([CHSearchTreeHeaderObject class]) {
@@ -60,19 +60,19 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 	return headerObject;
 }
 
-- (NSComparisonResult) compare:(id)otherObject {
+- (NSComparisonResult)compare:(id)otherObject {
 	return NSOrderedAscending;
 }
 
-- (id) retain {
+- (id)retain {
 	CHUnsupportedOperationException([self class], _cmd); return nil;
 }
 
-- (oneway void) release {
+- (oneway void)release {
 	CHUnsupportedOperationException([self class], _cmd);
 }
 
-- (id) autorelease {
+- (id)autorelease {
 	CHUnsupportedOperationException([self class], _cmd); return nil;
 }
 
@@ -119,11 +119,11 @@ static CHSearchTreeHeaderObject *headerObject = nil;
  @param mutations A pointer to the collection's mutation count for invalidation.
  @return An initialized CHBinarySearchTreeEnumerator which will enumerate objects in @a tree in the order specified by @a order.
  */
-- (id) initWithTree:(id<CHSearchTree>)tree
-               root:(CHBinaryTreeNode*)root
-           sentinel:(CHBinaryTreeNode*)sentinel
-     traversalOrder:(CHTraversalOrder)order
-    mutationPointer:(unsigned long*)mutations;
+- (id)initWithTree:(id<CHSearchTree>)tree
+              root:(CHBinaryTreeNode *)root
+          sentinel:(CHBinaryTreeNode *)sentinel
+    traversalOrder:(CHTraversalOrder)order
+   mutationPointer:(unsigned long *)mutations;
 
 /**
  Returns an array of objects the receiver has yet to enumerate.
@@ -132,24 +132,24 @@ static CHSearchTreeHeaderObject *headerObject = nil;
  
  Invoking this method exhausts the remainder of the objects, such that subsequent invocations of #nextObject return @c nil.
  */
-- (NSArray*) allObjects;
+- (NSArray *)allObjects;
 
 /**
  Returns the next object from the collection being enumerated.
  
  @return The next object from the collection being enumerated, or @c nil when all objects have been enumerated.
  */
-- (id) nextObject;
+- (id)nextObject;
 
 @end
 
 @implementation CHBinarySearchTreeEnumerator
 
-- (id) initWithTree:(id<CHSearchTree>)tree
-               root:(CHBinaryTreeNode*)root
-           sentinel:(CHBinaryTreeNode*)sentinel
-     traversalOrder:(CHTraversalOrder)order
-    mutationPointer:(unsigned long*)mutations
+- (id)initWithTree:(id<CHSearchTree>)tree
+              root:(CHBinaryTreeNode *)root
+          sentinel:(CHBinaryTreeNode *)sentinel
+    traversalOrder:(CHTraversalOrder)order
+   mutationPointer:(unsigned long *)mutations
 {
 	if ((self = [super init]) == nil || !isValidTraversalOrder(order)) return nil;
 	traversalOrder = order;
@@ -172,14 +172,14 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 	return self;
 }
 
-- (void) dealloc {
+- (void)dealloc {
 	[searchTree release];
 	free(stack);
 	free(queue);
 	[super dealloc];
 }
 
-- (NSArray*) allObjects {
+- (NSArray *)allObjects {
 	if (mutationCount != *mutationPtr)
 		CHMutatedCollectionException([self class], _cmd);
 	NSMutableArray *array = [[NSMutableArray alloc] init];
@@ -191,7 +191,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 	return [array autorelease];
 }
 
-- (id) nextObject {
+- (id)nextObject {
 	if (mutationCount != *mutationPtr)
 		CHMutatedCollectionException([self class], _cmd);
 	
@@ -292,7 +292,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 
 #pragma mark -
 
-CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
+CHBinaryTreeNode * CHCreateBinaryTreeNodeWithObject(id anObject) {
 	CHBinaryTreeNode *node;
 	// NSScannedOption tells the garbage collector to scan object and children.
 	node = malloc(kCHBinaryTreeNodeSize);
@@ -303,7 +303,7 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 
 @implementation CHAbstractBinarySearchTree
 
-- (void) dealloc {
+- (void)dealloc {
 	[self removeAllObjects];
 	free(header);
 	free(sentinel);
@@ -312,7 +312,7 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 
 // This is the designated initializer for CHAbstractBinarySearchTree.
 // Only to be called from concrete child classes to initialize shared variables.
-- (id) init {
+- (id)init {
 	if ((self = [super init]) == nil) return nil;
 	count = 0;
 	mutations = 0;
@@ -327,7 +327,7 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 
 // Calling [self init] allows child classes to initialize their specific state.
 // (The -init method in any subclass must always call to -[super init] first.)
-- (id) initWithArray:(NSArray*)anArray {
+- (id)initWithArray:(NSArray *)anArray {
 	if ([self init] == nil) return nil;
 	[self addObjectsFromArray:anArray];
 	return self;
@@ -335,19 +335,19 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 
 #pragma mark <NSCoding>
 
-- (id) initWithCoder:(NSCoder*)decoder {
+- (id)initWithCoder:(NSCoder *)decoder {
 	// Decode the array of objects and use it to initialize the tree's contents.
 	return [self initWithArray:[decoder decodeObjectForKey:@"objects"]];
 }
 
-- (void) encodeWithCoder:(NSCoder*)encoder {
+- (void)encodeWithCoder:(NSCoder *)encoder {
 	[encoder encodeObject:[self allObjectsWithTraversalOrder:CHTraverseLevelOrder]
 	               forKey:@"objects"];
 }
 
 #pragma mark <NSCopying> methods
 
-- (id) copyWithZone:(NSZone*)zone {
+- (id)copyWithZone:(NSZone *)zone {
 	id<CHSearchTree> newTree = [[[self class] allocWithZone:zone] init];
 	// No point in using fast enumeration here until rdar://6296108 is addressed.
 	NSEnumerator *e = [self objectEnumeratorWithTraversalOrder:CHTraverseLevelOrder];
@@ -360,10 +360,7 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 
 #pragma mark <NSFastEnumeration>
 
-- (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
-                                   objects:(id*)stackbuf
-                                     count:(NSUInteger)len
-{
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id *)stackbuf count:(NSUInteger)len {
 	CHBinaryTreeNode *current;
 	CHBinaryTreeStack_DECLARE();
 	
@@ -378,8 +375,8 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 		return 0;		
 	}
 	else {
-		current = (CHBinaryTreeNode*) state->state;
-		stack = (CHBinaryTreeNode**) state->extra[0];
+		current = (CHBinaryTreeNode *) state->state;
+		stack = (CHBinaryTreeNode **) state->extra[0];
 		stackCapacity = (NSUInteger) state->extra[1];
 		stackSize = (NSUInteger) state->extra[2];
 	}
@@ -387,7 +384,7 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 	
 	// Accumulate objects from the tree until we reach all nodes or the maximum
 	NSUInteger batchCount = 0;
-	while ( (current != sentinel || stackSize > 0) && batchCount < len) {
+	while ((current != sentinel || stackSize > 0) && batchCount < len) {
 		while (current != sentinel) {
 			CHBinaryTreeStack_PUSH(current);
 			current = current->left;
@@ -414,39 +411,39 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 
 #pragma mark Concrete Implementations
 
-- (void) addObjectsFromArray:(NSArray*)anArray {
+- (void)addObjectsFromArray:(NSArray *)anArray {
 	for (id anObject in anArray) {
 		[self addObject:anObject];
 	}
 }
 
-- (NSArray*) allObjects {
+- (NSArray *)allObjects {
 	return [self allObjectsWithTraversalOrder:CHTraverseAscending];
 }
 
-- (NSArray*) allObjectsWithTraversalOrder:(CHTraversalOrder)order {
+- (NSArray *)allObjectsWithTraversalOrder:(CHTraversalOrder)order {
 	return [[self objectEnumeratorWithTraversalOrder:order] allObjects];
 }
 
-- (id) anyObject {
+- (id)anyObject {
 	return (count > 0) ? header->right->object : nil;
 	// In an empty tree, sentinel's object may be nil, but let's not chance it.
 	// (Our -removeAllObjects nils the pointer, child's -removeObject: may not.)
 }
 
-- (BOOL) containsObject:(id)anObject {
+- (BOOL)containsObject:(id)anObject {
 	return ([self member:anObject] != nil);
 }
 
-- (NSUInteger) count {
+- (NSUInteger)count {
 	return count;
 }
 
-- (NSString*) description {
+- (NSString *)description {
 	return [[self allObjectsWithTraversalOrder:CHTraverseAscending] description];
 }
 
-- (id) firstObject {
+- (id)firstObject {
 	sentinel->object = nil;
 	CHBinaryTreeNode *current = header->right;
 	while (current->left != sentinel)
@@ -454,26 +451,26 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 	return current->object;
 }
 
-- (NSUInteger) hash {
+- (NSUInteger)hash {
 	return hashOfCountAndObjects(count, [self firstObject], [self lastObject]);
 }
 
-- (BOOL) isEqual:(id)otherObject {
+- (BOOL)isEqual:(id)otherObject {
 	if ([otherObject conformsToProtocol:@protocol(CHSortedSet)])
 		return [self isEqualToSortedSet:otherObject];
 	else
 		return NO;
 }
 
-- (BOOL) isEqualToSearchTree:(id<CHSearchTree>)otherTree {
+- (BOOL)isEqualToSearchTree:(id<CHSearchTree>)otherTree {
 	return collectionsAreEqual(self, otherTree);
 }
 
-- (BOOL) isEqualToSortedSet:(id<CHSortedSet>)otherSortedSet {
+- (BOOL)isEqualToSortedSet:(id<CHSortedSet>)otherSortedSet {
 	return collectionsAreEqual(self, otherSortedSet);
 }
 
-- (id) lastObject {
+- (id)lastObject {
 	sentinel->object = nil;
 	CHBinaryTreeNode *current = header->right;
 	while (current->right != sentinel)
@@ -481,7 +478,7 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 	return current->object;
 }
 
-- (id) member:(id)anObject {
+- (id)member:(id)anObject {
 	if (anObject == nil)
 		return nil;
 	sentinel->object = anObject; // Make sure the target value is always "found"
@@ -492,11 +489,11 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 	return (current != sentinel) ? current->object : nil;
 }
 
-- (NSEnumerator*) objectEnumerator {
+- (NSEnumerator *)objectEnumerator {
 	return [self objectEnumeratorWithTraversalOrder:CHTraverseAscending];
 }
 
-- (NSEnumerator*) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order {
+- (NSEnumerator *)objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order {
 	return [[[CHBinarySearchTreeEnumerator alloc]
 			 initWithTree:self
 	                 root:header->right
@@ -506,7 +503,7 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 }
 
 // Doesn't call -[NSGarbageCollector collectIfNeeded] -- lets the sender choose.
-- (void) removeAllObjects {
+- (void)removeAllObjects {
 	if (count == 0)
 		return;
 	++mutations;
@@ -533,20 +530,20 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 }
 
 // Incurs an extra search cost, but we don't know how the child class removes...
-- (void) removeFirstObject {
+- (void)removeFirstObject {
 	[self removeObject:[self firstObject]];
 }
 
 // Incurs an extra search cost, but we don't know how the child class removes...
-- (void) removeLastObject {
+- (void)removeLastObject {
 	[self removeObject:[self lastObject]];
 }
 
-- (NSEnumerator*) reverseObjectEnumerator {
+- (NSEnumerator *)reverseObjectEnumerator {
 	return [self objectEnumeratorWithTraversalOrder:CHTraverseDescending];
 }
 
-- (NSSet*) set {
+- (NSSet *)set {
 	NSMutableSet *set = [NSMutableSet new];
 	NSEnumerator *e = [self objectEnumeratorWithTraversalOrder:CHTraversePreOrder];
 	id anObject;
@@ -565,10 +562,7 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
  
  \attention This implementation tests objects for membership in the subset according to their sorted order. This worst-case input causes more work for self-balancing trees, and subsets of unbalanced trees will always degenerate to linked lists.
  */
-- (id<CHSortedSet>) subsetFromObject:(id)start
-                            toObject:(id)end
-                             options:(CHSubsetConstructionOptions)options
-{
+- (id<CHSortedSet>)subsetFromObject:(id)start toObject:(id)end options:(CHSubsetConstructionOptions)options {
 	// If both parameters are nil, return a copy containing all the objects.
 	if (start == nil && end == nil)
 		return [[self copy] autorelease];
@@ -631,7 +625,7 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 }
 
 
-- (NSString*) debugDescription {
+- (NSString *)debugDescription {
 	NSMutableString *description = [NSMutableString stringWithFormat:
 	                                @"<%@: 0x%p> = {\n", [self class], self];
 	CHBinaryTreeNode *current;
@@ -656,13 +650,13 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 	return description;
 }
 
-- (NSString*) debugDescriptionForNode:(CHBinaryTreeNode*)node {
+- (NSString *)debugDescriptionForNode:(CHBinaryTreeNode *)node {
 	return [NSString stringWithFormat:@"\"%@\"", node->object];
 }
 
 // Uses an iterative reverse pre-order traversal to generate the diagram so that
 // DOT tools will render the graph as a binary search tree is expected to look.
-- (NSString*) dotGraphString {
+- (NSString *)dotGraphString {
 	NSMutableString *graph = [NSMutableString stringWithFormat:
 							  @"digraph %@\n{\n", NSStringFromClass([self class])];
 	if (header->right == sentinel) {
@@ -705,17 +699,17 @@ CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject) {
 	return graph;
 }
 
-- (NSString*) dotGraphStringForNode:(CHBinaryTreeNode*)node {
+- (NSString *)dotGraphStringForNode:(CHBinaryTreeNode *)node {
 	return [NSString stringWithFormat:@"  \"%@\";\n", node->object];
 }
 
 #pragma mark Unsupported Implementations
 
-- (void) addObject:(id)anObject {
+- (void)addObject:(id)anObject {
 	CHUnsupportedOperationException([self class], _cmd);
 }
 
-- (void) removeObject:(id)element {
+- (void)removeObject:(id)element {
 	CHUnsupportedOperationException([self class], _cmd);
 }
 

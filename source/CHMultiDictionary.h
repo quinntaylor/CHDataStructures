@@ -44,7 +44,7 @@
  
  @see allObjects
  */
-- (NSUInteger) countForAllKeys;
+- (NSUInteger)countForAllKeys;
 
 /**
  Returns the number of objects associated with a given key.
@@ -54,7 +54,7 @@
  
  @see objectsForKey:
  */
-- (NSUInteger) countForKey:(id)aKey;
+- (NSUInteger)countForKey:(id)aKey;
 
 /**
  Returns an array of objects associated with a given key.
@@ -65,7 +65,7 @@
  @see countForKey:
  @see removeObjectsForKey:
  */
-- (NSSet*) objectsForKey:(id)aKey;
+- (NSSet *)objectsForKey:(id)aKey;
 
 #pragma mark Modifying Contents
 
@@ -82,7 +82,7 @@
  @see removeObjectsForKey:
  @see setObjects:forKey:
  */
-- (void) addObject:(id)anObject forKey:(id)aKey;
+- (void)addObject:(id)anObject forKey:(id)aKey;
 
 /**
  Adds the given object(s) to a key entry in the receiver.
@@ -97,7 +97,7 @@
  @see removeObjectsForKey:
  @see setObjects:forKey:
  */
-- (void) addObjects:(NSSet*)objectSet forKey:(id)aKey;
+- (void)addObjects:(NSSet *)objectSet forKey:(id)aKey;
 
 /**
  Remove @b all occurrences of @a anObject associated with a given key.
@@ -113,7 +113,7 @@
  @see objectsForKey:
  @see removeObjectsForKey:
  */
-- (void) removeObject:(id)anObject forKey:(id)aKey;
+- (void)removeObject:(id)anObject forKey:(id)aKey;
 
 /**
  Remove a given key and its associated value(s) from the receiver.
@@ -125,7 +125,7 @@
  @see objectsForKey:
  @see removeObject:forKey:
  */
-- (void) removeObjectsForKey:(id)aKey;
+- (void)removeObjectsForKey:(id)aKey;
 
 /**
  Sets the object(s) associated with a key entry in the receiver.
@@ -140,6 +140,6 @@
  @see objectsForKey:
  @see removeObjectsForKey:
  */
-- (void) setObjects:(NSSet*)objectSet forKey:(id)aKey;
+- (void)setObjects:(NSSet *)objectSet forKey:(id)aKey;
 
 @end

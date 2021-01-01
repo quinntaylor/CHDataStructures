@@ -89,7 +89,7 @@ typedef struct CHBinaryTreeNode {
  
  @see dotGraphString
  */
-- (NSString*) debugDescription;
+- (NSString *)debugDescription;
 
 /**
  Produces a <a href="http://en.wikipedia.org/wiki/DOT_language">DOT language</a> graph description for the receiver tree.
@@ -100,6 +100,6 @@ typedef struct CHBinaryTreeNode {
  
  @see debugDescription
  */
-- (NSString*) dotGraphString;
+- (NSString *)dotGraphString;
 
 @end

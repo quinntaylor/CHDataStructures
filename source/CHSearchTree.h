@@ -69,7 +69,7 @@ typedef enum {
  
  @see initWithArray:
  */
-- (id) init;
+- (id)init;
 
 /**
  Initialize a search tree with the contents of an array. Objects are added to the tree in the order they occur in the array.
@@ -77,7 +77,7 @@ typedef enum {
  @param anArray An array containing objects with which to populate a new search tree.
  @return An initialized search tree that contains the objects in @a anArray in sorted order.
  */
-- (id) initWithArray:(NSArray*)anArray;
+- (id)initWithArray:(NSArray *)anArray;
 
 #pragma mark Querying Contents
 /** @name Tree Traversals */
@@ -93,7 +93,7 @@ typedef enum {
  @see objectEnumeratorWithTraversalOrder:
  @see \link reverseObjectEnumerator - reverseObjectEnumerator\endlink
  */
-- (NSArray*) allObjectsWithTraversalOrder:(CHTraversalOrder)order;
+- (NSArray *)allObjectsWithTraversalOrder:(CHTraversalOrder)order;
 
 /**
  Compares the receiving search tree to another search tree. Two search trees have equal contents if they each hold the same number of objects and objects at a given position in each search tree satisfy the \link NSObject-p#isEqual: -isEqual:\endlink test.
@@ -101,7 +101,7 @@ typedef enum {
  @param otherTree A search tree.
  @return @c YES if the contents of @a otherTree are equal to the contents of the receiver, otherwise @c NO.
  */
-- (BOOL) isEqualToSearchTree:(id<CHSearchTree>)otherTree;
+- (BOOL)isEqualToSearchTree:(id<CHSearchTree>)otherTree;
 
 /**
  Returns an enumerator that accesses each object using a given traversal order.
@@ -115,7 +115,7 @@ typedef enum {
  @see \link objectEnumerator - objectEnumerator\endlink
  @see \link reverseObjectEnumerator - reverseObjectEnumerator\endlink
  */
-- (NSEnumerator*) objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order;
+- (NSEnumerator *)objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order;
 
 // @}
 @end

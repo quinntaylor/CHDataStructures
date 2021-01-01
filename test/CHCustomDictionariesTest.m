@@ -23,13 +23,13 @@ id replicateWithNSCoding(id dictionary) {
 	return [NSKeyedUnarchiver unarchiveObjectWithData:data];	
 }
 
-static NSArray* keyArray;
+static NSArray *keyArray;
 
 #pragma mark -
 
 @interface CHMutableDictionary (Test)
 
-- (NSString*) debugDescription; // Declare here to prevent compiler warnings.
+- (NSString *)debugDescription; // Declare here to prevent compiler warnings.
 
 @end
 
@@ -41,15 +41,15 @@ static NSArray* keyArray;
 
 @implementation CHMutableDictionaryTest
 
-+ (void) initialize {
++ (void)initialize {
 	keyArray = [[NSArray arrayWithObjects:@"baz", @"foo", @"bar", @"yoo", @"hoo", nil] retain];
 }
 
-- (void) setUp {
+- (void)setUp {
 	dictionary = [[[CHMutableDictionary alloc] init] autorelease];
 }
 
-- (void) populateDictionary {
+- (void)populateDictionary {
 	enumerator = [keyArray objectEnumerator];
 	id aKey;
 	while (aKey = [enumerator nextObject]) {
@@ -57,24 +57,24 @@ static NSArray* keyArray;
 	}
 }
 
-- (void) testInitWithObjectsForKeysCount {
+- (void)testInitWithObjectsForKeysCount {
 	dictionary = [[[dictionary class] alloc] initWithObjects:keyArray forKeys:keyArray];
 	// Should call down to -initWithObjects:forKeys:count:
 }
 
-- (void) testDebugDescription {
+- (void)testDebugDescription {
 	XCTAssertNotNil([dictionary debugDescription]);
 	[dictionary setObject:@"xyz" forKey:@"abc"];
 	XCTAssertNotNil([dictionary debugDescription]);
 }
 
-- (void) testDescription {
+- (void)testDescription {
 	XCTAssertNotNil([dictionary description]);
 	[dictionary setObject:@"xyz" forKey:@"abc"];
 	XCTAssertNotNil([dictionary description]);
 }
 
-- (void) testKeyEnumerator {
+- (void)testKeyEnumerator {
 	// Test that key enumerator is non-nil, even for an empty dictionary.
 	enumerator = [dictionary keyEnumerator];
 	XCTAssertNotNil(enumerator);
@@ -89,7 +89,7 @@ static NSArray* keyArray;
 	XCTAssertNotNil([enumerator allObjects]);
 }
 
-- (void) testObjectEnumerator {
+- (void)testObjectEnumerator {
 	// Test that object enumerator is non-nil, even for an empty dictionary.
 	enumerator = [dictionary objectEnumerator];
 	XCTAssertNotNil(enumerator);
@@ -104,7 +104,7 @@ static NSArray* keyArray;
 	XCTAssertNotNil([enumerator allObjects]);
 }
 
-- (void) testRemoveAllObjects {
+- (void)testRemoveAllObjects {
 	// Removal shouldn't raise exception even if dictionary is empty
 	XCTAssertEqual([dictionary count], (NSUInteger)0);
 	XCTAssertNoThrow([dictionary removeAllObjects]);
@@ -115,7 +115,7 @@ static NSArray* keyArray;
 	XCTAssertEqual([dictionary count], (NSUInteger)0);
 }
 
-- (void) testRemoveObjectForKey {
+- (void)testRemoveObjectForKey {
 	// Removal shouldn't raise exception even if dictionary is empty
 	XCTAssertNil([dictionary objectForKey:@"foo"]);
 	XCTAssertNoThrow([dictionary removeObjectForKey:@"foo"]);
@@ -126,7 +126,7 @@ static NSArray* keyArray;
 	XCTAssertNil([dictionary objectForKey:@"foo"]);
 }
 
-- (void) testSetObjectForKey {
+- (void)testSetObjectForKey {
 	// Verify that nil key and/or object raises an exception
 	XCTAssertThrows([dictionary setObject:@"" forKey:nil]);
 	XCTAssertThrows([dictionary setObject:nil forKey:@""]);
@@ -148,14 +148,14 @@ static NSArray* keyArray;
 	XCTAssertFalse([value isEqual:[dictionary objectForKey:key]]);
 }
 
-- (void) testNSCoding {
+- (void)testNSCoding {
 	[self populateDictionary];
 	id clone = replicateWithNSCoding(dictionary);
 	XCTAssertEqualObjects([NSSet setWithArray:[clone allKeys]],
 						 [NSSet setWithArray:[dictionary allKeys]]);
 }
 
-- (void) testNSCopying {
+- (void)testNSCopying {
 	id copy = [[dictionary copy] autorelease];
 	XCTAssertEqual([copy count], [dictionary count]);
 	XCTAssertEqual([copy hash], [dictionary hash]);
@@ -176,11 +176,11 @@ static NSArray* keyArray;
 
 @implementation CHBidirectionalDictionaryTest
 
-- (void) setUp {
+- (void)setUp {
 	dictionary = [[[CHBidirectionalDictionary alloc] init] autorelease];
 }
 
-- (void) testInverseDictionary {
+- (void)testInverseDictionary {
 	id inverse = [dictionary inverseDictionary];
 	XCTAssertNotNil([dictionary inverseDictionary]);
 	// Test identity of dictionary and inverse with respect to each other.
@@ -205,7 +205,7 @@ static NSArray* keyArray;
 	XCTAssertNil([inverse objectForKey:value]);
 }
 
-- (void) testRemoveKeyForObject {
+- (void)testRemoveKeyForObject {
 	XCTAssertNoThrow([dictionary removeKeyForObject:nil]);
 	
 	[dictionary setObject:@"B" forKey:@"A"];
@@ -227,7 +227,7 @@ static NSArray* keyArray;
 	XCTAssertNil([dictionary keyForObject:@"D"]);
 }
 
-- (void) testRemoveObjectForKey {
+- (void)testRemoveObjectForKey {
 	XCTAssertNoThrow([dictionary removeObjectForKey:nil]);
 	
 	[dictionary setObject:@"B" forKey:@"A"];
@@ -249,7 +249,7 @@ static NSArray* keyArray;
 	XCTAssertNil([dictionary keyForObject:@"D"]);
 }
 
-- (void) testSetAndQueryKeyAndObject {
+- (void)testSetAndQueryKeyAndObject {
 	// Verify that nil key and/or object raises an exception
 	XCTAssertThrows([dictionary setObject:@"" forKey:nil]);
 	XCTAssertThrows([dictionary setObject:nil forKey:@""]);
@@ -323,17 +323,17 @@ static NSArray* keyArray;
 
 @implementation CHMultiDictionaryTest
 
-- (void) setUp {
+- (void)setUp {
 	dictionary = [[[CHMultiDictionary alloc] init] autorelease];
 }
 
-- (void) populateDictionary {
+- (void)populateDictionary {
 	[dictionary addObjects:[NSSet setWithObjects:@"A",@"B",@"C",nil] forKey:@"foo"];
 	[dictionary addObjects:[NSSet setWithObjects:@"X",@"Y",@"Z",nil] forKey:@"bar"];
 	[dictionary addObjects:[NSSet setWithObjects:@"1",@"2",@"3",nil] forKey:@"baz"];
 }
 
-- (void) testAddObjectForKey {
+- (void)testAddObjectForKey {
 	XCTAssertEqual([dictionary count], (NSUInteger)0);
 	XCTAssertEqual([dictionary countForAllKeys], (NSUInteger)0);
 	
@@ -359,7 +359,7 @@ static NSArray* keyArray;
 	XCTAssertEqual([dictionary countForKey:@"bar"], (NSUInteger)2);
 }
 
-- (void) testAddObjectsForKey {
+- (void)testAddObjectsForKey {
 	[dictionary addObjects:[NSSet setWithObjects:@"A",@"B",nil] forKey:@"foo"];
 	XCTAssertEqual([dictionary count], (NSUInteger)1);
 	XCTAssertEqual([dictionary countForKey:@"foo"], (NSUInteger)2);
@@ -377,7 +377,7 @@ static NSArray* keyArray;
 	XCTAssertEqual([dictionary countForAllKeys], (NSUInteger)6);
 }
 
-- (void) testInitWithObjectsAndKeys {
+- (void)testInitWithObjectsAndKeys {
 	// Test initializing with no objects or keys
 	XCTAssertNoThrow([[CHMultiDictionary alloc] initWithObjectsAndKeys:nil]);
 	// Test initializing with invalid nil key parameter (unmatched values/keys)
@@ -394,7 +394,7 @@ static NSArray* keyArray;
 	XCTAssertEqual([dictionary countForKey:@"baz"], (NSUInteger)1);
 }
 
-- (void) testInitWithObjectsForKeys {
+- (void)testInitWithObjectsForKeys {
 	NSMutableArray *keys = [NSMutableArray array];
 	NSMutableArray *objects = [NSMutableArray array];
 	
@@ -416,7 +416,7 @@ static NSArray* keyArray;
 	XCTAssertThrows([[CHMultiDictionary alloc] initWithObjects:objects forKeys:keys]);
 }
 
-- (void) testObjectEnumerator {
+- (void)testObjectEnumerator {
 	[self populateDictionary];
 	
 	enumerator = [dictionary objectEnumerator];
@@ -427,7 +427,7 @@ static NSArray* keyArray;
 	}
 }
 
-- (void) testObjectsForKey {
+- (void)testObjectsForKey {
 	[self populateDictionary];
 	
 	XCTAssertEqualObjects([dictionary objectsForKey:@"foo"],
@@ -439,7 +439,7 @@ static NSArray* keyArray;
 	XCTAssertNil([dictionary objectsForKey:@"bogus"]);
 }
 
-- (void) testRemoveAllObjects {
+- (void)testRemoveAllObjects {
 	[self populateDictionary];
 	
 	XCTAssertEqual([dictionary count], (NSUInteger)3);
@@ -449,7 +449,7 @@ static NSArray* keyArray;
 	XCTAssertEqual([dictionary countForAllKeys], (NSUInteger)0);
 }
 
-- (void) testRemoveObjectForKey {
+- (void)testRemoveObjectForKey {
 	[self populateDictionary];
 	
 	XCTAssertEqual([dictionary count], (NSUInteger)3);
@@ -473,7 +473,7 @@ static NSArray* keyArray;
 	XCTAssertEqual([dictionary countForAllKeys], (NSUInteger)6);
 }
 
-- (void) testRemoveObjectsForKey {
+- (void)testRemoveObjectsForKey {
 	[self populateDictionary];
 	
 	XCTAssertEqual([dictionary count],           (NSUInteger)3);
@@ -492,7 +492,7 @@ static NSArray* keyArray;
 	XCTAssertEqual([dictionary countForAllKeys], (NSUInteger)0);
 }
 
-- (void) testSetObjectForKey {
+- (void)testSetObjectForKey {
 	// Verify that nil key and/or object raises an exception
 	XCTAssertThrows([dictionary setObject:@"" forKey:nil]);
 	XCTAssertThrows([dictionary setObject:nil forKey:@""]);
@@ -515,12 +515,12 @@ static NSArray* keyArray;
 	XCTAssertFalse([value isEqual:[dictionary objectForKey:key]]);
 }
 
-- (void) testSetObjectsForKey {
+- (void)testSetObjectsForKey {
 	// Verify that nil key and/or object raises an exception
 	XCTAssertThrows([dictionary setObjects:[NSSet set] forKey:nil]);
 	XCTAssertThrows([dictionary setObjects:nil forKey:@""]);
 
-	NSSet* objectSet;
+	NSSet *objectSet;
 	
 	[dictionary addObject:@"XYZ" forKey:@"foo"];
 	XCTAssertEqual([dictionary count], (NSUInteger)1);
@@ -554,7 +554,7 @@ static NSArray* keyArray;
 
 @implementation CHDictionaryWithOrderingTest
 
-- (void) testFirstKey {
+- (void)testFirstKey {
 	if (![dictionary respondsToSelector:@selector(firstKey)])
 		return;
 	XCTAssertNil([dictionary firstKey]);
@@ -562,7 +562,7 @@ static NSArray* keyArray;
 	XCTAssertEqualObjects([dictionary firstKey], [expectedKeyOrder objectAtIndex:0]);
 }
 
-- (void) testKeyEnumerator {
+- (void)testKeyEnumerator {
 	enumerator = [dictionary keyEnumerator];
 	XCTAssertNotNil(enumerator);
 	NSArray *allKeys = [enumerator allObjects];
@@ -578,7 +578,7 @@ static NSArray* keyArray;
 	XCTAssertEqualObjects(allKeys, [dictionary allKeys]);
 }
 
-- (void) testLastKey {
+- (void)testLastKey {
 	if (![dictionary respondsToSelector:@selector(lastKey)])
 		return;
 	XCTAssertNil([dictionary lastKey]);
@@ -586,7 +586,7 @@ static NSArray* keyArray;
 	XCTAssertEqualObjects([dictionary lastKey], [expectedKeyOrder lastObject]);
 }
 
-- (void) testReverseKeyEnumerator {
+- (void)testReverseKeyEnumerator {
 	if (![dictionary respondsToSelector:@selector(reverseKeyEnumerator)])
 		return;
 	enumerator = [dictionary reverseKeyEnumerator];
@@ -612,13 +612,13 @@ static NSArray* keyArray;
 	                     [[expectedKeyOrder reverseObjectEnumerator] allObjects]);
 }
 
-- (void) testNSCoding {
+- (void)testNSCoding {
 	[self populateDictionary];
 	id clone = replicateWithNSCoding(dictionary);
 	XCTAssertEqualObjects(clone, dictionary);
 }
 
-- (void) testNSCopying {
+- (void)testNSCopying {
 	id copy = [[dictionary copy] autorelease];
 	XCTAssertEqualObjects([copy class], [dictionary class]);
 	XCTAssertEqual([copy hash], [dictionary hash]);
@@ -641,12 +641,12 @@ static NSArray* keyArray;
 
 @implementation CHSortedDictionaryTest
 
-- (void) setUp {
+- (void)setUp {
 	dictionary = [[[CHSortedDictionary alloc] init] autorelease];
 	expectedKeyOrder = [keyArray sortedArrayUsingSelector:@selector(compare:)];
 }
 
-- (void) testAllKeys {
+- (void)testAllKeys {
 	NSMutableArray *keys = [NSMutableArray array];
 	NSNumber *key;
 	for (NSUInteger i = 0; i <= 20; i++) {
@@ -658,7 +658,7 @@ static NSArray* keyArray;
 	XCTAssertEqualObjects([dictionary allKeys], keys);
 }
 
-- (void) testNSFastEnumeration {
+- (void)testNSFastEnumeration {
 	NSUInteger limit = 32; // NSFastEnumeration asks for 16 objects at a time
 	// Insert keys in reverse sorted order
 	for (NSUInteger number = limit; number >= 1; number--)
@@ -682,12 +682,12 @@ static NSArray* keyArray;
 	XCTAssertTrue(raisedException);	
 }
 
-- (void) testSubsetFromKeyToKeyOptions {
+- (void)testSubsetFromKeyToKeyOptions {
 	XCTAssertNoThrow([dictionary subsetFromKey:nil toKey:nil options:0]);
 	XCTAssertNoThrow([dictionary subsetFromKey:@"A" toKey:@"Z" options:0]);
 	
 	[self populateDictionary];
-	NSMutableDictionary* subset;
+	NSMutableDictionary *subset;
 	
 	XCTAssertNoThrow(subset = [dictionary subsetFromKey:[expectedKeyOrder objectAtIndex:0]
 												 toKey:[expectedKeyOrder lastObject]
@@ -709,12 +709,12 @@ static NSArray* keyArray;
 
 @implementation CHOrderedDictionaryTest
 
-- (void) setUp {
+- (void)setUp {
 	dictionary = [[[CHOrderedDictionary alloc] init] autorelease];
 	expectedKeyOrder = keyArray;
 }
 
-- (void) testAllKeys {
+- (void)testAllKeys {
 	NSMutableArray *keys = [NSMutableArray array];
 	NSNumber *key;
 	for (NSUInteger i = 0; i <= 20; i++) {
@@ -725,7 +725,7 @@ static NSArray* keyArray;
 	XCTAssertEqualObjects([dictionary allKeys], keys);
 }
 
-- (void) testExchangeKeyAtIndexWithKeyAtIndex {
+- (void)testExchangeKeyAtIndexWithKeyAtIndex {
 	// Test for exceptions when trying to exchange when collection is empty.
 	XCTAssertThrows([dictionary exchangeKeyAtIndex:0 withKeyAtIndex:1]);
 	XCTAssertThrows([dictionary exchangeKeyAtIndex:1 withKeyAtIndex:0]);
@@ -740,7 +740,7 @@ static NSArray* keyArray;
 	XCTAssertEqualObjects([dictionary lastKey],  @"baz");
 }
 
-- (void) testIndexOfKey {
+- (void)testIndexOfKey {
 	XCTAssertTrue([dictionary indexOfKey:@"foo"] == NSNotFound);
 	[self populateDictionary];
 	for (NSUInteger i = 0; i < [keyArray count]; i++) {
@@ -748,7 +748,7 @@ static NSArray* keyArray;
 	}
 }
 
-- (void) testInsertObjectForKeyAtIndex {
+- (void)testInsertObjectForKeyAtIndex {
 	// Test inserting at bad index, and with nil key and object.
 	XCTAssertThrows([dictionary insertObject:@"foo" forKey:@"foo" atIndex:1]);
 	XCTAssertThrows([dictionary insertObject:nil    forKey:@"foo" atIndex:0]);
@@ -765,7 +765,7 @@ static NSArray* keyArray;
 	XCTAssertEqualObjects([dictionary firstKey], @"abc");
 }
 
-- (void) testKeyAtIndex {
+- (void)testKeyAtIndex {
 	XCTAssertThrows([dictionary keyAtIndex:0]);
 	XCTAssertThrows([dictionary keyAtIndex:1]);
 	[self populateDictionary];
@@ -777,11 +777,11 @@ static NSArray* keyArray;
 	XCTAssertThrows([dictionary keyAtIndex:i]);
 }
 
-- (void) testKeysAtIndexes {
+- (void)testKeysAtIndexes {
 	XCTAssertThrows([dictionary keysAtIndexes:[NSIndexSet indexSetWithIndex:0]]);
 	[self populateDictionary];
 	// Select ranges of indexes and test that they line up with what we expect.
-	NSIndexSet* indexes;
+	NSIndexSet *indexes;
 	for (NSUInteger location = 0; location < [dictionary count]; location++) {
 		XCTAssertNoThrow([dictionary keysAtIndexes:[NSIndexSet indexSetWithIndex:location]]);
 		for (NSUInteger length = 0; length < [dictionary count] - location; length++) {
@@ -794,7 +794,7 @@ static NSArray* keyArray;
 	XCTAssertThrows([dictionary keysAtIndexes:nil]);
 }
 
-- (void) testNSFastEnumeration {
+- (void)testNSFastEnumeration {
 	NSUInteger limit = 32; // NSFastEnumeration asks for 16 objects at a time
 	// Insert keys in reverse sorted order
 	for (NSUInteger number = limit; number >= 1; number--)
@@ -818,7 +818,7 @@ static NSArray* keyArray;
 	XCTAssertTrue(raisedException);	
 }
 
-- (void) testObjectForKeyAtIndex {
+- (void)testObjectForKeyAtIndex {
 	XCTAssertThrows([dictionary objectForKeyAtIndex:0]);
 	
 	[self populateDictionary];
@@ -830,12 +830,12 @@ static NSArray* keyArray;
 	XCTAssertThrows([dictionary objectForKeyAtIndex:i]);
 }
 
-- (void) testObjectsForKeyAtIndexes {
+- (void)testObjectsForKeyAtIndexes {
 	XCTAssertThrows([dictionary objectsForKeysAtIndexes:nil]);
 	[self populateDictionary];
 	XCTAssertThrows([dictionary objectsForKeysAtIndexes:nil]);
 	
-	NSIndexSet* indexes;
+	NSIndexSet *indexes;
 	for (NSUInteger location = 0; location < [dictionary count]; location++) {
 		for (NSUInteger length = 0; length < [dictionary count] - location; length++) {
 			indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(location, length)];
@@ -846,17 +846,17 @@ static NSArray* keyArray;
 	XCTAssertThrows([dictionary objectsForKeysAtIndexes:nil]);
 }
 
-- (void) testOrderedDictionaryWithKeysAtIndexes {
+- (void)testOrderedDictionaryWithKeysAtIndexes {
 	XCTAssertThrows([dictionary orderedDictionaryWithKeysAtIndexes:nil]);
 	[self populateDictionary];
 	XCTAssertThrows([dictionary orderedDictionaryWithKeysAtIndexes:nil]);
 
-	CHOrderedDictionary* newDictionary;
+	CHOrderedDictionary *newDictionary;
 	XCTAssertNoThrow(newDictionary = [dictionary orderedDictionaryWithKeysAtIndexes:[NSIndexSet indexSet]]);
 	XCTAssertNotNil(newDictionary);
 	XCTAssertEqual([newDictionary count], (NSUInteger)0);
 	// Select ranges of indexes and test that they line up with what we expect.
-	NSIndexSet* indexes;
+	NSIndexSet *indexes;
 	for (NSUInteger location = 0; location < [dictionary count]; location++) {
 		for (NSUInteger length = 0; length < [dictionary count] - location; length++) {
 			indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(location, length)]; 
@@ -867,7 +867,7 @@ static NSArray* keyArray;
 	XCTAssertThrows([dictionary orderedDictionaryWithKeysAtIndexes:nil]);
 }
 
-- (void) testRemoveObjectForKeyAtIndex {
+- (void)testRemoveObjectForKeyAtIndex {
 	// Test removing with invalid indexes
 	XCTAssertThrows([dictionary removeObjectForKeyAtIndex:0]);
 	[self populateDictionary];
@@ -885,7 +885,7 @@ static NSArray* keyArray;
 	XCTAssertEqualObjects([dictionary allKeys], expected);	
 }
 
-- (void) testSetObjectForKeyAtIndex {
+- (void)testSetObjectForKeyAtIndex {
 	// Test that specifying a key index for an empty dictionary raises exception
 	XCTAssertThrows([dictionary setObject:@"bogus" forKeyAtIndex:0]);
 	XCTAssertThrows([dictionary setObject:@"bogus" forKeyAtIndex:1]);
@@ -900,15 +900,15 @@ static NSArray* keyArray;
 	XCTAssertThrows([dictionary setObject:nil forKeyAtIndex:0]);
 }
 
-- (void) testRemoveObjectsForKeysAtIndexes {
+- (void)testRemoveObjectsForKeysAtIndexes {
 	XCTAssertThrows([dictionary removeObjectsForKeysAtIndexes:nil]);
 	[self populateDictionary];
 	XCTAssertThrows([dictionary removeObjectsForKeysAtIndexes:nil]);
 	
-	NSDictionary* master = [NSDictionary dictionaryWithDictionary:dictionary];
-	NSMutableDictionary* expected = [NSMutableDictionary dictionary];
+	NSDictionary *master = [NSDictionary dictionaryWithDictionary:dictionary];
+	NSMutableDictionary *expected = [NSMutableDictionary dictionary];
 	// Select ranges of indexes and test that they line up with what we expect.
-	NSIndexSet* indexes;
+	NSIndexSet *indexes;
 	for (NSUInteger location = 0; location < [dictionary count]; location++) {
 		for (NSUInteger length = 0; length < [dictionary count] - location; length++) {
 			indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(location, length)]; 

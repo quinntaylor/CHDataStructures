@@ -14,7 +14,7 @@
 
 #pragma mark CFDictionary callbacks
 
-const void* CHDictionaryRetain(CFAllocatorRef allocator, const void *value) {
+const void * CHDictionaryRetain(CFAllocatorRef allocator, const void *value) {
 	return [(id)value retain];
 }
 
@@ -51,7 +51,7 @@ static const CFDictionaryValueCallBacks kCHDictionaryValueCallBacks = {
 	CHDictionaryEqual
 };
 
-HIDDEN void createCollectableCFMutableDictionary(CFMutableDictionaryRef* dictionary, NSUInteger initialCapacity)
+HIDDEN void createCollectableCFMutableDictionary(CFMutableDictionaryRef *dictionary, NSUInteger initialCapacity)
 {
 	// Create a CFMutableDictionaryRef with callback functions as defined above.
 	*dictionary = CFDictionaryCreateMutable(kCFAllocatorDefault,
@@ -66,19 +66,19 @@ HIDDEN void createCollectableCFMutableDictionary(CFMutableDictionaryRef* diction
 
 @implementation CHMutableDictionary
 
-- (void) dealloc {
+- (void)dealloc {
 	CFRelease(dictionary); // The dictionary will never be null at this point.
 	[super dealloc];
 }
 
 // Note: Defined here since -init is not implemented in NS(Mutable)Dictionary.
-- (id) init {
+- (id)init {
 	return [self initWithCapacity:0]; // The 0 means we provide no capacity hint
 }
 
 // Note: This is the designated initializer for NSMutableDictionary and this class.
 // Subclasses may override this as necessary, but must call back here first.
-- (id) initWithCapacity:(NSUInteger)numItems {
+- (id)initWithCapacity:(NSUInteger)numItems {
 	if ((self = [super init]) == nil) return nil;
 	createCollectableCFMutableDictionary(&dictionary, numItems);
 	return self;
@@ -87,21 +87,21 @@ HIDDEN void createCollectableCFMutableDictionary(CFMutableDictionaryRef* diction
 #pragma mark <NSCoding>
 
 // Overridden from NSMutableDictionary to encode/decode as the proper class.
-- (Class) classForKeyedArchiver {
+- (Class)classForKeyedArchiver {
 	return [self class];
 }
 
-- (id) initWithCoder:(NSCoder*)decoder {
+- (id)initWithCoder:(NSCoder *)decoder {
 	return [self initWithDictionary:[decoder decodeObjectForKey:@"dictionary"]];
 }
 
-- (void) encodeWithCoder:(NSCoder*)encoder {
-	[encoder encodeObject:(NSDictionary*)dictionary forKey:@"dictionary"];
+- (void)encodeWithCoder:(NSCoder *)encoder {
+	[encoder encodeObject:(NSDictionary *)dictionary forKey:@"dictionary"];
 }
 
 #pragma mark <NSCopying>
 
-- (id) copyWithZone:(NSZone*) zone {
+- (id)copyWithZone:(NSZone *) zone {
 	// We could use -initWithDictionary: here, but it would just use more memory.
 	// (It marshals key-value pairs into two id* arrays, then inits from those.)
 	CHMutableDictionary *copy = [[[self class] allocWithZone:zone] init];
@@ -111,48 +111,45 @@ HIDDEN void createCollectableCFMutableDictionary(CFMutableDictionaryRef* diction
 
 #pragma mark <NSFastEnumeration>
 
-- (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
-                                   objects:(id*)stackbuf
-                                     count:(NSUInteger)len
-{
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id *)stackbuf count:(NSUInteger)len {
 	return [super countByEnumeratingWithState:state objects:stackbuf count:len];
 }
 
 #pragma mark Querying Contents
 
-- (NSUInteger) count {
+- (NSUInteger)count {
 	return CFDictionaryGetCount(dictionary);
 }
 
-- (NSString*) debugDescription {
+- (NSString *)debugDescription {
 	CFStringRef description = CFCopyDescription(dictionary);
 	CFRelease([(id)description retain]);
 	return [(id)description autorelease];
 }
 
-- (NSEnumerator*) keyEnumerator {
+- (NSEnumerator *)keyEnumerator {
 	return [(id)dictionary keyEnumerator];
 }
 
-- (NSEnumerator*) objectEnumerator {
+- (NSEnumerator *)objectEnumerator {
 	return [(id)dictionary objectEnumerator];
 }
 
-- (id) objectForKey:(id)aKey {
+- (id)objectForKey:(id)aKey {
 	return (id)CFDictionaryGetValue(dictionary, aKey);
 }
 
 #pragma mark Modifying Contents
 
-- (void) removeAllObjects {
+- (void)removeAllObjects {
 	CFDictionaryRemoveAllValues(dictionary);
 }
 
-- (void) removeObjectForKey:(id)aKey {
+- (void)removeObjectForKey:(id)aKey {
 	CFDictionaryRemoveValue(dictionary, aKey);
 }
 
-- (void) setObject:(id)anObject forKey:(id)aKey {
+- (void)setObject:(id)anObject forKey:(id)aKey {
 	if (anObject == nil || aKey == nil)
 		CHNilArgumentException([self class], _cmd);
 	CFDictionarySetValue(dictionary, [[aKey copy] autorelease], anObject);

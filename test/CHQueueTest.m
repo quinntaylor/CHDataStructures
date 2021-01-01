@@ -24,7 +24,7 @@
 
 @implementation CHQueueTest
 
-- (void) setUp {
+- (void)setUp {
 	queueClasses = [NSArray arrayWithObjects:
 					[CHListQueue class],
 					[CHCircularBufferQueue class],
@@ -32,7 +32,7 @@
 	objects = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
 }
 
-- (void) testInitWithArray {
+- (void)testInitWithArray {
 	NSMutableArray *moreObjects = [NSMutableArray array];
 	for (NSUInteger i = 0; i < 32; i++)
 		[moreObjects addObject:[NSNumber numberWithUnsignedInteger:i]];
@@ -56,7 +56,7 @@
 	}
 }
 
-- (void) testIsEqualToQueue {
+- (void)testIsEqualToQueue {
 	NSMutableArray *emptyQueues = [NSMutableArray array];
 	NSMutableArray *equalQueues = [NSMutableArray array];
 	NSMutableArray *reversedQueues = [NSMutableArray array];
@@ -87,7 +87,7 @@
 	}
 }
 
-- (void) testAddObject {
+- (void)testAddObject {
 	NSEnumerator *classes = [queueClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -104,7 +104,7 @@
 	}
 }
 
-- (void) testRemoveFirstObject {
+- (void)testRemoveFirstObject {
 	NSEnumerator *classes = [queueClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {

@@ -19,13 +19,13 @@
  */
 @implementation CHListStack
 
-- (id) init {
+- (id)init {
 	if ((self = [super init]) == nil) return nil;
 	list = [[CHSinglyLinkedList alloc] init];
 	return self;
 }
 
-- (id) initWithArray:(NSArray*)anArray {
+- (id)initWithArray:(NSArray *)anArray {
 	if ([self init] == nil) return nil;
 	for (id anObject in anArray) {
 		[list prependObject:anObject];
@@ -33,28 +33,28 @@
 	return self;
 }
 
-- (BOOL) isEqual:(id)otherObject {
+- (BOOL)isEqual:(id)otherObject {
 	if ([otherObject conformsToProtocol:@protocol(CHStack)])
 		return [self isEqualToStack:otherObject];
 	else
 		return NO;
 }
 
-- (BOOL) isEqualToStack:(id<CHStack>)otherStack {
+- (BOOL)isEqualToStack:(id<CHStack>)otherStack {
 	return collectionsAreEqual(self, otherStack);
 }
 
-- (void) popObject {
+- (void)popObject {
 	[list removeFirstObject];
 }
 
-- (void) pushObject:(id)anObject {
+- (void)pushObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
 	[list prependObject:anObject];
 }
 
-- (id) topObject {
+- (id)topObject {
 	return [list firstObject];
 }
 

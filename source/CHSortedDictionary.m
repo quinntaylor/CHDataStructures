@@ -15,12 +15,12 @@
 
 @implementation CHSortedDictionary
 
-- (void) dealloc {
+- (void)dealloc {
 	[sortedKeys release];
 	[super dealloc];
 }
 
-- (id) initWithCapacity:(NSUInteger)numItems {
+- (id)initWithCapacity:(NSUInteger)numItems {
 	if ((self = [super initWithCapacity:numItems]) == nil) return nil;
 	sortedKeys = [[CHAVLTree alloc] init];
 	return self;
@@ -31,43 +31,40 @@
 #pragma mark <NSFastEnumeration>
 
 /** @test Add unit test. */
-- (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
-                                   objects:(id*)stackbuf
-                                     count:(NSUInteger)len
-{
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id *)stackbuf count:(NSUInteger)len {
 	return [sortedKeys countByEnumeratingWithState:state objects:stackbuf count:len];
 }
 
 #pragma mark Querying Contents
 
-- (id) firstKey {
+- (id)firstKey {
 	return [sortedKeys firstObject];
 }
 
-- (NSUInteger) hash {
+- (NSUInteger)hash {
 	return hashOfCountAndObjects([sortedKeys count],
 	                             [sortedKeys firstObject],
 	                             [sortedKeys lastObject]);
 }
 
-- (id) lastKey {
+- (id)lastKey {
 	return [sortedKeys lastObject];
 }
 
-- (NSEnumerator*) keyEnumerator {
+- (NSEnumerator *)keyEnumerator {
 	return [sortedKeys objectEnumerator];
 }
 
-- (NSEnumerator*) reverseKeyEnumerator {
+- (NSEnumerator *)reverseKeyEnumerator {
 	return [sortedKeys reverseObjectEnumerator];
 }
 
-- (NSMutableDictionary*) subsetFromKey:(id)start
+- (NSMutableDictionary *)subsetFromKey:(id)start
                                  toKey:(id)end
                                options:(CHSubsetConstructionOptions)options
 {
 	id<CHSortedSet> keySubset = [sortedKeys subsetFromObject:start toObject:end options:options];
-	NSMutableDictionary* subset = [[[[self class] alloc] init] autorelease];
+	NSMutableDictionary *subset = [[[[self class] alloc] init] autorelease];
 	for (id aKey in keySubset) {
 		[subset setObject:[self objectForKey:aKey] forKey:aKey];
 	}
@@ -76,19 +73,19 @@
 
 #pragma mark Modifying Contents
 
-- (void) removeAllObjects {
+- (void)removeAllObjects {
 	[super removeAllObjects];
 	[sortedKeys removeAllObjects];
 }
 
-- (void) removeObjectForKey:(id)aKey {
+- (void)removeObjectForKey:(id)aKey {
 	if (CFDictionaryContainsKey(dictionary, aKey)) {
 		[super removeObjectForKey:aKey];
 		[sortedKeys removeObject:aKey];
 	}
 }
 
-- (void) setObject:(id)anObject forKey:(id)aKey {
+- (void)setObject:(id)anObject forKey:(id)aKey {
 	if (anObject == nil || aKey == nil)
 		CHNilArgumentException([self class], _cmd);
 	id clonedKey = [[aKey copy] autorelease];

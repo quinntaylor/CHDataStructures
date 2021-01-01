@@ -12,7 +12,7 @@
 
 #import "Util.h"
 
-size_t kCHPointerSize = sizeof(void*); // A variable declared extern in Util.h
+size_t kCHPointerSize = sizeof(void *); // A variable declared extern in Util.h
 
 BOOL objectsAreEqual(id o1, id o2) {
 	return [o1 isEqual:o2];

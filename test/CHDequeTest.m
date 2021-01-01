@@ -24,7 +24,7 @@
 
 @implementation CHDequeTest
 
-- (void) setUp {
+- (void)setUp {
 	objects = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
 	dequeClasses = [NSArray arrayWithObjects:
 					[CHListDeque class],
@@ -32,7 +32,7 @@
 					nil];
 }
 
-- (void) testInitWithArray {
+- (void)testInitWithArray {
 	NSMutableArray *moreObjects = [NSMutableArray array];
 	for (NSUInteger i = 0; i < 32; i++)
 		[moreObjects addObject:[NSNumber numberWithUnsignedInteger:i]];
@@ -56,7 +56,7 @@
 	}
 }
 
-- (void) testPrependObject {
+- (void)testPrependObject {
 	NSEnumerator *classes = [dequeClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -75,7 +75,7 @@
 	}
 }
 
-- (void) testAppendObject {
+- (void)testAppendObject {
 	NSEnumerator *classes = [dequeClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -94,7 +94,7 @@
 	}
 }
 
-- (void) testFirstObject {
+- (void)testFirstObject {
 	NSEnumerator *classes = [dequeClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -108,7 +108,7 @@
 	}
 }
 
-- (void) testIsEqualToDeque {
+- (void)testIsEqualToDeque {
 	NSMutableArray *emptyDeques = [NSMutableArray array];
 	NSMutableArray *equalDeques = [NSMutableArray array];
 	NSMutableArray *reversedDeques = [NSMutableArray array];
@@ -139,7 +139,7 @@
 	}
 }
 
-- (void) testLastObject {
+- (void)testLastObject {
 	NSEnumerator *classes = [dequeClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -153,7 +153,7 @@
 	}
 }
 
-- (void) testRemoveFirstObject {
+- (void)testRemoveFirstObject {
 	NSEnumerator *classes = [dequeClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -188,7 +188,7 @@
 	}
 }
 
-- (void) testRemoveLastObject {
+- (void)testRemoveLastObject {
 	NSEnumerator *classes = [dequeClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -209,7 +209,7 @@
 	}
 }
 
-- (void) testReverseObjectEnumerator {
+- (void)testReverseObjectEnumerator {
 	NSEnumerator *classes = [dequeClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {

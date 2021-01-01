@@ -17,8 +17,8 @@
 
 @interface CHLinkedListTest : XCTestCase {
 	id<CHLinkedList> list;
-	NSArray* linkedListClasses;
-	NSArray* abc;
+	NSArray *linkedListClasses;
+	NSArray *abc;
 	NSEnumerator *e;
 	id anObject;
 }
@@ -26,7 +26,7 @@
 
 @implementation CHLinkedListTest
 
-- (void) setUp {
+- (void)setUp {
 	abc = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
 	linkedListClasses = [NSArray arrayWithObjects:
 						 [CHDoublyLinkedList class],
@@ -36,7 +36,7 @@
 
 #pragma mark -
 
-- (void) testNSCoding {
+- (void)testNSCoding {
 	NSEnumerator *classes = [linkedListClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -51,7 +51,7 @@
 	}
 }
 
-- (void) testNSCopying {
+- (void)testNSCopying {
 	NSEnumerator *classes = [linkedListClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -63,7 +63,7 @@
 	}
 }
 
-- (void) testNSFastEnumeration {
+- (void)testNSFastEnumeration {
 	NSEnumerator *classes = [linkedListClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -92,7 +92,7 @@
 
 #pragma mark -
 
-- (void) testEmptyList {
+- (void)testEmptyList {
 	NSEnumerator *classes = [linkedListClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -104,7 +104,7 @@
 	}
 }
 
-- (void) testInitWithArray {
+- (void)testInitWithArray {
 	NSEnumerator *classes = [linkedListClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -114,7 +114,7 @@
 	}
 }
 
-- (void) testDescription {
+- (void)testDescription {
 	NSEnumerator *classes = [linkedListClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -125,7 +125,7 @@
 
 #pragma mark Insertion and Access
 
-- (void) testPrependObject {
+- (void)testPrependObject {
 	NSEnumerator *classes = [linkedListClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -143,7 +143,7 @@
 	}
 }
 
-- (void) testAddObject {
+- (void)testAddObject {
 	NSEnumerator *classes = [linkedListClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -161,7 +161,7 @@
 	}
 }
 
-- (void) testAddObjectsFromArray {
+- (void)testAddObjectsFromArray {
 	NSEnumerator *classes = [linkedListClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -174,7 +174,7 @@
 	}
 }
 
-- (void) testExchangeObjectAtIndexWithObjectAtIndex {
+- (void)testExchangeObjectAtIndexWithObjectAtIndex {
 	NSEnumerator *classes = [linkedListClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -205,7 +205,7 @@
 	}
 }
 
-- (void) testInsertObjectAtIndex {
+- (void)testInsertObjectAtIndex {
 	NSEnumerator *classes = [linkedListClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -244,7 +244,7 @@
 	}
 }
 
-- (void) testInsertObjectsAtIndexes {
+- (void)testInsertObjectsAtIndexes {
 	NSEnumerator *classes = [linkedListClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -292,7 +292,7 @@
 	}		
 }
 
-- (void) testObjectEnumerator {
+- (void)testObjectEnumerator {
 	NSEnumerator *classes = [linkedListClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -341,7 +341,7 @@
 		
 		// For doubly-linked list, test reverse enumeration order as well
 		if (aClass == [CHDoublyLinkedList class]) {
-			e = [(CHDoublyLinkedList*)list reverseObjectEnumerator];
+			e = [(CHDoublyLinkedList *)list reverseObjectEnumerator];
 			XCTAssertEqualObjects([e nextObject], @"C");
 			XCTAssertEqualObjects([e nextObject], @"B");
 			XCTAssertEqualObjects([e nextObject], @"A");
@@ -350,7 +350,7 @@
 			XCTAssertNil([e nextObject]);
 			XCTAssertEqual([list retainCount], (NSUInteger)1);
 			
-			e = [(CHDoublyLinkedList*)list reverseObjectEnumerator];
+			e = [(CHDoublyLinkedList *)list reverseObjectEnumerator];
 			XCTAssertEqual([list retainCount], (NSUInteger)2);
 			allObjects = [e allObjects];
 			XCTAssertEqual([list retainCount], (NSUInteger)1);
@@ -372,7 +372,7 @@
 
 #pragma mark Search
 
-- (void) testContainsObject {
+- (void)testContainsObject {
 	NSEnumerator *classes = [linkedListClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -386,7 +386,7 @@
 	}
 }
 
-- (void) testContainsObjectIdenticalTo {
+- (void)testContainsObjectIdenticalTo {
 	NSEnumerator *classes = [linkedListClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -399,7 +399,7 @@
 	}
 }
 
-- (void) testIndexOfObject {
+- (void)testIndexOfObject {
 	NSEnumerator *classes = [linkedListClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -413,7 +413,7 @@
 	}
 }
 
-- (void) testIndexOfObjectIdenticalTo {
+- (void)testIndexOfObjectIdenticalTo {
 	NSEnumerator *classes = [linkedListClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -430,7 +430,7 @@
 	}
 }
 
-- (void) testIsEqualToLinkedList {
+- (void)testIsEqualToLinkedList {
 	NSMutableArray *emptyLinkedLists = [NSMutableArray array];
 	NSMutableArray *equalLinkedLists = [NSMutableArray array];
 	NSEnumerator *classes = [linkedListClasses objectEnumerator];
@@ -456,7 +456,7 @@
 	}
 }
 
-- (void) testObjectAtIndex {
+- (void)testObjectAtIndex {
 	NSEnumerator *classes = [linkedListClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -472,7 +472,7 @@
 	}
 }
 
-- (void) testObjectsAtIndexes {
+- (void)testObjectsAtIndexes {
 	NSEnumerator *classes = [linkedListClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -503,7 +503,7 @@
 
 #pragma mark Removal
 
-- (void) testRemoveAllObjects {
+- (void)testRemoveAllObjects {
 	NSEnumerator *classes = [linkedListClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -517,7 +517,7 @@
 	}
 }
 
-- (void) testRemoveFirstObject {
+- (void)testRemoveFirstObject {
 	NSEnumerator *classes = [linkedListClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -547,7 +547,7 @@
 	}
 }
 
-- (void) testRemoveLastObject {
+- (void)testRemoveLastObject {
 	NSEnumerator *classes = [linkedListClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -573,7 +573,7 @@
 	}
 }
 
-- (void) testRemoveObject {
+- (void)testRemoveObject {
 	NSEnumerator *classes = [linkedListClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -616,7 +616,7 @@
 	}
 }
 
-- (void) testRemoveObjectIdenticalTo {
+- (void)testRemoveObjectIdenticalTo {
 	NSEnumerator *classes = [linkedListClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -651,7 +651,7 @@
 	}
 }
 
-- (void) testRemoveObjectAtIndex {
+- (void)testRemoveObjectAtIndex {
 	NSEnumerator *classes = [linkedListClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -682,9 +682,9 @@
 	}
 }
 
-- (void) testRemoveObjectsAtIndexes {
-	NSMutableArray* expected = [NSMutableArray array];
-	NSIndexSet* indexes;
+- (void)testRemoveObjectsAtIndexes {
+	NSMutableArray *expected = [NSMutableArray array];
+	NSIndexSet *indexes;
 	
 	NSEnumerator *classes = [linkedListClasses objectEnumerator];
 	Class aClass;
@@ -714,7 +714,7 @@
 	}
 }
 
-- (void) testReplaceObjectAtIndexWithObject {
+- (void)testReplaceObjectAtIndexWithObject {
 	NSEnumerator *classes = [linkedListClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {

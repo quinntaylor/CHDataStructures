@@ -15,7 +15,7 @@
 
 // Remove left horizontal links
 #define skew(node) { \
-	if ( node->left->level == node->level && node->level != 0 ) { \
+	if (node->left->level == node->level && node->level != 0) { \
 		CHBinaryTreeNode *save = node->left; \
 		node->left = save->right; \
 		save->right = node; \
@@ -25,7 +25,7 @@
 
 // Remove consecutive horizontal links
 #define split(node) { \
-	if ( node->right->right->level == node->level && node->level != 0 ) { \
+	if (node->right->right->level == node->level && node->level != 0) { \
 		CHBinaryTreeNode *save = node->right; \
 		node->right = save->left; \
 		save->left = node; \
@@ -40,7 +40,7 @@
 
 // NOTE: The header and sentinel nodes are initialized to level 0 by default.
 
-- (void) addObject:(id)anObject {
+- (void)addObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
 	++mutations;
@@ -91,7 +91,7 @@ done:
 	CHBinaryTreeStack_FREE(stack);
 }
 
-- (void) removeObject:(id)anObject {
+- (void)removeObject:(id)anObject {
 	if (count == 0 || anObject == nil)
 		return;
 	++mutations;
@@ -162,11 +162,11 @@ done:
 	CHBinaryTreeStack_FREE(stack);
 }
 
-- (NSString*) debugDescriptionForNode:(CHBinaryTreeNode*)node {
+- (NSString *)debugDescriptionForNode:(CHBinaryTreeNode *)node {
 	return [NSString stringWithFormat:@"[%d]\t\"%@\"", node->level, node->object];
 }
 
-- (NSString*) dotGraphStringForNode:(CHBinaryTreeNode*)node {
+- (NSString *)dotGraphStringForNode:(CHBinaryTreeNode *)node {
 	return [NSString stringWithFormat:@"  \"%@\" [label=\"%@\\n%d\"];\n",
 			node->object, node->object, node->level];
 }

@@ -62,6 +62,6 @@ typedef struct CHDoublyLinkedListNode {
  @attention The enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
  @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
  */
-- (NSEnumerator*) reverseObjectEnumerator;
+- (NSEnumerator *)reverseObjectEnumerator;
 
 @end

@@ -23,17 +23,17 @@
 	parent->link[(parent->right == node)] = save; \
 }
 
-- (id) init {
+- (id)init {
 	if ((self = [super init]) == nil) return nil;
 	header->priority = CHTreapNotFound; // This is the highest possible priority
 	return self;
 }
 
-- (void) addObject:(id)anObject {
+- (void)addObject:(id)anObject {
 	[self addObject:anObject withPriority:arc4random()];
 }
 
-- (void) addObject:(id)anObject withPriority:(NSUInteger)priority {
+- (void)addObject:(id)anObject withPriority:(NSUInteger)priority {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
 	++mutations;
@@ -92,7 +92,7 @@
 	CHBinaryTreeStack_FREE(stack);
 }
 
-- (void) removeObject:(id)anObject {
+- (void)removeObject:(id)anObject {
 	if (count == 0 || anObject == nil)
 		return;
 	++mutations;
@@ -126,7 +126,7 @@
 	}
 }
 
-- (NSUInteger) priorityForObject:(id)anObject {
+- (NSUInteger)priorityForObject:(id)anObject {
 	if (anObject == nil)
 		return CHTreapNotFound;
 	sentinel->object = anObject; // Make sure the target value is always "found"
@@ -137,12 +137,12 @@
 	return (current != sentinel) ? current->priority : CHTreapNotFound;
 }
 
-- (NSString*) debugDescriptionForNode:(CHBinaryTreeNode*)node {
+- (NSString *)debugDescriptionForNode:(CHBinaryTreeNode *)node {
 	return [NSString stringWithFormat:@"[%11d]\t\"%@\"",
 			node->priority, node->object];
 }
 
-- (NSString*) dotGraphStringForNode:(CHBinaryTreeNode*)node {
+- (NSString *)dotGraphStringForNode:(CHBinaryTreeNode *)node {
 	return [NSString stringWithFormat:@"  \"%@\" [label=\"%@\\n%d\"];\n",
 			node->object, node->object, node->priority];
 }

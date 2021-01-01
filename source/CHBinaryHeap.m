@@ -14,23 +14,23 @@
 
 #pragma mark CFBinaryHeap callbacks
 
-const void* CHBinaryHeapRetain (CFAllocatorRef allocator, const void *value) {
+const void * CHBinaryHeapRetain(CFAllocatorRef allocator, const void *value) {
 	return [(id)value retain];
 }
 
-void CHBinaryHeapRelease (CFAllocatorRef allocator, const void *value) {
+void CHBinaryHeapRelease(CFAllocatorRef allocator, const void *value) {
 	[(id)value release];
 }
 
-CFStringRef CHBinaryHeapDescription (const void *value) {
+CFStringRef CHBinaryHeapDescription(const void *value) {
 	return CFRetain([(id)value description]);
 }
 
-CFComparisonResult CHBinaryHeapCompareAscending (const void *value1, const void *value2, void *info) {
+CFComparisonResult CHBinaryHeapCompareAscending(const void *value1, const void *value2, void *info) {
 	return [(id)value1 compare:(id)value2];
 }
 
-CFComparisonResult CHBinaryHeapCompareDescending (const void *value1, const void *value2, void *info) {
+CFComparisonResult CHBinaryHeapCompareDescending(const void *value1, const void *value2, void *info) {
 	return [(id)value1 compare:(id)value2] * -1;
 }
 
@@ -54,25 +54,25 @@ static const CFBinaryHeapCallBacks kCHBinaryHeapCallBacksDescending = {
 
 @implementation CHBinaryHeap
 
-- (void) dealloc {
+- (void)dealloc {
 	CFRelease(heap); // The heap will never be null at this point.
 	[super dealloc];
 }
 
-- (id) init {
+- (id)init {
 	return [self initWithOrdering:NSOrderedAscending array:nil];
 }
 
-- (id) initWithArray:(NSArray*)anArray {
+- (id)initWithArray:(NSArray *)anArray {
 	return [self initWithOrdering:NSOrderedAscending array:anArray];
 }
 
-- (id) initWithOrdering:(NSComparisonResult)order {
+- (id)initWithOrdering:(NSComparisonResult)order {
 	return [self initWithOrdering:order array:nil];
 }
 
 // This is the designated initializer
-- (id) initWithOrdering:(NSComparisonResult)order array:(NSArray*)anArray {
+- (id)initWithOrdering:(NSComparisonResult)order array:(NSArray *)anArray {
 	if ((self = [super init]) == nil) return nil;
 	sortOrder = order;
 	if (sortOrder == NSOrderedAscending)
@@ -88,11 +88,11 @@ static const CFBinaryHeapCallBacks kCHBinaryHeapCallBacksDescending = {
 
 #pragma mark Querying Contents
 
-- (NSArray*) allObjects {
+- (NSArray *)allObjects {
 	return [self allObjectsInSortedOrder];
 }
 
-- (NSArray*) allObjectsInSortedOrder {
+- (NSArray *)allObjectsInSortedOrder {
 	NSUInteger count = [self count];
 	void *values = malloc(kCHPointerSize * count);
 	CFBinaryHeapGetValues(heap, values);
@@ -101,58 +101,58 @@ static const CFBinaryHeapCallBacks kCHBinaryHeapCallBacksDescending = {
 	return objects;
 }
 
-- (BOOL) containsObject:(id)anObject {
+- (BOOL)containsObject:(id)anObject {
 	return CFBinaryHeapContainsValue(heap, anObject);
 }
 
-- (NSUInteger) count {
+- (NSUInteger)count {
 	return CFBinaryHeapGetCount(heap);
 }
 
-- (NSString*) description {
+- (NSString *)description {
 	return [[self allObjectsInSortedOrder] description];
 }
 
-- (NSString*) debugDescription {
+- (NSString *)debugDescription {
 	CFStringRef description = CFCopyDescription(heap);
 	CFRelease([(id)description retain]);
 	return [(id)description autorelease];
 }
 
-- (id) firstObject {
+- (id)firstObject {
 	return (id)CFBinaryHeapGetMinimum(heap);
 }
 
-- (NSUInteger) hash {
+- (NSUInteger)hash {
 	id anObject = [self firstObject];
 	return hashOfCountAndObjects([self count], anObject, anObject);
 }
 
-- (BOOL) isEqual:(id)otherObject {
+- (BOOL)isEqual:(id)otherObject {
 	if ([otherObject conformsToProtocol:@protocol(CHHeap)])
 		return [self isEqualToHeap:otherObject];
 	else
 		return NO;
 }
 
-- (BOOL) isEqualToHeap:(id<CHHeap>)otherHeap {
+- (BOOL)isEqualToHeap:(id<CHHeap>)otherHeap {
 	return collectionsAreEqual(self, otherHeap);
 }
 
-- (NSEnumerator*) objectEnumerator {
+- (NSEnumerator *)objectEnumerator {
 	return [[self allObjectsInSortedOrder] objectEnumerator];
 }
 
 #pragma mark Modifying Contents
 
-- (void) addObject:(id)anObject {
+- (void)addObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
 	CFBinaryHeapAddValue(heap, anObject);
 	++mutations;
 }
 
-- (void) addObjectsFromArray:(NSArray*)anArray {
+- (void)addObjectsFromArray:(NSArray *)anArray {
 	if ([anArray count] == 0) // includes implicit check for nil array
 		return;
 	for (id anObject in anArray) {
@@ -161,32 +161,32 @@ static const CFBinaryHeapCallBacks kCHBinaryHeapCallBacksDescending = {
 	++mutations;
 }
 
-- (void) removeAllObjects {
+- (void)removeAllObjects {
 	CFBinaryHeapRemoveAllValues(heap);
 	++mutations;
 }
 
-- (void) removeFirstObject {
+- (void)removeFirstObject {
 	CFBinaryHeapRemoveMinimumValue(heap);
 	++mutations;
 }
 
 #pragma mark <NSCoding>
 
-- (id) initWithCoder:(NSCoder*)decoder {
+- (id)initWithCoder:(NSCoder *)decoder {
 	return [self initWithOrdering:([decoder decodeBoolForKey:@"sortAscending"]
 	                               ? NSOrderedAscending : NSOrderedDescending)
 	                        array:[decoder decodeObjectForKey:@"objects"]];
 }
 
-- (void) encodeWithCoder:(NSCoder*)encoder {
+- (void)encodeWithCoder:(NSCoder *)encoder {
 	[encoder encodeObject:[self allObjectsInSortedOrder] forKey:@"objects"];
 	[encoder encodeBool:(sortOrder == NSOrderedAscending) forKey:@"sortAscending"];
 }
 
 #pragma mark <NSCopying>
 
-- (id) copyWithZone:(NSZone*) zone {
+- (id)copyWithZone:(NSZone *) zone {
 	return [[CHBinaryHeap alloc] initWithArray:[self allObjects]];
 }
 
@@ -194,16 +194,13 @@ static const CFBinaryHeapCallBacks kCHBinaryHeapCallBacksDescending = {
 
 // This overridden method returns the heap contents in fully-sorted order.
 // Just as -objectEnumerator above, the first call incurs a hidden sorting cost.
-- (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
-                                   objects:(id*)stackbuf
-                                     count:(NSUInteger)len
-{
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id *)stackbuf count:(NSUInteger)len {
 	// Currently (in Leopard) NSEnumerators from NSArray only return 1 each time
 	if (state->state == 0) {
 		// Create a sorted array to use for enumeration, store it in the state.
 		state->extra[4] = (unsigned long) [self allObjectsInSortedOrder];
 	}
-	NSArray *sorted = (NSArray*) state->extra[4];
+	NSArray *sorted = (NSArray *) state->extra[4];
 	NSUInteger count = [sorted countByEnumeratingWithState:state
 	                                               objects:stackbuf
 	                                                 count:len];

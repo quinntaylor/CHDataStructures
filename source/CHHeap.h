@@ -34,7 +34,7 @@
  
  @see initWithOrdering:array:
  */
-- (id) init;
+- (id)init;
 
 /**
  Initialize a heap with ascending ordering and objects from a given array. Objects are added to the heap as they occur in the array, then "heapified" with an ordering of @c NSOrderedAscending.
@@ -44,7 +44,7 @@
  
  @see initWithOrdering:array:
  */
-- (id) initWithArray:(NSArray*)anArray;
+- (id)initWithArray:(NSArray *)anArray;
 
 /**
  Initialize a heap with a given sort ordering and no objects.
@@ -54,7 +54,7 @@
  
  @see initWithOrdering:array:
  */
-- (id) initWithOrdering:(NSComparisonResult)order;
+- (id)initWithOrdering:(NSComparisonResult)order;
 
 /**
  Initialize a heap with a given sort ordering and objects from a given array. Objects are added to the heap as they occur in the array, then "heapified" with an ordering of @a order.
@@ -63,7 +63,7 @@
  @param anArray An array containing objects with which to populate a new heap.
  @return An initialized CHHeap that contains the objects in @a anArray, to be sorted in the specified order.
  */
-- (id) initWithOrdering:(NSComparisonResult)order array:(NSArray*)anArray;
+- (id)initWithOrdering:(NSComparisonResult)order array:(NSArray *)anArray;
 
 #pragma mark Querying Contents
 /** @name Querying Contents */
@@ -79,7 +79,7 @@
  @see count
  @see objectEnumerator
  */
-- (NSArray*) allObjectsInSortedOrder;
+- (NSArray *)allObjectsInSortedOrder;
 
 /**
  Determine whether the receiver contains a given object, matched using \link NSObject-p#isEqual: -isEqual:\endlink.
@@ -89,7 +89,7 @@
  
  @see removeObject:
  */
-- (BOOL) containsObject:(id)anObject;
+- (BOOL)containsObject:(id)anObject;
 
 /**
  Returns the number of objects currently in the heap.
@@ -98,7 +98,7 @@
  
  @see allObjectsInSortedOrder
  */
-- (NSUInteger) count;
+- (NSUInteger)count;
 
 /**
  Examine the first object in the heap without removing it.
@@ -107,7 +107,7 @@
  
  @see removeFirstObject
  */
-- (id) firstObject;
+- (id)firstObject;
 
 /**
  Compares the receiving heap to another heap. Two heaps have equal contents if they each hold the same number of objects and (when fully sorted) objects at a given position in each heap satisfy the \link NSObject-p#isEqual: -isEqual:\endlink test.
@@ -115,7 +115,7 @@
  @param otherHeap A heap.
  @return @c YES if the contents of @a otherHeap are equal to the contents of the receiver, otherwise @c NO.
  */
-- (BOOL) isEqualToHeap:(id<CHHeap>)otherHeap;
+- (BOOL)isEqualToHeap:(id<CHHeap>)otherHeap;
 
 /**
  Returns an enumerator that accesses each object in the heap in sorted order.
@@ -130,7 +130,7 @@
  
  @see allObjectsInSortedOrder
  */
-- (NSEnumerator*) objectEnumerator;
+- (NSEnumerator *)objectEnumerator;
 
 // @}
 #pragma mark Modifying Contents
@@ -146,7 +146,7 @@
  
  @see addObjectsFromArray:
  */
-- (void) addObject:(id)anObject;
+- (void)addObject:(id)anObject;
 
 /**
  Adds the objects in a given array to the receiver, then re-establish the heap property. After all the objects have been inserted, objects are "heapified" as necessary, proceeding backwards from index @c count/2 down to @c 0.
@@ -155,7 +155,7 @@
  
  @see addObject:
  */
-- (void) addObjectsFromArray:(NSArray*)anArray;
+- (void)addObjectsFromArray:(NSArray *)anArray;
 
 /**
  Empty the receiver of all of its members.
@@ -163,7 +163,7 @@
  @see allObjectsInSortedOrder
  @see removeFirstObject
  */
-- (void) removeAllObjects;
+- (void)removeAllObjects;
 
 /**
  Remove the front object in the heap; if it is already empty, there is no effect.
@@ -171,7 +171,7 @@
  @see firstObject
  @see removeAllObjects
  */
-- (void) removeFirstObject;
+- (void)removeFirstObject;
 
 // @}
 @end

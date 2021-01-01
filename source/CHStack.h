@@ -36,7 +36,7 @@
  
  @see initWithArray:
  */
-- (id) init;
+- (id)init;
 
 /**
  Initialize a stack with the contents of an array. Objects are pushed on the stack in the order they occur in the array.
@@ -44,7 +44,7 @@
  @param anArray An array containing objects with which to populate a new stack.
  @return An initialized stack that contains the objects in @a anArray.
  */
-- (id) initWithArray:(NSArray*)anArray;
+- (id)initWithArray:(NSArray *)anArray;
 
 #pragma mark Querying Contents
 /** @name Querying Contents */
@@ -59,7 +59,7 @@
  @see objectEnumerator
  @see removeAllObjects
  */
-- (NSArray*) allObjects;
+- (NSArray *)allObjects;
 
 /**
  Determine whether the receiver contains a given object, matched using \link NSObject-p#isEqual: -isEqual:\endlink.
@@ -70,7 +70,7 @@
  @see containsObjectIdenticalTo:
  @see removeObject:
  */
-- (BOOL) containsObject:(id)anObject;
+- (BOOL)containsObject:(id)anObject;
 
 /**
  Determine whether the receiver contains a given object, matched using the == operator.
@@ -81,7 +81,7 @@
  @see containsObject:
  @see removeObjectIdenticalTo:
  */
-- (BOOL) containsObjectIdenticalTo:(id)anObject;
+- (BOOL)containsObjectIdenticalTo:(id)anObject;
 
 /**
  Returns the number of objects currently on the stack.
@@ -90,7 +90,7 @@
  
  @see allObjects
  */
-- (NSUInteger) count;
+- (NSUInteger)count;
 
 /**
  Returns the lowest index of a given object, matched using @c isEqual:.
@@ -102,7 +102,7 @@
  @see objectAtIndex:
  @see removeObjectAtIndex:
  */
-- (NSUInteger) indexOfObject:(id)anObject;
+- (NSUInteger)indexOfObject:(id)anObject;
 
 /**
  Returns the lowest index of a given object, matched using the == operator.
@@ -114,7 +114,7 @@
  @see objectAtIndex:
  @see removeObjectAtIndex:
  */
-- (NSUInteger) indexOfObjectIdenticalTo:(id)anObject;
+- (NSUInteger)indexOfObjectIdenticalTo:(id)anObject;
 
 /**
  Compares the receiving stack to another stack. Two stacks have equal contents if they each hold the same number of objects and objects at a given position in each stack satisfy the \link NSObject-p#isEqual: -isEqual:\endlink test.
@@ -122,7 +122,7 @@
  @param otherStack A stack.
  @return @c YES if the contents of @a otherStack are equal to the contents of the receiver, otherwise @c NO.
  */
-- (BOOL) isEqualToStack:(id<CHStack>)otherStack;
+- (BOOL)isEqualToStack:(id<CHStack>)otherStack;
 
 /**
  Returns the object located at @a index in the receiver.
@@ -136,7 +136,7 @@
  @see indexOfObjectIdenticalTo:
  @see removeObjectAtIndex:
  */
-- (id) objectAtIndex:(NSUInteger)index;
+- (id)objectAtIndex:(NSUInteger)index;
 
 /**
  Returns an enumerator that accesses each object in the stack from top to bottom.
@@ -148,7 +148,7 @@
 
  @see allObjects
  */
-- (NSEnumerator*) objectEnumerator;
+- (NSEnumerator *)objectEnumerator;
 
 /**
  Returns an array containing the objects in the receiver at the indexes specified by a given index set.
@@ -165,7 +165,7 @@
  @see objectAtIndex:
  @see removeObjectsAtIndexes:
  */
-- (NSArray*) objectsAtIndexes:(NSIndexSet*)indexes;
+- (NSArray *)objectsAtIndexes:(NSIndexSet *)indexes;
 
 /**
  Returns the object on the top of the stack without removing it.
@@ -175,7 +175,7 @@
  @see popObject
  @see pushObject:
  */
-- (id) topObject;
+- (id)topObject;
 
 // @}
 #pragma mark Modifying Contents
@@ -193,7 +193,7 @@
  @see indexOfObject:
  @see objectAtIndex:
  */
-- (void) exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2;
+- (void)exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2;
 
 /**
  Remove the topmost object on the stack; no effect if the stack is already empty.
@@ -202,7 +202,7 @@
  @see removeObject:
  @see topObject
  */
-- (void) popObject;
+- (void)popObject;
 
 /**
  Add an object to the top of the stack.
@@ -214,7 +214,7 @@
  @see popObject
  @see topObject
  */
-- (void) pushObject:(id)anObject;
+- (void)pushObject:(id)anObject;
 
 /**
  Empty the receiver of all of its members.
@@ -224,7 +224,7 @@
  @see removeObject:
  @see removeObjectIdenticalTo:
  */
-- (void) removeAllObjects;
+- (void)removeAllObjects;
 
 /**
  Remove @b all occurrences of @a anObject, matched using @c isEqual:.
@@ -236,7 +236,7 @@
  @see containsObject:
  @see removeObjectIdenticalTo:
  */
-- (void) removeObject:(id)anObject;
+- (void)removeObject:(id)anObject;
 
 /**
  Remove the object at a given index from the receiver.
@@ -249,7 +249,7 @@
  @see indexOfObjectIdenticalTo:
  @see objectAtIndex:
  */
-- (void) removeObjectAtIndex:(NSUInteger)index;
+- (void)removeObjectAtIndex:(NSUInteger)index;
 
 /**
  Remove @b all occurrences of @a anObject, matched using the == operator.
@@ -261,7 +261,7 @@
  @see containsObjectIdenticalTo:
  @see removeObject:
  */
-- (void) removeObjectIdenticalTo:(id)anObject;
+- (void)removeObjectIdenticalTo:(id)anObject;
 
 /**
  Remove the objects at the specified indexes from the receiver. Indexes of elements beyond the first specified index will decrease.
@@ -276,7 +276,7 @@
  @see removeAllObjects
  @see removeObjectAtIndex:
  */
-- (void) removeObjectsAtIndexes:(NSIndexSet*)indexes;
+- (void)removeObjectsAtIndexes:(NSIndexSet *)indexes;
 
 /**
  Replaces the object at a given index with a given object.
@@ -287,7 +287,7 @@
  @throw NSRangeException if @a index exceeds the bounds of the receiver.
  @throw NSInvalidArgumentException if @a anObject is @c nil.
  */
-- (void) replaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject;
+- (void)replaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject;
 
 // @}
 @end

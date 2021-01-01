@@ -16,7 +16,7 @@
 
 @implementation CHUnbalancedTree
 
-- (void) addObject:(id)anObject {
+- (void)addObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
 	++mutations;
@@ -49,7 +49,7 @@
 
 // Removal is guaranteed to not make the tree deeper/taller, since it uses the
 // "min of the right subtree" algorithm if the node to be removed has 2 children.
-- (void) removeObject:(id)anObject {
+- (void)removeObject:(id)anObject {
 	if (count == 0 || anObject == nil)
 		return;
 	++mutations;

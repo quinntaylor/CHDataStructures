@@ -14,14 +14,14 @@
 
 @implementation CHCircularBufferQueue
 
-- (BOOL) isEqual:(id)otherObject {
+- (BOOL)isEqual:(id)otherObject {
 	if ([otherObject conformsToProtocol:@protocol(CHQueue)])
 		return [self isEqualToQueue:otherObject];
 	else
 		return NO;
 }
 
-- (BOOL) isEqualToQueue:(id<CHQueue>)otherQueue {
+- (BOOL)isEqualToQueue:(id<CHQueue>)otherQueue {
 	return collectionsAreEqual(self, otherQueue);
 }
 

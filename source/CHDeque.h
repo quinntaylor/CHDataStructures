@@ -33,7 +33,7 @@
  
  @see initWithArray:
  */
-- (id) init;
+- (id)init;
 
 /**
  Initialize a deque with the contents of an array. Objects are appended in the order they occur in the array.
@@ -41,7 +41,7 @@
  @param anArray An array containing objects with which to populate a new deque.
  @return An initialized deque that contains the objects in @a anArray.
  */
-- (id) initWithArray:(NSArray*)anArray;
+- (id)initWithArray:(NSArray *)anArray;
 
 #pragma mark Querying Contents
 /** @name Querying Contents */
@@ -57,7 +57,7 @@
  @see removeAllObjects
  @see reverseObjectEnumerator
  */
-- (NSArray*) allObjects;
+- (NSArray *)allObjects;
 
 /**
  Determine whether the receiver contains a given object, matched using \link NSObject-p#isEqual: -isEqual:\endlink.
@@ -68,7 +68,7 @@
  @see containsObjectIdenticalTo:
  @see removeObject:
  */
-- (BOOL) containsObject:(id)anObject;
+- (BOOL)containsObject:(id)anObject;
 
 /**
  Determine whether the receiver contains a given object, matched using the == operator.
@@ -79,7 +79,7 @@
  @see containsObject:
  @see removeObjectIdenticalTo:
  */
-- (BOOL) containsObjectIdenticalTo:(id)anObject;
+- (BOOL)containsObjectIdenticalTo:(id)anObject;
 
 /**
  Returns the number of objects currently in the deque.
@@ -88,7 +88,7 @@
  
  @see allObjects
  */
-- (NSUInteger) count;
+- (NSUInteger)count;
 
 /**
  Returns the first object in the deque without removing it.
@@ -97,7 +97,7 @@
  
  @see lastObject
  */
-- (id) firstObject;
+- (id)firstObject;
 
 /**
  Returns the lowest index of a given object, matched using @c isEqual:.
@@ -109,7 +109,7 @@
  @see objectAtIndex:
  @see removeObjectAtIndex:
  */
-- (NSUInteger) indexOfObject:(id)anObject;
+- (NSUInteger)indexOfObject:(id)anObject;
 
 /**
  Returns the lowest index of a given object, matched using the == operator.
@@ -121,7 +121,7 @@
  @see objectAtIndex:
  @see removeObjectAtIndex:
  */
-- (NSUInteger) indexOfObjectIdenticalTo:(id)anObject;
+- (NSUInteger)indexOfObjectIdenticalTo:(id)anObject;
 
 /**
  Compares the receiving deque to another deque. Two deques have equal contents if they each hold the same number of objects and objects at a given position in each deque satisfy the \link NSObject-p#isEqual: -isEqual:\endlink test.
@@ -129,7 +129,7 @@
  @param otherDeque A deque.
  @return @c YES if the contents of @a otherDeque are equal to the contents of the receiver, otherwise @c NO.
  */
-- (BOOL) isEqualToDeque:(id<CHDeque>)otherDeque;
+- (BOOL)isEqualToDeque:(id<CHDeque>)otherDeque;
 
 /**
  Returns the last object in the deque without removing it.
@@ -138,7 +138,7 @@
  
  @see firstObject
  */
-- (id) lastObject;
+- (id)lastObject;
 
 /**
  Returns the object located at @a index in the receiver.
@@ -152,7 +152,7 @@
  @see indexOfObjectIdenticalTo:
  @see removeObjectAtIndex:
  */
-- (id) objectAtIndex:(NSUInteger)index;
+- (id)objectAtIndex:(NSUInteger)index;
 
 /**
  Returns an enumerator that accesses each object in the deque from front to back.
@@ -165,7 +165,7 @@
  @see allObjects
  @see reverseObjectEnumerator
  */
-- (NSEnumerator*) objectEnumerator;
+- (NSEnumerator *)objectEnumerator;
 
 /**
  Returns an array containing the objects in the receiver at the indexes specified by a given index set.
@@ -182,7 +182,7 @@
  @see objectAtIndex:
  @see removeObjectsAtIndexes:
  */
-- (NSArray*) objectsAtIndexes:(NSIndexSet*)indexes;
+- (NSArray *)objectsAtIndexes:(NSIndexSet *)indexes;
 
 /**
  Returns an enumerator that accesses each object in the deque from back to front.
@@ -195,7 +195,7 @@
  @see allObjects
  @see objectEnumerator
  */
-- (NSEnumerator*) reverseObjectEnumerator;
+- (NSEnumerator *)reverseObjectEnumerator;
 
 // @}
 #pragma mark Modifying Contents
@@ -212,7 +212,7 @@
  @see lastObject
  @see removeLastObject
  */
-- (void) appendObject:(id)anObject;
+- (void)appendObject:(id)anObject;
 
 /**
  Exchange the objects in the receiver at given indexes.
@@ -225,7 +225,7 @@
  @see indexOfObject:
  @see objectAtIndex:
  */
-- (void) exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2;
+- (void)exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2;
 
 /**
  Add an object to the front of the deque.
@@ -237,7 +237,7 @@
  @see firstObject
  @see removeFirstObject
  */
-- (void) prependObject:(id)anObject;
+- (void)prependObject:(id)anObject;
 
 /**
  Empty the receiver of all of its members.
@@ -248,7 +248,7 @@
  @see removeObject:
  @see removeObjectIdenticalTo:
  */
-- (void) removeAllObjects;
+- (void)removeAllObjects;
 
 /**
  Remove the first object in the deque; no effect if it is empty.
@@ -257,7 +257,7 @@
  @see removeLastObject
  @see removeObject:
  */
-- (void) removeFirstObject;
+- (void)removeFirstObject;
 
 /**
  Remove the last object in the deque; no effect if it is empty.
@@ -266,7 +266,7 @@
  @see removeFirstObject
  @see removeObject:
  */
-- (void) removeLastObject;
+- (void)removeLastObject;
 
 /**
  Remove @b all occurrences of @a anObject, matched using @c isEqual:.
@@ -278,7 +278,7 @@
  @see containsObject:
  @see removeObjectIdenticalTo:
  */
-- (void) removeObject:(id)anObject;
+- (void)removeObject:(id)anObject;
 
 /**
  Remove the object at a given index from the receiver.
@@ -291,7 +291,7 @@
  @see indexOfObjectIdenticalTo:
  @see objectAtIndex:
  */
-- (void) removeObjectAtIndex:(NSUInteger)index;
+- (void)removeObjectAtIndex:(NSUInteger)index;
 
 /**
  Remove @b all occurrences of @a anObject, matched using the == operator.
@@ -303,7 +303,7 @@
  @see containsObjectIdenticalTo:
  @see removeObject:
  */
-- (void) removeObjectIdenticalTo:(id)anObject;
+- (void)removeObjectIdenticalTo:(id)anObject;
 
 /**
  Remove the objects at the specified indexes from the receiver. Indexes of elements beyond the first specified index will decrease.
@@ -318,7 +318,7 @@
  @see removeAllObjects
  @see removeObjectAtIndex:
  */
-- (void) removeObjectsAtIndexes:(NSIndexSet*)indexes;
+- (void)removeObjectsAtIndexes:(NSIndexSet *)indexes;
 
 /**
  Replaces the object at a given index with a given object.
@@ -329,7 +329,7 @@
  @throw NSRangeException if @a index exceeds the bounds of the receiver.
  @throw NSInvalidArgumentException if @a anObject is @c nil.
  */
-- (void) replaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject;
+- (void)replaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject;
 
 // @}
 @end

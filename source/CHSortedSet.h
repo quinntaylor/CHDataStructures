@@ -42,14 +42,14 @@ typedef enum {
  @see CHSortedDictionary
 
  @todo Add more operations similar to those supported by NSSet and NSMutableSet, such as:
-	- <code>- (NSArray*) allObjectsFilteredUsingPredicate:</code>
-	- <code>- (void) filterUsingPredicate:</code>
-	- <code>- (BOOL) isEqualToSortedSet:</code>
-	- <code>- (BOOL) isSubsetOfSortedSet:</code>
-	- <code>- (BOOL) intersectsSet:</code>
-	- <code>- (void) intersectSet:</code>
-	- <code>- (void) minusSet:</code>
-	- <code>- (void) unionSet:</code>
+	- <code>- (NSArray *)allObjectsFilteredUsingPredicate:</code>
+	- <code>- (void)filterUsingPredicate:</code>
+	- <code>- (BOOL)isEqualToSortedSet:</code>
+	- <code>- (BOOL)isSubsetOfSortedSet:</code>
+	- <code>- (BOOL)intersectsSet:</code>
+	- <code>- (void)intersectSet:</code>
+	- <code>- (void)minusSet:</code>
+	- <code>- (void)unionSet:</code>
  
  @todo Consider adding other possible sorted set implementations, such as <a href="http://en.wikipedia.org/wiki/Skip_list">skip lists</a>, <a href="http://www.concentric.net/~Ttwang/tech/sorthash.htm">sorted linear hash sets</a>, and <a href="http://code.activestate.com/recipes/230113/">sorted lists</a>.
 
@@ -63,7 +63,7 @@ typedef enum {
  
  @see initWithArray:
  */
-- (id) init;
+- (id)init;
 
 /**
  Initialize a sorted set with the contents of an array. Objects are added to the set in the order they occur in the array.
@@ -71,7 +71,7 @@ typedef enum {
  @param anArray An array containing objects with which to populate a new sorted set.
  @return An initialized sorted set that contains the objects in @a anArray in sorted order.
  */
-- (id) initWithArray:(NSArray*)anArray;
+- (id)initWithArray:(NSArray *)anArray;
 
 #pragma mark Querying Contents
 /** @name Querying Contents */
@@ -88,7 +88,7 @@ typedef enum {
  @see removeAllObjects
  @see set
  */
-- (NSArray*) allObjects;
+- (NSArray *)allObjects;
 
 /**
  Returns one of the objects in the receiver, or @c nil if the receiver contains no objects. The object returned is chosen at the receiver's convenience; the selection is not guaranteed to be random.
@@ -99,7 +99,7 @@ typedef enum {
  @see firstObject
  @see lastObject
  */
-- (id) anyObject;
+- (id)anyObject;
 
 /**
  Returns the number of objects currently in the receiver.
@@ -108,7 +108,7 @@ typedef enum {
  
  @see allObjects
  */
-- (NSUInteger) count;
+- (NSUInteger)count;
 
 /**
  Determine whether a given object is present in the receiver.
@@ -121,7 +121,7 @@ typedef enum {
  @see member:
  @see set
  */
-- (BOOL) containsObject:(id)anObject;
+- (BOOL)containsObject:(id)anObject;
 
 /**
  Returns the minimum object in the receiver, according to natural sorted order.
@@ -132,7 +132,7 @@ typedef enum {
  @see lastObject
  @see removeFirstObject
  */
-- (id) firstObject;
+- (id)firstObject;
 
 /**
  Compares the receiving sorted set to another sorted set. Two sorted sets have equal contents if they each hold the same number of objects and objects at a given position in each sorted set satisfy the \link NSObject-p#isEqual: -isEqual:\endlink test.
@@ -140,7 +140,7 @@ typedef enum {
  @param otherSortedSet A sorted set.
  @return @c YES if the contents of @a otherSortedSet are equal to the contents of the receiver, otherwise @c NO.
  */
-- (BOOL) isEqualToSortedSet:(id<CHSortedSet>)otherSortedSet;
+- (BOOL)isEqualToSortedSet:(id<CHSortedSet>)otherSortedSet;
 
 /**
  Returns the maximum object in the receiver, according to natural sorted order.
@@ -152,7 +152,7 @@ typedef enum {
  @see firstObject
  @see removeLastObject
  */
-- (id) lastObject;
+- (id)lastObject;
 
 /**
  Determine whether the receiver contains a given object, and returns the object if present.
@@ -165,7 +165,7 @@ typedef enum {
  @see containsObject:
  @see set
  */
-- (id) member:(id)anObject;
+- (id)member:(id)anObject;
 
 /**
  Returns an enumerator that accesses each object in the receiver in ascending order.
@@ -178,7 +178,7 @@ typedef enum {
  @see allObjects
  @see reverseObjectEnumerator
  */
-- (NSEnumerator*) objectEnumerator;
+- (NSEnumerator *)objectEnumerator;
 
 /**
  Returns an enumerator that accesses each object in the receiver in descending order.
@@ -190,7 +190,7 @@ typedef enum {
  
  @see objectEnumerator
  */
-- (NSEnumerator*) reverseObjectEnumerator;
+- (NSEnumerator *)reverseObjectEnumerator;
 
 /**
  Returns an (autoreleased) NSSet object containing the objects in the receiver. This is an alternative to @c -allObjects, which returns the objects in sorted order. Returning an unordered set may be more efficient for the receiver, and thus preferable when the caller doesn't care about ordering, such as for fast tests of membership.
@@ -200,7 +200,7 @@ typedef enum {
  @see allObjects
  @see objectEnumerator
  */
-- (NSSet*) set;
+- (NSSet *)set;
 
 /**
  Returns a new sorted set containing the objects delineated by two given objects. The subset is a shallow copy (new memory is allocated for the structure, but the copy points to the same objects) so any changes to the objects in the subset affect the receiver as well. The subset is an instance of the same class as the receiver.
@@ -215,9 +215,7 @@ typedef enum {
  - If @a start comes before @a end in an ordered set, objects between @a start and @a end (or which match either object) are included.
  - Otherwise, all objects @b except those that fall between @a start and @a end are included.
  */
-- (id<CHSortedSet>) subsetFromObject:(id)start
-							toObject:(id)end
-							 options:(CHSubsetConstructionOptions)options;
+- (id<CHSortedSet>)subsetFromObject:(id)start toObject:(id)end options:(CHSubsetConstructionOptions)options;
 
 // @}
 #pragma mark Modifying Contents
@@ -235,7 +233,7 @@ typedef enum {
  
  @see addObjectsFromArray:
  */
-- (void) addObject:(id)anObject;
+- (void)addObject:(id)anObject;
 
 /**
  Adds to the receiver each object in a given array, if the object is not already a member.
@@ -247,7 +245,7 @@ typedef enum {
  @see addObject:
  @see lastObject
  */
-- (void) addObjectsFromArray:(NSArray*)anArray;
+- (void)addObjectsFromArray:(NSArray *)anArray;
 
 /**
  Remove all objects from the receiver; if the receiver is already empty, there is no effect.
@@ -257,7 +255,7 @@ typedef enum {
  @see removeLastObject
  @see removeObject:
  */
-- (void) removeAllObjects;
+- (void)removeAllObjects;
 
 /**
  Remove the minimum object from the receiver, according to natural sorted order.
@@ -266,7 +264,7 @@ typedef enum {
  @see removeLastObject
  @see removeObject:
  */
-- (void) removeFirstObject;
+- (void)removeFirstObject;
 
 /**
  Remove the maximum object from the receiver, according to natural sorted order.
@@ -275,7 +273,7 @@ typedef enum {
  @see removeFirstObject
  @see removeObject:
  */
-- (void) removeLastObject;
+- (void)removeLastObject;
 
 /**
  Remove the object for which @c -compare: returns @c NSOrderedSame from the receiver. If no matching object exists, there is no effect.
@@ -287,7 +285,7 @@ typedef enum {
  @see containsObject:
  @see removeAllObjects
  */
-- (void) removeObject:(id)anObject;
+- (void)removeObject:(id)anObject;
 
 // @}
 @end

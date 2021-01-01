@@ -22,38 +22,38 @@
  */
 @implementation CHListQueue
 
-- (id) init {
+- (id)init {
 	if ((self = [super init]) == nil) return nil;
 	list = [[CHSinglyLinkedList alloc] init];
 	return self;
 }
 
-- (void) addObject:(id)anObject {
+- (void)addObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
 	[list addObject:anObject];
 }
 
-- (id) firstObject {
+- (id)firstObject {
 	return [list firstObject];
 }
 
-- (BOOL) isEqual:(id)otherObject {
+- (BOOL)isEqual:(id)otherObject {
 	if ([otherObject conformsToProtocol:@protocol(CHQueue)])
 		return [self isEqualToQueue:otherObject];
 	else
 		return NO;
 }
 
-- (BOOL) isEqualToQueue:(id<CHQueue>)otherQueue {
+- (BOOL)isEqualToQueue:(id<CHQueue>)otherQueue {
 	return collectionsAreEqual(self, otherQueue);
 }
 
-- (id) lastObject {
+- (id)lastObject {
 	return [list lastObject];
 }
 
-- (void) removeFirstObject {
+- (void)removeFirstObject {
 	[list removeFirstObject];
 }
 

@@ -470,6 +470,7 @@
 			);
 			name = CHDataStructures;
 			sourceTree = "<group>";
+			usesTabs = 1;
 		};
 		0867D69AFE84028FC02AAC07 /* Linked Frameworks */ = {
 			isa = PBXGroup;

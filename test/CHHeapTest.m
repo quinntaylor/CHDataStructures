@@ -16,13 +16,13 @@
 
 @interface CHMutableArrayHeap (Test)
 
-- (BOOL) isValid;
+- (BOOL)isValid;
 
 @end
 
 @implementation CHMutableArrayHeap (Test)
 
-- (BOOL) isValid {
+- (BOOL)isValid {
 	id parent, leftChild, rightChild;
 	NSUInteger parentIndex = 0, leftIndex, rightIndex;
 	NSUInteger arraySize = [array count];
@@ -50,19 +50,19 @@
 
 @interface CHBinaryHeap (Debug)
 
-- (NSString*) debugDescription; // Declare here to prevent compiler warnings.
+- (NSString *)debugDescription; // Declare here to prevent compiler warnings.
 
 @end
 
 @interface CHBinaryHeap (Test)
 
-- (BOOL) isValid;
+- (BOOL)isValid;
 
 @end
 
 @implementation CHBinaryHeap (Test)
 
-- (BOOL) isValid {
+- (BOOL)isValid {
 	return YES; // We assume that CFBinaryHeap is correct... ;-)
 }
 @end
@@ -79,7 +79,7 @@
 
 @implementation CHHeapTest
 
-- (void) setUp {
+- (void)setUp {
 	heapClasses = [NSArray arrayWithObjects:[CHMutableArrayHeap class],
 	                                        [CHBinaryHeap class],
 	                                        nil];
@@ -90,7 +90,7 @@
 
 #pragma mark -
 
-- (void) testNSCoding {
+- (void)testNSCoding {
 	NSInteger sortOrder = NSOrderedDescending; // Switches to ascending first.
 	do {
 		sortOrder *= -1;
@@ -113,7 +113,7 @@
 	} while (sortOrder != NSOrderedDescending);
 }
 
-- (void) testNSCopying {
+- (void)testNSCopying {
 	NSEnumerator *classes = [heapClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -129,7 +129,7 @@
 	}
 }
 
-- (void) testNSFastEnumeration {
+- (void)testNSFastEnumeration {
 	NSEnumerator *classes = [heapClasses objectEnumerator];
 	Class aClass;
 	NSUInteger limit = 32;
@@ -159,7 +159,7 @@
 
 #pragma mark -
 
-- (void) testInitWithArray {
+- (void)testInitWithArray {
 	NSEnumerator *classes = [heapClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -169,7 +169,7 @@
 	}
 }
 
-- (void) testInvalidInit {
+- (void)testInvalidInit {
 	NSEnumerator *classes = [heapClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -178,7 +178,7 @@
 	}
 }
 
-- (void) testAddObject {
+- (void)testAddObject {
 	NSEnumerator *classes = [heapClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -194,7 +194,7 @@
 	}
 }
 
-- (void) testAddObjectsFromArray {
+- (void)testAddObjectsFromArray {
 	NSEnumerator *classes = [heapClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -207,7 +207,7 @@
 	}
 }
 
-- (void) testContainsObject {
+- (void)testContainsObject {
 	NSEnumerator *classes = [heapClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -223,7 +223,7 @@
 	}
 }
 
-- (void) testContainsObjectIdenticalTo {
+- (void)testContainsObjectIdenticalTo {
 	NSEnumerator *classes = [heapClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -240,7 +240,7 @@
 	}
 }
 
-- (void) testCount {
+- (void)testCount {
 	NSEnumerator *classes = [heapClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -251,7 +251,7 @@
 	}
 }
 
-- (void) testDebugDescription {
+- (void)testDebugDescription {
 	NSEnumerator *classes = [heapClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -262,7 +262,7 @@
 	}
 }
 
-- (void) testDescription {
+- (void)testDescription {
 	NSEnumerator *classes = [heapClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -273,7 +273,7 @@
 	}
 }
 
-- (void) testFirstObject {
+- (void)testFirstObject {
 	NSEnumerator *classes = [heapClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -283,7 +283,7 @@
 	}
 }
 
-- (void) testInsertObjectAtIndex {
+- (void)testInsertObjectAtIndex {
 	NSEnumerator *classes = [heapClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -294,7 +294,7 @@
 	}
 }
 
-- (void) testIsEqualToHeap {
+- (void)testIsEqualToHeap {
 	NSMutableArray *emptyHeaps = [NSMutableArray array];
 	NSMutableArray *equalHeaps = [NSMutableArray array];
 	NSMutableArray *reversedHeaps = [NSMutableArray array];
@@ -324,7 +324,7 @@
 	}
 }
 
-- (void) testRemoveFirstObject {
+- (void)testRemoveFirstObject {
 	NSEnumerator *classes = [heapClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -347,7 +347,7 @@
 	}
 }
 
-- (void) testRemoveObject {
+- (void)testRemoveObject {
 	NSEnumerator *classes = [heapClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -370,7 +370,7 @@
 	}
 }
 
-- (void) testRemoveObjectAtIndex {
+- (void)testRemoveObjectAtIndex {
 	NSEnumerator *classes = [heapClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -381,7 +381,7 @@
 	}
 }
 
-- (void) testRemoveObjectIdenticalTo {
+- (void)testRemoveObjectIdenticalTo {
 	NSString *a = [NSString stringWithFormat:@"A"];
 	NSEnumerator *classes = [heapClasses objectEnumerator];
 	Class aClass;
@@ -408,7 +408,7 @@
 	}
 }
 
-- (void) testRemoveAllObjects {
+- (void)testRemoveAllObjects {
 	NSEnumerator *classes = [heapClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -420,7 +420,7 @@
 	}
 }
 
-- (void) testObjectEnumerator {
+- (void)testObjectEnumerator {
 	NSArray *allObjects;
 	
 	NSEnumerator *classes = [heapClasses objectEnumerator];

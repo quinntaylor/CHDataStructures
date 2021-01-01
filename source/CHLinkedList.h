@@ -36,7 +36,7 @@
  
  @see initWithArray:
  */
-- (id) init;
+- (id)init;
 
 /**
  Initialize a linked list with the contents of an array. Objects are appended in the order they occur in the array.
@@ -44,7 +44,7 @@
  @param anArray An array containing objects with which to populate a new linked list.
  @return An initialized linked list that contains the objects in @a anArray.
  */
-- (id) initWithArray:(NSArray*)anArray;
+- (id)initWithArray:(NSArray *)anArray;
 
 #pragma mark Querying Contents
 /** @name Querying Contents */
@@ -59,7 +59,7 @@
  @see objectEnumerator
  @see removeAllObjects
  */
-- (NSArray*) allObjects;
+- (NSArray *)allObjects;
 
 /**
  Determine whether the receiver contains a given object, matched using \link NSObject-p#isEqual: -isEqual:\endlink.
@@ -70,7 +70,7 @@
  @see containsObjectIdenticalTo:
  @see removeObject:
  */
-- (BOOL) containsObject:(id)anObject;
+- (BOOL)containsObject:(id)anObject;
 
 /**
  Determine whether the receiver contains a given object, matched using the == operator.
@@ -81,7 +81,7 @@
  @see containsObject:
  @see removeObjectIdenticalTo:
  */
-- (BOOL) containsObjectIdenticalTo:(id)anObject;
+- (BOOL)containsObjectIdenticalTo:(id)anObject;
 
 /**
  Returns the number of objects currently in the receiver.
@@ -90,7 +90,7 @@
  
  @see allObjects
  */
-- (NSUInteger) count;
+- (NSUInteger)count;
 
 /**
  Returns the first object in the receiver.
@@ -100,7 +100,7 @@
  @see lastObject
  @see removeFirstObject
  */
-- (id) firstObject;
+- (id)firstObject;
 
 /**
  Returns the last object in the receiver.
@@ -110,7 +110,7 @@
  @see firstObject
  @see removeLastObject
  */
-- (id) lastObject;
+- (id)lastObject;
 
 /**
  Returns the lowest index of a given object, matched using @c isEqual:.
@@ -118,7 +118,7 @@
  @param anObject The object to be matched and located in the receiver.
  @return The index of the first object which is equal to @a anObject. If none of the objects in the receiver match @a anObject, returns @c NSNotFound.
  */
-- (NSUInteger) indexOfObject:(id)anObject;
+- (NSUInteger)indexOfObject:(id)anObject;
 
 /**
  Returns the lowest index of a given object, matched using the == operator.
@@ -126,7 +126,7 @@
  @param anObject The object to be matched and located in the receiver.
  @return The index of the first object which is equal to @a anObject. If none of the objects in the receiver match @a anObject, returns @c NSNotFound.
  */
-- (NSUInteger) indexOfObjectIdenticalTo:(id)anObject;
+- (NSUInteger)indexOfObjectIdenticalTo:(id)anObject;
 
 /**
  Compares the receiving linked list to another linked list. Two linked lists have equal contents if they each hold the same number of objects and objects at a given position in each linked list satisfy the \link NSObject-p#isEqual: -isEqual:\endlink test.
@@ -134,7 +134,7 @@
  @param otherLinkedList A linked list.
  @return @c YES if the contents of @a otherLinkedList are equal to the contents of the receiver, otherwise @c NO.
  */
-- (BOOL) isEqualToLinkedList:(id<CHLinkedList>)otherLinkedList;
+- (BOOL)isEqualToLinkedList:(id<CHLinkedList>)otherLinkedList;
 
 /**
  Returns the object located at @a index.
@@ -147,7 +147,7 @@
  @see indexOfObject:
  @see indexOfObjectIdenticalTo:
  */
-- (id) objectAtIndex:(NSUInteger)index;
+- (id)objectAtIndex:(NSUInteger)index;
 
 /**
  Returns an enumerator that accesses each object in the receiver from front to back.
@@ -159,7 +159,7 @@
  
  @see allObjects
  */
-- (NSEnumerator*) objectEnumerator;
+- (NSEnumerator *)objectEnumerator;
 
 /**
  Returns an array containing the objects in the receiver at the indexes specified by a given index set.
@@ -176,7 +176,7 @@
  @see objectAtIndex:
  @see removeObjectsAtIndexes:
  */
-- (NSArray*) objectsAtIndexes:(NSIndexSet*)indexes;
+- (NSArray *)objectsAtIndexes:(NSIndexSet *)indexes;
 
 // @}
 #pragma mark Modifying Contents
@@ -193,7 +193,7 @@
  @see lastObject
  @see prependObject:
  */
-- (void) addObject:(id)anObject;
+- (void)addObject:(id)anObject;
 
 /**
  Adds the objects in a given array to the receiver, then re-establish the heap property. After all the objects have been inserted, objects are "heapified" as necessary, proceeding backwards from index @c count/2 down to @c 0.
@@ -202,7 +202,7 @@
  
  @see addObject:
  */
-- (void) addObjectsFromArray:(NSArray*)anArray;
+- (void)addObjectsFromArray:(NSArray *)anArray;
 
 /**
  Exchange the objects in the receiver at given indexes.
@@ -217,7 +217,7 @@
  @see indexOfObject:
  @see objectAtIndex:
  */
-- (void) exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2;
+- (void)exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2;
 
 /**
  Insert a given object at a given index. If @a index is already occupied, then objects at @a index and beyond are (conceptually) shifted one spot toward the end.
@@ -230,7 +230,7 @@
  
  @see insertObjects:atIndexes:
  */
-- (void) insertObject:(id)anObject atIndex:(NSUInteger)index;
+- (void)insertObject:(id)anObject atIndex:(NSUInteger)index;
 
 /**
  Insert the objects in in a given array at the specified indexes in the receiver. Each object in @a objects is inserted into the receiver in turn at the corresponding location specified in @a indexes after earlier insertions have been made. The resulting behavior is the same as that exhibited by the same method in NSMutableArray.
@@ -243,7 +243,7 @@
 
  @see insertObject:atIndex:
  */
-- (void) insertObjects:(NSArray *)objects atIndexes:(NSIndexSet *)indexes;
+- (void)insertObjects:(NSArray *)objects atIndexes:(NSIndexSet *)indexes;
 
 /**
  Add an object to the receiver, inserted at the front.
@@ -255,7 +255,7 @@
  @see addObject:
  @see firstObject
  */
-- (void) prependObject:(id)anObject;
+- (void)prependObject:(id)anObject;
 
 /**
  Removes the first item in the receiver.
@@ -263,7 +263,7 @@
  @see firstObject
  @see removeLastObject
  */
-- (void) removeFirstObject;
+- (void)removeFirstObject;
 
 /**
  Remove the last item in the receiver.
@@ -271,7 +271,7 @@
  @see lastObject
  @see removeFirstObject
  */
-- (void) removeLastObject;
+- (void)removeLastObject;
 
 /**
  Remove @b all occurrences of @a anObject, matched using @c isEqual:.
@@ -285,7 +285,7 @@
  @see containsObject:
  @see removeObjectIdenticalTo:
  */
-- (void) removeObject:(id)anObject;
+- (void)removeObject:(id)anObject;
 
 /**
  Remove the object at @a index. To fill the gap, elements beyond @a index have 1 subtracted from their index.
@@ -294,7 +294,7 @@
  
  @throw NSRangeException if @a index exceeds the bounds of the receiver.
  */
-- (void) removeObjectAtIndex:(NSUInteger)index;
+- (void)removeObjectAtIndex:(NSUInteger)index;
 
 /**
  Remove @b all occurrences of @a anObject, matched using the == operator.
@@ -308,7 +308,7 @@
  @see containsObjectIdenticalTo:
  @see removeObject:
  */
-- (void) removeObjectIdenticalTo:(id)anObject;
+- (void)removeObjectIdenticalTo:(id)anObject;
 
 /**
  Remove the objects at the specified indexes from the receiver. Indexes of elements beyond the first specified index will decrease.
@@ -323,7 +323,7 @@
  @see removeAllObjects
  @see removeObjectAtIndex:
  */
-- (void) removeObjectsAtIndexes:(NSIndexSet*)indexes;
+- (void)removeObjectsAtIndexes:(NSIndexSet *)indexes;
 
 /**
  Empty the receiver of all of its members.
@@ -333,7 +333,7 @@
  @see removeObject:
  @see removeObjectIdenticalTo:
  */
-- (void) removeAllObjects;
+- (void)removeAllObjects;
 
 /**
  Replaces the object at a given index with a given object.
@@ -344,7 +344,7 @@
  @throw NSRangeException if @a index exceeds the bounds of the receiver.
  @throw NSInvalidArgumentException if @a anObject is @c nil.
  */
-- (void) replaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject;
+- (void)replaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject;
 
 // @}
 @end

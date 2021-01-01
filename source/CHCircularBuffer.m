@@ -30,7 +30,7 @@ do { \
 		dst = (dst + size) % arrayCapacity; \
 		itemsLeftToCopy -= size; \
 	} \
-} while(0)
+} while (0)
 
 /**
  An NSEnumerator for traversing a CHAbstractCircularBufferCollection subclass.
@@ -62,12 +62,12 @@ do { \
  @param mutations A pointer to the collection's mutation count for invalidation.
  @return An initialized CHCircularBufferEnumerator which will enumerate objects in @a anArray in the order specified by @a direction.
  */
-- (id) initWithArray:(id*)anArray
-            capacity:(NSUInteger)capacity
-               count:(NSUInteger)count
-          startIndex:(NSUInteger)startIndex
-           direction:(NSComparisonResult)direction
-     mutationPointer:(unsigned long*)mutations;
+- (id)initWithArray:(id *)anArray
+           capacity:(NSUInteger)capacity
+              count:(NSUInteger)count
+         startIndex:(NSUInteger)startIndex
+          direction:(NSComparisonResult)direction
+    mutationPointer:(unsigned long *)mutations;
 
 /**
  Returns an array of objects the receiver has yet to enumerate.
@@ -77,7 +77,7 @@ do { \
  Invoking this method exhausts the remainder of the objects, such that subsequent
  invocations of #nextObject return @c nil.
  */
-- (NSArray*) allObjects;
+- (NSArray *)allObjects;
 
 /**
  Returns the next object from the collection being enumerated.
@@ -85,18 +85,18 @@ do { \
  @return The next object from the collection being enumerated, or
  @c nil when all objects have been enumerated.
  */
-- (id) nextObject;
+- (id)nextObject;
 
 @end
 
 @implementation CHCircularBufferEnumerator
 
-- (id) initWithArray:(id*)anArray
-            capacity:(NSUInteger)capacity
-               count:(NSUInteger)count
-          startIndex:(NSUInteger)startIndex
-           direction:(NSComparisonResult)direction
-     mutationPointer:(unsigned long*)mutations
+- (id)initWithArray:(id *)anArray
+           capacity:(NSUInteger)capacity
+              count:(NSUInteger)count
+         startIndex:(NSUInteger)startIndex
+          direction:(NSComparisonResult)direction
+    mutationPointer:(unsigned long *)mutations
 {
 	if ((self = [super init]) == nil) return nil;
 	array = anArray;
@@ -112,7 +112,7 @@ do { \
 	return self;
 }
 
-- (NSArray*) allObjects {
+- (NSArray *)allObjects {
 	NSMutableArray *allObjects = [[NSMutableArray alloc] init];
 	if (reverseEnumeration) {
 		while (enumerationCount++ < arrayCount) {
@@ -131,7 +131,7 @@ do { \
 	return [allObjects autorelease];
 }
 
-- (id) nextObject {
+- (id)nextObject {
 	id object = nil;
 	if (enumerationCount++ < arrayCount) {
 		object = array[enumerationIndex];
@@ -168,18 +168,18 @@ do { \
  */
 @implementation CHCircularBuffer
 
-- (void) dealloc {
+- (void)dealloc {
 	[self removeAllObjects];
 	free(array);
 	[super dealloc];
 }
 
 // Note: Defined here since -init is not implemented in NS(Mutable)Array.
-- (id) init {
+- (id)init {
 	return [self initWithCapacity:DEFAULT_BUFFER_SIZE];
 }
 
-- (id) initWithArray:(NSArray*)anArray {
+- (id)initWithArray:(NSArray *)anArray {
 	NSUInteger capacity = DEFAULT_BUFFER_SIZE;
 	while (capacity <= [anArray count])
 		capacity *= 2;
@@ -192,7 +192,7 @@ do { \
 }
 
 // This is the designated initializer for CHCircularBuffer.
-- (id) initWithCapacity:(NSUInteger)capacity {
+- (id)initWithCapacity:(NSUInteger)capacity {
 	if ((self = [super init]) == nil) return nil;
 	arrayCapacity = capacity ? capacity : DEFAULT_BUFFER_SIZE;
 	array = malloc(kCHPointerSize * arrayCapacity);
@@ -202,21 +202,21 @@ do { \
 #pragma mark <NSCoding>
 
 // Overridden from NSMutableArray to encode/decode as the proper class.
-- (Class) classForKeyedArchiver {
+- (Class)classForKeyedArchiver {
 	return [self class];
 }
 
-- (id) initWithCoder:(NSCoder*)decoder {
+- (id)initWithCoder:(NSCoder *)decoder {
 	return [self initWithArray:[decoder decodeObjectForKey:@"array"]];
 }
 
-- (void) encodeWithCoder:(NSCoder*)encoder {
+- (void)encodeWithCoder:(NSCoder *)encoder {
 	[encoder encodeObject:[self allObjects] forKey:@"array"];
 }
 
 #pragma mark <NSCopying>
 
-- (id) copyWithZone:(NSZone*)zone {
+- (id)copyWithZone:(NSZone *)zone {
 	return [[[self class] allocWithZone:zone] initWithArray:[self allObjects]];
 }
 
@@ -225,10 +225,7 @@ do { \
 /*
  Since this class uses a C array for storage, we can return a pointer to any spot in the array and a count greater than "len". This approach avoids copy overhead, and is also more efficient since this method will be called only 2 or 3 times, depending on whether the buffer wraps around the end of the array. (The last call always returns 0 and requires no extra processing.)
  */
-- (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
-                                   objects:(id*)stackbuf
-                                     count:(NSUInteger)len
-{
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id *)stackbuf count:(NSUInteger)len {
 	if (state->state == 0) {
 		state->mutationsPtr = &mutations;
 		state->itemsPtr = array + headIndex; // pointer arithmetic for offset
@@ -251,7 +248,7 @@ do { \
 
 #pragma mark Querying Contents
 
-- (NSArray*) allObjects {
+- (NSArray *)allObjects {
 	NSMutableArray *allObjects = [[NSMutableArray alloc] init];
 	if (count > 0) {
 		for (id anObject in self) {
@@ -261,7 +258,7 @@ do { \
 	return [allObjects autorelease];
 }
 
-- (BOOL) containsObject:(id)anObject {
+- (BOOL)containsObject:(id)anObject {
 	NSUInteger iterationIndex = headIndex;
 	while (iterationIndex != tailIndex) {
 		if ([array[iterationIndex] isEqual:anObject])
@@ -271,7 +268,7 @@ do { \
 	return NO;
 }
 
-- (BOOL) containsObjectIdenticalTo:(id)anObject {
+- (BOOL)containsObjectIdenticalTo:(id)anObject {
 	NSUInteger iterationIndex = headIndex;
 	while (iterationIndex != tailIndex) {
 		if (array[iterationIndex] == anObject)
@@ -282,27 +279,27 @@ do { \
 }
 
 // NSArray primitive method
-- (NSUInteger) count {
+- (NSUInteger)count {
 	return count;
 }
 
-- (id) firstObject {
+- (id)firstObject {
 	return (count > 0) ? array[headIndex] : nil;
 }
 
-- (NSUInteger) hash {
+- (NSUInteger)hash {
 	return hashOfCountAndObjects(count, [self firstObject], [self lastObject]);
 }
 
-- (id) lastObject {
+- (id)lastObject {
 	return (count > 0) ? array[((tailIndex) ? tailIndex : arrayCapacity) - 1] : nil;
 }
 
-- (NSUInteger) indexOfObject:(id)anObject {
+- (NSUInteger)indexOfObject:(id)anObject {
 	return [self indexOfObject:anObject inRange:NSMakeRange(0, count)];
 }
 
-- (NSUInteger) indexOfObject:(id)anObject inRange:(NSRange)range {
+- (NSUInteger)indexOfObject:(id)anObject inRange:(NSRange)range {
 	NSUInteger onePastLastRelativeIndex = range.location + range.length;
 	if (onePastLastRelativeIndex > count)
 		CHIndexOutOfRangeException([self class], _cmd, onePastLastRelativeIndex, count);
@@ -317,7 +314,7 @@ do { \
 	return NSNotFound;
 }
 
-- (NSUInteger) indexOfObjectIdenticalTo:(id)anObject {
+- (NSUInteger)indexOfObjectIdenticalTo:(id)anObject {
 	return [self indexOfObjectIdenticalTo:anObject inRange:NSMakeRange(0, count)];
 }
 
@@ -337,13 +334,13 @@ do { \
 }
 
 // NSArray primitive method
-- (id) objectAtIndex:(NSUInteger)index {
+- (id)objectAtIndex:(NSUInteger)index {
 	if (index >= count)
 		CHIndexOutOfRangeException([self class], _cmd, index, count);
 	return array[transformIndex(index)];
 }
 
-- (NSArray*) objectsAtIndexes:(NSIndexSet*)indexes {
+- (NSArray *)objectsAtIndexes:(NSIndexSet *)indexes {
 	if (indexes == nil)
 		CHNilArgumentException([self class], _cmd);
 	if ([indexes count] == 0)
@@ -357,7 +354,7 @@ do { \
 	return objects;
 }
 
-- (NSEnumerator*) objectEnumerator {
+- (NSEnumerator *)objectEnumerator {
 	return [[[CHCircularBufferEnumerator alloc]
 	         initWithArray:array
 	              capacity:arrayCapacity
@@ -367,7 +364,7 @@ do { \
 	       mutationPointer:&mutations] autorelease];
 }
 
-- (NSEnumerator*) reverseObjectEnumerator {
+- (NSEnumerator *)reverseObjectEnumerator {
 	return [[[CHCircularBufferEnumerator alloc]
 	         initWithArray:array
 	              capacity:arrayCapacity
@@ -380,12 +377,12 @@ do { \
 #pragma mark Modifying Contents
 
 // NSMutableArray primitive method
-- (void) addObject:(id)anObject {
+- (void)addObject:(id)anObject {
 	[self insertObject:anObject atIndex:count];
 }
 
 // NSMutableArray primitive method
-- (void) insertObject:(id)anObject atIndex:(NSUInteger)index {
+- (void)insertObject:(id)anObject atIndex:(NSUInteger)index {
 	if (index > count)
 		CHIndexOutOfRangeException([self class], _cmd, index, count);
 	if (anObject == nil)
@@ -428,7 +425,7 @@ do { \
 	}
 }
 
-- (void) exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2 {
+- (void)exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2 {
 	if (idx1 >= count || idx2 >= count)
 		CHIndexOutOfRangeException([self class], _cmd, MAX(idx1,idx2), count);
 	if (idx1 != idx2) {
@@ -443,7 +440,7 @@ do { \
 	}
 }
 
-- (void) removeFirstObject {
+- (void)removeFirstObject {
 	if (count == 0)
 		return;
 	[array[headIndex] release];
@@ -454,7 +451,7 @@ do { \
 }
 
 // NSMutableArray primitive method
-- (void) removeLastObject {
+- (void)removeLastObject {
 	if (count == 0)
 		return;
 	decrementIndex(tailIndex);
@@ -465,7 +462,7 @@ do { \
 }
 
 // Private method that accepts a function pointer for testing object equality.
-- (void) removeObject:(id)anObject withEqualityTest:(BOOL(*)(id,id))objectsMatch {
+- (void)removeObject:(id)anObject withEqualityTest:(BOOL(*)(id,id))objectsMatch {
 	if (count == 0 || anObject == nil)
 		return;
 	// Strip off leading matches if any exist in the buffer.
@@ -509,12 +506,12 @@ do { \
 	++mutations;
 }
 
-- (void) removeObject:(id)anObject {
+- (void)removeObject:(id)anObject {
 	[self removeObject:anObject withEqualityTest:&objectsAreEqual];
 }
 
 // NSMutableArray primitive method
-- (void) removeObjectAtIndex:(NSUInteger)index {
+- (void)removeObjectAtIndex:(NSUInteger)index {
 	if (index >= count)
 		CHIndexOutOfRangeException([self class], _cmd, index, count);
 	NSUInteger actualIndex = transformIndex(index);
@@ -544,11 +541,11 @@ do { \
 	++mutations;
 }
 
-- (void) removeObjectIdenticalTo:(id)anObject {
+- (void)removeObjectIdenticalTo:(id)anObject {
 	[self removeObject:anObject withEqualityTest:&objectsAreIdentical];
 }
 
-- (void) removeObjectsAtIndexes:(NSIndexSet*)indexes {
+- (void)removeObjectsAtIndexes:(NSIndexSet *)indexes {
 	if (indexes == nil)
 		CHNilArgumentException([self class], _cmd);
 	if ([indexes count] > 0) {
@@ -560,7 +557,7 @@ do { \
 	}
 }
 
-- (void) removeAllObjects {
+- (void)removeAllObjects {
 	if (count > 0) {
 		while (headIndex != tailIndex) {
 			[array[headIndex] release];
@@ -578,7 +575,7 @@ do { \
 }
 
 // NSMutableArray primitive method
-- (void) replaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject {
+- (void)replaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject {
 	if (index >= count)
 		CHIndexOutOfRangeException([self class], _cmd, index, count);
 	[anObject retain];

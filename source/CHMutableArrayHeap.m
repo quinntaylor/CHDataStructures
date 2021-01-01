@@ -14,7 +14,7 @@
 
 @implementation CHMutableArrayHeap
 
-- (void) heapifyFromIndex:(NSUInteger)parentIndex {
+- (void)heapifyFromIndex:(NSUInteger)parentIndex {
 	NSUInteger leftIndex, rightIndex;
 	id parent, leftChild, rightChild;
 	
@@ -49,32 +49,32 @@
 
 #pragma mark -
 
-- (void) dealloc {
+- (void)dealloc {
 	[array release];
 	[super dealloc];
 }
 
-- (id) init {
+- (id)init {
 	return [self initWithOrdering:NSOrderedAscending array:nil];
 }
 
-- (id) initWithArray:(NSArray*)anArray {
+- (id)initWithArray:(NSArray *)anArray {
 	return [self initWithOrdering:NSOrderedAscending array:anArray];
 }
 
 // This is the designated initializer for NSMutableArray (must be overridden)
-- (id) initWithCapacity:(NSUInteger)capacity {
+- (id)initWithCapacity:(NSUInteger)capacity {
 	if ((self = [super init]) == nil) return nil;
 	array = [[NSMutableArray alloc] initWithCapacity:capacity];
 	return self;	
 }
 
-- (id) initWithOrdering:(NSComparisonResult)order {
+- (id)initWithOrdering:(NSComparisonResult)order {
 	return [self initWithOrdering:order array:nil];
 }
 
 // This is the designated initializer for CHMutableArrayHeap
-- (id) initWithOrdering:(NSComparisonResult)order array:(NSArray*)anArray {
+- (id)initWithOrdering:(NSComparisonResult)order array:(NSArray *)anArray {
 	// Parent initializer allocates empty array; add objects after order is set.
 	if ((self = [self initWithCapacity:[anArray count]]) == nil) return nil;
 	if (order != NSOrderedAscending && order != NSOrderedDescending)
@@ -87,18 +87,18 @@
 #pragma mark <NSCoding>
 
 // Overridden from NSMutableArray to encode/decode as the proper class.
-- (Class) classForKeyedArchiver {
+- (Class)classForKeyedArchiver {
 	return [self class];
 }
 
-- (id) initWithCoder:(NSCoder*)decoder {
+- (id)initWithCoder:(NSCoder *)decoder {
 	// Ordinarily we'd call -[super initWithCoder:], but we must set order first
 	return [self initWithOrdering:([decoder decodeBoolForKey:@"sortAscending"]
 	                               ? NSOrderedAscending : NSOrderedDescending)
 	                        array:[decoder decodeObjectForKey:@"array"]];
 }
 
-- (void) encodeWithCoder:(NSCoder*)encoder {
+- (void)encodeWithCoder:(NSCoder *)encoder {
 	[super encodeWithCoder:encoder];
 	[encoder encodeObject:array forKey:@"array"];
 	[encoder encodeBool:(sortOrder == NSOrderedAscending) forKey:@"sortAscending"];
@@ -106,7 +106,7 @@
 
 #pragma mark <NSCopying>
 
-- (id) copyWithZone:(NSZone*)zone {
+- (id)copyWithZone:(NSZone *)zone {
 	return [[[self class] allocWithZone:zone] initWithOrdering:sortOrder array:array];
 }
 
@@ -114,16 +114,13 @@
 
 // This overridden method returns the heap contents in fully-sorted order.
 // Just as -objectEnumerator above, the first call incurs a hidden sorting cost.
-- (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
-                                   objects:(id*)stackbuf
-                                     count:(NSUInteger)len
-{
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id *)stackbuf count:(NSUInteger)len {
 	// Currently (in Leopard) NSEnumerators from NSArray only return 1 each time
 	if (state->state == 0) {
 		// Create a sorted array to use for enumeration, store it in the state.
 		state->extra[4] = (unsigned long) [self allObjectsInSortedOrder];
 	}
-	NSArray *sorted = (NSArray*) state->extra[4];
+	NSArray *sorted = (NSArray *) state->extra[4];
 	NSUInteger count = [sorted countByEnumeratingWithState:state
 	                                               objects:stackbuf
 	                                                 count:len];
@@ -144,11 +141,11 @@
  @see objectEnumerator
  @see removeAllObjects
  */
-- (NSArray*) allObjects {
+- (NSArray *)allObjects {
 	return [[array copy] autorelease];
 }
 
-- (NSArray*) allObjectsInSortedOrder {
+- (NSArray *)allObjectsInSortedOrder {
 	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc]
 	                                    initWithKey:nil
 	                                      ascending:(sortOrder == NSOrderedAscending)];
@@ -164,50 +161,50 @@
  @see containsObjectIdenticalTo:
  @see removeObject:
  */
-- (BOOL) containsObject:(id)anObject {
+- (BOOL)containsObject:(id)anObject {
 	return [array containsObject:anObject];
 }
 
 // NOTE: This method is not part of the CHHeap protocol.
-- (BOOL) containsObjectIdenticalTo:(id)anObject {
+- (BOOL)containsObjectIdenticalTo:(id)anObject {
 	return ([array indexOfObjectIdenticalTo:anObject] != NSNotFound);
 }
 
-- (NSUInteger) count {
+- (NSUInteger)count {
 	return [array count];
 }
 
-- (id) firstObject {
+- (id)firstObject {
 	return ([array count] > 0) ? [array objectAtIndex:0] : nil;
 }
 
-- (NSUInteger) hash {
+- (NSUInteger)hash {
 	id anObject = [self firstObject];
 	return hashOfCountAndObjects([self count], anObject, anObject);
 }
 
-- (BOOL) isEqual:(id)otherObject {
+- (BOOL)isEqual:(id)otherObject {
 	if ([otherObject conformsToProtocol:@protocol(CHHeap)])
 		return [self isEqualToHeap:otherObject];
 	else
 		return NO;
 }
 
-- (BOOL) isEqualToHeap:(id<CHHeap>)otherHeap {
+- (BOOL)isEqualToHeap:(id<CHHeap>)otherHeap {
 	return collectionsAreEqual(self, otherHeap);
 }
 
-- (id) objectAtIndex:(NSUInteger)index {
+- (id)objectAtIndex:(NSUInteger)index {
 	return [array objectAtIndex:index];
 }
 
-- (NSEnumerator*) objectEnumerator {
+- (NSEnumerator *)objectEnumerator {
 	return [[self allObjectsInSortedOrder] objectEnumerator];
 }
 
 #pragma mark -
 
-- (void) addObject:(id)anObject {
+- (void)addObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
 	++mutations;
@@ -226,7 +223,7 @@
 	}
 }
 
-- (void) addObjectsFromArray:(NSArray*)anArray {
+- (void)addObjectsFromArray:(NSArray *)anArray {
 	if (anArray == nil)
 		return;
 	++mutations;
@@ -243,7 +240,7 @@
 	CHUnsupportedOperationException([self class], _cmd);
 }
 
-- (void) removeFirstObject {
+- (void)removeFirstObject {
 	if ([array count] > 0) {
 		++mutations;
 		[array exchangeObjectAtIndex:0 withObjectAtIndex:([array count]-1)];
@@ -254,7 +251,7 @@
 }
 
 // NOTE: This method is not part of the CHHeap protocol.
-- (void) removeObject:(id)anObject {
+- (void)removeObject:(id)anObject {
 	NSUInteger count = [array count];
 	if (count == 0 || anObject == nil)
 		return;
@@ -273,12 +270,12 @@
 	}
 }
 
-- (void) removeObjectAtIndex:(NSUInteger)index {
+- (void)removeObjectAtIndex:(NSUInteger)index {
 	CHUnsupportedOperationException([self class], _cmd);
 }
 
 // NOTE: This method is not part of the CHHeap protocol.
-- (void) removeObjectIdenticalTo:(id)anObject {
+- (void)removeObjectIdenticalTo:(id)anObject {
 	NSUInteger count = [array count];
 	if (count == 0 || anObject == nil)
 		return;
@@ -297,7 +294,7 @@
 	}
 }
 
-- (void) removeAllObjects {
+- (void)removeAllObjects {
 	[array removeAllObjects];
 	++mutations;
 }

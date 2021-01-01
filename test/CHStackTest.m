@@ -25,7 +25,7 @@
 
 @implementation CHStackTest
 
-- (void) setUp {
+- (void)setUp {
 	stackClasses = [NSArray arrayWithObjects:
 					[CHListStack class],
 					[CHCircularBufferStack class],
@@ -46,7 +46,7 @@
  -objectEnumerator
  */
 
-- (void) testInitWithArray {
+- (void)testInitWithArray {
 	NSMutableArray *moreObjects = [NSMutableArray array];
 	for (NSUInteger i = 0; i < 32; i++)
 		[moreObjects addObject:[NSNumber numberWithUnsignedInteger:i]];
@@ -69,7 +69,7 @@
 	}
 }
 
-- (void) testIsEqualToStack {
+- (void)testIsEqualToStack {
 	NSMutableArray *emptyStacks = [NSMutableArray array];
 	NSMutableArray *equalStacks = [NSMutableArray array];
 	NSMutableArray *reversedStacks = [NSMutableArray array];
@@ -101,7 +101,7 @@
 	}
 }
 
-- (void) testPushObject {
+- (void)testPushObject {
 	NSEnumerator *classes = [stackClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -116,7 +116,7 @@
 	}
 }
 
-- (void) testTopObjectAndPopObject {
+- (void)testTopObjectAndPopObject {
 	NSEnumerator *classes = [stackClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {

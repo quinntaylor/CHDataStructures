@@ -17,14 +17,14 @@
 // This macro is used as an alias for the 'dictionary' ivar in the parent class.
 #define keysToObjects dictionary
 
-- (void) dealloc {
+- (void)dealloc {
 	if (inverse != nil)
 		inverse->inverse = nil; // Unlink from inverse dictionary if one exists.
 	CFRelease(objectsToKeys); // The dictionary can never be null at this point.
 	[super dealloc];
 }
 
-- (id) initWithCapacity:(NSUInteger)numItems {
+- (id)initWithCapacity:(NSUInteger)numItems {
 	if ((self = [super initWithCapacity:numItems]) == nil) return nil;
 	createCollectableCFMutableDictionary(&objectsToKeys, numItems);
 	return self;
@@ -33,7 +33,7 @@
 #pragma mark Querying Contents
 
 /** @todo Determine the proper ownership/lifetime of the inverse dictionary. */
-- (CHBidirectionalDictionary*) inverseDictionary {
+- (CHBidirectionalDictionary *)inverseDictionary {
 	if (inverse == nil) {
 		// Create a new instance of this class to represent the inverse mapping
 		inverse = [[CHBidirectionalDictionary alloc] init];
@@ -49,36 +49,36 @@
 	return inverse;
 }
 
-- (id) keyForObject:(id)anObject {
+- (id)keyForObject:(id)anObject {
 	return (id)CFDictionaryGetValue(objectsToKeys, anObject);
 }
 
-- (NSEnumerator*) objectEnumerator {
+- (NSEnumerator *)objectEnumerator {
 	return [(id)objectsToKeys keyEnumerator];
 }
 
 #pragma mark Modifying Contents
 
-- (void) addEntriesFromDictionary:(NSDictionary*)otherDictionary {
+- (void)addEntriesFromDictionary:(NSDictionary *)otherDictionary {
 	[super addEntriesFromDictionary:otherDictionary];
 }
 
-- (void) removeAllObjects {
+- (void)removeAllObjects {
 	[super removeAllObjects];
 	CFDictionaryRemoveAllValues(objectsToKeys);
 }
 
-- (void) removeKeyForObject:(id)anObject {
+- (void)removeKeyForObject:(id)anObject {
 	[super removeObjectForKey:[self keyForObject:anObject]];
 	CFDictionaryRemoveValue(objectsToKeys, anObject);
 }
 
-- (void) removeObjectForKey:(id)aKey {
+- (void)removeObjectForKey:(id)aKey {
 	CFDictionaryRemoveValue(objectsToKeys, [self objectForKey:aKey]);
 	[super removeObjectForKey:aKey];
 }
 
-- (void) setObject:(id)anObject forKey:(id)aKey {
+- (void)setObject:(id)anObject forKey:(id)aKey {
 	if (anObject == nil || aKey == nil)
 		CHNilArgumentException([self class], _cmd);
 	// Remove existing mappings for aKey and anObject if they currently exist.

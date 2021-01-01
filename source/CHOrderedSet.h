@@ -44,7 +44,7 @@
  @see anyObject
  @see objectEnumerator
  */
-- (NSArray*) allObjects;
+- (NSArray *)allObjects;
 
 /**
  Returns the "oldest" member of the receiver.
@@ -56,7 +56,7 @@
  @see lastObject
  @see removeFirstObject
  */
-- (id) firstObject;
+- (id)firstObject;
 
 /**
  Returns the index of a given object based on insertion order.
@@ -69,7 +69,7 @@
  @see objectAtIndex:
  @see removeObjectAtIndex:
  */
-- (NSUInteger) indexOfObject:(id)anObject;
+- (NSUInteger)indexOfObject:(id)anObject;
 
 /**
  Compares the receiving ordered set to another ordered set. Two ordered sets have equal contents if they each hold the same number of objects and objects at a given position in each ordered set satisfy the \link NSObject-p#isEqual: -isEqual:\endlink test.
@@ -77,7 +77,7 @@
  @param otherOrderedSet A ordered set.
  @return @c YES if the contents of @a otherOrderedSet are equal to the contents of the receiver, otherwise @c NO.
  */
-- (BOOL) isEqualToOrderedSet:(CHOrderedSet*)otherOrderedSet;
+- (BOOL)isEqualToOrderedSet:(CHOrderedSet *)otherOrderedSet;
 
 /**
  Returns the "youngest" member of the receiver.
@@ -89,7 +89,7 @@
  @see firstObject
  @see removeLastObject
  */
-- (id) lastObject;
+- (id)lastObject;
 
 /**
  Returns the value at the specified index.
@@ -103,7 +103,7 @@
  @see objectsAtIndexes:
  @see removeObjectAtIndex:
  */
-- (id) objectAtIndex:(NSUInteger)index;
+- (id)objectAtIndex:(NSUInteger)index;
 
 /**
  Returns an enumerator object that lets you access each object in the receiver by insertion order.
@@ -116,7 +116,7 @@
  
  @see allObjects
  */
-- (NSEnumerator*) objectEnumerator;
+- (NSEnumerator *)objectEnumerator;
 
 /**
  Returns an array containing the objects in the receiver at the indexes specified by a given index set.
@@ -133,7 +133,7 @@
  @see objectAtIndex:
  @see removeObjectsAtIndexes:
  */
-- (NSArray*) objectsAtIndexes:(NSIndexSet*)indexes;
+- (NSArray *)objectsAtIndexes:(NSIndexSet *)indexes;
 
 /**
  Returns an ordered dictionary containing the objects in the receiver at the indexes specified by a given index set.
@@ -146,7 +146,7 @@
  
  @attention To retrieve entries in a given NSRange, pass <code>[NSIndexSet indexSetWithIndexesInRange:range]</code> as the parameter.
  */
-- (CHOrderedSet*) orderedSetWithObjectsAtIndexes:(NSIndexSet*)indexes;
+- (CHOrderedSet *)orderedSetWithObjectsAtIndexes:(NSIndexSet *)indexes;
 
 // @}
 #pragma mark Modifying Contents
@@ -163,7 +163,7 @@
  @see indexOfObject:
  @see objectAtIndex:
  */
-- (void) insertObject:(id)anObject atIndex:(NSUInteger)index;
+- (void)insertObject:(id)anObject atIndex:(NSUInteger)index;
 
 /**
  Exchange the objects in the receiver at given indexes.
@@ -177,7 +177,7 @@
  @see insertObject:atIndex:
  @see objectAtIndex:
  */
-- (void) exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2;
+- (void)exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2;
 
 /**
  Remove the "oldest" member of the receiver.
@@ -187,7 +187,7 @@
  @see removeObject:
  @see removeObjectAtIndex:
  */
-- (void) removeFirstObject;
+- (void)removeFirstObject;
 
 /**
  Remove the "youngest" member of the receiver. 
@@ -197,7 +197,7 @@
  @see removeObject:
  @see removeObjectAtIndex:
  */
-- (void) removeLastObject;
+- (void)removeLastObject;
 
 /**
  Remove the object at a given index from the receiver.
@@ -214,7 +214,7 @@
  @see removeObject:
  @see removeObjectsAtIndexes:
  */
-- (void) removeObjectAtIndex:(NSUInteger)index;
+- (void)removeObjectAtIndex:(NSUInteger)index;
 
 /**
  Remove the objects at the specified indexes from the receiver.
@@ -229,7 +229,7 @@
  @see removeAllObjects
  @see removeObjectAtIndex:
  */
-- (void) removeObjectsAtIndexes:(NSIndexSet*)indexes;
+- (void)removeObjectsAtIndexes:(NSIndexSet *)indexes;
 
 // @}
 @end

@@ -63,7 +63,7 @@
  
  @see #addObject:withPriority:
  */
-- (void) addObject:(id)anObject;
+- (void)addObject:(id)anObject;
 
 /**
  Add an object to the treap using a given priority value. Ordering is based on an object's response to the @c -compare: message. Since no duplicates are allowed, if the tree already contains an object for which @c compare: returns @c NSOrderedSame, that object is released and replaced by @a anObject.
@@ -76,7 +76,7 @@
  
  If @a anObject already exists in the treap, @a priority replaces the existing priority, and the existing node is percolated up or down to maintain the heap property. Thus, this method can be used to manipulate the depth of an object. Using a specific priority value for an object allows the user to impose a heap ordering by giving higher priorities to objects that should bubble towards the top, and lower priorities to objects that should bubble towards the bottom. In theory, this makes it significantly faster to retrieve commonly searched-for items, at the possible cost of a less-balanced treap overall, depending on the mapping of priorities and the sorted order of the objects. Use with caution.
  */
-- (void) addObject:(id)anObject withPriority:(NSUInteger)priority;
+- (void)addObject:(id)anObject withPriority:(NSUInteger)priority;
 
 /**
  Returns the priority for @a anObject if it's in the treap, @c CHTreapNotFound otherwise.
@@ -84,6 +84,6 @@
  @param anObject The object for which to find the treap priority, if it exists.
  @return The priority for @a anObject if it is in the treap, @c CHTreapNotFound if it is @c nil or not present.
  */
-- (NSUInteger) priorityForObject:(id)anObject;
+- (NSUInteger)priorityForObject:(id)anObject;
 
 @end

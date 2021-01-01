@@ -35,7 +35,7 @@
  @see containsObject:
  @see removeObjectIdenticalTo:
  */
-- (BOOL) containsObjectIdenticalTo:(id)anObject;
+- (BOOL)containsObjectIdenticalTo:(id)anObject;
 
 /**
  Remove @b all occurrences of @a anObject, matched using @c isEqual:.
@@ -48,7 +48,7 @@
  @see removeAllObjects
  @see removeObjectIdenticalTo:
  */
-- (void) removeObject:(id)anObject;
+- (void)removeObject:(id)anObject;
 
 /**
  Remove @b all occurrences of @a anObject, matched using the == operator.
@@ -61,6 +61,6 @@
  @see removeAllObjects
  @see removeObject:
  */
-- (void) removeObjectIdenticalTo:(id)anObject;
+- (void)removeObjectIdenticalTo:(id)anObject;
 	
 @end

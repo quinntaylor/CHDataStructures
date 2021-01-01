@@ -15,53 +15,53 @@
 
 @implementation CHListDeque
 
-- (id) init {
+- (id)init {
 	if ((self = [super init]) == nil) return nil;
 	list = [[CHDoublyLinkedList alloc] init];
 	return self;
 }
 
-- (void) prependObject:(id)anObject {
+- (void)prependObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
 	[list prependObject:anObject];
 }
 
-- (void) appendObject:(id)anObject {
+- (void)appendObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
 	[list addObject:anObject];
 }
 
-- (id) firstObject {
+- (id)firstObject {
 	return [list firstObject];
 }
 
-- (BOOL) isEqual:(id)otherObject {
+- (BOOL)isEqual:(id)otherObject {
 	if ([otherObject conformsToProtocol:@protocol(CHDeque)])
 		return [self isEqualToDeque:otherObject];
 	else
 		return NO;
 }
 
-- (BOOL) isEqualToDeque:(id<CHDeque>)otherDeque {
+- (BOOL)isEqualToDeque:(id<CHDeque>)otherDeque {
 	return collectionsAreEqual(self, otherDeque);
 }
 
-- (id) lastObject {
+- (id)lastObject {
 	return [list lastObject];
 }
 
-- (void) removeFirstObject {
+- (void)removeFirstObject {
 	[list removeFirstObject];
 }
 
-- (void) removeLastObject {
+- (void)removeLastObject {
 	[list removeLastObject];
 }
 
-- (NSEnumerator*) reverseObjectEnumerator {
-	return [(CHDoublyLinkedList*)list reverseObjectEnumerator];
+- (NSEnumerator *)reverseObjectEnumerator {
+	return [(CHDoublyLinkedList *)list reverseObjectEnumerator];
 }
 
 @end

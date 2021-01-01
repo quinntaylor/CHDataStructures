@@ -55,7 +55,7 @@
  @see keyAtIndex:
  @see lastKey
  */
-- (id) firstKey;
+- (id)firstKey;
 
 /**
  Returns the last key in the receiver, according to insertion order.
@@ -65,7 +65,7 @@
  @see firstKey
  @see keyAtIndex:
  */
-- (id) lastKey;
+- (id)lastKey;
 
 /**
  Returns the index of a given key based on insertion order.
@@ -77,7 +77,7 @@
  @see keyAtIndex:
  @see lastKey
  */
-- (NSUInteger) indexOfKey:(id)aKey;
+- (NSUInteger)indexOfKey:(id)aKey;
 
 /**
  Returns the key at the specified index, based on insertion order.
@@ -92,7 +92,7 @@
  @see indexOfKey:
  @see lastKey
  */
-- (id) keyAtIndex:(NSUInteger)index;
+- (id)keyAtIndex:(NSUInteger)index;
 
 /**
  Returns an array containing the keys in the receiver at the indexes specified by a given index set.
@@ -106,7 +106,7 @@
  @see \link NSDictionary#allKeys -allKeys\endlink
  @see orderedDictionaryWithKeysAtIndexes:
  */
-- (NSArray*) keysAtIndexes:(NSIndexSet*)indexes;
+- (NSArray *)keysAtIndexes:(NSIndexSet *)indexes;
 
 /**
  Returns the value for the key at the specified index, based on insertion order.
@@ -121,7 +121,7 @@
  @see \link NSDictionary#objectForKey: -objectForKey:\endlink
  @see removeObjectForKeyAtIndex:
  */
-- (id) objectForKeyAtIndex:(NSUInteger)index;
+- (id)objectForKeyAtIndex:(NSUInteger)index;
 
 /**
  Returns the set of objects from the receiver corresponding to the keys at the indexes specified by a given index set.
@@ -136,7 +136,7 @@
  @see \link NSDictionary#objectsForKeys:notFoundMarker: -objectsForKeys:notFoundMarker:\endlink
  @see removeObjectsForKeysAtIndexes:
  */
-- (NSArray*) objectsForKeysAtIndexes:(NSIndexSet*)indexes;
+- (NSArray *)objectsForKeysAtIndexes:(NSIndexSet *)indexes;
 
 /**
  Returns an ordered dictionary containing the entries in the receiver with keys at the indexes specified by a given index set.
@@ -149,7 +149,7 @@
  
  @attention To retrieve entries in a given NSRange, pass <code>[NSIndexSet indexSetWithIndexesInRange:range]</code> as the parameter.
  */
-- (CHOrderedDictionary*) orderedDictionaryWithKeysAtIndexes:(NSIndexSet*)indexes;
+- (CHOrderedDictionary *)orderedDictionaryWithKeysAtIndexes:(NSIndexSet *)indexes;
 
 /**
  Returns an enumerator that lets you access each key in the receiver in reverse order.
@@ -165,7 +165,7 @@
  @see \link NSDictionary#allKeysForObject: -allKeysForObject:\endlink
  @see NSFastEnumeration protocol
  */
-- (NSEnumerator*) reverseKeyEnumerator;
+- (NSEnumerator *)reverseKeyEnumerator;
 
 // @}
 #pragma mark Modifying Contents
@@ -183,7 +183,7 @@
  @see indexOfKey:
  @see keyAtIndex:
  */
-- (void) exchangeKeyAtIndex:(NSUInteger)idx1 withKeyAtIndex:(NSUInteger)idx2;
+- (void)exchangeKeyAtIndex:(NSUInteger)idx1 withKeyAtIndex:(NSUInteger)idx2;
 
 /**
  Adds a given key-value pair to the receiver, with the key at a given index in the ordering.
@@ -199,7 +199,7 @@
  @see keyAtIndex:
  @see setObject:forKey:
  */
-- (void) insertObject:(id)anObject forKey:(id)aKey atIndex:(NSUInteger)index;
+- (void)insertObject:(id)anObject forKey:(id)aKey atIndex:(NSUInteger)index;
 
 /**
  Removes the key at a given index from the receiver. Elements on the non-wrapped end of the buffer are shifted one spot to fill the gap.
@@ -213,7 +213,7 @@
  @see objectForKeyAtIndex:
  @see \link NSMutableDictionary#removeObjectForKey: -removeObjectForKey:\endlink
  */
-- (void) removeObjectForKeyAtIndex:(NSUInteger)index;
+- (void)removeObjectForKeyAtIndex:(NSUInteger)index;
 
 /**
  Removes the keys at the specified indexes from the receiver. This method is similar to #removeObjectForKeyAtIndex: but allows you to efficiently remove multiple keys with a single operation.
@@ -226,7 +226,7 @@
  @see objectsForKeysAtIndexes:
  @see removeObjectForKeyAtIndex:
  */
-- (void) removeObjectsForKeysAtIndexes:(NSIndexSet*)indexes;
+- (void)removeObjectsForKeysAtIndexes:(NSIndexSet *)indexes;
 
 /**
  Adds a given key-value pair to the receiver, with the key added at the end of the ordering.
@@ -237,7 +237,7 @@
  @see insertObject:forKey:atIndex:
  @see setObject:forKeyAtIndex:
  */
-- (void) setObject:(id)anObject forKey:(id)aKey;
+- (void)setObject:(id)anObject forKey:(id)aKey;
 
 /**
  Sets the value for the key at the specified index in the receiver.
@@ -251,7 +251,7 @@
  @see insertObject:forKey:atIndex:
  @see setObject:forKey:
  */
-- (void) setObject:(id)anObject forKeyAtIndex:(NSUInteger)index;
+- (void)setObject:(id)anObject forKeyAtIndex:(NSUInteger)index;
 
 // @}
 @end

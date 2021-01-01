@@ -12,7 +12,7 @@
 
 #import "Util.h"
 
-HIDDEN void createCollectableCFMutableDictionary(CFMutableDictionaryRef* dictionary, NSUInteger initialCapacity);
+HIDDEN void createCollectableCFMutableDictionary(CFMutableDictionaryRef *dictionary, NSUInteger initialCapacity);
 
 /**
  @file CHMutableDictionary.h
@@ -33,13 +33,13 @@ HIDDEN void createCollectableCFMutableDictionary(CFMutableDictionaryRef* diction
 	CFMutableDictionaryRef dictionary; // A Core Foundation dictionary.
 }
 
-- (id) initWithCapacity:(NSUInteger)numItems;
+- (id)initWithCapacity:(NSUInteger)numItems;
 
-- (NSUInteger) count;
-- (NSEnumerator*) keyEnumerator;
-- (id) objectForKey:(id)aKey;
-- (void) removeAllObjects;
-- (void) removeObjectForKey:(id)aKey;
-- (void) setObject:(id)anObject forKey:(id)aKey;
+- (NSUInteger)count;
+- (NSEnumerator *)keyEnumerator;
+- (id)objectForKey:(id)aKey;
+- (void)removeAllObjects;
+- (void)removeObjectForKey:(id)aKey;
+- (void)setObject:(id)anObject forKey:(id)aKey;
 
 @end

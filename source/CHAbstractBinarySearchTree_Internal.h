@@ -26,10 +26,10 @@
 // NOTE: Subclasses should override the following methods to display any algorithm-specific information (such as the extra field used by self-balancing trees) in debugging output and generated DOT graphs.
 
 // This method determines the appearance of nodes in the graph produced by -debugDescription, and may be overriden by subclasses. The default implementation returns the -description for the object in the node, surrounded by quote marks.
-- (NSString*) debugDescriptionForNode:(CHBinaryTreeNode*)node;
+- (NSString *)debugDescriptionForNode:(CHBinaryTreeNode *)node;
 
 // This method determines the appearance of nodes in the graph produced by -dotGraphString, and may be overriden by subclasses. The default implementation creates an oval containing the value returned by -description for the object in the node.
-- (NSString*) dotGraphStringForNode:(CHBinaryTreeNode*)node;
+- (NSString *)dotGraphStringForNode:(CHBinaryTreeNode *)node;
 
 @end
 
@@ -41,7 +41,7 @@
  @param anObject The object to be stored in the @a object field of the struct; may be @c nil.
  @return An struct allocated with @c malloc().
  */
-HIDDEN CHBinaryTreeNode* CHCreateBinaryTreeNodeWithObject(id anObject);
+HIDDEN CHBinaryTreeNode * CHCreateBinaryTreeNodeWithObject(id anObject);
 
 // These are used by subclasses; marked as HIDDEN to reduce external visibility.
 HIDDEN size_t kCHBinaryTreeNodeSize;

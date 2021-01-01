@@ -16,7 +16,7 @@
 
 #pragma mark C Functions for Optimized Operations
 
-static inline CHBinaryTreeNode* rotateNodeWithLeftChild(CHBinaryTreeNode *node) {
+static inline CHBinaryTreeNode * rotateNodeWithLeftChild(CHBinaryTreeNode *node) {
 	CHBinaryTreeNode *leftChild = node->left;
 	node->left = leftChild->right;
 	leftChild->right = node;
@@ -25,7 +25,7 @@ static inline CHBinaryTreeNode* rotateNodeWithLeftChild(CHBinaryTreeNode *node) 
 	return leftChild;
 }
 
-static inline CHBinaryTreeNode* rotateNodeWithRightChild(CHBinaryTreeNode *node) {
+static inline CHBinaryTreeNode * rotateNodeWithRightChild(CHBinaryTreeNode *node) {
 	CHBinaryTreeNode *rightChild = node->right;
 	node->right = rightChild->left;
 	rightChild->left = node;
@@ -34,7 +34,7 @@ static inline CHBinaryTreeNode* rotateNodeWithRightChild(CHBinaryTreeNode *node)
 	return rightChild;
 }
 
-HIDDEN CHBinaryTreeNode* rotateObjectOnAncestor(id anObject, CHBinaryTreeNode *ancestor) {
+HIDDEN CHBinaryTreeNode * rotateObjectOnAncestor(id anObject, CHBinaryTreeNode *ancestor) {
 	if ([ancestor->object compare:anObject] == NSOrderedDescending) {
 		if ([ancestor->left->object compare:anObject] == NSOrderedDescending)
 			ancestor->left = rotateNodeWithLeftChild(ancestor->left);
@@ -51,7 +51,7 @@ HIDDEN CHBinaryTreeNode* rotateObjectOnAncestor(id anObject, CHBinaryTreeNode *a
 	}
 }
 
-static inline CHBinaryTreeNode* singleRotation(CHBinaryTreeNode *node, BOOL goingRight) {
+static inline CHBinaryTreeNode * singleRotation(CHBinaryTreeNode *node, BOOL goingRight) {
 	CHBinaryTreeNode *save = node->link[!goingRight];
 	node->link[!goingRight] = save->link[goingRight];
 	save->link[goingRight] = node;
@@ -60,7 +60,7 @@ static inline CHBinaryTreeNode* singleRotation(CHBinaryTreeNode *node, BOOL goin
 	return save;
 }
 
-static inline CHBinaryTreeNode* doubleRotation(CHBinaryTreeNode *node, BOOL goingRight) {
+static inline CHBinaryTreeNode * doubleRotation(CHBinaryTreeNode *node, BOOL goingRight) {
 	node->link[!goingRight] = singleRotation(node->link[!goingRight], !goingRight);
 	return singleRotation(node, goingRight);	
 }
@@ -74,7 +74,7 @@ static inline CHBinaryTreeNode* doubleRotation(CHBinaryTreeNode *node, BOOL goin
 /*
  Basically, as you walk down the tree to insert, if the present node has two red children, color it red and change the two children to black. If its parent is red, the tree must be rotated. (Just change the root's color back to black if you changed it). Returns without incrementing the count if the object already exists in the tree.
  */
-- (void) addObject:(id)anObject {
+- (void)addObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
 	++mutations;
@@ -151,7 +151,7 @@ static inline CHBinaryTreeNode* doubleRotation(CHBinaryTreeNode *node, BOOL goin
  @see http://www.stanford.edu/~blp/avl/libavl.html/Deleting-from-an-RB-Tree.html
  @see http://eternallyconfuzzled.com/tuts/datastructures/jsw_tut_rbtree.aspx
  */
-- (void) removeObject:(id)anObject {
+- (void)removeObject:(id)anObject {
 	if (count == 0 || anObject == nil)
 		return;
 	++mutations;
@@ -217,12 +217,12 @@ static inline CHBinaryTreeNode* doubleRotation(CHBinaryTreeNode *node, BOOL goin
 	header->right->color = kBLACK; // Make the root black for simplified logic
 }
 
-- (NSString*) debugDescriptionForNode:(CHBinaryTreeNode*)node {
+- (NSString *)debugDescriptionForNode:(CHBinaryTreeNode *)node {
 	return [NSString stringWithFormat:@"[%s]\t\"%@\"",
 			(node->color == kRED) ? " RED " : "BLACK", node->object];
 }
 
-- (NSString*) dotGraphStringForNode:(CHBinaryTreeNode*)node {
+- (NSString *)dotGraphStringForNode:(CHBinaryTreeNode *)node {
 	return [NSString stringWithFormat:@"  \"%@\" [color=%@];\n",
 			node->object, (node->color == kRED) ? @"red" : @"black"];
 }

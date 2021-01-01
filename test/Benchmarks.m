@@ -16,17 +16,17 @@
 #import <objc/runtime.h>
 
 @interface CHAbstractBinarySearchTree (Height)
-- (NSUInteger) height;
-- (NSUInteger) heightOfSubtreeAtNode:(CHBinaryTreeNode*)node;
+- (NSUInteger)height;
+- (NSUInteger)heightOfSubtreeAtNode:(CHBinaryTreeNode *)node;
 @end
 
 @implementation CHAbstractBinarySearchTree (Height)
 
-- (NSUInteger) height {
+- (NSUInteger)height {
 	return [self heightOfSubtreeAtNode:header->right];
 }
 
-- (NSUInteger) heightOfSubtreeAtNode:(CHBinaryTreeNode*)node {
+- (NSUInteger)heightOfSubtreeAtNode:(CHBinaryTreeNode *)node {
 	if (node == sentinel)
 		return 0;
 	else {
@@ -49,7 +49,7 @@ static double startTime;
 double timestamp() {
 	struct timeval timeOfDay;
 	gettimeofday(&timeOfDay, NULL);
-	return ((double) timeOfDay.tv_sec + (double) timeOfDay.tv_usec * 1e-6);
+	return ((double) timeOfDay.tv_sec + (double)timeOfDay.tv_usec * 1e-6);
 }
 
 void benchmarkDeque(Class testClass) {
@@ -450,7 +450,7 @@ void benchmarkTree(Class testClass) {
 	[pool drain];
 }
 
-NSArray* randomNumberArray(NSUInteger count) {
+NSArray * randomNumberArray(NSUInteger count) {
 	NSMutableSet *objectSet = [NSMutableSet set];
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	while ([objectSet count] < count)
@@ -459,7 +459,7 @@ NSArray* randomNumberArray(NSUInteger count) {
 	return [objectSet allObjects];
 }
 
-int main (int argc, const char * argv[]) {
+int main(int argc, const char * argv[]) {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	NSUInteger limit = 100000;
 	objects = [[NSMutableArray alloc] init];

@@ -35,34 +35,34 @@
 // The following methods are undocumented since they are only reimplementations.
 // Users should consult the API documentation for NSArray and NSMutableArray.
 
-- (id) initWithArray:(NSArray*)anArray;
+- (id)initWithArray:(NSArray *)anArray;
 
-- (NSArray*) allObjects;
-- (BOOL) containsObject:(id)anObject;
-- (BOOL) containsObjectIdenticalTo:(id)anObject;
-- (void) exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2;
-- (id) firstObject;
-- (NSUInteger) indexOfObject:(id)anObject;
-- (NSUInteger) indexOfObjectIdenticalTo:(id)anObject;
-- (id) lastObject;
-- (NSEnumerator*) objectEnumerator;
-- (NSArray*) objectsAtIndexes:(NSIndexSet*)indexes;
-- (void) removeAllObjects;
-- (void) removeFirstObject;
-- (void) removeLastObject;
-- (void) removeObject:(id)anObject;
-- (void) removeObjectIdenticalTo:(id)anObject;
-- (void) removeObjectsAtIndexes:(NSIndexSet*)indexes;
-- (void) replaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject;
-- (NSEnumerator*) reverseObjectEnumerator;
+- (NSArray *)allObjects;
+- (BOOL)containsObject:(id)anObject;
+- (BOOL)containsObjectIdenticalTo:(id)anObject;
+- (void)exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2;
+- (id)firstObject;
+- (NSUInteger)indexOfObject:(id)anObject;
+- (NSUInteger)indexOfObjectIdenticalTo:(id)anObject;
+- (id)lastObject;
+- (NSEnumerator *)objectEnumerator;
+- (NSArray *)objectsAtIndexes:(NSIndexSet *)indexes;
+- (void)removeAllObjects;
+- (void)removeFirstObject;
+- (void)removeLastObject;
+- (void)removeObject:(id)anObject;
+- (void)removeObjectIdenticalTo:(id)anObject;
+- (void)removeObjectsAtIndexes:(NSIndexSet *)indexes;
+- (void)replaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject;
+- (NSEnumerator *)reverseObjectEnumerator;
 
 #pragma mark Adopted Protocols
 
-- (void) encodeWithCoder:(NSCoder*)encoder;
-- (id) initWithCoder:(NSCoder*)decoder;
-- (id) copyWithZone:(NSZone*)zone;
-- (NSUInteger) countByEnumeratingWithState:(NSFastEnumerationState*)state
-                                   objects:(id*)stackbuf
-                                     count:(NSUInteger)len;
+- (void)encodeWithCoder:(NSCoder *)encoder;
+- (id)initWithCoder:(NSCoder *)decoder;
+- (id)copyWithZone:(NSZone *)zone;
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state
+								  objects:(id *)stackbuf
+									count:(NSUInteger)len;
 
 @end

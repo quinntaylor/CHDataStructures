@@ -37,25 +37,25 @@ static NSArray *abcde;
 
 @implementation CHSortedSetTest
 
-+ (void) initialize {
++ (void)initialize {
 	if ([self class] != [CHSortedSetTest class])
 		return;
 	abcde = [[NSArray alloc] initWithObjects:@"A",@"B",@"C",@"D",@"E",nil];
 }
 
-- (Class) classUnderTest {
+- (Class)classUnderTest {
 	return nil;
 }
 
-- (id) createSet {
+- (id)createSet {
 	return [[[[self classUnderTest] alloc] init] autorelease];
 }
 
-- (void) setUp {
+- (void)setUp {
 	set = [self createSet];
 }
 
-- (void) testAddObject {
+- (void)testAddObject {
 	if ([self classUnderTest] == nil)
 		return;
 	if ([self classUnderTest] == [CHAbstractBinarySearchTree class]) {
@@ -81,7 +81,7 @@ static NSArray *abcde;
 	}
 }
 
-- (void) testAllObjects {
+- (void)testAllObjects {
 	if (NonConcreteClass())
 		return;
 	// Try with empty sorted set
@@ -91,7 +91,7 @@ static NSArray *abcde;
 	XCTAssertEqualObjects([set allObjects], abcde);
 }
 
-- (void) testAnyObject {
+- (void)testAnyObject {
 	if (NonConcreteClass())
 		return;
 	// Try with empty sorted set
@@ -101,7 +101,7 @@ static NSArray *abcde;
 	XCTAssertNotNil([set anyObject]);
 }
 
-- (void) testContainsObject {
+- (void)testContainsObject {
 	if (NonConcreteClass())
 		return;
 	// Test contains for nil and non-member objects
@@ -118,7 +118,7 @@ static NSArray *abcde;
 		XCTAssertTrue([set containsObject:anObject]);
 }
 
-- (void) testFirstObject {
+- (void)testFirstObject {
 	if (NonConcreteClass())
 		return;
 	// Try with empty sorted set
@@ -130,21 +130,21 @@ static NSArray *abcde;
 	XCTAssertEqualObjects([set firstObject], @"A");
 }
 
-- (void) testInit {
+- (void)testInit {
 	if (NonConcreteClass())
 		return;
 	XCTAssertNotNil(set);
 	XCTAssertEqual([set count], (NSUInteger)0);
 }
 
-- (void) testInitWithArray {
+- (void)testInitWithArray {
 	if (NonConcreteClass())
 		return;
 	set = [[[[self classUnderTest] alloc] initWithArray:abcde] autorelease];
 	XCTAssertEqual([set count], [abcde count]);
 }
 
-- (void) testIsEqual {
+- (void)testIsEqual {
 	if (NonConcreteClass())
 		return;
 	// Calls to -isEqual: exercise -isEqualToSortedSet: by extension
@@ -155,7 +155,7 @@ static NSArray *abcde;
 	XCTAssertFalse([set isEqual:[[NSObject new] autorelease]]);
 }
 
-- (void) testLastObject {
+- (void)testLastObject {
 	if (NonConcreteClass())
 		return;
 	// Try with empty sorted set
@@ -167,7 +167,7 @@ static NSArray *abcde;
 	XCTAssertEqualObjects([set lastObject], @"E");
 }
 
-- (void) testMember {
+- (void)testMember {
 	if (NonConcreteClass())
 		return;
 	// Try with empty sorted set
@@ -184,7 +184,7 @@ static NSArray *abcde;
 	XCTAssertNil([set member:@"bogus"]);
 }
 
-- (void) testObjectEnumerator {
+- (void)testObjectEnumerator {
 	if (NonConcreteClass())
 		return;
 	
@@ -224,14 +224,14 @@ static NSArray *abcde;
 	XCTAssertThrows([e allObjects]);
 }
 
-- (void) testRemoveObject {
+- (void)testRemoveObject {
 	if ([set isMemberOfClass:[CHAbstractBinarySearchTree class]]) {
 		// This method should be unsupported in the abstract parent class.
 		XCTAssertThrows([set removeObject:nil]);
 	}
 }
 
-- (void) testRemoveAllObjects {
+- (void)testRemoveAllObjects {
 	if (NonConcreteClass())
 		return;
 	// Try with empty sorted set
@@ -244,7 +244,7 @@ static NSArray *abcde;
 	XCTAssertEqual([set count], (NSUInteger)0);
 }
 
-- (void) testRemoveFirstObject {
+- (void)testRemoveFirstObject {
 	if (NonConcreteClass())
 		return;
 	// Try with empty sorted set
@@ -259,7 +259,7 @@ static NSArray *abcde;
 	XCTAssertEqual([set count], [abcde count]-1);
 }
 
-- (void) testRemoveLastObject {
+- (void)testRemoveLastObject {
 	if (NonConcreteClass())
 		return;
 	// Try with empty sorted set
@@ -274,7 +274,7 @@ static NSArray *abcde;
 	XCTAssertEqual([set count], [abcde count]-1);
 }
 
-- (void) testReverseObjectEnumerator {
+- (void)testReverseObjectEnumerator {
 	if (NonConcreteClass())
 		return;
 	// Try with empty sorted set
@@ -290,7 +290,7 @@ static NSArray *abcde;
 	}
 }
 
-- (void) testSet {
+- (void)testSet {
 	if (NonConcreteClass())
 		return;
 	NSArray *order = [NSArray arrayWithObjects:@"B",@"M",@"C",@"K",@"D",@"I",@"E",@"G",
@@ -299,7 +299,7 @@ static NSArray *abcde;
 	XCTAssertEqualObjects([set set], [NSSet setWithArray:order]);
 }
 
-- (void) testSubsetFromObjectToObject {
+- (void)testSubsetFromObjectToObject {
 	if (NonConcreteClass())
 		return;
 	NSArray *acdeg = [NSArray arrayWithObjects:@"A",@"C",@"D",@"E",@"G",nil];
@@ -377,7 +377,7 @@ static NSArray *abcde;
 	XCTAssertEqualObjects(subset, acdeg);
 }
 
-- (void) testNSCoding {
+- (void)testNSCoding {
 	if (NonConcreteClass())
 		return;
 	NSArray *order = [NSArray arrayWithObjects:@"B",@"M",@"C",@"K",@"D",@"I",@"E",@"G",@"J",@"L",@"N",@"F",@"A",@"H",nil];
@@ -401,7 +401,7 @@ static NSArray *abcde;
 		XCTAssertEqualObjects(before, after);
 }
 
-- (void) testNSCopying {
+- (void)testNSCopying {
 	if (NonConcreteClass())
 		return;
 	id copy;
@@ -423,7 +423,7 @@ static NSArray *abcde;
 	}
 }
 
-- (void) testNSFastEnumeration {
+- (void)testNSFastEnumeration {
 	if (NonConcreteClass())
 		return;
 	NSUInteger limit = 32; // NSFastEnumeration asks for 16 objects at a time
@@ -453,13 +453,13 @@ static NSArray *abcde;
 
 @interface CHAbstractBinarySearchTree (Test)
 
-- (id) headerObject;
+- (id)headerObject;
 
 @end
 
 @implementation CHAbstractBinarySearchTree (Test)
 
-- (id) headerObject {
+- (id)headerObject {
 	return header->object;
 }
 
@@ -470,15 +470,15 @@ static NSArray *abcde;
 
 @implementation CHAbstractBinarySearchTreeTest
 
-- (Class) classUnderTest {
+- (Class)classUnderTest {
 	return [CHAbstractBinarySearchTree class];
 }
 
-- (void) setUp {
+- (void)setUp {
 	set = [self createSet];
 }
 
-- (void) testAllObjectsWithTraversalOrder {
+- (void)testAllObjectsWithTraversalOrder {
 	if ([self class] == [CHAbstractBinarySearchTreeTest class])
 		return;
 	// Also tests -objectEnumeratorWithTraversalOrder: implicitly
@@ -490,11 +490,11 @@ static NSArray *abcde;
 	// NOTE: Individual subclasses should test pre/post/level-order traversals
 }
 
-- (void) testDescription {
+- (void)testDescription {
 	XCTAssertEqualObjects([set description], [[set allObjects] description]);
 }
 
-- (void) testHeaderObject {
+- (void)testHeaderObject {
 	id headerObject = [set headerObject];
 	XCTAssertNotNil(headerObject);
 	XCTAssertThrows([headerObject retain]);
@@ -502,7 +502,7 @@ static NSArray *abcde;
 	XCTAssertThrows([headerObject autorelease]);
 }
 
-- (void) testIsEqualToSearchTree {
+- (void)testIsEqualToSearchTree {
 	if ([self class] != [CHAbstractBinarySearchTreeTest class])
 		return;
 	NSMutableArray *equalTrees = [NSMutableArray array];
@@ -548,17 +548,17 @@ static NSArray *abcde;
 
 @implementation CHAnderssonTreeTest
 
-- (Class) classUnderTest {
+- (Class)classUnderTest {
 	return [CHAnderssonTree class];
 }
 
-- (void) setUp {
+- (void)setUp {
 	set = [self createSet];
 	objects = [NSArray arrayWithObjects:@"B",@"N",@"C",@"L",@"D",@"J",@"E",@"H",@"K",@"M",@"O",@"G",@"A",@"I",@"F",nil];
 	// When inserted in this order, creates the tree from: Weiss pg. 645
 }
 
-- (void) testAddObject {
+- (void)testAddObject {
 	XCTAssertEqual([set count], (NSUInteger)0);
 	XCTAssertThrows([set addObject:nil]);
 	XCTAssertEqual([set count], (NSUInteger)0);
@@ -581,7 +581,7 @@ static NSArray *abcde;
 	XCTAssertEqual([set count], [objects count]);
 }
 
-- (void) testDebugDescriptionForNode {
+- (void)testDebugDescriptionForNode {
 	CHBinaryTreeNode *node = malloc(sizeof(CHBinaryTreeNode));
 	node->object = [NSString stringWithString:@"A B C"];
 	node->level = 1;
@@ -590,7 +590,7 @@ static NSArray *abcde;
 	free(node);
 }
 
-- (void) testDotGraphStringForNode {
+- (void)testDotGraphStringForNode {
 	CHBinaryTreeNode *node = malloc(sizeof(CHBinaryTreeNode));
 	node->object = [NSString stringWithString:@"A B C"];
 	node->level = 1;
@@ -599,7 +599,7 @@ static NSArray *abcde;
 	free(node);
 }
 
-- (void) testRemoveObject {
+- (void)testRemoveObject {
 	XCTAssertNoThrow([set removeObject:nil]);
 	XCTAssertNoThrow([set removeObject:@"bogus"]);
 	[set addObjectsFromArray:objects];
@@ -657,15 +657,15 @@ static NSArray *abcde;
 
 @interface CHAVLTree (Test)
 
-- (void) verify;
+- (void)verify;
 
 @end
 
 @implementation CHAVLTree (Test)
 
-- (NSInteger) heightForSubtree:(CHBinaryTreeNode*)node
-                    isBalanced:(BOOL*)isBalanced
-                   errorString:(NSMutableString*)balanceErrors {
+- (NSInteger)heightForSubtree:(CHBinaryTreeNode *)node
+				   isBalanced:(BOOL *)isBalanced
+				  errorString:(NSMutableString *)balanceErrors {
 	if (node == sentinel)
 		return 0;
 	NSInteger leftHeight  = [self heightForSubtree:node->left isBalanced:isBalanced errorString:balanceErrors];
@@ -678,7 +678,7 @@ static NSArray *abcde;
 	return MAX(leftHeight, rightHeight) + 1;
 }
 
-- (void) verify {
+- (void)verify {
 	BOOL isBalanced = YES;
 	NSMutableString *balanceErrors = [NSMutableString string];
 	[self heightForSubtree:header->right
@@ -698,16 +698,16 @@ static NSArray *abcde;
 
 @implementation CHAVLTreeTest
 
-- (Class) classUnderTest {
+- (Class)classUnderTest {
 	return [CHAVLTree class];
 }
 
-- (void) setUp {
+- (void)setUp {
 	set = [self createSet];
 	objects = [NSArray arrayWithObjects:@"B",@"N",@"C",@"L",@"D",@"J",@"E",@"H",@"K",@"M",@"O",@"G",@"A",@"I",@"F",nil];
 }
 
-- (void) testAddObject {
+- (void)testAddObject {
 	[super testAddObject];
 	
 	[set removeAllObjects];
@@ -735,7 +735,7 @@ static NSArray *abcde;
 }
 
 
-- (void) testAllObjectsWithTraversalOrder {
+- (void)testAllObjectsWithTraversalOrder {
 	[set addObjectsFromArray:objects];
 	XCTAssertEqualObjects([set allObjectsWithTraversalOrder:CHTraverseAscending],
 						 ([NSArray arrayWithObjects:@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O",nil]));
@@ -749,7 +749,7 @@ static NSArray *abcde;
 						 ([NSArray arrayWithObjects:@"J",@"D",@"L",@"B",@"G",@"K",@"N",@"A",@"C",@"E",@"H",@"M",@"O",@"F",@"I",nil]));
 }
 
-- (void) testDebugDescriptionForNode {
+- (void)testDebugDescriptionForNode {
 	CHBinaryTreeNode *node = malloc(sizeof(CHBinaryTreeNode));
 	node->object = [NSString stringWithString:@"A B C"];
 	node->balance = 0;
@@ -758,7 +758,7 @@ static NSArray *abcde;
 	free(node);
 }
 
-- (void) testDotGraphStringForNode {
+- (void)testDotGraphStringForNode {
 	CHBinaryTreeNode *node = malloc(sizeof(CHBinaryTreeNode));
 	node->object = [NSString stringWithString:@"A B C"];
 	node->balance = 0;
@@ -767,7 +767,7 @@ static NSArray *abcde;
 	free(node);
 }
 
-- (void) testRemoveObject {
+- (void)testRemoveObject {
 	XCTAssertNoThrow([set removeObject:nil]);
 	XCTAssertNoThrow([set removeObject:@"bogus"]);
 	[set addObjectsFromArray:objects];
@@ -835,7 +835,7 @@ static NSArray *abcde;
 						 ([NSArray arrayWithObjects:@"F",nil]));
 }
 
-- (void) testRemoveObjectDoubleLeft {
+- (void)testRemoveObjectDoubleLeft {
 	objects = [NSArray arrayWithObjects:@"F",@"B",@"J",@"A",@"D",@"H",@"K",@"C",@"E",@"G",@"I",nil];
 	[set addObjectsFromArray:objects];
 	[set removeObject:@"A"];
@@ -846,7 +846,7 @@ static NSArray *abcde;
 						 ([NSArray arrayWithObjects:@"F",@"C",@"B",@"E",@"J",@"H",@"G",@"I",@"K",nil]));
 }
 
-- (void) testRemoveObjectDoubleRight {
+- (void)testRemoveObjectDoubleRight {
 	objects = [NSArray arrayWithObjects:@"F",@"B",@"J",@"A",@"D",@"H",@"K",@"C",@"E",@"G",@"I",nil];
 	[set addObjectsFromArray:objects];
 	[set removeObject:@"K"];
@@ -863,14 +863,14 @@ static NSArray *abcde;
 
 @interface CHRedBlackTree (Test)
 
-- (void) verify;
+- (void)verify;
 
 @end
 
 @implementation CHRedBlackTree (Test)
 
 // Recursive method for verifying that red-black properties are not violated.
-- (NSUInteger) verifySubtreeAtNode:(CHBinaryTreeNode*)node {
+- (NSUInteger)verifySubtreeAtNode:(CHBinaryTreeNode *)node {
 	if (node == sentinel)
 		return 1;
 	/* Test for consecutive red links */
@@ -901,7 +901,7 @@ static NSArray *abcde;
 		return 0;
 }
 
-- (void) verify {
+- (void)verify {
 	sentinel->object = nil;
 	[self verifySubtreeAtNode:header->right];
 }
@@ -913,17 +913,17 @@ static NSArray *abcde;
 
 @implementation CHRedBlackTreeTest
 
-- (Class) classUnderTest {
+- (Class)classUnderTest {
 	return [CHRedBlackTree class];
 }
 
-- (void) setUp {
+- (void)setUp {
 	set = [self createSet];
 	objects = [NSArray arrayWithObjects:@"B",@"M",@"C",@"K",@"D",@"I",@"E",@"G",@"J",@"L",@"N",@"F",@"A",@"H",nil];
 	// When inserted in this order, creates the tree from: Weiss pg. 631 
 }
 
-- (void) testAddObject {
+- (void)testAddObject {
 	[super testAddObject];
 	[set removeAllObjects];
 	
@@ -992,7 +992,7 @@ static NSArray *abcde;
 	XCTAssertEqual([set count], [objects count]);
 }
 
-- (void) testAddObjectsAscending {
+- (void)testAddObjectsAscending {
 	objects = [NSArray arrayWithObjects:@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",
 			   @"I",@"J",@"K",@"L",@"M",@"N",@"O",@"P",@"Q",@"R",nil];
 	[set addObjectsFromArray:objects];
@@ -1002,7 +1002,7 @@ static NSArray *abcde;
 						 ([NSArray arrayWithObjects:@"H",@"D",@"L",@"B",@"F",@"J",@"N",@"A",@"C",@"E",@"G",@"I",@"K",@"M",@"P",@"O",@"Q",@"R",nil]));
 }
 
-- (void) testAddObjectsDescending {
+- (void)testAddObjectsDescending {
 	objects = [NSArray arrayWithObjects:@"R",@"Q",@"P",@"O",@"N",@"M",@"L",@"K",
 			   @"J",@"I",@"H",@"G",@"F",@"E",@"D",@"C",@"B",@"A",nil];
 	e = [objects objectEnumerator];
@@ -1014,7 +1014,7 @@ static NSArray *abcde;
 						 ([NSArray arrayWithObjects:@"K",@"G",@"O",@"E",@"I",@"M",@"Q",@"C",@"F",@"H",@"J",@"L",@"N",@"P",@"R",@"B",@"D",@"A",nil]));
 }
 
-- (void) testAllObjectsWithTraversalOrder {
+- (void)testAllObjectsWithTraversalOrder {
 	[set addObjectsFromArray:objects];
 	
 	XCTAssertEqualObjects([set allObjectsWithTraversalOrder:CHTraverseAscending],
@@ -1029,7 +1029,7 @@ static NSArray *abcde;
 						 ([NSArray arrayWithObjects:@"E",@"C",@"K",@"B",@"D",@"I",@"M",@"A",@"G",@"J",@"L",@"N",@"F",@"H",nil]));
 }
 
-- (void) testDebugDescriptionForNode {
+- (void)testDebugDescriptionForNode {
 	CHBinaryTreeNode *node = malloc(sizeof(CHBinaryTreeNode));
 	node->object = [NSString stringWithString:@"A B C"];
 	node->color = kRED;
@@ -1041,7 +1041,7 @@ static NSArray *abcde;
 	free(node);
 }
 
-- (void) testDotGraphStringForNode {
+- (void)testDotGraphStringForNode {
 	CHBinaryTreeNode *node = malloc(sizeof(CHBinaryTreeNode));
 	node->object = [NSString stringWithString:@"A B C"];
 	node->color = kRED;
@@ -1053,7 +1053,7 @@ static NSArray *abcde;
 	free(node);
 }
 
-- (void) testRemoveObject {
+- (void)testRemoveObject {
 	XCTAssertNoThrow([set removeObject:nil]);
 	XCTAssertNoThrow([set removeObject:@"bogus"]);
 	[set addObjectsFromArray:objects];
@@ -1076,14 +1076,14 @@ static NSArray *abcde;
 
 @interface CHTreap (Test)
 
-- (void) verify; // Raises an exception on error
+- (void)verify; // Raises an exception on error
 
 @end
 
 @implementation CHTreap (Test)
 
 // Recursive method for verifying that BST and heap properties are not violated.
-- (void) verifySubtreeAtNode:(CHBinaryTreeNode*)node {
+- (void)verifySubtreeAtNode:(CHBinaryTreeNode *)node {
 	if (node == sentinel)
 		return;
 	
@@ -1114,7 +1114,7 @@ static NSArray *abcde;
 	}
 }
 
-- (void) verify {
+- (void)verify {
 	[self verifySubtreeAtNode:header->right];
 }
 
@@ -1125,17 +1125,17 @@ static NSArray *abcde;
 
 @implementation CHTreapTest
 
-- (Class) classUnderTest {
+- (Class)classUnderTest {
 	return [CHTreap class];
 }
 
-- (void) setUp {
+- (void)setUp {
 	set = [self createSet];
 	objects = [NSArray arrayWithObjects:@"G",@"D",@"K",@"B",@"I",@"F",@"L",@"C",
 			   @"H",@"E",@"M",@"A",@"J",nil];
 }
 
-- (void) testAddObject {
+- (void)testAddObject {
 	[super testAddObject];
 	
 	// Repeat a few times to try to get a decent random spread.
@@ -1152,7 +1152,7 @@ static NSArray *abcde;
 	}
 }
 
-- (void) testAddObjectWithPriority {
+- (void)testAddObjectWithPriority {
 	[super testAddObject];
 
 	XCTAssertNoThrow([set addObject:@"foo" withPriority:0]);
@@ -1206,7 +1206,7 @@ static NSArray *abcde;
 						 ([NSArray arrayWithObjects:@"J",@"A",@"E",@"C",@"B",@"D",@"H",@"F",@"G",@"I",@"M",@"L",@"K",nil]));
 }
 
-- (void) testAllObjectsWithTraversalOrder {
+- (void)testAllObjectsWithTraversalOrder {
 	e = [objects objectEnumerator];
 	while (anObject = [e nextObject])
 		[set addObject:anObject];
@@ -1221,7 +1221,7 @@ static NSArray *abcde;
 	XCTAssertEqual([set count], [objects count]);	
 }
 
-- (void) testDebugDescriptionForNode {
+- (void)testDebugDescriptionForNode {
 	CHBinaryTreeNode *node = malloc(sizeof(CHBinaryTreeNode));
 	node->object = [NSString stringWithString:@"A B C"];
 	node->priority = 123456789;
@@ -1230,7 +1230,7 @@ static NSArray *abcde;
 	free(node);
 }
 
-- (void) testDotGraphStringForNode {
+- (void)testDotGraphStringForNode {
 	CHBinaryTreeNode *node = malloc(sizeof(CHBinaryTreeNode));
 	node->object = [NSString stringWithString:@"A B C"];
 	node->priority = 123456789;
@@ -1239,7 +1239,7 @@ static NSArray *abcde;
 	free(node);
 }
 
-- (void) testPriorityForObject {
+- (void)testPriorityForObject {
 	// Priority value should indicate that an object not in the treap is absent.
 	XCTAssertEqual([set priorityForObject:nil],      (NSUInteger)CHTreapNotFound);
 	XCTAssertEqual([set priorityForObject:@"bogus"], (NSUInteger)CHTreapNotFound);
@@ -1269,7 +1269,7 @@ static NSArray *abcde;
 						 ([NSArray arrayWithObjects:@"K",@"B",@"A",@"D",@"C",@"G",@"F",@"E",@"H",@"J",@"I",@"M",@"L",nil]));
 }
 
-- (void) testRemoveObject {
+- (void)testRemoveObject {
 	XCTAssertNoThrow([set removeObject:nil]);
 	XCTAssertNoThrow([set removeObject:@"bogus"]);
 	[set addObjectsFromArray:objects];
@@ -1303,11 +1303,11 @@ static NSArray *abcde;
 
 @implementation CHUnbalancedTreeTest
 
-- (Class) classUnderTest {
+- (Class)classUnderTest {
 	return [CHUnbalancedTree class];
 }
 
-- (void) setUp {
+- (void)setUp {
 	set = [self createSet];
 
 	objects = [NSArray arrayWithObjects:@"F",@"B",@"G",@"A",@"D",@"I",@"C",@"E",
@@ -1322,7 +1322,7 @@ static NSArray *abcde;
 				  [NSArray arrayWithObjects:@"A",@"E",@"B",@"D",@"C",nil]];
 }
 
-- (void) testAddObject {
+- (void)testAddObject {
 	[super testAddObject];
 	
 	[set removeAllObjects];
@@ -1331,7 +1331,7 @@ static NSArray *abcde;
 						 objects);
 }
 
-- (void) testAllObjectsWithTraversalOrder {
+- (void)testAllObjectsWithTraversalOrder {
 	[super testAllObjectsWithTraversalOrder];
 	[set removeAllObjects];
 	[set addObjectsFromArray:objects];
@@ -1367,7 +1367,7 @@ static NSArray *abcde;
 	XCTAssertEqualObjects([zigzagTree allObjectsWithTraversalOrder:CHTraverseDescending],  descending);
 }
 
-- (void) testDebugDescription {
+- (void)testDebugDescription {
 	CHBinaryTreeNode *node = malloc(sizeof(CHBinaryTreeNode));
 	node->object = @"A B C";
 	XCTAssertEqualObjects([set debugDescriptionForNode:node], @"\"A B C\"");
@@ -1386,7 +1386,7 @@ static NSArray *abcde;
 						 @"Wrong string from -debugDescription.");
 }
 
-- (void) testDotGraphString {
+- (void)testDotGraphString {
 	CHBinaryTreeNode *node = malloc(sizeof(CHBinaryTreeNode));
 	node->object = [NSString stringWithString:@"A B C"];
 	XCTAssertEqualObjects([set dotGraphStringForNode:node], @"  \"A B C\";\n");
@@ -1410,7 +1410,7 @@ static NSArray *abcde;
 						 @"digraph CHUnbalancedTree\n{\n  nil;\n}\n");
 }
 
-- (void) testRemoveObject {
+- (void)testRemoveObject {
 	objects = [NSArray arrayWithObjects:
 			   @"F",@"B",@"A",@"C",@"E",@"D",@"J",@"I",@"G",@"H",@"K",nil];
 

@@ -29,15 +29,15 @@
 	CFMutableSetRef set; // A Core Foundation set.
 }
 
-- (id) initWithCapacity:(NSUInteger)numItems;
+- (id)initWithCapacity:(NSUInteger)numItems;
 
-- (void) addObject:(id)anObject;
-- (id) anyObject;
-- (BOOL) containsObject:(id)anObject;
-- (NSUInteger) count;
-- (id) member:(id)anObject;
-- (NSEnumerator*) objectEnumerator;
-- (void) removeAllObjects;
-- (void) removeObject:(id)anObject;
+- (void)addObject:(id)anObject;
+- (id)anyObject;
+- (BOOL)containsObject:(id)anObject;
+- (NSUInteger)count;
+- (id)member:(id)anObject;
+- (NSEnumerator *)objectEnumerator;
+- (void)removeAllObjects;
+- (void)removeObject:(id)anObject;
 
 @end

@@ -14,46 +14,46 @@
 #import "CHAbstractBinarySearchTree_Internal.h"
 
 // Two-way single rotation
-static inline CHBinaryTreeNode* singleRotation(CHBinaryTreeNode *node, u_int32_t dir) {
-    CHBinaryTreeNode *save = node->link[!dir];
-    node->link[!dir] = save->link[dir];
-    save->link[dir] = node;
+static inline CHBinaryTreeNode * singleRotation(CHBinaryTreeNode *node, u_int32_t dir) {
+	CHBinaryTreeNode *save = node->link[!dir];
+	node->link[!dir] = save->link[dir];
+	save->link[dir] = node;
 	return save;
 }
 
 // Two-way double rotation
-static inline CHBinaryTreeNode* doubleRotation(CHBinaryTreeNode *node, u_int32_t dir) {
-    CHBinaryTreeNode *save = node->link[!dir]->link[dir];
-    node->link[!dir]->link[dir] = save->link[!dir];
-    save->link[!dir] = node->link[!dir];
-    node->link[!dir] = save;
+static inline CHBinaryTreeNode * doubleRotation(CHBinaryTreeNode *node, u_int32_t dir) {
+	CHBinaryTreeNode *save = node->link[!dir]->link[dir];
+	node->link[!dir]->link[dir] = save->link[!dir];
+	save->link[!dir] = node->link[!dir];
+	node->link[!dir] = save;
 	
-    save = node->link[!dir];
-    node->link[!dir] = save->link[dir];
-    save->link[dir] = node;
-    return save;
+	save = node->link[!dir];
+	node->link[!dir] = save->link[dir];
+	save->link[dir] = node;
+	return save;
 }
 
 static inline void adjustBalance(CHBinaryTreeNode *root, u_int32_t dir, int32_t bal) {
-    CHBinaryTreeNode *n = root->link[dir];
-    CHBinaryTreeNode *nn = n->link[!dir];
-    if (nn->balance == 0)
-        root->balance = n->balance = 0;
-    else if (nn->balance == bal) {
-        root->balance = -bal;
-        n->balance = 0;
-    } else { // nn->balance == -bal
-        root->balance = 0;
-        n->balance = bal;
-    }
-    nn->balance = 0;
+	CHBinaryTreeNode *n = root->link[dir];
+	CHBinaryTreeNode *nn = n->link[!dir];
+	if (nn->balance == 0)
+		root->balance = n->balance = 0;
+	else if (nn->balance == bal) {
+		root->balance = -bal;
+		n->balance = 0;
+	} else { // nn->balance == -bal
+		root->balance = 0;
+		n->balance = bal;
+	}
+	nn->balance = 0;
 }
 
 @implementation CHAVLTree
 
 // NOTE: The header and sentinel nodes are initialized to balance 0 by default.
 
-- (void) addObject:(id)anObject {
+- (void)addObject:(id)anObject {
 	if (anObject == nil)
 		CHNilArgumentException([self class], _cmd);
 	++mutations;
@@ -132,7 +132,7 @@ done:
 	CHBinaryTreeStack_FREE(stack);
 }
 
-- (void) removeObject:(id)anObject {
+- (void)removeObject:(id)anObject {
 	if (count == 0 || anObject == nil)
 		return;
 	++mutations;
@@ -221,12 +221,12 @@ done:
 	CHBinaryTreeStack_FREE(stack);
 }
 
-- (NSString*) debugDescriptionForNode:(CHBinaryTreeNode*)node {
+- (NSString *)debugDescriptionForNode:(CHBinaryTreeNode *)node {
 	return [NSString stringWithFormat:@"[%2d]\t\"%@\"",
 			node->balance, node->object];
 }
 
-- (NSString*) dotGraphStringForNode:(CHBinaryTreeNode*)node {
+- (NSString *)dotGraphStringForNode:(CHBinaryTreeNode *)node {
 	return [NSString stringWithFormat:@"  \"%@\" [label=\"%@\\n%d\"];\n",
 			node->object, node->object, node->balance];
 }

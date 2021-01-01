@@ -24,14 +24,14 @@
 
 @implementation UtilTest
 
-- (void) setUp {
+- (void)setUp {
 	aClass = [NSObject class];
 	aMethod = @selector(foo:bar:);
 	reason = [NSMutableString stringWithString:@"[NSObject foo:bar:] -- "];
 	raisedException = NO;
 }
 
-- (void) testCollectionsAreEqual {
+- (void)testCollectionsAreEqual {
 	NSArray *array = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
 	NSDictionary *dict = [NSDictionary dictionaryWithObjects:array forKeys:array];
 	NSSet *set = [NSSet setWithObjects:@"A",@"B",@"C",nil];
@@ -56,7 +56,7 @@
 	XCTAssertThrowsSpecificNamed(collectionsAreEqual(set, obj), NSException, NSInvalidArgumentException);
 }
 
-- (void) testIndexOutOfRangeException {
+- (void)testIndexOutOfRangeException {
 	@try {
 		CHIndexOutOfRangeException(aClass, aMethod, 4, 4);
 	}
@@ -69,7 +69,7 @@
 	XCTAssertTrue(raisedException);
 }
 
-- (void) testInvalidArgumentException {
+- (void)testInvalidArgumentException {
 	@try {
 		CHInvalidArgumentException(aClass, aMethod, @"Some silly reason.");
 	}
@@ -82,7 +82,7 @@
 	XCTAssertTrue(raisedException);
 }
 
-- (void) testNilArgumentException {
+- (void)testNilArgumentException {
 	@try {
 		CHNilArgumentException(aClass, aMethod);
 	}
@@ -95,7 +95,7 @@
 	XCTAssertTrue(raisedException);
 }
 
-- (void) testMutatedCollectionException {
+- (void)testMutatedCollectionException {
 	@try {
 		CHMutatedCollectionException(aClass, aMethod);
 	}
@@ -108,7 +108,7 @@
 	XCTAssertTrue(raisedException);
 }
 
-- (void) testUnsupportedOperationException {
+- (void)testUnsupportedOperationException {
 	@try {
 		CHUnsupportedOperationException(aClass, aMethod);
 	}
@@ -121,7 +121,7 @@
 	XCTAssertTrue(raisedException);
 }
 
-- (void) testCHQuietLog {
+- (void)testCHQuietLog {
 	// Can't think of a way to verify stdout, so I'll just exercise all the code
 	CHQuietLog(@"Hello, world!");
 	CHQuietLog(@"Hello, world! I accept specifiers: %@ instance at 0x%x.",
