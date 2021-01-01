@@ -150,7 +150,7 @@
 		E445580B0EBCB70A00D9C482 /* CHAVLTree.h in Headers */ = {isa = PBXBuildFile; fileRef = E44558090EBCB70A00D9C482 /* CHAVLTree.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E445580C0EBCB70A00D9C482 /* CHAVLTree.m in Sources */ = {isa = PBXBuildFile; fileRef = E445580A0EBCB70A00D9C482 /* CHAVLTree.m */; };
 		E44773A20E913C89000889F7 /* CHUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = E44773A10E913C89000889F7 /* CHUtil.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E44B57660E95538600F9DD1A /* CHDataStructures.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* CHDataStructures.framework */; };
+		E44B57660E95538600F9DD1A /* CHDataStructures.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* CHDataStructures.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		E44B59C70E95852400F9DD1A /* Benchmarks.m in Sources */ = {isa = PBXBuildFile; fileRef = E44B58C40E95820400F9DD1A /* Benchmarks.m */; };
 		E44EB0F20ECB83230071F93A /* CHUtilTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E44EB0F10ECB83230071F93A /* CHUtilTest.m */; };
 		E4558D910FE758C300CC5860 /* CHMutableDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = E4558D8F0FE758C300CC5860 /* CHMutableDictionary.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -814,7 +814,7 @@
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0460;
+				LastUpgradeCheck = 1200;
 				TargetAttributes = {
 					96E5B2A51A70FCB40074B77B = {
 						CreatedOnToolsVersion = 6.2;
@@ -1128,7 +1128,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 96E14B7A2592634D006519C9 /* Debug.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.quinntaylor.CHDataStructures;
 				PRODUCT_NAME = CHDataStructures;
 			};
 			name = Debug;
@@ -1137,7 +1137,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 96E14B7B25926360006519C9 /* Release.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.quinntaylor.CHDataStructures;
 				PRODUCT_NAME = CHDataStructures;
 			};
 			name = Release;
@@ -1299,6 +1299,7 @@
 		E44B59B80E95851000F9DD1A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
 				INSTALL_PATH = /usr/local/bin;
 				OTHER_LDFLAGS = (
 					"-framework",
@@ -1311,6 +1312,7 @@
 		E44B59B90E95851000F9DD1A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
 				INSTALL_PATH = /usr/local/bin;
 				OTHER_LDFLAGS = (
 					"-framework",
