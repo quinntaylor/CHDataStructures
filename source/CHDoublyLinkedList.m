@@ -41,11 +41,11 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
  
  This enumerator doesn't support enumerating over a sub-list of nodes. (When a node from the middle is provided, enumeration will proceed towards the tail.)
  */
-- (id)initWithList:(CHDoublyLinkedList *)list
-         startNode:(CHDoublyLinkedListNode *)startNode
-           endNode:(CHDoublyLinkedListNode *)endNode
-         direction:(NSComparisonResult)direction
-   mutationPointer:(unsigned long *)mutations;
+- (instancetype)initWithList:(CHDoublyLinkedList *)list
+				   startNode:(CHDoublyLinkedListNode *)startNode
+					 endNode:(CHDoublyLinkedListNode *)endNode
+				   direction:(NSComparisonResult)direction
+			 mutationPointer:(unsigned long *)mutations;
 
 /**
  Returns the next object in the collection being enumerated.
@@ -69,11 +69,11 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 
 @implementation CHDoublyLinkedListEnumerator
 
-- (id)initWithList:(CHDoublyLinkedList *)list
-         startNode:(CHDoublyLinkedListNode *)startNode
-           endNode:(CHDoublyLinkedListNode *)endNode
-         direction:(NSComparisonResult)direction
-   mutationPointer:(unsigned long *)mutations;
+- (instancetype)initWithList:(CHDoublyLinkedList *)list
+				   startNode:(CHDoublyLinkedListNode *)startNode
+					 endNode:(CHDoublyLinkedListNode *)endNode
+				   direction:(NSComparisonResult)direction
+			 mutationPointer:(unsigned long *)mutations;
 {
 	if ((self = [super init]) == nil) return nil;
 	collection = ([list count] > 0) ? [list retain] : nil;
@@ -175,12 +175,12 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 	[super dealloc];
 }
 
-- (id)init {
+- (instancetype)init {
 	return [self initWithArray:nil];
 }
 
 // This is the designated initializer for CHDoublyLinkedList
-- (id)initWithArray:(NSArray *)anArray {
+- (instancetype)initWithArray:(NSArray *)anArray {
 	if ((self = [super init]) == nil) return nil;
 	head = malloc(kCHDoublyLinkedListNodeSize);
 	tail = malloc(kCHDoublyLinkedListNodeSize);
@@ -203,7 +203,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 
 #pragma mark <NSCoding>
 
-- (id)initWithCoder:(NSCoder *)decoder {
+- (instancetype)initWithCoder:(NSCoder *)decoder {
 	return [self initWithArray:[decoder decodeObjectForKey:@"objects"]];
 }
 
@@ -213,7 +213,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 
 #pragma mark <NSCopying>
 
-- (id)copyWithZone:(NSZone *)zone {
+- (instancetype)copyWithZone:(NSZone *)zone {
 	CHDoublyLinkedList *newList = [[CHDoublyLinkedList allocWithZone:zone] init];
 	for (id anObject in self) {
 		[newList addObject:anObject];

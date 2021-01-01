@@ -54,27 +54,27 @@
 	[super dealloc];
 }
 
-- (id)init {
+- (instancetype)init {
 	return [self initWithOrdering:NSOrderedAscending array:nil];
 }
 
-- (id)initWithArray:(NSArray *)anArray {
+- (instancetype)initWithArray:(NSArray *)anArray {
 	return [self initWithOrdering:NSOrderedAscending array:anArray];
 }
 
 // This is the designated initializer for NSMutableArray (must be overridden)
-- (id)initWithCapacity:(NSUInteger)capacity {
+- (instancetype)initWithCapacity:(NSUInteger)capacity {
 	if ((self = [super init]) == nil) return nil;
 	array = [[NSMutableArray alloc] initWithCapacity:capacity];
 	return self;	
 }
 
-- (id)initWithOrdering:(NSComparisonResult)order {
+- (instancetype)initWithOrdering:(NSComparisonResult)order {
 	return [self initWithOrdering:order array:nil];
 }
 
 // This is the designated initializer for CHMutableArrayHeap
-- (id)initWithOrdering:(NSComparisonResult)order array:(NSArray *)anArray {
+- (instancetype)initWithOrdering:(NSComparisonResult)order array:(NSArray *)anArray {
 	// Parent initializer allocates empty array; add objects after order is set.
 	if ((self = [self initWithCapacity:[anArray count]]) == nil) return nil;
 	if (order != NSOrderedAscending && order != NSOrderedDescending)
@@ -91,7 +91,7 @@
 	return [self class];
 }
 
-- (id)initWithCoder:(NSCoder *)decoder {
+- (instancetype)initWithCoder:(NSCoder *)decoder {
 	// Ordinarily we'd call -[super initWithCoder:], but we must set order first
 	return [self initWithOrdering:([decoder decodeBoolForKey:@"sortAscending"]
 	                               ? NSOrderedAscending : NSOrderedDescending)
@@ -106,7 +106,7 @@
 
 #pragma mark <NSCopying>
 
-- (id)copyWithZone:(NSZone *)zone {
+- (instancetype)copyWithZone:(NSZone *)zone {
 	return [[[self class] allocWithZone:zone] initWithOrdering:sortOrder array:array];
 }
 

@@ -34,7 +34,7 @@
  
  @see initWithOrdering:array:
  */
-- (id)init;
+- (instancetype)init;
 
 /**
  Initialize a heap with ascending ordering and objects from a given array. Objects are added to the heap as they occur in the array, then "heapified" with an ordering of @c NSOrderedAscending.
@@ -44,7 +44,7 @@
  
  @see initWithOrdering:array:
  */
-- (id)initWithArray:(NSArray *)anArray;
+- (instancetype)initWithArray:(NSArray *)anArray;
 
 /**
  Initialize a heap with a given sort ordering and no objects.
@@ -54,7 +54,7 @@
  
  @see initWithOrdering:array:
  */
-- (id)initWithOrdering:(NSComparisonResult)order;
+- (instancetype)initWithOrdering:(NSComparisonResult)order;
 
 /**
  Initialize a heap with a given sort ordering and objects from a given array. Objects are added to the heap as they occur in the array, then "heapified" with an ordering of @a order.
@@ -63,7 +63,7 @@
  @param anArray An array containing objects with which to populate a new heap.
  @return An initialized CHHeap that contains the objects in @a anArray, to be sorted in the specified order.
  */
-- (id)initWithOrdering:(NSComparisonResult)order array:(NSArray *)anArray;
+- (instancetype)initWithOrdering:(NSComparisonResult)order array:(NSArray *)anArray;
 
 #pragma mark Querying Contents
 /** @name Querying Contents */

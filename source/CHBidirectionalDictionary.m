@@ -24,7 +24,7 @@
 	[super dealloc];
 }
 
-- (id)initWithCapacity:(NSUInteger)numItems {
+- (instancetype)initWithCapacity:(NSUInteger)numItems {
 	if ((self = [super initWithCapacity:numItems]) == nil) return nil;
 	createCollectableCFMutableDictionary(&objectsToKeys, numItems);
 	return self;

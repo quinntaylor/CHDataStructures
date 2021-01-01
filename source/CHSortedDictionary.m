@@ -20,7 +20,7 @@
 	[super dealloc];
 }
 
-- (id)initWithCapacity:(NSUInteger)numItems {
+- (instancetype)initWithCapacity:(NSUInteger)numItems {
 	if ((self = [super initWithCapacity:numItems]) == nil) return nil;
 	sortedKeys = [[CHAVLTree alloc] init];
 	return self;

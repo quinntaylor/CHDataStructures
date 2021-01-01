@@ -33,9 +33,9 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
  @param mutations A pointer to the collection's mutation count, for invalidation.
  @return An initialized CHSinglyLinkedListEnumerator which will enumerate objects in @a list.
  */
-- (id)initWithList:(CHSinglyLinkedList *)list
-         startNode:(CHSinglyLinkedListNode *)startNode
-   mutationPointer:(unsigned long *)mutations;
+- (instancetype)initWithList:(CHSinglyLinkedList *)list
+				   startNode:(CHSinglyLinkedListNode *)startNode
+			 mutationPointer:(unsigned long *)mutations;
 
 /**
  Returns the next object in the collection being enumerated.
@@ -57,9 +57,9 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 
 @implementation CHSinglyLinkedListEnumerator
 
-- (id)initWithList:(CHSinglyLinkedList *)list
-         startNode:(CHSinglyLinkedListNode *)startNode
-   mutationPointer:(unsigned long *)mutations;
+- (instancetype)initWithList:(CHSinglyLinkedList *)list
+				   startNode:(CHSinglyLinkedListNode *)startNode
+			 mutationPointer:(unsigned long *)mutations;
 {
 	if ((self = [super init]) == nil) return nil;
 	collection = (startNode != NULL) ? collection = [list retain] : nil;
@@ -112,12 +112,12 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 	[super dealloc];
 }
 
-- (id)init {
+- (instancetype)init {
 	return [self initWithArray:nil];
 }
 
 // This is the designated initializer for CHSinglyLinkedList
-- (id)initWithArray:(NSArray *)anArray {
+- (instancetype)initWithArray:(NSArray *)anArray {
 	if ((self = [super init]) == nil) return nil;
 	head = malloc(kCHSinglyLinkedListNodeSize);
 	head->next = NULL;
@@ -136,7 +136,7 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 
 #pragma mark <NSCoding>
 
-- (id)initWithCoder:(NSCoder *)decoder {
+- (instancetype)initWithCoder:(NSCoder *)decoder {
 	return [self initWithArray:[decoder decodeObjectForKey:@"objects"]];
 }
 
@@ -147,7 +147,7 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 
 #pragma mark <NSCopying>
 
-- (id)copyWithZone:(NSZone *)zone {
+- (instancetype)copyWithZone:(NSZone *)zone {
 	CHSinglyLinkedList *newList = [[CHSinglyLinkedList allocWithZone:zone] init];
 	for (id anObject in self) {
 		[newList addObject:anObject];

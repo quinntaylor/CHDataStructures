@@ -51,13 +51,13 @@ static const CFSetCallBacks kCHMutableSetCallbacks = {
 }
 
 // Note: Defined here since -init is not implemented in NS(Mutable)Set.
-- (id)init {
+- (instancetype)init {
 	return [self initWithCapacity:0]; // The 0 means we provide no capacity hint
 }
 
 // Note: This is the designated initializer for NSMutableSet and this class.
 // Subclasses may override this as necessary, but must call back here first.
-- (id)initWithCapacity:(NSUInteger)numItems {
+- (instancetype)initWithCapacity:(NSUInteger)numItems {
 	if ((self = [super init]) == nil) return nil;
 	set = CFSetCreateMutable(kCFAllocatorDefault,
 	                         numItems,
@@ -66,7 +66,7 @@ static const CFSetCallBacks kCHMutableSetCallbacks = {
 	return self;
 }
 
-- (id)initWithCoder:(NSCoder *)decoder {
+- (instancetype)initWithCoder:(NSCoder *)decoder {
 	return [self initWithArray:[decoder decodeObjectForKey:@"objects"]];
 }
 
@@ -127,7 +127,7 @@ static const CFSetCallBacks kCHMutableSetCallbacks = {
 
 #pragma mark <NSCopying>
 
-- (id)copyWithZone:(NSZone *)zone {
+- (instancetype)copyWithZone:(NSZone *)zone {
 	CHMutableSet *copy = [[[self class] allocWithZone:zone] init];
 	[copy addObjectsFromArray:[self allObjects]];
 	return copy;

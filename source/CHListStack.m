@@ -19,13 +19,13 @@
  */
 @implementation CHListStack
 
-- (id)init {
+- (instancetype)init {
 	if ((self = [super init]) == nil) return nil;
 	list = [[CHSinglyLinkedList alloc] init];
 	return self;
 }
 
-- (id)initWithArray:(NSArray *)anArray {
+- (instancetype)initWithArray:(NSArray *)anArray {
 	if ([self init] == nil) return nil;
 	for (id anObject in anArray) {
 		[list prependObject:anObject];

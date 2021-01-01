@@ -20,13 +20,13 @@
 	[super dealloc];
 }
 
-- (id)initWithCapacity:(NSUInteger)numItems {
+- (instancetype)initWithCapacity:(NSUInteger)numItems {
 	if ((self = [super initWithCapacity:numItems]) == nil) return nil;
 	keyOrdering = [[CHCircularBuffer alloc] initWithCapacity:numItems];
 	return self;
 }
 
-- (id)initWithCoder:(NSCoder *)decoder {
+- (instancetype)initWithCoder:(NSCoder *)decoder {
 	if ((self = [super initWithCoder:decoder]) == nil) return nil;
 	[keyOrdering release];
 	keyOrdering = [[decoder decodeObjectForKey:@"keyOrdering"] retain];

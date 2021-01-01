@@ -72,13 +72,13 @@ HIDDEN void createCollectableCFMutableDictionary(CFMutableDictionaryRef *diction
 }
 
 // Note: Defined here since -init is not implemented in NS(Mutable)Dictionary.
-- (id)init {
+- (instancetype)init {
 	return [self initWithCapacity:0]; // The 0 means we provide no capacity hint
 }
 
 // Note: This is the designated initializer for NSMutableDictionary and this class.
 // Subclasses may override this as necessary, but must call back here first.
-- (id)initWithCapacity:(NSUInteger)numItems {
+- (instancetype)initWithCapacity:(NSUInteger)numItems {
 	if ((self = [super init]) == nil) return nil;
 	createCollectableCFMutableDictionary(&dictionary, numItems);
 	return self;
@@ -91,7 +91,7 @@ HIDDEN void createCollectableCFMutableDictionary(CFMutableDictionaryRef *diction
 	return [self class];
 }
 
-- (id)initWithCoder:(NSCoder *)decoder {
+- (instancetype)initWithCoder:(NSCoder *)decoder {
 	return [self initWithDictionary:[decoder decodeObjectForKey:@"dictionary"]];
 }
 
@@ -101,7 +101,7 @@ HIDDEN void createCollectableCFMutableDictionary(CFMutableDictionaryRef *diction
 
 #pragma mark <NSCopying>
 
-- (id)copyWithZone:(NSZone *) zone {
+- (instancetype)copyWithZone:(NSZone *) zone {
 	// We could use -initWithDictionary: here, but it would just use more memory.
 	// (It marshals key-value pairs into two id* arrays, then inits from those.)
 	CHMutableDictionary *copy = [[[self class] allocWithZone:zone] init];

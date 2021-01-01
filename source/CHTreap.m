@@ -23,7 +23,7 @@
 	parent->link[(parent->right == node)] = save; \
 }
 
-- (id)init {
+- (instancetype)init {
 	if ((self = [super init]) == nil) return nil;
 	header->priority = CHTreapNotFound; // This is the highest possible priority
 	return self;

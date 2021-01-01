@@ -28,7 +28,7 @@ size_t kCHBinaryTreeNodeSize = sizeof(CHBinaryTreeNode);
  
  @return The singleton instance of this class.
  */
-+ (id)object;
++ (instancetype)object;
 
 /**
  Always indicate that another given object should appear to the right side.
@@ -47,7 +47,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 
 @implementation CHSearchTreeHeaderObject
 
-+ (id)object {
++ (instancetype)object {
 	// Protecting the @synchronized block prevents unnecessary lock contention.
 	if (headerObject == nil) {
 		@synchronized([CHSearchTreeHeaderObject class]) {
@@ -64,7 +64,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 	return NSOrderedAscending;
 }
 
-- (id)retain {
+- (instancetype)retain {
 	CHUnsupportedOperationException([self class], _cmd); return nil;
 }
 
@@ -72,7 +72,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 	CHUnsupportedOperationException([self class], _cmd);
 }
 
-- (id)autorelease {
+- (instancetype)autorelease {
 	CHUnsupportedOperationException([self class], _cmd); return nil;
 }
 
@@ -119,11 +119,11 @@ static CHSearchTreeHeaderObject *headerObject = nil;
  @param mutations A pointer to the collection's mutation count for invalidation.
  @return An initialized CHBinarySearchTreeEnumerator which will enumerate objects in @a tree in the order specified by @a order.
  */
-- (id)initWithTree:(id<CHSearchTree>)tree
-              root:(CHBinaryTreeNode *)root
-          sentinel:(CHBinaryTreeNode *)sentinel
-    traversalOrder:(CHTraversalOrder)order
-   mutationPointer:(unsigned long *)mutations;
+- (instancetype)initWithTree:(id<CHSearchTree>)tree
+						root:(CHBinaryTreeNode *)root
+					sentinel:(CHBinaryTreeNode *)sentinel
+			  traversalOrder:(CHTraversalOrder)order
+			 mutationPointer:(unsigned long *)mutations;
 
 /**
  Returns an array of objects the receiver has yet to enumerate.
@@ -145,11 +145,11 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 
 @implementation CHBinarySearchTreeEnumerator
 
-- (id)initWithTree:(id<CHSearchTree>)tree
-              root:(CHBinaryTreeNode *)root
-          sentinel:(CHBinaryTreeNode *)sentinel
-    traversalOrder:(CHTraversalOrder)order
-   mutationPointer:(unsigned long *)mutations
+- (instancetype)initWithTree:(id<CHSearchTree>)tree
+						root:(CHBinaryTreeNode *)root
+					sentinel:(CHBinaryTreeNode *)sentinel
+			  traversalOrder:(CHTraversalOrder)order
+			 mutationPointer:(unsigned long *)mutations
 {
 	if ((self = [super init]) == nil || !isValidTraversalOrder(order)) return nil;
 	traversalOrder = order;
@@ -312,7 +312,7 @@ CHBinaryTreeNode * CHCreateBinaryTreeNodeWithObject(id anObject) {
 
 // This is the designated initializer for CHAbstractBinarySearchTree.
 // Only to be called from concrete child classes to initialize shared variables.
-- (id)init {
+- (instancetype)init {
 	if ((self = [super init]) == nil) return nil;
 	count = 0;
 	mutations = 0;
@@ -327,7 +327,7 @@ CHBinaryTreeNode * CHCreateBinaryTreeNodeWithObject(id anObject) {
 
 // Calling [self init] allows child classes to initialize their specific state.
 // (The -init method in any subclass must always call to -[super init] first.)
-- (id)initWithArray:(NSArray *)anArray {
+- (instancetype)initWithArray:(NSArray *)anArray {
 	if ([self init] == nil) return nil;
 	[self addObjectsFromArray:anArray];
 	return self;
@@ -335,7 +335,7 @@ CHBinaryTreeNode * CHCreateBinaryTreeNodeWithObject(id anObject) {
 
 #pragma mark <NSCoding>
 
-- (id)initWithCoder:(NSCoder *)decoder {
+- (instancetype)initWithCoder:(NSCoder *)decoder {
 	// Decode the array of objects and use it to initialize the tree's contents.
 	return [self initWithArray:[decoder decodeObjectForKey:@"objects"]];
 }
@@ -347,7 +347,7 @@ CHBinaryTreeNode * CHCreateBinaryTreeNodeWithObject(id anObject) {
 
 #pragma mark <NSCopying> methods
 
-- (id)copyWithZone:(NSZone *)zone {
+- (instancetype)copyWithZone:(NSZone *)zone {
 	id<CHSearchTree> newTree = [[[self class] allocWithZone:zone] init];
 	// No point in using fast enumeration here until rdar://6296108 is addressed.
 	NSEnumerator *e = [self objectEnumeratorWithTraversalOrder:CHTraverseLevelOrder];

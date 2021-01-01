@@ -36,7 +36,7 @@
  
  @see initWithArray:
  */
-- (id)init;
+- (instancetype)init;
 
 /**
  Initialize a queue with the contents of an array. Objects are enqueued in the order they occur in the array.
@@ -44,7 +44,7 @@
  @param anArray An array containing objects with which to populate a new queue.
  @return An initialized queue that contains the objects in @a anArray.
  */
-- (id)initWithArray:(NSArray *)anArray;
+- (instancetype)initWithArray:(NSArray *)anArray;
 
 #pragma mark Querying Contents
 /** @name Querying Contents */

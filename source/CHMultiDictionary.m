@@ -30,7 +30,7 @@ static inline NSMutableSet * createMutableSetFromObject(id object) {
 
 @implementation CHMultiDictionary
 
-- (id)initWithObjects:(NSArray *)objectsArray forKeys:(NSArray *)keyArray {
+- (instancetype)initWithObjects:(NSArray *)objectsArray forKeys:(NSArray *)keyArray {
 	if ([keyArray count] != [objectsArray count])
 		CHInvalidArgumentException([self class], _cmd, @"Unequal array counts.");
 	if (self = [super initWithCapacity:[objectsArray count]]) {

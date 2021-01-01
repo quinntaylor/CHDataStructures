@@ -29,7 +29,7 @@
 	CFMutableSetRef set; // A Core Foundation set.
 }
 
-- (id)initWithCapacity:(NSUInteger)numItems;
+- (instancetype)initWithCapacity:(NSUInteger)numItems;
 
 - (void)addObject:(id)anObject;
 - (id)anyObject;

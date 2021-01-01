@@ -15,7 +15,7 @@
 @implementation CHCircularBufferStack
 
 // Overridden from parent class to make the stack grow left from the last slot.
-- (id)initWithCapacity:(NSUInteger)capacity {
+- (instancetype)initWithCapacity:(NSUInteger)capacity {
 	if ((self = [super initWithCapacity:capacity]) == nil) return nil;
 	// Initialize head and tail to last slot; avoids wrapping on second insert.
 	headIndex = tailIndex = arrayCapacity - 1;
@@ -23,7 +23,7 @@
 }
 
 // Overridden from parent class so objects are inserted in reverse order.
-- (id)initWithArray:(NSArray *)anArray {
+- (instancetype)initWithArray:(NSArray *)anArray {
 	NSUInteger capacity = 16;
 	while (capacity <= [anArray count])
 		capacity *= 2;

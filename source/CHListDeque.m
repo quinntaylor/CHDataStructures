@@ -15,7 +15,7 @@
 
 @implementation CHListDeque
 
-- (id)init {
+- (instancetype)init {
 	if ((self = [super init]) == nil) return nil;
 	list = [[CHDoublyLinkedList alloc] init];
 	return self;

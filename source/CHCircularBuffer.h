@@ -35,7 +35,7 @@
 // The following methods are undocumented since they are only reimplementations.
 // Users should consult the API documentation for NSArray and NSMutableArray.
 
-- (id)initWithArray:(NSArray *)anArray;
+- (instancetype)initWithArray:(NSArray *)anArray;
 
 - (NSArray *)allObjects;
 - (BOOL)containsObject:(id)anObject;
@@ -59,8 +59,8 @@
 #pragma mark Adopted Protocols
 
 - (void)encodeWithCoder:(NSCoder *)encoder;
-- (id)initWithCoder:(NSCoder *)decoder;
-- (id)copyWithZone:(NSZone *)zone;
+- (instancetype)initWithCoder:(NSCoder *)decoder;
+- (instancetype)copyWithZone:(NSZone *)zone;
 - (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state
 								  objects:(id *)stackbuf
 									count:(NSUInteger)len;

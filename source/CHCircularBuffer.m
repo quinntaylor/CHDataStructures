@@ -62,12 +62,12 @@ do { \
  @param mutations A pointer to the collection's mutation count for invalidation.
  @return An initialized CHCircularBufferEnumerator which will enumerate objects in @a anArray in the order specified by @a direction.
  */
-- (id)initWithArray:(id *)anArray
-           capacity:(NSUInteger)capacity
-              count:(NSUInteger)count
-         startIndex:(NSUInteger)startIndex
-          direction:(NSComparisonResult)direction
-    mutationPointer:(unsigned long *)mutations;
+- (instancetype)initWithArray:(id *)anArray
+					 capacity:(NSUInteger)capacity
+						count:(NSUInteger)count
+				   startIndex:(NSUInteger)startIndex
+					direction:(NSComparisonResult)direction
+			  mutationPointer:(unsigned long *)mutations;
 
 /**
  Returns an array of objects the receiver has yet to enumerate.
@@ -91,12 +91,12 @@ do { \
 
 @implementation CHCircularBufferEnumerator
 
-- (id)initWithArray:(id *)anArray
-           capacity:(NSUInteger)capacity
-              count:(NSUInteger)count
-         startIndex:(NSUInteger)startIndex
-          direction:(NSComparisonResult)direction
-    mutationPointer:(unsigned long *)mutations
+- (instancetype)initWithArray:(id *)anArray
+					 capacity:(NSUInteger)capacity
+						count:(NSUInteger)count
+				   startIndex:(NSUInteger)startIndex
+					direction:(NSComparisonResult)direction
+			  mutationPointer:(unsigned long *)mutations
 {
 	if ((self = [super init]) == nil) return nil;
 	array = anArray;
@@ -175,11 +175,11 @@ do { \
 }
 
 // Note: Defined here since -init is not implemented in NS(Mutable)Array.
-- (id)init {
+- (instancetype)init {
 	return [self initWithCapacity:DEFAULT_BUFFER_SIZE];
 }
 
-- (id)initWithArray:(NSArray *)anArray {
+- (instancetype)initWithArray:(NSArray *)anArray {
 	NSUInteger capacity = DEFAULT_BUFFER_SIZE;
 	while (capacity <= [anArray count])
 		capacity *= 2;
@@ -192,7 +192,7 @@ do { \
 }
 
 // This is the designated initializer for CHCircularBuffer.
-- (id)initWithCapacity:(NSUInteger)capacity {
+- (instancetype)initWithCapacity:(NSUInteger)capacity {
 	if ((self = [super init]) == nil) return nil;
 	arrayCapacity = capacity ? capacity : DEFAULT_BUFFER_SIZE;
 	array = malloc(kCHPointerSize * arrayCapacity);
@@ -206,7 +206,7 @@ do { \
 	return [self class];
 }
 
-- (id)initWithCoder:(NSCoder *)decoder {
+- (instancetype)initWithCoder:(NSCoder *)decoder {
 	return [self initWithArray:[decoder decodeObjectForKey:@"array"]];
 }
 
@@ -216,7 +216,7 @@ do { \
 
 #pragma mark <NSCopying>
 
-- (id)copyWithZone:(NSZone *)zone {
+- (instancetype)copyWithZone:(NSZone *)zone {
 	return [[[self class] allocWithZone:zone] initWithArray:[self allObjects]];
 }
 

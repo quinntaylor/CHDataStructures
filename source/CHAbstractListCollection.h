@@ -31,7 +31,7 @@
 	id<CHLinkedList> list; // List used for storing contents of collection.
 }
 
-- (id)initWithArray:(NSArray *)anArray;
+- (instancetype)initWithArray:(NSArray *)anArray;
 - (NSArray *)allObjects;
 - (BOOL)containsObject:(id)anObject;
 - (BOOL)containsObjectIdenticalTo:(id)anObject;
@@ -52,8 +52,8 @@
 #pragma mark Adopted Protocols
 
 - (void)encodeWithCoder:(NSCoder *)encoder;
-- (id)initWithCoder:(NSCoder *)decoder;
-- (id)copyWithZone:(NSZone *)zone;
+- (instancetype)initWithCoder:(NSCoder *)decoder;
+- (instancetype)copyWithZone:(NSZone *)zone;
 - (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state
 								  objects:(id *)stackbuf
 									count:(NSUInteger)len;

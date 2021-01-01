@@ -22,7 +22,7 @@
  */
 @implementation CHListQueue
 
-- (id)init {
+- (instancetype)init {
 	if ((self = [super init]) == nil) return nil;
 	list = [[CHSinglyLinkedList alloc] init];
 	return self;

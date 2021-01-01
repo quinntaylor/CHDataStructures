@@ -69,7 +69,7 @@ typedef enum {
  
  @see initWithArray:
  */
-- (id)init;
+- (instancetype)init;
 
 /**
  Initialize a search tree with the contents of an array. Objects are added to the tree in the order they occur in the array.
@@ -77,7 +77,7 @@ typedef enum {
  @param anArray An array containing objects with which to populate a new search tree.
  @return An initialized search tree that contains the objects in @a anArray in sorted order.
  */
-- (id)initWithArray:(NSArray *)anArray;
+- (instancetype)initWithArray:(NSArray *)anArray;
 
 #pragma mark Querying Contents
 /** @name Tree Traversals */

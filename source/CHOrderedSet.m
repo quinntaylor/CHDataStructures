@@ -20,11 +20,11 @@
 	[super dealloc];
 }
 
-- (id)init {
+- (instancetype)init {
 	return [self initWithCapacity:0];
 }
 
-- (id)initWithCapacity:(NSUInteger)numItems {
+- (instancetype)initWithCapacity:(NSUInteger)numItems {
 	if ((self = [super initWithCapacity:numItems]) == nil) return nil;
 	ordering = [[CHCircularBuffer alloc] initWithCapacity:numItems];
 	return self;

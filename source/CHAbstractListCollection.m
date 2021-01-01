@@ -21,7 +21,7 @@
 
 // Child classes must implement -init to initialize the "list" instance variable
 
-- (id)initWithArray:(NSArray *)anArray {
+- (instancetype)initWithArray:(NSArray *)anArray {
 	if ([self init] == nil) return nil;
 	for (id anObject in anArray) {
 		[list addObject:anObject];
@@ -31,7 +31,7 @@
 
 #pragma mark <NSCoding>
 
-- (id)initWithCoder:(NSCoder *)decoder {
+- (instancetype)initWithCoder:(NSCoder *)decoder {
 	if ((self = [super init]) == nil) return nil;
 	list = [[decoder decodeObjectForKey:@"list"] retain];
 	return self;
@@ -43,7 +43,7 @@
 
 #pragma mark <NSCopying>
 
-- (id)copyWithZone:(NSZone *)zone {
+- (instancetype)copyWithZone:(NSZone *)zone {
 	id copy = [[[self class] allocWithZone:zone] init];
 	for (id anObject in self) {
 		[copy addObject:anObject];

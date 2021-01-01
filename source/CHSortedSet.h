@@ -63,7 +63,7 @@ typedef enum {
  
  @see initWithArray:
  */
-- (id)init;
+- (instancetype)init;
 
 /**
  Initialize a sorted set with the contents of an array. Objects are added to the set in the order they occur in the array.
@@ -71,7 +71,7 @@ typedef enum {
  @param anArray An array containing objects with which to populate a new sorted set.
  @return An initialized sorted set that contains the objects in @a anArray in sorted order.
  */
-- (id)initWithArray:(NSArray *)anArray;
+- (instancetype)initWithArray:(NSArray *)anArray;
 
 #pragma mark Querying Contents
 /** @name Querying Contents */
