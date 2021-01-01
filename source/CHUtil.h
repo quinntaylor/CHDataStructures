@@ -1,5 +1,5 @@
 /*
- CHDataStructures.framework -- Util.h
+ CHDataStructures.framework -- CHUtil.h
  
  Copyright (c) 2008-2010, Quinn Taylor <http://homepage.mac.com/quinntaylor>
  
@@ -13,7 +13,7 @@
 #import <Foundation/Foundation.h>
 
 /**
- @file Util.h
+ @file CHUtil.h
  A group of utility C functions for simplifying common exceptions and logging.
  */
 

@@ -1,5 +1,5 @@
 /*
- CHDataStructures.framework -- Util.m
+ CHDataStructures.framework -- CHUtil.m
  
  Copyright (c) 2008-2010, Quinn Taylor <http://homepage.mac.com/quinntaylor>
  
@@ -10,9 +10,9 @@
  The software is  provided "as is", without warranty of any kind, including all implied warranties of merchantability and fitness. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
  */
 
-#import "Util.h"
+#import "CHUtil.h"
 
-size_t kCHPointerSize = sizeof(void *); // A variable declared extern in Util.h
+size_t kCHPointerSize = sizeof(void *);
 
 BOOL objectsAreEqual(id o1, id o2) {
 	return [o1 isEqual:o2];

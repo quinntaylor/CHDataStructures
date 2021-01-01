@@ -12,7 +12,7 @@
 
 #import <XCTest/XCTest.h>
 #import "CHCircularBuffer.h"
-#import "Util.h"
+#import "CHUtil.h"
 
 static NSArray *abc;
 

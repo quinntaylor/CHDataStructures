@@ -1,5 +1,5 @@
 /*
- CHDataStructures.framework -- UtilTest.m
+ CHDataStructures.framework -- CHUtilTest.m
  
  Copyright (c) 2008-2010, Quinn Taylor <http://homepage.mac.com/quinntaylor>
  
@@ -11,9 +11,9 @@
  */
 
 #import <XCTest/XCTest.h>
-#import "Util.h"
+#import "CHUtil.h"
 
-@interface UtilTest : XCTestCase {
+@interface CHUtilTest : XCTestCase {
 	Class aClass;
 	SEL aMethod;
 	NSMutableString *reason;
@@ -22,7 +22,7 @@
 
 @end
 
-@implementation UtilTest
+@implementation CHUtilTest
 
 - (void)setUp {
 	aClass = [NSObject class];

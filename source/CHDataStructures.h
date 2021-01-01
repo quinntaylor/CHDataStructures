@@ -45,7 +45,7 @@
 #import "CHUnbalancedTree.h"
 
 // Utilities
-#import "Util.h"
+#import "CHUtil.h"
 
 /**
  @file CHDataStructures.h
