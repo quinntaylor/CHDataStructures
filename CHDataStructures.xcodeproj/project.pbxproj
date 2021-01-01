@@ -51,7 +51,6 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 		969123AC1A7100120073C75A /* CHUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = E4723A710EB91B7A006FE465 /* CHUtil.m */; };
 		969123AD1A7100120073C75A /* CHAbstractBinarySearchTree.m in Sources */ = {isa = PBXBuildFile; fileRef = E4ADBC990E88412C00B570BC /* CHAbstractBinarySearchTree.m */; };
 		969123AE1A7100120073C75A /* CHAbstractListCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = E48860B90EA66072000F132A /* CHAbstractListCollection.m */; };
@@ -311,7 +310,6 @@
 
 /* Begin PBXFileReference section */
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
-		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = resources/English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* CHDataStructures.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CHDataStructures.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		96A45EE62154A19900C50ABB /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		96E14B792592632C006519C9 /* Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Common.xcconfig; sourceTree = "<group>"; };
@@ -490,7 +488,6 @@
 			isa = PBXGroup;
 			children = (
 				E49923740FEB7B2600923859 /* CHDataStructuresFormatters.plist */,
-				089C1666FE841158C02AAC07 /* InfoPlist.strings */,
 				E4FE17F70FA6765D00C34601 /* Info-Framework.plist */,
 				E473C9890E9331FA005CA997 /* Info-Tests.plist */,
 			);
@@ -829,13 +826,10 @@
 			};
 			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "CHDataStructures" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 1;
 			knownRegions = (
-				English,
-				Japanese,
-				French,
-				German,
+				en,
 			);
 			mainGroup = 0867D691FE84028FC02AAC07 /* CHDataStructures */;
 			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
@@ -859,7 +853,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1101,17 +1094,6 @@
 			targetProxy = E4FAE1640E968F20007BB1F9 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		089C1666FE841158C02AAC07 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				089C1667FE841158C02AAC07 /* English */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		1DEB91AE08733DA50010E9CD /* Debug */ = {
