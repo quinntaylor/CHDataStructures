@@ -11,8 +11,8 @@
  */
 
 #import <XCTest/XCTest.h>
-#import "CHBinaryHeap.h"
-#import "CHMutableArrayHeap.h"
+#import <CHDataStructures/CHBinaryHeap.h>
+#import <CHDataStructures/CHMutableArrayHeap.h>
 
 @interface CHMutableArrayHeap (Test)
 

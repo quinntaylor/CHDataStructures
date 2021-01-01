@@ -11,8 +11,8 @@
  */
 
 #import <XCTest/XCTest.h>
-#import "CHMutableSet.h"
-#import "CHOrderedSet.h"
+#import <CHDataStructures/CHMutableSet.h>
+#import <CHDataStructures/CHOrderedSet.h>
 
 static NSArray *abc;
 

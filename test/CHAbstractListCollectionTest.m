@@ -11,9 +11,9 @@
  */
 
 #import <XCTest/XCTest.h>
-#import "CHAbstractListCollection.h"
-#import "CHSinglyLinkedList.h"
-#import "CHDoublyLinkedList.h"
+#import <CHDataStructures/CHAbstractListCollection.h>
+#import <CHDataStructures/CHSinglyLinkedList.h>
+#import <CHDataStructures/CHDoublyLinkedList.h>
 
 @interface CHAbstractListCollection (Test)
 

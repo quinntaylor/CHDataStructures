@@ -11,8 +11,8 @@
  */
 
 #import <XCTest/XCTest.h>
-#import "CHCircularBufferDeque.h"
-#import "CHListDeque.h"
+#import <CHDataStructures/CHCircularBufferDeque.h>
+#import <CHDataStructures/CHListDeque.h>
 
 @interface CHDequeTest : XCTestCase {
 	id<CHDeque> deque;

@@ -11,8 +11,8 @@
  The software is  provided "as is", without warranty of any kind, including all implied warranties of merchantability and fitness. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
  */
 
-#import "CHQueue.h"
-#import "CHAbstractListCollection.h"
+#import <CHDataStructures/CHQueue.h>
+#import <CHDataStructures/CHAbstractListCollection.h>
 
 /**
  @file CHListQueue.h

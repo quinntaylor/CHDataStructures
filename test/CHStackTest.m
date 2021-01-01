@@ -11,9 +11,9 @@
  */
 
 #import <XCTest/XCTest.h>
-#import "CHStack.h"
-#import "CHListStack.h"
-#import "CHCircularBufferStack.h"
+#import <CHDataStructures/CHStack.h>
+#import <CHDataStructures/CHListStack.h>
+#import <CHDataStructures/CHCircularBufferStack.h>
 
 @interface CHStackTest : XCTestCase {
 	id<CHStack> stack;

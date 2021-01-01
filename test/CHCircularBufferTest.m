@@ -11,8 +11,8 @@
  */
 
 #import <XCTest/XCTest.h>
-#import "CHCircularBuffer.h"
-#import "CHUtil.h"
+#import <CHDataStructures/CHCircularBuffer.h>
+#import <CHDataStructures/CHUtil.h>
 
 static NSArray *abc;
 

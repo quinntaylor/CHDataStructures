@@ -12,11 +12,11 @@
 
 #import <XCTest/XCTest.h>
 
-#import "CHBidirectionalDictionary.h"
-#import "CHMutableDictionary.h"
-#import "CHMultiDictionary.h"
-#import "CHOrderedDictionary.h"
-#import "CHSortedDictionary.h"
+#import <CHDataStructures/CHBidirectionalDictionary.h>
+#import <CHDataStructures/CHMutableDictionary.h>
+#import <CHDataStructures/CHMultiDictionary.h>
+#import <CHDataStructures/CHOrderedDictionary.h>
+#import <CHDataStructures/CHSortedDictionary.h>
 
 id replicateWithNSCoding(id dictionary) {
 	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:dictionary];

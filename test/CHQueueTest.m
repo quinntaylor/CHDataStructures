@@ -11,8 +11,8 @@
  */
 
 #import <XCTest/XCTest.h>
-#import "CHCircularBufferQueue.h"
-#import "CHListQueue.h"
+#import <CHDataStructures/CHCircularBufferQueue.h>
+#import <CHDataStructures/CHListQueue.h>
 
 @interface CHQueueTest : XCTestCase {
 	id<CHQueue> queue;

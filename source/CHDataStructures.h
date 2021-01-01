@@ -13,39 +13,39 @@
 #import <Foundation/Foundation.h>
 
 // Protocols
-#import "CHDeque.h"
-#import "CHHeap.h"
-#import "CHLinkedList.h"
-#import "CHQueue.h"
-#import "CHSearchTree.h"
-#import "CHSortedSet.h"
-#import "CHStack.h"
+#import <CHDataStructures/CHDeque.h>
+#import <CHDataStructures/CHHeap.h>
+#import <CHDataStructures/CHLinkedList.h>
+#import <CHDataStructures/CHQueue.h>
+#import <CHDataStructures/CHSearchTree.h>
+#import <CHDataStructures/CHSortedSet.h>
+#import <CHDataStructures/CHStack.h>
 
 // Concrete Implementations
-#import "CHAnderssonTree.h"
-#import "CHBidirectionalDictionary.h"
-#import "CHBinaryHeap.h"
-#import "CHAVLTree.h"
-#import "CHCircularBuffer.h"
-#import "CHCircularBufferDeque.h"
-#import "CHCircularBufferQueue.h"
-#import "CHCircularBufferStack.h"
-#import "CHDoublyLinkedList.h"
-#import "CHListDeque.h"
-#import "CHListQueue.h"
-#import "CHListStack.h"
-#import "CHMultiDictionary.h"
-#import "CHMutableArrayHeap.h"
-#import "CHOrderedDictionary.h"
-#import "CHOrderedSet.h"
-#import "CHRedBlackTree.h"
-#import "CHSinglyLinkedList.h"
-#import "CHSortedDictionary.h"
-#import "CHTreap.h"
-#import "CHUnbalancedTree.h"
+#import <CHDataStructures/CHAnderssonTree.h>
+#import <CHDataStructures/CHBidirectionalDictionary.h>
+#import <CHDataStructures/CHBinaryHeap.h>
+#import <CHDataStructures/CHAVLTree.h>
+#import <CHDataStructures/CHCircularBuffer.h>
+#import <CHDataStructures/CHCircularBufferDeque.h>
+#import <CHDataStructures/CHCircularBufferQueue.h>
+#import <CHDataStructures/CHCircularBufferStack.h>
+#import <CHDataStructures/CHDoublyLinkedList.h>
+#import <CHDataStructures/CHListDeque.h>
+#import <CHDataStructures/CHListQueue.h>
+#import <CHDataStructures/CHListStack.h>
+#import <CHDataStructures/CHMultiDictionary.h>
+#import <CHDataStructures/CHMutableArrayHeap.h>
+#import <CHDataStructures/CHOrderedDictionary.h>
+#import <CHDataStructures/CHOrderedSet.h>
+#import <CHDataStructures/CHRedBlackTree.h>
+#import <CHDataStructures/CHSinglyLinkedList.h>
+#import <CHDataStructures/CHSortedDictionary.h>
+#import <CHDataStructures/CHTreap.h>
+#import <CHDataStructures/CHUnbalancedTree.h>
 
 // Utilities
-#import "CHUtil.h"
+#import <CHDataStructures/CHUtil.h>
 
 /**
  @file CHDataStructures.h

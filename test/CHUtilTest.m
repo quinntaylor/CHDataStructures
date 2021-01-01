@@ -11,7 +11,7 @@
  */
 
 #import <XCTest/XCTest.h>
-#import "CHUtil.h"
+#import <CHDataStructures/CHUtil.h>
 
 @interface CHUtilTest : XCTestCase {
 	Class aClass;

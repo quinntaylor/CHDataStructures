@@ -11,14 +11,14 @@
  */
 
 #import <XCTest/XCTest.h>
-#import "CHSortedSet.h"
+#import <CHDataStructures/CHSortedSet.h>
 
 #import "CHAbstractBinarySearchTree_Internal.h"
-#import "CHAnderssonTree.h"
-#import "CHAVLTree.h"
-#import "CHRedBlackTree.h"
-#import "CHTreap.h"
-#import "CHUnbalancedTree.h"
+#import <CHDataStructures/CHAnderssonTree.h>
+#import <CHDataStructures/CHAVLTree.h>
+#import <CHDataStructures/CHRedBlackTree.h>
+#import <CHDataStructures/CHTreap.h>
+#import <CHDataStructures/CHUnbalancedTree.h>
 
 static NSArray *abcde;
 

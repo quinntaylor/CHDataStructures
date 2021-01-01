@@ -10,7 +10,7 @@
  The software is  provided "as is", without warranty of any kind, including all implied warranties of merchantability and fitness. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.
  */
 
-#import "CHMutableDictionary.h"
+#import <CHDataStructures/CHMutableDictionary.h>
 
 /**
  A dictionary that allows bidirectional lookup by keys and values with equal ease. This is possible because a <a href="http://en.wikipedia.org/wiki/Bidirectional_map">bidirectional dictionary</a> enforces the restriction that there is a 1-to-1 relation between keys and values, meaning that multiple keys cannot map to the same value. This is accomplished using a second internal dictionary which stores value-to-key mappings so values can be checked for uniqueness upon insertion. (Since values become the keys in this secondary dictionary, values must also be unique.) See \link #setObject:forKey: -setObject:forKey:\endlink below for details.

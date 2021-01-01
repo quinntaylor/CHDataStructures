@@ -11,9 +11,9 @@
  */
 
 #import <XCTest/XCTest.h>
-#import "CHLinkedList.h"
-#import "CHDoublyLinkedList.h"
-#import "CHSinglyLinkedList.h"
+#import <CHDataStructures/CHLinkedList.h>
+#import <CHDataStructures/CHDoublyLinkedList.h>
+#import <CHDataStructures/CHSinglyLinkedList.h>
 
 @interface CHLinkedListTest : XCTestCase {
 	id<CHLinkedList> list;
