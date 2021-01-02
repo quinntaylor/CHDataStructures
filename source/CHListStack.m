@@ -13,14 +13,13 @@
  */
 @implementation CHListStack
 
-- (instancetype)init {
-	if ((self = [super init]) == nil) return nil;
-	list = [[CHSinglyLinkedList alloc] init];
-	return self;
+- (id<CHLinkedList>)_createList {
+	return [[CHSinglyLinkedList alloc] init];
 }
 
 - (instancetype)initWithArray:(NSArray *)anArray {
-	if ([self init] == nil) return nil;
+	self = [super initWithArray:@[]]; // Don't let superclass add objects, we prepend them below.
+	if (self == nil) return nil;
 	for (id anObject in anArray) {
 		[list prependObject:anObject];
 	}

@@ -72,6 +72,8 @@ typedef struct CHBinaryTreeNode {
 	unsigned long mutations; // Tracks mutations for NSFastEnumeration.
 }
 
+- (instancetype)initWithArray:(NSArray *)anArray NS_DESIGNATED_INITIALIZER;
+
 /**
  Produces a representation of the receiver that can be useful for debugging.
  

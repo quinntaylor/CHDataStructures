@@ -17,10 +17,8 @@
 	parent->link[(parent->right == node)] = save; \
 }
 
-- (instancetype)init {
-	if ((self = [super init]) == nil) return nil;
+- (void)_subclassSetup {
 	header->priority = CHTreapNotFound; // This is the highest possible priority
-	return self;
 }
 
 - (void)addObject:(id)anObject {

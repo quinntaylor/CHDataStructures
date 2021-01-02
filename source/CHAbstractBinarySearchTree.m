@@ -303,9 +303,12 @@ CHBinaryTreeNode * CHCreateBinaryTreeNodeWithObject(id anObject) {
 	[super dealloc];
 }
 
-// This is the designated initializer for CHAbstractBinarySearchTree.
-// Only to be called from concrete child classes to initialize shared variables.
 - (instancetype)init {
+	return [self initWithArray:@[]];
+}
+
+// This is the designated initializer for CHAbstractBinarySearchTree.
+- (instancetype)initWithArray:(NSArray *)anArray {
 	if ((self = [super init]) == nil) return nil;
 	count = 0;
 	mutations = 0;
@@ -315,15 +318,13 @@ CHBinaryTreeNode * CHCreateBinaryTreeNodeWithObject(id anObject) {
 	header = CHCreateBinaryTreeNodeWithObject([CHSearchTreeHeaderObject object]);
 	header->right = sentinel;
 	header->left = sentinel;
+	[self _subclassSetup];
+	[self addObjectsFromArray:anArray];
 	return self;
 }
 
-// Calling [self init] allows child classes to initialize their specific state.
-// (The -init method in any subclass must always call to -[super init] first.)
-- (instancetype)initWithArray:(NSArray *)anArray {
-	if ([self init] == nil) return nil;
-	[self addObjectsFromArray:anArray];
-	return self;
+- (void)_subclassSetup {
+	// This allows child classes to initialize their specific state on init.
 }
 
 #pragma mark <NSCoding>

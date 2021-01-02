@@ -16,10 +16,8 @@
  */
 @implementation CHListQueue
 
-- (instancetype)init {
-	if ((self = [super init]) == nil) return nil;
-	list = [[CHSinglyLinkedList alloc] init];
-	return self;
+- (id<CHLinkedList>)_createList {
+	return [[CHSinglyLinkedList alloc] init];
 }
 
 - (void)addObject:(id)anObject {

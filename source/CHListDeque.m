@@ -9,10 +9,8 @@
 
 @implementation CHListDeque
 
-- (instancetype)init {
-	if ((self = [super init]) == nil) return nil;
-	list = [[CHDoublyLinkedList alloc] init];
-	return self;
+- (id<CHLinkedList>)_createList {
+	return [[CHDoublyLinkedList alloc] init];
 }
 
 - (void)prependObject:(id)anObject {

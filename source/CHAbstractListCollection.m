@@ -13,14 +13,24 @@
 	[super dealloc];
 }
 
-// Child classes must implement -init to initialize the "list" instance variable
+- (instancetype)init {
+	return [self initWithArray:@[]];
+}
 
 - (instancetype)initWithArray:(NSArray *)anArray {
-	if ([self init] == nil) return nil;
+	self = [super init];
+	if (self == nil) return nil;
+	list = [self _createList];
 	for (id anObject in anArray) {
 		[list addObject:anObject];
 	}
 	return self;
+}
+
+// Child classes must override to provide a value for the "list" instance variable.
+- (id<CHLinkedList>)_createList {
+	CHUnsupportedOperationException([CHAbstractListCollection class], _cmd);
+	return nil;
 }
 
 #pragma mark <NSCoding>

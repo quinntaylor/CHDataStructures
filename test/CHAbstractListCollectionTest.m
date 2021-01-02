@@ -6,24 +6,9 @@
 
 #import <XCTest/XCTest.h>
 #import <CHDataStructures/CHAbstractListCollection.h>
-#import <CHDataStructures/CHSinglyLinkedList.h>
-#import <CHDataStructures/CHDoublyLinkedList.h>
-
-@interface CHAbstractListCollection (Test)
-
-- (void)addObject:(id)anObject;
-- (void)addObjectsFromArray:(NSArray *)anArray;
-- (id<CHLinkedList>)list;
-
-@end
+#import <CHDataStructures/CHListDeque.h>
 
 @implementation CHAbstractListCollection (Test)
-
-- (instancetype)init {
-	if ((self = [super init]) == nil) return nil;
-	list = [[CHSinglyLinkedList alloc] init];
-	return self;
-}
 
 - (void)addObject:(id)anObject {
 	[list addObject:anObject];
@@ -31,10 +16,6 @@
 
 - (void)addObjectsFromArray:(NSArray *)anArray {
 	[list addObjectsFromArray:anArray];
-}
-
-- (id<CHLinkedList>)list {
-	return list;
 }
 
 @end
@@ -52,7 +33,7 @@
 @implementation CHAbstractListCollectionTest
 
 - (void)setUp {
-	collection = [[[CHAbstractListCollection alloc] init] autorelease];
+	collection = [[CHListDeque alloc] init]; // Pick a concrete subclass to initialize
 	objects = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
 }
 
@@ -106,10 +87,12 @@
 	XCTAssertNotNil(collection);
 }
 
-- (void)testInitWithArray {
-	collection = [[CHAbstractListCollection alloc] initWithArray:objects];
-	XCTAssertEqual([collection count], [objects count]);
-	XCTAssertEqualObjects([collection allObjects], objects);
+- (void)testAbstractInit {
+	XCTAssertThrows([[CHAbstractListCollection alloc] init]);
+}
+
+- (void)testAbstractInitWithArray {
+	XCTAssertThrows([[CHAbstractListCollection alloc] initWithArray:objects]);
 }
 
 - (void)testAllObjects {
