@@ -56,7 +56,6 @@ static const CFSetCallBacks kCHMutableSetCallbacks = {
 	set = CFSetCreateMutable(kCFAllocatorDefault,
 	                         numItems,
 	                         &kCHMutableSetCallbacks);
-	CFMakeCollectable(set); // Works under GC, and is a no-op otherwise.
 	return self;
 }
 

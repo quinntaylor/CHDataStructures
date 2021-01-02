@@ -20,7 +20,7 @@
 
 - (instancetype)initWithCapacity:(NSUInteger)numItems {
 	if ((self = [super initWithCapacity:numItems]) == nil) return nil;
-	createCollectableCFMutableDictionary(&objectsToKeys, numItems);
+	objectsToKeys = CHDictionaryCreateMutable(numItems);
 	return self;
 }
 
@@ -34,9 +34,8 @@
 		// Release the CFMutableDictionary -init creates so we don't leak memory
 		CFRelease(inverse->dictionary);
 		// Set its dictionary references to the reverse of what they are here
-		// (NOTE: CFMakeCollectable() works under GC, and is a no-op otherwise.)
-		CFMakeCollectable(CFRetain(inverse->keysToObjects = objectsToKeys));
-		CFMakeCollectable(CFRetain(inverse->objectsToKeys = keysToObjects));
+		CFRetain(inverse->keysToObjects = objectsToKeys);
+		CFRetain(inverse->objectsToKeys = keysToObjects);
 		// Set this instance as the mutual inverse of the newly-created instance 
 		inverse->inverse = self;
 	}

@@ -45,15 +45,13 @@ static const CFDictionaryValueCallBacks kCHDictionaryValueCallBacks = {
 	CHDictionaryEqual
 };
 
-HIDDEN void createCollectableCFMutableDictionary(CFMutableDictionaryRef *dictionary, NSUInteger initialCapacity)
+HIDDEN CFMutableDictionaryRef CHDictionaryCreateMutable(NSUInteger initialCapacity)
 {
 	// Create a CFMutableDictionaryRef with callback functions as defined above.
-	*dictionary = CFDictionaryCreateMutable(kCFAllocatorDefault,
-	                                       initialCapacity,
-	                                       &kCHDictionaryKeyCallBacks,
-	                                       &kCHDictionaryValueCallBacks);
-	// Hand the reference off to GC if it's enabled, perform a no-op otherwise.
-	CFMakeCollectable(*dictionary);
+	return CFDictionaryCreateMutable(kCFAllocatorDefault,
+									 initialCapacity,
+									 &kCHDictionaryKeyCallBacks,
+									 &kCHDictionaryValueCallBacks);
 }
 
 #pragma mark -
@@ -74,7 +72,7 @@ HIDDEN void createCollectableCFMutableDictionary(CFMutableDictionaryRef *diction
 // Subclasses may override this as necessary, but must call back here first.
 - (instancetype)initWithCapacity:(NSUInteger)numItems {
 	if ((self = [super init]) == nil) return nil;
-	createCollectableCFMutableDictionary(&dictionary, numItems);
+	dictionary = CHDictionaryCreateMutable(numItems);
 	return self;
 }
 

@@ -6,7 +6,7 @@
 
 #import <CHDataStructures/CHUtil.h>
 
-HIDDEN void createCollectableCFMutableDictionary(CFMutableDictionaryRef *dictionary, NSUInteger initialCapacity);
+HIDDEN CFMutableDictionaryRef CHDictionaryCreateMutable(NSUInteger initialCapacity) CF_RETURNS_RETAINED;
 
 /**
  @file CHMutableDictionary.h

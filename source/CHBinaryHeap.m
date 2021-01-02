@@ -75,7 +75,6 @@ static const CFBinaryHeapCallBacks kCHBinaryHeapCallBacksDescending = {
 		heap = CFBinaryHeapCreate(kCFAllocatorDefault, 0, &kCHBinaryHeapCallBacksDescending, NULL);
 	else
 		CHInvalidArgumentException([self class], _cmd, @"Invalid sort order.");
-	CFMakeCollectable(heap); // Works under GC, and is a no-op otherwise.
 	[self addObjectsFromArray:anArray];
 	return self;
 }
