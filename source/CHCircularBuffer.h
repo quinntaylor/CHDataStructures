@@ -26,39 +26,11 @@
 	unsigned long mutations; // Tracks mutations for NSFastEnumeration.
 }
 
-- (instancetype)initWithCapacity:(NSUInteger)capacity NS_DESIGNATED_INITIALIZER;
-
-// The following methods are undocumented since they are only reimplementations.
-// Users should consult the API documentation for NSArray and NSMutableArray.
-
-- (instancetype)initWithArray:(NSArray *)anArray;
+- (instancetype)initWithCapacity:(NSUInteger)capacity NS_DESIGNATED_INITIALIZER; // Inherited from NSMutableArray
 
 - (NSArray *)allObjects;
-- (BOOL)containsObject:(id)anObject;
 - (BOOL)containsObjectIdenticalTo:(id)anObject;
-- (void)exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2;
-- (id)firstObject;
-- (NSUInteger)indexOfObject:(id)anObject;
-- (NSUInteger)indexOfObjectIdenticalTo:(id)anObject;
-- (id)lastObject;
-- (NSEnumerator *)objectEnumerator;
-- (NSArray *)objectsAtIndexes:(NSIndexSet *)indexes;
-- (void)removeAllObjects;
 - (void)removeFirstObject;
 - (void)removeLastObject;
-- (void)removeObject:(id)anObject;
-- (void)removeObjectIdenticalTo:(id)anObject;
-- (void)removeObjectsAtIndexes:(NSIndexSet *)indexes;
-- (void)replaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject;
-- (NSEnumerator *)reverseObjectEnumerator;
-
-#pragma mark Adopted Protocols
-
-- (void)encodeWithCoder:(NSCoder *)encoder;
-- (instancetype)initWithCoder:(NSCoder *)decoder;
-- (instancetype)copyWithZone:(NSZone *)zone;
-- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state
-								  objects:(id *)stackbuf
-									count:(NSUInteger)len;
 
 @end

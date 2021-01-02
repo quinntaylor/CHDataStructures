@@ -27,13 +27,6 @@ HIDDEN CFMutableDictionaryRef CHDictionaryCreateMutable(NSUInteger initialCapaci
 	CFMutableDictionaryRef dictionary; // A Core Foundation dictionary.
 }
 
-- (instancetype)initWithCapacity:(NSUInteger)numItems NS_DESIGNATED_INITIALIZER;
-
-- (NSUInteger)count;
-- (NSEnumerator *)keyEnumerator;
-- (id)objectForKey:(id)aKey;
-- (void)removeAllObjects;
-- (void)removeObjectForKey:(id)aKey;
-- (void)setObject:(id)anObject forKey:(id)aKey;
+- (instancetype)initWithCapacity:(NSUInteger)numItems NS_DESIGNATED_INITIALIZER; // Inherited from NSMutableDictionary
 
 @end

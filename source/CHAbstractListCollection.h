@@ -17,15 +17,13 @@
  - NSCoding
  - NSCopying
  - NSFastEnumeration
- 
- Rather than enforcing that this class be abstract, the contract is implied.
  */
 @interface CHAbstractListCollection : NSObject <NSCoding, NSCopying, NSFastEnumeration>
 {
 	id<CHLinkedList> list; // List used for storing contents of collection.
 }
 
-- (instancetype)initWithArray:(NSArray *)anArray;
+- (instancetype)initWithArray:(NSArray *)anArray NS_DESIGNATED_INITIALIZER;
 - (NSArray *)allObjects;
 - (BOOL)containsObject:(id)anObject;
 - (BOOL)containsObjectIdenticalTo:(id)anObject;
@@ -42,14 +40,5 @@
 - (void)removeObjectIdenticalTo:(id)anObject;
 - (void)removeObjectsAtIndexes:(NSIndexSet *)indexes;
 - (void)replaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject;
-
-#pragma mark Adopted Protocols
-
-- (void)encodeWithCoder:(NSCoder *)encoder;
-- (instancetype)initWithCoder:(NSCoder *)decoder;
-- (instancetype)copyWithZone:(NSZone *)zone;
-- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state
-								  objects:(id *)stackbuf
-									count:(NSUInteger)len;
 
 @end

@@ -23,15 +23,6 @@
 	CFMutableSetRef set; // A Core Foundation set.
 }
 
-- (instancetype)initWithCapacity:(NSUInteger)numItems NS_DESIGNATED_INITIALIZER;
-
-- (void)addObject:(id)anObject;
-- (id)anyObject;
-- (BOOL)containsObject:(id)anObject;
-- (NSUInteger)count;
-- (id)member:(id)anObject;
-- (NSEnumerator *)objectEnumerator;
-- (void)removeAllObjects;
-- (void)removeObject:(id)anObject;
+- (instancetype)initWithCapacity:(NSUInteger)numItems NS_DESIGNATED_INITIALIZER; // Inherited from NSMutableSet
 
 @end
