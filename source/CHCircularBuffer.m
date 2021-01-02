@@ -175,13 +175,24 @@ do { \
 
 - (instancetype)initWithArray:(NSArray *)anArray {
 	NSUInteger capacity = DEFAULT_BUFFER_SIZE;
-	while (capacity <= [anArray count])
-		capacity *= 2;
-	if ([self initWithCapacity:capacity] == nil) return nil;
-	for (id anObject in anArray) {
-		array[tailIndex++] = [anObject retain];
-	}
 	count = [anArray count];
+	while (capacity <= count) {
+		capacity *= 2;
+	}
+	if ([self initWithCapacity:capacity] == nil) return nil;
+	if (count > 0) {
+		if ([self _insertBackToFront]) {
+			headIndex = capacity;
+			tailIndex = 0;
+			for (id anObject in anArray) {
+				array[--headIndex] = [anObject retain];
+			}
+		} else {
+			for (id anObject in anArray) {
+				array[tailIndex++] = [anObject retain];
+			}
+		}
+	}
 	return self;
 }
 
@@ -190,7 +201,15 @@ do { \
 	if ((self = [super init]) == nil) return nil;
 	arrayCapacity = capacity ? capacity : DEFAULT_BUFFER_SIZE;
 	array = malloc(kCHPointerSize * arrayCapacity);
-	return self;	
+	if ([self _insertBackToFront]) {
+		// Initialize head and tail to last slot; avoids wrapping on second insert.
+		headIndex = tailIndex = (arrayCapacity - 1);
+	}
+	return self;
+}
+
+- (BOOL)_insertBackToFront {
+	return NO;
 }
 
 #pragma mark <NSCoding>
