@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0620"
+   LastUpgradeVersion = "0700"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "96E5B2A51A70FCB40074B77B"
+               BlueprintIdentifier = "8DC2EF4F0486A6940098B216"
                BuildableName = "CHDataStructures.framework"
-               BlueprintName = "iOS"
+               BlueprintName = "CHDataStructures"
                ReferencedContainer = "container:CHDataStructures.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -28,74 +28,73 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "96E5B2AF1A70FCB50074B77B"
+               BlueprintIdentifier = "E473CB540E9346CB005CA997"
                BuildableName = "CHDataStructures.xctest"
-               BlueprintName = "iOSTests"
+               BlueprintName = "CHDataStructuresTests"
                ReferencedContainer = "container:CHDataStructures.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
+      buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES"
-      buildConfiguration = "Debug">
+      shouldUseLaunchSchemeArgsEnv = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "8DC2EF4F0486A6940098B216"
+            BuildableName = "CHDataStructures.framework"
+            BlueprintName = "CHDataStructures"
+            ReferencedContainer = "container:CHDataStructures.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <Testables>
          <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "96E5B2AF1A70FCB50074B77B"
+               BlueprintIdentifier = "E473CB540E9346CB005CA997"
                BuildableName = "CHDataStructures.xctest"
-               BlueprintName = "iOSTests"
+               BlueprintName = "CHDataStructuresTests"
                ReferencedContainer = "container:CHDataStructures.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "96E5B2A51A70FCB40074B77B"
-            BuildableName = "CHDataStructures.framework"
-            BlueprintName = "iOS"
-            ReferencedContainer = "container:CHDataStructures.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </TestAction>
    <LaunchAction
+      buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
-      buildConfiguration = "Debug"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
+      debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "96E5B2A51A70FCB40074B77B"
+            BlueprintIdentifier = "8DC2EF4F0486A6940098B216"
             BuildableName = "CHDataStructures.framework"
-            BlueprintName = "iOS"
+            BlueprintName = "CHDataStructures"
             ReferencedContainer = "container:CHDataStructures.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
-      <AdditionalOptions>
-      </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
+      buildConfiguration = "Release"
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
-      buildConfiguration = "Release"
       debugDocumentVersioning = "YES">
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "96E5B2A51A70FCB40074B77B"
+            BlueprintIdentifier = "8DC2EF4F0486A6940098B216"
             BuildableName = "CHDataStructures.framework"
-            BlueprintName = "iOS"
+            BlueprintName = "CHDataStructures"
             ReferencedContainer = "container:CHDataStructures.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

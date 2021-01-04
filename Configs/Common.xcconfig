@@ -6,9 +6,33 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
+// Architectures
+SDKROOT = iphoneos
+SDKROOT[sdk=appletv*] = appletvos
+SDKROOT[sdk=watch*] = watchos
+SDKROOT[sdk=mac*] = macosx
+
+SUPPORTED_PLATFORMS = iphoneos iphonesimulator appletvos appletvsimulator watchos watchsimulator macosx
+
+// Deployment
+TARGETED_DEVICE_FAMILY[sdk=iphone*] = 1,2
+TARGETED_DEVICE_FAMILY[sdk=appletv*] = 3,5
+TARGETED_DEVICE_FAMILY[sdk=watch*] = 4
+TARGETED_DEVICE_FAMILY[sdk=mac*] =
+
+IPHONEOS_DEPLOYMENT_TARGET = 9.0
+MACOSX_DEPLOYMENT_TARGET = 10.11
+
+// Search Paths
 ALWAYS_SEARCH_USER_PATHS = NO
+
+// Signing
+CODE_SIGN_IDENTITY = -
+CODE_SIGN_STYLE = Automatic
+
+// Apple Clang - Language - Objective-C
 CLANG_ENABLE_OBJC_WEAK = YES
-CODE_SIGN_IDENTITY = "-"
+
 COMBINE_HIDPI_IMAGES = YES
 DEBUG_INFORMATION_FORMAT = dwarf-with-dsym
 ENABLE_STRICT_OBJC_MSGSEND = YES
