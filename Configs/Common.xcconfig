@@ -30,6 +30,10 @@ ALWAYS_SEARCH_USER_PATHS = NO
 CODE_SIGN_IDENTITY = -
 CODE_SIGN_STYLE = Automatic
 
+// Apple Clang - Language - Modules
+CLANG_ENABLE_MODULES = YES
+CLANG_MODULES_AUTOLINK = NO
+
 // Apple Clang - Language - Objective-C
 CLANG_ENABLE_OBJC_WEAK = YES
 
