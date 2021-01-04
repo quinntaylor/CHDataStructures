@@ -394,7 +394,6 @@
 		E4D499690E93CD1300434CBA /* CHLinkedListTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHLinkedListTest.m; path = test/CHLinkedListTest.m; sourceTree = "<group>"; };
 		E4D9413E0F93C147001BAE05 /* CHCircularBufferStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHCircularBufferStack.h; path = source/CHCircularBufferStack.h; sourceTree = "<group>"; };
 		E4D9413F0F93C147001BAE05 /* CHCircularBufferStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHCircularBufferStack.m; path = source/CHCircularBufferStack.m; sourceTree = "<group>"; };
-		E4E7C1260EC0CACE009B19D7 /* CHDataStructures_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHDataStructures_Prefix.pch; path = source/CHDataStructures_Prefix.pch; sourceTree = "<group>"; };
 		E4FD52CC0ECA8589006D9FF8 /* CHDequeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHDequeTest.m; path = test/CHDequeTest.m; sourceTree = "<group>"; };
 		E4FD52F50ECA8A9F006D9FF8 /* CHQueueTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHQueueTest.m; path = test/CHQueueTest.m; sourceTree = "<group>"; };
 		E4FD53020ECA9212006D9FF8 /* CHStackTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHStackTest.m; path = test/CHStackTest.m; sourceTree = "<group>"; };
@@ -598,7 +597,6 @@
 			isa = PBXGroup;
 			children = (
 				E442DFA70E8F1BDF00BD62F6 /* CHDataStructures.h */,
-				E4E7C1260EC0CACE009B19D7 /* CHDataStructures_Prefix.pch */,
 				E44773A10E913C89000889F7 /* CHUtil.h */,
 				E4723A710EB91B7A006FE465 /* CHUtil.m */,
 				E44B57D00E9558A000F9DD1A /* Protocols */,
@@ -1102,8 +1100,6 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_VERSION = A;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = source/CHDataStructures_Prefix.pch;
 				INFOPLIST_FILE = "resources/Info-Framework.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
 				WRAPPER_EXTENSION = framework;
@@ -1116,8 +1112,6 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_VERSION = A;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = source/CHDataStructures_Prefix.pch;
 				INFOPLIST_FILE = "resources/Info-Framework.plist";
 				INSTALL_PATH = "@executable_path/../Frameworks";
 				WRAPPER_EXTENSION = framework;
@@ -1163,7 +1157,6 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = source/CHDataStructures_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1205,7 +1198,6 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = source/CHDataStructures_Prefix.pch;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "resources/Info-Framework.plist";
