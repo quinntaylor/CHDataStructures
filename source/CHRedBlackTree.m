@@ -1,9 +1,10 @@
-/*
- CHDataStructures.framework -- CHRedBlackTree.m
- 
- Copyright (c) 2008-2010, Quinn Taylor <http://homepage.mac.com/quinntaylor>
- Copyright (c) 2002, Phillip Morelock <http://www.phillipmorelock.com>
- */
+//
+//  CHRedBlackTree.m
+//  CHDataStructures
+//
+//  Copyright © 2008-2021, Quinn Taylor
+//  Copyright © 2002, Phillip Morelock
+//
 
 #import <CHDataStructures/CHRedBlackTree.h>
 #import "CHAbstractBinarySearchTree_Internal.h"

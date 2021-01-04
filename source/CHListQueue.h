@@ -1,9 +1,10 @@
-/*
- CHDataStructures.framework -- CHListQueue.h
- 
- Copyright (c) 2008-2010, Quinn Taylor <http://homepage.mac.com/quinntaylor>
- Copyright (c) 2002, Phillip Morelock <http://www.phillipmorelock.com>
- */
+//
+//  CHListQueue.h
+//  CHDataStructures
+//
+//  Copyright © 2008-2021, Quinn Taylor
+//  Copyright © 2002, Phillip Morelock
+//
 
 #import <CHDataStructures/CHQueue.h>
 #import <CHDataStructures/CHAbstractListCollection.h>

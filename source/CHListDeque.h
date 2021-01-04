@@ -1,8 +1,9 @@
-/*
- CHDataStructures.framework -- CHListDeque.h
- 
- Copyright (c) 2008-2010, Quinn Taylor <http://homepage.mac.com/quinntaylor>
- */
+//
+//  CHListDeque.h
+//  CHDataStructures
+//
+//  Copyright © 2008-2021, Quinn Taylor
+//
 
 #import <CHDataStructures/CHDeque.h>
 #import <CHDataStructures/CHAbstractListCollection.h>

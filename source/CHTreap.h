@@ -1,8 +1,9 @@
-/*
- CHDataStructures.framework -- CHTreap.h
- 
- Copyright (c) 2008-2010, Quinn Taylor <http://homepage.mac.com/quinntaylor>
- */
+//
+//  CHTreap.h
+//  CHDataStructures
+//
+//  Copyright © 2008-2021, Quinn Taylor
+//
 
 #import <CHDataStructures/CHAbstractBinarySearchTree.h>
 

@@ -1,8 +1,9 @@
-/*
- CHDataStructures.framework -- CHMutableArrayHeap.m
- 
- Copyright (c) 2008-2010, Quinn Taylor <http://homepage.mac.com/quinntaylor>
- */
+//
+//  CHMutableArrayHeap.m
+//  CHDataStructures
+//
+//  Copyright © 2008-2021, Quinn Taylor
+//
 
 #import <CHDataStructures/CHMutableArrayHeap.h>
 

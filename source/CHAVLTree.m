@@ -1,8 +1,9 @@
-/*
- CHDataStructures.framework -- CHAVLTree.m
- 
- Copyright (c) 2008-2010, Quinn Taylor <http://homepage.mac.com/quinntaylor>
- */
+//
+//  CHAVLTree.m
+//  CHDataStructures
+//
+//  Copyright © 2008-2021, Quinn Taylor
+//
 
 #import <CHDataStructures/CHAVLTree.h>
 #import "CHAbstractBinarySearchTree_Internal.h"

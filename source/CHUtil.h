@@ -1,8 +1,9 @@
-/*
- CHDataStructures.framework -- CHUtil.h
- 
- Copyright (c) 2008-2010, Quinn Taylor <http://homepage.mac.com/quinntaylor>
- */
+//
+//  CHUtil.h
+//  CHDataStructures
+//
+//  Copyright © 2008-2021, Quinn Taylor
+//
 
 #import <Foundation/Foundation.h>
 

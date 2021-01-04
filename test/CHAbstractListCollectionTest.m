@@ -1,8 +1,9 @@
-/*
- CHDataStructures.framework -- CHAbstractListCollectionTest.m
- 
- Copyright (c) 2008-2010, Quinn Taylor <http://homepage.mac.com/quinntaylor>
- */
+//
+//  CHAbstractListCollectionTest.m
+//  CHDataStructures
+//
+//  Copyright © 2008-2021, Quinn Taylor
+//
 
 #import <XCTest/XCTest.h>
 #import <CHDataStructures/CHAbstractListCollection.h>

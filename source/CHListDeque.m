@@ -1,8 +1,9 @@
-/*
- CHDataStructures.framework -- CHListDeque.m
- 
- Copyright (c) 2008-2010, Quinn Taylor <http://homepage.mac.com/quinntaylor>
- */
+//
+//  CHListDeque.m
+//  CHDataStructures
+//
+//  Copyright © 2008-2021, Quinn Taylor
+//
 
 #import <CHDataStructures/CHListDeque.h>
 #import <CHDataStructures/CHDoublyLinkedList.h>

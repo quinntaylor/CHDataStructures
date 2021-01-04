@@ -1,8 +1,9 @@
-/*
- CHDataStructures.framework -- CHAbstractBinarySearchTree_Internal.h
- 
- Copyright (c) 2008-2010, Quinn Taylor <http://homepage.mac.com/quinntaylor>
- */
+//
+//  CHAbstractBinarySearchTree_Internal.h
+//  CHDataStructures
+//
+//  Copyright © 2008-2021, Quinn Taylor
+//
 
 #import <CHDataStructures/CHAbstractBinarySearchTree.h>
 

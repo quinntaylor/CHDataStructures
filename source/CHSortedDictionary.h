@@ -1,8 +1,9 @@
-/*
- CHDataStructures.framework -- CHSortedDictionary.h
- 
- Copyright (c) 2009-2010, Quinn Taylor <http://homepage.mac.com/quinntaylor>
- */
+//
+//  CHSortedDictionary.h
+//  CHDataStructures
+//
+//  Copyright © 2009-2021, Quinn Taylor
+//
 
 #import <CHDataStructures/CHMutableDictionary.h>
 #import <CHDataStructures/CHSortedSet.h>

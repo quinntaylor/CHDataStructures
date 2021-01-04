@@ -1,8 +1,9 @@
-/*
- CHDataStructures.framework -- CHLinkedList.h
- 
- Copyright (c) 2008-2010, Quinn Taylor <http://homepage.mac.com/quinntaylor>
- */
+//
+//  CHLinkedList.h
+//  CHDataStructures
+//
+//  Copyright © 2008-2021, Quinn Taylor
+//
 
 #import <CHDataStructures/CHUtil.h>
 

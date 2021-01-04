@@ -1,8 +1,9 @@
-/*
- CHDataStructures.framework -- CHBidirectionalDictionary.m
- 
- Copyright (c) 2010, Quinn Taylor <http://homepage.mac.com/quinntaylor>
- */
+//
+//  CHBidirectionalDictionary.m
+//  CHDataStructures
+//
+//  Copyright © 2010-2021, Quinn Taylor
+//
 
 #import <CHDataStructures/CHBidirectionalDictionary.h>
 

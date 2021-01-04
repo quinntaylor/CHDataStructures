@@ -1,8 +1,9 @@
-/*
- CHDataStructures.framework -- CHCircularBufferStack.h
- 
- Copyright (c) 2009-2010, Quinn Taylor <http://homepage.mac.com/quinntaylor>
- */
+//
+//  CHCircularBufferStack.h
+//  CHDataStructures
+//
+//  Copyright © 2009-2021, Quinn Taylor
+//
 
 #import <CHDataStructures/CHStack.h>
 #import <CHDataStructures/CHCircularBuffer.h>

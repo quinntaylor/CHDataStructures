@@ -1,9 +1,10 @@
-/*
- CHDataStructures.framework -- CHDoublyLinkedList.h
- 
- Copyright (c) 2008-2010, Quinn Taylor <http://homepage.mac.com/quinntaylor>
- Copyright (c) 2002, Phillip Morelock <http://www.phillipmorelock.com>
- */
+//
+//  CHDoublyLinkedList.h
+//  CHDataStructures
+//
+//  Copyright © 2008-2021, Quinn Taylor
+//  Copyright © 2002, Phillip Morelock
+//
 
 #import <CHDataStructures/CHLinkedList.h>
 

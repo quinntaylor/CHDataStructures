@@ -1,8 +1,9 @@
-/*
- CHDataStructures.framework -- CHMultiDictionary.m
- 
- Copyright (c) 2008-2010, Quinn Taylor <http://homepage.mac.com/quinntaylor>
- */
+//
+//  CHMultiDictionary.m
+//  CHDataStructures
+//
+//  Copyright © 2008-2021, Quinn Taylor
+//
 
 #import <CHDataStructures/CHMultiDictionary.h>
 
