@@ -41,7 +41,7 @@ static NSMutableArray *objects;
 static double startTime;
 
 /* Return the current time in seconds, using a double precision number. */
-double timestamp() {
+double timestamp(void) {
 	struct timeval timeOfDay;
 	gettimeofday(&timeOfDay, NULL);
 	return ((double) timeOfDay.tv_sec + (double)timeOfDay.tv_usec * 1e-6);
