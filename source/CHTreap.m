@@ -27,8 +27,7 @@
 }
 
 - (void)addObject:(id)anObject withPriority:(NSUInteger)priority {
-	if (anObject == nil)
-		CHNilArgumentException([self class], _cmd);
+	CHRaiseInvalidArgumentExceptionIfNil(anObject);
 	++mutations;
 
 	CHBinaryTreeNode *parent, *current = header;

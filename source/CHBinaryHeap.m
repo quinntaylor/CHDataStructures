@@ -75,7 +75,7 @@ static const CFBinaryHeapCallBacks kCHBinaryHeapCallBacksDescending = {
 	else if (sortOrder == NSOrderedDescending)
 		heap = CFBinaryHeapCreate(kCFAllocatorDefault, 0, &kCHBinaryHeapCallBacksDescending, NULL);
 	else
-		CHInvalidArgumentException([self class], _cmd, @"Invalid sort order.");
+		CHRaiseInvalidArgumentException(@"Invalid sort order.");
 	[self addObjectsFromArray:anArray];
 	return self;
 }
@@ -140,8 +140,7 @@ static const CFBinaryHeapCallBacks kCHBinaryHeapCallBacksDescending = {
 #pragma mark Modifying Contents
 
 - (void)addObject:(id)anObject {
-	if (anObject == nil)
-		CHNilArgumentException([self class], _cmd);
+	CHRaiseInvalidArgumentExceptionIfNil(anObject);
 	CFBinaryHeapAddValue(heap, anObject);
 	++mutations;
 }

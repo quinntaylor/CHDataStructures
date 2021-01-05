@@ -36,8 +36,7 @@
 // NOTE: The header and sentinel nodes are initialized to level 0 by default.
 
 - (void)addObject:(id)anObject {
-	if (anObject == nil)
-		CHNilArgumentException([self class], _cmd);
+	CHRaiseInvalidArgumentExceptionIfNil(anObject);
 	++mutations;
 	
 	CHBinaryTreeNode *parent, *current = header;

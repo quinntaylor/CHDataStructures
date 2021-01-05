@@ -65,78 +65,51 @@ HIDDEN NSUInteger hashOfCountAndObjects(NSUInteger count, id o1, id o2);
 #pragma mark -
 
 /**
- Convenience function for raising an exception for an invalid range (index).
- 
- Currently, there is no support for calling this function from a C function.
- 
- @param aClass The class object for the originator of the exception. Callers should pass the result of <code>[self class]</code> for this parameter.
- @param method The method selector where the problem originated. Callers should pass @c _cmd for this parameter.
- @param index The offending index passed to the receiver.
- @param elements The number of elements present in the receiver.
- 
- @throw NSRangeException
- 
- @see \link NSException#raise:format: +[NSException raise:format:]\endlink
+ Convenience macro for raising an exception for an invalid index.
  */
-OBJC_EXPORT void CHIndexOutOfRangeException(Class aClass, SEL method,
-                                       NSUInteger index, NSUInteger elements);
+#define CHRaiseIndexOutOfRangeExceptionIf(a, comparison, b) \
+({ \
+	NSUInteger aValue = (a); \
+	NSUInteger bValue = (b); \
+	if (aValue comparison bValue) { \
+		[NSException raise:NSRangeException \
+		            format:@"%s -- Index out of range: %s (%lu) %s %s (%lu)", \
+                           __PRETTY_FUNCTION__, #a, aValue, #comparison, #b, bValue]; \
+	} \
+})
 
 /**
- Convenience function for raising an exception on an invalid argument.
- 
- Currently, there is no support for calling this function from a C function.
- 
- @param aClass The class object for the originator of the exception. Callers should pass the result of <code>[self class]</code> for this parameter.
- @param method The method selector where the problem originated. Callers should pass @c _cmd for this parameter.
- @param str An NSString describing the offending invalid argument.
- 
- @throw NSInvalidArgumentException
- 
- @see \link NSException#raise:format: +[NSException raise:format:]\endlink
+ Convenience macro for raising an exception on an invalid argument.
  */
-OBJC_EXPORT void CHInvalidArgumentException(Class aClass, SEL method, NSString *str);
+#define CHRaiseInvalidArgumentException(str) \
+[NSException raise:NSInvalidArgumentException \
+            format:@"%s -- %@", \
+                   __PRETTY_FUNCTION__, str]
 
 /**
- Convenience function for raising an exception on an invalid nil object argument.
- 
- Currently, there is no support for calling this function from a C function.
- 
- @param aClass The class object for the originator of the exception. Callers should pass the result of <code>[self class]</code> for this parameter.
- @param method The method selector where the problem originated. Callers should pass @c _cmd for this parameter.
- 
- @throw NSInvalidArgumentException
- 
- @see CHInvalidArgumentException()
+ Convenience macro for raising an exception on an invalid nil argument.
+
  */
-OBJC_EXPORT void CHNilArgumentException(Class aClass, SEL method);
+#define CHRaiseInvalidArgumentExceptionIfNil(argument) \
+if (argument == nil) { \
+	CHRaiseInvalidArgumentException(@"Invalid nil value: " @#argument); \
+}
 
 /**
- Convenience function for raising an exception when a collection is mutated.
- 
- Currently, there is no support for calling this function from a C function.
- 
- @param aClass The class object for the originator of the exception. Callers should pass the result of <code>[self class]</code> for this parameter.
- @param method The method selector where the problem originated. Callers should pass @c _cmd for this parameter.
- 
- @throw NSGenericException
- 
- @see \link NSException#raise:format: +[NSException raise:format:]\endlink
+ Convenience macro for raising an exception when a collection is mutated.
  */
-OBJC_EXPORT void CHMutatedCollectionException(Class aClass, SEL method);
+#define CHRaiseMutatedCollectionException() \
+[NSException raise:NSGenericException \
+            format:@"%s -- Collection was mutated during enumeration", \
+                   __PRETTY_FUNCTION__]
 
 /**
- Convenience function for raising an exception for un-implemented functionality.
- 
- Currently, there is no support for calling this function from a C function.
- 
- @param aClass The class object for the originator of the exception. Callers should pass the result of <code>[self class]</code> for this parameter.
- @param method The method selector where the problem originated. Callers should pass @c _cmd for this parameter.
- 
- @throw NSInternalInconsistencyException
- 
- @see \link NSException#raise:format: +[NSException raise:format:]\endlink
+ Convenience macro for raising an exception for unsupported operations.
  */
-OBJC_EXPORT void CHUnsupportedOperationException(Class aClass, SEL method);
+#define CHRaiseUnsupportedOperationException() \
+[NSException raise:NSInternalInconsistencyException \
+            format:@"%s -- Unsupported operation", \
+                   __PRETTY_FUNCTION__]
 
 /**
  Provides a more terse alternative to NSLog() which accepts the same parameters. The output is made shorter by excluding the date stamp and process information which NSLog prints before the actual specified output.

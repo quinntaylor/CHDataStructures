@@ -43,8 +43,7 @@
 }
 
 - (void)pushObject:(id)anObject {
-	if (anObject == nil)
-		CHNilArgumentException([self class], _cmd);
+	CHRaiseInvalidArgumentExceptionIfNil(anObject);
 	[list prependObject:anObject];
 }
 

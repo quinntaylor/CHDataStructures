@@ -30,7 +30,7 @@
 
 // Child classes must override to provide a value for the "list" instance variable.
 - (id<CHLinkedList>)_createList {
-	CHUnsupportedOperationException([CHAbstractListCollection class], _cmd);
+	CHRaiseUnsupportedOperationException();
 	return nil;
 }
 

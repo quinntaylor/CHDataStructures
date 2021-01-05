@@ -27,7 +27,7 @@ static inline NSMutableSet * createMutableSetFromObject(id object) {
 
 - (instancetype)initWithObjects:(NSArray *)objectsArray forKeys:(NSArray *)keyArray {
 	if ([keyArray count] != [objectsArray count])
-		CHInvalidArgumentException([self class], _cmd, @"Unequal array counts.");
+		CHRaiseInvalidArgumentException(@"Unequal array counts.");
 	if (self = [super initWithCapacity:[objectsArray count]]) {
 		NSEnumerator *objects = [objectsArray objectEnumerator];
 		for (id key in keyArray) {

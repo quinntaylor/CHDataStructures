@@ -87,7 +87,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 
 - (id)nextObject {
 	if (mutationCount != *mutationPtr)
-		CHMutatedCollectionException([self class], _cmd);
+		CHRaiseMutatedCollectionException();
 	if (current == sentinel) {
 		[collection release];
 		collection = nil;
@@ -100,7 +100,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 
 - (NSArray *)allObjects {
 	if (mutationCount != *mutationPtr)
-		CHMutatedCollectionException([self class], _cmd);
+		CHRaiseMutatedCollectionException();
 	NSMutableArray *array = [[NSMutableArray alloc] init];
 	while (current != sentinel) {
 		[array addObject:current->object];
@@ -124,8 +124,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 // An internal method for locating a node at a specific position in the list.
 // If the index is invalid, an NSRangeException is raised.
 - (CHDoublyLinkedListNode *)nodeAtIndex:(NSUInteger)index {
-	if (index > count) // If it's equal to count, we return the dummy tail node
-		CHIndexOutOfRangeException([self class], _cmd, index, count);
+	CHRaiseIndexOutOfRangeExceptionIf(index, >, count); // If it's equal, we return the dummy tail node
 	// Start with the end of the linked list (head or tail) closest to the index
 	BOOL closerToHead = (index < count/2);
 	CHDoublyLinkedListNode *node = closerToHead ? head->next : tail;
@@ -313,8 +312,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 }
 
 - (id)objectAtIndex:(NSUInteger)index {
-	if (index >= count)
-		CHIndexOutOfRangeException([self class], _cmd, index, count);
+	CHRaiseIndexOutOfRangeExceptionIf(index, >=, count);
 	return [self nodeAtIndex:index]->object;
 }
 
@@ -328,10 +326,11 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 }
 
 - (NSArray *)objectsAtIndexes:(NSIndexSet *)indexes {
-	if (indexes == nil)
-		CHNilArgumentException([self class], _cmd);
-	if ([indexes count] && [indexes lastIndex] >= count)
-		CHIndexOutOfRangeException([self class], _cmd, [indexes lastIndex], count);
+	CHRaiseInvalidArgumentExceptionIfNil(indexes);
+	if ([indexes count] == 0) {
+		return @[];
+	}
+	CHRaiseIndexOutOfRangeExceptionIf([indexes lastIndex], >=, count);
 	NSMutableArray *objects = [NSMutableArray arrayWithCapacity:[indexes count]];
 	CHDoublyLinkedListNode *current = head;
 	NSUInteger nextIndex = [indexes firstIndex], index = 0;
@@ -357,8 +356,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 #pragma mark Modifying Contents
 
 - (void)addObject:(id)anObject {
-	if (anObject == nil)
-		CHNilArgumentException([self class], _cmd);
+	CHRaiseInvalidArgumentExceptionIfNil(anObject);
 	[self insertObject:anObject atIndex:count];
 }
 
@@ -369,8 +367,8 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 }
 
 - (void)exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2 {
-	if (idx1 >= count || idx2 >= count)
-		CHIndexOutOfRangeException([self class], _cmd, MAX(idx1,idx2), count);
+	CHRaiseIndexOutOfRangeExceptionIf(idx1, >=, count);
+	CHRaiseIndexOutOfRangeExceptionIf(idx2, >=, count);
 	if (idx1 != idx2) {
 		// Find the nodes as the provided indexes
 		CHDoublyLinkedListNode *node1 = [self nodeAtIndex:idx1];
@@ -384,8 +382,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 }
 
 - (void)insertObject:(id)anObject atIndex:(NSUInteger)index {
-	if (anObject == nil)
-		CHNilArgumentException([self class], _cmd);
+	CHRaiseInvalidArgumentExceptionIfNil(anObject);
 	CHDoublyLinkedListNode *node = [self nodeAtIndex:index];
 	CHDoublyLinkedListNode *newNode;
 	newNode = malloc(kCHDoublyLinkedListNodeSize);
@@ -401,10 +398,10 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 }
 
 - (void)insertObjects:(NSArray *)objects atIndexes:(NSIndexSet *)indexes {
-	if (objects == nil || indexes == nil)
-		CHNilArgumentException([self class], _cmd);
+	CHRaiseInvalidArgumentExceptionIfNil(objects);
+	CHRaiseInvalidArgumentExceptionIfNil(indexes);
 	if ([objects count] != [indexes count])
-		CHInvalidArgumentException([self class], _cmd, @"Unequal object and index counts.");
+		CHRaiseInvalidArgumentException(@"Unequal object and index counts.");
 	NSUInteger index = [indexes firstIndex];
 	for (id anObject in objects) {
 		[self insertObject:anObject atIndex:index];
@@ -413,8 +410,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 }
 
 - (void)prependObject:(id)anObject {
-	if (anObject == nil)
-		CHNilArgumentException([self class], _cmd);
+	CHRaiseInvalidArgumentExceptionIfNil(anObject);
 	[self insertObject:anObject atIndex:0];
 }
 
@@ -465,8 +461,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 }
 
 - (void)removeObjectAtIndex:(NSUInteger)index {
-	if (index >= count)
-		CHIndexOutOfRangeException([self class], _cmd, index, count);
+	CHRaiseIndexOutOfRangeExceptionIf(index, >=, count);
 	[self removeNode:[self nodeAtIndex:index]];
 }
 
@@ -475,11 +470,9 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 }
 
 - (void)removeObjectsAtIndexes:(NSIndexSet *)indexes {
-	if (indexes == nil)
-		CHNilArgumentException([self class], _cmd);
+	CHRaiseInvalidArgumentExceptionIfNil(indexes);
 	if ([indexes count]) {
-		if ([indexes lastIndex] >= count)
-			CHIndexOutOfRangeException([self class], _cmd, [indexes lastIndex], count);
+		CHRaiseIndexOutOfRangeExceptionIf([indexes lastIndex], >=, count);
 		NSUInteger nextIndex = [indexes firstIndex], index = 0;
 		CHDoublyLinkedListNode *current = head->next, *temp;
 		while (nextIndex != NSNotFound) {
@@ -494,8 +487,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 }
 
 - (void)replaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject {
-	if (index >= count)
-		CHIndexOutOfRangeException([self class], _cmd, index, count);
+	CHRaiseIndexOutOfRangeExceptionIf(index, >=, count);
 	CHDoublyLinkedListNode *node = [self nodeAtIndex:index];
 	[node->object autorelease];
 	node->object = [anObject retain];

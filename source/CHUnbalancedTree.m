@@ -12,8 +12,7 @@
 @implementation CHUnbalancedTree
 
 - (void)addObject:(id)anObject {
-	if (anObject == nil)
-		CHNilArgumentException([self class], _cmd);
+	CHRaiseInvalidArgumentExceptionIfNil(anObject);
 	++mutations;
 	
 	CHBinaryTreeNode *parent = header, *current = header->right;

@@ -83,8 +83,7 @@
 }
 
 - (CHOrderedDictionary *)orderedDictionaryWithKeysAtIndexes:(NSIndexSet *)indexes {
-	if (indexes == nil)
-		CHNilArgumentException([self class], _cmd);
+	CHRaiseInvalidArgumentExceptionIfNil(indexes);
 	if ([indexes count] == 0)
 		return [[self class] dictionary];
 	CHOrderedDictionary *newDictionary = [[self class] dictionaryWithCapacity:[indexes count]];
@@ -108,10 +107,9 @@
 }
 
 - (void)insertObject:(id)anObject forKey:(id)aKey atIndex:(NSUInteger)index {
-	if (index > [self count])
-		CHIndexOutOfRangeException([self class], _cmd, index, [self count]);
-	if (anObject == nil || aKey == nil)
-		CHNilArgumentException([self class], _cmd);
+	CHRaiseInvalidArgumentExceptionIfNil(anObject);
+	CHRaiseInvalidArgumentExceptionIfNil(aKey);
+	CHRaiseIndexOutOfRangeExceptionIf(index, >, [self count]);
 	
 	id clonedKey = [[aKey copy] autorelease];
 	if (!CFDictionaryContainsKey(dictionary, clonedKey)) {

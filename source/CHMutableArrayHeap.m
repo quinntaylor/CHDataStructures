@@ -71,7 +71,7 @@
 // This is the designated initializer for CHMutableArrayHeap
 - (instancetype)initWithOrdering:(NSComparisonResult)order array:(NSArray *)anArray {
 	if (order != NSOrderedAscending && order != NSOrderedDescending)
-		CHInvalidArgumentException([self class], _cmd, @"Invalid sort order.");
+		CHRaiseInvalidArgumentException(@"Invalid sort order.");
 	if ((self = [super init]) == nil) return nil;
 	array = [[NSMutableArray alloc] initWithCapacity:[anArray count]];
 	sortOrder = order;
@@ -200,8 +200,7 @@
 #pragma mark -
 
 - (void)addObject:(id)anObject {
-	if (anObject == nil)
-		CHNilArgumentException([self class], _cmd);
+	CHRaiseInvalidArgumentExceptionIfNil(anObject);
 	++mutations;
 	[array addObject:anObject];
 	// Bubble the new object (at the end of the array) up the heap as necessary.
@@ -232,7 +231,7 @@
 }
 
 - (void)insertObject:(id)anObject atIndex:(NSUInteger)index {
-	CHUnsupportedOperationException([self class], _cmd);
+	CHRaiseUnsupportedOperationException();
 }
 
 - (void)removeFirstObject {
@@ -266,7 +265,7 @@
 }
 
 - (void)removeObjectAtIndex:(NSUInteger)index {
-	CHUnsupportedOperationException([self class], _cmd);
+	CHRaiseUnsupportedOperationException();
 }
 
 // NOTE: This method is not part of the CHHeap protocol.

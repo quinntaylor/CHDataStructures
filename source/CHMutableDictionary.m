@@ -143,8 +143,8 @@ HIDDEN CFMutableDictionaryRef CHDictionaryCreateMutable(NSUInteger initialCapaci
 }
 
 - (void)setObject:(id)anObject forKey:(id)aKey {
-	if (anObject == nil || aKey == nil)
-		CHNilArgumentException([self class], _cmd);
+	CHRaiseInvalidArgumentExceptionIfNil(anObject);
+	CHRaiseInvalidArgumentExceptionIfNil(aKey);
 	CFDictionarySetValue(dictionary, [[aKey copy] autorelease], anObject);
 }
 

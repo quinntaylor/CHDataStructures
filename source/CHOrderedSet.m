@@ -60,12 +60,10 @@
 }
 
 - (NSArray *)objectsAtIndexes:(NSIndexSet *)indexes {
-	if (indexes == nil)
-		CHNilArgumentException([self class], _cmd);
+	CHRaiseInvalidArgumentExceptionIfNil(indexes);
 	if ([indexes count] == 0)
-		return [NSArray array];
-	if ([indexes lastIndex] >= [self count])
-		CHIndexOutOfRangeException([self class], _cmd, [indexes lastIndex], [self count]);
+		return @[];
+	CHRaiseIndexOutOfRangeExceptionIf([indexes lastIndex], >=, [self count]);
 	NSMutableArray *objects = [NSMutableArray arrayWithCapacity:[self count]];
 	NSUInteger index = [indexes firstIndex];
 	while (index != NSNotFound) {
@@ -76,8 +74,7 @@
 }
 
 - (CHOrderedSet *)orderedSetWithObjectsAtIndexes:(NSIndexSet *)indexes {
-	if (indexes == nil)
-		CHNilArgumentException([self class], _cmd);
+	CHRaiseInvalidArgumentExceptionIfNil(indexes);
 	if ([indexes count] == 0)
 		return [[self class] set];
 	CHOrderedSet *newSet = [[self class] setWithCapacity:[indexes count]];
@@ -92,8 +89,7 @@
 #pragma mark Modifying Contents
 
 - (void)addObject:(id)anObject {
-	if (anObject == nil)
-		CHNilArgumentException([self class], _cmd);
+	CHRaiseInvalidArgumentExceptionIfNil(anObject);
 	if (![self containsObject:anObject])
 		[ordering addObject:anObject];
 	[super addObject:anObject];
@@ -104,8 +100,7 @@
 }
 
 - (void)insertObject:(id)anObject atIndex:(NSUInteger)index {
-	if (index > [self count])
-		CHIndexOutOfRangeException([self class], _cmd, index, [self count]);
+	CHRaiseIndexOutOfRangeExceptionIf(index, >, [self count]);
 	if ([self containsObject:anObject])
 		[ordering removeObject:anObject];
 	[ordering insertObject:anObject atIndex:index];

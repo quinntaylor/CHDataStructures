@@ -49,8 +49,7 @@ static inline void adjustBalance(CHBinaryTreeNode *root, u_int32_t dir, int32_t 
 // NOTE: The header and sentinel nodes are initialized to balance 0 by default.
 
 - (void)addObject:(id)anObject {
-	if (anObject == nil)
-		CHNilArgumentException([self class], _cmd);
+	CHRaiseInvalidArgumentExceptionIfNil(anObject);
 	++mutations;
 	
 	CHBinaryTreeNode *parent = nil, *save = nil, *current = header;

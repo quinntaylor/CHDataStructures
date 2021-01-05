@@ -70,8 +70,7 @@ static inline CHBinaryTreeNode * doubleRotation(CHBinaryTreeNode *node, BOOL goi
  Basically, as you walk down the tree to insert, if the present node has two red children, color it red and change the two children to black. If its parent is red, the tree must be rotated. (Just change the root's color back to black if you changed it). Returns without incrementing the count if the object already exists in the tree.
  */
 - (void)addObject:(id)anObject {
-	if (anObject == nil)
-		CHNilArgumentException([self class], _cmd);
+	CHRaiseInvalidArgumentExceptionIfNil(anObject);
 	++mutations;
 
 	CHBinaryTreeNode *current, *parent, *grandparent, *greatgrandparent;

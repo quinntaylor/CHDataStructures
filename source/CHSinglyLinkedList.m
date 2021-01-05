@@ -71,7 +71,7 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 
 - (id)nextObject {
 	if (mutationCount != *mutationPtr)
-		CHMutatedCollectionException([self class], _cmd);
+		CHRaiseMutatedCollectionException();
 	if (current == NULL) {
 		[collection release];
 		collection = nil;
@@ -84,7 +84,7 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 
 - (NSArray *)allObjects {
 	if (mutationCount != *mutationPtr)
-		CHMutatedCollectionException([self class], _cmd);
+		CHRaiseMutatedCollectionException();
 	NSMutableArray *array = [[NSMutableArray alloc] init];
 	while (current != NULL) {
 		[array addObject:current->object];
@@ -246,8 +246,7 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
  @throw NSRangeException if @a index exceeds the bounds of the receiver.
  */
 - (CHSinglyLinkedListNode *)nodeAtIndex:(NSUInteger)index {
-	if (index >= count)
-		CHIndexOutOfRangeException([self class], _cmd, index, count);
+	CHRaiseIndexOutOfRangeExceptionIf(index, >=, count);
 	if (index == count - 1)
 		return tail;
 	// Try starting from cached node (if one exists) and corresponding index
@@ -281,10 +280,11 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 }
 
 - (NSArray *)objectsAtIndexes:(NSIndexSet *)indexes {
-	if (indexes == nil)
-		CHNilArgumentException([self class], _cmd);
-	if ([indexes count] && [indexes lastIndex] >= count)
-		CHIndexOutOfRangeException([self class], _cmd, [indexes lastIndex], count);
+	CHRaiseInvalidArgumentExceptionIfNil(indexes);
+	if ([indexes count] == 0) {
+		return @[];
+	}
+	CHRaiseIndexOutOfRangeExceptionIf([indexes lastIndex], >=, count);
 	NSMutableArray *objects = [NSMutableArray arrayWithCapacity:[indexes count]];
 	NSUInteger nextIndex = [indexes firstIndex];
 	while (nextIndex != NSNotFound) {
@@ -297,8 +297,7 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 #pragma mark Modifying Contents
 
 - (void)addObject:(id)anObject {
-	if (anObject == nil)
-		CHNilArgumentException([self class], _cmd);
+	CHRaiseInvalidArgumentExceptionIfNil(anObject);
 	CHSinglyLinkedListNode *new;
 	new = malloc(kCHSinglyLinkedListNodeSize);
 	new->object = [anObject retain];
@@ -323,8 +322,8 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 }
 
 - (void)exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2 {
-	if (idx1 >= count || idx2 >= count)
-		CHIndexOutOfRangeException([self class], _cmd, MAX(idx1,idx2), count);
+	CHRaiseIndexOutOfRangeExceptionIf(idx1, >=, count);
+	CHRaiseIndexOutOfRangeExceptionIf(idx2, >=, count);
 	if (idx1 != idx2) {
 		CHSinglyLinkedListNode *node1 = [self nodeAtIndex:MIN(idx1,idx2)];
 		CHSinglyLinkedListNode *node2 = [self nodeAtIndex:MAX(idx1,idx2)];
@@ -337,8 +336,7 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 }
 
 - (void)insertObject:(id)anObject atIndex:(NSUInteger)index {
-	if (anObject == nil)
-		CHNilArgumentException([self class], _cmd);
+	CHRaiseInvalidArgumentExceptionIfNil(anObject);
 	CHSinglyLinkedListNode *new = malloc(kCHSinglyLinkedListNodeSize);
 	new->object = [anObject retain];
 	if (index == count) {
@@ -359,10 +357,10 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 }
 
 - (void)insertObjects:(NSArray *)objects atIndexes:(NSIndexSet *)indexes {
-	if (objects == nil || indexes == nil)
-		CHNilArgumentException([self class], _cmd);
+	CHRaiseInvalidArgumentExceptionIfNil(objects);
+	CHRaiseInvalidArgumentExceptionIfNil(indexes);
 	if ([objects count] != [indexes count])
-		CHInvalidArgumentException([self class], _cmd, @"Unequal object and index counts.");
+		CHRaiseInvalidArgumentException(@"Unequal object and index counts.");
 	NSUInteger index = [indexes firstIndex];
 	for (id anObject in objects) {
 		[self insertObject:anObject atIndex:index];
@@ -371,8 +369,7 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 }
 
 - (void)prependObject:(id)anObject {
-	if (anObject == nil)
-		CHNilArgumentException([self class], _cmd);
+	CHRaiseInvalidArgumentExceptionIfNil(anObject);
 	CHSinglyLinkedListNode *new;
 	new = malloc(kCHSinglyLinkedListNodeSize);
 	new->object = [anObject retain];
@@ -452,8 +449,7 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 }
 
 - (void)removeObjectAtIndex:(NSUInteger)index {
-	if (index >= count)
-		CHIndexOutOfRangeException([self class], _cmd, index, count);
+	CHRaiseIndexOutOfRangeExceptionIf(index, >=, count);
 	// Find the node prior to the specified index and insert node after that
 	CHSinglyLinkedListNode *node = index ? [self nodeAtIndex:index-1] : head;
 	[self removeNodeAfterNode:node];
@@ -472,11 +468,9 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 }
 
 - (void)removeObjectsAtIndexes:(NSIndexSet *)indexes {
-	if (indexes == nil)
-		CHNilArgumentException([self class], _cmd);
+	CHRaiseInvalidArgumentExceptionIfNil(indexes);
 	if ([indexes count]) {
-		if ([indexes lastIndex] >= count)
-			CHIndexOutOfRangeException([self class], _cmd, [indexes lastIndex], count);
+		CHRaiseIndexOutOfRangeExceptionIf([indexes lastIndex], >=, count);
 		// Indexes point to element one beyond the current element
 		NSUInteger nextIndex = [indexes firstIndex];
 		NSUInteger index = nextIndex;

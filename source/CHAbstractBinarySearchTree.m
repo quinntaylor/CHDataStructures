@@ -59,15 +59,17 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 }
 
 - (instancetype)retain {
-	CHUnsupportedOperationException([self class], _cmd); return nil;
+	CHRaiseUnsupportedOperationException();
+	return nil;
 }
 
 - (oneway void)release {
-	CHUnsupportedOperationException([self class], _cmd);
+	CHRaiseUnsupportedOperationException();
 }
 
 - (instancetype)autorelease {
-	CHUnsupportedOperationException([self class], _cmd); return nil;
+	CHRaiseUnsupportedOperationException();
+	return nil;
 }
 
 @end
@@ -175,7 +177,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 
 - (NSArray *)allObjects {
 	if (mutationCount != *mutationPtr)
-		CHMutatedCollectionException([self class], _cmd);
+		CHRaiseMutatedCollectionException();
 	NSMutableArray *array = [[NSMutableArray alloc] init];
 	id anObject;
 	while ((anObject = [self nextObject]))
@@ -187,7 +189,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 
 - (id)nextObject {
 	if (mutationCount != *mutationPtr)
-		CHMutatedCollectionException([self class], _cmd);
+		CHRaiseMutatedCollectionException();
 	
 	switch (traversalOrder) {
 		case CHTraverseAscending: {
@@ -701,11 +703,11 @@ CHBinaryTreeNode * CHCreateBinaryTreeNodeWithObject(id anObject) {
 #pragma mark Unsupported Implementations
 
 - (void)addObject:(id)anObject {
-	CHUnsupportedOperationException([self class], _cmd);
+	CHRaiseUnsupportedOperationException();
 }
 
 - (void)removeObject:(id)element {
-	CHUnsupportedOperationException([self class], _cmd);
+	CHRaiseUnsupportedOperationException();
 }
 
 @end

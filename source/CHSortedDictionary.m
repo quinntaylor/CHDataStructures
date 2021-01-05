@@ -81,8 +81,8 @@
 }
 
 - (void)setObject:(id)anObject forKey:(id)aKey {
-	if (anObject == nil || aKey == nil)
-		CHNilArgumentException([self class], _cmd);
+	CHRaiseInvalidArgumentExceptionIfNil(anObject);
+	CHRaiseInvalidArgumentExceptionIfNil(aKey);
 	id clonedKey = [[aKey copy] autorelease];
 	[sortedKeys addObject:clonedKey];
 	CFDictionarySetValue(dictionary, clonedKey, anObject);

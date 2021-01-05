@@ -122,7 +122,7 @@ do { \
 		}
 	}
 	if (mutationCount != *mutationPtr)
-		CHMutatedCollectionException([self class], _cmd);
+		CHRaiseMutatedCollectionException();
 	return [allObjects autorelease];
 }
 
@@ -138,7 +138,7 @@ do { \
 		}
 	}
 	if (mutationCount != *mutationPtr)
-		CHMutatedCollectionException([self class], _cmd);
+		CHRaiseMutatedCollectionException();
 	return object;
 }
 
@@ -315,8 +315,7 @@ do { \
 
 - (NSUInteger)indexOfObject:(id)anObject inRange:(NSRange)range {
 	NSUInteger onePastLastRelativeIndex = range.location + range.length;
-	if (onePastLastRelativeIndex > count)
-		CHIndexOutOfRangeException([self class], _cmd, onePastLastRelativeIndex, count);
+	CHRaiseIndexOutOfRangeExceptionIf(onePastLastRelativeIndex, >, count);
 	NSUInteger iterationIndex = transformIndex(range.location);
 	NSUInteger relativeIndex = range.location;
 	while (relativeIndex < onePastLastRelativeIndex) {
@@ -334,8 +333,7 @@ do { \
 
 - (NSUInteger)indexOfObjectIdenticalTo:(id)anObject inRange:(NSRange)range {
 	NSUInteger onePastLastRelativeIndex = range.location + range.length;
-	if (onePastLastRelativeIndex > count)
-		CHIndexOutOfRangeException([self class], _cmd, onePastLastRelativeIndex, count);
+	CHRaiseIndexOutOfRangeExceptionIf(onePastLastRelativeIndex, >, count);
 	NSUInteger iterationIndex = transformIndex(range.location);
 	NSUInteger relativeIndex = range.location;
 	while (relativeIndex < onePastLastRelativeIndex) {
@@ -349,14 +347,12 @@ do { \
 
 // NSArray primitive method
 - (id)objectAtIndex:(NSUInteger)index {
-	if (index >= count)
-		CHIndexOutOfRangeException([self class], _cmd, index, count);
+	CHRaiseIndexOutOfRangeExceptionIf(index, >=, count);
 	return array[transformIndex(index)];
 }
 
 - (NSArray *)objectsAtIndexes:(NSIndexSet *)indexes {
-	if (indexes == nil)
-		CHNilArgumentException([self class], _cmd);
+	CHRaiseInvalidArgumentExceptionIfNil(indexes);
 	if ([indexes count] == 0)
 		return [NSArray array];
 	NSMutableArray *objects = [NSMutableArray arrayWithCapacity:[indexes count]];
@@ -397,10 +393,8 @@ do { \
 
 // NSMutableArray primitive method
 - (void)insertObject:(id)anObject atIndex:(NSUInteger)index {
-	if (index > count)
-		CHIndexOutOfRangeException([self class], _cmd, index, count);
-	if (anObject == nil)
-		CHNilArgumentException([self class], _cmd);
+	CHRaiseInvalidArgumentExceptionIfNil(anObject);
+	CHRaiseIndexOutOfRangeExceptionIf(index, >, count);
 	[anObject retain];
 	if (count == 0 || index == count) {
 		// To append, just move the tail forward one slot (wrapping if needed)
@@ -440,8 +434,8 @@ do { \
 }
 
 - (void)exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2 {
-	if (idx1 >= count || idx2 >= count)
-		CHIndexOutOfRangeException([self class], _cmd, MAX(idx1,idx2), count);
+	CHRaiseIndexOutOfRangeExceptionIf(idx1, >=, count);
+	CHRaiseIndexOutOfRangeExceptionIf(idx2, >=, count);
 	if (idx1 != idx2) {
 		// Find the "real" equivalents of the provided indexes
 		NSUInteger realIdx1 = transformIndex(idx1);
@@ -526,8 +520,7 @@ do { \
 
 // NSMutableArray primitive method
 - (void)removeObjectAtIndex:(NSUInteger)index {
-	if (index >= count)
-		CHIndexOutOfRangeException([self class], _cmd, index, count);
+	CHRaiseIndexOutOfRangeExceptionIf(index, >=, count);
 	NSUInteger actualIndex = transformIndex(index);
 	[array[actualIndex] release];
 	// Handle the simple cases of removing the first or last object first.
@@ -560,8 +553,7 @@ do { \
 }
 
 - (void)removeObjectsAtIndexes:(NSIndexSet *)indexes {
-	if (indexes == nil)
-		CHNilArgumentException([self class], _cmd);
+	CHRaiseInvalidArgumentExceptionIfNil(indexes);
 	if ([indexes count] > 0) {
 		NSUInteger index = [indexes lastIndex];
 		while (index != NSNotFound) {
@@ -590,8 +582,7 @@ do { \
 
 // NSMutableArray primitive method
 - (void)replaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject {
-	if (index >= count)
-		CHIndexOutOfRangeException([self class], _cmd, index, count);
+	CHRaiseIndexOutOfRangeExceptionIf(index, >=, count);
 	[anObject retain];
 	[array[transformIndex(index)] release];
 	array[transformIndex(index)] = anObject;

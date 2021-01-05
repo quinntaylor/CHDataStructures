@@ -43,35 +43,6 @@ NSUInteger hashOfCountAndObjects(NSUInteger count, id object1, id object2) {
 
 #pragma mark -
 
-void CHIndexOutOfRangeException(Class aClass, SEL method,
-                                NSUInteger index, NSUInteger count) {
-	[NSException raise:NSRangeException
-	            format:@"[%@ %s] -- Index (%lu) beyond bounds for count (%lu)",
-	                   aClass, sel_getName(method), index, count];
-}
-
-void CHInvalidArgumentException(Class aClass, SEL method, NSString *string) {
-	[NSException raise:NSInvalidArgumentException
-	            format:@"[%@ %s] -- %@",
-	                   aClass, sel_getName(method), string];
-}
-
-void CHNilArgumentException(Class aClass, SEL method) {
-	CHInvalidArgumentException(aClass, method, @"Invalid nil argument");
-}
-
-void CHMutatedCollectionException(Class aClass, SEL method) {
-	[NSException raise:NSGenericException
-	            format:@"[%@ %s] -- Collection was mutated during enumeration",
-	                   aClass, sel_getName(method)];
-}
-
-void CHUnsupportedOperationException(Class aClass, SEL method) {
-	[NSException raise:NSInternalInconsistencyException
-	            format:@"[%@ %s] -- Unsupported operation",
-	                   aClass, sel_getName(method)];
-}
-
 void CHQuietLog(NSString *format, ...) {
 	if (format == nil) {
 		printf("(null)\n");

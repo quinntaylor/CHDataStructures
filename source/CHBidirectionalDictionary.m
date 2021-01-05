@@ -73,8 +73,8 @@
 }
 
 - (void)setObject:(id)anObject forKey:(id)aKey {
-	if (anObject == nil || aKey == nil)
-		CHNilArgumentException([self class], _cmd);
+	CHRaiseInvalidArgumentExceptionIfNil(anObject);
+	CHRaiseInvalidArgumentExceptionIfNil(aKey);
 	// Remove existing mappings for aKey and anObject if they currently exist.
 	CFDictionaryRemoveValue(keysToObjects, CFDictionaryGetValue(objectsToKeys, anObject));
 	CFDictionaryRemoveValue(objectsToKeys, CFDictionaryGetValue(keysToObjects, aKey));

@@ -8,23 +8,14 @@
 #import <XCTest/XCTest.h>
 #import <CHDataStructures/CHUtil.h>
 
-@interface CHUtilTest : XCTestCase {
-	Class aClass;
-	SEL aMethod;
-	NSMutableString *reason;
-	BOOL raisedException;
-}
+@interface CHUtilTest : XCTestCase
 
 @end
 
 @implementation CHUtilTest
 
-- (void)setUp {
-	aClass = [NSObject class];
-	aMethod = @selector(foo:bar:);
-	reason = [NSMutableString stringWithString:@"[NSObject foo:bar:] -- "];
-	raisedException = NO;
-}
+#define expectedReason(message) \
+([NSString stringWithFormat:@"%s -- %@", __PRETTY_FUNCTION__, message])
 
 - (void)testCollectionsAreEqual {
 	NSArray *array = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
@@ -52,66 +43,69 @@
 }
 
 - (void)testIndexOutOfRangeException {
+	BOOL raisedException;
 	@try {
-		CHIndexOutOfRangeException(aClass, aMethod, 4, 4);
+		int idx = 5;
+		int count = 4;
+		CHRaiseIndexOutOfRangeExceptionIf(idx, >, count);
 	}
 	@catch (NSException * e) {
 		raisedException = YES;
 		XCTAssertEqualObjects([e name], NSRangeException);
-		[reason appendString:@"Index (4) beyond bounds for count (4)"];
-		XCTAssertEqualObjects([e reason], reason);
+		XCTAssertEqualObjects([e reason], expectedReason(@"Index out of range: idx (5) > count (4)"));
 	}
 	XCTAssertTrue(raisedException);
 }
 
 - (void)testInvalidArgumentException {
+	BOOL raisedException;
 	@try {
-		CHInvalidArgumentException(aClass, aMethod, @"Some silly reason.");
+		CHRaiseInvalidArgumentException(@"Some silly reason.");
 	}
 	@catch (NSException * e) {
 		raisedException = YES;
 		XCTAssertEqualObjects([e name], NSInvalidArgumentException);
-		[reason appendString:@"Some silly reason."];
-		XCTAssertEqualObjects([e reason], reason);
+		XCTAssertEqualObjects([e reason], expectedReason(@"Some silly reason."));
 	}
 	XCTAssertTrue(raisedException);
 }
 
 - (void)testNilArgumentException {
+	BOOL raisedException;
+	id object = nil;
 	@try {
-		CHNilArgumentException(aClass, aMethod);
+		CHRaiseInvalidArgumentExceptionIfNil(object);
 	}
 	@catch (NSException * e) {
 		raisedException = YES;
 		XCTAssertEqualObjects([e name], NSInvalidArgumentException);
-		[reason appendString:@"Invalid nil argument"];
-		XCTAssertEqualObjects([e reason], reason);
+		XCTAssertEqualObjects([e reason], expectedReason(@"Invalid nil value: object"));
 	}
 	XCTAssertTrue(raisedException);
 }
 
 - (void)testMutatedCollectionException {
+	BOOL raisedException;
 	@try {
-		CHMutatedCollectionException(aClass, aMethod);
+		CHRaiseMutatedCollectionException();
 	}
 	@catch (NSException * e) {
 		raisedException = YES;
 		XCTAssertEqualObjects([e name], NSGenericException);
-		[reason appendString:@"Collection was mutated during enumeration"];
-		XCTAssertEqualObjects([e reason], reason);
+		XCTAssertEqualObjects([e reason], expectedReason(@"Collection was mutated during enumeration"));
 	}
 	XCTAssertTrue(raisedException);
 }
 
 - (void)testUnsupportedOperationException {
+	BOOL raisedException;
 	@try {
-		CHUnsupportedOperationException(aClass, aMethod);
+		CHRaiseUnsupportedOperationException();
 	}
 	@catch (NSException * e) {
 		raisedException = YES;
 		XCTAssertEqualObjects([e name], NSInternalInconsistencyException);
-		[reason appendString:@"Unsupported operation"];
-		XCTAssertEqualObjects([e reason], reason);
+		XCTAssertEqualObjects([e reason], expectedReason(@"Unsupported operation"));
 	}
 	XCTAssertTrue(raisedException);
 }
