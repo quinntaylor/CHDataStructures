@@ -175,7 +175,7 @@
 
 - (NSUInteger)hash {
 	id anObject = [self firstObject];
-	return hashOfCountAndObjects([self count], anObject, anObject);
+	return CHHashOfCountAndObjects([self count], anObject, anObject);
 }
 
 - (BOOL)isEqual:(id)otherObject {
@@ -186,7 +186,7 @@
 }
 
 - (BOOL)isEqualToHeap:(id<CHHeap>)otherHeap {
-	return collectionsAreEqual(self, otherHeap);
+	return CHCollectionsAreEqual(self, otherHeap);
 }
 
 - (id)objectAtIndex:(NSUInteger)index {

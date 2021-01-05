@@ -44,7 +44,7 @@
 }
 
 - (BOOL)isEqualToOrderedSet:(CHOrderedSet *)otherOrderedSet {
-	return collectionsAreEqual(self, otherOrderedSet);
+	return CHCollectionsAreEqual(self, otherOrderedSet);
 }
 
 - (id)lastObject {

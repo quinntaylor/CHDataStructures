@@ -81,7 +81,7 @@
 }
 
 - (NSUInteger)hash {
-	return hashOfCountAndObjects([list count], [list firstObject], [list lastObject]);
+	return CHHashOfCountAndObjects([list count], [list firstObject], [list lastObject]);
 }
 
 - (NSUInteger)indexOfObject:(id)anObject {

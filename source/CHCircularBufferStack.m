@@ -22,7 +22,7 @@
 }
 
 - (BOOL)isEqualToStack:(id<CHStack>)otherStack {
-	return collectionsAreEqual(self, otherStack);
+	return CHCollectionsAreEqual(self, otherStack);
 }
 
 - (void)popObject {

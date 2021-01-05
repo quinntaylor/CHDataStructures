@@ -449,7 +449,7 @@ CHBinaryTreeNode * CHCreateBinaryTreeNodeWithObject(id anObject) {
 }
 
 - (NSUInteger)hash {
-	return hashOfCountAndObjects(count, [self firstObject], [self lastObject]);
+	return CHHashOfCountAndObjects(count, [self firstObject], [self lastObject]);
 }
 
 - (BOOL)isEqual:(id)otherObject {
@@ -460,11 +460,11 @@ CHBinaryTreeNode * CHCreateBinaryTreeNodeWithObject(id anObject) {
 }
 
 - (BOOL)isEqualToSearchTree:(id<CHSearchTree>)otherTree {
-	return collectionsAreEqual(self, otherTree);
+	return CHCollectionsAreEqual(self, otherTree);
 }
 
 - (BOOL)isEqualToSortedSet:(id<CHSortedSet>)otherSortedSet {
-	return collectionsAreEqual(self, otherSortedSet);
+	return CHCollectionsAreEqual(self, otherSortedSet);
 }
 
 - (id)lastObject {

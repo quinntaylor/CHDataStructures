@@ -9,7 +9,7 @@
 #import "CHAbstractBinarySearchTree_Internal.h"
 
 // Two-way single rotation
-static inline CHBinaryTreeNode * singleRotation(CHBinaryTreeNode *node, u_int32_t dir) {
+static CHBinaryTreeNode * singleRotation(CHBinaryTreeNode *node, u_int32_t dir) {
 	CHBinaryTreeNode *save = node->link[!dir];
 	node->link[!dir] = save->link[dir];
 	save->link[dir] = node;
@@ -17,7 +17,7 @@ static inline CHBinaryTreeNode * singleRotation(CHBinaryTreeNode *node, u_int32_
 }
 
 // Two-way double rotation
-static inline CHBinaryTreeNode * doubleRotation(CHBinaryTreeNode *node, u_int32_t dir) {
+static CHBinaryTreeNode * doubleRotation(CHBinaryTreeNode *node, u_int32_t dir) {
 	CHBinaryTreeNode *save = node->link[!dir]->link[dir];
 	node->link[!dir]->link[dir] = save->link[!dir];
 	save->link[!dir] = node->link[!dir];
@@ -29,7 +29,7 @@ static inline CHBinaryTreeNode * doubleRotation(CHBinaryTreeNode *node, u_int32_
 	return save;
 }
 
-static inline void adjustBalance(CHBinaryTreeNode *root, u_int32_t dir, int32_t bal) {
+static void adjustBalance(CHBinaryTreeNode *root, u_int32_t dir, int32_t bal) {
 	CHBinaryTreeNode *n = root->link[dir];
 	CHBinaryTreeNode *nn = n->link[!dir];
 	if (nn->balance == 0)

@@ -37,9 +37,7 @@
 }
 
 - (NSUInteger)hash {
-	return hashOfCountAndObjects([sortedKeys count],
-	                             [sortedKeys firstObject],
-	                             [sortedKeys lastObject]);
+	return CHHashOfCountAndObjects([sortedKeys count], [sortedKeys firstObject], [sortedKeys lastObject]);
 }
 
 - (id)lastKey {

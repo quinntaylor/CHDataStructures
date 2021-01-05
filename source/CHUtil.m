@@ -9,15 +9,15 @@
 
 size_t kCHPointerSize = sizeof(void *);
 
-BOOL objectsAreEqual(id o1, id o2) {
+BOOL CHObjectsAreEqual(id o1, id o2) {
 	return [o1 isEqual:o2];
 }
 
-BOOL objectsAreIdentical(id o1, id o2) {
+BOOL CHObjectsAreIdentical(id o1, id o2) {
 	return (o1 == o2);
 }
 
-BOOL collectionsAreEqual(id collection1, id collection2) {
+BOOL CHCollectionsAreEqual(id collection1, id collection2) {
 	if ((collection1 && ![collection1 respondsToSelector:@selector(count)]) ||
 		(collection2 && ![collection2 respondsToSelector:@selector(count)]))
 	{
@@ -36,7 +36,7 @@ BOOL collectionsAreEqual(id collection1, id collection2) {
 	return YES;	
 }
 
-NSUInteger hashOfCountAndObjects(NSUInteger count, id object1, id object2) {
+NSUInteger CHHashOfCountAndObjects(NSUInteger count, id object1, id object2) {
 	NSUInteger hash = 17 * count ^ (count << 16);
 	return hash ^ (31*[object1 hash]) ^ ((31*[object2 hash]) << 4);
 }

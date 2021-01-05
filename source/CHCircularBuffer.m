@@ -273,20 +273,19 @@ do { \
 }
 
 - (BOOL)containsObject:(id)anObject {
-	NSUInteger iterationIndex = headIndex;
-	while (iterationIndex != tailIndex) {
-		if ([array[iterationIndex] isEqual:anObject])
-			return YES;
-		incrementIndex(iterationIndex);
-	}
-	return NO;
+	return [self _containsObject:anObject withEqualityTest:&CHObjectsAreEqual];
 }
 
 - (BOOL)containsObjectIdenticalTo:(id)anObject {
+	return [self _containsObject:anObject withEqualityTest:&CHObjectsAreIdentical];
+}
+
+- (BOOL)_containsObject:(id)anObject withEqualityTest:(CHObjectEqualityTest)objectsMatch {
 	NSUInteger iterationIndex = headIndex;
 	while (iterationIndex != tailIndex) {
-		if (array[iterationIndex] == anObject)
+		if (objectsMatch(array[iterationIndex], anObject)) {
 			return YES;
+		}
 		incrementIndex(iterationIndex);
 	}
 	return NO;
@@ -302,7 +301,7 @@ do { \
 }
 
 - (NSUInteger)hash {
-	return hashOfCountAndObjects(count, [self firstObject], [self lastObject]);
+	return CHHashOfCountAndObjects(count, [self firstObject], [self lastObject]);
 }
 
 - (id)lastObject {
@@ -314,17 +313,7 @@ do { \
 }
 
 - (NSUInteger)indexOfObject:(id)anObject inRange:(NSRange)range {
-	NSUInteger onePastLastRelativeIndex = range.location + range.length;
-	CHRaiseIndexOutOfRangeExceptionIf(onePastLastRelativeIndex, >, count);
-	NSUInteger iterationIndex = transformIndex(range.location);
-	NSUInteger relativeIndex = range.location;
-	while (relativeIndex < onePastLastRelativeIndex) {
-		if ([array[iterationIndex] isEqual:anObject])
-			return relativeIndex;
-		incrementIndex(iterationIndex);
-		relativeIndex++;
-	}
-	return NSNotFound;
+	return [self _indexOfObject:anObject inRange:range withEqualityTest:&CHObjectsAreEqual];
 }
 
 - (NSUInteger)indexOfObjectIdenticalTo:(id)anObject {
@@ -332,13 +321,18 @@ do { \
 }
 
 - (NSUInteger)indexOfObjectIdenticalTo:(id)anObject inRange:(NSRange)range {
+	return [self _indexOfObject:anObject inRange:range withEqualityTest:&CHObjectsAreIdentical];
+}
+
+- (NSUInteger)_indexOfObject:(id)anObject inRange:(NSRange)range withEqualityTest:(CHObjectEqualityTest)objectsMatch {
 	NSUInteger onePastLastRelativeIndex = range.location + range.length;
 	CHRaiseIndexOutOfRangeExceptionIf(onePastLastRelativeIndex, >, count);
 	NSUInteger iterationIndex = transformIndex(range.location);
 	NSUInteger relativeIndex = range.location;
 	while (relativeIndex < onePastLastRelativeIndex) {
-		if (array[iterationIndex] == anObject)
+		if (objectsMatch(array[iterationIndex], anObject)) {
 			return relativeIndex;
+		}
 		incrementIndex(iterationIndex);
 		relativeIndex++;
 	}
@@ -469,8 +463,7 @@ do { \
 	++mutations;
 }
 
-// Private method that accepts a function pointer for testing object equality.
-- (void)removeObject:(id)anObject withEqualityTest:(BOOL(*)(id,id))objectsMatch {
+- (void)_removeObject:(id)anObject withEqualityTest:(CHObjectEqualityTest)objectsMatch {
 	if (count == 0 || anObject == nil)
 		return;
 	// Strip off leading matches if any exist in the buffer.
@@ -515,7 +508,7 @@ do { \
 }
 
 - (void)removeObject:(id)anObject {
-	[self removeObject:anObject withEqualityTest:&objectsAreEqual];
+	[self _removeObject:anObject withEqualityTest:&CHObjectsAreEqual];
 }
 
 // NSMutableArray primitive method
@@ -549,7 +542,7 @@ do { \
 }
 
 - (void)removeObjectIdenticalTo:(id)anObject {
-	[self removeObject:anObject withEqualityTest:&objectsAreIdentical];
+	[self _removeObject:anObject withEqualityTest:&CHObjectsAreIdentical];
 }
 
 - (void)removeObjectsAtIndexes:(NSIndexSet *)indexes {

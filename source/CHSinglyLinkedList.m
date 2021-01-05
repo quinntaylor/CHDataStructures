@@ -203,7 +203,7 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 }
 
 - (NSUInteger)hash {
-	return hashOfCountAndObjects(count, [self firstObject], [self lastObject]);
+	return CHHashOfCountAndObjects(count, [self firstObject], [self lastObject]);
 }
 
 - (BOOL)isEqual:(id)otherObject {
@@ -214,7 +214,7 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 }
 
 - (BOOL)isEqualToLinkedList:(id<CHLinkedList>)otherLinkedList {
-	return collectionsAreEqual(self, otherLinkedList);
+	return CHCollectionsAreEqual(self, otherLinkedList);
 }
 
 - (id)lastObject {
@@ -222,19 +222,17 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 }
 
 - (NSUInteger)indexOfObject:(id)anObject {
-	CHSinglyLinkedListNode *current = head->next;
-	NSUInteger index = 0;
-	while (current && ![current->object isEqual:anObject]) {
-		current = current->next;
-		++index;
-	}
-	return (current == NULL) ? NSNotFound : index;
+	return [self _indexOfObject:anObject withEqualityTest:&CHObjectsAreEqual];
 }
 
 - (NSUInteger)indexOfObjectIdenticalTo:(id)anObject {
+	return [self _indexOfObject:anObject withEqualityTest:&CHObjectsAreIdentical];
+}
+
+- (NSUInteger)_indexOfObject:(id)anObject withEqualityTest:(CHObjectEqualityTest)objectsMatch {
 	CHSinglyLinkedListNode *current = head->next;
 	NSUInteger index = 0;
-	while (current && (current->object != anObject)) {
+	while (current && !objectsMatch(current->object, anObject)) {
 		current = current->next;
 		++index;
 	}
@@ -427,8 +425,7 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 	cachedNode = NULL;
 }
 
-// Private method that accepts a function pointer for testing object equality.
-- (void)removeObject:(id)anObject withEqualityTest:(BOOL(*)(id,id))objectsMatch {
+- (void)_removeObject:(id)anObject withEqualityTest:(CHObjectEqualityTest)objectsMatch {
 	if (count == 0 || anObject == nil)
 		return;
 	CHSinglyLinkedListNode *node = head;
@@ -445,7 +442,7 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 }
 
 - (void)removeObject:(id)anObject {
-	[self removeObject:anObject withEqualityTest:&objectsAreEqual];
+	[self _removeObject:anObject withEqualityTest:&CHObjectsAreEqual];
 }
 
 - (void)removeObjectAtIndex:(NSUInteger)index {
@@ -464,7 +461,7 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 }
 
 - (void)removeObjectIdenticalTo:(id)anObject {
-	[self removeObject:anObject withEqualityTest:&objectsAreIdentical];
+	[self _removeObject:anObject withEqualityTest:&CHObjectsAreIdentical];
 }
 
 - (void)removeObjectsAtIndexes:(NSIndexSet *)indexes {

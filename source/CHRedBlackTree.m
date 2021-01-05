@@ -11,7 +11,7 @@
 
 #pragma mark C Functions for Optimized Operations
 
-static inline CHBinaryTreeNode * rotateNodeWithLeftChild(CHBinaryTreeNode *node) {
+static CHBinaryTreeNode * rotateNodeWithLeftChild(CHBinaryTreeNode *node) {
 	CHBinaryTreeNode *leftChild = node->left;
 	node->left = leftChild->right;
 	leftChild->right = node;
@@ -20,7 +20,7 @@ static inline CHBinaryTreeNode * rotateNodeWithLeftChild(CHBinaryTreeNode *node)
 	return leftChild;
 }
 
-static inline CHBinaryTreeNode * rotateNodeWithRightChild(CHBinaryTreeNode *node) {
+static CHBinaryTreeNode * rotateNodeWithRightChild(CHBinaryTreeNode *node) {
 	CHBinaryTreeNode *rightChild = node->right;
 	node->right = rightChild->left;
 	rightChild->left = node;
@@ -29,7 +29,7 @@ static inline CHBinaryTreeNode * rotateNodeWithRightChild(CHBinaryTreeNode *node
 	return rightChild;
 }
 
-HIDDEN CHBinaryTreeNode * rotateObjectOnAncestor(id anObject, CHBinaryTreeNode *ancestor) {
+static CHBinaryTreeNode * rotateObjectOnAncestor(id anObject, CHBinaryTreeNode *ancestor) {
 	if ([ancestor->object compare:anObject] == NSOrderedDescending) {
 		if ([ancestor->left->object compare:anObject] == NSOrderedDescending)
 			ancestor->left = rotateNodeWithLeftChild(ancestor->left);
@@ -46,7 +46,7 @@ HIDDEN CHBinaryTreeNode * rotateObjectOnAncestor(id anObject, CHBinaryTreeNode *
 	}
 }
 
-static inline CHBinaryTreeNode * singleRotation(CHBinaryTreeNode *node, BOOL goingRight) {
+static CHBinaryTreeNode * singleRotation(CHBinaryTreeNode *node, BOOL goingRight) {
 	CHBinaryTreeNode *save = node->link[!goingRight];
 	node->link[!goingRight] = save->link[goingRight];
 	save->link[goingRight] = node;
@@ -55,9 +55,9 @@ static inline CHBinaryTreeNode * singleRotation(CHBinaryTreeNode *node, BOOL goi
 	return save;
 }
 
-static inline CHBinaryTreeNode * doubleRotation(CHBinaryTreeNode *node, BOOL goingRight) {
+static CHBinaryTreeNode * doubleRotation(CHBinaryTreeNode *node, BOOL goingRight) {
 	node->link[!goingRight] = singleRotation(node->link[!goingRight], !goingRight);
-	return singleRotation(node, goingRight);	
+	return singleRotation(node, goingRight);
 }
 
 #pragma mark -

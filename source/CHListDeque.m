@@ -36,7 +36,7 @@
 }
 
 - (BOOL)isEqualToDeque:(id<CHDeque>)otherDeque {
-	return collectionsAreEqual(self, otherDeque);
+	return CHCollectionsAreEqual(self, otherDeque);
 }
 
 - (id)lastObject {

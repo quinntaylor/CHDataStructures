@@ -23,6 +23,8 @@
 /** Global variable to store the size of a pointer only once. */
 OBJC_EXPORT size_t kCHPointerSize;
 
+typedef BOOL(*CHObjectEqualityTest)(id,id);
+
 /**
  Simple function for checking object equality, to be used as a function pointer.
  
@@ -30,7 +32,7 @@ OBJC_EXPORT size_t kCHPointerSize;
  @param o2 The second object to be compared.
  @return <code>[o1 isEqual:o2]</code>
  */
-HIDDEN BOOL objectsAreEqual(id o1, id o2);
+HIDDEN BOOL CHObjectsAreEqual(id o1, id o2);
 
 /**
  Simple function for checking object identity, to be used as a function pointer.
@@ -39,7 +41,7 @@ HIDDEN BOOL objectsAreEqual(id o1, id o2);
  @param o2 The second object to be compared.
  @return <code>o1 == o2</code>
  */
-HIDDEN BOOL objectsAreIdentical(id o1, id o2);
+HIDDEN BOOL CHObjectsAreIdentical(id o1, id o2);
 
 /**
  Determine whether two collections enumerate the equivalent objects in the same order.
@@ -50,7 +52,7 @@ HIDDEN BOOL objectsAreIdentical(id o1, id o2);
  
  @throw NSInvalidArgumentException if one of both of the arguments do not respond to the @c -count or @c -objectEnumerator selectors.
  */
-OBJC_EXPORT BOOL collectionsAreEqual(id collection1, id collection2);
+OBJC_EXPORT BOOL CHCollectionsAreEqual(id collection1, id collection2);
 
 /**
  Generate a hash for a collection based on the count and up to two objects. If objects are provided, the result of their -hash method will be used.
@@ -60,7 +62,7 @@ OBJC_EXPORT BOOL collectionsAreEqual(id collection1, id collection2);
  @param o2 The second object to include in the hash.
  @return An unsigned integer that can be used as a table address in a hash table structure.
  */
-HIDDEN NSUInteger hashOfCountAndObjects(NSUInteger count, id o1, id o2);
+HIDDEN NSUInteger CHHashOfCountAndObjects(NSUInteger count, id o1, id o2);
 
 #pragma mark -
 

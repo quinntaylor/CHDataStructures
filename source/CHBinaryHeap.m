@@ -119,7 +119,7 @@ static const CFBinaryHeapCallBacks kCHBinaryHeapCallBacksDescending = {
 
 - (NSUInteger)hash {
 	id anObject = [self firstObject];
-	return hashOfCountAndObjects([self count], anObject, anObject);
+	return CHHashOfCountAndObjects([self count], anObject, anObject);
 }
 
 - (BOOL)isEqual:(id)otherObject {
@@ -130,7 +130,7 @@ static const CFBinaryHeapCallBacks kCHBinaryHeapCallBacksDescending = {
 }
 
 - (BOOL)isEqualToHeap:(id<CHHeap>)otherHeap {
-	return collectionsAreEqual(self, otherHeap);
+	return CHCollectionsAreEqual(self, otherHeap);
 }
 
 - (NSEnumerator *)objectEnumerator {

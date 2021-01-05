@@ -8,9 +8,9 @@
 #import <CHDataStructures/CHMultiDictionary.h>
 
 /**
- Utility function for creating a new NSMutableSet containing object; if object is a set or array, the set containts all objects in the collection.
+ Utility function for creating a new NSMutableSet containing object; if object is a set or array, the set contains all objects in the collection.
  */
-static inline NSMutableSet * createMutableSetFromObject(id object) {
+static NSMutableSet * createMutableSetFromObject(id object) {
 	if (object == nil)
 		return nil;
 	if ([object isKindOfClass:[NSSet class]])

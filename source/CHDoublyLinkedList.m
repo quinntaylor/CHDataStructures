@@ -270,7 +270,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 }
 
 - (NSUInteger)hash {
-	return hashOfCountAndObjects(count, [self firstObject], [self lastObject]);
+	return CHHashOfCountAndObjects(count, [self firstObject], [self lastObject]);
 }
 
 - (BOOL)isEqual:(id)otherObject {
@@ -281,7 +281,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 }
 
 - (BOOL)isEqualToLinkedList:(id<CHLinkedList>)otherLinkedList {
-	return collectionsAreEqual(self, otherLinkedList);
+	return CHCollectionsAreEqual(self, otherLinkedList);
 }
 
 - (id)lastObject {
@@ -290,21 +290,18 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 }
 
 - (NSUInteger)indexOfObject:(id)anObject {
-	NSUInteger index = 0;
-	tail->object = anObject;
-	CHDoublyLinkedListNode *current = head->next;
-	while (![current->object isEqual:anObject]) {
-		current = current->next;
-		++index;
-	}
-	return (current == tail) ? NSNotFound : index;
+	return [self _indexOfObject:anObject withEqualityTest:&CHObjectsAreEqual];
 }
 
 - (NSUInteger)indexOfObjectIdenticalTo:(id)anObject {
+	return [self _indexOfObject:anObject withEqualityTest:&CHObjectsAreIdentical];
+}
+
+- (NSUInteger)_indexOfObject:(id)anObject withEqualityTest:(CHObjectEqualityTest)objectsMatch {
 	NSUInteger index = 0;
 	tail->object = anObject;
 	CHDoublyLinkedListNode *current = head->next;
-	while (current->object != anObject) {
+	while (!objectsMatch(current->object, anObject)) {
 		current = current->next;
 		++index;
 	}
@@ -439,8 +436,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 		[self removeNode:tail->prev];
 }
 
-// Private method that accepts a function pointer for testing object equality.
-- (void)removeObject:(id)anObject withEqualityTest:(BOOL(*)(id,id))objectsMatch {
+- (void)_removeObject:(id)anObject withEqualityTest:(CHObjectEqualityTest)objectsMatch {
 	if (count == 0 || anObject == nil)
 		return;
 	tail->object = anObject;
@@ -457,7 +453,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 }
 
 - (void)removeObject:(id)anObject {
-	[self removeObject:anObject withEqualityTest:&objectsAreEqual];
+	[self _removeObject:anObject withEqualityTest:&CHObjectsAreEqual];
 }
 
 - (void)removeObjectAtIndex:(NSUInteger)index {
@@ -466,7 +462,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 }
 
 - (void)removeObjectIdenticalTo:(id)anObject {
-	[self removeObject:anObject withEqualityTest:&objectsAreIdentical];
+	[self _removeObject:anObject withEqualityTest:&CHObjectsAreIdentical];
 }
 
 - (void)removeObjectsAtIndexes:(NSIndexSet *)indexes {

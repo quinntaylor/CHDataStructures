@@ -22,24 +22,24 @@
 	NSDictionary *dict = [NSDictionary dictionaryWithObjects:array forKeys:array];
 	NSSet *set = [NSSet setWithObjects:@"A",@"B",@"C",nil];
 	
-	XCTAssertTrue(collectionsAreEqual(nil, nil));
+	XCTAssertTrue(CHCollectionsAreEqual(nil, nil));
 	
-	XCTAssertTrue(collectionsAreEqual(array, array));
-	XCTAssertTrue(collectionsAreEqual(dict, dict));
-	XCTAssertTrue(collectionsAreEqual(set, set));
+	XCTAssertTrue(CHCollectionsAreEqual(array, array));
+	XCTAssertTrue(CHCollectionsAreEqual(dict, dict));
+	XCTAssertTrue(CHCollectionsAreEqual(set, set));
 
-	XCTAssertTrue(collectionsAreEqual(array, [array copy]));
-	XCTAssertTrue(collectionsAreEqual(dict, [dict copy]));
-	XCTAssertTrue(collectionsAreEqual(set, [set copy]));
+	XCTAssertTrue(CHCollectionsAreEqual(array, [array copy]));
+	XCTAssertTrue(CHCollectionsAreEqual(dict, [dict copy]));
+	XCTAssertTrue(CHCollectionsAreEqual(set, [set copy]));
 	
-	XCTAssertFalse(collectionsAreEqual(array, nil));
-	XCTAssertFalse(collectionsAreEqual(dict, nil));
-	XCTAssertFalse(collectionsAreEqual(set, nil));
+	XCTAssertFalse(CHCollectionsAreEqual(array, nil));
+	XCTAssertFalse(CHCollectionsAreEqual(dict, nil));
+	XCTAssertFalse(CHCollectionsAreEqual(set, nil));
 
 	id obj = [NSString string];
-	XCTAssertThrowsSpecificNamed(collectionsAreEqual(array, obj), NSException, NSInvalidArgumentException);
-	XCTAssertThrowsSpecificNamed(collectionsAreEqual(dict, obj), NSException, NSInvalidArgumentException);
-	XCTAssertThrowsSpecificNamed(collectionsAreEqual(set, obj), NSException, NSInvalidArgumentException);
+	XCTAssertThrowsSpecificNamed(CHCollectionsAreEqual(array, obj), NSException, NSInvalidArgumentException);
+	XCTAssertThrowsSpecificNamed(CHCollectionsAreEqual(dict, obj), NSException, NSInvalidArgumentException);
+	XCTAssertThrowsSpecificNamed(CHCollectionsAreEqual(set, obj), NSException, NSInvalidArgumentException);
 }
 
 - (void)testIndexOutOfRangeException {

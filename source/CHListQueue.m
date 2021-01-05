@@ -38,7 +38,7 @@
 }
 
 - (BOOL)isEqualToQueue:(id<CHQueue>)otherQueue {
-	return collectionsAreEqual(self, otherQueue);
+	return CHCollectionsAreEqual(self, otherQueue);
 }
 
 - (id)lastObject {
