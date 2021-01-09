@@ -301,14 +301,18 @@
 - (void)testRemoveObjectsAtIndexes {
 	// Test removing with invalid indexes
 	XCTAssertThrows([collection removeObjectsAtIndexes:nil]);
-	NSMutableIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 1)];
-	XCTAssertThrows([collection removeObjectsAtIndexes:indexes]);
+	XCTAssertThrows([collection removeObjectsAtIndexes:[NSIndexSet indexSetWithIndex:[collection count]]]);
+	XCTAssertNoThrow([collection removeObjectsAtIndexes:[NSIndexSet indexSet]]);
 	
 	NSMutableArray *expected = [NSMutableArray array];
 	[collection addObjectsFromArray:objects];
-	for (NSUInteger location = 0; location < [objects count]; location++) {
-		for (NSUInteger length = 0; length <= [objects count] - location; length++) {
-			indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(location, length)]; 
+	NSMutableIndexSet *indexes = [NSMutableIndexSet indexSet];
+	NSRange range;
+	NSUInteger count = [collection count];
+	for (range.location = 0; range.location < count; range.location++) {
+		[indexes removeAllIndexes];
+		for (range.length = 0; range.length <= count - range.location; range.length++) {
+			[indexes addIndexesInRange:range];
 			// Repopulate list and expected
 			[expected removeAllObjects];
 			[expected addObjectsFromArray:objects];
@@ -322,7 +326,7 @@
 	}	
 	XCTAssertThrows([collection removeObjectsAtIndexes:nil]);
 	// Try removing first and last elements, leaving middle element
-	indexes = [NSMutableIndexSet indexSet];
+	[indexes removeAllIndexes];
 	[indexes addIndex:0];
 	[indexes addIndex:2];
 	[expected removeAllObjects];
