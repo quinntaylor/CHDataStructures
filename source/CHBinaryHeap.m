@@ -22,7 +22,7 @@ CFStringRef CHBinaryHeapDescription(const void *value) {
 }
 
 CFComparisonResult CHBinaryHeapCompareAscending(const void *value1, const void *value2, void *info) {
-	return [(id)value1 compare:(id)value2];
+	return (CFComparisonResult)[(id)value1 compare:(id)value2];
 }
 
 CFComparisonResult CHBinaryHeapCompareDescending(const void *value1, const void *value2, void *info) {
