@@ -457,7 +457,7 @@ NSArray * randomNumberArray(NSUInteger count) {
 int main(int argc, const char * argv[]) {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	NSUInteger limit = 100000;
-	objects = [[NSMutableArray alloc] init];
+	objects = [[NSMutableArray alloc] initWithCapacity:(NSUInteger)log10(limit)];
 	
 	for (NSUInteger size = 10; size <= limit; size *= 10) {
 		NSMutableArray *temp = [[NSMutableArray alloc] initWithCapacity:size+1];
