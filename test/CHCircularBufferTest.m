@@ -725,8 +725,9 @@ do { \
 
 	BOOL raisedException = NO;
 	@try {
-		for (NSNumber *number in buffer)
+		for (__unused NSNumber *number in buffer) {
 			[buffer addObject:@"bogus"];
+		}
 	}
 	@catch (NSException *exception) {
 		raisedException = YES;

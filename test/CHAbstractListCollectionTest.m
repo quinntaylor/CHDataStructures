@@ -73,8 +73,9 @@
 
 	BOOL raisedException = NO;
 	@try {
-		for (id object in collection)
+		for (__unused id object in collection) {
 			[collection addObject:@"bogus"];
+		}
 	}
 	@catch (NSException *exception) {
 		raisedException = YES;

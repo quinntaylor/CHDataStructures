@@ -433,8 +433,9 @@ static NSArray *abcde;
 	
 	BOOL raisedException = NO;
 	@try {
-		for (id object in set)
+		for (__unused id object in set) {
 			[set addObject:[NSNumber numberWithInteger:-1]];
+		}
 	}
 	@catch (NSException *exception) {
 		raisedException = YES;

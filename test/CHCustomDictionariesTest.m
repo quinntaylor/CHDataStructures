@@ -668,8 +668,9 @@ static NSArray *keyArray;
 	
 	BOOL raisedException = NO;
 	@try {
-		for (id key in dictionary)
+		for (__unused id key in dictionary) {
 			[dictionary setObject:[NSNull null] forKey:[NSNumber numberWithInteger:-1]];
+		}
 	}
 	@catch (NSException *exception) {
 		raisedException = YES;
@@ -804,8 +805,9 @@ static NSArray *keyArray;
 	
 	BOOL raisedException = NO;
 	@try {
-		for (id key in dictionary)
+		for (__unused id key in dictionary) {
 			[dictionary setObject:[NSNull null] forKey:[NSNumber numberWithInteger:-1]];
+		}
 	}
 	@catch (NSException *exception) {
 		raisedException = YES;
