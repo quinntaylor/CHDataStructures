@@ -23,7 +23,8 @@
  
  @todo Allow setting a maximum size, and either reject additions or evict the "oldest" item when the limit is reached? (Perhaps this would be better done by the user...)
  */
-@interface CHOrderedSet : CHMutableSet {
+@interface CHOrderedSet<__covariant ObjectType> : CHMutableSet
+{
 	id ordering; // A structure for maintaining ordering of the objects.
 }
 
@@ -39,7 +40,7 @@
  @see anyObject
  @see objectEnumerator
  */
-- (NSArray *)allObjects;
+- (NSArray<ObjectType> *)allObjects;
 
 /**
  Returns the "oldest" member of the receiver.
@@ -51,7 +52,7 @@
  @see lastObject
  @see removeFirstObject
  */
-- (id)firstObject;
+- (ObjectType)firstObject;
 
 /**
  Returns the index of a given object based on insertion order.
@@ -64,7 +65,7 @@
  @see objectAtIndex:
  @see removeObjectAtIndex:
  */
-- (NSUInteger)indexOfObject:(id)anObject;
+- (NSUInteger)indexOfObject:(ObjectType)anObject;
 
 /**
  Compares the receiving ordered set to another ordered set. Two ordered sets have equal contents if they each hold the same number of objects and objects at a given position in each ordered set satisfy the \link NSObject-p#isEqual: -isEqual:\endlink test.
@@ -72,7 +73,7 @@
  @param otherOrderedSet A ordered set.
  @return @c YES if the contents of @a otherOrderedSet are equal to the contents of the receiver, otherwise @c NO.
  */
-- (BOOL)isEqualToOrderedSet:(CHOrderedSet *)otherOrderedSet;
+- (BOOL)isEqualToOrderedSet:(CHOrderedSet<ObjectType> *)otherOrderedSet;
 
 /**
  Returns the "youngest" member of the receiver.
@@ -84,7 +85,7 @@
  @see firstObject
  @see removeLastObject
  */
-- (id)lastObject;
+- (ObjectType)lastObject;
 
 /**
  Returns the value at the specified index.
@@ -98,7 +99,7 @@
  @see objectsAtIndexes:
  @see removeObjectAtIndex:
  */
-- (id)objectAtIndex:(NSUInteger)index;
+- (ObjectType)objectAtIndex:(NSUInteger)index;
 
 /**
  Returns an enumerator object that lets you access each object in the receiver by insertion order.
@@ -111,7 +112,7 @@
  
  @see allObjects
  */
-- (NSEnumerator *)objectEnumerator;
+- (NSEnumerator<ObjectType> *)objectEnumerator;
 
 /**
  Returns an array containing the objects in the receiver at the indexes specified by a given index set.
@@ -128,7 +129,7 @@
  @see objectAtIndex:
  @see removeObjectsAtIndexes:
  */
-- (NSArray *)objectsAtIndexes:(NSIndexSet *)indexes;
+- (NSArray<ObjectType> *)objectsAtIndexes:(NSIndexSet *)indexes;
 
 /**
  Returns an ordered dictionary containing the objects in the receiver at the indexes specified by a given index set.
@@ -141,7 +142,7 @@
  
  @attention To retrieve entries in a given NSRange, pass <code>[NSIndexSet indexSetWithIndexesInRange:range]</code> as the parameter.
  */
-- (CHOrderedSet *)orderedSetWithObjectsAtIndexes:(NSIndexSet *)indexes;
+- (CHOrderedSet<ObjectType> *)orderedSetWithObjectsAtIndexes:(NSIndexSet *)indexes;
 
 // @}
 #pragma mark Modifying Contents
@@ -158,7 +159,7 @@
  @see indexOfObject:
  @see objectAtIndex:
  */
-- (void)insertObject:(id)anObject atIndex:(NSUInteger)index;
+- (void)insertObject:(ObjectType)anObject atIndex:(NSUInteger)index;
 
 /**
  Exchange the objects in the receiver at given indexes.

@@ -15,14 +15,14 @@
 /**
  A simple CHHeap implemented as a subclass of NSMutableArray.
  */
-@interface CHMutableArrayHeap : NSMutableArray <CHHeap> {
+@interface CHMutableArrayHeap<__covariant ObjectType> : NSMutableArray <CHHeap> {
 	NSMutableArray *array; // An array to use for storing objects in the heap.
 	NSComparisonResult sortOrder; // Whether to sort objects ascending or not.
 	unsigned long mutations; // Used to track mutations for NSFastEnumeration.
 }
 
 - (instancetype)initWithCapacity:(NSUInteger)capacity NS_DESIGNATED_INITIALIZER; // Inherited from NSMutableArray
-- (instancetype)initWithOrdering:(NSComparisonResult)order array:(NSArray *)array NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithOrdering:(NSComparisonResult)order array:(NSArray<ObjectType> *)array NS_DESIGNATED_INITIALIZER;
 
 /**
  Determine whether the receiver contains a given object, matched using the == operator.
@@ -33,7 +33,7 @@
  @see containsObject:
  @see removeObjectIdenticalTo:
  */
-- (BOOL)containsObjectIdenticalTo:(id)anObject;
+- (BOOL)containsObjectIdenticalTo:(ObjectType)anObject;
 
 /**
  Remove @b all occurrences of @a anObject, matched using @c isEqual:.
@@ -46,7 +46,7 @@
  @see removeAllObjects
  @see removeObjectIdenticalTo:
  */
-- (void)removeObject:(id)anObject;
+- (void)removeObject:(ObjectType)anObject;
 
 /**
  Remove @b all occurrences of @a anObject, matched using the == operator.
@@ -59,6 +59,6 @@
  @see removeAllObjects
  @see removeObject:
  */
-- (void)removeObjectIdenticalTo:(id)anObject;
+- (void)removeObjectIdenticalTo:(ObjectType)anObject;
 	
 @end

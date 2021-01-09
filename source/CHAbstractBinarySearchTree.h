@@ -65,7 +65,7 @@ typedef struct CHBinaryTreeNode {
  
  Much of the code and algorithms was distilled from information in the <a href="http://eternallyconfuzzled.com/tuts/datastructures/jsw_tut_bst1.aspx">Binary Search Trees tutorial</a>, which is in the public domain courtesy of <a href="http://eternallyconfuzzled.com/">Julienne Walker</a>. Method names have been changed to match the APIs of existing Cocoa collections provided by Apple.
  */
-@interface CHAbstractBinarySearchTree : NSObject <CHSearchTree>
+@interface CHAbstractBinarySearchTree<__covariant ObjectType> : NSObject <CHSearchTree>
 {
 	CHBinaryTreeNode *header; // Dummy header; no more checks for root.
 	CHBinaryTreeNode *sentinel; // Dummy leaf; no more checks for NULL.
@@ -73,7 +73,7 @@ typedef struct CHBinaryTreeNode {
 	unsigned long mutations; // Tracks mutations for NSFastEnumeration.
 }
 
-- (instancetype)initWithArray:(NSArray *)anArray NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithArray:(NSArray<ObjectType> *)anArray NS_DESIGNATED_INITIALIZER;
 
 /**
  Produces a representation of the receiver that can be useful for debugging.

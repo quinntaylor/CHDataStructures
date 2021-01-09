@@ -24,7 +24,8 @@ HIDDEN CFMutableDictionaryRef CHDictionaryCreateMutable(NSUInteger initialCapaci
  
  @todo Implement @c -copy and @c -mutableCopy differently (so users can actually obtain an immutable copy) and make mutation methods aware of immutability?
  */
-@interface CHMutableDictionary : NSMutableDictionary {
+@interface CHMutableDictionary<__covariant KeyType, __covariant ObjectType> : NSMutableDictionary
+{
 	CFMutableDictionaryRef dictionary; // A Core Foundation dictionary.
 }
 

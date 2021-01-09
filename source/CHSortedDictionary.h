@@ -31,7 +31,8 @@
  
  @see CHSortedSet
  */
-@interface CHSortedDictionary : CHMutableDictionary {
+@interface CHSortedDictionary<__covariant KeyType, __covariant ObjectType> : CHMutableDictionary
+{
 	id<CHSortedSet> sortedKeys;
 }
 
@@ -46,7 +47,7 @@
  
  @see lastKey
  */
-- (id)firstKey;
+- (KeyType)firstKey;
 
 /**
  Returns the maximum key in the receiver, according to natural sorted order.
@@ -55,7 +56,7 @@
  
  @see firstKey
  */
-- (id)lastKey;
+- (KeyType)lastKey;
 
 /**
  Returns a new dictionary containing the entries for keys delineated by two given objects. The subset is a shallow copy (new memory is allocated for the structure, but the copy points to the same objects) so any changes to the objects in the subset affect the receiver as well. The subset is an instance of the same class as the receiver.
@@ -70,9 +71,9 @@
  - If @a start comes before @a end in an ordered set, keys between @a start and @a end (or which match either object) are included.
  - Otherwise, all keys @b except those that fall between @a start and @a end are included.
  */
-- (NSMutableDictionary *)subsetFromKey:(id)start
-                                 toKey:(id)end
-                               options:(CHSubsetConstructionOptions)options;
+- (NSMutableDictionary<KeyType, ObjectType> *)subsetFromKey:(KeyType)start
+													  toKey:(KeyType)end
+													options:(CHSubsetConstructionOptions)options;
 
 // @}
 @end

@@ -26,7 +26,8 @@
  - <a href="http://cablemodem.fibertel.com.ar/mcape/boost/libs/bimap/">Boost.Bimap</a> / <a href="http://www.codeproject.com/KB/stl/bimap.aspx">bimap</a> (C++)
  - <a href="http://www.go4expert.com/forums/showthread.php?t=1466">BiDirHashtable</a> (C#)
  */
-@interface CHBidirectionalDictionary : CHMutableDictionary {
+@interface CHBidirectionalDictionary<__covariant KeyType, __covariant ObjectType> : CHMutableDictionary
+{
 	CFMutableDictionaryRef objectsToKeys; // Used for reverse mapping.
 	CHBidirectionalDictionary *inverse; // Pointer to inverse dictionary.
 }
@@ -45,7 +46,7 @@
  @see \link NSDictionary#objectForKey: -objectForKey:\endlink
  @see removeKeyForObject:
  */
-- (id)keyForObject:(id)anObject;
+- (KeyType)keyForObject:(ObjectType)anObject;
 
 /**
  Returns the inverse view of the receiver, which maps each value to its associated key. The receiver and its inverse are backed by the same data; any changes to one will appear in the other. A reference to the inverse (if one exists) is stored internally, and vice versa, so the two instances are linked. If one is released, it will cut its ties to and from the other.
@@ -54,7 +55,7 @@
  
  @attention There is no guaranteed correspondence between the order in which keys are enumerated for a dictionary and its inverse.
  */
-- (CHBidirectionalDictionary *)inverseDictionary;
+- (CHBidirectionalDictionary<ObjectType, KeyType> *)inverseDictionary;
 
 // @}
 #pragma mark Modifying Contents
@@ -71,7 +72,7 @@
  @see \link NSDictionary#initWithDictionary: -initWithDictionary:\endlink
  @see setObject:forKey:
  */
-- (void)addEntriesFromDictionary:(NSDictionary *)otherDictionary;
+- (void)addEntriesFromDictionary:(NSDictionary<KeyType, ObjectType> *)otherDictionary;
 
 /**
  Removes the key for a given value (and its inverse key-value mapping) from the receiver. Does nothing if the specified value doesn't exist.
@@ -83,7 +84,7 @@
  @see keyForObject:
  @see removeObjectForKey:
  */
-- (void)removeKeyForObject:(id)anObject;
+- (void)removeKeyForObject:(ObjectType)anObject;
 
 /**
  Removes the value for a given key (and its inverse value-key mapping) from the receiver. Does nothing if the specified key doesn't exist.
@@ -95,7 +96,7 @@
  @see \link NSDictionary#objectForKey: -objectForKey:\endlink
  @see removeKeyForObject:
  */
-- (void)removeObjectForKey:(id)aKey;
+- (void)removeObjectForKey:(KeyType)aKey;
 
 /**
  Adds a given key-value pair to the receiver, replacing any existing pair with the given key or value.
@@ -120,7 +121,7 @@
  @see keyForObject:
  @see \link NSDictionary#objectForKey: -objectForKey:\endlink
  */
-- (void)setObject:(id)anObject forKey:(id)aKey;
+- (void)setObject:(ObjectType)anObject forKey:(KeyType)aKey;
 
 // @}
 @end

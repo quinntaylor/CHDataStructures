@@ -19,27 +19,27 @@
  - NSCopying
  - NSFastEnumeration
  */
-@interface CHAbstractListCollection : NSObject <NSCoding, NSCopying, NSFastEnumeration>
+@interface CHAbstractListCollection<__covariant ObjectType> : NSObject <NSCoding, NSCopying, NSFastEnumeration>
 {
 	id<CHLinkedList> list; // List used for storing contents of collection.
 }
 
-- (instancetype)initWithArray:(NSArray *)anArray NS_DESIGNATED_INITIALIZER;
-- (NSArray *)allObjects;
-- (BOOL)containsObject:(id)anObject;
-- (BOOL)containsObjectIdenticalTo:(id)anObject;
+- (instancetype)initWithArray:(NSArray<ObjectType> *)anArray NS_DESIGNATED_INITIALIZER;
+- (NSArray<ObjectType> *)allObjects;
+- (BOOL)containsObject:(ObjectType)anObject;
+- (BOOL)containsObjectIdenticalTo:(ObjectType)anObject;
 - (NSUInteger)count;
 - (void)exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2;
-- (NSUInteger)indexOfObject:(id)anObject;
-- (NSUInteger)indexOfObjectIdenticalTo:(id)anObject;
+- (NSUInteger)indexOfObject:(ObjectType)anObject;
+- (NSUInteger)indexOfObjectIdenticalTo:(ObjectType)anObject;
 - (id)objectAtIndex:(NSUInteger)index;
 - (NSEnumerator *)objectEnumerator;
-- (NSArray *)objectsAtIndexes:(NSIndexSet *)indexes;
+- (NSArray<ObjectType> *)objectsAtIndexes:(NSIndexSet *)indexes;
 - (void)removeAllObjects;
-- (void)removeObject:(id)anObject;
+- (void)removeObject:(ObjectType)anObject;
 - (void)removeObjectAtIndex:(NSUInteger)index;
-- (void)removeObjectIdenticalTo:(id)anObject;
+- (void)removeObjectIdenticalTo:(ObjectType)anObject;
 - (void)removeObjectsAtIndexes:(NSIndexSet *)indexes;
-- (void)replaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject;
+- (void)replaceObjectAtIndex:(NSUInteger)index withObject:(ObjectType)anObject;
 
 @end

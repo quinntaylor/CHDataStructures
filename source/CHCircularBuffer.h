@@ -18,7 +18,8 @@
  
  @note Any method inherited from NSArray or NSMutableArray is supported by this class and its children. Please see the documentation for those classes for details.
 */
-@interface CHCircularBuffer : NSMutableArray {
+@interface CHCircularBuffer<__covariant ObjectType> : NSMutableArray
+{
 	__strong id *array; // Primitive C array for storing collection contents.
 	NSUInteger arrayCapacity; // How many pointers @a array can accommodate.
 	NSUInteger count; // The number of objects currently in the buffer.
@@ -29,8 +30,8 @@
 
 - (instancetype)initWithCapacity:(NSUInteger)capacity NS_DESIGNATED_INITIALIZER; // Inherited from NSMutableArray
 
-- (NSArray *)allObjects;
-- (BOOL)containsObjectIdenticalTo:(id)anObject;
+- (NSArray<ObjectType> *)allObjects;
+- (BOOL)containsObjectIdenticalTo:(ObjectType)anObject;
 - (void)removeFirstObject;
 - (void)removeLastObject;
 

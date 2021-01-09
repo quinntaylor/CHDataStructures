@@ -38,7 +38,7 @@ typedef struct CHSinglyLinkedListNode {
  
  The primary weakness of singly-linked lists is the absence of a previous link. Since insertion and deletion involve changing the @c next link of the preceding node, and there is no way to step backwards through the list, traversal must always begin at the head, even if searching for an index that is very close to the tail. This does not mean that singly-linked lists are inherently bad, only that they are not well-suited for all possible applications. As usual, all data access attributes should be considered before choosing a data strcuture.
  */
-@interface CHSinglyLinkedList : NSObject <CHLinkedList>
+@interface CHSinglyLinkedList<__covariant ObjectType> : NSObject <CHLinkedList>
 {
 	CHSinglyLinkedListNode *head; // Dummy node at the front of the list.
 	CHSinglyLinkedListNode *tail; // Pointer to last node in a list.
@@ -48,6 +48,6 @@ typedef struct CHSinglyLinkedListNode {
 	unsigned long mutations; // Tracks mutations for NSFastEnumeration.
 }
 
-- (instancetype)initWithArray:(NSArray *)array NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithArray:(NSArray<ObjectType> *)array NS_DESIGNATED_INITIALIZER;
 
 @end

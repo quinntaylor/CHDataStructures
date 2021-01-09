@@ -26,7 +26,8 @@
  
  Unlike NSDictionary and other Cocoa collections, CHMultiDictionary has not been designed with mutable and immutable variants. A multimap is not that much more useful if it is immutable, so any copies made of this class are mutable by definition.
  */
-@interface CHMultiDictionary : CHMutableDictionary {
+@interface CHMultiDictionary<__covariant KeyType, __covariant ObjectType> : CHMutableDictionary
+{
 	NSUInteger objectCount; // Number of objects currently in the dictionary.
 }
 
@@ -49,7 +50,7 @@
  
  @see objectsForKey:
  */
-- (NSUInteger)countForKey:(id)aKey;
+- (NSUInteger)countForKey:(KeyType)aKey;
 
 /**
  Returns an array of objects associated with a given key.
@@ -60,7 +61,7 @@
  @see countForKey:
  @see removeObjectsForKey:
  */
-- (NSSet *)objectsForKey:(id)aKey;
+- (NSSet<ObjectType> *)objectsForKey:(KeyType)aKey;
 
 #pragma mark Modifying Contents
 
@@ -77,7 +78,7 @@
  @see removeObjectsForKey:
  @see setObjects:forKey:
  */
-- (void)addObject:(id)anObject forKey:(id)aKey;
+- (void)addObject:(ObjectType)anObject forKey:(KeyType)aKey;
 
 /**
  Adds the given object(s) to a key entry in the receiver.
@@ -92,7 +93,7 @@
  @see removeObjectsForKey:
  @see setObjects:forKey:
  */
-- (void)addObjects:(NSSet *)objectSet forKey:(id)aKey;
+- (void)addObjects:(NSSet<ObjectType> *)objectSet forKey:(KeyType)aKey;
 
 /**
  Remove @b all occurrences of @a anObject associated with a given key.
@@ -108,7 +109,7 @@
  @see objectsForKey:
  @see removeObjectsForKey:
  */
-- (void)removeObject:(id)anObject forKey:(id)aKey;
+- (void)removeObject:(ObjectType)anObject forKey:(KeyType)aKey;
 
 /**
  Remove a given key and its associated value(s) from the receiver.
@@ -120,7 +121,7 @@
  @see objectsForKey:
  @see removeObject:forKey:
  */
-- (void)removeObjectsForKey:(id)aKey;
+- (void)removeObjectsForKey:(KeyType)aKey;
 
 /**
  Sets the object(s) associated with a key entry in the receiver.
@@ -135,6 +136,6 @@
  @see objectsForKey:
  @see removeObjectsForKey:
  */
-- (void)setObjects:(NSSet *)objectSet forKey:(id)aKey;
+- (void)setObjects:(NSSet<ObjectType> *)objectSet forKey:(KeyType)aKey;
 
 @end

@@ -34,7 +34,8 @@
  
  @see CHOrderedSet
  */
-@interface CHOrderedDictionary : CHMutableDictionary {
+@interface CHOrderedDictionary<__covariant KeyType, __covariant ObjectType> : CHMutableDictionary
+{
 	id keyOrdering;
 }
 
@@ -50,7 +51,7 @@
  @see keyAtIndex:
  @see lastKey
  */
-- (id)firstKey;
+- (KeyType)firstKey;
 
 /**
  Returns the last key in the receiver, according to insertion order.
@@ -60,7 +61,7 @@
  @see firstKey
  @see keyAtIndex:
  */
-- (id)lastKey;
+- (KeyType)lastKey;
 
 /**
  Returns the index of a given key based on insertion order.
@@ -72,7 +73,7 @@
  @see keyAtIndex:
  @see lastKey
  */
-- (NSUInteger)indexOfKey:(id)aKey;
+- (NSUInteger)indexOfKey:(KeyType)aKey;
 
 /**
  Returns the key at the specified index, based on insertion order.
@@ -87,7 +88,7 @@
  @see indexOfKey:
  @see lastKey
  */
-- (id)keyAtIndex:(NSUInteger)index;
+- (KeyType)keyAtIndex:(NSUInteger)index;
 
 /**
  Returns an array containing the keys in the receiver at the indexes specified by a given index set.
@@ -101,7 +102,7 @@
  @see \link NSDictionary#allKeys -allKeys\endlink
  @see orderedDictionaryWithKeysAtIndexes:
  */
-- (NSArray *)keysAtIndexes:(NSIndexSet *)indexes;
+- (NSArray<KeyType> *)keysAtIndexes:(NSIndexSet *)indexes;
 
 /**
  Returns the value for the key at the specified index, based on insertion order.
@@ -116,7 +117,7 @@
  @see \link NSDictionary#objectForKey: -objectForKey:\endlink
  @see removeObjectForKeyAtIndex:
  */
-- (id)objectForKeyAtIndex:(NSUInteger)index;
+- (ObjectType)objectForKeyAtIndex:(NSUInteger)index;
 
 /**
  Returns the set of objects from the receiver corresponding to the keys at the indexes specified by a given index set.
@@ -131,7 +132,7 @@
  @see \link NSDictionary#objectsForKeys:notFoundMarker: -objectsForKeys:notFoundMarker:\endlink
  @see removeObjectsForKeysAtIndexes:
  */
-- (NSArray *)objectsForKeysAtIndexes:(NSIndexSet *)indexes;
+- (NSArray<ObjectType> *)objectsForKeysAtIndexes:(NSIndexSet *)indexes;
 
 /**
  Returns an ordered dictionary containing the entries in the receiver with keys at the indexes specified by a given index set.
@@ -144,7 +145,7 @@
  
  @attention To retrieve entries in a given NSRange, pass <code>[NSIndexSet indexSetWithIndexesInRange:range]</code> as the parameter.
  */
-- (CHOrderedDictionary *)orderedDictionaryWithKeysAtIndexes:(NSIndexSet *)indexes;
+- (CHOrderedDictionary<KeyType, ObjectType> *)orderedDictionaryWithKeysAtIndexes:(NSIndexSet *)indexes;
 
 /**
  Returns an enumerator that lets you access each key in the receiver in reverse order.
@@ -160,7 +161,7 @@
  @see \link NSDictionary#allKeysForObject: -allKeysForObject:\endlink
  @see NSFastEnumeration protocol
  */
-- (NSEnumerator *)reverseKeyEnumerator;
+- (NSEnumerator<KeyType> *)reverseKeyEnumerator;
 
 // @}
 #pragma mark Modifying Contents
@@ -194,7 +195,7 @@
  @see keyAtIndex:
  @see setObject:forKey:
  */
-- (void)insertObject:(id)anObject forKey:(id)aKey atIndex:(NSUInteger)index;
+- (void)insertObject:(ObjectType)anObject forKey:(KeyType)aKey atIndex:(NSUInteger)index;
 
 /**
  Removes the key at a given index from the receiver. Elements on the non-wrapped end of the buffer are shifted one spot to fill the gap.
@@ -232,7 +233,7 @@
  @see insertObject:forKey:atIndex:
  @see setObject:forKeyAtIndex:
  */
-- (void)setObject:(id)anObject forKey:(id)aKey;
+- (void)setObject:(ObjectType)anObject forKey:(KeyType)aKey;
 
 /**
  Sets the value for the key at the specified index in the receiver.
@@ -246,7 +247,7 @@
  @see insertObject:forKey:atIndex:
  @see setObject:forKey:
  */
-- (void)setObject:(id)anObject forKeyAtIndex:(NSUInteger)index;
+- (void)setObject:(ObjectType)anObject forKeyAtIndex:(NSUInteger)index;
 
 // @}
 @end

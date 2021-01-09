@@ -39,7 +39,7 @@ typedef struct CHDoublyLinkedListNode {
  
  Doubly-linked lists are well-suited as an underlying collection for other data structures, such as a deque (double-ended queue) like the one declared in CHListDeque. The same functionality can be achieved using a circular buffer and an array, and many libraries choose to do so when objects are only added to or removed from the ends, but the dynamic structure of a linked list is much more flexible when inserting and deleting in the middle of a list.
  */
-@interface CHDoublyLinkedList : NSObject <CHLinkedList>
+@interface CHDoublyLinkedList<__covariant ObjectType> : NSObject <CHLinkedList>
 {
 	CHDoublyLinkedListNode *head; // Dummy node at the front of the list.
 	CHDoublyLinkedListNode *tail; // Dummy node at the back of the list.
@@ -49,7 +49,7 @@ typedef struct CHDoublyLinkedListNode {
 	unsigned long mutations; // Tracks mutations for NSFastEnumeration.
 }
 
-- (instancetype)initWithArray:(NSArray *)array NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithArray:(NSArray<ObjectType> *)array NS_DESIGNATED_INITIALIZER;
 
 /**
  Returns an enumerator that accesses each object in the receiver from back to front.
@@ -59,6 +59,6 @@ typedef struct CHDoublyLinkedListNode {
  @attention The enumerator retains the collection. Once all objects in the enumerator have been consumed, the collection is released.
  @warning Modifying a collection while it is being enumerated is unsafe, and may cause a mutation exception to be raised.
  */
-- (NSEnumerator *)reverseObjectEnumerator;
+- (NSEnumerator<ObjectType> *)reverseObjectEnumerator;
 
 @end

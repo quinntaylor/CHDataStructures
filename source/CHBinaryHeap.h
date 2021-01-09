@@ -15,12 +15,13 @@
 /**
  A CHHeap implemented using a CFBinaryHeapRef internally.
  */
-@interface CHBinaryHeap : NSObject <CHHeap> {
+@interface CHBinaryHeap<__covariant ObjectType> : NSObject <CHHeap>
+{
 	CFBinaryHeapRef heap; // Used for storing objects in the heap.
 	NSComparisonResult sortOrder; // Whether to sort objects ascending or not.
 	unsigned long mutations; // Used to track mutations for NSFastEnumeration.
 }
 
-- (instancetype)initWithOrdering:(NSComparisonResult)order array:(NSArray *)array NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithOrdering:(NSComparisonResult)order array:(NSArray<ObjectType> *)array NS_DESIGNATED_INITIALIZER;
 
 @end
