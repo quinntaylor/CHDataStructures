@@ -915,6 +915,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = "resources/Info-Tests.plist";
+				WARNING_CFLAGS = "-Wno-nonnull";
 			};
 			name = Debug;
 		};
@@ -922,6 +923,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = "resources/Info-Tests.plist";
+				WARNING_CFLAGS = "-Wno-nonnull";
 			};
 			name = Release;
 		};

@@ -8,6 +8,8 @@
 #import <CHDataStructures/CHMutableDictionary.h>
 #import <CHDataStructures/CHSortedSet.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  @file CHSortedDictionary.h
  
@@ -47,7 +49,7 @@
  
  @see lastKey
  */
-- (KeyType)firstKey;
+- (nullable KeyType)firstKey;
 
 /**
  Returns the maximum key in the receiver, according to natural sorted order.
@@ -56,7 +58,7 @@
  
  @see firstKey
  */
-- (KeyType)lastKey;
+- (nullable KeyType)lastKey;
 
 /**
  Returns a new dictionary containing the entries for keys delineated by two given objects. The subset is a shallow copy (new memory is allocated for the structure, but the copy points to the same objects) so any changes to the objects in the subset affect the receiver as well. The subset is an instance of the same class as the receiver.
@@ -77,3 +79,5 @@
 
 // @}
 @end
+
+ NS_ASSUME_NONNULL_END

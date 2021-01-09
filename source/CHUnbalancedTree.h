@@ -8,6 +8,8 @@
 
 #import <CHDataStructures/CHAbstractBinarySearchTree.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  @file CHUnbalancedTree.h
  A generic, unbalanced implementation of CHSearchTree.
@@ -21,3 +23,5 @@
 @interface CHUnbalancedTree : CHAbstractBinarySearchTree
 
 @end
+
+NS_ASSUME_NONNULL_END

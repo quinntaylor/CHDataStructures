@@ -7,6 +7,8 @@
 
 #import <CHDataStructures/CHMutableDictionary.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  A dictionary that allows bidirectional lookup by keys and values with equal ease. This is possible because a <a href="http://en.wikipedia.org/wiki/Bidirectional_map">bidirectional dictionary</a> enforces the restriction that there is a 1-to-1 relation between keys and values, meaning that multiple keys cannot map to the same value. This is accomplished using a second internal dictionary which stores value-to-key mappings so values can be checked for uniqueness upon insertion. (Since values become the keys in this secondary dictionary, values must also be unique.) See \link #setObject:forKey: -setObject:forKey:\endlink below for details.
  
@@ -46,7 +48,7 @@
  @see \link NSDictionary#objectForKey: -objectForKey:\endlink
  @see removeKeyForObject:
  */
-- (KeyType)keyForObject:(ObjectType)anObject;
+- (nullable KeyType)keyForObject:(ObjectType)anObject;
 
 /**
  Returns the inverse view of the receiver, which maps each value to its associated key. The receiver and its inverse are backed by the same data; any changes to one will appear in the other. A reference to the inverse (if one exists) is stored internally, and vice versa, so the two instances are linked. If one is released, it will cut its ties to and from the other.
@@ -125,3 +127,5 @@
 
 // @}
 @end
+
+NS_ASSUME_NONNULL_END

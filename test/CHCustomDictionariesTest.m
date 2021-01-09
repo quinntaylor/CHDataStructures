@@ -201,7 +201,7 @@ static NSArray *keyArray;
 }
 
 - (void)testRemoveKeyForObject {
-	XCTAssertNoThrow([dictionary removeKeyForObject:nil]);
+	XCTAssertThrows([dictionary removeKeyForObject:nil]);
 	
 	[dictionary setObject:@"B" forKey:@"A"];
 	[dictionary setObject:@"D" forKey:@"C"];
@@ -223,7 +223,7 @@ static NSArray *keyArray;
 }
 
 - (void)testRemoveObjectForKey {
-	XCTAssertNoThrow([dictionary removeObjectForKey:nil]);
+	XCTAssertThrows([dictionary removeObjectForKey:nil]);
 	
 	[dictionary setObject:@"B" forKey:@"A"];
 	[dictionary setObject:@"D" forKey:@"C"];
@@ -251,8 +251,8 @@ static NSArray *keyArray;
 	
 	// Test basic key/value queries for an empty dictionary
 	XCTAssertEqual([dictionary count], (NSUInteger)0);
-	XCTAssertNoThrow([dictionary objectForKey:nil]);
-	XCTAssertNoThrow([dictionary keyForObject:nil]);
+	XCTAssertThrows([dictionary objectForKey:nil]);
+	XCTAssertThrows([dictionary keyForObject:nil]);
 	XCTAssertNil([dictionary objectForKey:@"A"]);
 	XCTAssertNil([dictionary keyForObject:@"A"]);
 	

@@ -8,6 +8,8 @@
 #import <CHDataStructures/CHDeque.h>
 #import <CHDataStructures/CHAbstractListCollection.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  @file CHListDeque.h
  A simple CHDeque implemented using a CHDoublyLinkedList.
@@ -19,3 +21,5 @@
 @interface CHListDeque : CHAbstractListCollection <CHDeque>
 
 @end
+
+NS_ASSUME_NONNULL_END

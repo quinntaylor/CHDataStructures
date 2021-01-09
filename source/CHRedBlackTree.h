@@ -8,6 +8,8 @@
 
 #import <CHDataStructures/CHAbstractBinarySearchTree.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 #define kBLACK 0
 #define kRED 1
 
@@ -56,3 +58,5 @@
 @interface CHRedBlackTree : CHAbstractBinarySearchTree
 
 @end
+
+NS_ASSUME_NONNULL_END

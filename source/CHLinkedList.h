@@ -7,6 +7,8 @@
 
 #import <CHDataStructures/CHUtil.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  @file CHLinkedList.h
  
@@ -60,7 +62,7 @@
  Determine whether the receiver contains a given object, matched using \link NSObject-p#isEqual: -isEqual:\endlink.
  
  @param anObject The object to test for membership in the receiver.
- @return @c YES if the receiver contains @a anObject (as determined by \link NSObject-p#isEqual: -isEqual:\endlink), @c NO if @a anObject is @c nil or not present.
+ @return @c YES if the receiver contains @a anObject (as determined by @c -isEqual:), otherwise @c NO.
  
  @see containsObjectIdenticalTo:
  @see removeObject:
@@ -71,7 +73,7 @@
  Determine whether the receiver contains a given object, matched using the == operator.
  
  @param anObject The object to test for membership in the receiver.
- @return @c YES if the receiver contains @a anObject (as determined by the == operator), @c NO if @a anObject is @c nil or not present.
+ @return @c YES if the receiver contains @a anObject (as determined by the == operator), otherwise @c NO.
  
  @see containsObject:
  @see removeObjectIdenticalTo:
@@ -95,7 +97,7 @@
  @see lastObject
  @see removeFirstObject
  */
-- (id)firstObject;
+- (nullable id)firstObject;
 
 /**
  Returns the last object in the receiver.
@@ -105,7 +107,7 @@
  @see firstObject
  @see removeLastObject
  */
-- (id)lastObject;
+- (nullable id)lastObject;
 
 /**
  Returns the lowest index of a given object, matched using @c isEqual:.
@@ -343,3 +345,5 @@
 
 // @}
 @end
+
+NS_ASSUME_NONNULL_END

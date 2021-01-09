@@ -195,6 +195,7 @@
 	while (aClass = [classes nextObject]) {
 		heap = [[[aClass alloc] init] autorelease];
 		XCTAssertNoThrow([heap addObjectsFromArray:nil]);
+		XCTAssertNoThrow([heap addObjectsFromArray:@[]]);
 		XCTAssertEqual([heap count], (NSUInteger)0);
 		[heap addObjectsFromArray:objects];
 		XCTAssertTrue([heap isValid]);
@@ -285,7 +286,9 @@
 		if (![aClass instancesRespondToSelector:@selector(insertObject:atIndex:)])
 			continue;
 		heap = [[[aClass alloc] init] autorelease];
+		// This is an unsupported operation and always throws.
 		XCTAssertThrows([heap insertObject:nil atIndex:0]);
+		XCTAssertThrows([heap insertObject:@"A" atIndex:0]);
 	}
 }
 

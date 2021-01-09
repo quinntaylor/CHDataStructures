@@ -44,6 +44,7 @@
 }
 
 - (id)keyForObject:(id)anObject {
+	CHRaiseInvalidArgumentExceptionIfNil(anObject);
 	return (id)CFDictionaryGetValue(objectsToKeys, anObject);
 }
 
@@ -63,8 +64,12 @@
 }
 
 - (void)removeKeyForObject:(id)anObject {
-	[super removeObjectForKey:[self keyForObject:anObject]];
-	CFDictionaryRemoveValue(objectsToKeys, anObject);
+	CHRaiseInvalidArgumentExceptionIfNil(anObject);
+	id key = [self keyForObject:anObject];
+	if (key) {
+		[super removeObjectForKey:[self keyForObject:anObject]];
+		CFDictionaryRemoveValue(objectsToKeys, anObject);
+	}
 }
 
 - (void)removeObjectForKey:(id)aKey {

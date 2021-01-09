@@ -7,6 +7,8 @@
 
 #import <CHDataStructures/CHUtil.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  @file CHMutableSet.h
  
@@ -27,3 +29,5 @@
 - (instancetype)initWithCapacity:(NSUInteger)numItems NS_DESIGNATED_INITIALIZER; // Inherited from NSMutableSet
 
 @end
+
+NS_ASSUME_NONNULL_END

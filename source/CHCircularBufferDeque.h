@@ -8,6 +8,8 @@
 #import <CHDataStructures/CHDeque.h>
 #import <CHDataStructures/CHCircularBuffer.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  @file CHCircularBufferDeque.h
  A simple CHDeque implemented using a CHCircularBuffer.
@@ -19,3 +21,5 @@
 @interface CHCircularBufferDeque : CHCircularBuffer <CHDeque>
 
 @end
+
+NS_ASSUME_NONNULL_END

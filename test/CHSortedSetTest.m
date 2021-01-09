@@ -100,8 +100,7 @@ static NSArray *abcde;
 	if (NonConcreteClass())
 		return;
 	// Test contains for nil and non-member objects
-	XCTAssertNoThrow([set containsObject:nil]);
-	XCTAssertFalse([set containsObject:nil]);
+	XCTAssertThrows([set containsObject:nil]);
 	XCTAssertNoThrow([set containsObject:@"bogus"]);
 	XCTAssertFalse([set containsObject:@"bogus"]);
 	[set addObjectsFromArray:abcde];
@@ -166,9 +165,8 @@ static NSArray *abcde;
 	if (NonConcreteClass())
 		return;
 	// Try with empty sorted set
-	XCTAssertNoThrow([set member:nil]);
+	XCTAssertThrows([set member:nil]);
 	XCTAssertNoThrow([set member:@"bogus"]);
-	XCTAssertNil([set member:nil]);	
 	XCTAssertNil([set member:@"bogus"]);	
 	// Try with populated sorted set
 	[set addObjectsFromArray:abcde];
@@ -222,7 +220,7 @@ static NSArray *abcde;
 - (void)testRemoveObject {
 	if ([set isMemberOfClass:[CHAbstractBinarySearchTree class]]) {
 		// This method should be unsupported in the abstract parent class.
-		XCTAssertThrows([set removeObject:nil]);
+		XCTAssertThrows([set removeObject:@"bogus"]);
 	}
 }
 
@@ -359,10 +357,14 @@ static NSArray *abcde;
 	o = CHSubsetConstructionExcludeLowEndpoint;
 	subset = [[set subsetFromObject:@"A" toObject:@"G" options:o] allObjects];
 	XCTAssertEqualObjects(subset, cdeg);
+	subset = [[set subsetFromObject:nil toObject:@"G" options:o] allObjects];
+	XCTAssertEqualObjects(subset, acdeg);
 	
 	o = CHSubsetConstructionExcludeHighEndpoint;
 	subset = [[set subsetFromObject:@"A" toObject:@"G" options:o] allObjects];
 	XCTAssertEqualObjects(subset, acde);
+	subset = [[set subsetFromObject:@"A" toObject:nil options:o] allObjects];
+	XCTAssertEqualObjects(subset, acdeg);
 	
 	o = CHSubsetConstructionExcludeLowEndpoint | CHSubsetConstructionExcludeHighEndpoint;
 	subset = [[set subsetFromObject:@"A" toObject:@"G" options:o] allObjects];
@@ -596,10 +598,10 @@ static NSArray *abcde;
 }
 
 - (void)testRemoveObject {
-	XCTAssertNoThrow([set removeObject:nil]);
+	XCTAssertThrows([set removeObject:nil]);
 	XCTAssertNoThrow([set removeObject:@"bogus"]);
 	[set addObjectsFromArray:objects];
-	XCTAssertNoThrow([set removeObject:nil]);
+	XCTAssertThrows([set removeObject:nil]);
 	XCTAssertNoThrow([set removeObject:@"bogus"]);
 	XCTAssertEqual([set count], [objects count]);
 	
@@ -764,10 +766,10 @@ static NSArray *abcde;
 }
 
 - (void)testRemoveObject {
-	XCTAssertNoThrow([set removeObject:nil]);
+	XCTAssertThrows([set removeObject:nil]);
 	XCTAssertNoThrow([set removeObject:@"bogus"]);
 	[set addObjectsFromArray:objects];
-	XCTAssertNoThrow([set removeObject:nil]);
+	XCTAssertThrows([set removeObject:nil]);
 	XCTAssertNoThrow([set removeObject:@"bogus"]);
 	XCTAssertEqual([set count], [objects count]);
 	
@@ -1050,10 +1052,10 @@ static NSArray *abcde;
 }
 
 - (void)testRemoveObject {
-	XCTAssertNoThrow([set removeObject:nil]);
+	XCTAssertThrows([set removeObject:nil]);
 	XCTAssertNoThrow([set removeObject:@"bogus"]);
 	[set addObjectsFromArray:objects];
-	XCTAssertNoThrow([set removeObject:nil]);
+	XCTAssertThrows([set removeObject:nil]);
 	XCTAssertNoThrow([set removeObject:@"bogus"]);
 	XCTAssertEqual([set count], [objects count]);
 	
@@ -1237,10 +1239,9 @@ static NSArray *abcde;
 
 - (void)testPriorityForObject {
 	// Priority value should indicate that an object not in the treap is absent.
-	XCTAssertEqual([set priorityForObject:nil],      (NSUInteger)CHTreapNotFound);
+	XCTAssertThrows([set priorityForObject:nil]);
 	XCTAssertEqual([set priorityForObject:@"bogus"], (NSUInteger)CHTreapNotFound);
 	[set addObjectsFromArray:objects];
-	XCTAssertEqual([set priorityForObject:nil],      (NSUInteger)CHTreapNotFound);
 	XCTAssertEqual([set priorityForObject:@"bogus"], (NSUInteger)CHTreapNotFound);
 	
 	// Inserting from 'objects' with these priorities creates a known ordering.
@@ -1266,10 +1267,9 @@ static NSArray *abcde;
 }
 
 - (void)testRemoveObject {
-	XCTAssertNoThrow([set removeObject:nil]);
+	XCTAssertThrows([set removeObject:nil]);
 	XCTAssertNoThrow([set removeObject:@"bogus"]);
 	[set addObjectsFromArray:objects];
-	XCTAssertNoThrow([set removeObject:nil]);
 	XCTAssertNoThrow([set removeObject:@"bogus"]);
 	XCTAssertEqual([set count], [objects count]);
 
@@ -1410,10 +1410,10 @@ static NSArray *abcde;
 	objects = [NSArray arrayWithObjects:
 			   @"F",@"B",@"A",@"C",@"E",@"D",@"J",@"I",@"G",@"H",@"K",nil];
 
-	XCTAssertNoThrow([set removeObject:nil]);
+	XCTAssertThrows([set removeObject:nil]);
 	XCTAssertNoThrow([set removeObject:@"bogus"]);
 	[set addObjectsFromArray:objects];
-	XCTAssertNoThrow([set removeObject:nil]);
+	XCTAssertThrows([set removeObject:nil]);
 	XCTAssertNoThrow([set removeObject:@"bogus"]);
 	XCTAssertEqual([set count], [objects count]);
 

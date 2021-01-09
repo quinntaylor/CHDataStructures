@@ -100,7 +100,7 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 }
 
 - (instancetype)init {
-	return [self initWithArray:nil];
+	return [self initWithArray:@[]];
 }
 
 // This is the designated initializer for CHSinglyLinkedList
@@ -418,8 +418,10 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 }
 
 - (void)_removeObject:(id)anObject withEqualityTest:(CHObjectEqualityTest)objectsMatch {
-	if (count == 0 || anObject == nil)
+	CHRaiseInvalidArgumentExceptionIfNil(anObject);
+	if (count == 0) {
 		return;
+	}
 	CHSinglyLinkedListNode *node = head;
 	do {
 		while (node->next != NULL && !objectsMatch(node->next->object, anObject))

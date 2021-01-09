@@ -7,6 +7,8 @@
 
 #import <CHDataStructures/CHAbstractBinarySearchTree.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  @file CHAbstractBinarySearchTree_Internal.h
  Contains \#defines for performing various traversals of binary search trees.
@@ -36,7 +38,7 @@
  @param anObject The object to be stored in the @a object field of the struct; may be @c nil.
  @return An struct allocated with @c malloc().
  */
-HIDDEN CHBinaryTreeNode * CHCreateBinaryTreeNodeWithObject(id anObject);
+HIDDEN CHBinaryTreeNode * CHCreateBinaryTreeNodeWithObject(_Nullable id anObject);
 
 // These are used by subclasses; marked as HIDDEN to reduce external visibility.
 HIDDEN FOUNDATION_EXTERN size_t kCHBinaryTreeNodeSize;
@@ -112,3 +114,5 @@ HIDDEN FOUNDATION_EXTERN size_t kCHBinaryTreeNodeSize;
 
 #define CHBinaryTreeQueue_DEQUEUE() \
 	if (queueHead != queueTail) queueHead = (queueHead + 1) % queueCapacity
+
+NS_ASSUME_NONNULL_END

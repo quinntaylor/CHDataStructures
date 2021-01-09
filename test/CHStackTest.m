@@ -50,9 +50,8 @@
 	Class aClass;
 	while (aClass = [classes nextObject]) {
 		// Test initializing with nil and empty array parameters
-		stack = [[[aClass alloc] initWithArray:nil] autorelease];
-		XCTAssertEqual([stack count], (NSUInteger)0);
-		stack = [[[aClass alloc] initWithArray:[NSArray array]] autorelease];
+		stack = nil;
+		XCTAssertThrows([[[aClass alloc] initWithArray:nil] autorelease]);
 		XCTAssertEqual([stack count], (NSUInteger)0);
 		// Test initializing with a valid, non-empty array
 		stack = [[[aClass alloc] initWithArray:objects] autorelease];

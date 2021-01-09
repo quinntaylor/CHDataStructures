@@ -25,6 +25,7 @@
 }
 
 - (instancetype)initWithArray:(NSArray *)anArray {
+	CHRaiseInvalidArgumentExceptionIfNil(anArray);
 	self = [super init];
 	if (self == nil) return nil;
 	list = [self _createList];

@@ -36,7 +36,8 @@
 	Class aClass;
 	while (aClass = [classes nextObject]) {
 		// Test initializing with nil and empty array parameters
-		queue = [[[aClass alloc] initWithArray:nil] autorelease];
+		queue = nil;
+		XCTAssertThrows(queue = [[[aClass alloc] initWithArray:nil] autorelease], @"%@", aClass);
 		XCTAssertEqual([queue count], (NSUInteger)0);
 		queue = [[[aClass alloc] initWithArray:[NSArray array]] autorelease];
 		XCTAssertEqual([queue count], (NSUInteger)0);

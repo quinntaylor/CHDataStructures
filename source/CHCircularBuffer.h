@@ -7,6 +7,8 @@
 
 #import <CHDataStructures/CHUtil.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  @file CHCircularBuffer.h
  
@@ -36,3 +38,5 @@
 - (void)removeLastObject;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -19,6 +19,7 @@
 }
 
 - (instancetype)initWithArray:(NSArray *)anArray {
+	CHRaiseInvalidArgumentExceptionIfNil(anArray);
 	self = [super initWithArray:@[]]; // Don't let superclass add objects, we prepend them below.
 	if (self == nil) return nil;
 	for (id anObject in anArray) {

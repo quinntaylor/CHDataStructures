@@ -85,8 +85,10 @@
 }
 
 - (void)removeObject:(id)anObject {
-	if (count == 0 || anObject == nil)
+	CHRaiseInvalidArgumentExceptionIfNil(anObject);
+	if (count == 0) {
 		return;
+	}
 	++mutations;
 	
 	CHBinaryTreeNode *parent = nil, *current = header;
@@ -119,8 +121,7 @@
 }
 
 - (NSUInteger)priorityForObject:(id)anObject {
-	if (anObject == nil)
-		return CHTreapNotFound;
+	CHRaiseInvalidArgumentExceptionIfNil(anObject);
 	sentinel->object = anObject; // Make sure the target value is always "found"
 	CHBinaryTreeNode *current = header->right;
 	NSComparisonResult comparison;

@@ -7,6 +7,8 @@
 
 #import <CHDataStructures/CHHeap.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  @file CHBinaryHeap.h
  A CHHeap implemented using a CFBinaryHeapRef internally.
@@ -25,3 +27,5 @@
 - (instancetype)initWithOrdering:(NSComparisonResult)order array:(NSArray<ObjectType> *)array NS_DESIGNATED_INITIALIZER;
 
 @end
+
+NS_ASSUME_NONNULL_END

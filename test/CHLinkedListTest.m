@@ -575,10 +575,9 @@
 	while (aClass = [classes nextObject]) {
 		list = [[[aClass alloc] init] autorelease];
 		[list removeObject:@"bogus"]; // Should have no effect
-		XCTAssertNoThrow([list removeObject:nil]);
+		XCTAssertThrows([list removeObject:nil]);
 		
 		[list addObjectsFromArray:abc];
-		XCTAssertNoThrow([list removeObject:nil]);
 		
 		[list removeObject:@"B"];
 		XCTAssertEqual([list count], (NSUInteger)2);
@@ -617,7 +616,7 @@
 	Class aClass;
 	while (aClass = [classes nextObject]) {
 		list = [[[aClass alloc] init] autorelease];
-		XCTAssertNoThrow([list removeObjectIdenticalTo:nil]);
+		XCTAssertThrows([list removeObjectIdenticalTo:nil]);
 		
 		NSString *a = [NSString stringWithFormat:@"A"];
 		[list addObject:a];
@@ -635,7 +634,7 @@
 		[list addObject:@"C"];
 		[list addObject:[NSString stringWithFormat:@"Z"]];
 
-		XCTAssertNoThrow([list removeObjectIdenticalTo:nil]);
+		XCTAssertThrows([list removeObjectIdenticalTo:nil]);
 
 		XCTAssertEqual([list count], (NSUInteger)6);
 		[list removeObjectIdenticalTo:@"Z"];

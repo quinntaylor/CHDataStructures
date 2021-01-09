@@ -9,6 +9,8 @@
 #import <CHDataStructures/CHStack.h>
 #import <CHDataStructures/CHAbstractListCollection.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  @file CHListStack.h
  A simple CHStack implemented using a CHSinglyLinkedList.
@@ -20,3 +22,5 @@
 @interface CHListStack : CHAbstractListCollection <CHStack>
 
 @end
+
+NS_ASSUME_NONNULL_END

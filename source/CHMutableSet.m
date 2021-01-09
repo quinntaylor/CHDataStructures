@@ -116,6 +116,7 @@ static const CFSetCallBacks kCHMutableSetCallbacks = {
 }
 
 - (void)removeObject:(id)anObject {
+	CHRaiseInvalidArgumentExceptionIfNil(anObject);
 	CFSetRemoveValue(set, anObject);
 }
 

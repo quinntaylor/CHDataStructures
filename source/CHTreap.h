@@ -7,6 +7,8 @@
 
 #import <CHDataStructures/CHAbstractBinarySearchTree.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  @file CHTreap.h
  A <a href="http://en.wikipedia.org/wiki/Treap">Treap</a> implementation of CHSearchTree.
@@ -77,8 +79,10 @@
  Returns the priority for @a anObject if it's in the treap, @c CHTreapNotFound otherwise.
  
  @param anObject The object for which to find the treap priority, if it exists.
- @return The priority for @a anObject if it is in the treap, @c CHTreapNotFound if it is @c nil or not present.
+ @return The priority for @a anObject if it is in the treap, otherwise @c CHTreapNotFound.
  */
 - (NSUInteger)priorityForObject:(ObjectType)anObject;
 
 @end
+
+NS_ASSUME_NONNULL_END

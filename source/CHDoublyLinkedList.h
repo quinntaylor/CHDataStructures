@@ -8,6 +8,8 @@
 
 #import <CHDataStructures/CHLinkedList.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  @file CHDoublyLinkedList.h
  A standard doubly-linked list implementation with pointers to head and tail.
@@ -15,9 +17,9 @@
 
 /** A struct for nodes in a CHDoublyLinkedList. */
 typedef struct CHDoublyLinkedListNode {
-	__unsafe_unretained id object; ///< The object associated with this node in the list.
-	struct CHDoublyLinkedListNode *next; ///< Next node in the list.
-	struct CHDoublyLinkedListNode *prev; ///< Previous node in the list.
+	__unsafe_unretained _Nullable id object; ///< The object associated with this node in the list.
+	struct CHDoublyLinkedListNode *_Nullable next; ///< Next node in the list.
+	struct CHDoublyLinkedListNode *_Nullable prev; ///< Previous node in the list.
 } CHDoublyLinkedListNode;
 
 #pragma mark -
@@ -62,3 +64,5 @@ typedef struct CHDoublyLinkedListNode {
 - (NSEnumerator<ObjectType> *)reverseObjectEnumerator;
 
 @end
+
+NS_ASSUME_NONNULL_END

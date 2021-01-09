@@ -7,6 +7,8 @@
 
 #import <CHDataStructures/CHMutableDictionary.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  @file CHOrderedDictionary.h
  
@@ -51,7 +53,7 @@
  @see keyAtIndex:
  @see lastKey
  */
-- (KeyType)firstKey;
+- (nullable KeyType)firstKey;
 
 /**
  Returns the last key in the receiver, according to insertion order.
@@ -61,7 +63,7 @@
  @see firstKey
  @see keyAtIndex:
  */
-- (KeyType)lastKey;
+- (nullable KeyType)lastKey;
 
 /**
  Returns the index of a given key based on insertion order.
@@ -251,3 +253,5 @@
 
 // @}
 @end
+
+NS_ASSUME_NONNULL_END

@@ -7,6 +7,8 @@
 
 #import <CHDataStructures/CHSearchTree.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  @file CHAbstractBinarySearchTree.h
  An abstract CHSearchTree implementation with many default method implementations.
@@ -41,13 +43,13 @@
  Since CHUnbalancedTree doesn't store any extra data, the second union is essentially 4 bytes of pure overhead per node. However, since unbalanced trees are generally not a good choice for sorting large data sets anyway, this is largely a moot point.
  */
 typedef struct CHBinaryTreeNode {
-	__unsafe_unretained id object;                        ///< The object stored in the node.
+	__unsafe_unretained _Nullable id object;                        ///< The object stored in the node.
 	union {
 		struct {
 			struct CHBinaryTreeNode *left;  ///< Link to left child.
 			struct CHBinaryTreeNode *right; ///< Link to right child.
 		};
-		struct CHBinaryTreeNode *link[2];   ///< Links to both childen.
+		struct CHBinaryTreeNode * _Nullable link[2];   ///< Links to both childen.
 	};
 	union {
 		  int32_t balance;   // Used by CHAVLTree
@@ -100,3 +102,5 @@ typedef struct CHBinaryTreeNode {
 - (NSString *)dotGraphString;
 
 @end
+
+NS_ASSUME_NONNULL_END

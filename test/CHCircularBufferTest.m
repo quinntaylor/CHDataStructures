@@ -344,7 +344,7 @@ do { \
 
 - (void)testIndexOfObjectInRange {
 	XCTAssertThrows([buffer indexOfObject:nil inRange:NSMakeRange(0, 1)]);
-	XCTAssertNoThrow([buffer indexOfObject:nil inRange:NSMakeRange(0, 0)]);
+	XCTAssertThrows([buffer indexOfObject:nil inRange:NSMakeRange(0, 0)]);
 	[buffer addObjectsFromArray:abc];
 	NSRange range = NSMakeRange(1, 1);
 	XCTAssertEqual([buffer indexOfObject:@"A" inRange:range], (NSUInteger)NSNotFound);
@@ -353,8 +353,8 @@ do { \
 }
 
 - (void)testIndexOfObjectIdenticalToInRange {
-	XCTAssertThrows([buffer indexOfObjectIdenticalTo:nil inRange:NSMakeRange(0, 1)]);	
-	XCTAssertNoThrow([buffer indexOfObjectIdenticalTo:nil inRange:NSMakeRange(0, 0)]);
+	XCTAssertThrows([buffer indexOfObjectIdenticalTo:nil inRange:NSMakeRange(0, 1)]);
+	XCTAssertThrows([buffer indexOfObjectIdenticalTo:nil inRange:NSMakeRange(0, 0)]);
 	[buffer addObjectsFromArray:abc];
 	NSRange range = NSMakeRange(1, 1);
 	XCTAssertEqual([buffer indexOfObjectIdenticalTo:@"A" inRange:range],
@@ -493,7 +493,7 @@ do { \
 	XCTAssertNoThrow([buffer removeObject:@"A"]);
 	[buffer addObjectsFromArray:abc];
 	XCTAssertEqual([buffer count], [abc count]);
-	XCTAssertNoThrow([buffer removeObject:nil]);
+	XCTAssertThrows([buffer removeObject:nil]);
 	XCTAssertEqual([buffer count], [abc count]);
 	
 	// Test removing all instances of an object in various scenarios
@@ -537,7 +537,7 @@ do { \
 	[buffer addObject:@"C"];
 	[buffer addObject:a];
 	[buffer addObject:b];
-	XCTAssertNoThrow([buffer removeObjectIdenticalTo:nil]);
+	XCTAssertThrows([buffer removeObjectIdenticalTo:nil]);
 	
 	XCTAssertEqual([buffer count], (NSUInteger)5);
 	[buffer removeObjectIdenticalTo:@"A"];

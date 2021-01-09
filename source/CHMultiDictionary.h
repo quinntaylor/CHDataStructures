@@ -7,6 +7,8 @@
 
 #import <CHDataStructures/CHMutableDictionary.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  @file CHMultiDictionary.h
  
@@ -56,12 +58,12 @@
  Returns an array of objects associated with a given key.
  
  @param aKey The key for which to return the corresponding objects.
- @return An NSSet of objects associated with a given key, or nil if the key is not in the receiver.
+ @return An NSSet of objects associated with a given key, or @c nil if the key is not in the receiver.
  
  @see countForKey:
  @see removeObjectsForKey:
  */
-- (NSSet<ObjectType> *)objectsForKey:(KeyType)aKey;
+- (nullable NSSet<ObjectType> *)objectsForKey:(KeyType)aKey;
 
 #pragma mark Modifying Contents
 
@@ -139,3 +141,5 @@
 - (void)setObjects:(NSSet<ObjectType> *)objectSet forKey:(KeyType)aKey;
 
 @end
+
+NS_ASSUME_NONNULL_END

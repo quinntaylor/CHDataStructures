@@ -232,7 +232,7 @@
 - (void)testRemoveObject {
 	[collection addObjectsFromArray:objects];
 
-	XCTAssertNoThrow([collection removeObject:nil]);
+	XCTAssertThrows([collection removeObject:nil]);
 
 	XCTAssertEqual([collection count], (NSUInteger)3);
 	[collection removeObject:@"A"];
@@ -262,7 +262,7 @@
 	[collection addObject:a];
 	[collection addObject:b];
 	
-	XCTAssertNoThrow([collection removeObjectIdenticalTo:nil]);
+	XCTAssertThrows([collection removeObjectIdenticalTo:nil]);
 
 	XCTAssertEqual([collection count], (NSUInteger)5);
 	[collection removeObjectIdenticalTo:@"A"];

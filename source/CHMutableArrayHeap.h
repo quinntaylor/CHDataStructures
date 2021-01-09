@@ -7,6 +7,8 @@
 
 #import <CHDataStructures/CHHeap.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  @file CHMutableArrayHeap.h
  A simple CHHeap implemented as a subclass of NSMutableArray.
@@ -28,7 +30,7 @@
  Determine whether the receiver contains a given object, matched using the == operator.
  
  @param anObject The object to test for membership in the heap.
- @return @c YES if @a anObject is in the heap, @c NO if it is @c nil or not present.
+ @return @c YES if @a anObject is in the heap, otherwise @c NO.
  
  @see containsObject:
  @see removeObjectIdenticalTo:
@@ -62,3 +64,5 @@
 - (void)removeObjectIdenticalTo:(ObjectType)anObject;
 	
 @end
+
+NS_ASSUME_NONNULL_END

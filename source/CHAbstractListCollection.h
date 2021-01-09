@@ -7,6 +7,8 @@
 
 #import <CHDataStructures/CHLinkedList.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  @file CHAbstractListCollection.h
  An abstract class which implements common behaviors of list-based collections.
@@ -43,3 +45,5 @@
 - (void)replaceObjectAtIndex:(NSUInteger)index withObject:(ObjectType)anObject;
 
 @end
+
+NS_ASSUME_NONNULL_END

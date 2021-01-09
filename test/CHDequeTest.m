@@ -36,7 +36,8 @@
 	Class aClass;
 	while (aClass = [classes nextObject]) {
 		// Test initializing with nil and empty array parameters
-		deque = [[[aClass alloc] initWithArray:nil] autorelease];
+		deque = nil;
+		XCTAssertThrows([[[aClass alloc] initWithArray:nil] autorelease]);
 		XCTAssertEqual([deque count], (NSUInteger)0);
 		deque = [[[aClass alloc] initWithArray:[NSArray array]] autorelease];
 		XCTAssertEqual([deque count], (NSUInteger)0);

@@ -8,6 +8,8 @@
 
 #import <CHDataStructures/CHUtil.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  @file CHSortedSet.h
  
@@ -94,7 +96,7 @@ typedef NS_OPTIONS(NSUInteger, CHSubsetConstructionOptions) {
  @see firstObject
  @see lastObject
  */
-- (id)anyObject;
+- (nullable id)anyObject;
 
 /**
  Returns the number of objects currently in the receiver.
@@ -109,7 +111,7 @@ typedef NS_OPTIONS(NSUInteger, CHSubsetConstructionOptions) {
  Determine whether a given object is present in the receiver.
  
  @param anObject The object to test for membership in the receiver.
- @return @c YES if the receiver contains @a anObject (as determined by \link NSObject-p#isEqual: -isEqual:\endlink), @c NO if @a anObject is @c nil or not present.
+ @return @c YES if the receiver contains @a anObject (as determined by @c -isEqual:), otherwise @c NO.
  
  @attention To test whether the matching object is identical to @a anObject, compare @a anObject with the value returned from #member: using the == operator.
  
@@ -127,7 +129,7 @@ typedef NS_OPTIONS(NSUInteger, CHSubsetConstructionOptions) {
  @see lastObject
  @see removeFirstObject
  */
-- (id)firstObject;
+- (nullable id)firstObject;
 
 /**
  Compares the receiving sorted set to another sorted set. Two sorted sets have equal contents if they each hold the same number of objects and objects at a given position in each sorted set satisfy the \link NSObject-p#isEqual: -isEqual:\endlink test.
@@ -147,20 +149,20 @@ typedef NS_OPTIONS(NSUInteger, CHSubsetConstructionOptions) {
  @see firstObject
  @see removeLastObject
  */
-- (id)lastObject;
+- (nullable id)lastObject;
 
 /**
  Determine whether the receiver contains a given object, and returns the object if present.
  
  @param anObject The object to test for membership in the receiver.
- @return If the receiver contains an object equal to @a anObject (as determined by \link NSObject-p#isEqual: -isEqual:\endlink) then that object (typically this will be @a anObject) is returned, otherwise @c nil.
+ @return An object in the receiver equal to @a anObject (as determined by @c -isEqual:), otherwise @c nil.
  
  @attention If you override \link NSObject-p#isEqual: -isEqual:\endlink for a custom class, you must also override \link NSObject-p#hash -hash\endlink for #member: to work correctly on objects of your class.
 
  @see containsObject:
  @see set
  */
-- (id)member:(id)anObject;
+- (nullable id)member:(id)anObject;
 
 /**
  Returns an enumerator that accesses each object in the receiver in ascending order.
@@ -210,7 +212,7 @@ typedef NS_OPTIONS(NSUInteger, CHSubsetConstructionOptions) {
  - If @a start comes before @a end in an ordered set, objects between @a start and @a end (or which match either object) are included.
  - Otherwise, all objects @b except those that fall between @a start and @a end are included.
  */
-- (id<CHSortedSet>)subsetFromObject:(id)start toObject:(id)end options:(CHSubsetConstructionOptions)options;
+- (id<CHSortedSet>)subsetFromObject:(nullable id)start toObject:(nullable id)end options:(CHSubsetConstructionOptions)options;
 
 // @}
 #pragma mark Modifying Contents
@@ -284,3 +286,5 @@ typedef NS_OPTIONS(NSUInteger, CHSubsetConstructionOptions) {
 
 // @}
 @end
+
+NS_ASSUME_NONNULL_END

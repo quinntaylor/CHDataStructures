@@ -7,6 +7,8 @@
 
 #import <CHDataStructures/CHAbstractBinarySearchTree.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  @file CHAnderssonTree.h
  An <a href="http://en.wikipedia.org/wiki/AA_tree">AA-tree</a> implementation of CHSearchTree.
@@ -67,3 +69,5 @@
 @interface CHAnderssonTree : CHAbstractBinarySearchTree
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -44,8 +44,10 @@
 // Removal is guaranteed to not make the tree deeper/taller, since it uses the
 // "min of the right subtree" algorithm if the node to be removed has 2 children.
 - (void)removeObject:(id)anObject {
-	if (count == 0 || anObject == nil)
+	CHRaiseInvalidArgumentExceptionIfNil(anObject);
+	if (count == 0) {
 		return;
+	}
 	++mutations;
 	
 	CHBinaryTreeNode *parent = nil, *current = header;

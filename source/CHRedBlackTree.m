@@ -148,8 +148,10 @@ static CHBinaryTreeNode * doubleRotation(CHBinaryTreeNode *node, BOOL goingRight
  @see http://eternallyconfuzzled.com/tuts/datastructures/jsw_tut_rbtree.aspx
  */
 - (void)removeObject:(id)anObject {
-	if (count == 0 || anObject == nil)
+	CHRaiseInvalidArgumentExceptionIfNil(anObject);
+	if (count == 0) {
 		return;
+	}
 	++mutations;
 	
 	CHBinaryTreeNode *current, *parent, *grandparent;

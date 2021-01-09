@@ -478,8 +478,7 @@ CHBinaryTreeNode * CHCreateBinaryTreeNodeWithObject(id anObject) {
 }
 
 - (id)member:(id)anObject {
-	if (anObject == nil)
-		return nil;
+	CHRaiseInvalidArgumentExceptionIfNil(anObject);
 	sentinel->object = anObject; // Make sure the target value is always "found"
 	CHBinaryTreeNode *current = header->right;
 	NSComparisonResult comparison;
@@ -531,12 +530,18 @@ CHBinaryTreeNode * CHCreateBinaryTreeNodeWithObject(id anObject) {
 
 // Incurs an extra search cost, but we don't know how the child class removes...
 - (void)removeFirstObject {
-	[self removeObject:[self firstObject]];
+	id object = [self firstObject];
+	if (object) { // Avoid removing nil
+		[self removeObject:object];
+	}
 }
 
 // Incurs an extra search cost, but we don't know how the child class removes...
 - (void)removeLastObject {
-	[self removeObject:[self lastObject]];
+	id object = [self lastObject];
+	if (object) { // Avoid removing nil
+		[self removeObject:object];
+	}
 }
 
 - (NSEnumerator *)reverseObjectEnumerator {
@@ -617,10 +622,12 @@ CHBinaryTreeNode * CHCreateBinaryTreeNodeWithObject(id anObject) {
 		}
 	}
 	// If the start and/or end value is to be excluded, remove before returning.
-	if (options & CHSubsetConstructionExcludeLowEndpoint)
+	if (start && (options & CHSubsetConstructionExcludeLowEndpoint)) {
 		[subset removeObject:start];
-	if (options & CHSubsetConstructionExcludeHighEndpoint)
+	}
+	if (end && (options & CHSubsetConstructionExcludeHighEndpoint)) {
 		[subset removeObject:end];
+	}
 	return subset;
 }
 

@@ -129,6 +129,7 @@ HIDDEN CFMutableDictionaryRef CHDictionaryCreateMutable(NSUInteger initialCapaci
 }
 
 - (id)objectForKey:(id)aKey {
+	CHRaiseInvalidArgumentExceptionIfNil(aKey);
 	return (id)CFDictionaryGetValue(dictionary, aKey);
 }
 
@@ -139,6 +140,7 @@ HIDDEN CFMutableDictionaryRef CHDictionaryCreateMutable(NSUInteger initialCapaci
 }
 
 - (void)removeObjectForKey:(id)aKey {
+	CHRaiseInvalidArgumentExceptionIfNil(aKey);
 	CFDictionaryRemoveValue(dictionary, aKey);
 }
 

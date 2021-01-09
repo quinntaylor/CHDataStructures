@@ -50,7 +50,7 @@
 }
 
 - (instancetype)init {
-	return [self initWithOrdering:NSOrderedAscending array:nil];
+	return [self initWithOrdering:NSOrderedAscending array:@[]];
 }
 
 - (instancetype)initWithArray:(NSArray *)anArray {
@@ -65,7 +65,7 @@
 }
 
 - (instancetype)initWithOrdering:(NSComparisonResult)order {
-	return [self initWithOrdering:order array:nil];
+	return [self initWithOrdering:order array:@[]];
 }
 
 // This is the designated initializer for CHMutableArrayHeap
@@ -151,7 +151,7 @@
  Determine whether the receiver contains a given object, matched using \link NSObject-p#isEqual: -isEqual:\endlink.
  
  @param anObject The object to test for membership in the heap.
- @return @c YES if @a anObject appears in the heap at least once, @c NO if @a anObject is @c nil or not present.
+ @return @c YES if @a anObject appears in the heap at least once, otherwise @c NO.
  
  @see containsObjectIdenticalTo:
  @see removeObject:
@@ -218,8 +218,9 @@
 }
 
 - (void)addObjectsFromArray:(NSArray *)anArray {
-	if (anArray == nil)
+	if ([anArray count] == 0) {
 		return;
+	}
 	++mutations;
 	[array addObjectsFromArray:anArray];
 	// Re-heapify from the middle of the heap array backwards to the beginning.

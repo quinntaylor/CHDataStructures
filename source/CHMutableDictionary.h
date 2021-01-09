@@ -7,6 +7,8 @@
 
 #import <CHDataStructures/CHUtil.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 HIDDEN CFMutableDictionaryRef CHDictionaryCreateMutable(NSUInteger initialCapacity) CF_RETURNS_RETAINED;
 
 /**
@@ -32,3 +34,5 @@ HIDDEN CFMutableDictionaryRef CHDictionaryCreateMutable(NSUInteger initialCapaci
 - (instancetype)initWithCapacity:(NSUInteger)numItems NS_DESIGNATED_INITIALIZER; // Inherited from NSMutableDictionary
 
 @end
+
+NS_ASSUME_NONNULL_END

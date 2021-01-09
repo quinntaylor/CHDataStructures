@@ -55,7 +55,7 @@ static const CFBinaryHeapCallBacks kCHBinaryHeapCallBacksDescending = {
 }
 
 - (instancetype)init {
-	return [self initWithOrdering:NSOrderedAscending array:nil];
+	return [self initWithOrdering:NSOrderedAscending array:@[]];
 }
 
 - (instancetype)initWithArray:(NSArray *)anArray {
@@ -63,7 +63,7 @@ static const CFBinaryHeapCallBacks kCHBinaryHeapCallBacksDescending = {
 }
 
 - (instancetype)initWithOrdering:(NSComparisonResult)order {
-	return [self initWithOrdering:order array:nil];
+	return [self initWithOrdering:order array:@[]];
 }
 
 // This is the designated initializer
@@ -179,7 +179,7 @@ static const CFBinaryHeapCallBacks kCHBinaryHeapCallBacksDescending = {
 
 #pragma mark <NSCopying>
 
-- (instancetype)copyWithZone:(NSZone *) zone {
+- (instancetype)copyWithZone:(NSZone *)zone {
 	return [[CHBinaryHeap alloc] initWithArray:[self allObjects]];
 }
 

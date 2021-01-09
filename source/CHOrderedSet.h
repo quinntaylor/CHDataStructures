@@ -7,6 +7,8 @@
 
 #import <CHDataStructures/CHMutableSet.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  @file CHOrderedSet.h
  A set which also maintains order of insertion, including manual reordering.
@@ -52,7 +54,7 @@
  @see lastObject
  @see removeFirstObject
  */
-- (ObjectType)firstObject;
+- (nullable ObjectType)firstObject;
 
 /**
  Returns the index of a given object based on insertion order.
@@ -85,7 +87,7 @@
  @see firstObject
  @see removeLastObject
  */
-- (ObjectType)lastObject;
+- (nullable ObjectType)lastObject;
 
 /**
  Returns the value at the specified index.
@@ -229,3 +231,5 @@
 
 // @}
 @end
+
+NS_ASSUME_NONNULL_END

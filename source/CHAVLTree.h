@@ -7,6 +7,8 @@
 
 #import <CHDataStructures/CHAbstractBinarySearchTree.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  @file CHAVLTree.h
  An <a href="http://en.wikipedia.org/wiki/Avl_tree">AVL tree</a> implementation of CHSearchTree.
@@ -40,3 +42,5 @@
 @interface CHAVLTree : CHAbstractBinarySearchTree
 
 @end
+
+NS_ASSUME_NONNULL_END

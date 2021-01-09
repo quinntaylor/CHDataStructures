@@ -8,6 +8,8 @@
 
 #import <CHDataStructures/CHLinkedList.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  @file CHSinglyLinkedList.h
  A standard singly-linked list implementation with pointers to head and tail.
@@ -16,7 +18,7 @@
 /** A struct for nodes in a CHSinglyLinkedList. */
 typedef struct CHSinglyLinkedListNode {
 	__unsafe_unretained id object; ///< The object associated with this node in the list.
-	struct CHSinglyLinkedListNode *next; ///< The next node in the list.
+	struct CHSinglyLinkedListNode *_Nullable next; ///< The next node in the list.
 } CHSinglyLinkedListNode;
 
 #pragma mark -
@@ -51,3 +53,5 @@ typedef struct CHSinglyLinkedListNode {
 - (instancetype)initWithArray:(NSArray<ObjectType> *)array NS_DESIGNATED_INITIALIZER;
 
 @end
+
+NS_ASSUME_NONNULL_END

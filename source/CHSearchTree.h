@@ -8,6 +8,8 @@
 
 #import <CHDataStructures/CHSortedSet.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  @file CHSearchTree.h
  
@@ -114,3 +116,5 @@ typedef NS_ENUM(NSUInteger, CHTraversalOrder) {
 
 // @}
 @end
+
+NS_ASSUME_NONNULL_END

@@ -9,6 +9,8 @@
 #import <CHDataStructures/CHQueue.h>
 #import <CHDataStructures/CHAbstractListCollection.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  @file CHListQueue.h
  A simple CHQueue implemented using a CHSinglyLinkedList.
@@ -20,3 +22,5 @@
 @interface CHListQueue : CHAbstractListCollection <CHQueue>
 
 @end
+
+NS_ASSUME_NONNULL_END

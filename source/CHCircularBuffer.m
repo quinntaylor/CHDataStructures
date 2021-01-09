@@ -159,6 +159,7 @@ do { \
 }
 
 - (instancetype)initWithArray:(NSArray *)anArray {
+	CHRaiseInvalidArgumentExceptionIfNil(anArray);
 	NSUInteger capacity = DEFAULT_BUFFER_SIZE;
 	count = [anArray count];
 	while (capacity <= count) {
@@ -310,6 +311,7 @@ do { \
 }
 
 - (NSUInteger)_indexOfObject:(id)anObject inRange:(NSRange)range withEqualityTest:(CHObjectEqualityTest)objectsMatch {
+	CHRaiseInvalidArgumentExceptionIfNil(anObject);
 	NSUInteger onePastLastRelativeIndex = range.location + range.length;
 	CHRaiseIndexOutOfRangeExceptionIf(onePastLastRelativeIndex, >, count);
 	NSUInteger iterationIndex = transformIndex(range.location);
@@ -449,8 +451,10 @@ do { \
 }
 
 - (void)_removeObject:(id)anObject withEqualityTest:(CHObjectEqualityTest)objectsMatch {
-	if (count == 0 || anObject == nil)
+	CHRaiseInvalidArgumentExceptionIfNil(anObject);
+	if (count == 0) {
 		return;
+	}
 	// Strip off leading matches if any exist in the buffer.
 	while (headIndex != tailIndex && objectsMatch(array[headIndex], anObject)) {
 		[array[headIndex] release];

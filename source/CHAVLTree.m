@@ -127,8 +127,10 @@ done:
 }
 
 - (void)removeObject:(id)anObject {
-	if (count == 0 || anObject == nil)
+	CHRaiseInvalidArgumentExceptionIfNil(anObject);
+	if (count == 0) {
 		return;
+	}
 	++mutations;
 
 	CHBinaryTreeNode *parent, *current = header;

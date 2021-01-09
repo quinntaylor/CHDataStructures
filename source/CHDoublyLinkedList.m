@@ -159,7 +159,7 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 }
 
 - (instancetype)init {
-	return [self initWithArray:nil];
+	return [self initWithArray:@[]];
 }
 
 // This is the designated initializer for CHDoublyLinkedList
@@ -426,8 +426,10 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 }
 
 - (void)_removeObject:(id)anObject withEqualityTest:(CHObjectEqualityTest)objectsMatch {
-	if (count == 0 || anObject == nil)
+	CHRaiseInvalidArgumentExceptionIfNil(anObject);
+	if (count == 0) {
 		return;
+	}
 	tail->object = anObject;
 	CHDoublyLinkedListNode *node = head->next, *temp;
 	do {

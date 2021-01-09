@@ -249,7 +249,8 @@ static NSArray *abc;
 }
 
 - (void)testRemoveObject {
-	XCTAssertNoThrow([set removeObject:nil]);
+	XCTAssertThrows([set removeObject:nil]);
+	XCTAssertNoThrow([set removeObject:@"bogus"]);
 	
 	[set addObjectsFromArray:abc];
 	XCTAssertTrue([set containsObject:@"A"]);

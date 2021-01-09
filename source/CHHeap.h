@@ -8,6 +8,8 @@
 
 #import <CHDataStructures/CHUtil.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  @file CHHeap.h
  
@@ -80,7 +82,7 @@
  Determine whether the receiver contains a given object, matched using \link NSObject-p#isEqual: -isEqual:\endlink.
  
  @param anObject The object to test for membership in the heap.
- @return @c YES if @a anObject appears in the heap at least once, @c NO if @a anObject is @c nil or not present.
+ @return @c YES if @a anObject appears in the heap at least once, otherwise @c NO.
  
  @see removeObject:
  */
@@ -102,7 +104,7 @@
  
  @see removeFirstObject
  */
-- (id)firstObject;
+- (nullable id)firstObject;
 
 /**
  Compares the receiving heap to another heap. Two heaps have equal contents if they each hold the same number of objects and (when fully sorted) objects at a given position in each heap satisfy the \link NSObject-p#isEqual: -isEqual:\endlink test.
@@ -170,3 +172,5 @@
 
 // @}
 @end
+
+NS_ASSUME_NONNULL_END
