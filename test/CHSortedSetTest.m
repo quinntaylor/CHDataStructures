@@ -513,6 +513,7 @@ static NSArray *abcde;
 	XCTAssertEqualObjects([set allObjectsWithTraversalOrder:CHTraversalOrderDescending],
 						 ([NSArray arrayWithObjects:@"E",@"D",@"C",@"B",@"A",nil]));
 	// NOTE: Individual subclasses should test pre/post/level-order traversals
+	XCTAssertThrows([set objectEnumeratorWithTraversalOrder:42]);
 }
 
 - (void)testDescription {

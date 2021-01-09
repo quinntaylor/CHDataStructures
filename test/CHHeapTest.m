@@ -168,6 +168,19 @@
 	}
 }
 
+- (void)testInitWithCapacity {
+	NSEnumerator *classes = [heapClasses objectEnumerator];
+	Class aClass;
+	while (aClass = [classes nextObject]) {
+		if ([aClass instancesRespondToSelector:@selector(initWithCapacity:)]) {
+			heap = [[[aClass alloc] initWithCapacity:42] autorelease];
+			XCTAssertEqual([heap count], 0);
+			[heap addObject:@(42)];
+			XCTAssertEqual([heap count], 1);
+		}
+	}
+}
+
 - (void)testInvalidInit {
 	NSEnumerator *classes = [heapClasses objectEnumerator];
 	Class aClass;
@@ -361,6 +374,7 @@
 			continue;
 		}
 		heap = [[[aClass alloc] init] autorelease];
+		[heap removeObject:@"bogus"];
 		// Add objects twice in order
 		[heap addObjectsFromArray:objects];
 		[heap addObjectsFromArray:objects];
@@ -398,6 +412,7 @@
 			continue;
 		}
 		heap = [[[aClass alloc] init] autorelease];
+		[heap removeObjectIdenticalTo:@"bogus"];
 		// Add objects twice in order
 		[heap addObjectsFromArray:objects];
 		[heap addObjectsFromArray:objects];

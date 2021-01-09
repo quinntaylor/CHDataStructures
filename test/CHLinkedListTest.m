@@ -683,7 +683,6 @@
 }
 
 - (void)testRemoveObjectsAtIndexes {
-	NSMutableArray *expected = [NSMutableArray array];
 	NSIndexSet *indexes;
 	
 	NSEnumerator *classes = [linkedListClasses objectEnumerator];
@@ -695,23 +694,29 @@
 		indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 1)];
 		XCTAssertThrows([list removeObjectsAtIndexes:indexes]);
 		
-		[list addObjectsFromArray:abc];
+		// Test removing contiguous ranges
 		for (NSUInteger location = 0; location < [abc count]; location++) {
 			for (NSUInteger length = 0; length <= [abc count] - location; length++) {
 				indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(location, length)]; 
-				// Repopulate list and expected
-				[expected removeAllObjects];
-				[expected addObjectsFromArray:abc];
-				[list removeAllObjects];
-				[list addObjectsFromArray:abc];
-				XCTAssertNoThrow([list removeObjectsAtIndexes:indexes]);
-				[expected removeObjectsAtIndexes:indexes];
-				XCTAssertEqual([list count], [expected count]);
-				XCTAssertEqualObjects([list allObjects], expected);
+				[self _testRemoveObjectsAtIndexes:indexes initialObjects:abc];
 			}
-		}	
-		XCTAssertThrows([list removeObjectsAtIndexes:nil]);
+		}
+		// Test removing discontiguous ranges
+		NSMutableIndexSet *mutableIndexes = [NSMutableIndexSet indexSet];
+		[mutableIndexes addIndex:0];
+		[mutableIndexes addIndex:2];
+		[self _testRemoveObjectsAtIndexes:mutableIndexes initialObjects:abc];
 	}
+}
+
+- (void)_testRemoveObjectsAtIndexes:(NSIndexSet *)indexes initialObjects:(NSArray *)array {
+	[list removeAllObjects];
+	[list addObjectsFromArray:array];
+	XCTAssertNoThrow([list removeObjectsAtIndexes:indexes]);
+	NSMutableArray *expected = [array mutableCopy];
+	[expected removeObjectsAtIndexes:indexes];
+	XCTAssertEqual([list count], [expected count]);
+	XCTAssertEqualObjects([list allObjects], expected);
 }
 
 - (void)testReplaceObjectAtIndexWithObject {
