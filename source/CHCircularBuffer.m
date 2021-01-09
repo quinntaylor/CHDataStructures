@@ -165,7 +165,7 @@ do { \
 	while (capacity <= count) {
 		capacity *= 2;
 	}
-	if ([self initWithCapacity:capacity] == nil) return nil;
+	if ((self = [self initWithCapacity:capacity]) == nil) return nil;
 	if (count > 0) {
 		if ([self _insertBackToFront]) {
 			headIndex = capacity;
