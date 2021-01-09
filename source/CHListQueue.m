@@ -17,7 +17,7 @@
  */
 @implementation CHListQueue
 
-- (id<CHLinkedList>)_createList {
+- (id<CHLinkedList>)_newList {
 	return [[CHSinglyLinkedList alloc] init];
 }
 

@@ -28,7 +28,7 @@
 	CHRaiseInvalidArgumentExceptionIfNil(anArray);
 	self = [super init];
 	if (self == nil) return nil;
-	list = [self _createList];
+	list = [self _newList];
 	for (id anObject in anArray) {
 		[list addObject:anObject];
 	}
@@ -36,7 +36,7 @@
 }
 
 // Child classes must override to provide a value for the "list" instance variable.
-- (id<CHLinkedList>)_createList {
+- (id<CHLinkedList>)_newList {
 	CHRaiseUnsupportedOperationException();
 	return nil;
 }

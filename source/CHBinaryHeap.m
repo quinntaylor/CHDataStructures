@@ -17,7 +17,7 @@ void CHBinaryHeapRelease(CFAllocatorRef allocator, const void *value) {
 	[(id)value release];
 }
 
-CFStringRef CHBinaryHeapDescription(const void *value) {
+CFStringRef CHBinaryHeapCopyDescription(const void *value) {
 	return CFRetain([(id)value description]);
 }
 
@@ -33,7 +33,7 @@ static const CFBinaryHeapCallBacks kCHBinaryHeapCallBacksAscending = {
 	0, // default version
 	CHBinaryHeapRetain,
 	CHBinaryHeapRelease,
-	CHBinaryHeapDescription,
+	CHBinaryHeapCopyDescription,
 	CHBinaryHeapCompareAscending
 };
 
@@ -41,7 +41,7 @@ static const CFBinaryHeapCallBacks kCHBinaryHeapCallBacksDescending = {
 	0, // default version
 	CHBinaryHeapRetain,
 	CHBinaryHeapRelease,
-	CHBinaryHeapDescription,
+	CHBinaryHeapCopyDescription,
 	CHBinaryHeapCompareDescending
 };
 

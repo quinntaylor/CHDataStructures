@@ -10,7 +10,7 @@
 
 @implementation CHListDeque
 
-- (id<CHLinkedList>)_createList {
+- (id<CHLinkedList>)_newList {
 	return [[CHDoublyLinkedList alloc] init];
 }
 
