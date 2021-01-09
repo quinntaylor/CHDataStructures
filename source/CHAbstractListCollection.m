@@ -7,6 +7,12 @@
 
 #import <CHDataStructures/CHAbstractListCollection.h>
 
+@interface CHAbstractListCollection ()
+
+- (instancetype)initWithCoder:(NSCoder *)decoder NS_DESIGNATED_INITIALIZER;
+
+@end
+
 @implementation CHAbstractListCollection
 
 - (void)dealloc {
