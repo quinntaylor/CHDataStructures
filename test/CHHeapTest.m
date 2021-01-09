@@ -328,7 +328,7 @@
 		
 		id lastObject = nil;
 		NSUInteger count = [heap count];
-		while (anObject = [heap firstObject]) {
+		while ((anObject = [heap firstObject])) {
 			if (lastObject)
 				XCTAssertEqual([lastObject compare:anObject],
 							   (NSComparisonResult)NSOrderedAscending);

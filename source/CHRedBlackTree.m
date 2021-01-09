@@ -78,8 +78,10 @@ static CHBinaryTreeNode * doubleRotation(CHBinaryTreeNode *node, BOOL goingRight
 	
 	sentinel->object = anObject;
 	NSComparisonResult comparison;
-	while (comparison = [current->object compare:anObject]) {
-		greatgrandparent = grandparent, grandparent = parent, parent = current;
+	while ((comparison = [current->object compare:anObject])) {
+		greatgrandparent = grandparent;
+		grandparent = parent;
+		parent = current;
 		current = current->link[comparison == NSOrderedAscending];
 		
 		// Check for the bad case of red parent and red sibling of parent

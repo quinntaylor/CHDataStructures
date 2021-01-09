@@ -483,8 +483,9 @@ CHBinaryTreeNode * CHCreateBinaryTreeNodeWithObject(id anObject) {
 	sentinel->object = anObject; // Make sure the target value is always "found"
 	CHBinaryTreeNode *current = header->right;
 	NSComparisonResult comparison;
-	while (comparison = [current->object compare:anObject]) // while not equal
+	while ((comparison = [current->object compare:anObject])) {
 		current = current->link[comparison == NSOrderedAscending]; // R on YES
+	}
 	return (current != sentinel) ? current->object : nil;
 }
 
@@ -515,7 +516,7 @@ CHBinaryTreeNode * CHCreateBinaryTreeNodeWithObject(id anObject) {
 	CHBinaryTreeStack_PUSH(header->right);
 	
 	CHBinaryTreeNode *current;
-	while (current = CHBinaryTreeStack_POP()) {
+	while ((current = CHBinaryTreeStack_POP())) {
 		if (current->right != sentinel)
 			CHBinaryTreeStack_PUSH(current->right);
 		if (current->left != sentinel)
@@ -634,7 +635,7 @@ CHBinaryTreeNode * CHCreateBinaryTreeNodeWithObject(id anObject) {
 	sentinel->object = nil;
 	if (header->right != sentinel)
 		CHBinaryTreeStack_PUSH(header->right);	
-	while (current = CHBinaryTreeStack_POP()) {
+	while ((current = CHBinaryTreeStack_POP())) {
 		if (current->right != sentinel)
 			CHBinaryTreeStack_PUSH(current->right);
 		if (current->left != sentinel)
@@ -670,7 +671,7 @@ CHBinaryTreeNode * CHCreateBinaryTreeNodeWithObject(id anObject) {
 		CHBinaryTreeStack_INIT();
 		CHBinaryTreeStack_PUSH(header->right);
 		// Uses a reverse pre-order traversal to make the DOT output look right.
-		while (current = CHBinaryTreeStack_POP()) {
+		while ((current = CHBinaryTreeStack_POP())) {
 			if (current->left != sentinel)
 				CHBinaryTreeStack_PUSH(current->left);
 			if (current->right != sentinel)

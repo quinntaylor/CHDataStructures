@@ -58,7 +58,7 @@ static void adjustBalance(CHBinaryTreeNode *root, u_int32_t dir, int32_t bal) {
 	
 	sentinel->object = anObject; // Assure that we find a spot to insert
 	NSComparisonResult comparison;
-	while (comparison = [current->object compare:anObject]) {
+	while ((comparison = [current->object compare:anObject])) {
 		CHBinaryTreeStack_PUSH(current);
 		if (current == header)
 			save = current->right;
@@ -138,7 +138,7 @@ done:
 	sentinel->object = anObject; // Assure that we stop at a leaf if not found.
 	NSComparisonResult comparison;
 	// Search down the node for the tree and save the path
-	while (comparison = [current->object compare:anObject]) {
+	while ((comparison = [current->object compare:anObject])) {
 		CHBinaryTreeStack_PUSH(current);
 		current = current->link[comparison == NSOrderedAscending]; // R on YES
 	}
