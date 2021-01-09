@@ -57,7 +57,7 @@
                                options:(CHSubsetConstructionOptions)options
 {
 	id<CHSortedSet> keySubset = [sortedKeys subsetFromObject:start toObject:end options:options];
-	NSMutableDictionary *subset = [[[[self class] alloc] init] autorelease];
+	NSMutableDictionary *subset = [[[[self class] alloc] initWithCapacity:[keySubset count]] autorelease];
 	for (id aKey in keySubset) {
 		[subset setObject:[self objectForKey:aKey] forKey:aKey];
 	}
