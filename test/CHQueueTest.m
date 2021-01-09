@@ -29,8 +29,9 @@
 
 - (void)testInitWithArray {
 	NSMutableArray *moreObjects = [NSMutableArray array];
-	for (NSUInteger i = 0; i < 32; i++)
+	for (NSUInteger i = 0; i < 32; i++) {
 		[moreObjects addObject:[NSNumber numberWithUnsignedInteger:i]];
+	}
 	
 	NSEnumerator *classes = [queueClasses objectEnumerator];
 	Class aClass;
@@ -93,8 +94,9 @@
 		XCTAssertEqual([queue count], (NSUInteger)0);
 		// Test adding objects one by one and verify count and ordering
 		e = [objects objectEnumerator];
-		while (anObject = [e nextObject])
+		while (anObject = [e nextObject]) {
 			[queue addObject:anObject];
+		}
 		XCTAssertEqual([queue count], [objects count]);
 		XCTAssertEqualObjects([queue allObjects], objects);
 	}

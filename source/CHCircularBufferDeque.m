@@ -18,10 +18,11 @@
 }
 
 - (BOOL)isEqual:(id)otherObject {
-	if ([otherObject conformsToProtocol:@protocol(CHDeque)])
+	if ([otherObject conformsToProtocol:@protocol(CHDeque)]) {
 		return [self isEqualToDeque:otherObject];
-	else
+	} else {
 		return NO;
+	}
 }
 
 - (BOOL)isEqualToDeque:(id<CHDeque>)otherDeque {

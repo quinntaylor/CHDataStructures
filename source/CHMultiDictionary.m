@@ -11,14 +11,15 @@
  Utility function for creating a new NSMutableSet containing object; if object is a set or array, the set contains all objects in the collection.
  */
 static NSMutableSet * createMutableSetFromObject(id object) {
-	if (object == nil)
+	if (object == nil) {
 		return nil;
-	if ([object isKindOfClass:[NSSet class]])
+	} else if ([object isKindOfClass:[NSSet class]]) {
 		return [NSMutableSet setWithSet:object];
-	if ([object isKindOfClass:[NSArray class]])
+	} else if ([object isKindOfClass:[NSArray class]]) {
 		return [NSMutableSet setWithArray:object];
-	else
+	} else {
 		return [NSMutableSet setWithObject:object];
+	}
 }
 
 #pragma mark -
@@ -26,8 +27,9 @@ static NSMutableSet * createMutableSetFromObject(id object) {
 @implementation CHMultiDictionary
 
 - (instancetype)initWithObjects:(NSArray *)objectsArray forKeys:(NSArray *)keyArray {
-	if ([keyArray count] != [objectsArray count])
+	if ([keyArray count] != [objectsArray count]) {
 		CHRaiseInvalidArgumentException(@"Unequal array counts.");
+	}
 	if (self = [super initWithCapacity:[objectsArray count]]) {
 		NSEnumerator *objects = [objectsArray objectEnumerator];
 		for (id key in keyArray) {
@@ -55,20 +57,22 @@ static NSMutableSet * createMutableSetFromObject(id object) {
 
 - (void)addObject:(id)anObject forKey:(id)aKey {
 	NSMutableSet *objects = [self objectForKey:aKey];
-	if (objects == nil)
+	if (objects == nil) {
 		[super setObject:(objects = [NSMutableSet set]) forKey:aKey];
-	else
+	} else {
 		objectCount -= [objects count];
+	}
 	[objects addObject:anObject];
 	objectCount += [objects count];
 }
 
 - (void)addObjects:(NSSet *)objectSet forKey:(id)aKey {
 	NSMutableSet *objects = [self objectForKey:aKey];
-	if (objects == nil)
+	if (objects == nil) {
 		[super setObject:(objects = [NSMutableSet set]) forKey:aKey];
-	else
+	} else {
 		objectCount -= [objects count];
+	}
 	[objects unionSet:objectSet];
 	objectCount += [objects count];
 }
@@ -83,8 +87,9 @@ static NSMutableSet * createMutableSetFromObject(id object) {
 	if ([objects containsObject:anObject]) {
 		[objects removeObject:anObject];
 		--objectCount;
-		if ([objects count] == 0)
+		if ([objects count] == 0) {
 			[self removeObjectForKey:aKey];
+		}
 	}
 }
 
@@ -95,8 +100,9 @@ static NSMutableSet * createMutableSetFromObject(id object) {
 
 - (void)setObject:(id)anObject forKey:(id)aKey {
 	NSSet *objectSet = createMutableSetFromObject(anObject);
-	if (aKey != nil)
+	if (aKey != nil) {
 		objectCount += ([objectSet count] - [[self objectForKey:aKey] count]);
+	}
 	[super setObject:objectSet forKey:aKey];
 }
 

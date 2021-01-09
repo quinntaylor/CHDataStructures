@@ -31,10 +31,11 @@
 }
 
 - (BOOL)isEqual:(id)otherObject {
-	if ([otherObject conformsToProtocol:@protocol(CHQueue)])
+	if ([otherObject conformsToProtocol:@protocol(CHQueue)]) {
 		return [self isEqualToQueue:otherObject];
-	else
+	} else {
 		return NO;
+	}
 }
 
 - (BOOL)isEqualToQueue:(id<CHQueue>)otherQueue {

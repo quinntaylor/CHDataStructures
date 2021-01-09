@@ -70,12 +70,13 @@ static const CFBinaryHeapCallBacks kCHBinaryHeapCallBacksDescending = {
 - (instancetype)initWithOrdering:(NSComparisonResult)order array:(NSArray *)anArray {
 	if ((self = [super init]) == nil) return nil;
 	sortOrder = order;
-	if (sortOrder == NSOrderedAscending)
+	if (sortOrder == NSOrderedAscending) {
 		heap = CFBinaryHeapCreate(kCFAllocatorDefault, 0, &kCHBinaryHeapCallBacksAscending, NULL);
-	else if (sortOrder == NSOrderedDescending)
+	} else if (sortOrder == NSOrderedDescending) {
 		heap = CFBinaryHeapCreate(kCFAllocatorDefault, 0, &kCHBinaryHeapCallBacksDescending, NULL);
-	else
+	} else {
 		CHRaiseInvalidArgumentException(@"Invalid sort order.");
+	}
 	[self addObjectsFromArray:anArray];
 	return self;
 }
@@ -123,10 +124,11 @@ static const CFBinaryHeapCallBacks kCHBinaryHeapCallBacksDescending = {
 }
 
 - (BOOL)isEqual:(id)otherObject {
-	if ([otherObject conformsToProtocol:@protocol(CHHeap)])
+	if ([otherObject conformsToProtocol:@protocol(CHHeap)]) {
 		return [self isEqualToHeap:otherObject];
-	else
+	} else {
 		return NO;
+	}
 }
 
 - (BOOL)isEqualToHeap:(id<CHHeap>)otherHeap {
@@ -146,8 +148,9 @@ static const CFBinaryHeapCallBacks kCHBinaryHeapCallBacksDescending = {
 }
 
 - (void)addObjectsFromArray:(NSArray *)anArray {
-	if ([anArray count] == 0) // includes implicit check for nil array
+	if ([anArray count] == 0) { // includes implicit check for nil array
 		return;
+	}
 	for (id anObject in anArray) {
 		CFBinaryHeapAddValue(heap, anObject);
 	}

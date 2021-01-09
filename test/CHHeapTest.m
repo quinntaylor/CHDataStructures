@@ -94,8 +94,9 @@
 		while (aClass = [classes nextObject]) {
 			heap = [[[aClass alloc] initWithOrdering:sortOrder] autorelease];
 			e = [objects objectEnumerator];
-			while (anObject = [e nextObject])
+			while (anObject = [e nextObject]) {
 				[heap addObject:anObject];
+			}
 			XCTAssertEqual([heap count], (NSUInteger)9);
 			XCTAssertTrue([heap isValid]);
 			
@@ -114,8 +115,9 @@
 	while (aClass = [classes nextObject]) {
 		heap = [[[aClass alloc] init] autorelease];
 		e = [objects objectEnumerator];
-		while (anObject = [e nextObject])
+		while (anObject = [e nextObject]) {
 			[heap addObject:anObject];
+		}
 		id heap2 = [[heap copy] autorelease];
 		XCTAssertNotNil(heap2);
 		XCTAssertEqual([heap2 count], (NSUInteger)9);
@@ -130,8 +132,9 @@
 	NSUInteger limit = 32;
 	while (aClass = [classes nextObject]) {
 		heap = [[[aClass alloc] init] autorelease];
-		for (NSUInteger number = 1; number <= limit; number++)
+		for (NSUInteger number = 1; number <= limit; number++) {
 			[heap addObject:[NSNumber numberWithUnsignedInteger:number]];
+		}
 		NSUInteger expected = 0, count = 0;
 		for (NSNumber *number in heap) {
 			XCTAssertEqual([number unsignedIntegerValue], ++expected);
@@ -142,8 +145,9 @@
 		// Check that a mutation exception is raised if the heap is modified
 		BOOL raisedException = NO;
 		@try {
-			for (NSNumber *number in heap)
+			for (NSNumber *number in heap) {
 				[heap addObject:number];
+			}
 		}
 		@catch (NSException * e) {
 			raisedException = YES;
@@ -209,12 +213,14 @@
 	while (aClass = [classes nextObject]) {
 		heap = [[[aClass alloc] init] autorelease];
 		e = [objects objectEnumerator];
-		while (anObject = [e nextObject])
+		while (anObject = [e nextObject]) {
 			XCTAssertFalse([heap containsObject:anObject]);
+		}
 		[heap addObjectsFromArray:objects];
 		e = [objects objectEnumerator];
-		while (anObject = [e nextObject])
+		while (anObject = [e nextObject]) {
 			XCTAssertTrue([heap containsObject:anObject]);
+		}
 		XCTAssertFalse([heap containsObject:@"bogus"]);
 	}
 }
@@ -223,8 +229,9 @@
 	NSEnumerator *classes = [heapClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
-		if (![aClass instancesRespondToSelector:@selector(containsObjectIdenticalTo:)])
+		if (![aClass instancesRespondToSelector:@selector(containsObjectIdenticalTo:)]) {
 			continue;
+		}
 		heap = [[[aClass alloc] initWithArray:objects] autorelease];
 		e = [objects objectEnumerator];
 		while (anObject = [e nextObject]) {
@@ -283,8 +290,9 @@
 	NSEnumerator *classes = [heapClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
-		if (![aClass instancesRespondToSelector:@selector(insertObject:atIndex:)])
+		if (![aClass instancesRespondToSelector:@selector(insertObject:atIndex:)]) {
 			continue;
+		}
 		heap = [[[aClass alloc] init] autorelease];
 		// This is an unsupported operation and always throws.
 		XCTAssertThrows([heap insertObject:nil atIndex:0]);
@@ -332,9 +340,9 @@
 		id lastObject = nil;
 		NSUInteger count = [heap count];
 		while ((anObject = [heap firstObject])) {
-			if (lastObject)
-				XCTAssertEqual([lastObject compare:anObject],
-							   (NSComparisonResult)NSOrderedAscending);
+			if (lastObject) {
+				XCTAssertEqual([lastObject compare:anObject], NSOrderedAscending);
+			}
 			lastObject = anObject;
 			[heap removeFirstObject];
 			XCTAssertEqual([heap count], --count);	
@@ -349,8 +357,9 @@
 	NSEnumerator *classes = [heapClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
-		if (![aClass instancesRespondToSelector:@selector(removeObject:)])
+		if (![aClass instancesRespondToSelector:@selector(removeObject:)]) {
 			continue;
+		}
 		heap = [[[aClass alloc] init] autorelease];
 		// Add objects twice in order
 		[heap addObjectsFromArray:objects];
@@ -372,8 +381,9 @@
 	NSEnumerator *classes = [heapClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
-		if (![aClass instancesRespondToSelector:@selector(removeObjectAtIndex:)])
+		if (![aClass instancesRespondToSelector:@selector(removeObjectAtIndex:)]) {
 			continue;
+		}
 		heap = [[[aClass alloc] init] autorelease];
 		XCTAssertThrows([heap removeObjectAtIndex:0]);
 	}
@@ -384,8 +394,9 @@
 	NSEnumerator *classes = [heapClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
-		if (![aClass instancesRespondToSelector:@selector(removeObjectIdenticalTo:)])
+		if (![aClass instancesRespondToSelector:@selector(removeObjectIdenticalTo:)]) {
 			continue;
+		}
 		heap = [[[aClass alloc] init] autorelease];
 		// Add objects twice in order
 		[heap addObjectsFromArray:objects];

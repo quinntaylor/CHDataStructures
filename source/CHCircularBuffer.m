@@ -73,8 +73,9 @@ do { \
 	remainingCount = count;
 	enumerationIndex = startIndex;
 	reverseEnumeration = (direction == NSOrderedDescending);
-	if (reverseEnumeration)
+	if (reverseEnumeration) {
 		decrementIndex(enumerationIndex);
+	}
 	mutationCount = *mutations;
 	mutationPtr = mutations;
 	return self;
@@ -94,8 +95,7 @@ do { \
 			[allObjects addObject:array[enumerationIndex]];
 			decrementIndex(enumerationIndex);
 		}
-	}
-	else {
+	} else {
 		while (remainingCount) {
 			remainingCount--;
 			[allObjects addObject:array[enumerationIndex]];
@@ -116,8 +116,7 @@ do { \
 		object = array[enumerationIndex];
 		if (reverseEnumeration) {
 			decrementIndex(enumerationIndex);
-		}
-		else {
+		} else {
 			incrementIndex(enumerationIndex);
 		}
 	} else {
@@ -232,15 +231,13 @@ do { \
 		NSUInteger enumeratedCount = MIN(arrayCapacity - headIndex, count);
 		state->state = (unsigned long) enumeratedCount;
 		return enumeratedCount;
-	}
-	else if (state->state < count) {
+	} else if (state->state < count) {
 		// This means the buffer wrapped around; now return the wrapped segment.
 		state->itemsPtr = array;
 		NSUInteger enumeratedCount = (NSUInteger) state->state;
 		state->state = (unsigned long) count;
 		return (count - enumeratedCount);
-	}
-	else {
+	} else {
 		return 0;
 	}
 }
@@ -334,8 +331,9 @@ do { \
 
 - (NSArray *)objectsAtIndexes:(NSIndexSet *)indexes {
 	CHRaiseInvalidArgumentExceptionIfNil(indexes);
-	if ([indexes count] == 0)
+	if ([indexes count] == 0) {
 		return [NSArray array];
+	}
 	NSMutableArray *objects = [NSMutableArray arrayWithCapacity:[indexes count]];
 	NSUInteger index = [indexes firstIndex];
 	while (index != NSNotFound) {
@@ -393,8 +391,7 @@ do { \
 			// These can't wrap around (we'll hit tail first) so just decrement.
 			--headIndex;
 			--actualIndex;
-		}
-		else {
+		} else {
 			// Otherwise, shift everything from given index onward to the right.
 			memmove(&array[actualIndex + 1], &array[actualIndex], kCHPointerSize * (tailIndex - actualIndex));
 			incrementIndex(tailIndex);
@@ -430,8 +427,9 @@ do { \
 }
 
 - (void)removeFirstObject {
-	if (count == 0)
+	if (count == 0) {
 		return;
+	}
 	[array[headIndex] release];
 	array[headIndex] = nil; // Let GC do its thing
 	incrementIndex(headIndex);
@@ -441,8 +439,9 @@ do { \
 
 // NSMutableArray primitive method
 - (void)removeLastObject {
-	if (count == 0)
+	if (count == 0) {
 		return;
+	}
 	decrementIndex(tailIndex);
 	[array[tailIndex] release];
 	array[tailIndex] = nil; // Let GC do its thing
@@ -463,8 +462,9 @@ do { \
 	}
 	// Scan ahead to find the next matching object to remove, if one exists.
 	NSUInteger scanIndex = headIndex;
-	while (scanIndex != tailIndex && !objectsMatch(array[scanIndex], anObject))
+	while (scanIndex != tailIndex && !objectsMatch(array[scanIndex], anObject)) {
 		incrementIndex(scanIndex);
+	}
 	// Scan other objects; release and skip matches, block copy objects to keep.
 	NSUInteger copySrcIndex = scanIndex; // index to copy FROM when closing gaps
 	NSUInteger copyDstIndex = scanIndex; // index to copy TO when closing gaps
@@ -473,8 +473,9 @@ do { \
 			[array[scanIndex] release];
 			// If the object is preceded by 1+ not to remove, close the gap now.
 			// NOTE: blockMove advances src/dst indexes by the count of objects.
-			if (copySrcIndex != scanIndex)
+			if (copySrcIndex != scanIndex) {
 				blockMove(copyDstIndex, copySrcIndex, scanIndex);
+			}
 			incrementIndex(copySrcIndex); // Advance to where scanIndex will be.
 		}
 		incrementIndex(scanIndex);

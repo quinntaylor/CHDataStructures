@@ -15,10 +15,11 @@
 }
 
 - (BOOL)isEqual:(id)otherObject {
-	if ([otherObject conformsToProtocol:@protocol(CHStack)])
+	if ([otherObject conformsToProtocol:@protocol(CHStack)]) {
 		return [self isEqualToStack:otherObject];
-	else
+	} else {
 		return NO;
+	}
 }
 
 - (BOOL)isEqualToStack:(id<CHStack>)otherStack {

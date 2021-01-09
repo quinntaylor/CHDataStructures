@@ -35,7 +35,7 @@ size_t kCHBinaryTreeNodeSize = sizeof(CHBinaryTreeNode);
 			if (headerObject == nil) {
 				headerObject = [[CHSearchTreeHeaderObject alloc] init];
 			}
-		}		
+		}
 	}
 	return headerObject;
 }
@@ -120,7 +120,12 @@ size_t kCHBinaryTreeNodeSize = sizeof(CHBinaryTreeNode);
 			  traversalOrder:(CHTraversalOrder)order
 			 mutationPointer:(unsigned long *)mutations
 {
-	if ((self = [super init]) == nil || !isValidTraversalOrder(order)) return nil;
+	if (!isValidTraversalOrder(order)) {
+		CHRaiseInvalidArgumentException(@"Invalid traversal order");
+	}
+	if ((self = [super init]) == nil) {
+		return nil;
+	}
 	traversalOrder = order;
 	searchTree = (root != sentinel) ? [tree retain] : nil;
 	remainingCount = [searchTree count];
@@ -159,23 +164,26 @@ size_t kCHBinaryTreeNodeSize = sizeof(CHBinaryTreeNode);
 }
 
 - (NSArray *)allObjects {
-	if (mutationCount != *mutationPtr)
+	if (mutationCount != *mutationPtr) {
 		CHRaiseMutatedCollectionException();
+	}
 	if (remainingCount == 0) {
 		return @[];
 	}
 	NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:remainingCount];
 	id anObject;
-	while ((anObject = [self nextObject]))
+	while ((anObject = [self nextObject])) {
 		[array addObject:anObject];
+	}
 	[searchTree release];
 	searchTree = nil;
 	return [array autorelease];
 }
 
 - (id)nextObject {
-	if (mutationCount != *mutationPtr)
+	if (mutationCount != *mutationPtr) {
 		CHRaiseMutatedCollectionException();
+	}
 	if (searchTree == nil) {
 		return nil;
 	}
@@ -228,10 +236,12 @@ size_t kCHBinaryTreeNodeSize = sizeof(CHBinaryTreeNode);
 			} else {
 				remainingCount--;
 			}
-			if (current->right != sentinelNode)
+			if (current->right != sentinelNode) {
 				CHBinaryTreeStack_PUSH(current->right);
-			if (current->left != sentinelNode)
+			}
+			if (current->left != sentinelNode) {
 				CHBinaryTreeStack_PUSH(current->left);
+			}
 			return current->object;
 		}
 			
@@ -254,11 +264,10 @@ size_t kCHBinaryTreeNodeSize = sizeof(CHBinaryTreeNode);
 					current = CHBinaryTreeStack_TOP->right;
 					CHBinaryTreeStack_PUSH(NULL);
 					// TODO: How to not push a null pad for leaf nodes?
-				}
-				else {
+				} else {
 					(void)CHBinaryTreeStack_POP(); // ignore the null pad
 					return CHBinaryTreeStack_POP()->object;
-				}				
+				}
 			}
 		}
 			
@@ -271,10 +280,12 @@ size_t kCHBinaryTreeNodeSize = sizeof(CHBinaryTreeNode);
 			} else {
 				remainingCount--;
 			}
-			if (current->left != sentinelNode)
+			if (current->left != sentinelNode) {
 				CHBinaryTreeQueue_ENQUEUE(current->left);
-			if (current->right != sentinelNode)
+			}
+			if (current->right != sentinelNode) {
 				CHBinaryTreeQueue_ENQUEUE(current->right);
+			}
 			return current->object;
 		}
 	}
@@ -361,11 +372,9 @@ size_t kCHBinaryTreeNodeSize = sizeof(CHBinaryTreeNode);
 		state->mutationsPtr = &mutations;
 		current = header->right;
 		CHBinaryTreeStack_INIT();
-	}
-	else if (state->state == 1) {
-		return 0;		
-	}
-	else {
+	} else if (state->state == 1) {
+		return 0;
+	} else {
 		current = (CHBinaryTreeNode *) state->state;
 		stack = (CHBinaryTreeNode **) state->extra[0];
 		stackCapacity = (NSUInteger) state->extra[1];
@@ -390,8 +399,7 @@ size_t kCHBinaryTreeNodeSize = sizeof(CHBinaryTreeNode);
 	if (current == sentinel && stackSize == 0) {
 		CHBinaryTreeStack_FREE(stack);
 		state->state = 1; // used as a termination flag
-	}
-	else {
+	} else {
 		state->state    = (unsigned long) current;
 		state->extra[0] = (unsigned long) stack;
 		state->extra[1] = (unsigned long) stackCapacity;
@@ -437,8 +445,9 @@ size_t kCHBinaryTreeNodeSize = sizeof(CHBinaryTreeNode);
 - (id)firstObject {
 	sentinel->object = nil;
 	CHBinaryTreeNode *current = header->right;
-	while (current->left != sentinel)
+	while (current->left != sentinel) {
 		current = current->left;
+	}
 	return current->object;
 }
 
@@ -447,10 +456,11 @@ size_t kCHBinaryTreeNodeSize = sizeof(CHBinaryTreeNode);
 }
 
 - (BOOL)isEqual:(id)otherObject {
-	if ([otherObject conformsToProtocol:@protocol(CHSortedSet)])
+	if ([otherObject conformsToProtocol:@protocol(CHSortedSet)]) {
 		return [self isEqualToSortedSet:otherObject];
-	else
+	} else {
 		return NO;
+	}
 }
 
 - (BOOL)isEqualToSearchTree:(id<CHSearchTree>)otherTree {
@@ -464,8 +474,9 @@ size_t kCHBinaryTreeNodeSize = sizeof(CHBinaryTreeNode);
 - (id)lastObject {
 	sentinel->object = nil;
 	CHBinaryTreeNode *current = header->right;
-	while (current->right != sentinel)
+	while (current->right != sentinel) {
 		current = current->right;
+	}
 	return current->object;
 }
 
@@ -495,8 +506,9 @@ size_t kCHBinaryTreeNodeSize = sizeof(CHBinaryTreeNode);
 
 // Doesn't call -[NSGarbageCollector collectIfNeeded] -- lets the sender choose.
 - (void)removeAllObjects {
-	if (count == 0)
+	if (count == 0) {
 		return;
+	}
 	++mutations;
 	count = 0;
 	
@@ -508,10 +520,12 @@ size_t kCHBinaryTreeNodeSize = sizeof(CHBinaryTreeNode);
 	
 	CHBinaryTreeNode *current;
 	while ((current = CHBinaryTreeStack_POP())) {
-		if (current->right != sentinel)
+		if (current->right != sentinel) {
 			CHBinaryTreeStack_PUSH(current->right);
-		if (current->left != sentinel)
+		}
+		if (current->left != sentinel) {
 			CHBinaryTreeStack_PUSH(current->left);
+		}
 		[current->object release];
 		free(current);
 	}
@@ -561,12 +575,13 @@ size_t kCHBinaryTreeNodeSize = sizeof(CHBinaryTreeNode);
  */
 - (id<CHSortedSet>)subsetFromObject:(id)start toObject:(id)end options:(CHSubsetConstructionOptions)options {
 	// If both parameters are nil, return a copy containing all the objects.
-	if (start == nil && end == nil)
+	if (start == nil && end == nil) {
 		return [[self copy] autorelease];
-	
+	}
 	id<CHSortedSet> subset = [[[[self class] alloc] init] autorelease];
-	if (count == 0)
+	if (count == 0) {
 		return subset;
+	}
 	
 	NSEnumerator *e;
 	id anObject;
@@ -574,43 +589,37 @@ size_t kCHBinaryTreeNodeSize = sizeof(CHBinaryTreeNode);
 	if (start == nil) {
 		// Start from the first object and add until we pass the end parameter.
 		e = [self objectEnumeratorWithTraversalOrder:CHTraversalOrderAscending];
-		while ((anObject = [e nextObject]) &&
-			   [anObject compare:end] != NSOrderedDescending) {
+		while ((anObject = [e nextObject]) && [anObject compare:end] != NSOrderedDescending) {
 			[subset addObject:anObject];
 		}
-	}
-	else if (end == nil) {
+	} else if (end == nil) {
 		// Start from the last object and add until we pass the start parameter.
 		e = [self objectEnumeratorWithTraversalOrder:CHTraversalOrderDescending];
-		while ((anObject = [e nextObject]) &&
-			   [anObject compare:start] != NSOrderedAscending) {
+		while ((anObject = [e nextObject]) && [anObject compare:start] != NSOrderedAscending) {
 			[subset addObject:anObject];
 		}
-	}
-	else {
+	} else {
 		if ([start compare:end] == NSOrderedAscending) {
 			// Include subset of objects between the range parameters.
 			e = [self objectEnumeratorWithTraversalOrder:CHTraversalOrderAscending];
-			while ((anObject = [e nextObject]) &&
-				   [anObject compare:start] == NSOrderedAscending)
+			while ((anObject = [e nextObject]) && [anObject compare:start] == NSOrderedAscending) {
 				;
+			}
 			if (anObject) {
 				do {
 					[subset addObject:anObject];
-				} while ((anObject = [e nextObject]) &&
-				         [anObject compare:end] != NSOrderedDescending);
+				} while ((anObject = [e nextObject]) && [anObject compare:end] != NSOrderedDescending);
 			}
-		}
-		else {
+		} else {
 			// Include subset of objects NOT between the range parameters.
 			e = [self objectEnumeratorWithTraversalOrder:CHTraversalOrderDescending];
-			while ((anObject = [e nextObject]) &&
-				   [anObject compare:start] != NSOrderedAscending)
+			while ((anObject = [e nextObject]) && [anObject compare:start] != NSOrderedAscending) {
 				[subset addObject:anObject];
+			}
 			e = [self objectEnumeratorWithTraversalOrder:CHTraversalOrderAscending];
-			while ((anObject = [e nextObject]) &&
-				   [anObject compare:end] != NSOrderedDescending)
+			while ((anObject = [e nextObject]) && [anObject compare:end] != NSOrderedDescending) {
 				[subset addObject:anObject];
+			}
 		}
 	}
 	// If the start and/or end value is to be excluded, remove before returning.
@@ -632,13 +641,16 @@ size_t kCHBinaryTreeNodeSize = sizeof(CHBinaryTreeNode);
 	CHBinaryTreeStack_INIT();
 	
 	sentinel->object = nil;
-	if (header->right != sentinel)
-		CHBinaryTreeStack_PUSH(header->right);	
+	if (header->right != sentinel) {
+		CHBinaryTreeStack_PUSH(header->right);
+	}
 	while ((current = CHBinaryTreeStack_POP())) {
-		if (current->right != sentinel)
+		if (current->right != sentinel) {
 			CHBinaryTreeStack_PUSH(current->right);
-		if (current->left != sentinel)
+		}
+		if (current->left != sentinel) {
 			CHBinaryTreeStack_PUSH(current->left);
+		}
 		// Append entry for the current node, including children
 		[description appendFormat:@"\t%@ -> \"%@\" and \"%@\"\n",
 		 [self debugDescriptionForNode:current],
@@ -671,10 +683,12 @@ size_t kCHBinaryTreeNodeSize = sizeof(CHBinaryTreeNode);
 		CHBinaryTreeStack_PUSH(header->right);
 		// Uses a reverse pre-order traversal to make the DOT output look right.
 		while ((current = CHBinaryTreeStack_POP())) {
-			if (current->left != sentinel)
+			if (current->left != sentinel) {
 				CHBinaryTreeStack_PUSH(current->left);
-			if (current->right != sentinel)
+			}
+			if (current->right != sentinel) {
 				CHBinaryTreeStack_PUSH(current->right);
+			}
 			// Append entry for node with any subclass-specific customizations.
 			[graph appendString:[self dotGraphStringForNode:current]];
 			// Append entry for edges from current node to both its children.
@@ -690,8 +704,9 @@ size_t kCHBinaryTreeNodeSize = sizeof(CHBinaryTreeNode);
 		CHBinaryTreeStack_FREE(stack);
 		
 		// Create entry for each null leaf node (each nil is modeled separately)
-		for (NSUInteger i = 1; i <= sentinelCount; i++)
+		for (NSUInteger i = 1; i <= sentinelCount; i++) {
 			[graph appendFormat:@"  nil%lu [shape=point,fillcolor=black];\n", i];
+		}
 	}
 	// Terminate the graph string, then return it
 	[graph appendString:@"}\n"];

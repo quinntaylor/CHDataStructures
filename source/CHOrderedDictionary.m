@@ -55,10 +55,11 @@
 }
 
 - (NSUInteger)indexOfKey:(id)aKey {
-	if (CFDictionaryContainsKey(dictionary, aKey))
+	if (CFDictionaryContainsKey(dictionary, aKey)) {
 		return [keyOrdering indexOfObject:aKey];
-	else
+	} else {
 		return NSNotFound;
+	}
 }
 
 - (id)keyAtIndex:(NSUInteger)index {
@@ -84,8 +85,9 @@
 
 - (CHOrderedDictionary *)orderedDictionaryWithKeysAtIndexes:(NSIndexSet *)indexes {
 	CHRaiseInvalidArgumentExceptionIfNil(indexes);
-	if ([indexes count] == 0)
+	if ([indexes count] == 0) {
 		return [[self class] dictionary];
+	}
 	CHOrderedDictionary *newDictionary = [[self class] dictionaryWithCapacity:[indexes count]];
 	NSUInteger index = [indexes firstIndex];
 	while (index != NSNotFound) {

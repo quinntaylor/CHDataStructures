@@ -50,8 +50,9 @@ static NSArray *abc;
 - (void)setUp {
 	buffer = [[[CHCircularBuffer alloc] init] autorelease];
 	fifteen = [[NSMutableArray alloc] init];
-	for (int i = 1; i <= 15; i++)
+	for (int i = 1; i <= 15; i++) {
 		[fifteen addObject:[NSNumber numberWithInt:i]];
+	}
 }
 
 // This macro checks tail-head (accounting for wrapping) against the count.
@@ -69,8 +70,9 @@ do { \
 
 - (void)testInitWithArray {
 	NSMutableArray *array = [[[NSMutableArray alloc] init] autorelease];
-	for (int i = 1; i <= 15; i++)
+	for (int i = 1; i <= 15; i++) {
 		[array addObject:[NSNumber numberWithInt:i]];
+	}
 	buffer = [[[CHCircularBuffer alloc] initWithArray:array] autorelease];
 	XCTAssertEqual([buffer capacity], (NSUInteger)16);
 	checkCountAndDistanceFromHeadToTail(15);
@@ -80,8 +82,9 @@ do { \
 	XCTAssertEqual([buffer capacity], (NSUInteger)32);
 	checkCountAndDistanceFromHeadToTail(16);
 	
-	for (int i = 17; i <= 33; i++)
+	for (int i = 17; i <= 33; i++) {
 		[array addObject:[NSNumber numberWithInt:i]];
+	}
 	buffer = [[[CHCircularBuffer alloc] initWithArray:array] autorelease];
 	XCTAssertEqual([buffer capacity], (NSUInteger)64);
 	checkCountAndDistanceFromHeadToTail(33);
@@ -110,11 +113,13 @@ do { \
 	
 	// Force expansion of original capacity
 	buffer = [[[CHCircularBuffer alloc] init] autorelease];
-	for (int i = 1; i <= 16; i++)
+	for (int i = 1; i <= 16; i++) {
 		[buffer addObject:[NSNumber numberWithInt:i]];
+	}
 	XCTAssertEqual([buffer capacity], (NSUInteger)32);
-	for (int i = 17; i <= 33; i++)
+	for (int i = 17; i <= 33; i++) {
 		[buffer addObject:[NSNumber numberWithInt:i]];
+	}
 	XCTAssertEqual([buffer capacity], (NSUInteger)64);
 }
 
@@ -134,8 +139,9 @@ do { \
 	NSMutableArray *correct = [NSMutableArray arrayWithArray:abc];
 	[correct addObject:@"D"];
 	e = [abc reverseObjectEnumerator];
-	while (anObject = [e nextObject])
+	while (anObject = [e nextObject]) {
 		[buffer insertObject:anObject atIndex:0];
+	}
 	[buffer addObject:@"D"];
 	XCTAssertEqualObjects(buffer, correct);
 	checkCountAndDistanceFromHeadToTail([correct count]);
@@ -179,7 +185,7 @@ do { \
 	XCTAssertEqualObjects([buffer objectAtIndex:1], @"A");
 	XCTAssertEqualObjects([buffer lastObject],      @"C");	
 }
-		
+
 #pragma mark Access
 
 - (void)testCount {
@@ -197,8 +203,9 @@ do { \
 	
 	// Test -allObjects when the buffer wraps around to the beginning
 	e = [abc objectEnumerator];
-	while (anObject = [e nextObject])
+	while (anObject = [e nextObject]) {
 		[buffer removeFirstObject];
+	}
 	checkCountAndDistanceFromHeadToTail(0);
 	NSMutableArray *objects = [NSMutableArray array];
 	for (int i = 1; i < 16; i++) {
@@ -279,27 +286,31 @@ do { \
 
 - (void)testContainsObject {
 	e = [abc objectEnumerator];
-	while (anObject = [e nextObject])
+	while (anObject = [e nextObject]) {
 		XCTAssertFalse([buffer containsObject:anObject]);
+	}
 	XCTAssertFalse([buffer containsObject:@"bogus"]);
 	[buffer addObjectsFromArray:abc];
 	e = [abc objectEnumerator];
-	while (anObject = [e nextObject])
+	while (anObject = [e nextObject]) {
 		XCTAssertTrue([buffer containsObject:anObject]);
+	}
 	XCTAssertFalse([buffer containsObject:@"bogus"]);
 }
 
 - (void)testContainsObjectIdenticalTo {
 	NSString *a = [NSString stringWithFormat:@"A"];
 	e = [abc objectEnumerator];
-	while (anObject = [e nextObject])
+	while (anObject = [e nextObject]) {
 		XCTAssertFalse([buffer containsObjectIdenticalTo:anObject]);
+	}
 	XCTAssertFalse([buffer containsObjectIdenticalTo:@"bogus"]);
 	XCTAssertFalse([buffer containsObjectIdenticalTo:a]);
 	[buffer addObjectsFromArray:abc];
 	e = [abc objectEnumerator];
-	while (anObject = [e nextObject])
+	while (anObject = [e nextObject]) {
 		XCTAssertTrue([buffer containsObjectIdenticalTo:anObject]);
+	}
 	XCTAssertFalse([buffer containsObjectIdenticalTo:@"bogus"]);
 	XCTAssertFalse([buffer containsObjectIdenticalTo:a]);
 }
@@ -336,8 +347,9 @@ do { \
 
 	NSUInteger expectedIndex = 0;
 	e = [fifteen objectEnumerator];
-	while (anObject = [e nextObject])
+	while (anObject = [e nextObject]) {
 		XCTAssertEqual([buffer indexOfObjectIdenticalTo:anObject], expectedIndex++);
+	}
 	XCTAssertEqual([buffer indexOfObjectIdenticalTo:@"bogus"], (NSUInteger)NSNotFound);
 	XCTAssertEqual([buffer indexOfObjectIdenticalTo:a],        (NSUInteger)NSNotFound);
 }
@@ -560,7 +572,7 @@ do { \
 			// Offset the head pointer by 3 to force wrapping
 			if (i == 1) {
 				e = [abc objectEnumerator];
-							while (anObject = [e nextObject]) {
+				while (anObject = [e nextObject]) {
 					[buffer addObject:anObject];
 					[buffer removeFirstObject];
 				}				
@@ -712,8 +724,9 @@ do { \
 
 - (void)testNSFastEnumeration {
 	int number, expected, count;
-	for (number = 1; number <= 32; number++)
+	for (number = 1; number <= 32; number++) {
 		[buffer addObject:[NSNumber numberWithInt:number]];
+	}
 	count = 0;
 	expected = 1;
 	e = [buffer objectEnumerator];
@@ -744,8 +757,9 @@ do { \
 		[buffer removeFirstObject];
 	}
 	checkCountAndDistanceFromHeadToTail(0);
-	for (number = 1; number < 16; number++)
+	for (number = 1; number < 16; number++) {
 		[buffer addObject:[NSNumber numberWithInt:number]];
+	}
 	count = 0;
 	expected = 1;
 	e = [buffer objectEnumerator];

@@ -32,9 +32,9 @@ static CHBinaryTreeNode * doubleRotation(CHBinaryTreeNode *node, u_int32_t dir) 
 static void adjustBalance(CHBinaryTreeNode *root, u_int32_t dir, int32_t bal) {
 	CHBinaryTreeNode *n = root->link[dir];
 	CHBinaryTreeNode *nn = n->link[!dir];
-	if (nn->balance == 0)
+	if (nn->balance == 0) {
 		root->balance = n->balance = 0;
-	else if (nn->balance == bal) {
+	} else if (nn->balance == bal) {
 		root->balance = -bal;
 		n->balance = 0;
 	} else { // nn->balance == -bal
@@ -60,10 +60,11 @@ static void adjustBalance(CHBinaryTreeNode *root, u_int32_t dir, int32_t bal) {
 	NSComparisonResult comparison;
 	while ((comparison = [current->object compare:anObject])) {
 		CHBinaryTreeStack_PUSH(current);
-		if (current == header)
+		if (current == header) {
 			save = current->right;
-		else if (current->balance != 0)
+		} else if (current->balance != 0) {
 			save = current;
+		}
 		current = current->link[comparison == NSOrderedAscending]; // R on YES
 	}
 	NSAssert(save != nil, @"Illegal state, save should never be nil!");
@@ -92,11 +93,11 @@ static void adjustBalance(CHBinaryTreeNode *root, u_int32_t dir, int32_t bal) {
 	while (keepBalancing && parent != header) {
 		isRightChild = (parent->right == current);
 		// Update the balance factor
-		if (isRightChild)
+		if (isRightChild) {
 			parent->balance++;
-		else
+		} else {
 			parent->balance--;
-		
+		}
 		if (parent == save) {
 			// Rebalance if the balance factor is out of whack, then terminate
 			if (abs(parent->balance) > 1) {
@@ -179,10 +180,11 @@ done:
 	BOOL done = NO;
 	while (!done && stackSize > 0) {
 		// Update the balance factor
-		if (isRightChild)
+		if (isRightChild) {
 			parent->balance--;
-		else
+		} else {
 			parent->balance++;
+		}
 		// If the subtree heights differ by more than 1, rebalance them
 		if (parent->balance > 1 || parent->balance < -1) {
 			CHBinaryTreeNode *node = parent->link[!isRightChild];
@@ -190,12 +192,10 @@ done:
 			if (node->balance == -bal) {
 				parent->balance = node->balance = 0;
 				parent = singleRotation(parent, isRightChild);
-			}
-			else if (node->balance == bal) {
+			} else if (node->balance == bal) {
 				adjustBalance(parent, !isRightChild, -bal);
 				parent = doubleRotation(parent, isRightChild);
-			}
-			else { // node->balance == 0
+			} else { // node->balance == 0
 				parent->balance = -bal;
 				node->balance = bal;
 				parent = singleRotation(parent, isRightChild);
@@ -203,10 +203,9 @@ done:
 			}
 			comparison = [CHBinaryTreeStack_TOP->object compare:parent->object];
 			CHBinaryTreeStack_TOP->link[comparison == NSOrderedAscending] = parent;
-		}
-		else if (parent->balance != 0)
+		} else if (parent->balance != 0) {
 			break;
-
+		}
 		current = parent;
 		parent = CHBinaryTreeStack_POP();
 		isRightChild = (parent->right == current);

@@ -29,8 +29,9 @@
 
 - (void)testInitWithArray {
 	NSMutableArray *moreObjects = [NSMutableArray array];
-	for (NSUInteger i = 0; i < 32; i++)
+	for (NSUInteger i = 0; i < 32; i++) {
 		[moreObjects addObject:[NSNumber numberWithUnsignedInteger:i]];
+	}
 	
 	NSEnumerator *classes = [dequeClasses objectEnumerator];
 	Class aClass;
@@ -80,8 +81,9 @@
 		
 		XCTAssertEqual([deque count], (NSUInteger)0);
 		e = [objects objectEnumerator];
-		while (anObject = [e nextObject])
+		while (anObject = [e nextObject]) {
 			[deque appendObject:anObject];
+		}
 		XCTAssertEqual([deque count], (NSUInteger)3);
 		e = [deque objectEnumerator];
 		XCTAssertEqualObjects([e nextObject], @"A");
@@ -190,8 +192,9 @@
 	while (aClass = [classes nextObject]) {
 		deque = [[[aClass alloc] init] autorelease];
 		e = [objects objectEnumerator];
-		while (anObject = [e nextObject])
+		while (anObject = [e nextObject]) {
 			[deque appendObject:anObject];
+		}
 		XCTAssertEqualObjects([deque lastObject], @"C");
 		[deque removeLastObject];
 		XCTAssertEqualObjects([deque lastObject], @"B");
@@ -211,8 +214,9 @@
 	while (aClass = [classes nextObject]) {
 		deque = [[[aClass alloc] init] autorelease];
 		e = [objects objectEnumerator];
-		while (anObject = [e nextObject])
+		while (anObject = [e nextObject]) {
 			[deque appendObject:anObject];
+		}
 		e = [deque reverseObjectEnumerator];
 		XCTAssertEqualObjects([e nextObject], @"C");
 		XCTAssertEqualObjects([e nextObject], @"B");

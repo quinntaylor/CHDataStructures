@@ -64,8 +64,9 @@
 	while (aClass = [classes nextObject]) {
 		list = [[[aClass alloc] init] autorelease];
 		NSUInteger number, expected = 1, count = 0;
-		for (number = 1; number <= 32; number++)
+		for (number = 1; number <= 32; number++) {
 			[list addObject:[NSNumber numberWithUnsignedInteger:number]];
+		}
 		for (NSNumber *object in list) {
 			XCTAssertEqual([object unsignedIntegerValue], expected++);
 			count++;
@@ -130,8 +131,9 @@
 		XCTAssertThrows([list prependObject:nil]);
 		// Test prepending valid objects
 		e = [abc objectEnumerator];
-		while (anObject = [e nextObject])
+		while (anObject = [e nextObject]) {
 			[list prependObject:anObject];
+		}
 		// Verify first and last object
 		XCTAssertEqual([list count], [abc count]);
 		XCTAssertEqualObjects([list firstObject], @"C");
@@ -148,8 +150,9 @@
 		XCTAssertThrows([list addObject:nil]);
 		// Test appending valid objects
 		e = [abc objectEnumerator];
-		while (anObject = [e nextObject])
+		while (anObject = [e nextObject]) {
 			[list addObject:anObject];
+		}
 		// Verify first and last object
 		XCTAssertEqual([list count], [abc count]);
 		XCTAssertEqualObjects([list firstObject], @"A");
@@ -458,8 +461,9 @@
 	while (aClass = [classes nextObject]) {
 		list = [[[aClass alloc] init] autorelease];
 		e = [abc objectEnumerator];
-		while (anObject = [e nextObject])
+		while (anObject = [e nextObject]) {
 			[list addObject:anObject];
+		}
 		XCTAssertThrows([list objectAtIndex:-1]);
 		XCTAssertEqualObjects([list objectAtIndex:0], @"A");
 		XCTAssertEqualObjects([list objectAtIndex:1], @"B");
@@ -505,8 +509,9 @@
 	while (aClass = [classes nextObject]) {
 		list = [[[aClass alloc] init] autorelease];
 		e = [abc objectEnumerator];
-		while (anObject = [e nextObject])
+		while (anObject = [e nextObject]) {
 			[list addObject:anObject];
+		}
 		XCTAssertEqual([list count], [abc count]);
 		[list removeAllObjects];
 		XCTAssertEqual([list count], (NSUInteger)0);

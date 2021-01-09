@@ -53,8 +53,9 @@
 		current->priority = (u_int32_t) (priority % CHTreapNotFound);
 		while (current->left != current->right) { // sentinel check
 			direction = (current->right->priority > current->left->priority);
-			if (current->priority >= current->link[direction]->priority)
+			if (current->priority >= current->link[direction]->priority) {
 				break;
+			}
 			NSAssert(parent != nil, @"Illegal state, parent should never be nil!");
 			singleRotation(current, !direction, parent);
 			parent = current;

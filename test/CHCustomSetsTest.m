@@ -52,10 +52,11 @@ static NSArray *abc;
 	NSNumber *number;
 	for (NSUInteger count = 1; count <= 20; count++) {
 		number = [NSNumber numberWithUnsignedInt:arc4random()];
-		if ([array containsObject:number])
+		if ([array containsObject:number]) {
 			count--;
-		else
+		} else {
 			[array addObject:number];
+		}
 	}
 	return array;
 }
@@ -290,10 +291,11 @@ static NSArray *abc;
 	BOOL unorderedSet = [set isMemberOfClass:[CHMutableSet class]];
 	for (NSNumber *number in set) {
 		XCTAssertNotNil(number);
-		if (unorderedSet)
+		if (unorderedSet) {
 			XCTAssertNotNil([enumerator nextObject]);
-		else
+		} else {
 			XCTAssertEqualObjects(number, [enumerator nextObject]);
+		}
 		count++;
 	}
 	XCTAssertEqual(count, [array count]);
@@ -334,13 +336,15 @@ static NSArray *abc;
 	XCTAssertThrows([set addObject:nil]);
 	
 	e = [abc objectEnumerator];
-	while (anObject = [e nextObject])
+	while (anObject = [e nextObject]) {
 		[set addObject:anObject];
+	}
 	[self checkEqualityWithArray:abc];
 	
 	e = [abc objectEnumerator];
-	while (anObject = [e nextObject])
+	while (anObject = [e nextObject]) {
 		[set addObject:anObject];
+	}
 	[self checkEqualityWithArray:abc];
 }
 
@@ -375,9 +379,11 @@ static NSArray *abc;
 	
 	order = [NSMutableArray arrayWithObjects:@"A",@"B",@"C",nil];
 	e = [ade objectEnumerator];
-	while (anObject = [e nextObject])
-		if (![anObject isEqual:@"A"])
+	while (anObject = [e nextObject]) {
+		if (![anObject isEqual:@"A"]) {
 			[order addObject:anObject];
+		}
+	}
 	[set addObjectsFromArray:abc];
 	[set unionSet:ade];
 	[self checkEqualityWithArray:order];

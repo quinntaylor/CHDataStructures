@@ -58,9 +58,9 @@
 	}
 	NSAssert(parent != nil, @"Illegal state, parent should never be nil!");
 	// Exit if the specified node was not found in the tree.
-	if (current == sentinel)
+	if (current == sentinel) {
 		return;
-
+	}
 	[current->object release]; // Object must be released in any case
 	--count;
 	if (current->left == sentinel || current->right == sentinel) {

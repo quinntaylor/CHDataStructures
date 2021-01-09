@@ -550,8 +550,9 @@ static NSArray *keyArray;
 @implementation CHDictionaryWithOrderingTest
 
 - (void)testFirstKey {
-	if (![dictionary respondsToSelector:@selector(firstKey)])
+	if (![dictionary respondsToSelector:@selector(firstKey)]) {
 		return;
+	}
 	XCTAssertNil([dictionary firstKey]);
 	[self populateDictionary];
 	XCTAssertEqualObjects([dictionary firstKey], [expectedKeyOrder objectAtIndex:0]);
@@ -574,16 +575,18 @@ static NSArray *keyArray;
 }
 
 - (void)testLastKey {
-	if (![dictionary respondsToSelector:@selector(lastKey)])
+	if (![dictionary respondsToSelector:@selector(lastKey)]) {
 		return;
+	}
 	XCTAssertNil([dictionary lastKey]);
 	[self populateDictionary];
 	XCTAssertEqualObjects([dictionary lastKey], [expectedKeyOrder lastObject]);
 }
 
 - (void)testReverseKeyEnumerator {
-	if (![dictionary respondsToSelector:@selector(reverseKeyEnumerator)])
+	if (![dictionary respondsToSelector:@selector(reverseKeyEnumerator)]) {
 		return;
+	}
 	enumerator = [dictionary reverseKeyEnumerator];
 	XCTAssertNotNil(enumerator);
 	NSArray *allKeys = [enumerator allObjects];
@@ -656,8 +659,9 @@ static NSArray *keyArray;
 - (void)testNSFastEnumeration {
 	NSUInteger limit = 32; // NSFastEnumeration asks for 16 objects at a time
 	// Insert keys in reverse sorted order
-	for (NSUInteger number = limit; number >= 1; number--)
+	for (NSUInteger number = limit; number >= 1; number--) {
 		[dictionary setObject:[NSNull null] forKey:[NSNumber numberWithUnsignedInteger:number]];
+	}
 	// Verify that keys are enumerated in sorted order
 	NSUInteger expected = 1, count = 0;
 	for (NSNumber *object in dictionary) {
@@ -793,8 +797,9 @@ static NSArray *keyArray;
 - (void)testNSFastEnumeration {
 	NSUInteger limit = 32; // NSFastEnumeration asks for 16 objects at a time
 	// Insert keys in reverse sorted order
-	for (NSUInteger number = limit; number >= 1; number--)
+	for (NSUInteger number = limit; number >= 1; number--) {
 		[dictionary setObject:[NSNull null] forKey:[NSNumber numberWithUnsignedInteger:number]];
+	}
 	// Verify that keys are enumerated in sorted order
 	NSUInteger expected = 32, count = 0;
 	for (NSNumber *object in dictionary) {

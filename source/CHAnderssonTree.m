@@ -111,8 +111,7 @@ done:
 		// Single/zero child case -- replace node with non-nil child (if exists)
 		parent = CHBinaryTreeStack_TOP;
 		NSAssert(parent != nil, @"Illegal state, parent should never be nil!");
-		parent->link[parent->right == current]
-			= current->link[current->left == sentinel];
+		parent->link[parent->right == current] = current->link[current->left == sentinel];
 		free(current);
 	} else {
 		// Two child case -- replace with minimum object in right subtree

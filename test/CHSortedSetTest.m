@@ -33,8 +33,9 @@ static NSArray *abcde;
 @implementation CHSortedSetTest
 
 + (void)initialize {
-	if ([self class] != [CHSortedSetTest class])
+	if ([self class] != [CHSortedSetTest class]) {
 		return;
+	}
 	abcde = [[NSArray alloc] initWithObjects:@"A",@"B",@"C",@"D",@"E",nil];
 }
 
@@ -51,8 +52,9 @@ static NSArray *abcde;
 }
 
 - (void)testAddObject {
-	if ([self classUnderTest] == nil)
+	if ([self classUnderTest] == nil) {
 		return;
+	}
 	if ([self classUnderTest] == [CHAbstractBinarySearchTree class]) {
 		// This method should be unsupported in the abstract parent class.
 		XCTAssertThrows([set addObject:nil]);
@@ -77,8 +79,9 @@ static NSArray *abcde;
 }
 
 - (void)testAllObjects {
-	if (NonConcreteClass())
+	if (NonConcreteClass()) {
 		return;
+	}
 	// Try with empty sorted set
 	XCTAssertEqualObjects([set allObjects], [NSArray array]);
 	// Try with populated sorted set
@@ -87,8 +90,9 @@ static NSArray *abcde;
 }
 
 - (void)testAnyObject {
-	if (NonConcreteClass())
+	if (NonConcreteClass()) {
 		return;
+	}
 	// Try with empty sorted set
 	XCTAssertNil([set anyObject]);
 	// Try with populated sorted set
@@ -97,8 +101,9 @@ static NSArray *abcde;
 }
 
 - (void)testContainsObject {
-	if (NonConcreteClass())
+	if (NonConcreteClass()) {
 		return;
+	}
 	// Test contains for nil and non-member objects
 	XCTAssertThrows([set containsObject:nil]);
 	XCTAssertNoThrow([set containsObject:@"bogus"]);
@@ -108,13 +113,15 @@ static NSArray *abcde;
 	XCTAssertFalse([set containsObject:@"bogus"]);
 	// Test contains for each object in the set 
 	e = [abcde objectEnumerator];
-	while (anObject = [e nextObject])
+	while (anObject = [e nextObject]) {
 		XCTAssertTrue([set containsObject:anObject]);
+	}
 }
 
 - (void)testFirstObject {
-	if (NonConcreteClass())
+	if (NonConcreteClass()) {
 		return;
+	}
 	// Try with empty sorted set
 	XCTAssertNoThrow([set firstObject]);
 	XCTAssertNil([set firstObject]);
@@ -125,22 +132,25 @@ static NSArray *abcde;
 }
 
 - (void)testInit {
-	if (NonConcreteClass())
+	if (NonConcreteClass()) {
 		return;
+	}
 	XCTAssertNotNil(set);
 	XCTAssertEqual([set count], (NSUInteger)0);
 }
 
 - (void)testInitWithArray {
-	if (NonConcreteClass())
+	if (NonConcreteClass()) {
 		return;
+	}
 	set = [[[[self classUnderTest] alloc] initWithArray:abcde] autorelease];
 	XCTAssertEqual([set count], [abcde count]);
 }
 
 - (void)testIsEqual {
-	if (NonConcreteClass())
+	if (NonConcreteClass()) {
 		return;
+	}
 	// Calls to -isEqual: exercise -isEqualToSortedSet: by extension
 	XCTAssertTrue([set isEqual:set]);
 	[set addObjectsFromArray:abcde];
@@ -150,8 +160,9 @@ static NSArray *abcde;
 }
 
 - (void)testLastObject {
-	if (NonConcreteClass())
+	if (NonConcreteClass()) {
 		return;
+	}
 	// Try with empty sorted set
 	XCTAssertNoThrow([set lastObject]);
 	XCTAssertNil([set lastObject]);
@@ -162,8 +173,9 @@ static NSArray *abcde;
 }
 
 - (void)testMember {
-	if (NonConcreteClass())
+	if (NonConcreteClass()) {
 		return;
+	}
 	// Try with empty sorted set
 	XCTAssertThrows([set member:nil]);
 	XCTAssertNoThrow([set member:@"bogus"]);
@@ -171,15 +183,17 @@ static NSArray *abcde;
 	// Try with populated sorted set
 	[set addObjectsFromArray:abcde];
 	e = [abcde objectEnumerator];
-	while (anObject = [e nextObject])
+	while (anObject = [e nextObject]) {
 		XCTAssertEqualObjects([set member:anObject], anObject);
+	}
 	XCTAssertNoThrow([set member:@"bogus"]);
 	XCTAssertNil([set member:@"bogus"]);
 }
 
 - (void)testObjectEnumerator {
-	if (NonConcreteClass())
+	if (NonConcreteClass()) {
 		return;
+	}
 	
 	// Enumerator shouldn't retain collection if there are no objects
 	XCTAssertEqual([set retainCount], (NSUInteger)1);
@@ -225,8 +239,9 @@ static NSArray *abcde;
 }
 
 - (void)testRemoveAllObjects {
-	if (NonConcreteClass())
+	if (NonConcreteClass()) {
 		return;
+	}
 	// Try with empty sorted set
 	XCTAssertNoThrow([set removeAllObjects]);
 	XCTAssertEqual([set count], (NSUInteger)0);
@@ -238,8 +253,9 @@ static NSArray *abcde;
 }
 
 - (void)testRemoveFirstObject {
-	if (NonConcreteClass())
+	if (NonConcreteClass()) {
 		return;
+	}
 	// Try with empty sorted set
 	XCTAssertNoThrow([set removeFirstObject]);
 	XCTAssertEqual([set count], (NSUInteger)0);
@@ -253,8 +269,9 @@ static NSArray *abcde;
 }
 
 - (void)testRemoveLastObject {
-	if (NonConcreteClass())
+	if (NonConcreteClass()) {
 		return;
+	}
 	// Try with empty sorted set
 	XCTAssertNoThrow([set removeLastObject]);
 	XCTAssertEqual([set count], (NSUInteger)0);
@@ -268,8 +285,9 @@ static NSArray *abcde;
 }
 
 - (void)testReverseObjectEnumerator {
-	if (NonConcreteClass())
+	if (NonConcreteClass()) {
 		return;
+	}
 	// Try with empty sorted set
 	NSEnumerator *reverse = [set reverseObjectEnumerator];
 	XCTAssertNotNil(reverse);
@@ -284,8 +302,9 @@ static NSArray *abcde;
 }
 
 - (void)testSet {
-	if (NonConcreteClass())
+	if (NonConcreteClass()) {
 		return;
+	}
 	NSArray *order = [NSArray arrayWithObjects:@"B",@"M",@"C",@"K",@"D",@"I",@"E",@"G",
 			   @"J",@"L",@"N",@"F",@"A",@"H",nil];
 	[set addObjectsFromArray:order];
@@ -293,8 +312,9 @@ static NSArray *abcde;
 }
 
 - (void)testSubsetFromObjectToObject {
-	if (NonConcreteClass())
+	if (NonConcreteClass()) {
 		return;
+	}
 	NSArray *acdeg = [NSArray arrayWithObjects:@"A",@"C",@"D",@"E",@"G",nil];
 	NSArray *acde  = [NSArray arrayWithObjects:@"A",@"C",@"D",@"E",nil];
 	NSArray *aceg  = [NSArray arrayWithObjects:@"A",@"C",@"E",@"G",nil];
@@ -375,32 +395,36 @@ static NSArray *abcde;
 }
 
 - (void)testNSCoding {
-	if (NonConcreteClass())
+	if (NonConcreteClass()) {
 		return;
+	}
 	NSArray *order = [NSArray arrayWithObjects:@"B",@"M",@"C",@"K",@"D",@"I",@"E",@"G",@"J",@"L",@"N",@"F",@"A",@"H",nil];
 	NSArray *before, *after;
 	[set addObjectsFromArray:order];
 	XCTAssertEqual([set count], [order count]);
-	if ([set conformsToProtocol:@protocol(CHSearchTree)])
+	if ([set conformsToProtocol:@protocol(CHSearchTree)]) {
 		before = [set allObjectsWithTraversalOrder:CHTraversalOrderLevelOrder];
-	else
+	} else {
 		before = [set allObjects];
-	
+	}
 	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:set];
 	set = [[NSKeyedUnarchiver unarchiveObjectWithData:data] retain];
 	
 	XCTAssertEqual([set count], [order count]);
-	if ([set conformsToProtocol:@protocol(CHSearchTree)])
+	if ([set conformsToProtocol:@protocol(CHSearchTree)]) {
 		after = [set allObjectsWithTraversalOrder:CHTraversalOrderLevelOrder];
-	else
+	} else {
 		after = [set allObjects];
-	if ([self classUnderTest] != [CHTreap class])
+	}
+	if ([self classUnderTest] != [CHTreap class]) {
 		XCTAssertEqualObjects(before, after);
+	}
 }
 
 - (void)testNSCopying {
-	if (NonConcreteClass())
+	if (NonConcreteClass()) {
 		return;
+	}
 	id copy;
 	copy = [[set copy] autorelease];
 	XCTAssertNotNil(copy);
@@ -421,11 +445,13 @@ static NSArray *abcde;
 }
 
 - (void)testNSFastEnumeration {
-	if (NonConcreteClass())
+	if (NonConcreteClass()) {
 		return;
+	}
 	NSUInteger limit = 32; // NSFastEnumeration asks for 16 objects at a time
-	for (NSUInteger number = 1; number <= limit; number++)
+	for (NSUInteger number = 1; number <= limit; number++) {
 		[set addObject:[NSNumber numberWithUnsignedInteger:number]];
+	}
 	NSUInteger expected = 1, count = 0;
 	for (NSNumber *object in set) {
 		XCTAssertEqual([object unsignedIntegerValue], expected++);
@@ -477,8 +503,9 @@ static NSArray *abcde;
 }
 
 - (void)testAllObjectsWithTraversalOrder {
-	if ([self class] == [CHAbstractBinarySearchTreeTest class])
+	if ([self class] == [CHAbstractBinarySearchTreeTest class]) {
 		return;
+	}
 	// Also tests -objectEnumeratorWithTraversalOrder: implicitly
 	[set addObjectsFromArray:abcde];
 	XCTAssertEqualObjects([set allObjectsWithTraversalOrder:CHTraversalOrderAscending],
@@ -501,8 +528,9 @@ static NSArray *abcde;
 }
 
 - (void)testIsEqualToSearchTree {
-	if ([self class] != [CHAbstractBinarySearchTreeTest class])
+	if ([self class] != [CHAbstractBinarySearchTreeTest class]) {
 		return;
+	}
 	NSMutableArray *equalTrees = [NSMutableArray array];
 	NSArray *treeClasses = [NSArray arrayWithObjects:
 							[CHAnderssonTree class],
@@ -664,8 +692,9 @@ static NSArray *abcde;
 - (NSInteger)heightForSubtree:(CHBinaryTreeNode *)node
 				   isBalanced:(BOOL *)isBalanced
 				  errorString:(NSMutableString *)balanceErrors {
-	if (node == sentinel)
+	if (node == sentinel) {
 		return 0;
+	}
 	NSInteger leftHeight  = [self heightForSubtree:node->left isBalanced:isBalanced errorString:balanceErrors];
 	NSInteger rightHeight = [self heightForSubtree:node->right isBalanced:isBalanced errorString:balanceErrors];
 	if (node->balance != (rightHeight-leftHeight)) {
@@ -869,8 +898,9 @@ static NSArray *abcde;
 
 // Recursive method for verifying that red-black properties are not violated.
 - (NSUInteger)verifySubtreeAtNode:(CHBinaryTreeNode *)node {
-	if (node == sentinel)
+	if (node == sentinel) {
 		return 1;
+	}
 	/* Test for consecutive red links */
 	if (node->color == kRED) {
 		if (node->left->color == kRED || node->right->color == kRED) {
@@ -893,10 +923,11 @@ static NSArray *abcde;
 		            format:@"Black height violation below %@", node->object];
 	}
 	/* Count black links */
-	if (leftBlackHeight != 0 && rightBlackHeight != 0)
+	if (leftBlackHeight != 0 && rightBlackHeight != 0) {
 		return (node->color == kRED) ? leftBlackHeight : leftBlackHeight + 1;
-	else
+	} else {
 		return 0;
+	}
 }
 
 - (void)verify {
@@ -1004,8 +1035,9 @@ static NSArray *abcde;
 	objects = [NSArray arrayWithObjects:@"R",@"Q",@"P",@"O",@"N",@"M",@"L",@"K",
 			   @"J",@"I",@"H",@"G",@"F",@"E",@"D",@"C",@"B",@"A",nil];
 	e = [objects objectEnumerator];
-	while (anObject = [e nextObject])
+	while (anObject = [e nextObject]) {
 		[set addObject:anObject];
+	}
 	XCTAssertEqual([set count], [objects count]);
 	XCTAssertNoThrow([set verify]);
 	XCTAssertEqualObjects([set allObjectsWithTraversalOrder:CHTraversalOrderLevelOrder],
@@ -1082,31 +1114,35 @@ static NSArray *abcde;
 
 // Recursive method for verifying that BST and heap properties are not violated.
 - (void)verifySubtreeAtNode:(CHBinaryTreeNode *)node {
-	if (node == sentinel)
+	if (node == sentinel) {
 		return;
-	
+	}
 	if (node->left != sentinel) {
 		// Verify BST property
-		if ([node->left->object compare:node->object] == NSOrderedDescending)
+		if ([node->left->object compare:node->object] == NSOrderedDescending) {
 			[NSException raise:NSInternalInconsistencyException
 			            format:@"BST violation left of %@", node->object];
+		}
 		// Verify heap property
-		if (node->left->priority > node->priority)
+		if (node->left->priority > node->priority) {
 			[NSException raise:NSInternalInconsistencyException
 			            format:@"Heap violation left of %@", node->object];
+		}
 		// Recursively verity left subtree
 		[self verifySubtreeAtNode:node->left];
 	}
 	
 	if (node->right != sentinel) {
 		// Verify BST property
-		if ([node->right->object compare:node->object] == NSOrderedAscending)
+		if ([node->right->object compare:node->object] == NSOrderedAscending) {
 			[NSException raise:NSInternalInconsistencyException
 			            format:@"BST violation right of %@", node->object];
+		}
 		// Verify heap property
-		if (node->right->priority > node->priority)
+		if (node->right->priority > node->priority) {
 			[NSException raise:NSInternalInconsistencyException
 			            format:@"Heap violation right of %@", node->object];
+		}
 		// Recursively verity right subtree
 		[self verifySubtreeAtNode:node->right];
 	}
@@ -1206,9 +1242,9 @@ static NSArray *abcde;
 
 - (void)testAllObjectsWithTraversalOrder {
 	e = [objects objectEnumerator];
-	while (anObject = [e nextObject])
+	while (anObject = [e nextObject]) {
 		[set addObject:anObject];
-	
+	}
 	XCTAssertEqualObjects([set allObjectsWithTraversalOrder:CHTraversalOrderAscending],
 						 ([NSArray arrayWithObjects:@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"L",@"M",nil]));	
 	XCTAssertEqualObjects([set allObjectsWithTraversalOrder:CHTraversalOrderDescending],
@@ -1258,9 +1294,9 @@ static NSArray *abcde;
 	// Verify that the assigned priorities are what we expect
 	index = 0;
 	e = [objects objectEnumerator];
-	while (anObject = [e nextObject])
+	while (anObject = [e nextObject]) {
 		XCTAssertEqual([set priorityForObject:anObject], priorities[index++]);
-	
+	}
 	// Verify the required tree structure with these objects and priorities.
 	XCTAssertEqualObjects([set allObjectsWithTraversalOrder:CHTraversalOrderPreOrder],
 						 ([NSArray arrayWithObjects:@"K",@"B",@"A",@"D",@"C",@"G",@"F",@"E",@"H",@"J",@"I",@"M",@"L",nil]));
@@ -1395,8 +1431,9 @@ static NSArray *abcde;
 	                       @"  \"B\";\n  \"B\" -> {nil3;\"D\"};\n"
 	                       @"  \"D\";\n  \"D\" -> {\"C\";nil4};\n"
 	                       @"  \"C\";\n  \"C\" -> {nil5;nil6};\n"];
-	for (int i = 1; i <= 6; i++)
+	for (int i = 1; i <= 6; i++) {
 		[expected appendFormat:@"  nil%d [shape=point,fillcolor=black];\n", i];
+	}
 	[expected appendFormat:@"}\n"];
 	
 	XCTAssertEqualObjects([zigzagTree dotGraphString], expected);

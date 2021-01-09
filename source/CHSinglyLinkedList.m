@@ -53,8 +53,9 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 }
 
 - (id)nextObject {
-	if (mutationCount != *mutationPtr)
+	if (mutationCount != *mutationPtr) {
 		CHRaiseMutatedCollectionException();
+	}
 	if (current == nil) {
 		[self _collectionExhausted];
 		return nil;
@@ -66,8 +67,9 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 }
 
 - (NSArray *)allObjects {
-	if (mutationCount != *mutationPtr)
+	if (mutationCount != *mutationPtr) {
 		CHRaiseMutatedCollectionException();
+	}
 	if (remainingCount == 0) {
 		return @[];
 	}
@@ -151,11 +153,9 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 		currentNode = head->next;
 		state->itemsPtr = stackbuf;
 		state->mutationsPtr = &mutations;
-	}
-	else if (state->state == 1) {
+	} else if (state->state == 1) {
 		return 0;		
-	}
-	else {
+	} else {
 		currentNode = (CHSinglyLinkedListNode *) state->state;
 	}
 	
@@ -165,10 +165,11 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 		stackbuf[batchCount++] = currentNode->object;
 		currentNode = currentNode->next;
 	}
-	if (currentNode == NULL)
+	if (currentNode == NULL) {
 		state->state = 1; // used as a termination flag
-	else
+	} else {
 		state->state = (unsigned long)currentNode;
+	}
 	return batchCount;
 }
 
@@ -199,10 +200,11 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 }
 
 - (BOOL)isEqual:(id)otherObject {
-	if ([otherObject conformsToProtocol:@protocol(CHLinkedList)])
+	if ([otherObject conformsToProtocol:@protocol(CHLinkedList)]) {
 		return [self isEqualToLinkedList:otherObject];
-	else
+	} else {
 		return NO;
+	}
 }
 
 - (BOOL)isEqualToLinkedList:(id<CHLinkedList>)otherLinkedList {
@@ -237,8 +239,9 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
  */
 - (CHSinglyLinkedListNode *)nodeAtIndex:(NSUInteger)index {
 	CHRaiseIndexOutOfRangeExceptionIf(index, >=, count);
-	if (index == count - 1)
+	if (index == count - 1) {
 		return tail;
+	}
 	// Try starting from cached node (if one exists) and corresponding index
 	CHSinglyLinkedListNode *node = cachedNode;
 	NSUInteger nodeIndex = cachedIndex;
@@ -248,8 +251,9 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 		nodeIndex = 0;
 	}
 	// Iterate through the list elements until we find the requested node index
-	while (nodeIndex++ < index)
+	while (nodeIndex++ < index) {
 		node = node->next;
+	}
 	// Update cached node and corresponding index
 	if (node != NULL) {
 		cachedNode = node;
@@ -333,8 +337,7 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 		new->next = NULL;
 		tail->next = new;
 		tail = new;
-	}
-	else {
+	} else {
 		// Find the node prior to the specified index adnd insert after it
 		CHSinglyLinkedListNode *node = index ? [self nodeAtIndex:index-1] : head;
 		new->next = node->next;
@@ -349,8 +352,9 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 - (void)insertObjects:(NSArray *)objects atIndexes:(NSIndexSet *)indexes {
 	CHRaiseInvalidArgumentExceptionIfNil(objects);
 	CHRaiseInvalidArgumentExceptionIfNil(indexes);
-	if ([objects count] != [indexes count])
+	if ([objects count] != [indexes count]) {
 		CHRaiseInvalidArgumentException(@"Unequal object and index counts.");
+	}
 	NSUInteger index = [indexes firstIndex];
 	for (id anObject in objects) {
 		[self insertObject:anObject atIndex:index];
@@ -365,8 +369,9 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 	new->object = [anObject retain];
 	new->next = head->next;
 	head->next = new;
-	if (tail == head)
+	if (tail == head) {
 		tail = new;
+	}
 	++count;
 	++mutations;
 }
@@ -391,8 +396,9 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 }
 
 - (void)removeFirstObject {
-	if (count > 0)
+	if (count > 0) {
 		[self removeObjectAtIndex:0];
+	}
 }
 
 /**
@@ -404,8 +410,9 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
  @see removeFirstObject
  */
 - (void)removeLastObject {
-	if (count > 0)
+	if (count > 0) {
 		[self removeObjectAtIndex:(count-1)];
+	}
 }
 
 // Remove the node with a matching object, steal its 'next' link for my own.
@@ -424,8 +431,9 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 	}
 	CHSinglyLinkedListNode *node = head;
 	do {
-		while (node->next != NULL && !objectsMatch(node->next->object, anObject))
+		while (node->next != NULL && !objectsMatch(node->next->object, anObject)) {
 			node = node->next;
+		}
 		if (node->next != NULL) {
 			[self removeNodeAfterNode:node];
 			--count;
@@ -450,8 +458,9 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 	}
 	--count;
 	++mutations;
-	if (node->next == NULL)
+	if (node->next == NULL) {
 		tail = node;
+	}
 }
 
 - (void)removeObjectIdenticalTo:(id)anObject {
@@ -467,13 +476,15 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 		NSUInteger index = nextIndex;
 		CHSinglyLinkedListNode *node = nextIndex ? [self nodeAtIndex:nextIndex-1] : head;
 		while (nextIndex != NSNotFound) {
-			while (index++ < nextIndex)
+			while (index++ < nextIndex) {
 				node = node->next;
+			}
 			[self removeNodeAfterNode:node];
 			nextIndex = [indexes indexGreaterThanIndex:nextIndex];
 		}
-		if (node->next == NULL)
+		if (node->next == NULL) {
 			tail = node;
+		}
 		count -= [indexes count];
 		++mutations;
 	}

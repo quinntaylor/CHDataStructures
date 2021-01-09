@@ -31,17 +31,18 @@ static CHBinaryTreeNode * rotateNodeWithRightChild(CHBinaryTreeNode *node) {
 
 static CHBinaryTreeNode * rotateObjectOnAncestor(id anObject, CHBinaryTreeNode *ancestor) {
 	if ([ancestor->object compare:anObject] == NSOrderedDescending) {
-		if ([ancestor->left->object compare:anObject] == NSOrderedDescending)
+		if ([ancestor->left->object compare:anObject] == NSOrderedDescending) {
 			ancestor->left = rotateNodeWithLeftChild(ancestor->left);
-		else
+		} else {
 			ancestor->left = rotateNodeWithRightChild(ancestor->left);
+		}
 		return ancestor->left;
-	}
-	else {
-		if ([ancestor->right->object compare:anObject] == NSOrderedDescending)
+	} else {
+		if ([ancestor->right->object compare:anObject] == NSOrderedDescending) {
 			ancestor->right = rotateNodeWithLeftChild(ancestor->right);
-		else
+		} else {
 			ancestor->right = rotateNodeWithRightChild(ancestor->right);
+		}
 		return ancestor->right;
 	}
 }
@@ -99,8 +100,9 @@ static CHBinaryTreeNode * doubleRotation(CHBinaryTreeNode *node, BOOL goingRight
 //						? singleRotation(grandparent, !lastWentRight)
 //						: doubleRotation(grandparent, !lastWentRight);
 				grandparent->color = kRED;
-				if ([grandparent->object compare:anObject] != [parent->object compare:anObject])
+				if ([grandparent->object compare:anObject] != [parent->object compare:anObject]) {
 					parent = rotateObjectOnAncestor(anObject, grandparent);
+				}
 				current = rotateObjectOnAncestor(anObject, greatgrandparent);
 				current->color = kBLACK;
 			}
@@ -127,8 +129,9 @@ static CHBinaryTreeNode * doubleRotation(CHBinaryTreeNode *node, BOOL goingRight
 		// Fix red violation
 		if (parent->color == kRED) 	{
 			grandparent->color = kRED;
-			if ([grandparent->object compare:anObject] != [parent->object compare:anObject])
+			if ([grandparent->object compare:anObject] != [parent->object compare:anObject]) {
 				rotateObjectOnAncestor(anObject, grandparent);
+			}
 			current = rotateObjectOnAncestor(anObject, greatgrandparent);
 			current->color = kBLACK;
 		}
@@ -166,8 +169,9 @@ static CHBinaryTreeNode * doubleRotation(CHBinaryTreeNode *node, BOOL goingRight
 		comparison = [current->object compare:anObject];
 		prevWentRight = isGoingRight;
 		isGoingRight = (comparison != NSOrderedDescending);
-		if (comparison == NSOrderedSame)
+		if (comparison == NSOrderedSame) {
 			found = current; // Save a pointer; removal happens outside the loop
+		}
 		
 		// There are only potential violations when removing a black node.
 		// If so, push the child red node down using rotations and color flips.
@@ -175,8 +179,7 @@ static CHBinaryTreeNode * doubleRotation(CHBinaryTreeNode *node, BOOL goingRight
 			if (current->link[!isGoingRight]->color == kRED) {
 				parent->link[prevWentRight] = singleRotation(current, isGoingRight);
 				parent = parent->link[prevWentRight];
-			}
-			else {
+			} else {
 				sibling = parent->link[prevWentRight];
 				if (sibling != sentinel) {
 					if (sibling->left->color == kBLACK && sibling->right->color == kBLACK) {
@@ -184,13 +187,13 @@ static CHBinaryTreeNode * doubleRotation(CHBinaryTreeNode *node, BOOL goingRight
 						parent->color = kBLACK;
 						sibling->color = kRED;
 						current->color = kRED;
-					}
-					else {
+					} else {
 						CHBinaryTreeNode *tempNode = grandparent->link[(grandparent->right == parent)];
-						if (sibling->link[prevWentRight]->color == kRED)
+						if (sibling->link[prevWentRight]->color == kRED) {
 							tempNode = doubleRotation(parent, prevWentRight);
-						else if (sibling->link[!prevWentRight]->color == kRED)
+						} else if (sibling->link[!prevWentRight]->color == kRED) {
 							tempNode = singleRotation(parent, prevWentRight);
+						}
 						/* Ensure correct coloring */
 						current->color = tempNode->color = kRED;
 						tempNode->left->color = kBLACK;
@@ -202,14 +205,14 @@ static CHBinaryTreeNode * doubleRotation(CHBinaryTreeNode *node, BOOL goingRight
 	}
 	
 	// Transfer replacement value up to outgoing node, remove the "donor" node.
-    if (found != NULL) {
+	if (found != NULL) {
 		[found->object release];
 		found->object = current->object;
 		parent->link[(parent->right == current)]
 			= current->link[(current->left == sentinel)];
 		free(current);
 		--count;
-    }
+	}
 	header->right->color = kBLACK; // Make the root black for simplified logic
 }
 

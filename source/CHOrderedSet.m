@@ -61,8 +61,9 @@
 
 - (NSArray *)objectsAtIndexes:(NSIndexSet *)indexes {
 	CHRaiseInvalidArgumentExceptionIfNil(indexes);
-	if ([indexes count] == 0)
+	if ([indexes count] == 0) {
 		return @[];
+	}
 	CHRaiseIndexOutOfRangeExceptionIf([indexes lastIndex], >=, [self count]);
 	NSMutableArray *objects = [NSMutableArray arrayWithCapacity:[self count]];
 	NSUInteger index = [indexes firstIndex];
@@ -75,8 +76,9 @@
 
 - (CHOrderedSet *)orderedSetWithObjectsAtIndexes:(NSIndexSet *)indexes {
 	CHRaiseInvalidArgumentExceptionIfNil(indexes);
-	if ([indexes count] == 0)
+	if ([indexes count] == 0) {
 		return [[self class] set];
+	}
 	CHOrderedSet *newSet = [[self class] setWithCapacity:[indexes count]];
 	NSUInteger index = [indexes firstIndex];
 	while (index != NSNotFound) {
@@ -90,8 +92,9 @@
 
 - (void)addObject:(id)anObject {
 	CHRaiseInvalidArgumentExceptionIfNil(anObject);
-	if (![self containsObject:anObject])
+	if (![self containsObject:anObject]) {
 		[ordering addObject:anObject];
+	}
 	[super addObject:anObject];
 }
 
@@ -101,8 +104,9 @@
 
 - (void)insertObject:(id)anObject atIndex:(NSUInteger)index {
 	CHRaiseIndexOutOfRangeExceptionIf(index, >, [self count]);
-	if ([self containsObject:anObject])
+	if ([self containsObject:anObject]) {
 		[ordering removeObject:anObject];
+	}
 	[ordering insertObject:anObject atIndex:index];
 	[super addObject:anObject];
 }

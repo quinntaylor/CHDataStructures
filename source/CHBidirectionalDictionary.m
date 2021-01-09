@@ -13,8 +13,9 @@
 #define keysToObjects dictionary
 
 - (void)dealloc {
-	if (inverse != nil)
+	if (inverse != nil) {
 		inverse->inverse = nil; // Unlink from inverse dictionary if one exists.
+	}
 	CFRelease(objectsToKeys); // The dictionary can never be null at this point.
 	[super dealloc];
 }

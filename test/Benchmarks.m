@@ -22,9 +22,9 @@
 }
 
 - (NSUInteger)heightOfSubtreeAtNode:(CHBinaryTreeNode *)node {
-	if (node == sentinel)
+	if (node == sentinel) {
 		return 0;
-	else {
+	} else {
 		NSUInteger leftHeight = [self heightOfSubtreeAtNode:node->left];
 		NSUInteger rightHeight = [self heightOfSubtreeAtNode:node->right];
 		return ((leftHeight > rightHeight) ? leftHeight : rightHeight) + 1;
@@ -55,16 +55,18 @@ void benchmarkDeque(Class testClass) {
 	
 	printf("(Operation)         ");
 	arrayEnumerator = [objects objectEnumerator];
-	while (array = [arrayEnumerator nextObject])
+	while (array = [arrayEnumerator nextObject]) {
 		printf("\t%-8lu", (unsigned long)[array count]);
+	}
 	
 	printf("\nprependObject:    ");
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		deque = [[testClass alloc] init];
 		startTime = timestamp();
-		for (id anObject in array)
+		for (id anObject in array) {
 			[deque prependObject:anObject];
+		}
 		printf("\t%f", timestamp() - startTime);
 		[deque release];
 	}
@@ -74,8 +76,9 @@ void benchmarkDeque(Class testClass) {
 	while (array = [arrayEnumerator nextObject]) {
 		deque = [[testClass alloc] init];
 		startTime = timestamp();
-		for (id anObject in array)
+		for (id anObject in array) {
 			[deque appendObject:anObject];
+		}
 		printf("\t%f", timestamp() - startTime);
 		[deque release];
 	}
@@ -84,11 +87,13 @@ void benchmarkDeque(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		deque = [[testClass alloc] init];
-		for (id anObject in array)
+		for (id anObject in array) {
 			[deque appendObject:anObject];
+		}
 		startTime = timestamp();
-		for (NSUInteger item = 1; item <= [array count]; item++)
+		for (NSUInteger item = 1; item <= [array count]; item++) {
 			[deque removeFirstObject];
+		}
 		printf("\t%f", timestamp() - startTime);
 		[deque release];
 	}
@@ -97,11 +102,13 @@ void benchmarkDeque(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		deque = [[testClass alloc] init];
-		for (id anObject in array)
+		for (id anObject in array) {
 			[deque appendObject:anObject];
+		}
 		startTime = timestamp();
-		for (NSUInteger item = 1; item <= [array count]; item++)
+		for (NSUInteger item = 1; item <= [array count]; item++) {
 			[deque removeLastObject];
+		}
 		printf("\t%f", timestamp() - startTime);
 		[deque release];
 	}
@@ -110,8 +117,9 @@ void benchmarkDeque(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		deque = [[testClass alloc] init];
-		for (id anObject in array)
+		for (id anObject in array) {
 			[deque appendObject:anObject];
+		}
 		startTime = timestamp();
 		[deque removeAllObjects];
 		printf("\t%f", timestamp() - startTime);
@@ -122,12 +130,14 @@ void benchmarkDeque(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		deque = [[testClass alloc] init];
-		for (id anObject in array)
+		for (id anObject in array) {
 			[deque appendObject:anObject];
+		}
 		startTime = timestamp();
 		objectEnumerator = [deque objectEnumerator];
-		while ([objectEnumerator nextObject] != nil)
+		while ([objectEnumerator nextObject] != nil) {
 			;
+		}
 		printf("\t%f", timestamp() - startTime);
 		[deque release];
 	}
@@ -136,11 +146,13 @@ void benchmarkDeque(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		deque = [[testClass alloc] init];
-		for (id anObject in array)
+		for (id anObject in array) {
 			[deque appendObject:anObject];
+		}
 		startTime = timestamp();
-		for (id object in deque)
+		for (id object in deque) {
 			;
+		}
 		printf("\t%f", timestamp() - startTime);
 		[deque release];
 	}
@@ -157,16 +169,18 @@ void benchmarkQueue(Class testClass) {
 	
 	printf("(Operation)         ");
 	arrayEnumerator = [objects objectEnumerator];
-	while (array = [arrayEnumerator nextObject])
+	while (array = [arrayEnumerator nextObject]) {
 		printf("\t%-8lu", (unsigned long)[array count]);
+	}
 	
 	printf("\naddObject:         ");
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		queue = [[testClass alloc] init];
 		startTime = timestamp();
-		for (id anObject in array)
+		for (id anObject in array) {
 			[queue addObject:anObject];
+		}
 		printf("\t%f", timestamp() - startTime);
 		[queue release];
 	}
@@ -175,11 +189,13 @@ void benchmarkQueue(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		queue = [[testClass alloc] init];
-		for (id anObject in array)
+		for (id anObject in array) {
 			[queue addObject:anObject];
+		}
 		startTime = timestamp();
-		for (NSUInteger item = 1; item <= [array count]; item++)
+		for (NSUInteger item = 1; item <= [array count]; item++) {
 			[queue removeFirstObject];
+		}
 		printf("\t%f", timestamp() - startTime);
 		[queue release];
 	}
@@ -188,8 +204,9 @@ void benchmarkQueue(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		queue = [[testClass alloc] init];
-		for (id anObject in array)
+		for (id anObject in array) {
 			[queue addObject:anObject];
+		}
 		startTime = timestamp();
 		[queue removeAllObjects];
 		printf("\t%f", timestamp() - startTime);
@@ -200,12 +217,14 @@ void benchmarkQueue(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		queue = [[testClass alloc] init];
-		for (id anObject in array)
+		for (id anObject in array) {
 			[queue addObject:anObject];
+		}
 		startTime = timestamp();
 		NSEnumerator *e = [queue objectEnumerator];
-		while ([e nextObject] != nil)
+		while ([e nextObject] != nil) {
 			;
+		}
 		printf("\t%f", timestamp() - startTime);
 		[queue release];
 	}
@@ -214,11 +233,13 @@ void benchmarkQueue(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		queue = [[testClass alloc] init];
-		for (id anObject in array)
+		for (id anObject in array) {
 			[queue addObject:anObject];
+		}
 		startTime = timestamp();
-		for (id object in queue)
+		for (id object in queue) {
 			;
+		}
 		printf("\t%f", timestamp() - startTime);
 		[queue release];
 	}
@@ -235,16 +256,17 @@ void benchmarkStack(Class testClass) {
 	
 	printf("(Operation)         ");
 	arrayEnumerator = [objects objectEnumerator];
-	while (array = [arrayEnumerator nextObject])
+	while (array = [arrayEnumerator nextObject]) {
 		printf("\t%-8lu", (unsigned long)[array count]);
-	
+	}
 	printf("\npushObject:       ");
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		stack = [[testClass alloc] init];
 		startTime = timestamp();
-		for (id anObject in array)
+		for (id anObject in array) {
 			[stack pushObject:anObject];
+		}
 		printf("\t%f", timestamp() - startTime);
 		[stack release];
 	}
@@ -253,11 +275,13 @@ void benchmarkStack(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		stack = [[testClass alloc] init];
-		for (id anObject in array)
+		for (id anObject in array) {
 			[stack pushObject:anObject];
+		}
 		startTime = timestamp();
-		for (NSUInteger item = 1; item <= [array count]; item++)
+		for (NSUInteger item = 1; item <= [array count]; item++) {
 			[stack popObject];
+		}
 		printf("\t%f", timestamp() - startTime);
 		[stack release];
 	}
@@ -266,8 +290,9 @@ void benchmarkStack(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		stack = [[testClass alloc] init];
-		for (id anObject in array)
+		for (id anObject in array) {
 			[stack pushObject:anObject];
+		}
 		startTime = timestamp();
 		[stack removeAllObjects];
 		printf("\t%f", timestamp() - startTime);
@@ -278,12 +303,14 @@ void benchmarkStack(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		stack = [[testClass alloc] init];
-		for (id anObject in array)
+		for (id anObject in array) {
 			[stack pushObject:anObject];
+		}
 		startTime = timestamp();
 		NSEnumerator *e = [stack objectEnumerator];
-		while ([e nextObject] != nil)
+		while ([e nextObject] != nil) {
 			;
+		}
 		printf("\t%f", timestamp() - startTime);
 		[stack release];
 	}
@@ -292,11 +319,13 @@ void benchmarkStack(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		stack = [[testClass alloc] init];
-		for (id anObject in array)
+		for (id anObject in array) {
 			[stack pushObject:anObject];
+		}
 		startTime = timestamp();
-		for (id object in stack)
+		for (id object in stack) {
 			;
+		}
 		printf("\t%f", timestamp() - startTime);
 		[stack release];
 	}
@@ -313,16 +342,17 @@ void benchmarkHeap(Class testClass) {
 	
 	printf("(Operation)         ");
 	arrayEnumerator = [objects objectEnumerator];
-	while (array = [arrayEnumerator nextObject])
+	while (array = [arrayEnumerator nextObject]) {
 		printf("\t%-8lu", (unsigned long)[array count]);
-	
+	}
 	printf("\naddObject:          ");
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		heap = [[testClass alloc] init];
 		startTime = timestamp();
-		for (id anObject in array)
+		for (id anObject in array) {
 			[heap addObject:anObject];
+		}
 		printf("\t%f", timestamp() - startTime);
 		[heap release];
 	}
@@ -331,11 +361,13 @@ void benchmarkHeap(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		heap = [[testClass alloc] init];
-		for (id anObject in array)
+		for (id anObject in array) {
 			[heap addObject:anObject];
+		}
 		startTime = timestamp();
-		for (NSUInteger item = 1; item <= [array count]; item++)
+		for (NSUInteger item = 1; item <= [array count]; item++) {
 			[heap removeFirstObject];
+		}
 		printf("\t%f", timestamp() - startTime);
 		[heap release];
 	}
@@ -344,8 +376,9 @@ void benchmarkHeap(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		heap = [[testClass alloc] init];
-		for (id anObject in array)
+		for (id anObject in array) {
 			[heap addObject:anObject];
+		}
 		startTime = timestamp();
 		[heap removeAllObjects];
 		printf("\t%f", timestamp() - startTime);
@@ -355,12 +388,14 @@ void benchmarkHeap(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		heap = [[testClass alloc] init];
-		for (id anObject in array)
+		for (id anObject in array) {
 			[heap addObject:anObject];
+		}
 		startTime = timestamp();
 		NSEnumerator *e = [heap objectEnumerator];
-		while ([e nextObject] != nil)
+		while ([e nextObject] != nil) {
 			;
+		}
 		printf("\t%f", timestamp() - startTime);
 		[heap release];
 	}
@@ -369,11 +404,13 @@ void benchmarkHeap(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		heap = [[testClass alloc] init];
-		for (id anObject in array)
+		for (id anObject in array) {
 			[heap addObject:anObject];
+		}
 		startTime = timestamp();
-		for (id object in heap)
+		for (id object in heap) {
 			;
+		}
 		printf("\t%f", timestamp() - startTime);
 		[heap release];
 	}
@@ -392,15 +429,16 @@ void benchmarkTree(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		printf("\t%-8lu", (unsigned long)[array count]);
-	}	
+	}
 	
 	printf("\naddObject:          ");
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		tree = [[testClass alloc] init];
 		startTime = timestamp();
-		for (id anObject in array)
+		for (id anObject in array) {
 			[tree addObject:anObject];
+		}
 		printf("\t%f", timestamp() - startTime);
 		[tree release];
 	}
@@ -410,8 +448,9 @@ void benchmarkTree(Class testClass) {
 	while (array = [arrayEnumerator nextObject]) {
 		tree = [[testClass alloc] initWithArray:array];
 		startTime = timestamp();
-		for (id anObject in array)
+		for (id anObject in array) {
 			[tree member:anObject];
+		}
 		printf("\t%f", timestamp() - startTime);
 		[tree release];
 	}
@@ -421,8 +460,9 @@ void benchmarkTree(Class testClass) {
 	while (array = [arrayEnumerator nextObject]) {
 		tree = [[testClass alloc] initWithArray:array];
 		startTime = timestamp();
-		for (id anObject in array)
+		for (id anObject in array) {
 			[tree removeObject:anObject];
+		}
 		printf("\t%f", timestamp() - startTime);
 		[tree release];
 	}
@@ -431,12 +471,14 @@ void benchmarkTree(Class testClass) {
 	arrayEnumerator = [objects objectEnumerator];
 	while (array = [arrayEnumerator nextObject]) {
 		tree = [[testClass alloc] init];
-		for (id anObject in array)
+		for (id anObject in array) {
 			[tree addObject:anObject];
+		}
 		startTime = timestamp();
 		NSEnumerator *e = [tree objectEnumerator];
-		while ([e nextObject] != nil)
+		while ([e nextObject] != nil) {
 			;
+		}
 		printf("\t%f", timestamp() - startTime);
 		[tree release];
 	}
@@ -448,8 +490,9 @@ void benchmarkTree(Class testClass) {
 NSArray * randomNumberArray(NSUInteger count) {
 	NSMutableSet *objectSet = [NSMutableSet set];
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	while ([objectSet count] < count)
+	while ([objectSet count] < count) {
 		[objectSet addObject:[NSNumber numberWithInt:arc4random()]];
+	}
 	[pool drain];
 	return [objectSet allObjects];
 }
@@ -462,8 +505,9 @@ int main(int argc, const char * argv[]) {
 	for (NSUInteger size = 10; size <= limit; size *= 10) {
 		NSMutableArray *temp = [[NSMutableArray alloc] initWithCapacity:size+1];
 		[temp addObjectsFromArray:[objects lastObject]];
-		for (NSUInteger item = [temp count]+1; item <= size; item++)
+		for (NSUInteger item = [temp count]+1; item <= size; item++) {
 			[temp addObject:[NSNumber numberWithUnsignedInteger:item]];
+		}
 		[objects addObject:temp];
 		[temp release];
 	}
@@ -507,8 +551,9 @@ int main(int argc, const char * argv[]) {
 		[dictionary setObject:[NSMutableArray array] forKey:@"addObject"];
 		[dictionary setObject:[NSMutableArray array] forKey:@"member"];
 		[dictionary setObject:[NSMutableArray array] forKey:@"removeObject"];
-		if ([aClass conformsToProtocol:@protocol(CHSearchTree)])
+		if ([aClass conformsToProtocol:@protocol(CHSearchTree)]) {
 			[dictionary setObject:[NSMutableArray array] forKey:@"height"];
+		}
 		[treeResults setObject:dictionary forKey:NSStringFromClass(aClass)];
 	}
 	
@@ -541,8 +586,9 @@ int main(int argc, const char * argv[]) {
 				// addObject:
 				nanosleep(&sleepDelay, &sleepRemain);
 				startTime = timestamp();
-				for (id anObject in randomNumbers)
+				for (id anObject in randomNumbers) {
 					[tree addObject:anObject];
+				}
 				duration = timestamp() - startTime;
 				[[dictionary objectForKey:@"addObject"] addObject:
 				 [NSString stringWithFormat:@"%lu,%f",
@@ -553,8 +599,9 @@ int main(int argc, const char * argv[]) {
 				NSUInteger index = 0;
 				startTime = timestamp();
 				for (id anObject in randomNumbers) {
-					if (index++ % 4 != 0)
+					if (index++ % 4 != 0) {
 						continue;
+					}
 					[tree containsObject:anObject];
 				}
 				duration = timestamp() - startTime;
@@ -563,16 +610,18 @@ int main(int argc, const char * argv[]) {
 				  jitteredSize, duration/size*scale]];
 				
 				// Maximum height
-				if ([aClass conformsToProtocol:@protocol(CHSearchTree)])
+				if ([aClass conformsToProtocol:@protocol(CHSearchTree)]) {
 					[[dictionary objectForKey:@"height"] addObject:
 					 [NSString stringWithFormat:@"%lu,%lu",
 					  jitteredSize, [tree height]]];
+				}
 				
 				// removeObject:
 				nanosleep(&sleepDelay, &sleepRemain);
 				startTime = timestamp();
-				for (id anObject in randomNumbers)
+				for (id anObject in randomNumbers) {
 					[tree removeObject:anObject];
+				}
 				duration = timestamp() - startTime;
 				[[dictionary objectForKey:@"removeObject"] addObject:
 				 [NSString stringWithFormat:@"%lu,%f", jitteredSize, duration/size*scale]];

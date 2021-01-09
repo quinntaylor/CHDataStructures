@@ -62,8 +62,9 @@
 
 - (void)testNSFastEnumeration {
 	NSUInteger limit = 32;
-	for (NSUInteger number = 1; number <= limit; number++)
+	for (NSUInteger number = 1; number <= limit; number++) {
 		[collection addObject:[NSNumber numberWithUnsignedInteger:number]];
+	}
 	NSUInteger expected = 1, count = 0;
 	for (NSNumber *object in collection) {
 		XCTAssertEqual([object unsignedIntegerValue], expected++);
@@ -114,13 +115,15 @@
 
 - (void)testContainsObject {
 	// An empty collection should not contain any objects we test for
-	for (NSUInteger i = 0; i < [objects count]; i++)
+	for (NSUInteger i = 0; i < [objects count]; i++) {
 		XCTAssertFalse([collection containsObject:[objects objectAtIndex:i]]);
+	}
 	XCTAssertFalse([collection containsObject:@"bogus"]);
 	// Add objects and test for inclusion of each, plus non-member object
 	[collection addObjectsFromArray:objects];
-	for (NSUInteger i = 0; i < [objects count]; i++)
+	for (NSUInteger i = 0; i < [objects count]; i++) {
 		XCTAssertTrue([collection containsObject:[objects objectAtIndex:i]]);
+	}
 	XCTAssertFalse([collection containsObject:@"bogus"]);
 }
 
@@ -159,14 +162,16 @@
 
 - (void)testIndexOfObject {
 	// An empty collection should return NSNotFound any objects we test for
-	for (NSUInteger i = 0; i < [objects count]; i++)
+	for (NSUInteger i = 0; i < [objects count]; i++) {
 		XCTAssertEqual([collection indexOfObject:[objects objectAtIndex:i]],
 					   (NSUInteger)NSNotFound);
+	}
 	XCTAssertEqual([collection indexOfObject:@"Z"], (NSUInteger)NSNotFound);
 	// Add objects and test index of each, plus non-member object
 	[collection addObjectsFromArray:objects];
-	for (NSUInteger i = 0; i < [objects count]; i++)
+	for (NSUInteger i = 0; i < [objects count]; i++) {
 		XCTAssertEqual([collection indexOfObject:[objects objectAtIndex:i]], i);
+	}
 	XCTAssertEqual([collection indexOfObject:@"Z"], (NSUInteger)NSNotFound);
 }
 
@@ -197,8 +202,8 @@
 	[collection addObject:@"Hello, World!"];
 	enumerator = [collection objectEnumerator];
 	XCTAssertNotNil(enumerator);
-	XCTAssertNotNil([enumerator nextObject]);	
-	XCTAssertNil([enumerator nextObject]);	
+	XCTAssertNotNil([enumerator nextObject]);
+	XCTAssertNil([enumerator nextObject]);
 }
 
 - (void)testObjectsAtIndexes {
@@ -213,8 +218,7 @@
 			if (location + length > count) {
 				XCTAssertThrows([collection objectsAtIndexes:indexes]);
 			} else {
-				XCTAssertEqualObjects([collection objectsAtIndexes:indexes],
-									 [objects objectsAtIndexes:indexes]);
+				XCTAssertEqualObjects([collection objectsAtIndexes:indexes], [objects objectsAtIndexes:indexes]);
 			}
 		}
 	}
@@ -324,7 +328,7 @@
 			XCTAssertEqual([collection count], [expected count]);
 			XCTAssertEqualObjects([collection allObjects], expected);
 		}
-	}	
+	}
 	XCTAssertThrows([collection removeObjectsAtIndexes:nil]);
 	// Try removing first and last elements, leaving middle element
 	[indexes removeAllIndexes];

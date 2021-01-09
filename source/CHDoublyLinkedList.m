@@ -65,8 +65,9 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 }
 
 - (id)nextObject {
-	if (mutationCount != *mutationPtr)
+	if (mutationCount != *mutationPtr) {
 		CHRaiseMutatedCollectionException();
+	}
 	if (current == sentinel) {
 		[self _collectionExhausted];
 		return nil;
@@ -78,8 +79,9 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 }
 
 - (NSArray *)allObjects {
-	if (mutationCount != *mutationPtr)
+	if (mutationCount != *mutationPtr) {
 		CHRaiseMutatedCollectionException();
+	}
 	if (remainingCount == 0) {
 		return @[];
 	}
@@ -125,11 +127,13 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 	}
 	// Iterate through the list elements until we find the requested node index
 	if (index > nodeIndex) {
-		while (index > nodeIndex++)
+		while (index > nodeIndex++) {
 			node = node->next;
+		}
 	} else {
-		while (index < nodeIndex--)
+		while (index < nodeIndex--) {
 			node = node->prev;
+		}
 	}
 	// Update cached node and corresponding index (it can never be null here)
 	cachedNode = node;
@@ -213,11 +217,9 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 		currentNode = head->next;
 		state->itemsPtr = stackbuf;
 		state->mutationsPtr = &mutations;
-	}
-	else if (state->state == 1) {
+	} else if (state->state == 1) {
 		return 0;		
-	}
-	else {
+	} else {
 		currentNode = (CHDoublyLinkedListNode *) state->state;
 	}
 	
@@ -228,11 +230,12 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
         currentNode = currentNode->next;
 		batchCount++;
     }
-	if (currentNode == tail)
+	if (currentNode == tail) {
 		state->state = 1; // used as a termination flag
-	else
+	} else {
 		state->state = (unsigned long)currentNode;
-    return batchCount;
+	}
+	return batchCount;
 }
 
 #pragma mark Querying Contents
@@ -263,10 +266,11 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 }
 
 - (BOOL)isEqual:(id)otherObject {
-	if ([otherObject conformsToProtocol:@protocol(CHLinkedList)])
+	if ([otherObject conformsToProtocol:@protocol(CHLinkedList)]) {
 		return [self isEqualToLinkedList:otherObject];
-	else
+	} else {
 		return NO;
+	}
 }
 
 - (BOOL)isEqualToLinkedList:(id<CHLinkedList>)otherLinkedList {
@@ -321,9 +325,9 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 	CHDoublyLinkedListNode *current = head;
 	NSUInteger nextIndex = [indexes firstIndex], index = 0;
 	while (nextIndex != NSNotFound) {
-		do
+		do {
 			current = current->next;
-		while (index++ < nextIndex);
+		} while (index++ < nextIndex);
 		[objects addObject:current->object];
 		nextIndex = [indexes indexGreaterThanIndex:nextIndex];
 	}
@@ -386,8 +390,9 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 - (void)insertObjects:(NSArray *)objects atIndexes:(NSIndexSet *)indexes {
 	CHRaiseInvalidArgumentExceptionIfNil(objects);
 	CHRaiseInvalidArgumentExceptionIfNil(indexes);
-	if ([objects count] != [indexes count])
+	if ([objects count] != [indexes count]) {
 		CHRaiseInvalidArgumentException(@"Unequal object and index counts.");
+	}
 	NSUInteger index = [indexes firstIndex];
 	for (id anObject in objects) {
 		[self insertObject:anObject atIndex:index];
@@ -416,13 +421,15 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 }
 
 - (void)removeFirstObject {
-	if (count > 0)
+	if (count > 0) {
 		[self removeNode:head->next];
+	}
 }
 
 - (void)removeLastObject {
-	if (count > 0)
+	if (count > 0) {
 		[self removeNode:tail->prev];
+	}
 }
 
 - (void)_removeObject:(id)anObject withEqualityTest:(CHObjectEqualityTest)objectsMatch {
@@ -433,8 +440,9 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 	tail->object = anObject;
 	CHDoublyLinkedListNode *node = head->next, *temp;
 	do {
-		while (!objectsMatch(node->object, anObject))
+		while (!objectsMatch(node->object, anObject)) {
 			node = node->next;
+		}
 		if (node != tail) {
 			temp = node->next;
 			[self removeNode:node];
@@ -463,8 +471,9 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 		NSUInteger nextIndex = [indexes firstIndex], index = 0;
 		CHDoublyLinkedListNode *current = head->next, *temp;
 		while (nextIndex != NSNotFound) {
-			while (index++ < nextIndex)
+			while (index++ < nextIndex) {
 				current = current->next;
+			}
 			temp = current->next;
 			[self removeNode:current];
 			current = temp;

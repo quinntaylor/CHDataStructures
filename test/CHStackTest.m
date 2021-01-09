@@ -43,9 +43,9 @@
 
 - (void)testInitWithArray {
 	NSMutableArray *moreObjects = [NSMutableArray array];
-	for (NSUInteger i = 0; i < 32; i++)
+	for (NSUInteger i = 0; i < 32; i++) {
 		[moreObjects addObject:[NSNumber numberWithUnsignedInteger:i]];
-	
+	}
 	NSEnumerator *classes = [stackClasses objectEnumerator];
 	Class aClass;
 	while (aClass = [classes nextObject]) {
@@ -104,8 +104,9 @@
 		
 		XCTAssertEqual([stack count], (NSUInteger)0);
 		e = [objects objectEnumerator];
-		while (anObject = [e nextObject])
+		while (anObject = [e nextObject]) {
 			[stack pushObject:anObject];
+		}
 		XCTAssertEqual([stack count], [objects count]);
 	}
 }

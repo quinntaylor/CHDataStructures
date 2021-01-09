@@ -24,14 +24,17 @@ BOOL CHCollectionsAreEqual(id collection1, id collection2) {
 		[NSException raise:NSInvalidArgumentException
 		            format:@"Parameter does not respond to -count selector."];
 	}
-	if (collection1 == collection2)
+	if (collection1 == collection2) {
 		return YES;
-	if ([collection1 count] != [collection2 count])
+	}
+	if ([collection1 count] != [collection2 count]) {
 		return NO;
+    }
 	NSEnumerator *otherObjects = [collection2 objectEnumerator];
 	for (id anObject in collection1) {
-		if (![anObject isEqual:[otherObjects nextObject]])
+		if (![anObject isEqual:[otherObjects nextObject]]) {
 			return NO;
+        }
 	}
 	return YES;	
 }

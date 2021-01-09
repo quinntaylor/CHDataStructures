@@ -27,17 +27,16 @@
 			if ([parent compare:leftChild] != sortOrder) {
 				[array exchangeObjectAtIndex:parentIndex withObjectAtIndex:leftIndex];
 				parentIndex = leftIndex;
-			}
-			else
+			} else {
 				break;
-		}
-		else {
+			}
+		} else {
 			if ([parent compare:rightChild] != sortOrder) {
 				[array exchangeObjectAtIndex:parentIndex withObjectAtIndex:rightIndex];
 				parentIndex = rightIndex;
-			}
-			else
+			} else {
 				break;
+			}
 		}
 	}
 }
@@ -70,8 +69,9 @@
 
 // This is the designated initializer for CHMutableArrayHeap
 - (instancetype)initWithOrdering:(NSComparisonResult)order array:(NSArray *)anArray {
-	if (order != NSOrderedAscending && order != NSOrderedDescending)
+	if (order != NSOrderedAscending && order != NSOrderedDescending) {
 		CHRaiseInvalidArgumentException(@"Invalid sort order.");
+	}
 	if ((self = [super init]) == nil) return nil;
 	array = [[NSMutableArray alloc] initWithCapacity:[anArray count]];
 	sortOrder = order;
@@ -179,10 +179,11 @@
 }
 
 - (BOOL)isEqual:(id)otherObject {
-	if ([otherObject conformsToProtocol:@protocol(CHHeap)])
+	if ([otherObject conformsToProtocol:@protocol(CHHeap)]) {
 		return [self isEqualToHeap:otherObject];
-	else
+	} else {
 		return NO;
+	}
 }
 
 - (BOOL)isEqualToHeap:(id<CHHeap>)otherHeap {
@@ -211,9 +212,9 @@
 		if ([[array objectAtIndex:parentIndex] compare:anObject] != sortOrder) {
 			[array exchangeObjectAtIndex:parentIndex withObjectAtIndex:index];
 			index = parentIndex;
-		}
-		else
+		} else {
 			break;
+		}
 	}
 }
 
@@ -227,8 +228,9 @@
 	// (This must be done since we don't know the ordering of the new objects.)
 	// We could choose to bubble each new element up, but this is likely faster.
 	NSUInteger index = [array count]/2;
-	while (0 < index--)
+	while (0 < index--) {
 		[self heapifyFromIndex:index];
+	}
 }
 
 - (void)insertObject:(id)anObject atIndex:(NSUInteger)index {
@@ -248,8 +250,9 @@
 // NOTE: This method is not part of the CHHeap protocol.
 - (void)removeObject:(id)anObject {
 	NSUInteger count = [array count];
-	if (count == 0 || anObject == nil)
+	if (count == 0 || anObject == nil) {
 		return;
+	}
 	++mutations;
 	NSUInteger index = 0;
 	NSRange range;
@@ -272,8 +275,9 @@
 // NOTE: This method is not part of the CHHeap protocol.
 - (void)removeObjectIdenticalTo:(id)anObject {
 	NSUInteger count = [array count];
-	if (count == 0 || anObject == nil)
+	if (count == 0 || anObject == nil) {
 		return;
+	}
 	++mutations;
 	NSUInteger index = 0;
 	NSRange range;

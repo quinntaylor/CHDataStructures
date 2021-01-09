@@ -113,6 +113,8 @@ HIDDEN FOUNDATION_EXTERN size_t kCHBinaryTreeNodeSize;
 	((queueHead != queueTail) ? queue[queueHead] : NULL)
 
 #define CHBinaryTreeQueue_DEQUEUE() \
-	if (queueHead != queueTail) queueHead = (queueHead + 1) % queueCapacity
+	if (queueHead != queueTail) { \
+		queueHead = (queueHead + 1) % queueCapacity; \
+	} \
 
 NS_ASSUME_NONNULL_END
