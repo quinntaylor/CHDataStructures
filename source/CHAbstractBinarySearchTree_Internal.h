@@ -54,8 +54,7 @@ HIDDEN FOUNDATION_EXTERN size_t kCHBinaryTreeNodeSize;
 }
 
 #define CHBinaryTreeStack_FREE(stack) { \
-	if (stack != NULL) \
-		free(stack); \
+	free(stack); \
 	stack = NULL; \
 }
 
@@ -88,8 +87,7 @@ HIDDEN FOUNDATION_EXTERN size_t kCHBinaryTreeNodeSize;
 }
 
 #define CHBinaryTreeQueue_FREE(queue) { \
-	if (queue != NULL) \
-		free(queue); \
+	free(queue); \
 	queue = NULL; \
 }
 

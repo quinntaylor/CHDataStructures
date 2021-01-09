@@ -90,11 +90,16 @@ static CHSearchTreeHeaderObject *headerObject = nil;
  Enumerators encapsulate their own state, and more than one enumerator may be active at once. However, if a collection is modified, any existing enumerators for that collection become invalid and will raise a mutation exception if any further objects are requested from it.
  */
 @interface CHBinarySearchTreeEnumerator : NSEnumerator
+
+@end
+
+@implementation CHBinarySearchTreeEnumerator
 {
 	__strong id<CHSearchTree> searchTree; // The tree being enumerated.
 	__strong CHBinaryTreeNode *current; // The next node to be enumerated.
 	__strong CHBinaryTreeNode *sentinelNode; // Sentinel node in the tree.
 	CHTraversalOrder traversalOrder; // Order in which to traverse the tree.
+	NSUInteger remainingCount; ///< Number of elements in @a searchTree remaining to be enumerated.
 	unsigned long mutationCount; // Stores the collection's initial mutation.
 	unsigned long *mutationPtr; // Pointer for checking changes in mutation.
 	
@@ -119,37 +124,12 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 						root:(CHBinaryTreeNode *)root
 					sentinel:(CHBinaryTreeNode *)sentinel
 			  traversalOrder:(CHTraversalOrder)order
-			 mutationPointer:(unsigned long *)mutations;
-
-/**
- Returns an array of objects the receiver has yet to enumerate.
- 
- @return An array of objects the receiver has yet to enumerate.
- 
- Invoking this method exhausts the remainder of the objects, such that subsequent invocations of #nextObject return @c nil.
- */
-- (NSArray *)allObjects;
-
-/**
- Returns the next object from the collection being enumerated.
- 
- @return The next object from the collection being enumerated, or @c nil when all objects have been enumerated.
- */
-- (id)nextObject;
-
-@end
-
-@implementation CHBinarySearchTreeEnumerator
-
-- (instancetype)initWithTree:(id<CHSearchTree>)tree
-						root:(CHBinaryTreeNode *)root
-					sentinel:(CHBinaryTreeNode *)sentinel
-			  traversalOrder:(CHTraversalOrder)order
 			 mutationPointer:(unsigned long *)mutations
 {
 	if ((self = [super init]) == nil || !isValidTraversalOrder(order)) return nil;
 	traversalOrder = order;
 	searchTree = (root != sentinel) ? [tree retain] : nil;
+	remainingCount = [searchTree count];
 	if (traversalOrder == CHTraverseLevelOrder) {
 		CHBinaryTreeQueue_INIT();
 		CHBinaryTreeQueue_ENQUEUE(root);
@@ -169,16 +149,28 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 }
 
 - (void)dealloc {
-	[searchTree release];
-	free(stack);
-	free(queue);
+	[self _collectionExhausted];
 	[super dealloc];
+}
+
+- (void)_collectionExhausted {
+	if (searchTree != nil) {
+		[searchTree release];
+		searchTree = nil;
+		current = nil;
+		sentinelNode = nil;
+		CHBinaryTreeStack_FREE(stack);
+		CHBinaryTreeQueue_FREE(queue);
+	}
 }
 
 - (NSArray *)allObjects {
 	if (mutationCount != *mutationPtr)
 		CHRaiseMutatedCollectionException();
-	NSMutableArray *array = [[NSMutableArray alloc] init];
+	if (remainingCount == 0) {
+		return @[];
+	}
+	NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:remainingCount];
 	id anObject;
 	while ((anObject = [self nextObject]))
 		[array addObject:anObject];
@@ -190,11 +182,17 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 - (id)nextObject {
 	if (mutationCount != *mutationPtr)
 		CHRaiseMutatedCollectionException();
+	if (searchTree == nil) {
+		return nil;
+	}
 	
 	switch (traversalOrder) {
 		case CHTraverseAscending: {
 			if (stackSize == 0 && current == sentinelNode) {
-				goto collectionExhausted;
+				[self _collectionExhausted];
+				return nil;
+			} else {
+				remainingCount--;
 			}
 			while (current != sentinelNode) {
 				CHBinaryTreeStack_PUSH(current);
@@ -210,7 +208,10 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 			
 		case CHTraverseDescending: {
 			if (stackSize == 0 && current == sentinelNode) {
-				goto collectionExhausted;
+				[self _collectionExhausted];
+				return nil;
+			} else {
+				remainingCount--;
 			}
 			while (current != sentinelNode) {
 				CHBinaryTreeStack_PUSH(current);
@@ -221,13 +222,17 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 			NSAssert(current != nil, @"Illegal state, current should never be nil!");
 			id tempObject = current->object;
 			current = current->left;
+			remainingCount--;
 			return tempObject;
 		}
 			
 		case CHTraversePreOrder: {
 			current = CHBinaryTreeStack_POP();
 			if (current == NULL) {
-				goto collectionExhausted;
+				[self _collectionExhausted];
+				return nil;
+			} else {
+				remainingCount--;
 			}
 			if (current->right != sentinelNode)
 				CHBinaryTreeStack_PUSH(current->right);
@@ -239,7 +244,10 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 		case CHTraversePostOrder: {
 			// This algorithm from: http://www.johny.ca/blog/archives/05/03/04/
 			if (stackSize == 0 && current == sentinelNode) {
-				goto collectionExhausted;
+				[self _collectionExhausted];
+				return nil;
+			} else {
+				remainingCount--;
 			}
 			while (1) {
 				while (current != sentinelNode) {
@@ -264,7 +272,10 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 			current = CHBinaryTreeQueue_FRONT;
 			CHBinaryTreeQueue_DEQUEUE();
 			if (current == NULL) {
-				goto collectionExhausted;
+				[self _collectionExhausted];
+				return nil;
+			} else {
+				remainingCount--;
 			}
 			if (current->left != sentinelNode)
 				CHBinaryTreeQueue_ENQUEUE(current->left);
@@ -272,16 +283,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 				CHBinaryTreeQueue_ENQUEUE(current->right);
 			return current->object;
 		}
-			
-		collectionExhausted:
-			if (searchTree != nil) {
-				[searchTree release];
-				searchTree = nil;
-				CHBinaryTreeStack_FREE(stack);
-				CHBinaryTreeQueue_FREE(queue);
-			}
 	}
-	return nil;
 }
 
 @end
@@ -521,7 +523,7 @@ CHBinaryTreeNode * CHCreateBinaryTreeNodeWithObject(id anObject) {
 		[current->object release];
 		free(current);
 	}
-	free(stack); // declared in CHBinaryTreeStack_DECLARE() macro
+	CHBinaryTreeStack_FREE(stack);
 	header->right = sentinel; // With GC, this is sufficient to unroot the tree.
 	sentinel->object = nil; // Make sure we don't accidentally retain an object.
 }

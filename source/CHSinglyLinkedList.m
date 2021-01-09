@@ -13,11 +13,17 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 /**
  An NSEnumerator for traversing a CHSinglyLinkedList from front to back.
  */
-@interface CHSinglyLinkedListEnumerator : NSEnumerator {
+@interface CHSinglyLinkedListEnumerator : NSEnumerator
+
+@end
+
+@implementation CHSinglyLinkedListEnumerator
+{
 	CHSinglyLinkedList *collection; // The source of enumerated objects.
 	__strong CHSinglyLinkedListNode *current; // The next node to be enumerated.
 	unsigned long mutationCount; // Stores the collection's initial mutation.
 	unsigned long *mutationPtr; // Pointer for checking changes in mutation.
+	NSUInteger remainingCount; ///< Number of elements in @a collection remaining to be enumerated.
 }
 
 /**
@@ -31,33 +37,10 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 - (instancetype)initWithList:(CHSinglyLinkedList *)list
 				   startNode:(CHSinglyLinkedListNode *)startNode
 			 mutationPointer:(unsigned long *)mutations;
-
-/**
- Returns the next object in the collection being enumerated.
- 
- @return The next object in the collection being enumerated, or @c nil when all objects have been enumerated.
- */
-- (id)nextObject;
-
-/**
- Returns an array of objects the receiver has yet to enumerate. Invoking this method exhausts the remainder of the objects, such that subsequent invocations of #nextObject return @c nil.
- 
- @return An array of objects the receiver has yet to enumerate.
- */
-- (NSArray *)allObjects;
-
-@end
-
-#pragma mark -
-
-@implementation CHSinglyLinkedListEnumerator
-
-- (instancetype)initWithList:(CHSinglyLinkedList *)list
-				   startNode:(CHSinglyLinkedListNode *)startNode
-			 mutationPointer:(unsigned long *)mutations;
 {
 	if ((self = [super init]) == nil) return nil;
-	collection = (startNode != NULL) ? collection = [list retain] : nil;
+	remainingCount = [list count];
+	collection = remainingCount ? [list retain] : nil;
 	current = startNode; // If startNode == endNode, will always return nil.
 	mutationCount = *mutations;
 	mutationPtr = mutations;
@@ -72,11 +55,11 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 - (id)nextObject {
 	if (mutationCount != *mutationPtr)
 		CHRaiseMutatedCollectionException();
-	if (current == NULL) {
-		[collection release];
-		collection = nil;
+	if (current == nil) {
+		[self _collectionExhausted];
 		return nil;
 	}
+	remainingCount--;
 	id object = current->object;
 	current = current->next;
 	return object;
@@ -85,14 +68,23 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 - (NSArray *)allObjects {
 	if (mutationCount != *mutationPtr)
 		CHRaiseMutatedCollectionException();
-	NSMutableArray *array = [[NSMutableArray alloc] init];
+	if (remainingCount == 0) {
+		return @[];
+	}
+	NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:remainingCount];
 	while (current != NULL) {
 		[array addObject:current->object];
 		current = current->next;
 	}
+	[self _collectionExhausted];
+	return [array autorelease];
+}
+
+- (void)_collectionExhausted {
 	[collection release];
 	collection = nil;
-	return [array autorelease];
+	current = nil;
+	remainingCount = 0;
 }
 
 @end

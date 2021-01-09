@@ -35,12 +35,15 @@ do { \
  enumerator become invalid if the underlying collection is modified.
  */
 @interface CHCircularBufferEnumerator : NSEnumerator
+
+@end
+
+@implementation CHCircularBufferEnumerator
 {
 	id *array;                   // Underlying circular buffer to be enumerated.
 	NSUInteger arrayCapacity;    // Allocated capacity of @a array.
-	NSUInteger arrayCount;       // Number of elements in @a array.
-	NSUInteger enumerationCount; // How many objects have been enumerated.
 	NSUInteger enumerationIndex; // Index of the next element to enumerate.
+	NSUInteger remainingCount;   ///< Number of elements in @a array remaining to be enumerated.
 	BOOL reverseEnumeration;     // Whether to enumerate back-to-front.
 	unsigned long mutationCount; // Stores the collection's initial mutation.
 	unsigned long *mutationPtr;  // Pointer for checking changes in mutation.
@@ -62,42 +65,12 @@ do { \
 						count:(NSUInteger)count
 				   startIndex:(NSUInteger)startIndex
 					direction:(NSComparisonResult)direction
-			  mutationPointer:(unsigned long *)mutations;
-
-/**
- Returns an array of objects the receiver has yet to enumerate.
- 
- @return An array of objects the receiver has yet to enumerate.
- 
- Invoking this method exhausts the remainder of the objects, such that subsequent
- invocations of #nextObject return @c nil.
- */
-- (NSArray *)allObjects;
-
-/**
- Returns the next object from the collection being enumerated.
- 
- @return The next object from the collection being enumerated, or
- @c nil when all objects have been enumerated.
- */
-- (id)nextObject;
-
-@end
-
-@implementation CHCircularBufferEnumerator
-
-- (instancetype)initWithArray:(id *)anArray
-					 capacity:(NSUInteger)capacity
-						count:(NSUInteger)count
-				   startIndex:(NSUInteger)startIndex
-					direction:(NSComparisonResult)direction
 			  mutationPointer:(unsigned long *)mutations
 {
 	if ((self = [super init]) == nil) return nil;
 	array = anArray;
 	arrayCapacity = capacity;
-	arrayCount = count;
-	enumerationCount = 0;
+	remainingCount = count;
 	enumerationIndex = startIndex;
 	reverseEnumeration = (direction == NSOrderedDescending);
 	if (reverseEnumeration)
@@ -108,27 +81,38 @@ do { \
 }
 
 - (NSArray *)allObjects {
-	NSMutableArray *allObjects = [[NSMutableArray alloc] init];
+	if (mutationCount != *mutationPtr) {
+		CHRaiseMutatedCollectionException();
+	}
+	if (remainingCount == 0) {
+		return @[];
+	}
+	NSMutableArray *allObjects = [[NSMutableArray alloc] initWithCapacity:remainingCount];
 	if (reverseEnumeration) {
-		while (enumerationCount++ < arrayCount) {
+		while (remainingCount) {
+			remainingCount--;
 			[allObjects addObject:array[enumerationIndex]];
 			decrementIndex(enumerationIndex);
 		}
 	}
 	else {
-		while (enumerationCount++ < arrayCount) {
+		while (remainingCount) {
+			remainingCount--;
 			[allObjects addObject:array[enumerationIndex]];
 			incrementIndex(enumerationIndex);
 		}
 	}
-	if (mutationCount != *mutationPtr)
-		CHRaiseMutatedCollectionException();
+	array = nil;
 	return [allObjects autorelease];
 }
 
 - (id)nextObject {
+	if (mutationCount != *mutationPtr) {
+		CHRaiseMutatedCollectionException();
+	}
 	id object = nil;
-	if (enumerationCount++ < arrayCount) {
+	if (remainingCount) {
+		remainingCount--;
 		object = array[enumerationIndex];
 		if (reverseEnumeration) {
 			decrementIndex(enumerationIndex);
@@ -136,9 +120,9 @@ do { \
 		else {
 			incrementIndex(enumerationIndex);
 		}
+	} else {
+		array = nil;
 	}
-	if (mutationCount != *mutationPtr)
-		CHRaiseMutatedCollectionException();
 	return object;
 }
 
@@ -263,11 +247,12 @@ do { \
 #pragma mark Querying Contents
 
 - (NSArray *)allObjects {
-	NSMutableArray *allObjects = [[NSMutableArray alloc] init];
-	if (count > 0) {
-		for (id anObject in self) {
-			[allObjects addObject:anObject];
-		}
+	if (count == 0) {
+		return @[];
+	}
+	NSMutableArray *allObjects = [[NSMutableArray alloc] initWithCapacity:count];
+	for (id anObject in self) {
+		[allObjects addObject:anObject];
 	}
 	return [allObjects autorelease];
 }

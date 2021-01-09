@@ -13,13 +13,19 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 /**
  An NSEnumerator for traversing a CHDoublyLinkedList in forward or reverse order.
  */
-@interface CHDoublyLinkedListEnumerator : NSEnumerator {
+@interface CHDoublyLinkedListEnumerator : NSEnumerator
+
+@end
+
+@implementation CHDoublyLinkedListEnumerator
+{
 	CHDoublyLinkedList *collection; // The source of enumerated objects.
 	__strong CHDoublyLinkedListNode *current; // The next node to be enumerated.
 	__strong CHDoublyLinkedListNode *sentinel; // Node that signifies completion.
 	BOOL reverse; // Whether the enumerator is proceeding from back to front.
 	unsigned long mutationCount; // Stores the collection's initial mutation.
 	unsigned long *mutationPtr; // Pointer for checking changes in mutation.
+	NSUInteger remainingCount; ///< Number of elements in @a collection remaining to be enumerated.
 }
 
 /**
@@ -41,37 +47,10 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 					 endNode:(CHDoublyLinkedListNode *)endNode
 				   direction:(NSComparisonResult)direction
 			 mutationPointer:(unsigned long *)mutations;
-
-/**
- Returns the next object in the collection being enumerated.
- 
- @return The next object in the collection being enumerated, or @c nil when all objects have been enumerated.
- */
-- (id)nextObject;
-
-/**
- Returns an array of objects the receiver has yet to enumerate.
- 
- @return An array of objects the receiver has yet to enumerate.
- 
- Invoking this method exhausts the remainder of the objects, such that subsequent invocations of #nextObject return @c nil.
- */
-- (NSArray *)allObjects;
-
-@end
-
-#pragma mark -
-
-@implementation CHDoublyLinkedListEnumerator
-
-- (instancetype)initWithList:(CHDoublyLinkedList *)list
-				   startNode:(CHDoublyLinkedListNode *)startNode
-					 endNode:(CHDoublyLinkedListNode *)endNode
-				   direction:(NSComparisonResult)direction
-			 mutationPointer:(unsigned long *)mutations;
 {
 	if ((self = [super init]) == nil) return nil;
-	collection = ([list count] > 0) ? [list retain] : nil;
+	remainingCount = [list count];
+	collection = remainingCount ? [list retain] : nil;
 	current = startNode;
 	sentinel = endNode;
 	reverse = (direction == NSOrderedDescending);
@@ -89,10 +68,10 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 	if (mutationCount != *mutationPtr)
 		CHRaiseMutatedCollectionException();
 	if (current == sentinel) {
-		[collection release];
-		collection = nil;
+		[self _collectionExhausted];
 		return nil;
 	}
+	remainingCount--;
 	id object = current->object;
 	current = (reverse) ? current->prev : current->next;
 	return object;
@@ -101,14 +80,24 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 - (NSArray *)allObjects {
 	if (mutationCount != *mutationPtr)
 		CHRaiseMutatedCollectionException();
-	NSMutableArray *array = [[NSMutableArray alloc] init];
+	if (remainingCount == 0) {
+		return @[];
+	}
+	NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:remainingCount];
 	while (current != sentinel) {
 		[array addObject:current->object];
 		current = (reverse) ? current->prev : current->next;
 	}
+	[self _collectionExhausted];
+	return [array autorelease];
+}
+
+- (void)_collectionExhausted {
 	[collection release];
 	collection = nil;
-	return [array autorelease];
+	current = nil;
+	sentinel = nil;
+	remainingCount = 0;
 }
 
 @end
