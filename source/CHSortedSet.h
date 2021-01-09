@@ -17,12 +17,12 @@
 /**
  These constants are passed to \link CHSortedSet#subsetFromObject:toObject:options: -[CHSortedSet subsetFromObject:toObject:options:]\endlink and affect how the subset is constructed. You can pass 0 to use the default behavior.
  */
-typedef enum {
+typedef NS_OPTIONS(NSUInteger, CHSubsetConstructionOptions) {
 	/** Indicates that a subset should exclude the low endpoint if it is not nil. */
-	CHSubsetExcludeLowEndpoint  = 1 << 0,
+	CHSubsetConstructionExcludeLowEndpoint  = 1 << 0,
 	/** Indicates that a subset should exclude the high endpoint if it is not nil. */
-	CHSubsetExcludeHighEndpoint = 1 << 1
-} CHSubsetConstructionOptions;
+	CHSubsetConstructionExcludeHighEndpoint = 1 << 1
+};
 
 /**
  A protocol which specifes an interface for sorted sets.

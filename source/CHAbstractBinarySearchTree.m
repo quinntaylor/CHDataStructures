@@ -130,12 +130,12 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 	traversalOrder = order;
 	searchTree = (root != sentinel) ? [tree retain] : nil;
 	remainingCount = [searchTree count];
-	if (traversalOrder == CHTraverseLevelOrder) {
+	if (traversalOrder == CHTraversalOrderLevelOrder) {
 		CHBinaryTreeQueue_INIT();
 		CHBinaryTreeQueue_ENQUEUE(root);
 	} else {
 		CHBinaryTreeStack_INIT();
-		if (traversalOrder == CHTraversePreOrder) {
+		if (traversalOrder == CHTraversalOrderPreOrder) {
 			CHBinaryTreeStack_PUSH(root);
 		} else {
 			current = root;
@@ -187,7 +187,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 	}
 	
 	switch (traversalOrder) {
-		case CHTraverseAscending: {
+		case CHTraversalOrderAscending: {
 			if (stackSize == 0 && current == sentinelNode) {
 				[self _collectionExhausted];
 				return nil;
@@ -206,7 +206,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 			return tempObject;
 		}
 			
-		case CHTraverseDescending: {
+		case CHTraversalOrderDescending: {
 			if (stackSize == 0 && current == sentinelNode) {
 				[self _collectionExhausted];
 				return nil;
@@ -226,7 +226,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 			return tempObject;
 		}
 			
-		case CHTraversePreOrder: {
+		case CHTraversalOrderPreOrder: {
 			current = CHBinaryTreeStack_POP();
 			if (current == NULL) {
 				[self _collectionExhausted];
@@ -241,7 +241,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 			return current->object;
 		}
 			
-		case CHTraversePostOrder: {
+		case CHTraversalOrderPostOrder: {
 			// This algorithm from: http://www.johny.ca/blog/archives/05/03/04/
 			if (stackSize == 0 && current == sentinelNode) {
 				[self _collectionExhausted];
@@ -268,7 +268,7 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 			}
 		}
 			
-		case CHTraverseLevelOrder: {
+		case CHTraversalOrderLevelOrder: {
 			current = CHBinaryTreeQueue_FRONT;
 			CHBinaryTreeQueue_DEQUEUE();
 			if (current == NULL) {
@@ -340,7 +340,7 @@ CHBinaryTreeNode * CHCreateBinaryTreeNodeWithObject(id anObject) {
 }
 
 - (void)encodeWithCoder:(NSCoder *)encoder {
-	[encoder encodeObject:[self allObjectsWithTraversalOrder:CHTraverseLevelOrder]
+	[encoder encodeObject:[self allObjectsWithTraversalOrder:CHTraversalOrderLevelOrder]
 	               forKey:@"objects"];
 }
 
@@ -349,7 +349,7 @@ CHBinaryTreeNode * CHCreateBinaryTreeNodeWithObject(id anObject) {
 - (instancetype)copyWithZone:(NSZone *)zone {
 	id<CHSearchTree> newTree = [[[self class] allocWithZone:zone] init];
 	// No point in using fast enumeration here until rdar://6296108 is addressed.
-	NSEnumerator *e = [self objectEnumeratorWithTraversalOrder:CHTraverseLevelOrder];
+	NSEnumerator *e = [self objectEnumeratorWithTraversalOrder:CHTraversalOrderLevelOrder];
 	id anObject;
 	while (anObject = [e nextObject]) {
 		[newTree addObject:anObject];
@@ -417,7 +417,7 @@ CHBinaryTreeNode * CHCreateBinaryTreeNodeWithObject(id anObject) {
 }
 
 - (NSArray *)allObjects {
-	return [self allObjectsWithTraversalOrder:CHTraverseAscending];
+	return [self allObjectsWithTraversalOrder:CHTraversalOrderAscending];
 }
 
 - (NSArray *)allObjectsWithTraversalOrder:(CHTraversalOrder)order {
@@ -439,7 +439,7 @@ CHBinaryTreeNode * CHCreateBinaryTreeNodeWithObject(id anObject) {
 }
 
 - (NSString *)description {
-	return [[self allObjectsWithTraversalOrder:CHTraverseAscending] description];
+	return [[self allObjectsWithTraversalOrder:CHTraversalOrderAscending] description];
 }
 
 - (id)firstObject {
@@ -489,7 +489,7 @@ CHBinaryTreeNode * CHCreateBinaryTreeNodeWithObject(id anObject) {
 }
 
 - (NSEnumerator *)objectEnumerator {
-	return [self objectEnumeratorWithTraversalOrder:CHTraverseAscending];
+	return [self objectEnumeratorWithTraversalOrder:CHTraversalOrderAscending];
 }
 
 - (NSEnumerator *)objectEnumeratorWithTraversalOrder:(CHTraversalOrder)order {
@@ -539,12 +539,12 @@ CHBinaryTreeNode * CHCreateBinaryTreeNodeWithObject(id anObject) {
 }
 
 - (NSEnumerator *)reverseObjectEnumerator {
-	return [self objectEnumeratorWithTraversalOrder:CHTraverseDescending];
+	return [self objectEnumeratorWithTraversalOrder:CHTraversalOrderDescending];
 }
 
 - (NSSet *)set {
 	NSMutableSet *set = [NSMutableSet new];
-	NSEnumerator *e = [self objectEnumeratorWithTraversalOrder:CHTraversePreOrder];
+	NSEnumerator *e = [self objectEnumeratorWithTraversalOrder:CHTraversalOrderPreOrder];
 	id anObject;
 	while (anObject = [e nextObject]) {
 		[set addObject:anObject];
@@ -575,7 +575,7 @@ CHBinaryTreeNode * CHCreateBinaryTreeNodeWithObject(id anObject) {
 	
 	if (start == nil) {
 		// Start from the first object and add until we pass the end parameter.
-		e = [self objectEnumeratorWithTraversalOrder:CHTraverseAscending];
+		e = [self objectEnumeratorWithTraversalOrder:CHTraversalOrderAscending];
 		while ((anObject = [e nextObject]) &&
 			   [anObject compare:end] != NSOrderedDescending) {
 			[subset addObject:anObject];
@@ -583,7 +583,7 @@ CHBinaryTreeNode * CHCreateBinaryTreeNodeWithObject(id anObject) {
 	}
 	else if (end == nil) {
 		// Start from the last object and add until we pass the start parameter.
-		e = [self objectEnumeratorWithTraversalOrder:CHTraverseDescending];
+		e = [self objectEnumeratorWithTraversalOrder:CHTraversalOrderDescending];
 		while ((anObject = [e nextObject]) &&
 			   [anObject compare:start] != NSOrderedAscending) {
 			[subset addObject:anObject];
@@ -592,7 +592,7 @@ CHBinaryTreeNode * CHCreateBinaryTreeNodeWithObject(id anObject) {
 	else {
 		if ([start compare:end] == NSOrderedAscending) {
 			// Include subset of objects between the range parameters.
-			e = [self objectEnumeratorWithTraversalOrder:CHTraverseAscending];
+			e = [self objectEnumeratorWithTraversalOrder:CHTraversalOrderAscending];
 			while ((anObject = [e nextObject]) &&
 				   [anObject compare:start] == NSOrderedAscending)
 				;
@@ -605,20 +605,20 @@ CHBinaryTreeNode * CHCreateBinaryTreeNodeWithObject(id anObject) {
 		}
 		else {
 			// Include subset of objects NOT between the range parameters.
-			e = [self objectEnumeratorWithTraversalOrder:CHTraverseDescending];
+			e = [self objectEnumeratorWithTraversalOrder:CHTraversalOrderDescending];
 			while ((anObject = [e nextObject]) &&
 				   [anObject compare:start] != NSOrderedAscending)
 				[subset addObject:anObject];
-			e = [self objectEnumeratorWithTraversalOrder:CHTraverseAscending];
+			e = [self objectEnumeratorWithTraversalOrder:CHTraversalOrderAscending];
 			while ((anObject = [e nextObject]) &&
 				   [anObject compare:end] != NSOrderedDescending)
 				[subset addObject:anObject];
 		}
 	}
 	// If the start and/or end value is to be excluded, remove before returning.
-	if (options & CHSubsetExcludeLowEndpoint)
+	if (options & CHSubsetConstructionExcludeLowEndpoint)
 		[subset removeObject:start];
-	if (options & CHSubsetExcludeHighEndpoint)
+	if (options & CHSubsetConstructionExcludeHighEndpoint)
 		[subset removeObject:end];
 	return subset;
 }

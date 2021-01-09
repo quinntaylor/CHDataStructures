@@ -17,20 +17,20 @@
 /**
  A set of constant values denoting the order in which to traverse a tree structure. For details, see: http://en.wikipedia.org/wiki/Tree_traversal#Traversal_methods
  */
-typedef enum {
-	CHTraverseAscending,   ///< Visit left subtree, node, then right subtree.
-	CHTraverseDescending,  ///< Visit right subtree, node, then left subtree.
-	CHTraversePreOrder,    ///< Visit node, left subtree, then right subtree.
-	CHTraversePostOrder,   ///< Visit left subtree, right subtree, then node.
-	CHTraverseLevelOrder   ///< Visit nodes from left-right, top-bottom.
-} CHTraversalOrder;
+typedef NS_ENUM(NSUInteger, CHTraversalOrder) {
+	CHTraversalOrderAscending,   ///< Visit left subtree, node, then right subtree.
+	CHTraversalOrderDescending,  ///< Visit right subtree, node, then left subtree.
+	CHTraversalOrderPreOrder,    ///< Visit node, left subtree, then right subtree.
+	CHTraversalOrderPostOrder,   ///< Visit left subtree, right subtree, then node.
+	CHTraversalOrderLevelOrder   ///< Visit nodes from left-right, top-bottom.
+};
 
-#define isValidTraversalOrder(o) (o>=CHTraverseAscending && o<=CHTraverseLevelOrder)
+#define isValidTraversalOrder(o) (o >= CHTraversalOrderAscending && o <= CHTraversalOrderLevelOrder)
 
 /**
  A protocol which specifes an interface for search trees, such as standard <a href="http://en.wikipedia.org/wiki/Binary_search_tree">binary trees</a>, <a href="http://en.wikipedia.org/wiki/B-tree">B-trees</a>, N-ary trees, or any similar tree-like structure. This protocol extends the CHSortedSet protocol with two additional methods (\link #allObjectsWithTraversalOrder:\endlink and \link #objectEnumeratorWithTraversalOrder:\endlink) specific to search tree implementations of a sorted set.
  
- Trees have a hierarchical structure and make heavy use of pointers to child nodes to organize information. There are several methods for visiting each node in a tree data structure, known as <a href="http://en.wikipedia.org/wiki/Tree_traversal">tree traversal</a> techniques. (Traversal applies to N-ary trees, not just binary trees.) Whereas linked lists and arrays have one or two logical means of stepping through the elements, because trees are branching structures, there are many different ways to choose how to visit all of the nodes. There are 5 most commonly-used tree traversal methods (4 are depth-first, 1 is breadth-first) which are shown below. Table 1 shows the results enumerating the nodes in Figure 1 using each traversal and includes the constant associated with each. These constants can be passed to \link #allObjectsWithTraversalOrder:\endlink or \link #objectEnumeratorWithTraversalOrder:\endlink to enumerate objects from a search tree in a specified order. (Both \link #allObjects\endlink and \link #objectEnumerator\endlink use @c CHTraverseAscending; \link #reverseObjectEnumerator\endlink uses @c CHTraverseDescending.)
+ Trees have a hierarchical structure and make heavy use of pointers to child nodes to organize information. There are several methods for visiting each node in a tree data structure, known as <a href="http://en.wikipedia.org/wiki/Tree_traversal">tree traversal</a> techniques. (Traversal applies to N-ary trees, not just binary trees.) Whereas linked lists and arrays have one or two logical means of stepping through the elements, because trees are branching structures, there are many different ways to choose how to visit all of the nodes. There are 5 most commonly-used tree traversal methods (4 are depth-first, 1 is breadth-first) which are shown below. Table 1 shows the results enumerating the nodes in Figure 1 using each traversal and includes the constant associated with each. These constants can be passed to \link #allObjectsWithTraversalOrder:\endlink or \link #objectEnumeratorWithTraversalOrder:\endlink to enumerate objects from a search tree in a specified order. (Both \link #allObjects\endlink and \link #objectEnumerator\endlink use @c CHTraversalOrderAscending; \link #reverseObjectEnumerator\endlink uses @c CHTraversalOrderDescending.)
  
  <table align="center" width="100%" border="0" cellpadding="0">
  <tr>
@@ -43,11 +43,11 @@ typedef enum {
  <tr style="background: #ddd;">
      <th>Traversal</th>     <th>Visit Order</th> <th>Node Ordering</th>                  <th>CHTraversalOrder</th>
  </tr>
- <tr><td>In-order</td>      <td>L, node, R</td>  <td><code>A B C D E F G H I</code></td> <td>CHTraverseAscending</td></tr>
- <tr><td>Reverse-order</td> <td>R, node, L</td>  <td><code>I H G F E D C B A</code></td> <td>CHTraverseDescending</td></tr>
- <tr><td>Pre-order</td>     <td>node, L, R</td>  <td><code>F B A D C E G I H</code></td> <td>CHTraversePreOrder</td></tr>
- <tr><td>Post-order</td>    <td>L, R, node</td>  <td><code>A C E D B H I G F</code></td> <td>CHTraversePostOrder</td></tr>
- <tr><td>Level-order</td>   <td>L→R, T→B</td>    <td><code>F B G A D I C E H</code></td> <td>CHTraverseLevelOrder</td></tr>
+ <tr><td>In-order</td>      <td>L, node, R</td>  <td><code>A B C D E F G H I</code></td> <td>CHTraversalOrderAscending</td></tr>
+ <tr><td>Reverse-order</td> <td>R, node, L</td>  <td><code>I H G F E D C B A</code></td> <td>CHTraversalOrderDescending</td></tr>
+ <tr><td>Pre-order</td>     <td>node, L, R</td>  <td><code>F B A D C E G I H</code></td> <td>CHTraversalOrderPreOrder</td></tr>
+ <tr><td>Post-order</td>    <td>L, R, node</td>  <td><code>A C E D B H I G F</code></td> <td>CHTraversalOrderPostOrder</td></tr>
+ <tr><td>Level-order</td>   <td>L→R, T→B</td>    <td><code>F B G A D I C E H</code></td> <td>CHTraversalOrderLevelOrder</td></tr>
  </table>
  <p><strong>Table 1 - Various traversals as performed on the tree in Figure 1.</strong></p>
  
