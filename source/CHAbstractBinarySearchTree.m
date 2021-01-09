@@ -17,31 +17,17 @@ size_t kCHBinaryTreeNodeSize = sizeof(CHBinaryTreeNode);
  */
 @interface CHSearchTreeHeaderObject : NSObject
 
+@end
+
+@implementation CHSearchTreeHeaderObject
+
 /**
  Returns the singleton instance of this class. The singleton variable is defined in this file and is initialized only once.
  
  @return The singleton instance of this class.
  */
-+ (instancetype)object;
-
-/**
- Always indicate that another given object should appear to the right side.
- 
- @param otherObject The object to be compared to the receiver.
- @return @c NSOrderedAscending, indicating that traversal should go to the right child of the containing tree node.
- 
- @warning The header object @b must be the receiver of the message (e.g. <code>[headerObject compare:anObject]</code>) in order to work correctly. Calling <code>[anObject compare:headerObject]</code> instead will almost certainly result in a crash.
- */
-- (NSComparisonResult)compare:(id)otherObject;
-
-@end
-
-// Static variable for storing singleton instance of search tree header object.
-static CHSearchTreeHeaderObject *headerObject = nil;
-
-@implementation CHSearchTreeHeaderObject
-
 + (instancetype)object {
+	static CHSearchTreeHeaderObject *headerObject = nil;
 	// Protecting the @synchronized block prevents unnecessary lock contention.
 	if (headerObject == nil) {
 		@synchronized([CHSearchTreeHeaderObject class]) {
@@ -54,6 +40,14 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 	return headerObject;
 }
 
+/**
+ Always indicate that another given object should appear to the right side.
+ 
+ @param otherObject The object to be compared to the receiver.
+ @return @c NSOrderedAscending, indicating that traversal should go to the right child of the containing tree node.
+ 
+ @warning The header object @b must be the receiver of the message (e.g. <code>[headerObject compare:anObject]</code>) in order to work correctly. Calling <code>[anObject compare:headerObject]</code> instead will almost certainly result in a crash.
+ */
 - (NSComparisonResult)compare:(id)otherObject {
 	return NSOrderedAscending;
 }
@@ -290,15 +284,6 @@ static CHSearchTreeHeaderObject *headerObject = nil;
 
 #pragma mark -
 
-CHBinaryTreeNode * CHCreateBinaryTreeNodeWithObject(id anObject) {
-	CHBinaryTreeNode *node;
-	// NSScannedOption tells the garbage collector to scan object and children.
-	node = malloc(kCHBinaryTreeNodeSize);
-	node->object = anObject;
-	node->balance = 0; // Affects balancing info for any subclass (anon. union)
-	return node;
-}
-
 @implementation CHAbstractBinarySearchTree
 
 - (void)dealloc {
@@ -317,12 +302,10 @@ CHBinaryTreeNode * CHCreateBinaryTreeNodeWithObject(id anObject) {
 	if ((self = [super init]) == nil) return nil;
 	count = 0;
 	mutations = 0;
-	sentinel = CHCreateBinaryTreeNodeWithObject(nil);
+	sentinel = [self _createNodeWithObject:nil];
 	sentinel->right = sentinel;
 	sentinel->left = sentinel;
-	header = CHCreateBinaryTreeNodeWithObject([CHSearchTreeHeaderObject object]);
-	header->right = sentinel;
-	header->left = sentinel;
+	header = [self _createNodeWithObject:[CHSearchTreeHeaderObject object]];
 	[self _subclassSetup];
 	[self addObjectsFromArray:anArray];
 	return self;
@@ -330,6 +313,15 @@ CHBinaryTreeNode * CHCreateBinaryTreeNodeWithObject(id anObject) {
 
 - (void)_subclassSetup {
 	// This allows child classes to initialize their specific state on init.
+}
+
+- (CHBinaryTreeNode *)_createNodeWithObject:(nullable id)object {
+	CHBinaryTreeNode *node = malloc(kCHBinaryTreeNodeSize);
+	node->object = object;
+	node->left = sentinel;
+	node->right = sentinel;
+	node->balance = 0; // Affects balancing info for any subclass (anonymous union)
+	return node;
 }
 
 #pragma mark <NSCoding>

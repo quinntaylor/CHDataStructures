@@ -61,9 +61,7 @@
 			current = current->link[!direction];
 		}
 	} else {
-		current = CHCreateBinaryTreeNodeWithObject(anObject);
-		current->left   = sentinel;
-		current->right  = sentinel;
+		current = [self _createNodeWithObject:anObject];
 		current->priority = (u_int32_t) (priority % CHTreapNotFound);
 		++count;
 		// Link from parent as the correct child, based on the last comparison

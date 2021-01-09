@@ -20,6 +20,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CHAbstractBinarySearchTree ()
 
+/**
+ Convenience method for allocating a new CHBinaryTreeNode. This centralizes the allocation so all subclasses can be sure they're allocating nodes correctly. Explicitly sets the "extra" field used by self-balancing trees to zero. Also sets both @c left and @c right to the value of @c sentinel.
+ 
+ @param object The value to be stored in the @a object field of the struct; may be @c nil.
+ @return An struct allocated with @c malloc().
+ */
+- (CHBinaryTreeNode *)_createNodeWithObject:(nullable id)object;
+
 // NOTE: Subclasses should override the following methods to display any algorithm-specific information (such as the extra field used by self-balancing trees) in debugging output and generated DOT graphs.
 
 // This method determines the appearance of nodes in the graph produced by -debugDescription, and may be overriden by subclasses. The default implementation returns the -description for the object in the node, surrounded by quote marks.
@@ -31,14 +39,6 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 #pragma mark -
-
-/**
- Convenience function for allocating a new CHBinaryTreeNode. This centralizes the allocation so all subclasses can be sure they're allocating nodes correctly. Explicitly sets the "extra" field used by self-balancing trees to zero.
- 
- @param anObject The object to be stored in the @a object field of the struct; may be @c nil.
- @return An struct allocated with @c malloc().
- */
-HIDDEN CHBinaryTreeNode * CHCreateBinaryTreeNodeWithObject(_Nullable id anObject);
 
 // These are used by subclasses; marked as HIDDEN to reduce external visibility.
 HIDDEN FOUNDATION_EXTERN size_t kCHBinaryTreeNodeSize;

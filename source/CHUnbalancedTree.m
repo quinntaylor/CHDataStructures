@@ -30,9 +30,7 @@
 		current->object = anObject;		
 	} else {
 		// Create a new node to hold the value being inserted
-		current = CHCreateBinaryTreeNodeWithObject(anObject);
-		current->left   = sentinel;
-		current->right  = sentinel;
+		current = [self _createNodeWithObject:anObject];
 		++count;
 		// Link from parent as the proper child, based on last comparison
 		comparison = [parent->object compare:anObject]; // restore prior compare

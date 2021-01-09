@@ -76,9 +76,7 @@ static void adjustBalance(CHBinaryTreeNode *root, u_int32_t dir, int32_t bal) {
 		// No need to rebalance up the path since we didn't modify the structure
 		goto done;
 	} else {
-		current = CHCreateBinaryTreeNodeWithObject(anObject);
-		current->left   = sentinel;
-		current->right  = sentinel;
+		current = [self _createNodeWithObject:anObject];
 		++count;
 		// Link from parent as the proper child, based on last comparison
 		parent = CHBinaryTreeStack_POP();

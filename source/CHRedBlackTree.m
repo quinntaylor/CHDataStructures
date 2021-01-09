@@ -114,9 +114,7 @@ static CHBinaryTreeNode * doubleRotation(CHBinaryTreeNode *node, BOOL goingRight
 		current->object = anObject;
 	} else {
 		++count;
-		current = CHCreateBinaryTreeNodeWithObject(anObject);
-		current->left = sentinel;
-		current->right = sentinel;
+		current = [self _createNodeWithObject:anObject];
 		
 		parent->link[([parent->object compare:anObject] == NSOrderedAscending)] = current;
 		
