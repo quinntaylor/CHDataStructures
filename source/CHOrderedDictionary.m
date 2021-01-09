@@ -16,15 +16,19 @@
 }
 
 - (instancetype)initWithCapacity:(NSUInteger)numItems {
-	if ((self = [super initWithCapacity:numItems]) == nil) return nil;
-	keyOrdering = [[CHCircularBuffer alloc] initWithCapacity:numItems];
+	self = [super initWithCapacity:numItems];
+	if (self) {
+		keyOrdering = [[CHCircularBuffer alloc] initWithCapacity:numItems];
+	}
 	return self;
 }
 
 - (instancetype)initWithCoder:(NSCoder *)decoder {
-	if ((self = [super initWithCoder:decoder]) == nil) return nil;
-	[keyOrdering release];
-	keyOrdering = [[decoder decodeObjectForKey:@"keyOrdering"] retain];
+	self = [super initWithCoder:decoder];
+	if (self) {
+		[keyOrdering release];
+		keyOrdering = [[decoder decodeObjectForKey:@"keyOrdering"] retain];
+	}
 	return self;
 }
 

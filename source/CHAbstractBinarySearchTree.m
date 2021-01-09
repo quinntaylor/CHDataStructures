@@ -123,27 +123,27 @@ size_t kCHBinaryTreeNodeSize = sizeof(CHBinaryTreeNode);
 	if (!isValidTraversalOrder(order)) {
 		CHRaiseInvalidArgumentException(@"Invalid traversal order");
 	}
-	if ((self = [super init]) == nil) {
-		return nil;
-	}
-	traversalOrder = order;
-	searchTree = (root != sentinel) ? [tree retain] : nil;
-	remainingCount = [searchTree count];
-	if (traversalOrder == CHTraversalOrderLevelOrder) {
-		CHBinaryTreeQueue_INIT();
-		CHBinaryTreeQueue_ENQUEUE(root);
-	} else {
-		CHBinaryTreeStack_INIT();
-		if (traversalOrder == CHTraversalOrderPreOrder) {
-			CHBinaryTreeStack_PUSH(root);
+	self = [super init];
+	if (self) {
+		traversalOrder = order;
+		searchTree = (root != sentinel) ? [tree retain] : nil;
+		remainingCount = [searchTree count];
+		if (traversalOrder == CHTraversalOrderLevelOrder) {
+			CHBinaryTreeQueue_INIT();
+			CHBinaryTreeQueue_ENQUEUE(root);
 		} else {
-			current = root;
+			CHBinaryTreeStack_INIT();
+			if (traversalOrder == CHTraversalOrderPreOrder) {
+				CHBinaryTreeStack_PUSH(root);
+			} else {
+				current = root;
+			}
 		}
+		sentinel->object = nil;
+		sentinelNode = sentinel;
+		mutationCount = *mutations;
+		mutationPtr = mutations;
 	}
-	sentinel->object = nil;
-	sentinelNode = sentinel;
-	mutationCount = *mutations;
-	mutationPtr = mutations;
 	return self;
 }
 
@@ -310,15 +310,17 @@ size_t kCHBinaryTreeNodeSize = sizeof(CHBinaryTreeNode);
 
 // This is the designated initializer for CHAbstractBinarySearchTree.
 - (instancetype)initWithArray:(NSArray *)anArray {
-	if ((self = [super init]) == nil) return nil;
-	count = 0;
-	mutations = 0;
-	sentinel = [self _createNodeWithObject:nil];
-	sentinel->right = sentinel;
-	sentinel->left = sentinel;
-	header = [self _createNodeWithObject:[CHSearchTreeHeaderObject object]];
-	[self _subclassSetup];
-	[self addObjectsFromArray:anArray];
+	self = [super init];
+	if (self) {
+		count = 0;
+		mutations = 0;
+		sentinel = [self _createNodeWithObject:nil];
+		sentinel->right = sentinel;
+		sentinel->left = sentinel;
+		header = [self _createNodeWithObject:[CHSearchTreeHeaderObject object]];
+		[self _subclassSetup];
+		[self addObjectsFromArray:anArray];
+	}
 	return self;
 }
 

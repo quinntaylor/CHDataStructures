@@ -67,17 +67,19 @@ do { \
 					direction:(NSComparisonResult)direction
 			  mutationPointer:(unsigned long *)mutations
 {
-	if ((self = [super init]) == nil) return nil;
-	array = anArray;
-	arrayCapacity = capacity;
-	remainingCount = count;
-	enumerationIndex = startIndex;
-	reverseEnumeration = (direction == NSOrderedDescending);
-	if (reverseEnumeration) {
-		decrementIndex(enumerationIndex);
+	self = [super init];
+	if (self) {
+		array = anArray;
+		arrayCapacity = capacity;
+		remainingCount = count;
+		enumerationIndex = startIndex;
+		reverseEnumeration = (direction == NSOrderedDescending);
+		if (reverseEnumeration) {
+			decrementIndex(enumerationIndex);
+		}
+		mutationCount = *mutations;
+		mutationPtr = mutations;
 	}
-	mutationCount = *mutations;
-	mutationPtr = mutations;
 	return self;
 }
 
@@ -164,17 +166,20 @@ do { \
 	while (capacity <= count) {
 		capacity *= 2;
 	}
-	if ((self = [self initWithCapacity:capacity]) == nil) return nil;
-	if (count > 0) {
-		if ([self _insertBackToFront]) {
-			headIndex = capacity;
-			tailIndex = 0;
-			for (id anObject in anArray) {
-				array[--headIndex] = [anObject retain];
-			}
-		} else {
-			for (id anObject in anArray) {
-				array[tailIndex++] = [anObject retain];
+	self = [self initWithCapacity:capacity];
+	if (self) {
+		
+		if (count > 0) {
+			if ([self _insertBackToFront]) {
+				headIndex = capacity;
+				tailIndex = 0;
+				for (id anObject in anArray) {
+					array[--headIndex] = [anObject retain];
+				}
+			} else {
+				for (id anObject in anArray) {
+					array[tailIndex++] = [anObject retain];
+				}
 			}
 		}
 	}
@@ -183,12 +188,14 @@ do { \
 
 // This is the designated initializer for CHCircularBuffer.
 - (instancetype)initWithCapacity:(NSUInteger)capacity {
-	if ((self = [super init]) == nil) return nil;
-	arrayCapacity = capacity ? capacity : DEFAULT_BUFFER_SIZE;
-	array = malloc(kCHPointerSize * arrayCapacity);
-	if ([self _insertBackToFront]) {
-		// Initialize head and tail to last slot; avoids wrapping on second insert.
-		headIndex = tailIndex = (arrayCapacity - 1);
+	self = [super init];
+	if (self) {
+		arrayCapacity = capacity ? capacity : DEFAULT_BUFFER_SIZE;
+		array = malloc(kCHPointerSize * arrayCapacity);
+		if ([self _insertBackToFront]) {
+			// Initialize head and tail to last slot; avoids wrapping on second insert.
+			headIndex = tailIndex = (arrayCapacity - 1);
+		}
 	}
 	return self;
 }

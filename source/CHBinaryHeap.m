@@ -68,16 +68,18 @@ static const CFBinaryHeapCallBacks kCHBinaryHeapCallBacksDescending = {
 
 // This is the designated initializer
 - (instancetype)initWithOrdering:(NSComparisonResult)order array:(NSArray *)anArray {
-	if ((self = [super init]) == nil) return nil;
-	sortOrder = order;
-	if (sortOrder == NSOrderedAscending) {
-		heap = CFBinaryHeapCreate(kCFAllocatorDefault, 0, &kCHBinaryHeapCallBacksAscending, NULL);
-	} else if (sortOrder == NSOrderedDescending) {
-		heap = CFBinaryHeapCreate(kCFAllocatorDefault, 0, &kCHBinaryHeapCallBacksDescending, NULL);
-	} else {
-		CHRaiseInvalidArgumentException(@"Invalid sort order.");
+	self = [super init];
+	if (self) {
+		sortOrder = order;
+		if (sortOrder == NSOrderedAscending) {
+			heap = CFBinaryHeapCreate(kCFAllocatorDefault, 0, &kCHBinaryHeapCallBacksAscending, NULL);
+		} else if (sortOrder == NSOrderedDescending) {
+			heap = CFBinaryHeapCreate(kCFAllocatorDefault, 0, &kCHBinaryHeapCallBacksDescending, NULL);
+		} else {
+			CHRaiseInvalidArgumentException(@"Invalid sort order.");
+		}
+		[self addObjectsFromArray:anArray];
 	}
-	[self addObjectsFromArray:anArray];
 	return self;
 }
 

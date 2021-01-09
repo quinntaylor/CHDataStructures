@@ -53,10 +53,10 @@ static const CFSetCallBacks kCHMutableSetCallbacks = {
 // Note: This is the designated initializer for NSMutableSet and this class.
 // Subclasses may override this as necessary, but must call back here first.
 - (instancetype)initWithCapacity:(NSUInteger)numItems {
-	if ((self = [super init]) == nil) return nil;
-	set = CFSetCreateMutable(kCFAllocatorDefault,
-	                         numItems,
-	                         &kCHMutableSetCallbacks);
+	self = [super init];
+	if (self) {
+		set = CFSetCreateMutable(kCFAllocatorDefault, numItems, &kCHMutableSetCallbacks);
+	}
 	return self;
 }
 

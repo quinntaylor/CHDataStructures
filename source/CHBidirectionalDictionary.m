@@ -21,8 +21,10 @@
 }
 
 - (instancetype)initWithCapacity:(NSUInteger)numItems {
-	if ((self = [super initWithCapacity:numItems]) == nil) return nil;
-	objectsToKeys = CHDictionaryCreateMutable(numItems);
+	self = [super initWithCapacity:numItems];
+	if (self) {
+		objectsToKeys = CHDictionaryCreateMutable(numItems);
+	}
 	return self;
 }
 

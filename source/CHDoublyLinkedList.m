@@ -48,14 +48,16 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 				   direction:(NSComparisonResult)direction
 			 mutationPointer:(unsigned long *)mutations;
 {
-	if ((self = [super init]) == nil) return nil;
-	remainingCount = [list count];
-	collection = remainingCount ? [list retain] : nil;
-	current = startNode;
-	sentinel = endNode;
-	reverse = (direction == NSOrderedDescending);
-	mutationCount = *mutations;
-	mutationPtr = mutations;
+	self = [super init];
+	if (self) {
+		remainingCount = [list count];
+		collection = remainingCount ? [list retain] : nil;
+		current = startNode;
+		sentinel = endNode;
+		reverse = (direction == NSOrderedDescending);
+		mutationCount = *mutations;
+		mutationPtr = mutations;
+	}
 	return self;
 }
 
@@ -168,18 +170,20 @@ static size_t kCHDoublyLinkedListNodeSize = sizeof(CHDoublyLinkedListNode);
 
 // This is the designated initializer for CHDoublyLinkedList
 - (instancetype)initWithArray:(NSArray *)anArray {
-	if ((self = [super init]) == nil) return nil;
-	head = malloc(kCHDoublyLinkedListNodeSize);
-	tail = malloc(kCHDoublyLinkedListNodeSize);
-	head->object = tail->object = nil;
-	head->next = tail;
-	head->prev = NULL;
-	tail->next = NULL;
-	tail->prev = head;
-	count = 0;
-	mutations = 0;
-	for (id anObject in anArray) {
-		[self addObject:anObject];
+	self = [super init];
+	if (self) {
+		head = malloc(kCHDoublyLinkedListNodeSize);
+		tail = malloc(kCHDoublyLinkedListNodeSize);
+		head->object = tail->object = nil;
+		head->next = tail;
+		head->prev = NULL;
+		tail->next = NULL;
+		tail->prev = head;
+		count = 0;
+		mutations = 0;
+		for (id anObject in anArray) {
+			[self addObject:anObject];
+		}
 	}
 	return self;
 }

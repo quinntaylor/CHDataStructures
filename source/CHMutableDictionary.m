@@ -71,9 +71,11 @@ HIDDEN CFMutableDictionaryRef CHDictionaryCreateMutable(NSUInteger initialCapaci
 
 // Note: This is the designated initializer for NSMutableDictionary and this class.
 // Subclasses may override this as necessary, but must call back here first.
-- (instancetype)initWithCapacity:(NSUInteger)numItems {
-	if ((self = [super init]) == nil) return nil;
-	dictionary = CHDictionaryCreateMutable(numItems);
+- (instancetype)initWithCapacity:(NSUInteger)capacity {
+	self = [super init];
+	if (self) {
+		dictionary = CHDictionaryCreateMutable(capacity);
+	}
 	return self;
 }
 

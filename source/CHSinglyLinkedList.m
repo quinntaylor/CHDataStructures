@@ -38,12 +38,14 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 				   startNode:(CHSinglyLinkedListNode *)startNode
 			 mutationPointer:(unsigned long *)mutations;
 {
-	if ((self = [super init]) == nil) return nil;
-	remainingCount = [list count];
-	collection = remainingCount ? [list retain] : nil;
-	current = startNode; // If startNode == endNode, will always return nil.
-	mutationCount = *mutations;
-	mutationPtr = mutations;
+	self = [super init];
+	if (self) {
+		remainingCount = [list count];
+		collection = remainingCount ? [list retain] : nil;
+		current = startNode; // If startNode == endNode, will always return nil.
+		mutationCount = *mutations;
+		mutationPtr = mutations;
+	}
 	return self;	
 }
 
@@ -107,14 +109,16 @@ static size_t kCHSinglyLinkedListNodeSize = sizeof(CHSinglyLinkedListNode);
 
 // This is the designated initializer for CHSinglyLinkedList
 - (instancetype)initWithArray:(NSArray *)anArray {
-	if ((self = [super init]) == nil) return nil;
-	head = malloc(kCHSinglyLinkedListNodeSize);
-	head->next = NULL;
-	tail = head;
-	count = 0;
-	mutations = 0;
-	for (id anObject in anArray) {
-		[self addObject:anObject];
+	self = [super init];
+	if (self) {
+		head = malloc(kCHSinglyLinkedListNodeSize);
+		head->next = NULL;
+		tail = head;
+		count = 0;
+		mutations = 0;
+		for (id anObject in anArray) {
+			[self addObject:anObject];
+		}
 	}
 	return self;
 }

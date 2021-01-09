@@ -58,8 +58,10 @@
 
 // This is the designated initializer for NSMutableArray (must be overridden)
 - (instancetype)initWithCapacity:(NSUInteger)capacity {
-	if ((self = [super init]) == nil) return nil;
-	array = [[NSMutableArray alloc] initWithCapacity:capacity];
+	self = [super init];
+	if (self) {
+		array = [[NSMutableArray alloc] initWithCapacity:capacity];
+	}
 	return self;	
 }
 
@@ -72,10 +74,12 @@
 	if (order != NSOrderedAscending && order != NSOrderedDescending) {
 		CHRaiseInvalidArgumentException(@"Invalid sort order.");
 	}
-	if ((self = [super init]) == nil) return nil;
-	array = [[NSMutableArray alloc] initWithCapacity:[anArray count]];
-	sortOrder = order;
-	[self addObjectsFromArray:anArray]; // establishes heap ordering of elements
+	self = [super init];
+	if (self) {
+		array = [[NSMutableArray alloc] initWithCapacity:[anArray count]];
+		sortOrder = order;
+		[self addObjectsFromArray:anArray]; // establishes heap ordering of elements
+	}
 	return self;
 }
 

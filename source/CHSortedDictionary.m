@@ -16,8 +16,10 @@
 }
 
 - (instancetype)initWithCapacity:(NSUInteger)numItems {
-	if ((self = [super initWithCapacity:numItems]) == nil) return nil;
-	sortedKeys = [[CHAVLTree alloc] init];
+	self = [super initWithCapacity:numItems];
+	if (self) {
+		sortedKeys = [[CHAVLTree alloc] init];
+	}
 	return self;
 }
 

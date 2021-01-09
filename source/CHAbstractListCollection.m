@@ -27,10 +27,11 @@
 - (instancetype)initWithArray:(NSArray *)anArray {
 	CHRaiseInvalidArgumentExceptionIfNil(anArray);
 	self = [super init];
-	if (self == nil) return nil;
-	list = [self _newList];
-	for (id anObject in anArray) {
-		[list addObject:anObject];
+	if (self) {
+		list = [self _newList];
+		for (id anObject in anArray) {
+			[list addObject:anObject];
+		}
 	}
 	return self;
 }
@@ -44,8 +45,10 @@
 #pragma mark <NSCoding>
 
 - (instancetype)initWithCoder:(NSCoder *)decoder {
-	if ((self = [super init]) == nil) return nil;
-	list = [[decoder decodeObjectForKey:@"list"] retain];
+	self = [super init];
+	if (self) {
+		list = [[decoder decodeObjectForKey:@"list"] retain];
+	}
 	return self;
 }
 

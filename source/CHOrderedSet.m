@@ -20,8 +20,10 @@
 }
 
 - (instancetype)initWithCapacity:(NSUInteger)numItems {
-	if ((self = [super initWithCapacity:numItems]) == nil) return nil;
-	ordering = [[CHCircularBuffer alloc] initWithCapacity:numItems];
+	self = [super initWithCapacity:numItems];
+	if (self) {
+		ordering = [[CHCircularBuffer alloc] initWithCapacity:numItems];
+	}
 	return self;
 }
 
