@@ -8,6 +8,7 @@
 #import <XCTest/XCTest.h>
 #import <CHDataStructures/CHBinaryHeap.h>
 #import <CHDataStructures/CHMutableArrayHeap.h>
+#import "NSObject+TestUtilities.h"
 
 @interface CHMutableArrayHeap (Test)
 
@@ -100,8 +101,7 @@
 			XCTAssertEqual([heap count], (NSUInteger)9);
 			XCTAssertTrue([heap isValid]);
 			
-			NSData *data = [NSKeyedArchiver archivedDataWithRootObject:heap];
-			heap = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+			heap = [heap copyUsingNSCoding];
 			
 			XCTAssertEqual([heap count], (NSUInteger)9);
 			XCTAssertTrue([heap isValid]);

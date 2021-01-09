@@ -49,6 +49,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		963F3A2A25A9083400FA6A4C /* NSObject+TestUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 963F3A1E25A904FF00FA6A4C /* NSObject+TestUtilities.m */; };
 		E40C4D02108D7A6A00A63A23 /* CHMutableSet.h in Headers */ = {isa = PBXBuildFile; fileRef = E40C4D00108D7A6A00A63A23 /* CHMutableSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E40C4D03108D7A6A00A63A23 /* CHMutableSet.m in Sources */ = {isa = PBXBuildFile; fileRef = E40C4D01108D7A6A00A63A23 /* CHMutableSet.m */; };
 		E40D184D0E945580007F39D8 /* CHListDeque.h in Headers */ = {isa = PBXBuildFile; fileRef = E40D184A0E945580007F39D8 /* CHListDeque.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -215,6 +216,8 @@
 /* Begin PBXFileReference section */
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8DC2EF5B0486A6940098B216 /* CHDataStructures.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CHDataStructures.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		963F3A0925A8F8E700FA6A4C /* NSObject+TestUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "NSObject+TestUtilities.h"; path = "test/NSObject+TestUtilities.h"; sourceTree = "<group>"; };
+		963F3A1E25A904FF00FA6A4C /* NSObject+TestUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "NSObject+TestUtilities.m"; path = "test/NSObject+TestUtilities.m"; sourceTree = "<group>"; };
 		96A45EE62154A19900C50ABB /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		96E14B792592632C006519C9 /* Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Common.xcconfig; sourceTree = "<group>"; };
 		96E14B7A2592634D006519C9 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
@@ -474,6 +477,8 @@
 				E4290A77100CE7F100C2C968 /* CHSortedSetTest.m */,
 				E4FD53020ECA9212006D9FF8 /* CHStackTest.m */,
 				E44EB0F10ECB83230071F93A /* CHUtilTest.m */,
+				963F3A0925A8F8E700FA6A4C /* NSObject+TestUtilities.h */,
+				963F3A1E25A904FF00FA6A4C /* NSObject+TestUtilities.m */,
 			);
 			name = "Unit Test Code";
 			sourceTree = "<group>";
@@ -777,6 +782,7 @@
 				E49BE3DC0FB230D4002904AB /* CHCustomSetsTest.m in Sources */,
 				E4FD52CD0ECA8589006D9FF8 /* CHDequeTest.m in Sources */,
 				E48BFBB00EE858F40004D5E6 /* CHHeapTest.m in Sources */,
+				963F3A2A25A9083400FA6A4C /* NSObject+TestUtilities.m in Sources */,
 				E46300B30ECBEDAF00E1AF73 /* CHLinkedListTest.m in Sources */,
 				E4FD52F60ECA8A9F006D9FF8 /* CHQueueTest.m in Sources */,
 				E4290A78100CE7F100C2C968 /* CHSortedSetTest.m in Sources */,
@@ -915,6 +921,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = "resources/Info-Tests.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				WARNING_CFLAGS = "-Wno-nonnull";
 			};
 			name = Debug;
@@ -923,6 +930,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = "resources/Info-Tests.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				WARNING_CFLAGS = "-Wno-nonnull";
 			};
 			name = Release;

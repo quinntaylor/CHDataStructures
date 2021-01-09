@@ -15,6 +15,8 @@
 #import <CHDataStructures/CHTreap.h>
 #import <CHDataStructures/CHUnbalancedTree.h>
 
+#import "NSObject+TestUtilities.h"
+
 static NSArray *abcde;
 
 #define NonConcreteClass() \
@@ -407,8 +409,7 @@ static NSArray *abcde;
 	} else {
 		before = [set allObjects];
 	}
-	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:set];
-	set = [[NSKeyedUnarchiver unarchiveObjectWithData:data] retain];
+	set = [set copyUsingNSCoding];
 	
 	XCTAssertEqual([set count], [order count]);
 	if ([set conformsToProtocol:@protocol(CHSearchTree)]) {

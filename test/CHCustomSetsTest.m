@@ -8,6 +8,7 @@
 #import <XCTest/XCTest.h>
 #import <CHDataStructures/CHMutableSet.h>
 #import <CHDataStructures/CHOrderedSet.h>
+#import "NSObject+TestUtilities.h"
 
 static NSArray *abc;
 
@@ -267,8 +268,7 @@ static NSArray *abc;
 	XCTAssertEqual([set count], [array count]);
 	[self checkEqualityWithArray:array];
 	
-	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:set];
-	CHOrderedSet *set2 = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+	CHOrderedSet *set2 = [set copyUsingNSCoding];
 	
 	XCTAssertEqual([set2 count], [set count]);
 	[self checkEqualityWithArray:[set2 allObjects]];

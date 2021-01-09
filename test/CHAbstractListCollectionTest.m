@@ -8,6 +8,7 @@
 #import <XCTest/XCTest.h>
 #import <CHDataStructures/CHAbstractListCollection.h>
 #import <CHDataStructures/CHListDeque.h>
+#import "NSObject+TestUtilities.h"
 
 @implementation CHAbstractListCollection (Test)
 
@@ -45,8 +46,7 @@
 	XCTAssertEqual([collection count], [objects count]);
 	XCTAssertEqualObjects([collection allObjects], objects);
 	
-	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:collection];
-	collection = [[NSKeyedUnarchiver unarchiveObjectWithData:data] retain];
+	collection = [collection copyUsingNSCoding];
 	
 	XCTAssertEqual([collection count], [objects count]);
 	XCTAssertEqualObjects([collection allObjects], objects);

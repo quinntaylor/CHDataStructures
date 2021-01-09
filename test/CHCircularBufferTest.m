@@ -8,6 +8,7 @@
 #import <XCTest/XCTest.h>
 #import <CHDataStructures/CHCircularBuffer.h>
 #import <CHDataStructures/CHUtil.h>
+#import "NSObject+TestUtilities.h"
 
 static NSArray *abc;
 
@@ -703,8 +704,7 @@ do { \
 	XCTAssertEqual([buffer capacity], (NSUInteger)32);
 	XCTAssertEqualObjects([buffer allObjects], objects);
 	
-	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:buffer];
-	buffer = [[NSKeyedUnarchiver unarchiveObjectWithData:data] retain];
+	buffer = [buffer copyUsingNSCoding];
 	
 	XCTAssertEqual([buffer count], [objects count]);
 	XCTAssertEqual([buffer capacity], (NSUInteger)32);

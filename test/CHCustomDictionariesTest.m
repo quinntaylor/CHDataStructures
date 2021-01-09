@@ -12,11 +12,7 @@
 #import <CHDataStructures/CHMultiDictionary.h>
 #import <CHDataStructures/CHOrderedDictionary.h>
 #import <CHDataStructures/CHSortedDictionary.h>
-
-id replicateWithNSCoding(id dictionary) {
-	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:dictionary];
-	return [NSKeyedUnarchiver unarchiveObjectWithData:data];	
-}
+#import "NSObject+TestUtilities.h"
 
 static NSArray *keyArray;
 
@@ -145,7 +141,7 @@ static NSArray *keyArray;
 
 - (void)testNSCoding {
 	[self populateDictionary];
-	id clone = replicateWithNSCoding(dictionary);
+	id clone = [dictionary copyUsingNSCoding];
 	XCTAssertEqualObjects([NSSet setWithArray:[clone allKeys]],
 						 [NSSet setWithArray:[dictionary allKeys]]);
 }
@@ -612,7 +608,7 @@ static NSArray *keyArray;
 
 - (void)testNSCoding {
 	[self populateDictionary];
-	id clone = replicateWithNSCoding(dictionary);
+	id clone = [dictionary copyUsingNSCoding];
 	XCTAssertEqualObjects(clone, dictionary);
 }
 

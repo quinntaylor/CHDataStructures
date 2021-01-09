@@ -9,9 +9,10 @@
 #import <CHDataStructures/CHLinkedList.h>
 #import <CHDataStructures/CHDoublyLinkedList.h>
 #import <CHDataStructures/CHSinglyLinkedList.h>
+#import "NSObject+TestUtilities.h"
 
 @interface CHLinkedListTest : XCTestCase {
-	id<CHLinkedList> list;
+	NSObject<CHLinkedList> *list;
 	NSArray *linkedListClasses;
 	NSArray *abc;
 	NSEnumerator *e;
@@ -38,8 +39,7 @@
 		list = [[[aClass alloc] initWithArray:abc] autorelease];
 		XCTAssertEqual([list count], [abc count]);
 		
-		NSData *data = [NSKeyedArchiver archivedDataWithRootObject:list];
-		list = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+		list = [list copyUsingNSCoding];
 		
 		XCTAssertEqual([list count], [abc count]);
 		XCTAssertEqualObjects([list allObjects], abc);
