@@ -768,7 +768,7 @@ static NSArray *keyArray;
 	NSUInteger i;
 	for (i = 0; i < [keyArray count]; i++) {
 		XCTAssertEqualObjects([dictionary keyAtIndex:i], [keyArray objectAtIndex:i],
-							 @"Wrong key at index %d.", i);
+							 @"Wrong key at index %lu.", i);
 	}
 	XCTAssertThrows([dictionary keyAtIndex:i]);
 }
@@ -822,7 +822,7 @@ static NSArray *keyArray;
 	NSUInteger i;	
 	for (i = 0; i < [keyArray count]; i++) {
 		XCTAssertEqualObjects([dictionary objectForKeyAtIndex:i], [keyArray objectAtIndex:i],
-							 @"Wrong object for key at index %d.", i);
+							 @"Wrong object for key at index %lu.", i);
 	}
 	XCTAssertThrows([dictionary objectForKeyAtIndex:i]);
 }

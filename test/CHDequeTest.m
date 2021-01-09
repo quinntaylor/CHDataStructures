@@ -122,7 +122,7 @@
 	id<CHDeque> deque1, deque2;
 	for (NSUInteger i = 0; i < [dequeClasses count]; i++) {
 		deque1 = [equalDeques objectAtIndex:i];
-		XCTAssertThrowsSpecificNamed([deque1 isEqualToDeque:[NSString string]], NSException, NSInvalidArgumentException);
+		XCTAssertThrowsSpecificNamed([deque1 isEqualToDeque:(id)[NSString string]], NSException, NSInvalidArgumentException);
 		XCTAssertFalse([deque1 isEqual:[NSString string]]);
 		XCTAssertEqualObjects(deque1, deque1);
 		deque2 = [equalDeques objectAtIndex:i+1];

@@ -23,7 +23,7 @@ static NSArray *abcde;
 #pragma mark -
 
 @interface CHSortedSetTest : XCTestCase {
-	id set;
+	id/*<CHSortedSet>*/ set;
 	NSArray *objects;
 	NSEnumerator *e;
 	id anObject;
@@ -289,7 +289,7 @@ static NSArray *abcde;
 	NSArray *order = [NSArray arrayWithObjects:@"B",@"M",@"C",@"K",@"D",@"I",@"E",@"G",
 			   @"J",@"L",@"N",@"F",@"A",@"H",nil];
 	[set addObjectsFromArray:order];
-	XCTAssertEqualObjects([set set], [NSSet setWithArray:order]);
+	XCTAssertEqualObjects([(id<CHSortedSet>)set set], [NSSet setWithArray:order]);
 }
 
 - (void)testSubsetFromObjectToObject {
@@ -533,8 +533,8 @@ static NSArray *abcde;
 		XCTAssertEqual([tree1 hash], [tree2 hash]);
 		XCTAssertEqualObjects(tree1, tree2);
 	}
-	XCTAssertFalse([tree1 isEqualToSearchTree:[NSArray array]]);
-	XCTAssertThrowsSpecificNamed([tree1 isEqualToSearchTree:[NSString string]], NSException, NSInvalidArgumentException);
+	XCTAssertFalse([tree1 isEqualToSearchTree:(id)[NSArray array]]);
+	XCTAssertThrowsSpecificNamed([tree1 isEqualToSearchTree:(id)[NSString string]], NSException, NSInvalidArgumentException);
 }
 
 @end
@@ -581,7 +581,7 @@ static NSArray *abcde;
 
 - (void)testDebugDescriptionForNode {
 	CHBinaryTreeNode *node = malloc(sizeof(CHBinaryTreeNode));
-	node->object = [NSString stringWithString:@"A B C"];
+	node->object = @"A B C";
 	node->level = 1;
 	XCTAssertEqualObjects([set debugDescriptionForNode:node],
 						 @"[1]\t\"A B C\"");
@@ -590,7 +590,7 @@ static NSArray *abcde;
 
 - (void)testDotGraphStringForNode {
 	CHBinaryTreeNode *node = malloc(sizeof(CHBinaryTreeNode));
-	node->object = [NSString stringWithString:@"A B C"];
+	node->object = @"A B C";
 	node->level = 1;
 	XCTAssertEqualObjects([set dotGraphStringForNode:node],
 						 @"  \"A B C\" [label=\"A B C\\n1\"];\n");
@@ -749,7 +749,7 @@ static NSArray *abcde;
 
 - (void)testDebugDescriptionForNode {
 	CHBinaryTreeNode *node = malloc(sizeof(CHBinaryTreeNode));
-	node->object = [NSString stringWithString:@"A B C"];
+	node->object = @"A B C";
 	node->balance = 0;
 	XCTAssertEqualObjects([set debugDescriptionForNode:node],
 						 @"[ 0]\t\"A B C\"");
@@ -758,7 +758,7 @@ static NSArray *abcde;
 
 - (void)testDotGraphStringForNode {
 	CHBinaryTreeNode *node = malloc(sizeof(CHBinaryTreeNode));
-	node->object = [NSString stringWithString:@"A B C"];
+	node->object = @"A B C";
 	node->balance = 0;
 	XCTAssertEqualObjects([set dotGraphStringForNode:node],
 						 @"  \"A B C\" [label=\"A B C\\n0\"];\n");
@@ -1029,7 +1029,7 @@ static NSArray *abcde;
 
 - (void)testDebugDescriptionForNode {
 	CHBinaryTreeNode *node = malloc(sizeof(CHBinaryTreeNode));
-	node->object = [NSString stringWithString:@"A B C"];
+	node->object = @"A B C";
 	node->color = kRED;
 	XCTAssertEqualObjects([set debugDescriptionForNode:node],
 						 @"[ RED ]	\"A B C\"");
@@ -1041,7 +1041,7 @@ static NSArray *abcde;
 
 - (void)testDotGraphStringForNode {
 	CHBinaryTreeNode *node = malloc(sizeof(CHBinaryTreeNode));
-	node->object = [NSString stringWithString:@"A B C"];
+	node->object = @"A B C";
 	node->color = kRED;
 	XCTAssertEqualObjects([set dotGraphStringForNode:node],
 						 @"  \"A B C\" [color=red];\n");
@@ -1221,7 +1221,7 @@ static NSArray *abcde;
 
 - (void)testDebugDescriptionForNode {
 	CHBinaryTreeNode *node = malloc(sizeof(CHBinaryTreeNode));
-	node->object = [NSString stringWithString:@"A B C"];
+	node->object = @"A B C";
 	node->priority = 123456789;
 	XCTAssertEqualObjects([set debugDescriptionForNode:node],
 						 @"[  123456789]\t\"A B C\"");
@@ -1230,7 +1230,7 @@ static NSArray *abcde;
 
 - (void)testDotGraphStringForNode {
 	CHBinaryTreeNode *node = malloc(sizeof(CHBinaryTreeNode));
-	node->object = [NSString stringWithString:@"A B C"];
+	node->object = @"A B C";
 	node->priority = 123456789;
 	XCTAssertEqualObjects([set dotGraphStringForNode:node],
 						 @"  \"A B C\" [label=\"A B C\\n123456789\"];\n");
@@ -1384,7 +1384,7 @@ static NSArray *abcde;
 
 - (void)testDotGraphString {
 	CHBinaryTreeNode *node = malloc(sizeof(CHBinaryTreeNode));
-	node->object = [NSString stringWithString:@"A B C"];
+	node->object = @"A B C";
 	XCTAssertEqualObjects([set dotGraphStringForNode:node], @"  \"A B C\";\n");
 	free(node);
 	

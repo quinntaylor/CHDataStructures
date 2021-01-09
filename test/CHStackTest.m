@@ -81,7 +81,7 @@
 	id<CHStack> stack1, stack2;
 	for (NSUInteger i = 0; i < [stackClasses count]; i++) {
 		stack1 = [equalStacks objectAtIndex:i];
-		XCTAssertThrowsSpecificNamed([stack1 isEqualToStack:[NSString string]],
+		XCTAssertThrowsSpecificNamed([stack1 isEqualToStack:(id)[NSString string]],
 		                            NSException, NSInvalidArgumentException);
 		XCTAssertFalse([stack1 isEqual:[NSString string]]);
 		XCTAssertEqualObjects(stack1, stack1);

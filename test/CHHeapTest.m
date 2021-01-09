@@ -309,7 +309,7 @@
 	id<CHHeap> heap1, heap2;
 	for (NSUInteger i = 0; i < [heapClasses count]; i++) {
 		heap1 = [equalHeaps objectAtIndex:i];
-		XCTAssertThrowsSpecificNamed([heap1 isEqualToHeap:[NSString string]], NSException, NSInvalidArgumentException);
+		XCTAssertThrowsSpecificNamed([heap1 isEqualToHeap:(id)[NSString string]], NSException, NSInvalidArgumentException);
 		XCTAssertFalse([heap1 isEqual:[NSString string]]);
 		XCTAssertEqualObjects(heap1, heap1);
 		heap2 = [emptyHeaps objectAtIndex:i];
