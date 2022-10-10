@@ -142,17 +142,14 @@
 		}
 		XCTAssertEqual(count, limit);
 		
-		// Check that a mutation exception is raised if the heap is modified
-		BOOL raisedException = NO;
 		@try {
 			for (NSNumber *number in heap) {
 				[heap addObject:number];
 			}
+			XCTFail(@"Expected an exception for mutating during enumeration.");
 		}
 		@catch (NSException * e) {
-			raisedException = YES;
 		}
-		XCTAssertTrue(raisedException);
 	}
 }
 

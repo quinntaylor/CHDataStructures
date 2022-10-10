@@ -736,16 +736,14 @@ do { \
 	}
 	XCTAssertEqual(count, 32);
 
-	BOOL raisedException = NO;
 	@try {
 		for (__unused NSNumber *number in buffer) {
 			[buffer addObject:@"bogus"];
 		}
+		XCTFail(@"Expected an exception for mutating during enumeration.");
 	}
 	@catch (NSException *exception) {
-		raisedException = YES;
 	}
-	XCTAssertTrue(raisedException);
 	
 	// Test enumeration when buffer wraps around
 	

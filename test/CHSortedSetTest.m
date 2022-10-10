@@ -460,16 +460,14 @@ static NSArray *abcde;
 	}
 	XCTAssertEqual(count, limit);
 	
-	BOOL raisedException = NO;
 	@try {
 		for (__unused id object in set) {
 			[set addObject:[NSNumber numberWithInteger:-1]];
 		}
+		XCTFail(@"Expected an exception for mutating during enumeration.");
 	}
 	@catch (NSException *exception) {
-		raisedException = YES;
 	}
-	XCTAssertTrue(raisedException);
 }
 
 @end

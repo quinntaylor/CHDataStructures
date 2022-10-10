@@ -43,71 +43,61 @@
 }
 
 - (void)testIndexOutOfRangeException {
-	BOOL raisedException;
 	@try {
 		int idx = 5;
 		int count = 4;
 		CHRaiseIndexOutOfRangeExceptionIf(idx, >, count);
+		XCTFail("Expected an NSRangeException.");
 	}
 	@catch (NSException * e) {
-		raisedException = YES;
 		XCTAssertEqualObjects([e name], NSRangeException);
 		XCTAssertEqualObjects([e reason], expectedReason(@"Index out of range: idx (5) > count (4)"));
 	}
-	XCTAssertTrue(raisedException);
 }
 
 - (void)testInvalidArgumentException {
-	BOOL raisedException;
 	@try {
 		CHRaiseInvalidArgumentException(@"Some silly reason.");
+		XCTFail("Expected an NSInvalidArgumentException.");
 	}
 	@catch (NSException * e) {
-		raisedException = YES;
 		XCTAssertEqualObjects([e name], NSInvalidArgumentException);
 		XCTAssertEqualObjects([e reason], expectedReason(@"Some silly reason."));
 	}
-	XCTAssertTrue(raisedException);
 }
 
 - (void)testNilArgumentException {
-	BOOL raisedException;
 	id object = nil;
 	@try {
 		CHRaiseInvalidArgumentExceptionIfNil(object);
+		XCTFail("Expected an NSInvalidArgumentException.");
 	}
 	@catch (NSException * e) {
-		raisedException = YES;
 		XCTAssertEqualObjects([e name], NSInvalidArgumentException);
 		XCTAssertEqualObjects([e reason], expectedReason(@"Invalid nil value: object"));
 	}
-	XCTAssertTrue(raisedException);
 }
 
 - (void)testMutatedCollectionException {
-	BOOL raisedException;
 	@try {
 		CHRaiseMutatedCollectionException();
+		XCTFail("Expected an NSGenericException.");
 	}
 	@catch (NSException * e) {
-		raisedException = YES;
 		XCTAssertEqualObjects([e name], NSGenericException);
 		XCTAssertEqualObjects([e reason], expectedReason(@"Collection was mutated during enumeration"));
 	}
-	XCTAssertTrue(raisedException);
 }
 
 - (void)testUnsupportedOperationException {
-	BOOL raisedException;
 	@try {
 		CHRaiseUnsupportedOperationException();
+		XCTFail("Expected an NSInternalInconsistencyException.");
 	}
 	@catch (NSException * e) {
-		raisedException = YES;
 		XCTAssertEqualObjects([e name], NSInternalInconsistencyException);
 		XCTAssertEqualObjects([e reason], expectedReason(@"Unsupported operation"));
 	}
-	XCTAssertTrue(raisedException);
 }
 
 - (void)testCHQuietLog {

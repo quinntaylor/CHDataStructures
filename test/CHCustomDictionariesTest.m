@@ -666,16 +666,14 @@ static NSArray *keyArray;
 	}
 	XCTAssertEqual(count, limit);
 	
-	BOOL raisedException = NO;
 	@try {
 		for (__unused id key in dictionary) {
 			[dictionary setObject:[NSNull null] forKey:[NSNumber numberWithInteger:-1]];
 		}
+		XCTFail(@"Expected an exception for mutating during enumeration.");
 	}
 	@catch (NSException *exception) {
-		raisedException = YES;
 	}
-	XCTAssertTrue(raisedException);	
 }
 
 - (void)testSubsetFromKeyToKeyOptions {
@@ -804,16 +802,14 @@ static NSArray *keyArray;
 	}
 	XCTAssertEqual(count, limit);
 	
-	BOOL raisedException = NO;
 	@try {
 		for (__unused id key in dictionary) {
 			[dictionary setObject:[NSNull null] forKey:[NSNumber numberWithInteger:-1]];
 		}
+		XCTFail(@"Expected an exception for mutating during enumeration.");
 	}
 	@catch (NSException *exception) {
-		raisedException = YES;
 	}
-	XCTAssertTrue(raisedException);	
 }
 
 - (void)testObjectForKeyAtIndex {

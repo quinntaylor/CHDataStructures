@@ -73,17 +73,14 @@
 		}
 		XCTAssertEqual(count, (NSUInteger)32);
 		
-		BOOL raisedException = NO;
 		@try {
 			for (__unused id object in list) {
 				[list addObject:@"bogus"];
 			}
+			XCTFail(@"Expected an exception for mutating during enumeration.");
 		}
 		@catch (NSException *exception) {
-			raisedException = YES;
 		}
-		// Test that a mutation exception was raised
-		XCTAssertTrue(raisedException);
 	}
 }
 
