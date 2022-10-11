@@ -26,7 +26,6 @@ static NSArray *keyArray;
 
 @interface CHMutableDictionaryTest : XCTestCase {
 	id dictionary;
-	NSEnumerator *enumerator;
 }
 @end
 
@@ -41,9 +40,7 @@ static NSArray *keyArray;
 }
 
 - (void)populateDictionary {
-	enumerator = [keyArray objectEnumerator];
-	id aKey;
-	while (aKey = [enumerator nextObject]) {
+	for (id aKey in keyArray) {
 		[dictionary setObject:aKey forKey:aKey];
 	}
 }
@@ -67,7 +64,7 @@ static NSArray *keyArray;
 
 - (void)testKeyEnumerator {
 	// Test that key enumerator is non-nil, even for an empty dictionary.
-	enumerator = [dictionary keyEnumerator];
+	NSEnumerator *enumerator = [dictionary keyEnumerator];
 	XCTAssertNotNil(enumerator);
 	// An enumerator with zero objects should return an empty, non-nil array
 	NSArray *allKeys = [enumerator allObjects];
@@ -82,7 +79,7 @@ static NSArray *keyArray;
 
 - (void)testObjectEnumerator {
 	// Test that object enumerator is non-nil, even for an empty dictionary.
-	enumerator = [dictionary objectEnumerator];
+	NSEnumerator *enumerator = [dictionary objectEnumerator];
 	XCTAssertNotNil(enumerator);
 	// An enumerator with zero objects should return an empty, non-nil array
 	NSArray *allObjects = [enumerator allObjects];
@@ -410,7 +407,7 @@ static NSArray *keyArray;
 - (void)testObjectEnumerator {
 	[self populateDictionary];
 	
-	enumerator = [dictionary objectEnumerator];
+	NSEnumerator *enumerator = [dictionary objectEnumerator];
 	XCTAssertEqual([[enumerator allObjects] count], [dictionary count]);
 	id anObject;
 	while (anObject = [enumerator nextObject]) {
@@ -555,7 +552,7 @@ static NSArray *keyArray;
 }
 
 - (void)testKeyEnumerator {
-	enumerator = [dictionary keyEnumerator];
+	NSEnumerator *enumerator = [dictionary keyEnumerator];
 	XCTAssertNotNil(enumerator);
 	NSArray *allKeys = [enumerator allObjects];
 	XCTAssertNotNil(allKeys);
@@ -583,7 +580,7 @@ static NSArray *keyArray;
 	if (![dictionary respondsToSelector:@selector(reverseKeyEnumerator)]) {
 		return;
 	}
-	enumerator = [dictionary reverseKeyEnumerator];
+	NSEnumerator *enumerator = [dictionary reverseKeyEnumerator];
 	XCTAssertNotNil(enumerator);
 	NSArray *allKeys = [enumerator allObjects];
 	XCTAssertNotNil(allKeys);

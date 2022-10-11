@@ -22,8 +22,6 @@ static NSArray *abc;
 
 @interface CHMutableSetTest : XCTestCase {
 	id set;
-	NSEnumerator *e;
-	id anObject;
 }
 
 - (void)checkEqualityWithArray:(NSArray *)anArray;
@@ -335,14 +333,12 @@ static NSArray *abc;
 - (void)testAddObject {
 	XCTAssertThrows([set addObject:nil]);
 	
-	e = [abc objectEnumerator];
-	while (anObject = [e nextObject]) {
+	for (id anObject in abc) {
 		[set addObject:anObject];
 	}
 	[self checkEqualityWithArray:abc];
 	
-	e = [abc objectEnumerator];
-	while (anObject = [e nextObject]) {
+	for (id anObject in abc) {
 		[set addObject:anObject];
 	}
 	[self checkEqualityWithArray:abc];
@@ -378,8 +374,7 @@ static NSArray *abc;
 	NSMutableArray *order;
 	
 	order = [NSMutableArray arrayWithObjects:@"A",@"B",@"C",nil];
-	e = [ade objectEnumerator];
-	while (anObject = [e nextObject]) {
+	for (id anObject in ade) {
 		if (![anObject isEqual:@"A"]) {
 			[order addObject:anObject];
 		}

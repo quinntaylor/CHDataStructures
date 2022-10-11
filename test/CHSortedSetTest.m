@@ -27,8 +27,6 @@ static NSArray *abcde;
 @interface CHSortedSetTest : XCTestCase {
 	id/*<CHSortedSet>*/ set;
 	NSArray *objects;
-	NSEnumerator *e;
-	id anObject;
 }
 @end
 
@@ -67,8 +65,7 @@ static NSArray *abcde;
 		
 		// Try adding distinct objects
 		NSUInteger expectedCount = 0;
-		e = [abcde objectEnumerator];
-		while (anObject = [e nextObject]) {
+		for (id anObject in abcde) {
 			[set addObject:anObject];
 			XCTAssertEqual([set count], ++expectedCount);
 		}
@@ -114,8 +111,7 @@ static NSArray *abcde;
 	XCTAssertNoThrow([set containsObject:@"bogus"]);
 	XCTAssertFalse([set containsObject:@"bogus"]);
 	// Test contains for each object in the set 
-	e = [abcde objectEnumerator];
-	while (anObject = [e nextObject]) {
+	for (id anObject in abcde) {
 		XCTAssertTrue([set containsObject:anObject]);
 	}
 }
@@ -184,8 +180,7 @@ static NSArray *abcde;
 	XCTAssertNil([set member:@"bogus"]);	
 	// Try with populated sorted set
 	[set addObjectsFromArray:abcde];
-	e = [abcde objectEnumerator];
-	while (anObject = [e nextObject]) {
+	for (id anObject in abcde) {
 		XCTAssertEqualObjects([set member:anObject], anObject);
 	}
 	XCTAssertNoThrow([set member:@"bogus"]);
@@ -199,7 +194,7 @@ static NSArray *abcde;
 	
 	// Enumerator shouldn't retain collection if there are no objects
 	XCTAssertEqual([set retainCount], (NSUInteger)1);
-	e = [set objectEnumerator];
+	NSEnumerator *e = [set objectEnumerator];
 	XCTAssertNotNil(e);
 	XCTAssertEqual([set retainCount], (NSUInteger)1);
 	XCTAssertNil([e nextObject]);
@@ -297,8 +292,7 @@ static NSArray *abcde;
 	// Try with populated sorted set
 	[set addObjectsFromArray:abcde];
 	reverse = [set reverseObjectEnumerator];
-	e = [[set allObjects] reverseObjectEnumerator];
-	while (anObject = [e nextObject]) {
+	for (id anObject in [[set allObjects] reverseObjectEnumerator]) {
 		XCTAssertEqualObjects([reverse nextObject], anObject);
 	}
 }
@@ -539,9 +533,7 @@ static NSArray *abcde;
 							[CHTreap class],
 							[CHUnbalancedTree class],
 							nil];
-	e = [treeClasses objectEnumerator];
-	Class theClass;
-	while (theClass = [e nextObject]) {
+	for (Class theClass in treeClasses) {
 		[equalTrees addObject:[[theClass alloc] initWithArray:abcde]];
 	}
 	// Add a repeat of the first class to avoid wrapping.
@@ -738,7 +730,7 @@ static NSArray *abcde;
 	[super testAddObject];
 	
 	[set removeAllObjects];
-	e = [objects objectEnumerator];
+	NSEnumerator *e = [objects objectEnumerator];
 	
 	// Test adding objects one at a time and verify the ordering of tree nodes
 	[set addObject:[e nextObject]]; // B
@@ -802,7 +794,7 @@ static NSArray *abcde;
 	XCTAssertNoThrow([set removeObject:@"bogus"]);
 	XCTAssertEqual([set count], [objects count]);
 	
-	e = [objects objectEnumerator];
+	NSEnumerator *e = [objects objectEnumerator];
 	
 	[set removeObject:[e nextObject]]; // B
 	XCTAssertNoThrow([set verify]);
@@ -956,7 +948,7 @@ static NSArray *abcde;
 	[super testAddObject];
 	[set removeAllObjects];
 	
-	e = [objects objectEnumerator];
+	NSEnumerator *e = [objects objectEnumerator];
 	
 	[set addObject:[e nextObject]]; // B
 	XCTAssertNoThrow([set verify]);
@@ -1034,10 +1026,7 @@ static NSArray *abcde;
 - (void)testAddObjectsDescending {
 	objects = [NSArray arrayWithObjects:@"R",@"Q",@"P",@"O",@"N",@"M",@"L",@"K",
 			   @"J",@"I",@"H",@"G",@"F",@"E",@"D",@"C",@"B",@"A",nil];
-	e = [objects objectEnumerator];
-	while (anObject = [e nextObject]) {
-		[set addObject:anObject];
-	}
+	[set addObjectsFromArray:objects];
 	XCTAssertEqual([set count], [objects count]);
 	XCTAssertNoThrow([set verify]);
 	XCTAssertEqualObjects([set allObjectsWithTraversalOrder:CHTraversalOrderLevelOrder],
@@ -1092,8 +1081,7 @@ static NSArray *abcde;
 	XCTAssertEqual([set count], [objects count]);
 	
 	NSUInteger count = [objects count];
-	e = [objects objectEnumerator];
-	while (anObject = [e nextObject]) {
+	for (id anObject in objects) {
 		[set removeObject:anObject];
 		XCTAssertEqual([set count], --count);
 		XCTAssertNoThrow([set verify]);
@@ -1176,8 +1164,7 @@ static NSArray *abcde;
 	for (NSUInteger tries = 1, count; tries <= 5; tries++) {
 		[set removeAllObjects];
 		count = 0;
-		e = [objects objectEnumerator];
-		while (anObject = [e nextObject]) {
+		for (id anObject in objects) {
 			[set addObject:anObject];
 			XCTAssertEqual([set count], ++count);
 			// Can't test a specific order because of randomly-assigned priorities
@@ -1194,7 +1181,7 @@ static NSArray *abcde;
 	[set removeAllObjects];
 	
 	NSUInteger priority = 0;
-	e = [objects objectEnumerator];
+	NSEnumerator *e = [objects objectEnumerator];
 	
 	// Simulate by inserting unordered elements with increasing priority
 	// This artificially balances the tree, but we can test the result.
@@ -1241,10 +1228,7 @@ static NSArray *abcde;
 }
 
 - (void)testAllObjectsWithTraversalOrder {
-	e = [objects objectEnumerator];
-	while (anObject = [e nextObject]) {
-		[set addObject:anObject];
-	}
+	[set addObjectsFromArray:objects];
 	XCTAssertEqualObjects([set allObjectsWithTraversalOrder:CHTraversalOrderAscending],
 						 ([NSArray arrayWithObjects:@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"L",@"M",nil]));	
 	XCTAssertEqualObjects([set allObjectsWithTraversalOrder:CHTraversalOrderDescending],
@@ -1285,16 +1269,14 @@ static NSArray *abcde;
 	
 	NSUInteger index = 0;
 	[set removeAllObjects];
-	e = [objects objectEnumerator];
-	while (anObject = [e nextObject]) {
+	for (id anObject in objects) {
 		[set addObject:anObject withPriority:(priorities[index++])];
 		[set verify];
 	}
 	
 	// Verify that the assigned priorities are what we expect
 	index = 0;
-	e = [objects objectEnumerator];
-	while (anObject = [e nextObject]) {
+	for (id anObject in objects) {
 		XCTAssertEqual([set priorityForObject:anObject], priorities[index++]);
 	}
 	// Verify the required tree structure with these objects and priorities.
@@ -1311,8 +1293,7 @@ static NSArray *abcde;
 
 	// Remove all nodes one by one, and test treap validity at each step
 	NSUInteger count = [objects count];
-	e = [objects objectEnumerator];
-	while (anObject = [e nextObject]) {
+	for (id anObject in objects) {
 		[set removeObject:anObject];
 		XCTAssertEqual([set count], --count);
 		XCTAssertNoThrow([set verify]);

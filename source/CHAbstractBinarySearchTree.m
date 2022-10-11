@@ -353,10 +353,7 @@ size_t kCHBinaryTreeNodeSize = sizeof(CHBinaryTreeNode);
 
 - (instancetype)copyWithZone:(NSZone *)zone {
 	id<CHSearchTree> newTree = [[[self class] allocWithZone:zone] init];
-	// No point in using fast enumeration here until rdar://6296108 is addressed.
-	NSEnumerator *e = [self objectEnumeratorWithTraversalOrder:CHTraversalOrderLevelOrder];
-	id anObject;
-	while (anObject = [e nextObject]) {
+	for (id anObject in [self objectEnumeratorWithTraversalOrder:CHTraversalOrderLevelOrder]) {
 		[newTree addObject:anObject];
 	}
 	return newTree;
@@ -558,9 +555,7 @@ size_t kCHBinaryTreeNodeSize = sizeof(CHBinaryTreeNode);
 
 - (NSSet *)set {
 	NSMutableSet *set = [NSMutableSet new];
-	NSEnumerator *e = [self objectEnumeratorWithTraversalOrder:CHTraversalOrderPreOrder];
-	id anObject;
-	while (anObject = [e nextObject]) {
+	for (id anObject in [self objectEnumeratorWithTraversalOrder:CHTraversalOrderPreOrder]) {
 		[set addObject:anObject];
 	}
 	return [set autorelease];

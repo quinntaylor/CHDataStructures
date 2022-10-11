@@ -13,8 +13,6 @@
 @interface CHStackTest : XCTestCase {
 	id<CHStack> stack;
 	NSArray *objects, *stackOrder, *stackClasses;
-	NSEnumerator *e;
-	id anObject;
 }
 @end
 
@@ -46,9 +44,7 @@
 	for (NSUInteger i = 0; i < 32; i++) {
 		[moreObjects addObject:[NSNumber numberWithUnsignedInteger:i]];
 	}
-	NSEnumerator *classes = [stackClasses objectEnumerator];
-	Class aClass;
-	while (aClass = [classes nextObject]) {
+	for (Class aClass in stackClasses) {
 		// Test initializing with nil and empty array parameters
 		stack = nil;
 		XCTAssertThrows([[[aClass alloc] initWithArray:nil] autorelease]);
@@ -68,9 +64,7 @@
 	NSMutableArray *equalStacks = [NSMutableArray array];
 	NSMutableArray *reversedStacks = [NSMutableArray array];
 	NSArray *reversedObjects = [[objects reverseObjectEnumerator] allObjects];
-	NSEnumerator *classes = [stackClasses objectEnumerator];
-	Class aClass;
-	while (aClass = [classes nextObject]) {
+	for (Class aClass in stackClasses) {
 		[emptyStacks addObject:[[aClass alloc] init]];
 		[equalStacks addObject:[[aClass alloc] initWithArray:objects]];
 		[reversedStacks addObject:[[aClass alloc] initWithArray:reversedObjects]];
@@ -96,15 +90,12 @@
 }
 
 - (void)testPushObject {
-	NSEnumerator *classes = [stackClasses objectEnumerator];
-	Class aClass;
-	while (aClass = [classes nextObject]) {
+	for (Class aClass in stackClasses) {
 		stack = [[[aClass alloc] init] autorelease];
 		XCTAssertThrows([stack pushObject:nil]);
 		
 		XCTAssertEqual([stack count], (NSUInteger)0);
-		e = [objects objectEnumerator];
-		while (anObject = [e nextObject]) {
+		for (id anObject in objects) {
 			[stack pushObject:anObject];
 		}
 		XCTAssertEqual([stack count], [objects count]);
@@ -112,15 +103,12 @@
 }
 
 - (void)testTopObjectAndPopObject {
-	NSEnumerator *classes = [stackClasses objectEnumerator];
-	Class aClass;
-	while (aClass = [classes nextObject]) {
+	for (Class aClass in stackClasses) {
 		stack = [[[aClass alloc] init] autorelease];
 		// Test that the top object starts out as nil
 		XCTAssertNil([stack topObject]);
 		// Test that the top object is correct as objects are pushed
-		e = [objects objectEnumerator];
-		while (anObject = [e nextObject]) {
+		for (id anObject in objects) {
 			[stack pushObject:anObject];
 			XCTAssertEqualObjects([stack topObject], anObject);
 		}

@@ -544,9 +544,7 @@ int main(int argc, const char * argv[]) {
 							nil];
 	NSMutableDictionary *treeResults = [NSMutableDictionary dictionary];
 	NSMutableDictionary *dictionary;
-	Class aClass;
-	NSEnumerator *classEnumerator = [testClasses objectEnumerator];
-	while (aClass = [classEnumerator nextObject]) {
+	for (Class aClass in testClasses) {
 		dictionary = [NSMutableDictionary dictionary];
 		[dictionary setObject:[NSMutableArray array] forKey:@"addObject"];
 		[dictionary setObject:[NSMutableArray array] forKey:@"member"];
@@ -575,8 +573,7 @@ int main(int argc, const char * argv[]) {
 			// Create a set of N unique random numbers
 			NSArray *randomNumbers = randomNumberArray(size);
 			jitterOffset = -([testClasses count]/2);
-			classEnumerator = [testClasses objectEnumerator];
-			while (aClass = [classEnumerator nextObject]) {
+			for (Class aClass in testClasses) {
 				NSAutoreleasePool *pool2 = [[NSAutoreleasePool alloc] init];
 				printf(" %s", class_getName(aClass));
 				tree = [[aClass alloc] init];

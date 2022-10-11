@@ -511,16 +511,13 @@ do { \
 	
 	// Test removing all instances of an object in various scenarios
 	[self removeObjectSetup];
-	NSEnumerator *testArrays = [[self removeObjectTestArrays] objectEnumerator];
-	NSArray *testArray;
-	while (testArray = [testArrays nextObject]) {
+	for (NSArray<NSString *> *testArray in [self removeObjectTestArrays]) {
 		NSMutableArray *processedArray = [testArray mutableCopy];
 		[processedArray removeObject:@"X"];
 		for (int i = 0; i <= 1; i++) {
 			// Offset the head pointer by 3 to force wrapping
 			if (i == 1) {
-				e = [abc objectEnumerator];
-				while (anObject = [e nextObject]) {
+				for (id anObject in abc) {
 					[buffer addObject:anObject];
 					[buffer removeFirstObject];
 				}				
@@ -564,16 +561,13 @@ do { \
 
 	// Test removing all instances of an object in various scenarios
 	[self removeObjectSetup];
-	NSEnumerator *testArrays = [[self removeObjectTestArrays] objectEnumerator];
-	NSArray *testArray;
-	while (testArray = [testArrays nextObject]) {
+	for (NSArray<NSString *> *testArray in [self removeObjectTestArrays]) {
 		NSMutableArray *processedArray = [testArray mutableCopy];
 		[processedArray removeObject:@"X"];
 		for (int i = 0; i <= 1; i++) {
 			// Offset the head pointer by 3 to force wrapping
 			if (i == 1) {
-				e = [abc objectEnumerator];
-				while (anObject = [e nextObject]) {
+				for (id anObject in abc) {
 					[buffer addObject:anObject];
 					[buffer removeFirstObject];
 				}				

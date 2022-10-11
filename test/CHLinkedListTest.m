@@ -15,8 +15,6 @@
 	NSObject<CHLinkedList> *list;
 	NSArray *linkedListClasses;
 	NSArray *abc;
-	NSEnumerator *e;
-	id anObject;
 }
 @end
 
@@ -33,9 +31,7 @@
 #pragma mark -
 
 - (void)testNSCoding {
-	NSEnumerator *classes = [linkedListClasses objectEnumerator];
-	Class aClass;
-	while (aClass = [classes nextObject]) {
+	for (Class aClass in linkedListClasses) {
 		list = [[[aClass alloc] initWithArray:abc] autorelease];
 		XCTAssertEqual([list count], [abc count]);
 		
@@ -47,9 +43,7 @@
 }
 
 - (void)testNSCopying {
-	NSEnumerator *classes = [linkedListClasses objectEnumerator];
-	Class aClass;
-	while (aClass = [classes nextObject]) {
+	for (Class aClass in linkedListClasses) {
 		list = [[[aClass alloc] initWithArray:abc] autorelease];
 		id<CHLinkedList> list2 = [[list copyWithZone:nil] autorelease];
 		XCTAssertNotNil(list2);
@@ -59,9 +53,7 @@
 }
 
 - (void)testNSFastEnumeration {
-	NSEnumerator *classes = [linkedListClasses objectEnumerator];
-	Class aClass;
-	while (aClass = [classes nextObject]) {
+	for (Class aClass in linkedListClasses) {
 		list = [[[aClass alloc] init] autorelease];
 		NSUInteger number, expected = 1, count = 0;
 		for (number = 1; number <= 32; number++) {
@@ -87,9 +79,7 @@
 #pragma mark -
 
 - (void)testEmptyList {
-	NSEnumerator *classes = [linkedListClasses objectEnumerator];
-	Class aClass;
-	while (aClass = [classes nextObject]) {
+	for (Class aClass in linkedListClasses) {
 		list = [[[aClass alloc] init] autorelease];
 		XCTAssertNotNil(list);
 		XCTAssertEqual([list count], (NSUInteger)0);
@@ -99,9 +89,7 @@
 }
 
 - (void)testInitWithArray {
-	NSEnumerator *classes = [linkedListClasses objectEnumerator];
-	Class aClass;
-	while (aClass = [classes nextObject]) {
+	for (Class aClass in linkedListClasses) {
 		list = [[[aClass alloc] initWithArray:abc] autorelease];
 		XCTAssertEqual([list count], [abc count]);
 		XCTAssertEqualObjects([list allObjects], abc);
@@ -109,9 +97,7 @@
 }
 
 - (void)testDescription {
-	NSEnumerator *classes = [linkedListClasses objectEnumerator];
-	Class aClass;
-	while (aClass = [classes nextObject]) {
+	for (Class aClass in linkedListClasses) {
 		list = [[[aClass alloc] initWithArray:abc] autorelease];
 		XCTAssertEqualObjects([list description], [abc description]);
 	}
@@ -120,15 +106,12 @@
 #pragma mark Insertion and Access
 
 - (void)testPrependObject {
-	NSEnumerator *classes = [linkedListClasses objectEnumerator];
-	Class aClass;
-	while (aClass = [classes nextObject]) {
+	for (Class aClass in linkedListClasses) {
 		list = [[[aClass alloc] init] autorelease];
 		// Prepending a nil object should raise an exception
 		XCTAssertThrows([list prependObject:nil]);
 		// Test prepending valid objects
-		e = [abc objectEnumerator];
-		while (anObject = [e nextObject]) {
+		for (id anObject in abc) {
 			[list prependObject:anObject];
 		}
 		// Verify first and last object
@@ -139,15 +122,12 @@
 }
 
 - (void)testAddObject {
-	NSEnumerator *classes = [linkedListClasses objectEnumerator];
-	Class aClass;
-	while (aClass = [classes nextObject]) {
+	for (Class aClass in linkedListClasses) {
 		list = [[[aClass alloc] init] autorelease];
 		// Appending a nil object should raise an exception
 		XCTAssertThrows([list addObject:nil]);
 		// Test appending valid objects
-		e = [abc objectEnumerator];
-		while (anObject = [e nextObject]) {
+		for (id anObject in abc) {
 			[list addObject:anObject];
 		}
 		// Verify first and last object
@@ -158,9 +138,7 @@
 }
 
 - (void)testAddObjectsFromArray {
-	NSEnumerator *classes = [linkedListClasses objectEnumerator];
-	Class aClass;
-	while (aClass = [classes nextObject]) {
+	for (Class aClass in linkedListClasses) {
 		list = [[[aClass alloc] init] autorelease];
 		// Passing a nil argument for the array should have no effect
 		XCTAssertNoThrow([list addObjectsFromArray:nil]);
@@ -171,9 +149,7 @@
 }
 
 - (void)testExchangeObjectAtIndexWithObjectAtIndex {
-	NSEnumerator *classes = [linkedListClasses objectEnumerator];
-	Class aClass;
-	while (aClass = [classes nextObject]) {
+	for (Class aClass in linkedListClasses) {
 		list = [[[aClass alloc] init] autorelease];
 		// When the list is empty, calls with any index should raise exception
 		XCTAssertThrows([list exchangeObjectAtIndex:0 withObjectAtIndex:0]);
@@ -202,9 +178,7 @@
 }
 
 - (void)testInsertObjectAtIndex {
-	NSEnumerator *classes = [linkedListClasses objectEnumerator];
-	Class aClass;
-	while (aClass = [classes nextObject]) {
+	for (Class aClass in linkedListClasses) {
 		list = [[[aClass alloc] init] autorelease];
 		// Test inserting using invalid object and invalid indexes
 		XCTAssertThrows([list insertObject:nil  atIndex:0]);
@@ -241,9 +215,7 @@
 }
 
 - (void)testInsertObjectsAtIndexes {
-	NSEnumerator *classes = [linkedListClasses objectEnumerator];
-	Class aClass;
-	while (aClass = [classes nextObject]) {
+	for (Class aClass in linkedListClasses) {
 		list = [[[aClass alloc] init] autorelease];
 		// Test inserting using invalid objects and invalid indexes
 		XCTAssertThrows([list insertObjects:nil
@@ -289,9 +261,8 @@
 }
 
 - (void)testObjectEnumerator {
-	NSEnumerator *classes = [linkedListClasses objectEnumerator];
-	Class aClass;
-	while (aClass = [classes nextObject]) {
+	NSEnumerator *e;
+	for (Class aClass in linkedListClasses) {
 		list = [[[aClass alloc] init] autorelease];
 		// Enumerator shouldn't retain collection if there are no objects
 		XCTAssertEqual([list retainCount], (NSUInteger)1);
@@ -369,9 +340,7 @@
 #pragma mark Search
 
 - (void)testContainsObject {
-	NSEnumerator *classes = [linkedListClasses objectEnumerator];
-	Class aClass;
-	while (aClass = [classes nextObject]) {
+	for (Class aClass in linkedListClasses) {
 		list = [[[aClass alloc] init] autorelease];
 		NSString *a = [NSString stringWithFormat:@"A"];
 		XCTAssertFalse([list containsObject:@"A"]);
@@ -383,9 +352,7 @@
 }
 
 - (void)testContainsObjectIdenticalTo {
-	NSEnumerator *classes = [linkedListClasses objectEnumerator];
-	Class aClass;
-	while (aClass = [classes nextObject]) {
+	for (Class aClass in linkedListClasses) {
 		list = [[[aClass alloc] init] autorelease];
 		NSString *a = [NSString stringWithFormat:@"A"];
 		XCTAssertFalse([list containsObjectIdenticalTo:a]);
@@ -396,9 +363,7 @@
 }
 
 - (void)testIndexOfObject {
-	NSEnumerator *classes = [linkedListClasses objectEnumerator];
-	Class aClass;
-	while (aClass = [classes nextObject]) {
+	for (Class aClass in linkedListClasses) {
 		list = [[[aClass alloc] init] autorelease];
 		XCTAssertEqual([list indexOfObject:@"A"], (NSUInteger)NSNotFound);
 		[list addObjectsFromArray:abc];
@@ -410,9 +375,7 @@
 }
 
 - (void)testIndexOfObjectIdenticalTo {
-	NSEnumerator *classes = [linkedListClasses objectEnumerator];
-	Class aClass;
-	while (aClass = [classes nextObject]) {
+	for (Class aClass in linkedListClasses) {
 		list = [[[aClass alloc] init] autorelease];
 		XCTAssertEqual([list indexOfObjectIdenticalTo:@"A"], (NSUInteger)NSNotFound);
 		[list addObjectsFromArray:abc];
@@ -429,9 +392,7 @@
 - (void)testIsEqualToLinkedList {
 	NSMutableArray *emptyLinkedLists = [NSMutableArray array];
 	NSMutableArray *equalLinkedLists = [NSMutableArray array];
-	NSEnumerator *classes = [linkedListClasses objectEnumerator];
-	Class aClass;
-	while (aClass = [classes nextObject]) {
+	for (Class aClass in linkedListClasses) {
 		[emptyLinkedLists addObject:[[aClass alloc] init]];
 		[equalLinkedLists addObject:[[aClass alloc] initWithArray:abc]];
 	}
@@ -453,14 +414,9 @@
 }
 
 - (void)testObjectAtIndex {
-	NSEnumerator *classes = [linkedListClasses objectEnumerator];
-	Class aClass;
-	while (aClass = [classes nextObject]) {
+	for (Class aClass in linkedListClasses) {
 		list = [[[aClass alloc] init] autorelease];
-		e = [abc objectEnumerator];
-		while (anObject = [e nextObject]) {
-			[list addObject:anObject];
-		}
+		[list addObjectsFromArray:abc];
 		XCTAssertThrows([list objectAtIndex:-1]);
 		XCTAssertEqualObjects([list objectAtIndex:0], @"A");
 		XCTAssertEqualObjects([list objectAtIndex:1], @"B");
@@ -470,9 +426,7 @@
 }
 
 - (void)testObjectsAtIndexes {
-	NSEnumerator *classes = [linkedListClasses objectEnumerator];
-	Class aClass;
-	while (aClass = [classes nextObject]) {
+	for (Class aClass in linkedListClasses) {
 		list = [[[aClass alloc] initWithArray:abc] autorelease];
 		NSUInteger count = [list count];
 		NSRange range;
@@ -501,14 +455,9 @@
 #pragma mark Removal
 
 - (void)testRemoveAllObjects {
-	NSEnumerator *classes = [linkedListClasses objectEnumerator];
-	Class aClass;
-	while (aClass = [classes nextObject]) {
+	for (Class aClass in linkedListClasses) {
 		list = [[[aClass alloc] init] autorelease];
-		e = [abc objectEnumerator];
-		while (anObject = [e nextObject]) {
-			[list addObject:anObject];
-		}
+		[list addObjectsFromArray:abc];
 		XCTAssertEqual([list count], [abc count]);
 		[list removeAllObjects];
 		XCTAssertEqual([list count], (NSUInteger)0);
@@ -516,9 +465,7 @@
 }
 
 - (void)testRemoveFirstObject {
-	NSEnumerator *classes = [linkedListClasses objectEnumerator];
-	Class aClass;
-	while (aClass = [classes nextObject]) {
+	for (Class aClass in linkedListClasses) {
 		list = [[[aClass alloc] init] autorelease];
 		
 		XCTAssertNoThrow([list removeFirstObject]);
@@ -546,9 +493,7 @@
 }
 
 - (void)testRemoveLastObject {
-	NSEnumerator *classes = [linkedListClasses objectEnumerator];
-	Class aClass;
-	while (aClass = [classes nextObject]) {
+	for (Class aClass in linkedListClasses) {
 		list = [[[aClass alloc] init] autorelease];
 		
 		[list removeLastObject]; // Should have no effect
@@ -572,9 +517,7 @@
 }
 
 - (void)testRemoveObject {
-	NSEnumerator *classes = [linkedListClasses objectEnumerator];
-	Class aClass;
-	while (aClass = [classes nextObject]) {
+	for (Class aClass in linkedListClasses) {
 		list = [[[aClass alloc] init] autorelease];
 		[list removeObject:@"bogus"]; // Should have no effect
 		XCTAssertThrows([list removeObject:nil]);
@@ -614,9 +557,7 @@
 }
 
 - (void)testRemoveObjectIdenticalTo {
-	NSEnumerator *classes = [linkedListClasses objectEnumerator];
-	Class aClass;
-	while (aClass = [classes nextObject]) {
+	for (Class aClass in linkedListClasses) {
 		list = [[[aClass alloc] init] autorelease];
 		XCTAssertThrows([list removeObjectIdenticalTo:nil]);
 		
@@ -649,9 +590,7 @@
 }
 
 - (void)testRemoveObjectAtIndex {
-	NSEnumerator *classes = [linkedListClasses objectEnumerator];
-	Class aClass;
-	while (aClass = [classes nextObject]) {
+	for (Class aClass in linkedListClasses) {
 		list = [[[aClass alloc] initWithArray:abc] autorelease];
 		
 		XCTAssertThrows([list removeObjectAtIndex:3]);
@@ -682,9 +621,7 @@
 - (void)testRemoveObjectsAtIndexes {
 	NSIndexSet *indexes;
 	
-	NSEnumerator *classes = [linkedListClasses objectEnumerator];
-	Class aClass;
-	while (aClass = [classes nextObject]) {
+	for (Class aClass in linkedListClasses) {
 		list = [[aClass alloc] init];
 		// Test removing with invalid indexes
 		XCTAssertThrows([list removeObjectsAtIndexes:nil]);
@@ -717,9 +654,7 @@
 }
 
 - (void)testReplaceObjectAtIndexWithObject {
-	NSEnumerator *classes = [linkedListClasses objectEnumerator];
-	Class aClass;
-	while (aClass = [classes nextObject]) {
+	for (Class aClass in linkedListClasses) {
 		list = [[[aClass alloc] initWithArray:abc] autorelease];
 		for (NSUInteger i = 0; i < [abc count]; i++) {
 			XCTAssertEqualObjects([list objectAtIndex:i], [abc objectAtIndex:i]);

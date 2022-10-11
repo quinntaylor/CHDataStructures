@@ -12,8 +12,6 @@
 @interface CHQueueTest : XCTestCase {
 	id<CHQueue> queue;
 	NSArray *objects, *queueClasses;
-	NSEnumerator *e;
-	id anObject;
 }
 @end
 
@@ -93,8 +91,7 @@
 		XCTAssertThrows([queue addObject:nil]);
 		XCTAssertEqual([queue count], (NSUInteger)0);
 		// Test adding objects one by one and verify count and ordering
-		e = [objects objectEnumerator];
-		while (anObject = [e nextObject]) {
+		for (id anObject in objects) {
 			[queue addObject:anObject];
 		}
 		XCTAssertEqual([queue count], [objects count]);
@@ -107,8 +104,7 @@
 	Class aClass;
 	while (aClass = [classes nextObject]) {
 		queue = [[[aClass alloc] init] autorelease];
-		e = [objects objectEnumerator];
-		while (anObject = [e nextObject]) {
+		for (id anObject in objects) {
 			[queue addObject:anObject];
 			XCTAssertEqualObjects([queue lastObject], anObject);
 		}
