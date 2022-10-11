@@ -266,7 +266,8 @@ size_t kCHBinaryTreeNodeSize = sizeof(CHBinaryTreeNode);
 					// TODO: How to not push a null pad for leaf nodes?
 				} else {
 					(void)CHBinaryTreeStack_POP(); // ignore the null pad
-					return CHBinaryTreeStack_POP()->object;
+					CHBinaryTreeNode *temp = CHBinaryTreeStack_POP();
+					return temp ? temp->object : nil;
 				}
 			}
 		}
