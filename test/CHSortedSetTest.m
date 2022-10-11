@@ -546,7 +546,8 @@ static NSArray *abcde;
 								 [CHTreap class],
 								 [CHUnbalancedTree class],
 								 nil];
-	id<CHSearchTree> tree1, tree2;
+	id<CHSearchTree> tree1 = nil;
+	id<CHSearchTree> tree2;
 	for (NSUInteger i = 0; i < [sortedSetClasses count]; i++) {
 		tree1 = [equalTrees objectAtIndex:i];
 		tree2 = [equalTrees objectAtIndex:i+1];
