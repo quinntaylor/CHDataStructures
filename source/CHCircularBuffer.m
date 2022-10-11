@@ -339,7 +339,7 @@ do { \
 - (NSArray *)objectsAtIndexes:(NSIndexSet *)indexes {
 	CHRaiseInvalidArgumentExceptionIfNil(indexes);
 	if ([indexes count] == 0) {
-		return [NSArray array];
+		return @[];
 	}
 	NSMutableArray *objects = [NSMutableArray arrayWithCapacity:[indexes count]];
 	NSUInteger index = [indexes firstIndex];

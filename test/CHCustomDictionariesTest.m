@@ -32,7 +32,7 @@ static NSArray *keyArray;
 @implementation CHMutableDictionaryTest
 
 + (void)initialize {
-	keyArray = [[NSArray arrayWithObjects:@"baz", @"foo", @"bar", @"yoo", @"hoo", nil] retain];
+	keyArray = @[@"baz", @"foo", @"bar", @"yoo", @"hoo"];
 }
 
 - (void)setUp {
@@ -374,7 +374,7 @@ static NSArray *keyArray;
 	// Test initializing with values from sets, arrays, and normal objects
 	dictionary = [[[CHMultiDictionary alloc] initWithObjectsAndKeys:
 				   [NSSet setWithObjects:@"A",@"B",@"C",nil], @"foo",
-				   [NSArray arrayWithObjects:@"X",@"Y",nil], @"bar",
+				   @[@"X",@"Y"], @"bar",
 				   @"Z", @"baz", nil] autorelease];
 	XCTAssertEqual([dictionary count],              (NSUInteger)3);
 	XCTAssertEqual([dictionary countForKey:@"foo"], (NSUInteger)3);
@@ -641,7 +641,7 @@ static NSArray *keyArray;
 	NSMutableArray *keys = [NSMutableArray array];
 	NSNumber *key;
 	for (NSUInteger i = 0; i <= 20; i++) {
-		key = [NSNumber numberWithUnsignedInt:arc4random()];
+		key = @(arc4random());
 		[keys addObject:key];
 		[dictionary setObject:[NSNull null] forKey:key];
 	}
@@ -653,7 +653,7 @@ static NSArray *keyArray;
 	NSUInteger limit = 32; // NSFastEnumeration asks for 16 objects at a time
 	// Insert keys in reverse sorted order
 	for (NSUInteger number = limit; number >= 1; number--) {
-		[dictionary setObject:[NSNull null] forKey:[NSNumber numberWithUnsignedInteger:number]];
+		[dictionary setObject:[NSNull null] forKey:@(number)];
 	}
 	// Verify that keys are enumerated in sorted order
 	NSUInteger expected = 1, count = 0;
@@ -665,7 +665,7 @@ static NSArray *keyArray;
 	
 	@try {
 		for (__unused id key in dictionary) {
-			[dictionary setObject:[NSNull null] forKey:[NSNumber numberWithInteger:-1]];
+			[dictionary setObject:[NSNull null] forKey:@(-1)];
 		}
 		XCTFail(@"Expected an exception for mutating during enumeration.");
 	}
@@ -709,7 +709,7 @@ static NSArray *keyArray;
 	NSMutableArray *keys = [NSMutableArray array];
 	NSNumber *key;
 	for (NSUInteger i = 0; i <= 20; i++) {
-		key = [NSNumber numberWithUnsignedInt:arc4random()];
+		key = @(arc4random());
 		[keys addObject:key];
 		[dictionary setObject:[NSNull null] forKey:key];
 	}
@@ -789,7 +789,7 @@ static NSArray *keyArray;
 	NSUInteger limit = 32; // NSFastEnumeration asks for 16 objects at a time
 	// Insert keys in reverse sorted order
 	for (NSUInteger number = limit; number >= 1; number--) {
-		[dictionary setObject:[NSNull null] forKey:[NSNumber numberWithUnsignedInteger:number]];
+		[dictionary setObject:[NSNull null] forKey:@(number)];
 	}
 	// Verify that keys are enumerated in sorted order
 	NSUInteger expected = 32, count = 0;
@@ -801,7 +801,7 @@ static NSArray *keyArray;
 	
 	@try {
 		for (__unused id key in dictionary) {
-			[dictionary setObject:[NSNull null] forKey:[NSNumber numberWithInteger:-1]];
+			[dictionary setObject:[NSNull null] forKey:@(-1)];
 		}
 		XCTFail(@"Expected an exception for mutating during enumeration.");
 	}

@@ -148,7 +148,7 @@
 	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc]
 	                                    initWithKey:nil
 	                                      ascending:(sortOrder == NSOrderedAscending)];
-	return [array sortedArrayUsingDescriptors:[NSArray arrayWithObject:[sortDescriptor autorelease]]];
+	return [array sortedArrayUsingDescriptors:@[[sortDescriptor autorelease]]];
 }
 
 /**

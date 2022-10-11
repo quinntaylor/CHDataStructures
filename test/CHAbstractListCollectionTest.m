@@ -36,7 +36,7 @@
 
 - (void)setUp {
 	collection = [[CHListDeque alloc] init]; // Pick a concrete subclass to initialize
-	objects = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
+	objects = @[@"A",@"B",@"C"];
 }
 
 #pragma mark -
@@ -63,7 +63,7 @@
 - (void)testNSFastEnumeration {
 	NSUInteger limit = 32;
 	for (NSUInteger number = 1; number <= limit; number++) {
-		[collection addObject:[NSNumber numberWithUnsignedInteger:number]];
+		[collection addObject:@(number)];
 	}
 	NSUInteger expected = 1, count = 0;
 	for (NSNumber *object in collection) {

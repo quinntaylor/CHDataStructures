@@ -491,7 +491,7 @@ NSArray * randomNumberArray(NSUInteger count) {
 	NSMutableSet *objectSet = [NSMutableSet set];
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	while ([objectSet count] < count) {
-		[objectSet addObject:[NSNumber numberWithInt:arc4random()]];
+		[objectSet addObject:@(arc4random())];
 	}
 	[pool drain];
 	return [objectSet allObjects];
@@ -506,7 +506,7 @@ int main(int argc, const char * argv[]) {
 		NSMutableArray *temp = [[NSMutableArray alloc] initWithCapacity:size+1];
 		[temp addObjectsFromArray:[objects lastObject]];
 		for (NSUInteger item = [temp count]+1; item <= size; item++) {
-			[temp addObject:[NSNumber numberWithUnsignedInteger:item]];
+			[temp addObject:@(item)];
 		}
 		[objects addObject:temp];
 		[temp release];
@@ -535,13 +535,13 @@ int main(int argc, const char * argv[]) {
 	
 	CHQuietLog(@"\n<CHSearchTree> Implemenations");
 	
-	NSArray *testClasses = [NSArray arrayWithObjects:
-							[CHAnderssonTree class],
-							[CHAVLTree class],
-							[CHRedBlackTree class],
-							[CHTreap class],
-							[CHUnbalancedTree class],
-							nil];
+	NSArray *testClasses = @[
+		[CHAnderssonTree class],
+		[CHAVLTree class],
+		[CHRedBlackTree class],
+		[CHTreap class],
+		[CHUnbalancedTree class],
+	];
 	NSMutableDictionary *treeResults = [NSMutableDictionary dictionary];
 	NSMutableDictionary *dictionary;
 	for (Class aClass in testClasses) {

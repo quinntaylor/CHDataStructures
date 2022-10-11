@@ -18,7 +18,7 @@
 ([NSString stringWithFormat:@"%s -- %@", __PRETTY_FUNCTION__, message])
 
 - (void)testCollectionsAreEqual {
-	NSArray *array = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
+	NSArray *array = @[@"A",@"B",@"C"];
 	NSDictionary *dict = [NSDictionary dictionaryWithObjects:array forKeys:array];
 	NSSet *set = [NSSet setWithObjects:@"A",@"B",@"C",nil];
 	

@@ -74,11 +74,11 @@
 @implementation CHHeapTest
 
 - (void)setUp {
-	heapClasses = [NSArray arrayWithObjects:[CHMutableArrayHeap class],
-	                                        [CHBinaryHeap class],
-	                                        nil];
-	objects = [NSArray arrayWithObjects:
-			   @"I",@"H",@"G",@"F",@"E",@"D",@"C",@"B",@"A",nil];
+	heapClasses = @[
+		[CHMutableArrayHeap class],
+		[CHBinaryHeap class],
+	];
+	objects = @[@"I",@"H",@"G",@"F",@"E",@"D",@"C",@"B",@"A"];
 }
 
 
@@ -121,7 +121,7 @@
 	for (Class aClass in heapClasses) {
 		heap = [[[aClass alloc] init] autorelease];
 		for (NSUInteger number = 1; number <= limit; number++) {
-			[heap addObject:[NSNumber numberWithUnsignedInteger:number]];
+			[heap addObject:@(number)];
 		}
 		NSUInteger expected = 0, count = 0;
 		for (NSNumber *number in heap) {

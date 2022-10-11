@@ -45,14 +45,14 @@ static NSArray *abc;
 @implementation CHCircularBufferTest
 
 + (void)initialize {
-	abc = [[NSArray arrayWithObjects:@"A",@"B",@"C",nil] retain];
+	abc = @[@"A",@"B",@"C"];
 }
 
 - (void)setUp {
 	buffer = [[[CHCircularBuffer alloc] init] autorelease];
 	fifteen = [[NSMutableArray alloc] init];
 	for (int i = 1; i <= 15; i++) {
-		[fifteen addObject:[NSNumber numberWithInt:i]];
+		[fifteen addObject:@(i)];
 	}
 }
 
@@ -72,19 +72,19 @@ do { \
 - (void)testInitWithArray {
 	NSMutableArray *array = [[[NSMutableArray alloc] init] autorelease];
 	for (int i = 1; i <= 15; i++) {
-		[array addObject:[NSNumber numberWithInt:i]];
+		[array addObject:@(i)];
 	}
 	buffer = [[[CHCircularBuffer alloc] initWithArray:array] autorelease];
 	XCTAssertEqual([buffer capacity], (NSUInteger)16);
 	checkCountAndDistanceFromHeadToTail(15);
 	
-	[array addObject:[NSNumber numberWithInt:16]];
+	[array addObject:@(16)];
 	buffer = [[[CHCircularBuffer alloc] initWithArray:array] autorelease];
 	XCTAssertEqual([buffer capacity], (NSUInteger)32);
 	checkCountAndDistanceFromHeadToTail(16);
 	
 	for (int i = 17; i <= 33; i++) {
-		[array addObject:[NSNumber numberWithInt:i]];
+		[array addObject:@(i)];
 	}
 	buffer = [[[CHCircularBuffer alloc] initWithArray:array] autorelease];
 	XCTAssertEqual([buffer capacity], (NSUInteger)64);
@@ -115,11 +115,11 @@ do { \
 	// Force expansion of original capacity
 	buffer = [[[CHCircularBuffer alloc] init] autorelease];
 	for (int i = 1; i <= 16; i++) {
-		[buffer addObject:[NSNumber numberWithInt:i]];
+		[buffer addObject:@(i)];
 	}
 	XCTAssertEqual([buffer capacity], (NSUInteger)32);
 	for (int i = 17; i <= 33; i++) {
-		[buffer addObject:[NSNumber numberWithInt:i]];
+		[buffer addObject:@(i)];
 	}
 	XCTAssertEqual([buffer capacity], (NSUInteger)64);
 }
@@ -132,7 +132,7 @@ do { \
 	[buffer insertObject:@"Z" atIndex:1];
 	[buffer insertObject:@"Y" atIndex:1];
 	[buffer insertObject:@"X" atIndex:1];
-	XCTAssertEqualObjects(buffer, ([NSArray arrayWithObjects:@"W",@"X",@"Y",@"Z",nil]));
+	XCTAssertEqualObjects(buffer, (@[@"W",@"X",@"Y",@"Z"]));
 	[buffer removeAllObjects];
 	// Insert some at the front to force the buffer to "wrap around" backwards.
 	NSMutableArray *correct = [NSMutableArray arrayWithArray:abc];
@@ -208,7 +208,7 @@ do { \
 	checkCountAndDistanceFromHeadToTail(0);
 	NSMutableArray *objects = [NSMutableArray array];
 	for (int i = 1; i < 16; i++) {
-		[objects addObject:[NSNumber numberWithInt:i]];
+		[objects addObject:@(i)];
 	}
 	[buffer addObjectsFromArray:objects];
 	XCTAssertEqual([buffer count], [objects count]);
@@ -491,13 +491,14 @@ do { \
 }
 
 - (NSArray *)removeObjectTestArrays {
-	return [NSArray arrayWithObjects:[NSArray arrayWithObjects:@"X",@"A",@"X",@"B",@"X",@"C",nil],
-	                                 [NSArray arrayWithObjects:@"A",@"X",@"B",@"X",@"C",@"X",nil],
-	                                 [NSArray arrayWithObjects:@"A",@"X",@"X",@"X",@"B",@"C",nil],
-	                                 [NSArray arrayWithObjects:@"A",@"X",@"X",@"B",@"C",@"D",nil],
-	                                 [NSArray arrayWithObjects:@"A",@"B",@"X",@"X",@"C",@"D",nil],
-	                                 [NSArray arrayWithObjects:@"X",@"A",@"X",@"B",@"X",@"C",@"X",nil],
-	                                 nil];
+	return @[
+		@[@"X",@"A",@"X",@"B",@"X",@"C"],
+		@[@"A",@"X",@"B",@"X",@"C",@"X"],
+		@[@"A",@"X",@"X",@"X",@"B",@"C"],
+		@[@"A",@"X",@"X",@"B",@"C",@"D"],
+		@[@"A",@"B",@"X",@"X",@"C",@"D"],
+		@[@"X",@"A",@"X",@"B",@"X",@"C",@"X"],
+	];
 }
 
 - (void)testRemoveObject {
@@ -686,8 +687,7 @@ do { \
 #pragma mark <Protocols>
 
 - (void)testNSCoding {
-	NSArray *objects = [NSArray arrayWithObjects:@"A",@"B",@"C",@"D",@"E",@"F",
-						@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O",@"P",nil];
+	NSArray *objects = @[@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O",@"P"];
 	[buffer addObjectsFromArray:objects];
 	XCTAssertEqual([buffer count], [objects count]);
 	XCTAssertEqual([buffer capacity], (NSUInteger)32);
@@ -701,8 +701,7 @@ do { \
 }
 
 - (void)testNSCopying {
-	NSArray *objects = [NSArray arrayWithObjects:@"A",@"B",@"C",@"D",@"E",@"F",
-						@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O",@"P",nil];
+	NSArray *objects = @[@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O",@"P"];
 	[buffer addObjectsFromArray:objects];
 	id buffer2 = [[buffer copy] autorelease];
 	[buffer removeAllObjects];
@@ -714,7 +713,7 @@ do { \
 - (void)testNSFastEnumeration {
 	int number, expected, count;
 	for (number = 1; number <= 32; number++) {
-		[buffer addObject:[NSNumber numberWithInt:number]];
+		[buffer addObject:@(number)];
 	}
 	count = 0;
 	expected = 1;
@@ -745,7 +744,7 @@ do { \
 	}
 	checkCountAndDistanceFromHeadToTail(0);
 	for (number = 1; number < 16; number++) {
-		[buffer addObject:[NSNumber numberWithInt:number]];
+		[buffer addObject:@(number)];
 	}
 	count = 0;
 	expected = 1;

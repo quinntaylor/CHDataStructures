@@ -21,11 +21,11 @@
 @implementation CHLinkedListTest
 
 - (void)setUp {
-	abc = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
-	linkedListClasses = [NSArray arrayWithObjects:
-						 [CHDoublyLinkedList class],
-						 [CHSinglyLinkedList class],
-						 nil];	
+	abc = @[@"A",@"B",@"C"];
+	linkedListClasses = @[
+		[CHDoublyLinkedList class],
+		[CHSinglyLinkedList class],
+	];
 }
 
 #pragma mark -
@@ -57,7 +57,7 @@
 		list = [[[aClass alloc] init] autorelease];
 		NSUInteger number, expected = 1, count = 0;
 		for (number = 1; number <= 32; number++) {
-			[list addObject:[NSNumber numberWithUnsignedInteger:number]];
+			[list addObject:@(number)];
 		}
 		for (NSNumber *object in list) {
 			XCTAssertEqual([object unsignedIntegerValue], expected++);
@@ -220,17 +220,17 @@
 		// Test inserting using invalid objects and invalid indexes
 		XCTAssertThrows([list insertObjects:nil
 								 atIndexes:nil]);
-		XCTAssertThrows([list insertObjects:[NSArray array]
+		XCTAssertThrows([list insertObjects:@[]
 								 atIndexes:nil]);
-		XCTAssertThrows([list insertObjects:[NSArray array]
+		XCTAssertThrows([list insertObjects:@[]
 								 atIndexes:[NSIndexSet indexSetWithIndex:0]]);
-		XCTAssertThrows([list insertObjects:[NSArray arrayWithObject:[NSNull null]]
+		XCTAssertThrows([list insertObjects:@[[NSNull null]]
 								 atIndexes:[NSIndexSet indexSet]]);
 		// Test inserting beyond the allowed index range
-		XCTAssertThrows([list insertObjects:[NSArray arrayWithObject:[NSNull null]]
+		XCTAssertThrows([list insertObjects:@[[NSNull null]]
 								 atIndexes:[NSIndexSet indexSetWithIndex:1]]);
 		// Test inserting a single object into an empty list
-		XCTAssertNoThrow([list insertObjects:[NSArray arrayWithObject:@"A"]
+		XCTAssertNoThrow([list insertObjects:@[@"A"]
 								  atIndexes:[NSIndexSet indexSetWithIndex:0]]);
 		XCTAssertEqual([list count], (NSUInteger)1);
 		XCTAssertEqualObjects([list objectAtIndex:0], @"A");
@@ -244,7 +244,7 @@
 		NSMutableArray *objects = [NSMutableArray array];
 		NSMutableIndexSet *indexes = [NSMutableIndexSet indexSet];
 		for (NSUInteger i = 0; i <= [abc count]; i++) {
-			[objects addObject:[NSNumber numberWithUnsignedInteger:i+1]];
+			[objects addObject:@(i+1)];
 			[indexes addIndex:i*2];
 		}
 		NSMutableArray *expected = [NSMutableArray arrayWithArray:abc];
@@ -321,11 +321,7 @@
 			XCTAssertEqual([list retainCount], (NSUInteger)2);
 			allObjects = [e allObjects];
 			XCTAssertEqual([list retainCount], (NSUInteger)1);
-			XCTAssertNotNil(allObjects);
-			NSArray *cba = [NSArray arrayWithObjects:@"C",@"B",@"A",nil];
-			XCTAssertEqualObjects(allObjects, cba);
-			XCTAssertEqualObjects([allObjects objectAtIndex:0], @"C");
-			XCTAssertEqualObjects([allObjects lastObject],      @"A");			
+			XCTAssertEqualObjects(allObjects, (@[@"C", @"B", @"A"]));
 		}
 		
 		// Test for mutation exception in the middle of enumeration

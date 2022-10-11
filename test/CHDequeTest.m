@@ -18,17 +18,17 @@
 @implementation CHDequeTest
 
 - (void)setUp {
-	objects = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
-	dequeClasses = [NSArray arrayWithObjects:
-					[CHListDeque class],
-					[CHCircularBufferDeque class],
-					nil];
+	objects = @[@"A",@"B",@"C"];
+	dequeClasses = @[
+		[CHListDeque class],
+		[CHCircularBufferDeque class],
+	];
 }
 
 - (void)testInitWithArray {
 	NSMutableArray *moreObjects = [NSMutableArray array];
 	for (NSUInteger i = 0; i < 32; i++) {
-		[moreObjects addObject:[NSNumber numberWithUnsignedInteger:i]];
+		[moreObjects addObject:@(i)];
 	}
 	
 	for (Class aClass in dequeClasses) {
@@ -36,7 +36,7 @@
 		deque = nil;
 		XCTAssertThrows([[[aClass alloc] initWithArray:nil] autorelease]);
 		XCTAssertEqual([deque count], (NSUInteger)0);
-		deque = [[[aClass alloc] initWithArray:[NSArray array]] autorelease];
+		deque = [[[aClass alloc] initWithArray:@[]] autorelease];
 		XCTAssertEqual([deque count], (NSUInteger)0);
 		// Test initializing with a valid, non-empty array
 		deque = [[[aClass alloc] initWithArray:objects] autorelease];

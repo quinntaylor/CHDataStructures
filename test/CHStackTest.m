@@ -19,12 +19,12 @@
 @implementation CHStackTest
 
 - (void)setUp {
-	stackClasses = [NSArray arrayWithObjects:
-					[CHListStack class],
-					[CHCircularBufferStack class],
-					nil];
-	objects = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
-	stackOrder = [NSArray arrayWithObjects:@"C", @"B", @"A", nil];
+	stackClasses = @[
+		[CHListStack class],
+		[CHCircularBufferStack class],
+	];
+	objects    = @[@"A", @"B", @"C"];
+	stackOrder = @[@"C", @"B", @"A"];
 }
 
 /*
@@ -42,7 +42,7 @@
 - (void)testInitWithArray {
 	NSMutableArray *moreObjects = [NSMutableArray array];
 	for (NSUInteger i = 0; i < 32; i++) {
-		[moreObjects addObject:[NSNumber numberWithUnsignedInteger:i]];
+		[moreObjects addObject:@(i)];
 	}
 	for (Class aClass in stackClasses) {
 		// Test initializing with nil and empty array parameters

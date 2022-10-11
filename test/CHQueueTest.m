@@ -18,17 +18,17 @@
 @implementation CHQueueTest
 
 - (void)setUp {
-	queueClasses = [NSArray arrayWithObjects:
-					[CHListQueue class],
-					[CHCircularBufferQueue class],
-					nil];
-	objects = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
+	queueClasses = @[
+		[CHListQueue class],
+		[CHCircularBufferQueue class],
+	];
+	objects = @[@"A",@"B",@"C"];
 }
 
 - (void)testInitWithArray {
 	NSMutableArray *moreObjects = [NSMutableArray array];
 	for (NSUInteger i = 0; i < 32; i++) {
-		[moreObjects addObject:[NSNumber numberWithUnsignedInteger:i]];
+		[moreObjects addObject:@(i)];
 	}
 	
 	NSEnumerator *classes = [queueClasses objectEnumerator];
@@ -38,7 +38,7 @@
 		queue = nil;
 		XCTAssertThrows(queue = [[[aClass alloc] initWithArray:nil] autorelease], @"%@", aClass);
 		XCTAssertEqual([queue count], (NSUInteger)0);
-		queue = [[[aClass alloc] initWithArray:[NSArray array]] autorelease];
+		queue = [[[aClass alloc] initWithArray:@[]] autorelease];
 		XCTAssertEqual([queue count], (NSUInteger)0);
 		// Test initializing with a valid, non-empty array
 		queue = [[[aClass alloc] initWithArray:objects] autorelease];

@@ -34,7 +34,7 @@ static NSArray *abc;
 @implementation CHMutableSetTest
 
 + (void)initialize {
-	abc = [[NSArray arrayWithObjects:@"A",@"B",@"C",nil] retain];
+	abc = @[@"A",@"B",@"C"];
 }
 
 - (void)setUp {
@@ -50,7 +50,7 @@ static NSArray *abc;
 	NSMutableArray *array = [NSMutableArray array];
 	NSNumber *number;
 	for (NSUInteger count = 1; count <= 20; count++) {
-		number = [NSNumber numberWithUnsignedInt:arc4random()];
+		number = @(arc4random());
 		if ([array containsObject:number]) {
 			count--;
 		} else {
@@ -63,7 +63,7 @@ static NSArray *abc;
 - (void)testAddObjectsFromArray {
 	// Test that adding a nil or empty parameter has no effect
 	XCTAssertNoThrow([set addObjectsFromArray:nil]);
-	XCTAssertNoThrow([set addObjectsFromArray:[NSArray array]]);
+	XCTAssertNoThrow([set addObjectsFromArray:@[]]);
 	XCTAssertEqual([set count], (NSUInteger)0);
 	// Test adding objects
 	[set addObjectsFromArray:abc];
@@ -83,7 +83,7 @@ static NSArray *abc;
 	[set addObject:@"B"];
 	[set addObject:@"C"];
 	[set addObject:@"A"];
-	array = [NSArray arrayWithObjects:@"A",@"B",@"C",nil];
+	array = @[@"A",@"B",@"C"];
 	[self checkEqualityWithArray:array];
 	
 	[set addObject:@"C"];
@@ -128,7 +128,7 @@ static NSArray *abc;
 	NSSet *xyz = [NSSet setWithObjects:@"X",@"Y",@"Z",nil];
 	
 	XCTAssertFalse([set intersectsSet:abcSet]);
-	[set addObjectsFromArray:[NSArray arrayWithObjects:@"A",@"B",@"C",nil]];
+	[set addObjectsFromArray:@[@"A",@"B",@"C"]];
 	
 	XCTAssertTrue([set intersectsSet:abcSet]);
 	XCTAssertTrue([set intersectsSet:cde]);
@@ -145,10 +145,10 @@ static NSArray *abc;
 }
 
 - (void)testIntersectSet {
-	NSArray *cde = [NSArray arrayWithObjects:@"C",@"D",@"E",nil];
-	NSArray *def = [NSArray arrayWithObjects:@"D",@"E",@"F",nil];
-	NSArray *c = [NSArray arrayWithObjects:@"C",nil];
-	NSArray *empty = [NSArray array];
+	NSArray *cde = @[@"C",@"D",@"E"];
+	NSArray *def = @[@"D",@"E",@"F"];
+	NSArray *c = @[@"C"];
+	NSArray *empty = @[];
 	
 	XCTAssertNoThrow([set intersectSet:nil]);
 	
@@ -175,9 +175,9 @@ static NSArray *abc;
 }
 
 - (void)testMinusSet {
-	NSArray *axbycz = [NSArray arrayWithObjects:@"A",@"X",@"B",@"Y",@"C",@"Z",nil];
-	NSArray *xaybzc = [NSArray arrayWithObjects:@"X",@"A",@"Y",@"B",@"Z",@"C",nil];
-	NSArray *empty = [NSArray array];
+	NSArray *axbycz = @[@"A",@"X",@"B",@"Y",@"C",@"Z"];
+	NSArray *xaybzc = @[@"X",@"A",@"Y",@"B",@"Z",@"C"];
+	NSArray *empty = @[];
 	NSSet *xyz = [NSSet setWithObjects:@"X",@"Y",@"Z",nil];
 	
 	XCTAssertNoThrow([set minusSet:nil]);
@@ -355,8 +355,8 @@ static NSArray *abc;
 }
 
 - (void)testInsertObjectAtIndex {
-	NSArray *acb  = [NSArray arrayWithObjects:@"A",@"C",@"B",nil];
-	NSArray *dacb  = [NSArray arrayWithObjects:@"D",@"A",@"C",@"B",nil];
+	NSArray *acb  = @[@"A",@"C",@"B"];
+	NSArray *dacb  = @[@"D",@"A",@"C",@"B"];
 	
 	XCTAssertThrows([set insertObject:@"X" atIndex:1]);
 	
@@ -387,7 +387,7 @@ static NSArray *abc;
 #pragma mark Querying Contents
 
 - (void)testDescription {
-	XCTAssertEqualObjects([set description], [[NSArray array] description]);
+	XCTAssertEqualObjects([set description], [@[] description]);
 
 	NSArray *array = [self randomNumbers];
 	[set addObjectsFromArray:array];
@@ -402,8 +402,8 @@ static NSArray *abc;
 }
 
 - (void)testIsEqualToOrderedSet {
-	NSArray *cba = [NSArray arrayWithObjects:@"C",@"B",@"A",nil];
-	NSArray *xyz = [NSArray arrayWithObjects:@"X",@"Y",@"Z",nil];
+	NSArray *cba = @[@"C",@"B",@"A"];
+	NSArray *xyz = @[@"X",@"Y",@"Z"];
 	CHOrderedSet *set2;
 	[set addObjectsFromArray:abc];
 	set2 = [[[CHOrderedSet alloc] initWithArray:abc] autorelease];
@@ -457,7 +457,7 @@ static NSArray *abc;
 
 - (void)testOrderedSetWithObjectsAtIndexes {
 	XCTAssertThrows([set orderedSetWithObjectsAtIndexes:nil]);
-	NSArray *abcde = [NSArray arrayWithObjects:@"A",@"B",@"C",@"D",@"E",nil];
+	NSArray *abcde = @[@"A",@"B",@"C",@"D",@"E"];
 	[set addObjectsFromArray:abcde];
 	XCTAssertThrows([set orderedSetWithObjectsAtIndexes:nil]);
 	
