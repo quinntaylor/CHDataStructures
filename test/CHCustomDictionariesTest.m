@@ -897,7 +897,7 @@ static NSArray *keyArray;
 	XCTAssertThrows([dictionary removeObjectsForKeysAtIndexes:nil]);
 	
 	NSDictionary *master = [NSDictionary dictionaryWithDictionary:dictionary];
-	NSMutableDictionary *expected = [NSMutableDictionary dictionary];
+	NSMutableDictionary *expected;
 	// Select ranges of indexes and test that they line up with what we expect.
 	NSIndexSet *indexes;
 	for (NSUInteger location = 0; location < [dictionary count]; location++) {
