@@ -37,9 +37,9 @@
 		// Test initializing with nil and empty array parameters
 		queue = nil;
 		XCTAssertThrows(queue = [[[aClass alloc] initWithArray:nil] autorelease], @"%@", aClass);
-		XCTAssertEqual([queue count], (NSUInteger)0);
+		XCTAssertEqual([queue count], 0);
 		queue = [[[aClass alloc] initWithArray:@[]] autorelease];
-		XCTAssertEqual([queue count], (NSUInteger)0);
+		XCTAssertEqual([queue count], 0);
 		// Test initializing with a valid, non-empty array
 		queue = [[[aClass alloc] initWithArray:objects] autorelease];
 		XCTAssertEqual([queue count], [objects count]);
@@ -89,7 +89,7 @@
 		queue = [[[aClass alloc] init] autorelease];
 		// Test that adding a nil parameter raises an exception
 		XCTAssertThrows([queue addObject:nil]);
-		XCTAssertEqual([queue count], (NSUInteger)0);
+		XCTAssertEqual([queue count], 0);
 		// Test adding objects one by one and verify count and ordering
 		for (id anObject in objects) {
 			[queue addObject:anObject];

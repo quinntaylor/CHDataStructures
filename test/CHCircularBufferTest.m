@@ -65,7 +65,7 @@ do { \
 } while (0)
 	
 - (void)testInit {
-	XCTAssertEqual([buffer capacity], (NSUInteger)16);
+	XCTAssertEqual([buffer capacity], 16);
 	checkCountAndDistanceFromHeadToTail(0);
 }
 
@@ -75,26 +75,26 @@ do { \
 		[array addObject:@(i)];
 	}
 	buffer = [[[CHCircularBuffer alloc] initWithArray:array] autorelease];
-	XCTAssertEqual([buffer capacity], (NSUInteger)16);
+	XCTAssertEqual([buffer capacity], 16);
 	checkCountAndDistanceFromHeadToTail(15);
 	
 	[array addObject:@(16)];
 	buffer = [[[CHCircularBuffer alloc] initWithArray:array] autorelease];
-	XCTAssertEqual([buffer capacity], (NSUInteger)32);
+	XCTAssertEqual([buffer capacity], 32);
 	checkCountAndDistanceFromHeadToTail(16);
 	
 	for (int i = 17; i <= 33; i++) {
 		[array addObject:@(i)];
 	}
 	buffer = [[[CHCircularBuffer alloc] initWithArray:array] autorelease];
-	XCTAssertEqual([buffer capacity], (NSUInteger)64);
+	XCTAssertEqual([buffer capacity], 64);
 	checkCountAndDistanceFromHeadToTail(33);
 }
 
 - (void)testInitWithCapacity {
 	// Test initializing with valid capacity
 	buffer = [[[CHCircularBuffer alloc] initWithCapacity:8] autorelease];
-	XCTAssertEqual([buffer capacity], (NSUInteger)8);
+	XCTAssertEqual([buffer capacity], 8);
 	checkCountAndDistanceFromHeadToTail(0);
 	// Test initializing with invalid capacity
 	buffer = [[[CHCircularBuffer alloc] initWithCapacity:0] autorelease];
@@ -117,11 +117,11 @@ do { \
 	for (int i = 1; i <= 16; i++) {
 		[buffer addObject:@(i)];
 	}
-	XCTAssertEqual([buffer capacity], (NSUInteger)32);
+	XCTAssertEqual([buffer capacity], 32);
 	for (int i = 17; i <= 33; i++) {
 		[buffer addObject:@(i)];
 	}
-	XCTAssertEqual([buffer capacity], (NSUInteger)64);
+	XCTAssertEqual([buffer capacity], 64);
 }
 
 - (void)testInsertObjectAtIndex {
@@ -188,14 +188,14 @@ do { \
 #pragma mark Access
 
 - (void)testCount {
-	XCTAssertEqual([buffer count], (NSUInteger)0);
+	XCTAssertEqual([buffer count], 0);
 	[buffer addObjectsFromArray:abc];
 	XCTAssertEqual([buffer count], [abc count]);
 }
 
 - (void)testAllObjects {
 	XCTAssertNotNil([buffer allObjects]);
-	XCTAssertEqual([[buffer allObjects] count], (NSUInteger)0);
+	XCTAssertEqual([[buffer allObjects] count], 0);
 	
 	[buffer addObjectsFromArray:abc];
 	XCTAssertEqualObjects([buffer allObjects], abc);
@@ -218,11 +218,11 @@ do { \
 - (void)testEnumerator {
 	XCTAssertNil([[buffer objectEnumerator] nextObject]);
 	XCTAssertNotNil([[buffer objectEnumerator] allObjects]);
-	XCTAssertEqual([[[buffer objectEnumerator] allObjects] count], (NSUInteger)0);
+	XCTAssertEqual([[[buffer objectEnumerator] allObjects] count], 0);
 
 	XCTAssertNil([[buffer reverseObjectEnumerator] nextObject]);
 	XCTAssertNotNil([[buffer reverseObjectEnumerator] allObjects]);
-	XCTAssertEqual([[[buffer reverseObjectEnumerator] allObjects] count], (NSUInteger)0);
+	XCTAssertEqual([[[buffer reverseObjectEnumerator] allObjects] count], 0);
 	
 	[buffer addObjectsFromArray:abc];
 	
@@ -315,7 +315,7 @@ do { \
 }
 
 - (void)testIndexOfObject {
-	XCTAssertEqual([buffer indexOfObject:@"bogus"], (NSUInteger)NSNotFound);
+	XCTAssertEqual([buffer indexOfObject:@"bogus"], NSNotFound);
 	// Move the head index to 3 so adding 15 objects will wrap.
 	e = [abc objectEnumerator];
 	while (anObject = [e nextObject]) {
@@ -329,13 +329,13 @@ do { \
 	while (anObject = [e nextObject]) {
 		XCTAssertEqual([buffer indexOfObject:anObject], expectedIndex++);
 	}
-	XCTAssertEqual([buffer indexOfObject:@"bogus"], (NSUInteger)NSNotFound);
+	XCTAssertEqual([buffer indexOfObject:@"bogus"], NSNotFound);
 }
 
 - (void)testIndexOfObjectIdenticalTo {
 	NSString *a = [NSString stringWithFormat:@"A"];
-	XCTAssertEqual([buffer indexOfObjectIdenticalTo:@"bogus"], (NSUInteger)NSNotFound);
-	XCTAssertEqual([buffer indexOfObjectIdenticalTo:a],        (NSUInteger)NSNotFound);
+	XCTAssertEqual([buffer indexOfObjectIdenticalTo:@"bogus"], NSNotFound);
+	XCTAssertEqual([buffer indexOfObjectIdenticalTo:a],        NSNotFound);
 	// Move the head index to 3 so adding 15 objects will wrap.
 	e = [abc objectEnumerator];
 	while (anObject = [e nextObject]) {
@@ -349,8 +349,8 @@ do { \
 	while (anObject = [e nextObject]) {
 		XCTAssertEqual([buffer indexOfObjectIdenticalTo:anObject], expectedIndex++);
 	}
-	XCTAssertEqual([buffer indexOfObjectIdenticalTo:@"bogus"], (NSUInteger)NSNotFound);
-	XCTAssertEqual([buffer indexOfObjectIdenticalTo:a],        (NSUInteger)NSNotFound);
+	XCTAssertEqual([buffer indexOfObjectIdenticalTo:@"bogus"], NSNotFound);
+	XCTAssertEqual([buffer indexOfObjectIdenticalTo:a],        NSNotFound);
 }
 
 - (void)testIndexOfObjectInRange {
@@ -358,9 +358,9 @@ do { \
 	XCTAssertThrows([buffer indexOfObject:nil inRange:NSMakeRange(0, 0)]);
 	[buffer addObjectsFromArray:abc];
 	NSRange range = NSMakeRange(1, 1);
-	XCTAssertEqual([buffer indexOfObject:@"A" inRange:range], (NSUInteger)NSNotFound);
-	XCTAssertEqual([buffer indexOfObject:@"B" inRange:range], (NSUInteger)1);
-	XCTAssertEqual([buffer indexOfObject:@"C" inRange:range], (NSUInteger)NSNotFound);
+	XCTAssertEqual([buffer indexOfObject:@"A" inRange:range], NSNotFound);
+	XCTAssertEqual([buffer indexOfObject:@"B" inRange:range], 1);
+	XCTAssertEqual([buffer indexOfObject:@"C" inRange:range], NSNotFound);
 }
 
 - (void)testIndexOfObjectIdenticalToInRange {
@@ -369,13 +369,13 @@ do { \
 	[buffer addObjectsFromArray:abc];
 	NSRange range = NSMakeRange(1, 1);
 	XCTAssertEqual([buffer indexOfObjectIdenticalTo:@"A" inRange:range],
-				   (NSUInteger)NSNotFound);
+				   NSNotFound);
 	XCTAssertEqual([buffer indexOfObjectIdenticalTo:@"B" inRange:range],
-				   (NSUInteger)1);
+				   1);
 	XCTAssertEqual([buffer indexOfObjectIdenticalTo:[NSString stringWithFormat:@"B"] inRange:range],
-				   (NSUInteger)NSNotFound);
+				   NSNotFound);
 	XCTAssertEqual([buffer indexOfObjectIdenticalTo:@"C" inRange:range],
-				   (NSUInteger)NSNotFound);
+				   NSNotFound);
 }
 
 - (void)testObjectAtIndex {
@@ -472,18 +472,18 @@ do { \
 	checkCountAndDistanceFromHeadToTail(0);
 	
 	// Test whether circular buffer contracts when all objects are removed.
-	XCTAssertEqual([buffer capacity], (NSUInteger)16);
+	XCTAssertEqual([buffer capacity], 16);
 	// Insert each object 3 times to force array capacity to 64 elements
 	[buffer addObjectsFromArray:fifteen];
 	[buffer addObjectsFromArray:fifteen];
 	[buffer addObjectsFromArray:fifteen];
 	// Test capacity and count of resulting buffer
 	XCTAssertEqual([buffer count], [fifteen count]*3);
-	XCTAssertEqual([buffer capacity], (NSUInteger)64);
+	XCTAssertEqual([buffer capacity], 64);
 	// Capacity should be set back to default when removing all objects
 	[buffer removeAllObjects];
-	XCTAssertEqual([buffer count],    (NSUInteger)0);
-	XCTAssertEqual([buffer capacity], (NSUInteger)16);
+	XCTAssertEqual([buffer count],    0);
+	XCTAssertEqual([buffer capacity], 16);
 }
 
 - (void)removeObjectSetup {
@@ -524,11 +524,11 @@ do { \
 			[buffer addObjectsFromArray:testArray];
 			XCTAssertEqualObjects(buffer, testArray);
 			[buffer removeObject:@"bogus"];
-			XCTAssertEqualObjects(buffer, testArray, @"for array %@", [testArray description]);
+			XCTAssertEqualObjects(buffer, testArray);
 			[buffer removeObject:@"X"];
-			XCTAssertEqualObjects(buffer, processedArray, @"for array %@", [testArray description]);
+			XCTAssertEqualObjects(buffer, processedArray);
 			[buffer removeObject:@"X"];
-			XCTAssertEqualObjects(buffer, processedArray, @"for array %@", [testArray description]);
+			XCTAssertEqualObjects(buffer, processedArray);
 			[buffer removeAllObjects];
 		}
 	}
@@ -548,15 +548,15 @@ do { \
 	[buffer addObject:b];
 	XCTAssertThrows([buffer removeObjectIdenticalTo:nil]);
 	
-	XCTAssertEqual([buffer count], (NSUInteger)5);
+	XCTAssertEqual([buffer count], 5);
 	[buffer removeObjectIdenticalTo:@"A"];
-	XCTAssertEqual([buffer count], (NSUInteger)5);
+	XCTAssertEqual([buffer count], 5);
 	[buffer removeObjectIdenticalTo:@"B"];
-	XCTAssertEqual([buffer count], (NSUInteger)5);
+	XCTAssertEqual([buffer count], 5);
 	[buffer removeObjectIdenticalTo:a];
-	XCTAssertEqual([buffer count], (NSUInteger)3);
+	XCTAssertEqual([buffer count], 3);
 	[buffer removeObjectIdenticalTo:b];
-	XCTAssertEqual([buffer count], (NSUInteger)1);
+	XCTAssertEqual([buffer count], 1);
 
 	// Test removing all instances of an object in various scenarios
 	[self removeObjectSetup];
@@ -574,11 +574,11 @@ do { \
 			[buffer addObjectsFromArray:testArray];
 			XCTAssertEqualObjects(buffer, testArray);
 			[buffer removeObjectIdenticalTo:x];
-			XCTAssertEqualObjects(buffer, testArray, @"for array %@", [testArray description]);
+			XCTAssertEqualObjects(buffer, testArray);
 			[buffer removeObjectIdenticalTo:@"X"];
-			XCTAssertEqualObjects(buffer, processedArray, @"for array %@", [testArray description]);
+			XCTAssertEqualObjects(buffer, processedArray);
 			[buffer removeObjectIdenticalTo:@"X"];
-			XCTAssertEqualObjects(buffer, processedArray, @"for array %@", [testArray description]);
+			XCTAssertEqualObjects(buffer, processedArray);
 			[buffer removeAllObjects];
 		}
 	}
@@ -690,13 +690,13 @@ do { \
 	NSArray *objects = @[@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O",@"P"];
 	[buffer addObjectsFromArray:objects];
 	XCTAssertEqual([buffer count], [objects count]);
-	XCTAssertEqual([buffer capacity], (NSUInteger)32);
+	XCTAssertEqual([buffer capacity], 32);
 	XCTAssertEqualObjects([buffer allObjects], objects);
 	
 	buffer = [buffer copyUsingNSCoding];
 	
 	XCTAssertEqual([buffer count], [objects count]);
-	XCTAssertEqual([buffer capacity], (NSUInteger)32);
+	XCTAssertEqual([buffer capacity], 32);
 	XCTAssertEqualObjects([buffer allObjects], objects);
 }
 

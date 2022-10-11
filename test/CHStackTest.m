@@ -48,7 +48,7 @@
 		// Test initializing with nil and empty array parameters
 		stack = nil;
 		XCTAssertThrows([[[aClass alloc] initWithArray:nil] autorelease]);
-		XCTAssertEqual([stack count], (NSUInteger)0);
+		XCTAssertEqual([stack count], 0);
 		// Test initializing with a valid, non-empty array
 		stack = [[[aClass alloc] initWithArray:objects] autorelease];
 		XCTAssertEqual([stack count], [objects count]);
@@ -94,7 +94,7 @@
 		stack = [[[aClass alloc] init] autorelease];
 		XCTAssertThrows([stack pushObject:nil]);
 		
-		XCTAssertEqual([stack count], (NSUInteger)0);
+		XCTAssertEqual([stack count], 0);
 		for (id anObject in objects) {
 			[stack pushObject:anObject];
 		}

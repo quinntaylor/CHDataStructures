@@ -35,9 +35,9 @@
 		// Test initializing with nil and empty array parameters
 		deque = nil;
 		XCTAssertThrows([[[aClass alloc] initWithArray:nil] autorelease]);
-		XCTAssertEqual([deque count], (NSUInteger)0);
+		XCTAssertEqual([deque count], 0);
 		deque = [[[aClass alloc] initWithArray:@[]] autorelease];
-		XCTAssertEqual([deque count], (NSUInteger)0);
+		XCTAssertEqual([deque count], 0);
 		// Test initializing with a valid, non-empty array
 		deque = [[[aClass alloc] initWithArray:objects] autorelease];
 		XCTAssertEqual([deque count], [objects count]);
@@ -54,11 +54,11 @@
 		deque = [[[aClass alloc] init] autorelease];
 		XCTAssertThrows([deque prependObject:nil]);
 		
-		XCTAssertEqual([deque count], (NSUInteger)0);
+		XCTAssertEqual([deque count], 0);
 		for (id anObject in objects) {
 			[deque prependObject:anObject];
 		}
-		XCTAssertEqual([deque count], (NSUInteger)3);
+		XCTAssertEqual([deque count], 3);
 		NSEnumerator *e = [deque objectEnumerator];
 		XCTAssertEqualObjects([e nextObject], @"C");
 		XCTAssertEqualObjects([e nextObject], @"B");
@@ -71,11 +71,11 @@
 		deque = [[[aClass alloc] init] autorelease];
 		XCTAssertThrows([deque appendObject:nil]);
 		
-		XCTAssertEqual([deque count], (NSUInteger)0);
+		XCTAssertEqual([deque count], 0);
 		for (id anObject in objects) {
 			[deque appendObject:anObject];
 		}
-		XCTAssertEqual([deque count], (NSUInteger)3);
+		XCTAssertEqual([deque count], 3);
 		NSEnumerator *e = [deque objectEnumerator];
 		XCTAssertEqualObjects([e nextObject], @"A");
 		XCTAssertEqualObjects([e nextObject], @"B");
@@ -181,7 +181,7 @@
 		XCTAssertNil([deque lastObject]);
 		// Test that removal works even with an empty deque
 		XCTAssertNoThrow([deque removeLastObject]);
-		XCTAssertEqual([deque count], (NSUInteger)0);
+		XCTAssertEqual([deque count], 0);
 	}
 }
 

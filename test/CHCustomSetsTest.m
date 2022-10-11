@@ -64,7 +64,7 @@ static NSArray *abc;
 	// Test that adding a nil or empty parameter has no effect
 	XCTAssertNoThrow([set addObjectsFromArray:nil]);
 	XCTAssertNoThrow([set addObjectsFromArray:@[]]);
-	XCTAssertEqual([set count], (NSUInteger)0);
+	XCTAssertEqual([set count], 0);
 	// Test adding objects
 	[set addObjectsFromArray:abc];
 	[self checkEqualityWithArray:abc];
@@ -98,7 +98,7 @@ static NSArray *abc;
 }
 
 - (void)testCount {
-	XCTAssertEqual([set count], (NSUInteger)0);
+	XCTAssertEqual([set count], 0);
 	NSArray *array = [self randomNumbers];
 	[set addObjectsFromArray:array];
 	XCTAssertEqual([set count], [array count]);
@@ -464,7 +464,7 @@ static NSArray *abc;
 	CHOrderedSet *newSet;
 	XCTAssertNoThrow(newSet = [set orderedSetWithObjectsAtIndexes:[NSIndexSet indexSet]]);
 	XCTAssertNotNil(newSet);
-	XCTAssertEqual([newSet count], (NSUInteger)0);
+	XCTAssertEqual([newSet count], 0);
 	
 	// Select ranges of indexes and test that they line up with what we expect.
 	NSIndexSet *indexes;

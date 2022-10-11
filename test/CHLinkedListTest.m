@@ -63,7 +63,7 @@
 			XCTAssertEqual([object unsignedIntegerValue], expected++);
 			count++;
 		}
-		XCTAssertEqual(count, (NSUInteger)32);
+		XCTAssertEqual(count, 32);
 		
 		@try {
 			for (__unused id object in list) {
@@ -82,7 +82,7 @@
 	for (Class aClass in linkedListClasses) {
 		list = [[[aClass alloc] init] autorelease];
 		XCTAssertNotNil(list);
-		XCTAssertEqual([list count], (NSUInteger)0);
+		XCTAssertEqual([list count], 0);
 		XCTAssertEqualObjects([list firstObject], nil);	
 		XCTAssertEqualObjects([list lastObject], nil);
 	}
@@ -232,7 +232,7 @@
 		// Test inserting a single object into an empty list
 		XCTAssertNoThrow([list insertObjects:@[@"A"]
 								  atIndexes:[NSIndexSet indexSetWithIndex:0]]);
-		XCTAssertEqual([list count], (NSUInteger)1);
+		XCTAssertEqual([list count], 1);
 		XCTAssertEqualObjects([list objectAtIndex:0], @"A");
 		// Test inserting multiple objects into an empty list
 		[list removeAllObjects];
@@ -265,32 +265,32 @@
 	for (Class aClass in linkedListClasses) {
 		list = [[[aClass alloc] init] autorelease];
 		// Enumerator shouldn't retain collection if there are no objects
-		XCTAssertEqual([list retainCount], (NSUInteger)1);
+		XCTAssertEqual([list retainCount], 1);
 		e = [list objectEnumerator];
 		XCTAssertNotNil(e);
-		XCTAssertEqual([list retainCount], (NSUInteger)1);
+		XCTAssertEqual([list retainCount], 1);
 		XCTAssertNil([e nextObject]);
 		
 		// Enumerator should retain collection when it has 1+ objects
 		[list addObjectsFromArray:abc];
-		XCTAssertEqual([list retainCount], (NSUInteger)1);
+		XCTAssertEqual([list retainCount], 1);
 		e = [list objectEnumerator];
 		XCTAssertNotNil(e);
-		XCTAssertEqual([list retainCount], (NSUInteger)2);
+		XCTAssertEqual([list retainCount], 2);
 		
 		// Enumerator should release collection when all objects are exhausted
 		XCTAssertEqualObjects([e nextObject], @"A");
 		XCTAssertEqualObjects([e nextObject], @"B");
 		XCTAssertEqualObjects([e nextObject], @"C");
 		
-		XCTAssertEqual([list retainCount], (NSUInteger)2);
+		XCTAssertEqual([list retainCount], 2);
 		XCTAssertNil([e nextObject]);
-		XCTAssertEqual([list retainCount], (NSUInteger)1);
+		XCTAssertEqual([list retainCount], 1);
 		
 		e = [list objectEnumerator];
-		XCTAssertEqual([list retainCount], (NSUInteger)2);
+		XCTAssertEqual([list retainCount], 2);
 		NSArray *allObjects = [e allObjects];
-		XCTAssertEqual([list retainCount], (NSUInteger)1);
+		XCTAssertEqual([list retainCount], 1);
 		XCTAssertNotNil(allObjects);
 		XCTAssertEqualObjects(allObjects, abc);
 		XCTAssertEqualObjects([allObjects objectAtIndex:0], @"A");
@@ -298,13 +298,13 @@
 		
 		// Enumerator should release collection on -dealloc
 		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		XCTAssertEqual([list retainCount], (NSUInteger)1);
+		XCTAssertEqual([list retainCount], 1);
 		e = [list objectEnumerator];
 		XCTAssertNotNil(e);
-		XCTAssertEqual([list retainCount], (NSUInteger)2);
+		XCTAssertEqual([list retainCount], 2);
 		// Force deallocation of enumerator by draining autorelease pool
 		[pool drain];
-		XCTAssertEqual([list retainCount], (NSUInteger)1);	
+		XCTAssertEqual([list retainCount], 1);	
 		
 		// For doubly-linked list, test reverse enumeration order as well
 		if (aClass == [CHDoublyLinkedList class]) {
@@ -313,14 +313,14 @@
 			XCTAssertEqualObjects([e nextObject], @"B");
 			XCTAssertEqualObjects([e nextObject], @"A");
 			
-			XCTAssertEqual([list retainCount], (NSUInteger)2);
+			XCTAssertEqual([list retainCount], 2);
 			XCTAssertNil([e nextObject]);
-			XCTAssertEqual([list retainCount], (NSUInteger)1);
+			XCTAssertEqual([list retainCount], 1);
 			
 			e = [(CHDoublyLinkedList *)list reverseObjectEnumerator];
-			XCTAssertEqual([list retainCount], (NSUInteger)2);
+			XCTAssertEqual([list retainCount], 2);
 			allObjects = [e allObjects];
-			XCTAssertEqual([list retainCount], (NSUInteger)1);
+			XCTAssertEqual([list retainCount], 1);
 			XCTAssertEqualObjects(allObjects, (@[@"C", @"B", @"A"]));
 		}
 		
@@ -361,26 +361,26 @@
 - (void)testIndexOfObject {
 	for (Class aClass in linkedListClasses) {
 		list = [[[aClass alloc] init] autorelease];
-		XCTAssertEqual([list indexOfObject:@"A"], (NSUInteger)NSNotFound);
+		XCTAssertEqual([list indexOfObject:@"A"], NSNotFound);
 		[list addObjectsFromArray:abc];
 		for (NSUInteger i = 0; i < [abc count]; i++) {
 			XCTAssertEqual([list indexOfObject:[abc objectAtIndex:i]], i);
 		}
-		XCTAssertEqual([list indexOfObject:@"Z"], (NSUInteger)NSNotFound);
+		XCTAssertEqual([list indexOfObject:@"Z"], NSNotFound);
 	}
 }
 
 - (void)testIndexOfObjectIdenticalTo {
 	for (Class aClass in linkedListClasses) {
 		list = [[[aClass alloc] init] autorelease];
-		XCTAssertEqual([list indexOfObjectIdenticalTo:@"A"], (NSUInteger)NSNotFound);
+		XCTAssertEqual([list indexOfObjectIdenticalTo:@"A"], NSNotFound);
 		[list addObjectsFromArray:abc];
 		// Test with the actual string, then a copy made from the string.
 		for (NSUInteger i = 0; i < [abc count]; i++) {
 			NSString *string = [abc objectAtIndex:i];
-			XCTAssertEqual([list indexOfObjectIdenticalTo:string], (NSUInteger)i);
+			XCTAssertEqual([list indexOfObjectIdenticalTo:string], i);
 			string = [NSString stringWithFormat:@"%@", string];
-			XCTAssertEqual([list indexOfObjectIdenticalTo:string], (NSUInteger)NSNotFound);
+			XCTAssertEqual([list indexOfObjectIdenticalTo:string], NSNotFound);
 		}
 	}
 }
@@ -456,7 +456,7 @@
 		[list addObjectsFromArray:abc];
 		XCTAssertEqual([list count], [abc count]);
 		[list removeAllObjects];
-		XCTAssertEqual([list count], (NSUInteger)0);
+		XCTAssertEqual([list count], 0);
 	}
 }
 
@@ -468,19 +468,19 @@
 		[list addObjectsFromArray:abc];
 		
 		XCTAssertNoThrow([list removeFirstObject]);
-		XCTAssertEqual([list count], (NSUInteger)2);
+		XCTAssertEqual([list count], 2);
 		XCTAssertEqualObjects([list firstObject], @"B");
 		XCTAssertEqualObjects([list lastObject],  @"C");
 		
 		[list removeFirstObject];
-		XCTAssertEqual([list count], (NSUInteger)1);
+		XCTAssertEqual([list count], 1);
 		XCTAssertEqualObjects([list firstObject], @"C");
 		XCTAssertEqualObjects([list lastObject],  @"C");
 		// Doubly-linked list:  head->next === tail->prev
 		// Singly-linked list:  head->next === tail
 		
 		[list removeFirstObject];
-		XCTAssertEqual([list count], (NSUInteger)0);
+		XCTAssertEqual([list count], 0);
 		XCTAssertNil([list firstObject]);
 		XCTAssertNil([list lastObject]);
 		// Doubly-linked list:  head->next === tail && tail->prev === head
@@ -496,17 +496,17 @@
 		[list addObjectsFromArray:abc];
 		
 		[list removeLastObject];
-		XCTAssertEqual([list count], (NSUInteger)2);
+		XCTAssertEqual([list count], 2);
 		XCTAssertEqualObjects([list firstObject], @"A");
 		XCTAssertEqualObjects([list lastObject],  @"B");
 		
 		[list removeLastObject];
-		XCTAssertEqual([list count], (NSUInteger)1);
+		XCTAssertEqual([list count], 1);
 		// Doubly-linked list:  head->next === tail->prev
 		// Singly-linked list:  head->next === tail
 		
 		[list removeLastObject];
-		XCTAssertEqual([list count], (NSUInteger)0);
+		XCTAssertEqual([list count], 0);
 		// Doubly-linked list:  head->next === tail && tail->prev === head
 		// Singly-linked list:  head === tail
 	}
@@ -521,17 +521,17 @@
 		[list addObjectsFromArray:abc];
 		
 		[list removeObject:@"B"];
-		XCTAssertEqual([list count], (NSUInteger)2);
+		XCTAssertEqual([list count], 2);
 		XCTAssertEqualObjects([list firstObject], @"A");
 		XCTAssertEqualObjects([list lastObject],  @"C");
 		
 		[list removeObject:@"A"];
-		XCTAssertEqual([list count], (NSUInteger)1);
+		XCTAssertEqual([list count], 1);
 		XCTAssertEqualObjects([list firstObject], @"C");
 		XCTAssertEqualObjects([list lastObject],  @"C");
 		
 		[list removeObject:@"C"];
-		XCTAssertEqual([list count], (NSUInteger)0);
+		XCTAssertEqual([list count], 0);
 		XCTAssertNil([list firstObject]);
 		XCTAssertNil([list lastObject]);
 		
@@ -543,9 +543,9 @@
 		[list addObject:@"Z"];
 		[list addObject:@"C"];
 		
-		XCTAssertEqual([list count], (NSUInteger)6);
+		XCTAssertEqual([list count], 6);
 		[list removeObject:@"Z"];
-		XCTAssertEqual([list count], (NSUInteger)3);
+		XCTAssertEqual([list count], 3);
 		XCTAssertEqualObjects([list objectAtIndex:0], @"A");
 		XCTAssertEqualObjects([list objectAtIndex:1], @"B");
 		XCTAssertEqualObjects([list objectAtIndex:2], @"C");	
@@ -559,11 +559,11 @@
 		
 		NSString *a = [NSString stringWithFormat:@"A"];
 		[list addObject:a];
-		XCTAssertEqual([list count], (NSUInteger)1);
+		XCTAssertEqual([list count], 1);
 		[list removeObjectIdenticalTo:@"A"];
-		XCTAssertEqual([list count], (NSUInteger)1);
+		XCTAssertEqual([list count], 1);
 		[list removeObjectIdenticalTo:a];
-		XCTAssertEqual([list count], (NSUInteger)0);
+		XCTAssertEqual([list count], 0);
 		
 		// Test removing all instances of an object
 		[list addObject:@"A"];
@@ -575,9 +575,9 @@
 
 		XCTAssertThrows([list removeObjectIdenticalTo:nil]);
 
-		XCTAssertEqual([list count], (NSUInteger)6);
+		XCTAssertEqual([list count], 6);
 		[list removeObjectIdenticalTo:@"Z"];
-		XCTAssertEqual([list count], (NSUInteger)4);
+		XCTAssertEqual([list count], 4);
 		XCTAssertEqualObjects([list objectAtIndex:0], @"A");
 		XCTAssertEqualObjects([list objectAtIndex:1], @"B");
 		XCTAssertEqualObjects([list objectAtIndex:2], @"C");	
@@ -593,22 +593,22 @@
 		XCTAssertThrows([list removeObjectAtIndex:-1]);
 		
 		[list removeObjectAtIndex:2];
-		XCTAssertEqual([list count], (NSUInteger)2);
+		XCTAssertEqual([list count], 2);
 		XCTAssertEqualObjects([list firstObject], @"A");
 		XCTAssertEqualObjects([list lastObject],  @"B");
 		
 		[list removeObjectAtIndex:0];
-		XCTAssertEqual([list count], (NSUInteger)1);
+		XCTAssertEqual([list count], 1);
 		XCTAssertEqualObjects([list firstObject], @"B");
 		XCTAssertEqualObjects([list lastObject],  @"B");
 		
 		[list removeObjectAtIndex:0];
-		XCTAssertEqual([list count], (NSUInteger)0);
+		XCTAssertEqual([list count], 0);
 		
 		[list addObjectsFromArray:abc];
 		// Test removing from an index in the middle
 		[list removeObjectAtIndex:1];
-		XCTAssertEqual([list count], (NSUInteger)2);
+		XCTAssertEqual([list count], 2);
 		XCTAssertEqualObjects([list firstObject], @"A");
 		XCTAssertEqualObjects([list lastObject],  @"C");
 	}

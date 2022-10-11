@@ -93,12 +93,12 @@
 			for (id anObject in objects) {
 				[heap addObject:anObject];
 			}
-			XCTAssertEqual([heap count], (NSUInteger)9);
+			XCTAssertEqual([heap count], 9);
 			XCTAssertTrue([heap isValid]);
 			
 			heap = [heap copyUsingNSCoding];
 			
-			XCTAssertEqual([heap count], (NSUInteger)9);
+			XCTAssertEqual([heap count], 9);
 			XCTAssertTrue([heap isValid]);
 		}
 	} while (sortOrder != NSOrderedDescending);
@@ -110,7 +110,7 @@
 		[heap addObjectsFromArray:objects];
 		id heap2 = [[heap copy] autorelease];
 		XCTAssertNotNil(heap2);
-		XCTAssertEqual([heap2 count], (NSUInteger)9);
+		XCTAssertEqual([heap2 count], 9);
 		XCTAssertEqual([heap hash], [heap2 hash]);
 		XCTAssertEqualObjects([heap allObjects], [heap2 allObjects]);
 	}
@@ -173,7 +173,7 @@
 	for (Class aClass in heapClasses) {
 		heap = [[[aClass alloc] init] autorelease];
 		XCTAssertThrows([heap addObject:nil]);
-		XCTAssertEqual([heap count], (NSUInteger)0);
+		XCTAssertEqual([heap count], 0);
 		for (id anObject in objects) {
 			[heap addObject:anObject];
 			XCTAssertTrue([heap isValid]);
@@ -187,7 +187,7 @@
 		heap = [[[aClass alloc] init] autorelease];
 		XCTAssertNoThrow([heap addObjectsFromArray:nil]);
 		XCTAssertNoThrow([heap addObjectsFromArray:@[]]);
-		XCTAssertEqual([heap count], (NSUInteger)0);
+		XCTAssertEqual([heap count], 0);
 		[heap addObjectsFromArray:objects];
 		XCTAssertTrue([heap isValid]);
 		XCTAssertEqual([heap count], [objects count]);
@@ -226,9 +226,9 @@
 - (void)testCount {
 	for (Class aClass in heapClasses) {
 		heap = [[[aClass alloc] init] autorelease];
-		XCTAssertEqual([heap count], (NSUInteger)0);
+		XCTAssertEqual([heap count], 0);
 		[heap addObject:@"A"];
-		XCTAssertEqual([heap count], (NSUInteger)1);
+		XCTAssertEqual([heap count], 1);
 	}
 }
 
@@ -382,9 +382,9 @@
 	for (Class aClass in heapClasses) {
 		heap = [[[aClass alloc] init] autorelease];
 		[heap addObjectsFromArray:objects];
-		XCTAssertEqual([heap count], (NSUInteger)9);
+		XCTAssertEqual([heap count], 9);
 		[heap removeAllObjects];
-		XCTAssertEqual([heap count], (NSUInteger)0);
+		XCTAssertEqual([heap count], 0);
 	}
 }
 
@@ -400,7 +400,7 @@
 		e = [heap objectEnumerator];
 		allObjects = [e allObjects];
 		XCTAssertNotNil(allObjects);
-		XCTAssertEqual([allObjects count], (NSUInteger)0);
+		XCTAssertEqual([allObjects count], 0);
 		
 		[heap addObjectsFromArray:objects];
 		e = [heap objectEnumerator];

@@ -59,9 +59,9 @@ static NSArray *abcde;
 		// This method should be unsupported in the abstract parent class.
 		XCTAssertThrows([set addObject:nil]);
 	} else {
-		XCTAssertEqual([set count], (NSUInteger)0);
+		XCTAssertEqual([set count], 0);
 		XCTAssertThrows([set addObject:nil]);
-		XCTAssertEqual([set count], (NSUInteger)0);
+		XCTAssertEqual([set count], 0);
 		
 		// Try adding distinct objects
 		NSUInteger expectedCount = 0;
@@ -134,7 +134,7 @@ static NSArray *abcde;
 		return;
 	}
 	XCTAssertNotNil(set);
-	XCTAssertEqual([set count], (NSUInteger)0);
+	XCTAssertEqual([set count], 0);
 }
 
 - (void)testInitWithArray {
@@ -193,32 +193,32 @@ static NSArray *abcde;
 	}
 	
 	// Enumerator shouldn't retain collection if there are no objects
-	XCTAssertEqual([set retainCount], (NSUInteger)1);
+	XCTAssertEqual([set retainCount], 1);
 	NSEnumerator *e = [set objectEnumerator];
 	XCTAssertNotNil(e);
-	XCTAssertEqual([set retainCount], (NSUInteger)1);
+	XCTAssertEqual([set retainCount], 1);
 	XCTAssertNil([e nextObject]);
 
 	// Enumerator should retain collection when it has 1+ objects, release on 0
 	[set addObjectsFromArray:abcde];
 	e = [set objectEnumerator];
 	XCTAssertNotNil(e);
-	XCTAssertEqual([set retainCount], (NSUInteger)2);
+	XCTAssertEqual([set retainCount], 2);
 	// Grab one object from the enumerator
 	[e nextObject];
-	XCTAssertEqual([set retainCount], (NSUInteger)2);
+	XCTAssertEqual([set retainCount], 2);
 	// Empty the enumerator of all objects
 	[e allObjects];
-	XCTAssertEqual([set retainCount], (NSUInteger)1);
+	XCTAssertEqual([set retainCount], 1);
 	
 	// Enumerator should release collection on -dealloc
 	NSAutoreleasePool *pool  = [[NSAutoreleasePool alloc] init];
-	XCTAssertEqual([set retainCount], (NSUInteger)1);
+	XCTAssertEqual([set retainCount], 1);
 	e = [set objectEnumerator];
 	XCTAssertNotNil(e);
-	XCTAssertEqual([set retainCount], (NSUInteger)2);
+	XCTAssertEqual([set retainCount], 2);
 	[pool drain]; // Force deallocation of autoreleased enumerator
-	XCTAssertEqual([set retainCount], (NSUInteger)1);
+	XCTAssertEqual([set retainCount], 1);
 	
 	// Test mutation in the middle of enumeration
 	e = [set objectEnumerator];
@@ -241,12 +241,12 @@ static NSArray *abcde;
 	}
 	// Try with empty sorted set
 	XCTAssertNoThrow([set removeAllObjects]);
-	XCTAssertEqual([set count], (NSUInteger)0);
+	XCTAssertEqual([set count], 0);
 	// Try with populated sorted set
 	[set addObjectsFromArray:abcde];
 	XCTAssertEqual([set count], [abcde count]);
 	XCTAssertNoThrow([set removeAllObjects]);
-	XCTAssertEqual([set count], (NSUInteger)0);
+	XCTAssertEqual([set count], 0);
 }
 
 - (void)testRemoveFirstObject {
@@ -255,7 +255,7 @@ static NSArray *abcde;
 	}
 	// Try with empty sorted set
 	XCTAssertNoThrow([set removeFirstObject]);
-	XCTAssertEqual([set count], (NSUInteger)0);
+	XCTAssertEqual([set count], 0);
 	// Try with populated sorted set
 	[set addObjectsFromArray:abcde];
 	XCTAssertEqualObjects([set firstObject], @"A");
@@ -271,7 +271,7 @@ static NSArray *abcde;
 	}
 	// Try with empty sorted set
 	XCTAssertNoThrow([set removeLastObject]);
-	XCTAssertEqual([set count], (NSUInteger)0);
+	XCTAssertEqual([set count], 0);
 	// Try with populated sorted set
 	[set addObjectsFromArray:abcde];
 	XCTAssertEqualObjects([set lastObject], @"E");
@@ -422,7 +422,7 @@ static NSArray *abcde;
 	id copy;
 	copy = [[set copy] autorelease];
 	XCTAssertNotNil(copy);
-	XCTAssertEqual([copy count], (NSUInteger)0);
+	XCTAssertEqual([copy count], 0);
 	XCTAssertEqual([set hash], [copy hash]);
 	
 	[set addObjectsFromArray:abcde];
@@ -577,9 +577,9 @@ static NSArray *abcde;
 }
 
 - (void)testAddObject {
-	XCTAssertEqual([set count], (NSUInteger)0);
+	XCTAssertEqual([set count], 0);
 	XCTAssertThrows([set addObject:nil]);
-	XCTAssertEqual([set count], (NSUInteger)0);
+	XCTAssertEqual([set count], 0);
 	
 	[set addObjectsFromArray:objects];
 	XCTAssertEqual([set count], [objects count]);
@@ -1257,9 +1257,9 @@ static NSArray *abcde;
 - (void)testPriorityForObject {
 	// Priority value should indicate that an object not in the treap is absent.
 	XCTAssertThrows([set priorityForObject:nil]);
-	XCTAssertEqual([set priorityForObject:@"bogus"], (NSUInteger)CHTreapNotFound);
+	XCTAssertEqual([set priorityForObject:@"bogus"], CHTreapNotFound);
 	[set addObjectsFromArray:objects];
-	XCTAssertEqual([set priorityForObject:@"bogus"], (NSUInteger)CHTreapNotFound);
+	XCTAssertEqual([set priorityForObject:@"bogus"], CHTreapNotFound);
 	
 	// Inserting from 'objects' with these priorities creates a known ordering.
 	NSUInteger priorities[] = {8,11,13,12,1,4,5,9,6,3,10,7,2};
@@ -1297,9 +1297,9 @@ static NSArray *abcde;
 	}
 	
 	// Test removing a node which has been removed from the tree
-	XCTAssertEqual([set count], (NSUInteger)0);
+	XCTAssertEqual([set count], 0);
 	[set removeObject:@"bogus"];
-	XCTAssertEqual([set count], (NSUInteger)0);
+	XCTAssertEqual([set count], 0);
 }
 
 @end

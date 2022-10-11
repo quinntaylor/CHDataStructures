@@ -56,7 +56,7 @@
 	[collection addObjectsFromArray:objects];
 	CHAbstractListCollection *collection2 = [[collection copy] autorelease];
 	XCTAssertNotNil(collection2);
-	XCTAssertEqual([collection2 count], (NSUInteger)3);
+	XCTAssertEqual([collection2 count], 3);
 	XCTAssertEqualObjects([collection allObjects], [collection2 allObjects]);
 }
 
@@ -99,16 +99,16 @@
 - (void)testAllObjects {
 	// An empty collection should return an empty (but non-nil) object array
 	XCTAssertNotNil([collection allObjects]);
-	XCTAssertEqual([[collection allObjects] count], (NSUInteger)0);
+	XCTAssertEqual([[collection allObjects] count], 0);
 	// Test that a non-empty collection returns all objects properly
 	[collection addObjectsFromArray:objects];
 	XCTAssertEqualObjects([collection allObjects], objects);
 }
 
 - (void)testCount {
-	XCTAssertEqual([collection count], (NSUInteger)0);
+	XCTAssertEqual([collection count], 0);
 	[collection addObject:@"Hello, World!"];
-	XCTAssertEqual([collection count], (NSUInteger)1);
+	XCTAssertEqual([collection count], 1);
 }
 
 - (void)testContainsObject {
@@ -164,21 +164,21 @@
 		XCTAssertEqual([collection indexOfObject:[objects objectAtIndex:i]],
 					   (NSUInteger)NSNotFound);
 	}
-	XCTAssertEqual([collection indexOfObject:@"Z"], (NSUInteger)NSNotFound);
+	XCTAssertEqual([collection indexOfObject:@"Z"], NSNotFound);
 	// Add objects and test index of each, plus non-member object
 	[collection addObjectsFromArray:objects];
 	for (NSUInteger i = 0; i < [objects count]; i++) {
 		XCTAssertEqual([collection indexOfObject:[objects objectAtIndex:i]], i);
 	}
-	XCTAssertEqual([collection indexOfObject:@"Z"], (NSUInteger)NSNotFound);
+	XCTAssertEqual([collection indexOfObject:@"Z"], NSNotFound);
 }
 
 - (void)testIndexOfObjectIdenticalTo {
 	NSString *a = [NSString stringWithFormat:@"A"];
 	[collection addObject:a];
-	XCTAssertEqual([collection indexOfObjectIdenticalTo:a], (NSUInteger)0);
-	XCTAssertEqual([collection indexOfObjectIdenticalTo:@"A"], (NSUInteger)NSNotFound);
-	XCTAssertEqual([collection indexOfObjectIdenticalTo:@"Z"], (NSUInteger)NSNotFound);
+	XCTAssertEqual([collection indexOfObjectIdenticalTo:a], 0);
+	XCTAssertEqual([collection indexOfObjectIdenticalTo:@"A"], NSNotFound);
+	XCTAssertEqual([collection indexOfObjectIdenticalTo:@"Z"], NSNotFound);
 }
 
 - (void)testObjectAtIndex {
@@ -224,11 +224,11 @@
 }
 
 - (void)testRemoveAllObjects {
-	XCTAssertEqual([collection count], (NSUInteger)0);
+	XCTAssertEqual([collection count], 0);
 	[collection addObjectsFromArray:objects];
-	XCTAssertEqual([collection count], (NSUInteger)3);
+	XCTAssertEqual([collection count], 3);
 	[collection removeAllObjects];
-	XCTAssertEqual([collection count], (NSUInteger)0);
+	XCTAssertEqual([collection count], 0);
 }
 
 - (void)testRemoveObject {
@@ -236,26 +236,26 @@
 
 	XCTAssertThrows([collection removeObject:nil]);
 
-	XCTAssertEqual([collection count], (NSUInteger)3);
+	XCTAssertEqual([collection count], 3);
 	[collection removeObject:@"A"];
-	XCTAssertEqual([collection count], (NSUInteger)2);
+	XCTAssertEqual([collection count], 2);
 	[collection removeObject:@"A"];
-	XCTAssertEqual([collection count], (NSUInteger)2);
+	XCTAssertEqual([collection count], 2);
 	[collection removeObject:@"Z"];
-	XCTAssertEqual([collection count], (NSUInteger)2);
+	XCTAssertEqual([collection count], 2);
 }
 
 - (void)testRemoveObjectIdenticalTo {
 	NSString *a = [NSString stringWithFormat:@"A"];
 	NSString *b = [NSString stringWithFormat:@"B"];
 	[collection addObject:a];
-	XCTAssertEqual([collection count], (NSUInteger)1);
+	XCTAssertEqual([collection count], 1);
 	[collection removeObjectIdenticalTo:@"A"];
-	XCTAssertEqual([collection count], (NSUInteger)1);
+	XCTAssertEqual([collection count], 1);
 	[collection removeObjectIdenticalTo:a];
-	XCTAssertEqual([collection count], (NSUInteger)0);
+	XCTAssertEqual([collection count], 0);
 	[collection removeObjectIdenticalTo:a];
-	XCTAssertEqual([collection count], (NSUInteger)0);
+	XCTAssertEqual([collection count], 0);
 	
 	// Test removing all instances of an object
 	[collection addObject:a];
@@ -266,13 +266,13 @@
 	
 	XCTAssertThrows([collection removeObjectIdenticalTo:nil]);
 
-	XCTAssertEqual([collection count], (NSUInteger)5);
+	XCTAssertEqual([collection count], 5);
 	[collection removeObjectIdenticalTo:@"A"];
-	XCTAssertEqual([collection count], (NSUInteger)5);
+	XCTAssertEqual([collection count], 5);
 	[collection removeObjectIdenticalTo:a];
-	XCTAssertEqual([collection count], (NSUInteger)3);
+	XCTAssertEqual([collection count], 3);
 	[collection removeObjectIdenticalTo:b];
-	XCTAssertEqual([collection count], (NSUInteger)1);
+	XCTAssertEqual([collection count], 1);
 }
 
 - (void)testRemoveObjectAtIndex {
@@ -285,18 +285,18 @@
 	XCTAssertThrows([collection removeObjectAtIndex:-1]);
 	// Test removing from valid indexes and verify results
 	[collection removeObjectAtIndex:2];
-	XCTAssertEqual([collection count], (NSUInteger)2);
+	XCTAssertEqual([collection count], 2);
 	XCTAssertEqualObjects([collection objectAtIndex:0], @"A");
 	XCTAssertEqualObjects([collection objectAtIndex:1], @"B");
 	[collection removeObjectAtIndex:0];
-	XCTAssertEqual([collection count], (NSUInteger)1);
+	XCTAssertEqual([collection count], 1);
 	XCTAssertEqualObjects([collection objectAtIndex:0], @"B");
 	[collection removeObjectAtIndex:0];
-	XCTAssertEqual([collection count], (NSUInteger)0);
+	XCTAssertEqual([collection count], 0);
 	// Test removing from an index in the middle of the collection
 	[collection addObjectsFromArray:objects];
 	[collection removeObjectAtIndex:1];
-	XCTAssertEqual([collection count], (NSUInteger)2);
+	XCTAssertEqual([collection count], 2);
 	XCTAssertEqualObjects([collection objectAtIndex:0], @"A");
 	XCTAssertEqualObjects([collection objectAtIndex:1], @"C");
 }
