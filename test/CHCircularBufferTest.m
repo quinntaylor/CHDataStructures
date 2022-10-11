@@ -125,9 +125,7 @@ do { \
 }
 
 - (void)testInsertObjectAtIndex {
-	// Inserting a nil object should raise an exception
-	XCTAssertThrows([buffer insertObject:nil  atIndex:0]);
-	// Any index on empty array should raise an exception
+	// Any non-zero index on empty array should raise an exception
 	XCTAssertThrows([buffer insertObject:@"Z" atIndex:1]);
 	// Insert in the middle of a non-wrapping buffer; tail should get pushed right
 	[buffer addObject:@"W"];
@@ -675,9 +673,6 @@ do { \
 }
 
 - (void)testReplaceObjectAtIndexWithObject {
-	XCTAssertThrows([buffer replaceObjectAtIndex:0 withObject:nil]);
-	XCTAssertThrows([buffer replaceObjectAtIndex:1 withObject:nil]);
-	
 	[buffer addObjectsFromArray:abc];
 	
 	for (NSUInteger i = 0; i < [abc count]; i++) {
