@@ -1,5 +1,5 @@
 //
-//  Common.xcconfig
+//  CHDataStructures.xcconfig
 //  CHDataStructures
 //
 
@@ -8,9 +8,6 @@
 
 // Architectures
 SDKROOT = iphoneos
-SDKROOT[sdk=appletv*] = appletvos
-SDKROOT[sdk=watch*] = watchos
-SDKROOT[sdk=mac*] = macosx
 
 SUPPORTED_PLATFORMS = iphoneos iphonesimulator appletvos appletvsimulator watchos watchsimulator macosx
 
@@ -20,8 +17,8 @@ TARGETED_DEVICE_FAMILY[sdk=appletv*] = 3,5
 TARGETED_DEVICE_FAMILY[sdk=watch*] = 4
 TARGETED_DEVICE_FAMILY[sdk=mac*] =
 
-IPHONEOS_DEPLOYMENT_TARGET = 9.0
-MACOSX_DEPLOYMENT_TARGET = 10.11
+IPHONEOS_DEPLOYMENT_TARGET = 12.0
+MACOSX_DEPLOYMENT_TARGET = 11.0
 
 // Search Paths
 ALWAYS_SEARCH_USER_PATHS = NO

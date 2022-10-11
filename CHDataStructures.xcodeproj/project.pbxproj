@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -11,8 +11,8 @@
 			isa = PBXAggregateTarget;
 			buildConfigurationList = E43C87740EA3D36600B3B31E /* Build configuration list for PBXAggregateTarget "Deployment" */;
 			buildPhases = (
-				E41E579A0F6AF8E500FDA687 /* ShellScript */,
-				E43C87670EA3D35500B3B31E /* ShellScript */,
+				E41E579A0F6AF8E500FDA687 /* Strip documentation comments for Release */,
+				E43C87670EA3D35500B3B31E /* SVN Versioning */,
 			);
 			dependencies = (
 				E43C876C0EA3D35C00B3B31E /* PBXTargetDependency */,
@@ -39,7 +39,7 @@
 			isa = PBXAggregateTarget;
 			buildConfigurationList = E4FE76F70E8955BB00971EE6 /* Build configuration list for PBXAggregateTarget "Documentation" */;
 			buildPhases = (
-				E4FE76D70E89556A00971EE6 /* ShellScript */,
+				E4FE76D70E89556A00971EE6 /* doxygen */,
 			);
 			dependencies = (
 			);
@@ -219,9 +219,7 @@
 		963F3A0925A8F8E700FA6A4C /* NSObject+TestUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "NSObject+TestUtilities.h"; path = "test/NSObject+TestUtilities.h"; sourceTree = "<group>"; };
 		963F3A1E25A904FF00FA6A4C /* NSObject+TestUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "NSObject+TestUtilities.m"; path = "test/NSObject+TestUtilities.m"; sourceTree = "<group>"; };
 		96A45EE62154A19900C50ABB /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		96E14B792592632C006519C9 /* Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Common.xcconfig; sourceTree = "<group>"; };
-		96E14B7A2592634D006519C9 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
-		96E14B7B25926360006519C9 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
+		96E14B792592632C006519C9 /* CHDataStructures.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = CHDataStructures.xcconfig; sourceTree = "<group>"; };
 		E400CAAA0F7919B7003189D3 /* CHCircularBufferQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHCircularBufferQueue.h; path = source/CHCircularBufferQueue.h; sourceTree = "<group>"; };
 		E400CAAB0F7919B7003189D3 /* CHCircularBufferQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CHCircularBufferQueue.m; path = source/CHCircularBufferQueue.m; sourceTree = "<group>"; };
 		E400CAC10F791A08003189D3 /* CHCircularBufferDeque.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CHCircularBufferDeque.h; path = source/CHCircularBufferDeque.h; sourceTree = "<group>"; };
@@ -442,9 +440,7 @@
 		96E14B7825926307006519C9 /* Configs */ = {
 			isa = PBXGroup;
 			children = (
-				96E14B792592632C006519C9 /* Common.xcconfig */,
-				96E14B7A2592634D006519C9 /* Debug.xcconfig */,
-				96E14B7B25926360006519C9 /* Release.xcconfig */,
+				96E14B792592632C006519C9 /* CHDataStructures.xcconfig */,
 			);
 			path = Configs;
 			sourceTree = "<group>";
@@ -624,7 +620,7 @@
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1200;
+				LastUpgradeCheck = 1400;
 				TargetAttributes = {
 					8DC2EF4F0486A6940098B216 = {
 						ProvisioningStyle = Automatic;
@@ -686,13 +682,15 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		E41E579A0F6AF8E500FDA687 /* ShellScript */ = {
+		E41E579A0F6AF8E500FDA687 /* Strip documentation comments for Release */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Strip documentation comments for Release";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -700,13 +698,15 @@
 			shellScript = "if [ ${CONFIGURATION} = 'Release' ]\nthen\n\techo\n\techo \"Stripping documentation comments from public header files\"\n\tdirectory=\"build/Release/CHDataStructures.framework/Headers\"\n\tfor file in `ls $directory` ; do\n\t\techo '    '$file\n\t\ttools/strip_comments.py --input $directory/$file -JL > /tmp/$file\n\t\ttools/trim_trailing_whitespace.py /tmp/$file\n\t\tmv /tmp/$file $directory/\n\tdone\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		E43C87670EA3D35500B3B31E /* ShellScript */ = {
+		E43C87670EA3D35500B3B31E /* SVN Versioning */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "SVN Versioning";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -714,13 +714,15 @@
 			shellScript = "if [ ${CONFIGURATION} = 'Release' ]\nthen\n\t# http://www.red-sweater.com/blog/23/automatic-build-sub-versioning-in-xcode\n\tSVN_REVISION=`svnversion | perl -p -e 's/(\\d+:)(\\d+M?S?)/\\$2/'`\n\n\tif [ $SVN_REVISION = 'exported' ]\n\tthen\n\t\tDATE=`date '+%Y-%m-%d'`\n\t\tDISK_IMAGE_NAME=${PRODUCT_NAME}\\ \\(${DATE}\\)\n\t\tDISK_IMAGE_FILE=${PRODUCT_NAME}-${DATE}.dmg\n\telse\n\t\tDISK_IMAGE_NAME=${PRODUCT_NAME}\\ \\(r${SVN_REVISION}\\)\n\t\tDISK_IMAGE_FILE=${PRODUCT_NAME}-r${SVN_REVISION}.dmg\n\tfi\n\t\n\tSOURCE_DIRECTORY=${TEMP_FILES_DIR}/temp\t\n\trm -rf   \"${SOURCE_DIRECTORY}\"\n\tmkdir -p \"${SOURCE_DIRECTORY}\"/CHDataStructures.framework/\n\n\tcp -R build/Release/CHDataStructures.framework/ \"${SOURCE_DIRECTORY}\"/CHDataStructures.framework/\n\tcp README.html \"${SOURCE_DIRECTORY}\"\n\n\t# Remove all invisible .DS_Store files before creating disk image\n\tfor file in `find \"${SOURCE_DIRECTORY}\"/CHDataStructures.framework -name .DS_Store`\n\tdo\n\t\trm $file\n\tdone\n\n\trm -f \"${DISK_IMAGE_FILE}\"\n\thdiutil create -fs HFS+ -volname \"${DISK_IMAGE_NAME}\" -srcfolder \"${SOURCE_DIRECTORY}\" \"${DISK_IMAGE_FILE}\"\n\thdiutil internet-enable -yes \"${DISK_IMAGE_FILE}\"\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		E4FE76D70E89556A00971EE6 /* ShellScript */ = {
+		E4FE76D70E89556A00971EE6 /* doxygen */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = doxygen;
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -863,8 +865,12 @@
 		};
 		1DEB91B208733DA50010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 96E14B7A2592634D006519C9 /* Debug.xcconfig */;
+			baseConfigurationReference = 96E14B792592632C006519C9 /* CHDataStructures.xcconfig */;
 			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.quinntaylor.CHDataStructures;
 				PRODUCT_NAME = CHDataStructures;
 			};
@@ -872,7 +878,7 @@
 		};
 		1DEB91B308733DA50010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 96E14B7B25926360006519C9 /* Release.xcconfig */;
+			baseConfigurationReference = 96E14B792592632C006519C9 /* CHDataStructures.xcconfig */;
 			buildSettings = {
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.quinntaylor.CHDataStructures;
 				PRODUCT_NAME = CHDataStructures;
@@ -921,7 +927,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = "resources/Info-Tests.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				WARNING_CFLAGS = "-Wno-nonnull";
 			};
 			name = Debug;
@@ -930,7 +935,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = "resources/Info-Tests.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				WARNING_CFLAGS = "-Wno-nonnull";
 			};
 			name = Release;
